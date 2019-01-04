@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,7 +16,7 @@ use Pimcore\Analytics\SiteId\SiteIdProvider;
 use Pimcore\Analytics\Google\Config\ConfigProvider as GoogleConfigProvider;
 use Pimcore\Config\Config as ConfigObject;
 
-class ConfigResolver
+class ConfigResolver implements ConfigResolverInterface
 {
     /**
      * @var null|bool|ConfigObject
@@ -65,6 +65,7 @@ class ConfigResolver
         $siteConfig = $config->getConfigForSite($configKey);
 
         $this->googleConfig = $siteConfig;
+
         return $this->googleConfig;
     }
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,13 +30,14 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 {
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function getCustomerDetailsAction(Request $request)
     {
         $this->isGrantedOr403();
 
-        $customerId = $request->get("customerId");
+        $customerId = $request->get('customerId');
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
@@ -48,38 +49,42 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function getProductDetailsAction(Request $request)
     {
         $this->isGrantedOr403();
 
-        $productIds = $request->get("products");
+        $productIds = $request->get('products');
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
         $store = $this->get('coreshop.repository.store')->find($request->get('store'));
         $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '".$request->get('customer')."' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
         }
 
         if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '".$request->get('store')."' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
         }
 
         if (!$currency instanceof CurrencyInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '".$request->get('currency')."' not found"]);
+            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
+        $context = [
+            'store' => $store,
+            'customer' => $customer,
+            'currency' => $currency,
+        ];
 
         $result = [];
 
-        $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
+        $currentCurrency = $store->getCurrency()->getIsoCode();
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
@@ -87,12 +92,12 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
-                $result[] = InheritanceHelper::useInheritedValues(function() use ($product, $productObject, $currentCurrency, $currency) {
+                $result[] = InheritanceHelper::useInheritedValues(function () use ($product, $productObject, $currentCurrency, $currency, $context) {
                     $productFlat = $this->getDataForObject($product);
 
                     $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
 
-                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, true);
+                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, $context, true);
                     $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
 
                     $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
@@ -134,9 +139,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -159,13 +164,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
-        $cart = InheritanceHelper::useInheritedValues(function() use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -179,7 +179,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         });
 
         $totals = $this->getTotalArray($cart);
-        $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
+        $currentCurrency = $store->getCurrency()->getIsoCode();
 
         foreach ($totals as &$totalEntry) {
             $price = $totalEntry['value'];
@@ -206,9 +206,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         $storeId = $request->get('store');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -236,13 +236,8 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
-        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store, $paymentModule) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $paymentModule) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
 
             try {
                 $this->prepareCart($request, $cart);
@@ -250,7 +245,6 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
                 return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
             }
 
-            $cart->setStore($store);
             $cart->setPaymentProvider($paymentModule);
             $this->get('coreshop.cart_processor')->process($cart);
 
@@ -258,7 +252,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         });
 
         /**
-         * @var $sale SaleInterface
+         * @var SaleInterface $sale
          */
         $sale = $this->factory->createNew();
         $sale->setBackendCreated(true);
@@ -266,7 +260,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
         $saleResponse = [
             'success' => true,
-            'id' => $sale->getId()
+            'id' => $sale->getId(),
         ];
 
         $additionalResponse = $this->afterSaleCreation($sale);
@@ -288,64 +282,66 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         return [
             [
                 'key' => 'subtotal',
-                'value' => $cart->getSubtotal(true)
+                'value' => $cart->getSubtotal(true),
             ],
             [
                 'key' => 'subtotal_tax',
-                'value' => $cart->getSubtotalTax()
+                'value' => $cart->getSubtotalTax(),
             ],
             [
                 'key' => 'subtotal_without_tax',
-                'value' => $cart->getSubtotal(false)
+                'value' => $cart->getSubtotal(false),
             ],
             [
                 'key' => 'discount_without_tax',
-                'value' => -1 * $cart->getDiscount(false)
+                'value' => -1 * $cart->getDiscount(false),
             ],
             [
                 'key' => 'discount_tax',
-                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false)
+                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
             ],
             [
                 'key' => 'discount',
-                'value' => -1 * $cart->getDiscount(true)
+                'value' => -1 * $cart->getDiscount(true),
             ],
             [
                 'key' => 'total_without_tax',
-                'value' => $cart->getTotal(false)
+                'value' => $cart->getTotal(false),
             ],
             [
                 'key' => 'total_tax',
-                'value' => $cart->getTotalTax()
+                'value' => $cart->getTotalTax(),
             ],
             [
                 'key' => 'total',
-                'value' => $cart->getTotal(true)
-            ]
+                'value' => $cart->getTotal(true),
+            ],
         ];
     }
 
     protected function createTempCart(
         CustomerInterface $customer,
+        StoreInterface $store,
         AddressInterface $shippingAddress,
         AddressInterface $invoiceAddress,
         CurrencyInterface $currency,
         $localeCode,
         array $productIds
-    )
-    {
+    ) {
         /**
-         * @var $cart CartInterface
+         * @var CartInterface $cart
          */
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $cart->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/coreshop/tmp'));
         $cart->setKey(uniqid());
+        $cart->setStore($store);
         $cart->setShippingAddress($shippingAddress);
         $cart->setInvoiceAddress($invoiceAddress);
         $cart->setCurrency($currency);
         $cart->setCustomer($customer);
         $cart->setCurrency($currency);
         $cart->setLocaleCode($localeCode);
+        $cart->setStore($store);
 
         foreach ($productIds as $productObject) {
             $productId = $productObject['id'];
@@ -363,11 +359,11 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
     /**
      * @return ProposalTransformerInterface
      */
-    protected abstract function getTransformer();
+    abstract protected function getTransformer();
 
     /**
      * @param ProposalInterface $sale
      * @returns array
      */
-    protected abstract function afterSaleCreation(ProposalInterface $sale);
+    abstract protected function afterSaleCreation(ProposalInterface $sale);
 }

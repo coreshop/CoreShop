@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,8 +24,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Webmozart\Assert\Assert;
-
-;
 
 class CheckoutController extends FrontendController
 {
@@ -124,10 +122,11 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @param Request $request
+     * @param Request               $request
      * @param CheckoutStepInterface $step
-     * @param $stepIdentifier
-     * @param $dataForStep
+     * @param string                $stepIdentifier
+     * @param mixed                 $dataForStep
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
@@ -139,7 +138,9 @@ class CheckoutController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return RedirectResponse
+     *
      * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
@@ -164,12 +165,12 @@ class CheckoutController extends FrontendController
          */
 
         /**
-         * @var $step CheckoutStepInterface
+         * @var CheckoutStepInterface $step
          */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
             $step = $checkoutManager->getStep($stepIdentifier);
 
-            if ($step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
+            if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
@@ -182,6 +183,7 @@ class CheckoutController extends FrontendController
 
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
+
             return $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
@@ -207,18 +209,18 @@ class CheckoutController extends FrontendController
         $request->getSession()->remove('coreshop_order_id');
 
         /**
-         * @var $order OrderInterface
+         * @var OrderInterface $order
          */
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $payments = $this->get('coreshop.repository.payment')->findForOrder($order);
+        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
-            'lastPayment' => $lastPayment
+            'lastPayment' => $lastPayment,
         ]);
     }
 

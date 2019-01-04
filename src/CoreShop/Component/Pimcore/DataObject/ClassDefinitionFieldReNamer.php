@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -99,6 +99,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
     /**
      * @return array
+     *
      * @throws \Exception
      */
     protected function getRenameQueries()
@@ -121,17 +122,17 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         $schemaManager = $this->database->getSchemaManager();
 
-        $storeTables = ['object_store_'.$this->definition->getId()];
-        $queryTables = ['object_query_'.$this->definition->getId()];
-        $tableRelations = 'object_relations_'.$this->definition->getId();
+        $storeTables = ['object_store_' . $this->definition->getId()];
+        $queryTables = ['object_query_' . $this->definition->getId()];
+        $tableRelations = 'object_relations_' . $this->definition->getId();
 
         //Check for localized data
-        $storeTables[] = 'object_localized_data_'.$this->definition->getId();
+        $storeTables[] = 'object_localized_data_' . $this->definition->getId();
 
         $validLanguages = Tool::getValidLanguages();
 
         foreach ($validLanguages as $language) {
-            $queryTables[] = 'object_localized_query_'.$this->definition->getId().'_'.$language;
+            $queryTables[] = 'object_localized_query_' . $this->definition->getId() . '_' . $language;
         }
 
         $key = $fieldDefinition->getName();
@@ -141,8 +142,8 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         foreach ($queryTables as $queryTable) {
             if (is_array($fieldDefinition->getQueryColumnType())) {
                 foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
-                    $columnName = $key.'__'.$fkey;
-                    $newColumnName = $key.'__'.$this->newFieldName;
+                    $columnName = $key . '__' . $fkey;
+                    $newColumnName = $key . '__' . $this->newFieldName;
 
                     $columnRenames[$queryTable][$columnName] = $newColumnName;
                 }
@@ -158,8 +159,8 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         foreach ($storeTables as $storeTable) {
             if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
                 foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
-                    $columnName = $key.'__'.$fkey;
-                    $newColumnName = $key.'__'.$this->newFieldName;
+                    $columnName = $key . '__' . $fkey;
+                    $newColumnName = $key . '__' . $this->newFieldName;
 
                     $columnRenames[$storeTable][$columnName] = $newColumnName;
                 }
@@ -194,22 +195,21 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
             $brickDefinitions = new Objectbrick\Definition\Listing();
 
             /**
-             * @var $brickDefinition Objectbrick\Definition
+             * @var Objectbrick\Definition $brickDefinition
              */
             foreach ($brickDefinitions as $brickDefinition) {
                 $brickQueryTable = $brickDefinition->getDao()->getTableName($this->definition, true);
                 $brickStoreTable = $brickDefinition->getDao()->getTableName($this->definition, false);
 
                 if ($schemaManager->tablesExist([$brickQueryTable, $brickStoreTable])) {
-                    $newBrickQueryTable = 'object_brick_query_'.$this->newFieldName.'_'.$this->definition->getId();
-                    $newBrickStoreTable = 'object_brick_store_'.$this->newFieldName.'_'.$this->definition->getId();
+                    $newBrickQueryTable = 'object_brick_query_' . $this->newFieldName . '_' . $this->definition->getId();
+                    $newBrickStoreTable = 'object_brick_store_' . $this->newFieldName . '_' . $this->definition->getId();
 
                     $queries[] = sprintf('RENAME TABLE `%s` TO `%s`;', $brickQueryTable, $newBrickQueryTable);
                     $queries[] = sprintf('RENAME TABLE `%s` TO `%s`;', $brickStoreTable, $newBrickStoreTable);
                 }
             }
         }
-
 
         if ($fieldDefinition instanceof Data\Fieldcollections) {
             foreach ($fieldDefinition->getAllowedTypes() as $fieldCollectionType) {
@@ -219,9 +219,9 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                 $collectionLocalizedTable = $collectionDefinition->getDao()->getLocalizedTableName($this->definition);
 
                 if ($schemaManager->tablesExist([$collectionTable, $collectionLocalizedTable])) {
-                    $newCollectionTable = 'object_collection_'.$this->newFieldName.'_'.$this->definition->getId();
-                    $newCollectionLocalizedTable = 'object_collection_'.$this->newFieldName.'_localized_'.$this->definition->getId(
-                        );
+                    $newCollectionTable = 'object_collection_' . $this->newFieldName . '_' . $this->definition->getId();
+                    $newCollectionLocalizedTable = 'object_collection_' . $this->newFieldName . '_localized_' . $this->definition->getId(
+                    );
 
                     $queries[] = sprintf('RENAME TABLE `%s` TO `%s`;', $collectionTable, $newCollectionTable);
                     $queries[] = sprintf(
@@ -246,12 +246,11 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         if ($isLocalizedField) {
             /**
-             * @var $localizedFieldDefinition Data\Localizedfields
+             * @var Data\Localizedfields $localizedFieldDefinition
              */
             $localizedFieldDefinition = $this->definition->getFieldDefinition('localizedfields');
             $localizedFieldDefinition->fieldDefinitionsCache = null;
-        }
-        else {
+        } else {
             $fieldDefinitions = $this->definition->getFieldDefinitions();
 
             unset($fieldDefinitions[$this->oldFieldName]);

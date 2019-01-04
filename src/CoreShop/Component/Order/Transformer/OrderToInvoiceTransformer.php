@@ -6,13 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -24,12 +25,9 @@ use CoreShop\Component\Order\OrderInvoiceStates;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
-use Pimcore\Model\DataObject\Fieldcollection;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
@@ -80,21 +78,21 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     protected $eventDispatcher;
 
     /**
-     * @var FactoryInterface
+     * @var AdjustmentFactoryInterface
      */
-    protected $taxItemFactory;
+    protected $adjustmentFactory;
 
     /**
      * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface $keyTransformer
-     * @param NumberGeneratorInterface $numberGenerator
-     * @param string $invoiceFolderPath
-     * @param ObjectServiceInterface $objectService
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param PimcoreFactoryInterface $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param FactoryInterface $taxItemFactory
+     * @param ItemKeyTransformerInterface           $keyTransformer
+     * @param NumberGeneratorInterface              $numberGenerator
+     * @param string                                $invoiceFolderPath
+     * @param ObjectServiceInterface                $objectService
+     * @param PimcoreRepositoryInterface            $orderItemRepository
+     * @param PimcoreFactoryInterface               $invoiceItemFactory
+     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
+     * @param TransformerEventDispatcherInterface   $eventDispatcher
+     * @param AdjustmentFactoryInterface            $adjustmentFactory
      */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
@@ -106,9 +104,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         PimcoreFactoryInterface $invoiceItemFactory,
         OrderInvoiceRepositoryInterface $invoiceRepository,
         TransformerEventDispatcherInterface $eventDispatcher,
-        FactoryInterface $taxItemFactory
-    )
-    {
+        AdjustmentFactoryInterface $adjustmentFactory
+    ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
         $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
@@ -118,7 +115,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->invoiceItemFactory = $invoiceItemFactory;
         $this->invoiceRepository = $invoiceRepository;
         $this->eventDispatcher = $eventDispatcher;
-        $this->taxItemFactory = $taxItemFactory;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -126,9 +123,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
-        /*
-         * @var $cart CartInterface
-         */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($invoice, OrderInvoiceInterface::class);
 
@@ -141,8 +135,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $invoiceNumber = $this->numberGenerator->generate($invoice);
 
         /**
-         * @var $invoice OrderInvoiceInterface
-         * @var $order OrderInterface
+         * @var OrderInvoiceInterface $invoice
+         * @var OrderInterface        $order
          */
         $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
         $invoice->setInvoiceNumber($invoiceNumber);
@@ -153,14 +147,14 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore
          */
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
 
         $items = [];
 
         /**
-         * @var $cartItem CartItemInterface
+         * @var CartItemInterface $cartItem
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();
@@ -174,7 +168,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         $invoice->setItems($items);
 
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
 
@@ -192,142 +186,69 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
     {
         $this->calculateSubtotal($invoice, true);
         $this->calculateSubtotal($invoice, false);
-        $this->calculateShipping($invoice, true);
-        $this->calculateShipping($invoice, false);
-        $this->calculateDiscount($invoice, true);
-        $this->calculateDiscount($invoice, false);
+        $this->calculateAdjustments($invoice, true);
+        $this->calculateAdjustments($invoice, false);
         $this->calculateTotal($invoice, true);
         $this->calculateTotal($invoice, false);
 
-        VersionHelper::useVersioning(function() use ($invoice) {
+        VersionHelper::useVersioning(function () use ($invoice) {
             $invoice->save();
         }, false);
     }
 
     /**
      * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Subtotal for Base Values
+     * @param bool                  $base    Calculate Subtotal for Base Values
      */
     private function calculateSubtotal(OrderInvoiceInterface $invoice, $base = true)
     {
-        $discountPercentage = $invoice->getOrder()->getDiscountPercentage();
-
         $subtotalWithTax = 0;
         $subtotalWithoutTax = 0;
-        $subtotalTax = 0;
 
         /**
-         * @var $item OrderInvoiceItemInterface
+         * @var OrderInvoiceItemInterface $item
          */
         foreach ($invoice->getItems() as $item) {
             if ($base) {
                 $subtotalWithTax += $item->getBaseTotal();
                 $subtotalWithoutTax += $item->getBaseTotal(false);
-                $subtotalTax += $item->getBaseTotalTax();
             } else {
                 $subtotalWithTax += $item->getTotal();
                 $subtotalWithoutTax += $item->getTotal(false);
-                $subtotalTax += $item->getTotalTax();
-            }
-
-            foreach ($item->getTaxes() as $tax) {
-                if ($tax instanceof TaxItemInterface) {
-                    $this->addTax($invoice, $tax->getName(), $tax->getRate(), $tax->getAmount() * $discountPercentage, $base);
-                }
             }
         }
 
         if ($base) {
             $invoice->setBaseSubtotal($subtotalWithTax);
             $invoice->setBaseSubtotal($subtotalWithoutTax, false);
-            $invoice->setBaseSubtotalTax($subtotalTax);
         } else {
             $invoice->setSubtotal($subtotalWithTax);
             $invoice->setSubtotal($subtotalWithoutTax, false);
-            $invoice->setSubtotalTax($subtotalTax);
         }
     }
 
     /**
-     * Calculate Shipping Prices for invoices.
+     * Calculate all Adjustments for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Shipping for Base Values
+     * @param bool                  $base
      */
-    private function calculateShipping(OrderInvoiceInterface $invoice, $base = true)
+    private function calculateAdjustments(OrderInvoiceInterface $invoice, $base = true)
     {
-        $shippingWithTax = 0;
-        $shippingWithoutTax = 0;
-        $shippingTax = 0;
+        $order = $invoice->getOrder();
 
-        if ($base) {
-            $totalShipping = $invoice->getOrder()->getBaseShipping();
-            $totalShippingWT = $invoice->getOrder()->getBaseShipping(false);
-            $invoicedShipping = $this->getProcessedValue('baseShippingGross', $invoice->getOrder());
-            $invoicedShippingWT = $this->getProcessedValue('baseShippingNet', $invoice->getOrder());
-        } else {
-            $totalShipping = $invoice->getOrder()->getShipping();
-            $totalShippingWT = $invoice->getOrder()->getShipping(false);
-            $invoicedShipping = $this->getProcessedValue('shippingGross', $invoice->getOrder());
-            $invoicedShippingWT = $this->getProcessedValue('shippingNet', $invoice->getOrder());
-        }
+        foreach ($base ? $order->getBaseAdjustments() : $order->getAdjustments() as $adjustment) {
+            $orderAdjustmentsGross = $base ? $order->getBaseAdjustmentsTotal($adjustment->getTypeIdentifier()) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier());
+            $orderAdjustmentsNet = $base ? $order->getBaseAdjustmentsTotal($adjustment->getTypeIdentifier(), false) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier(), false);
 
-        if ($totalShipping - $invoicedShipping > 0) {
-            $shippingTaxRate = $invoice->getOrder()->getShippingTaxRate();
+            $adjustmentValueToProcessGross = $orderAdjustmentsGross - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), true, $base);
+            $adjustmentValueToProcessNet = $orderAdjustmentsNet - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), false, $base);
 
-            $shippingWithTax = $totalShipping - $invoicedShipping;
-            $shippingWithoutTax = $totalShippingWT - $invoicedShippingWT;
-            $shippingTax = $shippingWithTax - $shippingWithoutTax;
+            if (0 !== $adjustmentValueToProcessGross) {
+                $newAdjustment = $this->adjustmentFactory->createWithData($adjustment->getTypeIdentifier(), $adjustment->getLabel(), $adjustmentValueToProcessGross, $adjustmentValueToProcessNet, $adjustment->getNeutral());
 
-            $this->addTax($invoice, 'shipping', $shippingTaxRate, $shippingTax, $base);
-        }
-
-        if ($base) {
-            $invoice->setBaseShipping($shippingWithTax);
-            $invoice->setBaseShipping($shippingWithoutTax, false);
-            $invoice->setBaseShippingTax($shippingTax);
-        } else {
-            $invoice->setShipping($shippingWithTax);
-            $invoice->setShipping($shippingWithoutTax, false);
-            $invoice->setShippingTax($shippingTax);
-            $invoice->setShippingTaxRate($invoice->getOrder()->getShippingTaxRate());
-        }
-    }
-
-    /**
-     * Calculate Discount for Invoice.
-     *
-     * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Discount for Base Values
-     */
-    private function calculateDiscount(OrderInvoiceInterface $invoice, $base = true)
-    {
-        $discountWithTax = 0;
-        $discountWithoutTax = 0;
-        $discountTax = 0;
-
-        if ($base) {
-            $totalDiscount = $invoice->getOrder()->getBaseDiscount();
-            $invoicedDiscount = $this->getProcessedValue('baseDiscount', $invoice->getOrder());
-        } else {
-            $totalDiscount = $invoice->getOrder()->getDiscount();
-            $invoicedDiscount = $this->getProcessedValue('discount', $invoice->getOrder());
-        }
-
-        if ($totalDiscount - $invoicedDiscount > 0) {
-            $discountWithTax = $totalDiscount - $invoicedDiscount;
-            $discountWithoutTax = $invoice->getOrder()->getDiscount(false) - $this->getProcessedValue('discountNet', $invoice->getOrder());
-            $discountTax = $discountWithTax - $discountWithoutTax;
-        }
-
-        if ($base) {
-            $invoice->setBaseDiscount($discountWithTax);
-            $invoice->setBaseDiscount($discountWithoutTax, false);
-            $invoice->setBaseDiscountTax($discountTax);
-        } else {
-            $invoice->setDiscount($discountWithTax);
-            $invoice->setDiscount($discountWithoutTax, false);
-            $invoice->setDiscountTax($discountTax);
+                $base ? $invoice->addBaseAdjustment($newAdjustment) : $invoice->addAdjustment($newAdjustment);
+            }
         }
     }
 
@@ -335,116 +256,60 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * Calculate Total for invoice.
      *
      * @param OrderInvoiceInterface $invoice
-     * @param boolean $base Calculate Totals for Base Values
+     * @param bool                  $base    Calculate Totals for Base Values
      */
     private function calculateTotal(OrderInvoiceInterface $invoice, $base = true)
     {
         if ($base) {
-            $subtotalTax = $invoice->getBaseSubtotalTax();
-            $shippingTax = $invoice->getBaseShippingTax();
-            $discountTax = $invoice->getBaseDiscountTax();
-
             $subtotalWithTax = $invoice->getBaseSubtotal();
-            $shippingWithTax = $invoice->getBaseShipping();
-            $discountWithTax = $invoice->getBaseDiscount();
+            $adjustmentsTotal = $invoice->getBaseAdjustmentsTotal();
 
             $subtotalWithoutTax = $invoice->getBaseSubtotal(false);
-            $shippingWithoutTax = $invoice->getBaseShipping(false);
-            $discountWithoutTax = $invoice->getBaseDiscount(false);
+            $adjustmentsTotalWithoutTax = $invoice->getBaseAdjustmentsTotal(null, false);
         } else {
-            $subtotalTax = $invoice->getSubtotalTax();
-            $shippingTax = $invoice->getShippingTax();
-            $discountTax = $invoice->getDiscountTax();
-
             $subtotalWithTax = $invoice->getSubtotal();
-            $shippingWithTax = $invoice->getShipping();
-            $discountWithTax = $invoice->getDiscount();
+            $adjustmentsTotal = $invoice->getAdjustmentsTotal();
 
             $subtotalWithoutTax = $invoice->getSubtotal(false);
-            $shippingWithoutTax = $invoice->getShipping(false);
-            $discountWithoutTax = $invoice->getDiscount(false);
+            $adjustmentsTotalWithoutTax = $invoice->getAdjustmentsTotal(null, false);
         }
 
-        $totalTax = ($subtotalTax + $shippingTax) - $discountTax;
-        $total = ($subtotalWithTax + $shippingWithTax) - $discountWithTax;
-        $totalWithoutTax = ($subtotalWithoutTax + $shippingWithoutTax) - $discountWithoutTax;
+        $total = $subtotalWithTax + $adjustmentsTotal;
+        $totalWithoutTax = $subtotalWithoutTax + $adjustmentsTotalWithoutTax;
 
         if ($base) {
-            $invoice->setBaseTotalTax($totalTax);
             $invoice->setBaseTotal($total);
             $invoice->setBaseTotal($totalWithoutTax, false);
         } else {
-            $invoice->setTotalTax($totalTax);
             $invoice->setTotal($total);
             $invoice->setTotal($totalWithoutTax, false);
         }
     }
 
     /**
-     * @param string $field
      * @param OrderInterface $order
+     * @param string         $adjustmentIdentifier
+     * @param bool           $withTax
+     * @param bool           $base
      *
-     * @return float
+     * @return int
      */
-    private function getProcessedValue($field, OrderInterface $order)
+    private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $base)
     {
         $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;
 
+        /**
+         * @var OrderInvoiceInterface $invoice
+         */
         foreach ($invoices as $invoice) {
-            $processedValue += $invoice->getValueForFieldName($field);
-        }
-
-        return $processedValue;
-    }
-
-    /**
-     * @param OrderInvoiceInterface $invoice
-     * @param $name
-     * @param $rate
-     * @param $amount
-     * @param boolean $base
-     */
-    private function addTax(OrderInvoiceInterface $invoice, $name, $rate, $amount, $base = true)
-    {
-        if ($base) {
-            $taxes = $invoice->getBaseTaxes();
-        } else {
-            $taxes = $invoice->getTaxes();
-        }
-
-        if (!$taxes instanceof Fieldcollection) {
-            $taxes = new Fieldcollection();
-        }
-
-        $found = false;
-
-        foreach ($taxes as $tax) {
-            if ($tax instanceof TaxItemInterface) {
-                if ($tax->getName() === $name) {
-                    $tax->setAmount($tax->getAmount() + $amount);
-                    $found = true;
-                    break;
+            foreach ($base ? $invoice->getBaseAdjustments() : $invoice->getAdjustments() as $adjustment) {
+                if ($adjustment->getTypeIdentifier() === $adjustmentIdentifier) {
+                    $processedValue += $adjustment->getAmount($withTax);
                 }
             }
         }
 
-        if (!$found) {
-            /**
-             * @var $taxItem TaxItemInterface
-             */
-            $taxItem = $this->taxItemFactory->createNew();
-            $taxItem->setName($name);
-            $taxItem->setRate($rate);
-            $taxItem->setAmount($amount);
-
-            $taxes->add($taxItem);
-
-            if ($base) {
-                $invoice->setBaseTaxes($taxes);
-            } else {
-                $invoice->setTaxes($taxes);
-            }
-        }
+        return $processedValue;
     }
 }

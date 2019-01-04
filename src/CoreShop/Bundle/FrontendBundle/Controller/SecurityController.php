@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,16 +37,15 @@ class SecurityController extends FrontendController
     protected $shopperContext;
 
     /**
-     * @param AuthenticationUtils $authenticationUtils
-     * @param FormFactoryInterface $formFactory
+     * @param AuthenticationUtils     $authenticationUtils
+     * @param FormFactoryInterface    $formFactory
      * @param ShopperContextInterface $shopperContext
      */
     public function __construct(
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
         ShopperContextInterface $shopperContext
-    )
-    {
+    ) {
         $this->authenticationUtils = $authenticationUtils;
         $this->formFactory = $formFactory;
         $this->shopperContext = $shopperContext;

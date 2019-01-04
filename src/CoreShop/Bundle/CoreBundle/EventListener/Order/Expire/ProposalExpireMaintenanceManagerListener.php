@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -46,9 +46,9 @@ final class ProposalExpireMaintenanceManagerListener
 
     /**
      * @param ConfigurationServiceInterface $configurationService
-     * @param ProposalExpirationInterface $proposalExpiration
-     * @param int $days
-     * @param array $params
+     * @param ProposalExpirationInterface   $proposalExpiration
+     * @param int                           $days
+     * @param array                         $params
      */
     public function __construct(ConfigurationServiceInterface $configurationService, ProposalExpirationInterface $proposalExpiration, $type, $days = 0, $params = [])
     {

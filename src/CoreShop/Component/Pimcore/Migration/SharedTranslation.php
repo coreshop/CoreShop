@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,11 +17,11 @@ use Pimcore\Model\Translation\Website;
 class SharedTranslation
 {
     /**
-     * Add a new Shared Translation
+     * Add a new Shared Translation.
      *
-     * @param $key
-     * @param $language
-     * @param $value
+     * @param string $key
+     * @param string $language
+     * @param string $value
      */
     public static function add($key, $language, $value)
     {
@@ -31,11 +31,14 @@ class SharedTranslation
     }
 
     /**
-     * Cleanup Translations
+     * Cleanup Translations.
      */
     public static function cleanup()
     {
         $list = new Website\Listing();
-        $list->cleanup();
+
+        if (method_exists($list, 'cleanup')) {
+            $list->cleanup();
+        }
     }
 }

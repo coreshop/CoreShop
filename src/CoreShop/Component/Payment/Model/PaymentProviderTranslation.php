@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -44,7 +44,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getTitle();
     }
 
     /**
@@ -53,26 +53,6 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        return $this->getTitle();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($name);
     }
 
     /**

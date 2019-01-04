@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,7 +29,7 @@ class EditmodeHelper
 
         return [
             'objectData' => $this->objectData,
-            'metaData' => $this->metaData
+            'metaData' => $this->metaData,
         ];
     }
 
@@ -40,8 +40,7 @@ class EditmodeHelper
 
         // relations but not for objectsMetadata, because they have additional data which cannot be loaded directly from the DB
         // nonownerobjects should go in there anyway (regardless if it a version or not), so that the values can be loaded
-        if (
-            (
+        if ((
                 !$objectFromVersion
                 && $fielddefinition instanceof DataObject\ClassDefinition\Data\Relations\AbstractRelations
                 && $fielddefinition->getLazyLoading()
@@ -50,11 +49,12 @@ class EditmodeHelper
             )
             || $fielddefinition instanceof DataObject\ClassDefinition\Data\Nonownerobjects
         ) {
-
             //lazy loading data is fetched from DB differently, so that not every relation object is instantiated
             $refId = null;
 
-            if ($fielddefinition->isRemoteOwner()) {
+            if ($fielddefinition->isRemoteOwner() &&
+                method_exists($fielddefinition, 'getOwnerFieldName') &&
+                method_exists($fielddefinition, 'getOwnerClassName')) {
                 $refKey = $fielddefinition->getOwnerFieldName();
                 $refClass = DataObject\ClassDefinition::getByName($fielddefinition->getOwnerClassName());
                 if ($refClass) {

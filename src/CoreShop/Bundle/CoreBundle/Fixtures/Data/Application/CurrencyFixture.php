@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -73,7 +73,10 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             /**
              * @var CurrencyInterface
              */
-            $currency = $this->container->get('coreshop.factory.currency')->createNew();
+            $currency = $this->container->get('coreshop.repository.currency')->getByCode($iso);
+            if (null === $currency) {
+                $currency = $this->container->get('coreshop.factory.currency')->createNew();
+            }
             $currency->setName($c['iso_4217_name']);
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);

@@ -29,9 +29,9 @@ final class MailEvent extends GenericEvent
     protected $shouldSendMail = true;
 
     /**
-     * @param $subject
+     * @param mixed $subject
      * @param Email $emailDocument
-     * @param Mail $mail
+     * @param Mail  $mail
      * @param array $params
      */
     public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])

@@ -6,14 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -22,21 +21,21 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ValidRulesFetcherInterface
      */
-    protected $validRuleFetcher;
+    private $validRuleFetcher;
 
     /**
      * @var RequestStack
      */
-    protected $requestStack;
+    private $requestStack;
 
     /**
      * @var array
      */
-    protected $checkedProducts = [];
+    private $checkedProducts = [];
 
     /**
      * @param ValidRulesFetcherInterface $validRuleFetcher
-     * @param RequestStack $requestStack
+     * @param RequestStack               $requestStack
      */
     public function __construct(ValidRulesFetcherInterface $validRuleFetcher, RequestStack $requestStack)
     {
@@ -47,7 +46,7 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {
             if (isset($this->checkedProducts[$product->getId()])) {
@@ -55,7 +54,7 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
             }
         }
 
-        $rules = $this->validRuleFetcher->getValidRules($product);
+        $rules = $this->validRuleFetcher->getValidRules($product, $context);
 
         $this->checkedProducts[$product->getId()] = $rules;
 

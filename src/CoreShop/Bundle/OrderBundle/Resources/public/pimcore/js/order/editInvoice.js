@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -31,42 +31,11 @@ coreshop.order.order.editInvoice = {
                 },
                 buttons: [
                     {
-                        text: t('save'),
+                        text: t('OK'),
                         handler: function (btn) {
-                            var form = btn.up('window').down('form').getForm();
-
-                            if (form.isValid()) {
-                                var formValues = form.getFieldValues();
-
-                                formValues['id'] = invoice.get('o_id');
-
-                                Ext.Ajax.request({
-                                    url: '/admin/coreshop/order-invoice/update-invoice',
-                                    method: 'post',
-                                    params: formValues,
-                                    callback: function (request, success, response) {
-                                        try {
-                                            response = Ext.decode(response.responseText);
-
-                                            if (response.success === true) {
-                                                window.close();
-                                                window.destroy();
-
-                                                if (callback) {
-                                                    callback(response);
-                                                }
-                                            } else if(response.success === false) {
-                                                Ext.Msg.alert(t('error'), response.message);
-                                            }
-                                        }
-                                        catch (e) {
-                                            Ext.Msg.alert(t('error'), e);
-                                        }
-                                    }
-                                });
-                            }
+                            window.close();
+                            window.destroy();
                         },
-
                         iconCls: 'pimcore_icon_apply'
                     }
                 ],

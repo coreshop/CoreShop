@@ -89,7 +89,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
 
     /**
      * @param PaymentInterface $payment
-     * @param string $nextState
+     * @param string           $nextState
      */
     private function updatePaymentState(PaymentInterface $payment, string $nextState)
     {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,29 +27,28 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var OrderInvoiceRepositoryInterface
      */
-    protected $orderInvoiceRepository;
+    private $orderInvoiceRepository;
 
     /**
      * @var ProcessableInterface
      */
-    protected $processable;
+    private $processable;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager             $stateMachineManager
      * @param OrderInvoiceRepositoryInterface $orderInvoiceRepository
-     * @param ProcessableInterface $processable
+     * @param ProcessableInterface            $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderInvoiceRepositoryInterface $orderInvoiceRepository,
         ProcessableInterface $processable
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderInvoiceRepository = $orderInvoiceRepository;
         $this->processable = $processable;
@@ -57,6 +56,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
+     *
      * @return mixed|void
      */
     public function resolve(OrderInterface $order)
@@ -78,7 +78,7 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $invoiceState
+     * @param string         $invoiceState
      *
      * @return int
      */
@@ -99,8 +99,8 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $invoiceState
-     * @param string $orderInvoiceState
+     * @param string         $invoiceState
+     * @param string         $orderInvoiceState
      *
      * @return bool
      */
@@ -108,10 +108,9 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $invoiceState,
         string $orderInvoiceState
-    ): bool
-    {
+    ): bool {
         $invoiceInStateAmount = $this->countOrderInvoicesInState($order, $invoiceState);
-        $invoiceAmount = count($this->orderInvoiceRepository->getDocuments($order));
+        $invoiceAmount = count($this->orderInvoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED));
 
         return $invoiceAmount === $invoiceInStateAmount &&
             $orderInvoiceState !== $order->getInvoiceState() &&

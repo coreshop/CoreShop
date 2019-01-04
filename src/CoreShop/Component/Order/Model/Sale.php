@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -158,21 +158,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     public function getShipping($withTax = true)
     {
         return $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDiscountPercentage()
-    {
-        $totalWithoutDiscount = $this->getSubtotal(false);
-        $totalWithDiscount = $this->getSubtotal(false) - $this->getDiscount(false);
-
-        if ($totalWithoutDiscount > 0) {
-            return ((100 / $totalWithoutDiscount) * $totalWithDiscount) / 100;
-        }
-
-        return 0;
     }
 
     /**
@@ -340,7 +325,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $total
+     * @param int $total
      */
     public function setBaseTotalNet($total)
     {
@@ -356,7 +341,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $total
+     * @param int $total
      */
     public function setBaseTotalGross($total)
     {
@@ -372,7 +357,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $subTotalNet
+     * @param int $subTotalNet
      */
     public function setBaseSubtotalNet($subTotalNet)
     {
@@ -388,7 +373,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $subTotalGross
+     * @param int $subTotalGross
      */
     public function setBaseSubtotalGross($subTotalGross)
     {
@@ -404,7 +389,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @param $taxes
+     * @param Fieldcollection $taxes
      */
     public function setBaseTaxes($taxes)
     {
@@ -432,6 +417,5 @@ abstract class Sale extends AbstractProposal implements SaleInterface
      */
     protected function recalculateBaseAfterAdjustmentChange()
     {
-
     }
 }

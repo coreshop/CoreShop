@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,35 +15,18 @@ namespace CoreShop\Component\Core\Product\Rule\Condition;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoresConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * @var StoreContextInterface
-     */
-    private $storeContext;
-
-    /**
-     * @param StoreContextInterface $storeContext
-     */
-    public function __construct(StoreContextInterface $storeContext)
-    {
-        $this->storeContext = $storeContext;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        $store = $this->storeContext->getStore();
-
-        if (!$store instanceof StoreInterface) {
+        if (!array_key_exists('store', $params)) {
             return false;
         }
 
-        return in_array($store->getId(), $configuration['stores']);
+        return in_array($params['store']->getId(), $configuration['stores']);
     }
 }

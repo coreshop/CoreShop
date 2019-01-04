@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,9 +36,9 @@ class SettingsController extends AdminController
     {
         $settings = [
             'bundle' => [
-                'version' => Version::getVersion()
+                'version' => Version::getVersion(),
             ],
-            'reports' => array_values($this->getParameter('coreshop.reports'))
+            'reports' => array_values($this->getParameter('coreshop.reports')),
         ];
 
         return $this->viewHandler->handle($settings);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,6 @@ use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Webmozart\Assert\Assert;
@@ -38,11 +37,6 @@ final class InstallerContext implements Context
      * @var CommandTester
      */
     private $tester;
-
-    /**
-     * @var QuestionHelper
-     */
-    private $questionHelper;
 
     /**
      * @var InstallCommand
@@ -114,29 +108,12 @@ final class InstallerContext implements Context
     }
 
     /**
-     * @param string $input
-     *
-     * @return resource
-     */
-    private function getInputStream($input)
-    {
-        $stream = fopen('php://memory', 'rb+', false);
-        fwrite($stream, $input);
-        rewind($stream);
-
-        return $stream;
-    }
-
-    /**
      * @param string $name
      */
     private function iExecuteCommandAndConfirm($name)
     {
-        $this->questionHelper = $this->command->getHelper('question');
-        $inputString = 'y' . PHP_EOL;
-        $this->questionHelper->setInputStream($this->getInputStream($inputString));
-
         try {
+            $this->tester->setInputs(['y']);
             $this->tester->execute(['command' => $name]);
         } catch (\Exception $e) {
         }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -52,11 +52,11 @@ final class CustomerContext implements Context
     private $addressFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $customerFactory
+     * @param SharedStorageInterface      $sharedStorage
+     * @param FactoryInterface            $customerFactory
      * @param CustomerRepositoryInterface $customerRepository
-     * @param FixedCustomerContext $fixedCustomerContext
-     * @param FactoryInterface $addressFactory
+     * @param FixedCustomerContext        $fixedCustomerContext
+     * @param FactoryInterface            $addressFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -64,8 +64,7 @@ final class CustomerContext implements Context
         CustomerRepositoryInterface $customerRepository,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
         $this->customerRepository = $customerRepository;
@@ -114,7 +113,7 @@ final class CustomerContext implements Context
         $nr
     ) {
         /**
-         * @var $address AddressInterface
+         * @var AddressInterface $address
          */
         $address = $this->addressFactory->createNew();
         $address->setCountry($country);
@@ -133,11 +132,12 @@ final class CustomerContext implements Context
 
     /**
      * @param string $email
+     *
      * @return CustomerInterface
      */
     private function createCustomer(string $email)
     {
-        /** @var CustomerInterface $customer*/
+        /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
         $customer->setKey(File::getValidFilename($email));

@@ -106,7 +106,6 @@ class GtmDataLayerBlockListener
         }
 
         $response->setContent($content);
-
     }
 
     /**

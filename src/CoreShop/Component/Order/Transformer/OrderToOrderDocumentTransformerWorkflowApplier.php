@@ -11,35 +11,34 @@ final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocum
     /**
      * @var OrderDocumentTransformerInterface
      */
-    protected $innerTransformer;
+    private $innerTransformer;
 
     /**
      * @var StateMachineManagerInterface
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var string
      */
-    protected $initialState;
+    private $initialState;
 
     /**
      * @var string
      */
-    protected $workflowName;
+    private $workflowName;
 
     /**
      * @var string
      */
-    protected $transition;
+    private $transition;
 
     /**
-     * OrderToInvoiceTransformerWorkflowApplier constructor.
      * @param OrderDocumentTransformerInterface $innerTransformer
-     * @param StateMachineManagerInterface $stateMachineManager
-     * @param string $initialState
-     * @param string $workflowName
-     * @param string $transition
+     * @param StateMachineManagerInterface      $stateMachineManager
+     * @param string                            $initialState
+     * @param string                            $workflowName
+     * @param string                            $transition
      */
     public function __construct(OrderDocumentTransformerInterface $innerTransformer, StateMachineManagerInterface $stateMachineManager, string $initialState, string $workflowName, string $transition)
     {

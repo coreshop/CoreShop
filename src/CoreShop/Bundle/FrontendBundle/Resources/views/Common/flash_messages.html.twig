@@ -3,9 +3,9 @@
 {% for label, message_data in app.flashes(['success', 'error']) %}
     {% for message in message_data %}
         {% if label == 'error'  %}
-             {{ messages.error(message) }}
+             {{ messages.error(message, false) }}
         {% else %}
-             {{ messages.dynamic(message, label)}}
+             {{ messages.dynamic(message, label, false)}}
         {% endif %}
     {% endfor %}
 {% endfor %}

@@ -6,27 +6,26 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\Order;
 
 use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
-use CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
 use CoreShop\Component\Order\Model\OrderShipmentInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use Monolog\Logger;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
@@ -67,13 +66,13 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     private $mailProcessor;
 
     /**
-     * @param Logger $logger
-     * @param MoneyFormatterInterface $priceFormatter
-     * @param OrderInvoiceRepositoryInterface $invoiceRepository
+     * @param Logger                           $logger
+     * @param MoneyFormatterInterface          $priceFormatter
+     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
      * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface $orderDocumentRenderer
-     * @param ThemeHelperInterface $themeHelper
-     * @param MailProcessorInterface $mailProcessor
+     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
+     * @param ThemeHelperInterface             $themeHelper
+     * @param MailProcessorInterface           $mailProcessor
      */
     public function __construct(
         Logger $logger,
@@ -83,8 +82,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         OrderDocumentRendererInterface $orderDocumentRenderer,
         ThemeHelperInterface $themeHelper,
         MailProcessorInterface $mailProcessor
-    )
-    {
+    ) {
         $this->logger = $logger;
         $this->priceFormatter = $priceFormatter;
         $this->invoiceRepository = $invoiceRepository;
@@ -104,7 +102,12 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         }
 
         $attachments = [];
-        $emailParameters = array_merge($order->getCustomer()->getObjectVars(), $params);
+        $customer = $order->getCustomer();
+
+        if ($customer instanceof Concrete) {
+            $emailParameters = array_merge($customer->getObjectVars(), $params);
+        }
+
         $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getCurrency()->getIsoCode());
         $emailParameters['orderNumber'] = $order->getOrderNumber();
 
@@ -119,8 +122,8 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         if (!isset($params['doNotSendToDesignatedRecipient']) || !$params['doNotSendToDesignatedRecipient']) {
             $recipient = [
                 [
-                    $order->getCustomer()->getEmail(),
-                    $order->getCustomer()->getFirstname() . ' ' . $order->getCustomer()->getLastname()
+                    $customer->getEmail(),
+                    $customer->getFirstname() . ' ' . $customer->getLastname(),
                 ],
             ];
         }
@@ -132,7 +135,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                 if ($invoice instanceof OrderInvoiceInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
-                        $attachments[] = \Swift_Attachment::newInstance($data, sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), 'application/pdf');
+                        $attachments[] = new \Swift_Attachment($data, sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), 'application/pdf');
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
@@ -147,7 +150,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                 if ($shipment instanceof OrderShipmentInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
-                        $attachments[] = \Swift_Attachment::newInstance($data, sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()), 'application/pdf');
+                        $attachments[] = new \Swift_Attachment($data, sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()), 'application/pdf');
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
@@ -160,5 +163,3 @@ class OrderMailProcessor implements OrderMailProcessorInterface
         });
     }
 }
-
-class_alias(OrderMailProcessor::class, 'CoreShop\Component\Core\Order\OrderMailProcessor');

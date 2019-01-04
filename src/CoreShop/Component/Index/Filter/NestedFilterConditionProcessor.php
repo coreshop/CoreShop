@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,14 +43,23 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
 
         if (is_array($conditions)) {
             foreach ($conditions as $cond) {
-                $conditionParams[] = $this->conditionProcessors->get($cond->getType())->prepareValuesForRendering($cond, $filter, $list, $currentFilter);
+                $filterProcessor = $this->conditionProcessors->get($cond->getType());
+
+                if ($filterProcessor instanceof FilterConditionProcessorInterface) {
+                    $conditionParams[] = $filterProcessor->prepareValuesForRendering(
+                        $cond,
+                        $filter,
+                        $list,
+                        $currentFilter
+                    );
+                }
             }
         }
 
         return [
             'type' => 'nested',
             'label' => $condition->getLabel(),
-            'conditions' => $conditionParams
+            'conditions' => $conditionParams,
         ];
     }
 
@@ -61,8 +70,19 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
     {
         $conditions = $condition->getConfiguration()['conditions'];
 
-        foreach ($conditions as $condition) {
-            $currentFilter = $this->conditionProcessors->get($condition->getType())->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, $isPrecondition);
+        foreach ($conditions as $cond) {
+            $filterProcessor = $this->conditionProcessors->get($cond->getType());
+
+            if ($filterProcessor instanceof FilterConditionProcessorInterface) {
+                $currentFilter = $filterProcessor->addCondition(
+                    $cond,
+                    $filter,
+                    $list,
+                    $currentFilter,
+                    $parameterBag,
+                    $isPrecondition
+                );
+            }
         }
 
         return $currentFilter;

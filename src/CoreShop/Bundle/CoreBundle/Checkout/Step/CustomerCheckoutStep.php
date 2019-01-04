@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -45,8 +45,8 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     private $registrationService;
 
     /**
-     * @param CustomerContextInterface $customerContext
-     * @param FormFactoryInterface $formFactory
+     * @param CustomerContextInterface     $customerContext
+     * @param FormFactoryInterface         $formFactory
      * @param RegistrationServiceInterface $registrationService
      */
     public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory, RegistrationServiceInterface $registrationService)
@@ -71,7 +71,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     {
         return true;
     }
-
 
     /**
      * {@inheritdoc}
@@ -134,12 +133,13 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     public function prepareStep(CartInterface $cart, Request $request)
     {
         return [
-            'guestForm' => $this->createForm($request)->createView()
+            'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
     /**
      * @param Request $request
+     *
      * @return FormInterface
      */
     private function createForm(Request $request)

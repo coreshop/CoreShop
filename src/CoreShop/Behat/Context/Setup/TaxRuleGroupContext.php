@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,8 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -53,10 +52,10 @@ final class TaxRuleGroupContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $taxRuleGroupFactory
-     * @param FactoryInterface $taxRuleFactory
-     * @param RepositoryInterface $taxRuleGroupRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $taxRuleGroupFactory
+     * @param FactoryInterface       $taxRuleFactory
+     * @param RepositoryInterface    $taxRuleGroupRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -64,8 +63,7 @@ final class TaxRuleGroupContext implements Context
         FactoryInterface $taxRuleGroupFactory,
         FactoryInterface $taxRuleFactory,
         RepositoryInterface $taxRuleGroupRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRuleGroupFactory = $taxRuleGroupFactory;
@@ -88,7 +86,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTax(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -107,7 +105,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndCombination(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -126,7 +124,7 @@ final class TaxRuleGroupContext implements Context
     public function theTaxRuleGroupHasATaxRuleForCountryWithTaxAndOneAfterAnother(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country, TaxRateInterface $taxRate)
     {
         /**
-         * @var $taxRule TaxRuleInterface
+         * @var TaxRuleInterface $taxRule
          */
         $taxRule = $this->taxRuleFactory->createNew();
         $taxRule->setTaxRuleGroup($taxRuleGroup);
@@ -139,23 +137,12 @@ final class TaxRuleGroupContext implements Context
     }
 
     /**
-     * @Given /^the (tax rule group "[^"]+") is valid for (store "[^"]+")$/
-     * @Given /^the (tax rule group) is valid for (store "[^"]+")$/
-     */
-    public function taxRuleGroupIsValidForStore(TaxRuleGroupInterface $taxRuleGroup, StoreInterface $store)
-    {
-        $taxRuleGroup->addStore($store);
-
-        $this->saveTaxRuleGroup($taxRuleGroup);
-    }
-
-    /**
-     * @param $name
+     * @param string $name
      */
     private function createTaxRuleGroup($name)
     {
         /**
-         * @var $taxRule TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface $taxRule
          */
         $taxRule = $this->taxRuleGroupFactory->createNew();
         $taxRule->setName($name);

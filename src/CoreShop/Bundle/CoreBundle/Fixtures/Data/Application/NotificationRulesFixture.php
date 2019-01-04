@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,6 +19,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class NotificationRulesFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
@@ -49,7 +50,11 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
     public function load(ObjectManager $manager)
     {
         $installResourcesDirectory = $this->container->getParameter('coreshop.installer.resources');
-        $jsonFile = $this->container->get('kernel')->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
+        /**
+         * @var KernelInterface $kernel
+         */
+        $kernel = $this->container->get('kernel');
+        $jsonFile = $kernel->locateResource(sprintf('%s/data/%s.json', $installResourcesDirectory, 'notification-rules'));
 
         $totalExistingRules = count($this->container->get('coreshop.repository.notification_rule')->findAll());
 
@@ -70,7 +75,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         foreach ($rule['actions'] as &$action) {
                             foreach ($action['configuration']['mails'] as &$mail) {
-                                $document = Document::getByPath('/'.$mail);
+                                $document = Document::getByPath('/' . $mail);
 
                                 if ($document instanceof Document\Email) {
                                     $mail = $document->getId();
@@ -88,7 +93,7 @@ final class NotificationRulesFixture extends AbstractFixture implements Containe
 
                         $this->container->get('doctrine.orm.entity_manager')->persist($notificationRule);
 
-                        ++$totalImported;
+                        $totalImported++;
                     } catch (\Exception $ex) {
                         //If some goes wrong, we just ignore it
                     }

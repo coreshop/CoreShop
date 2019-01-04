@@ -11,12 +11,15 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
-    protected $productClassName;
+    /**
+     * @var string
+     */
+    private $productClassName;
 
     /**
-     * @param $productClassName
+     * @param string $productClassName
      */
-    public function __construct($productClassName)
+    public function __construct(string $productClassName)
     {
         $this->productClassName = $productClassName;
     }
@@ -37,7 +40,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
             'parentCategoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
-            'stores' => IndexColumnInterface::FIELD_TYPE_STRING
+            'stores' => IndexColumnInterface::FIELD_TYPE_STRING,
         ];
     }
 
@@ -76,7 +79,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
             return [
                 'categoryIds' => ',' . implode(',', $categoryIds) . ',',
                 'parentCategoryIds' => ',' . implode(',', $parentCategoryIds) . ',',
-                'stores' => ',' . @implode(',', $indexable->getStores()) . ','
+                'stores' => ',' . @implode(',', $indexable->getStores()) . ',',
             ];
         }
 

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,17 +32,17 @@ trait CoreSaleCreationTrait
 
     public function getCarrierDetailsAction(Request $request)
     {
-        $productIds = $request->get("products");
-        $customerId = $request->get("customer");
-        $shippingAddressId = $request->get("shippingAddress");
-        $invoiceAddressId = $request->get("invoiceAddress");
+        $productIds = $request->get('products');
+        $customerId = $request->get('customer');
+        $shippingAddressId = $request->get('shippingAddress');
+        $invoiceAddressId = $request->get('invoiceAddress');
         $storeId = $request->get('store');
         $language = $request->get('language');
 
         /**
-         * @var $currency CurrencyInterface
+         * @var CurrencyInterface $currency
          */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get("currency"));
+        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
 
         $customer = $this->get('coreshop.repository.customer')->find($customerId);
         $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
@@ -67,16 +67,11 @@ trait CoreSaleCreationTrait
             return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
         }
 
-        $this->get('coreshop.context.store.fixed')->setStore($store);
-        $this->get('coreshop.context.currency.fixed')->setCurrency($currency);
-        $this->get('coreshop.context.customer.fixed')->setCustomer($customer);
-        $this->get('coreshop.context.country.fixed')->setCountry($shippingAddress->getCountry());
-
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
-        $cart = InheritanceHelper::useInheritedValues(function() use($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $store) {
-            $cart = $this->createTempCart($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
+        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $store) {
+            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
             $this->get('coreshop.cart_processor')->process($cart);
 
             return $cart;
@@ -86,7 +81,7 @@ trait CoreSaleCreationTrait
         $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
 
         /**
-         * @var $carrier CarrierInterface
+         * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
             $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart, $cart->getShippingAddress());
@@ -97,7 +92,7 @@ trait CoreSaleCreationTrait
                 'id' => $carrier->getId(),
                 'name' => $carrier->getIdentifier(),
                 'price' => $price,
-                'priceFormatted' => $priceFormatted
+                'priceFormatted' => $priceFormatted,
             ];
         }
 
@@ -107,7 +102,7 @@ trait CoreSaleCreationTrait
     protected function getTotalArray(CartInterface $cart)
     {
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
@@ -116,16 +111,16 @@ trait CoreSaleCreationTrait
         array_splice($result, 3, 0, [
             [
                 'key' => 'shipping_without_tax',
-                'value' => $cart->getShipping(false)
+                'value' => $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping_tax',
-                'value' => $cart->getShipping(true) - $cart->getShipping(false)
+                'value' => $cart->getShipping(true) - $cart->getShipping(false),
             ],
             [
                 'key' => 'shipping',
-                'value' => $cart->getShipping(true)
-            ]
+                'value' => $cart->getShipping(true),
+            ],
         ]);
 
         return $result;
@@ -134,7 +129,7 @@ trait CoreSaleCreationTrait
     protected function prepareCart(Request $request, CartInterface $cart)
     {
         /**
-         * @var $cart \CoreShop\Component\Core\Model\CartInterface
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
@@ -144,7 +139,7 @@ trait CoreSaleCreationTrait
             $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
 
             if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException('Carrier with ID '.$carrierId.' not found');
+                throw new \InvalidArgumentException('Carrier with ID ' . $carrierId . ' not found');
             }
 
             $cart->setCarrier($carrier);

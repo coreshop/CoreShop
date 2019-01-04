@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,9 +27,9 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
      */
     private $brickDefinition;
 
-
     /**
-     * @param $brickKey
+     * @param string $brickKey
+     *
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($brickKey)
@@ -53,5 +53,3 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
         return DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);
     }
 }
-
-class_alias(BrickDefinitionUpdate::class, 'CoreShop\Component\Pimcore\BrickDefinitionUpdate');

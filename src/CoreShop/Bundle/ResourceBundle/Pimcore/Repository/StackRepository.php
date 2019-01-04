@@ -25,7 +25,7 @@ class StackRepository extends PimcoreRepository
 
     /**
      * @param MetadataInterface $metadata
-     * @param                   $interface
+     * @param string            $interface
      * @param array             $stackClasses
      */
     public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)
@@ -37,8 +37,8 @@ class StackRepository extends PimcoreRepository
 
         foreach ($stackClasses as $class) {
             $namespaces = explode('\\', $class);
-           
-            $this->classNames[] = '"'.end($namespaces).'"';
+
+            $this->classNames[] = '"' . end($namespaces) . '"';
         }
     }
 

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -56,6 +55,15 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     {
         $class = $this->metadata->getClass('model');
 
+        if (!method_exists($class, 'classId')) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no classId function and is therefore not considered as a valid Pimcore DataObject',
+                    $class
+                )
+            );
+        }
+
         return $class::classId();
     }
 
@@ -75,7 +83,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
         $className = $this->metadata->getClass('model');
 
         //Refactor as soon as Pimcore introduces changes to $className::getList()
-        $listClass = $className.'\\Listing';
+        $listClass = $className . '\\Listing';
         $list = \Pimcore::getContainer()->get('pimcore.model.factory')->build($listClass);
 
         return $list;
@@ -102,9 +110,18 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      */
     public function forceFind($id, $force = true)
     {
-        $className = $this->metadata->getClass('model');
+        $class = $this->metadata->getClass('model');
 
-        return $className::getById($id, $force);
+        if (!method_exists($class, 'getById')) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DataObject',
+                    $class
+                )
+            );
+        }
+
+        return $class::getById($id, $force);
     }
 
     /**
@@ -157,7 +174,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * Normalize critera input
+     * Normalize critera input.
      *
      * Input could be
      *
@@ -174,13 +191,13 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *     ]
      * ]
      *
-     * @param $criteria
+     * @param array $criteria
+     *
      * @return array
      */
     private function normalizeCriteria($criteria)
     {
         $normalized = [
-
         ];
 
         if (is_array($criteria)) {
@@ -200,7 +217,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key." = ?";
+                    $normalizedCriterion['condition'] = $key . ' = ?';
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 
@@ -214,7 +231,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * Normalizes Order By
+     * Normalizes Order By.
      *
      * [
      *      "key" => "o_id",
@@ -225,14 +242,15 @@ class PimcoreRepository implements PimcoreRepositoryInterface
      *
      * "o_id ASC"
      *
-     * @param $orderBy
+     * @param array|string $orderBy
+     *
      * @return array
      */
     private function normalizeOrderBy($orderBy)
     {
         $normalized = [
             'key' => '',
-            'direction' => 'ASC'
+            'direction' => 'ASC',
         ];
 
         if (is_array($orderBy)) {
@@ -244,7 +262,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                 $normalized['direction'] = $orderBy['direction'];
             }
         } elseif (is_string($orderBy)) {
-            $exploded = explode(" ", $orderBy);
+            $exploded = explode(' ', $orderBy);
 
             $normalized['key'] = $exploded[0];
 

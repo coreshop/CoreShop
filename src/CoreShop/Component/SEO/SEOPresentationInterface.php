@@ -5,7 +5,7 @@ namespace CoreShop\Component\SEO;
 interface SEOPresentationInterface
 {
     /**
-     * @param $object
+     * @param mixed $object
      */
     public function updateSeoMetadata($object);
 }

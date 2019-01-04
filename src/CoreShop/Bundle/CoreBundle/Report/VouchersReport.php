@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -23,7 +24,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class VouchersReport implements ReportInterface
+class VouchersReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -56,10 +57,10 @@ class VouchersReport implements ReportInterface
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -68,8 +69,7 @@ class VouchersReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeContext,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -121,7 +121,7 @@ class VouchersReport implements ReportInterface
               LIMIT $offset,$limit";
 
         $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);
@@ -129,11 +129,27 @@ class VouchersReport implements ReportInterface
                 'usedDate' => $date->getTimestamp(),
                 'code' => $result['code'],
                 'rule' => !empty($result['rule']) ? $result['rule'] : '--',
-                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode())
+                'discount' => $this->moneyFormatter->format($result['discount'], $store->getCurrency()->getIsoCode(), $this->localeContext->getLocaleCode()),
             ];
         }
 
         return array_values($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+
+        foreach ($data as &$entry) {
+            $entry['usedDate'] = $formatter->format($entry['usedDate']);
+        }
+
+        return $data;
     }
 
     /**

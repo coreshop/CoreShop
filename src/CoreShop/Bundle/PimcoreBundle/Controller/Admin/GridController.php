@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,7 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
 class GridController extends AdminController
 {
     /**
-     * @param $listType
+     * @param string $listType
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridFiltersAction($listType)
@@ -37,7 +38,7 @@ class GridController extends AdminController
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin')
+                'name' => $trans->trans($service->getName(), [], 'admin'),
             ];
         }
 
@@ -45,7 +46,8 @@ class GridController extends AdminController
     }
 
     /**
-     * @param $listType
+     * @param string $listType
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getGridActionsAction($listType)
@@ -56,14 +58,13 @@ class GridController extends AdminController
         $services = [];
         /** @var GridActionInterface $service */
         foreach ($gridActionRepository->all() as $id => $service) {
-
             if ($service->supports($listType) !== true) {
                 continue;
             }
 
             $services[] = [
                 'id' => $id,
-                'name' => $trans->trans($service->getName(), [], 'admin')
+                'name' => $trans->trans($service->getName(), [], 'admin'),
             ];
         }
 
@@ -72,6 +73,7 @@ class GridController extends AdminController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function applyGridAction(Request $request)
@@ -103,7 +105,7 @@ class GridController extends AdminController
 
         return $this->json([
             'success' => $success,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 }

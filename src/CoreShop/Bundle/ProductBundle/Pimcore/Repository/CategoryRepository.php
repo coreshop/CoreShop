@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,7 +24,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     public function findFirstLevel()
     {
         $list = $this->getList();
-        $list->setCondition("parentCategory__id is null");
+        $list->setCondition('parentCategory__id is null');
 
         return $list->getObjects();
     }
@@ -35,15 +35,14 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     public function findChildCategories(CategoryInterface $category)
     {
         $list = $this->getList();
-        $list->setCondition("parentCategory__id = ?", [$category->getId()]);
+        $list->setCondition('parentCategory__id = ?', [$category->getId()]);
 
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
                 sprintf('o_%s ASC', $category->getChildrenSortBy()),
                 false
             );
-        }
-        else {
+        } else {
             $list->setOrderKey(
                 'o_key ASC',
                 false

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,7 +43,7 @@ class OrderShipmentController extends PimcoreController
         $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
@@ -92,7 +92,6 @@ class OrderShipmentController extends PimcoreController
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST'], true)) {
-
             if (!$handledForm->isValid()) {
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Form is not valid.']);
             }
@@ -106,7 +105,6 @@ class OrderShipmentController extends PimcoreController
             }
 
             try {
-
                 // request shipment ready state from order, if it's our first shipment.
                 $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_shipment');
                 if ($workflow->can($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT)) {
@@ -141,6 +139,7 @@ class OrderShipmentController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function updateStateAction(Request $request)
@@ -159,6 +158,7 @@ class OrderShipmentController extends PimcoreController
         }
 
         $workflow->apply($shipment, $transition);
+
         return $this->viewHandler->handle(['success' => true]);
     }
 
@@ -177,12 +177,13 @@ class OrderShipmentController extends PimcoreController
                 $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($shipment);
                 $header = [
                     'Content-Type' => 'application/pdf',
-                    'Content-Disposition' => 'inline; filename="shipment-'.$shipment->getId().'.pdf"',
+                    'Content-Disposition' => 'inline; filename="shipment-' . $shipment->getId() . '.pdf"',
                 ];
             } catch (\Exception $e) {
-                $responseData = '<strong>'.$e->getMessage().'</strong><br>trace: '.$e->getTraceAsString();
+                $responseData = '<strong>' . $e->getMessage() . '</strong><br>trace: ' . $e->getTraceAsString();
                 $header = ['Content-Type' => 'text/html'];
             }
+
             return new Response($responseData, 200, $header);
         }
 

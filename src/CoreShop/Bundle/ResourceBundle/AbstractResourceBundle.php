@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -55,6 +55,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
                                 [$this->getObjectManagerParameter()],
                                 sprintf('%s.driver.%s', $this->getBundlePrefix(), $driver)
                             ));
+
                             break;
 
                         case ResourceBundleInterface::MAPPING_ANNOTATION:
@@ -86,7 +87,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion()." (".$this->getComposerVersion().")";
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
         }
 
         return $this->getComposerVersion();
@@ -101,7 +102,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
 
         if ($this instanceof ComposerPackageBundleInterface && isset(Versions::VERSIONS[$this->getPackageName()])) {
             $version = Versions::getVersion($this->getPackageName());
-        } else if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+        } elseif (isset(Versions::VERSIONS['coreshop/core-shop'])) {
             $version = Versions::getVersion('coreshop/core-shop');
         }
 
@@ -152,6 +153,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         switch ($driverType) {
             case CoreShopResourceBundle::DRIVER_DOCTRINE_ORM:
                 $mappingsPassClassname = DoctrineOrmMappingsPass::class;
+
                 break;
             default:
                 throw new UnknownDriverException($driverType);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,29 +27,28 @@ final class OrderShippingStateResolver implements StateResolverInterface
     /**
      * @var StateMachineManager
      */
-    protected $stateMachineManager;
+    private $stateMachineManager;
 
     /**
      * @var OrderShipmentRepositoryInterface
      */
-    protected $orderShipmentRepository;
+    private $orderShipmentRepository;
 
     /**
      * @var ProcessableInterface
      */
-    protected $processable;
+    private $processable;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager              $stateMachineManager
      * @param OrderShipmentRepositoryInterface $orderShipmentRepository
-     * @param ProcessableInterface $processable
+     * @param ProcessableInterface             $processable
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         OrderShipmentRepositoryInterface $orderShipmentRepository,
         ProcessableInterface $processable
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->orderShipmentRepository = $orderShipmentRepository;
         $this->processable = $processable;
@@ -57,6 +56,7 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
+     *
      * @return mixed|void
      */
     public function resolve(OrderInterface $order)
@@ -76,10 +76,9 @@ final class OrderShippingStateResolver implements StateResolverInterface
         }
     }
 
-
     /**
      * @param OrderInterface $order
-     * @param string $shipmentState
+     * @param string         $shipmentState
      *
      * @return int
      */
@@ -100,8 +99,8 @@ final class OrderShippingStateResolver implements StateResolverInterface
 
     /**
      * @param OrderInterface $order
-     * @param string $shipmentState
-     * @param string $orderShippingState
+     * @param string         $shipmentState
+     * @param string         $orderShippingState
      *
      * @return bool
      */
@@ -109,10 +108,9 @@ final class OrderShippingStateResolver implements StateResolverInterface
         OrderInterface $order,
         string $shipmentState,
         string $orderShippingState
-    ): bool
-    {
+    ): bool {
         $shipmentInStateAmount = $this->countOrderShipmentsInState($order, $shipmentState);
-        $shipmentAmount = count($this->orderShipmentRepository->getDocuments($order));
+        $shipmentAmount = count($this->orderShipmentRepository->getDocumentsNotInState($order, OrderShipmentStates::STATE_CANCELLED));
 
         return $shipmentAmount === $shipmentInStateAmount &&
             $orderShippingState !== $order->getShippingState() &&

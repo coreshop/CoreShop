@@ -3,16 +3,15 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\DataObject\Service;
 
 interface ObjectClonerInterface
 {
     /**
-     * Clones an object and returns it unsaved
+     * Clones an object and returns it unsaved.
      *
      * @param Concrete $object
-     * @param $parent
-     * @param $key
+     * @param Concrete $parent
+     * @param string   $key
      *
      * @return Concrete
      */

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,7 +30,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
     /**
      * @param OrderDocumentRendererInterface $decoratedService
-     * @param string $environment
+     * @param string                         $environment
      */
     public function __construct(OrderDocumentRendererInterface $decoratedService, string $environment)
     {
@@ -50,7 +50,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
         if ($orderDocument->getRenderedAsset() instanceof Asset) {
             // check if asset is outdated.
-            if ((int)$orderDocument->getRenderedAsset()->getCreationDate() >= (int)$orderDocument->getModificationDate()) {
+            if ((int) $orderDocument->getRenderedAsset()->getCreationDate() >= (int) $orderDocument->getModificationDate()) {
                 return $orderDocument->getRenderedAsset()->getData();
             }
         }
@@ -60,7 +60,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $assetPath = $orderDocument->getFullPath();
         $assetName = sprintf('%s.pdf', $orderDocument::getDocumentType());
 
-        $document = Asset\Document::getByPath($assetPath.'/'.$assetName);
+        $document = Asset\Document::getByPath($assetPath . '/' . $assetName);
 
         if ($document instanceof Asset\Document) {
             $document->delete();

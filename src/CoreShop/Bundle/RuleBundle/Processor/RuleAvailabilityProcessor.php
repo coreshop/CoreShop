@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,6 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -26,21 +25,19 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    private $eventDispatcher;
 
     /**
      * @var EntityManagerInterface
      */
-    protected $entityManager;
+    private $entityManager;
 
     /**
-     * @var RuleRepositoryInterface
+     * @var ServiceRegistryInterface
      */
-    protected $ruleRegistry;
+    private $ruleRegistry;
 
     /**
-     * RuleAvailabilityProcessor constructor.
-     *
      * @param EventDispatcherInterface $eventDispatcher
      * @param EntityManagerInterface   $entityManager
      * @param ServiceRegistryInterface $ruleRegistry

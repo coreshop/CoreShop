@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,7 +25,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
      */
     public function findForStore(StoreInterface $store)
     {
-
         $list = $this->getList();
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
         $this->setSortingForListingWithoutCategory($list);
@@ -65,10 +64,11 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store)
     {
         $list = $this->getList();
+        $dao = $list->getDao();
 
         $db = \Pimcore\Db::get();
         $query = $db->select()
-            ->from($list->getTableName(), ['oo_id'])
+            ->from($dao->getTableName(), ['oo_id'])
             ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
             ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
 
@@ -101,7 +101,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     }
 
     /**
-     * @param Listing $list
+     * @param Listing           $list
      * @param CategoryInterface $category
      */
     private function setSortingForListing(Listing $list, CategoryInterface $category)

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,6 +20,7 @@ use CoreShop\Component\Pimcore\DataObject\BrickDefinitionUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdateInterface;
 use CoreShop\Component\Pimcore\DataObject\FieldCollectionDefinitionUpdate;
+use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Concrete;
@@ -41,13 +42,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }
@@ -278,9 +278,9 @@ final class PimcoreClassContext implements Context
         $definitionUpdater = $this->getUpdater($definition);
         $definitionUpdater->setProperty('classDefinitions', [
             [
-                "classname" => $class->getName(),
-                "fieldname" => $field
-            ]
+                'classname' => $class->getName(),
+                'fieldname' => $field,
+            ],
         ]);
         $definitionUpdater->save();
     }
@@ -611,7 +611,7 @@ final class PimcoreClassContext implements Context
     {
         $className = sprintf('Pimcore\\Model\\DataObject\\%s', $definition->getName());
         /**
-         * @var $instance Concrete
+         * @var Concrete $instance
          */
         $instance = new $className();
         $instance->setKey($key);
@@ -650,22 +650,26 @@ final class PimcoreClassContext implements Context
             switch ($row['type']) {
                 case 'checkbox':
                     $object->setValue($row['key'], filter_var($row['value'], FILTER_VALIDATE_BOOLEAN));
+
                     break;
 
                 case 'input':
                     $object->setValue($row['key'], $row['value']);
+
                     break;
 
                 case 'href':
                     $object->setValue($row['key'], DataObject::getById($row['value']));
+
                     break;
 
                 case 'localized':
-                    $setter = 'set'.ucfirst($row['key']);
+                    $setter = 'set' . ucfirst($row['key']);
 
                     foreach (Tool::getValidLanguages() as $lang) {
                         $object->$setter($row['value'], $lang);
                     }
+
                     break;
 
                 case 'brick':
@@ -679,8 +683,8 @@ final class PimcoreClassContext implements Context
                         $brickInstance->setValue($key, $value);
                     }
 
+                    $object->{'get' . ucfirst($row['key'])}()->{'set' . ucfirst($type)}($brickInstance);
 
-                    $object->{'get'.ucfirst($row['key'])}()->{'set'.ucfirst($type)}($brickInstance);
                     break;
 
                 case 'collection':
@@ -700,11 +704,13 @@ final class PimcoreClassContext implements Context
                         $items->add($collectionInstance);
                     }
 
-                    $object->{'set'.ucfirst($row['key'])}($items);
+                    $object->{'set' . ucfirst($row['key'])}($items);
+
                     break;
 
                 default:
                     throw new \InvalidArgumentException(sprintf('Type %s not yet supported', $row['type']));
+
                     break;
             }
         }
@@ -713,9 +719,10 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @param $definition
-     * @param $fieldDefinition
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
+     * @param string $definition
+     * @param string $fieldDefinition
+     *
+     * @throws ClassDefinitionNotFoundException
      */
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
     {
@@ -725,9 +732,11 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @param $definition
-     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate|null
-     * @throws \CoreShop\Component\Pimcore\ClassDefinitionNotFoundException
+     * @param string $definition
+     *
+     * @return BrickDefinitionUpdate|ClassUpdate|FieldCollectionDefinitionUpdate
+     *
+     * @throws ClassDefinitionNotFoundException
      */
     private function getUpdater($definition)
     {

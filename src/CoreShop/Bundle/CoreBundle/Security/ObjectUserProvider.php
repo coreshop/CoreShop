@@ -6,14 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\Security;
 
-use Pimcore\Model\DataObject\AbstractObject;
-use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
+use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,60 +22,36 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ObjectUserProvider implements UserProviderInterface
 {
     /**
-     * The pimcore class name to be used. Needs to be a fully qualified class
-     * name (e.g. Pimcore\Model\DataObject\User or your custom user class extending
-     * the generated one.
-     *
+     * @var CustomerRepositoryInterface
+     */
+    protected $customerRepository;
+
+    /**
      * @var string
      */
     protected $className;
 
     /**
-     * @var string
+     * @param CustomerRepositoryInterface $customerRepository
+     * @param string                      $className
      */
-    protected $usernameField = 'username';
-
-    /**
-     * @param string $className
-     * @param string $usernameField
-     */
-    public function __construct($className, $usernameField = 'username')
+    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
     {
+        $this->customerRepository = $customerRepository;
         $this->className = $className;
-        $this->usernameField = $usernameField;
-    }
-
-    /**
-     * Check if Class is of right type.
-     */
-    protected function checkClass()
-    {
-        if (!class_exists($this->className)) {
-            throw new InvalidArgumentException(sprintf('User class %s does not exist', $this->className));
-        }
-
-        $reflector = new \ReflectionClass($this->className);
-        if (!$reflector->isSubclassOf(AbstractObject::class)) {
-            throw new InvalidArgumentException(sprintf('User class %s must be a subclass of %s', $this->className, AbstractObject::class));
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($emailAddress)
     {
-        $this->checkClass();
-
-        $getter = sprintf('getBy%s', ucfirst($this->usernameField));
-
-        // User::getByUsername($username, 1);
-        $user = call_user_func_array([$this->className, $getter], [$username, 1]);
-        if ($user && $user instanceof $this->className) {
-            return $user;
+        $customer = $this->customerRepository->findCustomerByEmail($emailAddress);
+        if ($customer instanceof CustomerInterface) {
+            return $customer;
         }
 
-        throw new UsernameNotFoundException(sprintf('User %s was not found', $username));
+        throw new UsernameNotFoundException(sprintf('User with email address %s was not found', $emailAddress));
     }
 
     /**
@@ -83,13 +59,11 @@ class ObjectUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        $this->checkClass();
-
-        if (!$user instanceof $this->className || !$user instanceof AbstractObject) {
+        if (!$user instanceof CustomerInterface) {
             throw new UnsupportedUserException();
         }
 
-        $refreshedUser = call_user_func_array([$this->className, 'getById'], [$user->getId()]);
+        $refreshedUser = $this->customerRepository->find($user->getId());
 
         return $refreshedUser;
     }

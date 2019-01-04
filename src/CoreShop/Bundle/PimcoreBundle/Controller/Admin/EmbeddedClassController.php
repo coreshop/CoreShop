@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,7 +33,7 @@ final class EmbeddedClassController extends AdminController
         $list->setCondition('classId = ' . $list->quote($class->getId()));
         $list = $list->load();
         $result = [];
-        /** @var $item DataObject\ClassDefinition\CustomLayout */
+        /** @var DataObject\ClassDefinition\CustomLayout $item */
         foreach ($list as $item) {
             $result[] = [
                 'id' => $item->getId(),
@@ -88,7 +88,7 @@ final class EmbeddedClassController extends AdminController
 
         return $this->adminJson([
             'layout' => $layout,
-            'general' => $general
+            'general' => $general,
         ]);
     }
 }

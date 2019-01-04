@@ -34,7 +34,6 @@ class Version20180626083954 extends AbstractPimcoreMigration implements Containe
          * @var $order OrderInterface
          */
         foreach ($list->getObjects() as $order) {
-
             $shipments = $orderShipmentRepository->getDocuments($order);
             $invoice = $orderInvoiceRepository->getDocuments($order);
 
@@ -62,4 +61,3 @@ class Version20180626083954 extends AbstractPimcoreMigration implements Containe
     {
     }
 }
-

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -38,16 +38,15 @@ final class AddressContext implements Context
     private $addressRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $addressFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param FactoryInterface           $addressFactory
      * @param PimcoreRepositoryInterface $addressRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $addressFactory,
         PimcoreRepositoryInterface $addressRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->addressFactory = $addressFactory;
         $this->addressRepository = $addressRepository;
@@ -63,10 +62,11 @@ final class AddressContext implements Context
 
     /**
      * @param CountryInterface $country
-     * @param $postcode
-     * @param $city
-     * @param $street
-     * @param $nr
+     * @param string           $postcode
+     * @param string           $city
+     * @param string           $street
+     * @param string           $nr
+     *
      * @return AddressInterface
      */
     private function createAddress(CountryInterface $country, $postcode, $city, $street, $nr)

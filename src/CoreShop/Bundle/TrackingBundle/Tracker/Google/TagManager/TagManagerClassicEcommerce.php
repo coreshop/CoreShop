@@ -6,19 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
-use CoreShop\Bundle\TrackingBundle\Model\ActionData;
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
-use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -30,7 +25,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     public $codeTracker;
 
     /**
-     * @var ConfigResolver
+     * @var ConfigResolverInterface
      */
     public $config;
 
@@ -56,9 +51,9 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     }
 
     /**
-     * @param ConfigResolver $config
+     * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolver $config)
+    public function setConfigResolver(ConfigResolverInterface $config)
     {
         $this->config = $config;
     }
@@ -71,14 +66,14 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/classic'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtm/classic',
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
         // not implemented
     }
@@ -86,7 +81,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         // not implemented
     }
@@ -94,7 +89,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         // not implemented
     }
@@ -102,7 +97,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         // not implemented
     }
@@ -110,7 +105,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         // not implemented
     }
@@ -118,14 +113,13 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
         $this->ensureDataLayer();
 
-        $orderData = $this->itemBuilder->buildOrderAction($order);
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $items = $order['items'];
 
-        $actionData = array_merge($this->transformOrder($orderData), ['transactionProducts' => []]);
+        $actionData = array_merge($this->transformOrder($order), ['transactionProducts' => []]);
 
         foreach ($items as $item) {
             $actionData['transactionProducts'][] = $this->transformProductAction($item);
@@ -135,47 +129,48 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->codeTracker->addCodePart($result);
-
     }
 
     /**
-     * Transform ActionData into gtag data array
+     * Transform ActionData into gtag data array.
      *
-     * @param ActionData $actionData
+     * @param array $actionData
+     *
      * @return array
      */
-    protected function transformOrder(ActionData $actionData)
+    protected function transformOrder($actionData)
     {
         return [
-            'transactionId'          => $actionData->getId(),
-            'transactionAffiliation' => $actionData->getAffiliation() ?: '',
-            'transactionTotal'       => $actionData->getRevenue(),
-            'transactionTax'         => $actionData->getTax(),
-            'transactionShipping'    => $actionData->getShipping(),
-            'transactionCurrency'    => $actionData->getCurrency()
+            'transactionId' => $actionData['id'],
+            'transactionAffiliation' => $actionData['affiliation'] ?: '',
+            'transactionTotal' => $actionData['total'],
+            'transactionTax' => $actionData['totalTax'],
+            'transactionShipping' => $actionData['shipping'],
+            'transactionCurrency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into gtag data object
+     * Transform product action into gtag data object.
      *
-     * @param ProductData $item
+     * @param array $item
+     *
      * @return array
      */
-    protected function transformProductAction(ProductData $item)
+    protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'sku'      => $item->getSku(),
-            'name'     => $item->getName(),
-            'category' => $item->getCategory(),
-            'price'    => round($item->getPrice(), 2),
-            'quantity' => $item->getQuantity() ?: 1
+            'id' => $item['id'],
+            'sku' => $item['sku'],
+            'name' => $item['name'],
+            'category' => $item['category'],
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'],
         ]);
     }
 
     /**
-     * Makes sure data layer is included once before any call
+     * Makes sure data layer is included once before any call.
      */
     protected function ensureDataLayer()
     {

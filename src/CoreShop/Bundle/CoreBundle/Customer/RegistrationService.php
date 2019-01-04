@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,8 +21,6 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
@@ -40,11 +38,6 @@ final class RegistrationService implements RegistrationServiceInterface
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-
-    /**
-     * @var TokenStorage
-     */
-    private $securityTokenStorage;
 
     /**
      * @var LocaleContextInterface
@@ -68,28 +61,25 @@ final class RegistrationService implements RegistrationServiceInterface
 
     /**
      * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface $objectService
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param TokenStorage $securityTokenStorage
-     * @param LocaleContextInterface $localeContext
-     * @param string $customerFolder
-     * @param string $guestFolder
-     * @param string $addressFolder
+     * @param ObjectServiceInterface      $objectService
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param LocaleContextInterface      $localeContext
+     * @param string                      $customerFolder
+     * @param string                      $guestFolder
+     * @param string                      $addressFolder
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
-        TokenStorage $securityTokenStorage,
         LocaleContextInterface $localeContext,
         $customerFolder,
         $guestFolder,
-        $addressFolder)
-    {
+        $addressFolder
+    ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
         $this->eventDispatcher = $eventDispatcher;
-        $this->securityTokenStorage = $securityTokenStorage;
         $this->localeContext = $localeContext;
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
@@ -99,16 +89,24 @@ final class RegistrationService implements RegistrationServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
-    {
+    public function registerCustomer(
+        CustomerInterface $customer,
+        AddressInterface $address,
+        $formData,
+        $isGuest = false
+    ) {
         $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
-        
+
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
         }
 
         $customer->setPublished(true);
-        $customer->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', ($isGuest ? $this->guestFolder : $this->customerFolder), substr($customer->getLastname(), 0, 1))));
+        $customer->setParent($this->objectService->createFolderByPath(sprintf(
+            '/%s/%s',
+            ($isGuest ? $this->guestFolder : $this->customerFolder),
+            mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
+        )));
         $customer->setKey(File::getValidFilename($customer->getEmail()));
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
@@ -117,18 +115,21 @@ final class RegistrationService implements RegistrationServiceInterface
 
         $address->setPublished(true);
         $address->setKey(uniqid());
-        $address->setParent($this->objectService->createFolderByPath(sprintf('/%s/%s', $customer->getFullPath(), $this->addressFolder)));
+        $address->setParent($this->objectService->createFolderByPath(sprintf(
+            '/%s/%s',
+            $customer->getFullPath(),
+            $this->addressFolder
+        )));
         $address->save();
 
         $customer->setDefaultAddress($address);
         $customer->addAddress($address);
 
-        $token = new UsernamePasswordToken($customer, null, 'coreshop_frontend', $customer->getRoles());
-        $this->securityTokenStorage->setToken($token);
-
-        $this->eventDispatcher->dispatch('coreshop.customer.register', new CustomerRegistrationEvent($customer, $formData));
+        $this->eventDispatcher->dispatch(
+            'coreshop.customer.register',
+            new CustomerRegistrationEvent($customer, $formData)
+        );
 
         $customer->save();
     }
-
 }

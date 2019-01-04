@@ -24,11 +24,10 @@ class Version20180213073553 extends AbstractPimcoreMigration implements Containe
             'Update Order Item' => 'update_order_item',
             'Email' => 'email',
             'OrderComment' => 'order_comment',
-            'Order State Change' => 'order_state_change'
+            'Order State Change' => 'order_state_change',
         ];
 
         foreach ($oldNoteStates as $currentKey => $newKey) {
-
             $noteListing = new Note\Listing();
             $noteListing->addConditionParam('type = ?', $currentKey);
 

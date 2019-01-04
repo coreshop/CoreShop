@@ -3,6 +3,7 @@ imports:
     - { resource: "services/listeners.yml" }
     - { resource: "services/commands.yml" }
     - { resource: "services/pimcore.yml" }
+    - { resource: "services/condition_renderer.yml" }
 
 services:
     _defaults:
@@ -95,6 +96,8 @@ services:
             - '@coreshop.registry.index.getter'
             - '@coreshop.registry.index.interpreter'
             - '@coreshop.index.filter_group_helper'
+            - '@coreshop.index.condition.renderer'
+            - '@doctrine.dbal.default_connection'
         shared: false
         calls:
             - { method: setLogger, arguments: ['@logger'] }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -55,11 +55,11 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
 
             for ($i = 0; $i < $categoriesCount; $i++) {
                 /**
-                 * @var $category CategoryInterface
+                 * @var CategoryInterface $category
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
                 $category->setName($faker->words(3, true));
-                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath("/demo/categories"));
+                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
                 $category->setKey($category->getName());
                 $category->setPublished(true);

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,8 +37,8 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'label' => $condition->getLabel(),
             'minValue' => $minValue,
             'maxValue' => $maxValue,
-            'currentValueMin' => $currentFilter[$field.'-min'] ? $currentFilter[$field.'-min'] : $minValue,
-            'currentValueMax' => $currentFilter[$field.'-max'] ? $currentFilter[$field.'-max'] : $maxValue,
+            'currentValueMin' => $currentFilter[$field . '-min'] ? $currentFilter[$field . '-min'] : $minValue,
+            'currentValueMax' => $currentFilter[$field . '-max'] ? $currentFilter[$field . '-max'] : $maxValue,
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'stepCount' => $condition->getConfiguration()['stepCount'],
@@ -56,12 +56,12 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         if ($parameterBag->has($field)) {
             $values = explode(',', $parameterBag->get($field));
 
-            $parameterBag->set($field.'-min', $values[0]);
-            $parameterBag->set($field.'-max', $values[0]);
+            $parameterBag->set($field . '-min', $values[0]);
+            $parameterBag->set($field . '-max', $values[0]);
         }
 
-        $valueMin = $parameterBag->get($field.'-min');
-        $valueMax = $parameterBag->get($field.'-max');
+        $valueMin = $parameterBag->get($field . '-min');
+        $valueMax = $parameterBag->get($field . '-max');
 
         if (empty($valueMax)) {
             $valueMax = $condition->getConfiguration()['preSelectMax'];
@@ -79,14 +79,14 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $valueMin = null;
         }
 
-        $currentFilter[$field.'-min'] = $valueMin;
-        $currentFilter[$field.'-max'] = $valueMax;
+        $currentFilter[$field . '-min'] = $valueMin;
+        $currentFilter[$field . '-max'] = $valueMax;
 
         if (!empty($valueMin) && !empty($valueMax)) {
             $fieldName = $field;
 
             if ($isPrecondition) {
-                $fieldName = 'PRECONDITION_'.$fieldName;
+                $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
             $list->addCondition(new RangeCondition($field, $valueMin, $valueMax), $fieldName);

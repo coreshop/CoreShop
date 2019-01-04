@@ -119,6 +119,7 @@ services:
         class: CoreShop\Behat\Context\Transform\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.cart'
             - '@__symfony__.coreshop.context.cart'
         tags:
             - { name: fob.context_service }
@@ -167,5 +168,20 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.repository.manufacturer'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.index_condition:
+        class: CoreShop\Behat\Context\Transform\IndexConditionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.transform.cart_price_rule:
+        class: CoreShop\Behat\Context\Transform\CartPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.cart_price_rule'
         tags:
             - { name: fob.context_service }

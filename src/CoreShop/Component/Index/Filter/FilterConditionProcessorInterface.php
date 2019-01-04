@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,11 +26,11 @@ interface FilterConditionProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
-     * @param $currentFilter
-     * @param ParameterBag $parameterBag
-     * @param bool $isPrecondition
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
+     * @param array                    $currentFilter
+     * @param ParameterBag             $parameterBag
+     * @param bool                     $isPrecondition
      *
      * @return mixed
      */
@@ -38,9 +38,9 @@ interface FilterConditionProcessorInterface
 
     /**
      * @param FilterConditionInterface $condition
-     * @param FilterInterface $filter
-     * @param ListingInterface $list
-     * @param $currentFilter
+     * @param FilterInterface          $filter
+     * @param ListingInterface         $list
+     * @param array                    $currentFilter
      *
      * @return array
      */

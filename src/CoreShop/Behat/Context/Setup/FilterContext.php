@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,18 +16,13 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
 use CoreShop\Behat\Service\ClassStorageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\Model\DataObject\ClassDefinition;
 
 final class FilterContext implements Context
 {
@@ -63,11 +58,11 @@ final class FilterContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $filterFactory
-     * @param RepositoryInterface $filterRepository
-     * @param FactoryInterface $filterConditionFactory
+     * @param ClassStorageInterface  $classStorage
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $filterFactory
+     * @param RepositoryInterface    $filterRepository
+     * @param FactoryInterface       $filterConditionFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -76,8 +71,7 @@ final class FilterContext implements Context
         FactoryInterface $filterFactory,
         RepositoryInterface $filterRepository,
         FactoryInterface $filterConditionFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
@@ -103,12 +97,12 @@ final class FilterContext implements Context
 
         foreach ($hash as $row) {
             /**
-             * @var $condition FilterConditionInterface
+             * @var FilterConditionInterface $condition
              */
             $condition = $this->filterConditionFactory->createNew();
             $condition->setType($row['type']);
             $condition->setConfiguration([
-                'field' => $row['field']
+                'field' => $row['field'],
             ]);
             $condition->setLabel($row['label']);
 
@@ -131,7 +125,7 @@ final class FilterContext implements Context
         $condition->setType('category_select');
         $condition->setConfiguration([
             'preSelect' => $category ? $category->getId() : null,
-            'includeSubCategories' => $includeAllChilds === 'includes all subcategories'
+            'includeSubCategories' => $includeAllChilds === 'includes all subcategories',
         ]);
         $condition->setLabel('Category');
 
@@ -143,13 +137,13 @@ final class FilterContext implements Context
     }
 
     /**
-     * @param                $name
+     * @param string         $name
      * @param IndexInterface $index
      */
     private function createFilter($name, IndexInterface $index)
     {
         /**
-         * @var $filter FilterInterface
+         * @var FilterInterface $filter
          */
         $filter = $this->filterFactory->createNew();
         $filter->setName($name);

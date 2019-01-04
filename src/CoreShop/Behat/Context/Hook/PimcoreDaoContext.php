@@ -6,13 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -26,8 +27,11 @@ final class PimcoreDaoContext implements Context
      */
     public function purgeObjects()
     {
+        Cache::clearAll();
+        Cache\Runtime::clear();
+
         /**
-         * @var $list Listing
+         * @var Listing $list
          */
         $list = new DataObject\Listing();
         $list->setUnpublished(true);
@@ -59,11 +63,31 @@ final class PimcoreDaoContext implements Context
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function clearRuntimeCacheScenario()
+    {
+        //Clearing it here is totally fine, since each scenario has its own separated context of objects
+        \Pimcore\Cache\Runtime::clear();
+    }
+
+    /**
      * @BeforeStep
      */
-    public function clearRuntimeCache()
+    public function clearRuntimeCacheStep()
     {
-        \Pimcore\Cache\Runtime::clear();
+        //We should not clear Pimcore Objects here, otherwise we lose the reference to it
+        //and end up having the same object twice
+        $copy = \Pimcore\Cache\Runtime::getInstance()->getArrayCopy();
+        $keepItems = [];
+
+        foreach ($copy as $key => $value) {
+            if (strpos($key, 'object_') === 0) {
+                $keepItems[] = $key;
+            }
+        }
+
+        \Pimcore\Cache\Runtime::clear($keepItems);
     }
 
     /**

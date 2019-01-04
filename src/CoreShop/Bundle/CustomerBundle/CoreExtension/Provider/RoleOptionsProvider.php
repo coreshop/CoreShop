@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,7 +32,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
      * @var array
      */
     protected $invalidRoles = [
-        'ROLE_PIMCORE_ADMIN'
+        'ROLE_PIMCORE_ADMIN',
     ];
 
     public function __construct()
@@ -43,7 +43,7 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 
     /**
      * @param array $context
-     * @param       $fieldDefinition Data
+     * @param Data  $fieldDefinition
      *
      * @return array
      */
@@ -52,10 +52,9 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
         $roles = [];
 
         /**
-         * Get all unique roles
+         * Get all unique roles.
          */
         foreach ($this->originalRoles as $originalRole => $inheritedRoles) {
-
             foreach ($inheritedRoles as $inheritedRole) {
                 $roles[] = $inheritedRole;
             }
@@ -73,8 +72,8 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data  $fieldDefinition
      *
      * @return bool
      */
@@ -84,8 +83,8 @@ class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data  $fieldDefinition
      *
      * @return mixed
      */

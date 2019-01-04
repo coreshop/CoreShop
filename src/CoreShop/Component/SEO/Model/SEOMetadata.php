@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -176,7 +176,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraProperty($key, $value)
     {
-        $this->extraProperties[$key] = (string)$value;
+        $this->extraProperties[$key] = (string) $value;
     }
 
     /**
@@ -210,7 +210,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraName($key, $value)
     {
-        $this->extraNames[$key] = (string)$value;
+        $this->extraNames[$key] = (string) $value;
     }
 
     /**
@@ -244,7 +244,7 @@ class SEOMetadata implements SEOMetadataInterface
      */
     public function addExtraHttp($key, $value)
     {
-        $this->extraHttp[$key] = (string)$value;
+        $this->extraHttp[$key] = (string) $value;
     }
 
     /**
@@ -258,7 +258,8 @@ class SEOMetadata implements SEOMetadataInterface
     }
 
     /**
-     * @param $data
+     * @param mixed $data
+     *
      * @return array
      */
     private function toArray($data)
@@ -272,7 +273,10 @@ class SEOMetadata implements SEOMetadataInterface
         }
 
         throw new \InvalidArgumentException(
-            sprintf('Expected array or Traversable, got "%s"',
-                is_object($data) ? get_class($data) : gettype($data)));
+            sprintf(
+                'Expected array or Traversable, got "%s"',
+                is_object($data) ? get_class($data) : gettype($data)
+            )
+        );
     }
 }

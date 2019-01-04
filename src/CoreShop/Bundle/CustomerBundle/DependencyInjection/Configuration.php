@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
@@ -34,8 +34,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end()
-        ;
+            ->end();
 
         $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
@@ -47,7 +46,8 @@ final class Configuration implements ConfigurationInterface
     /**
      * @param ArrayNodeDefinition $node
      */
-    private function addStack(ArrayNodeDefinition $node) {
+    private function addStack(ArrayNodeDefinition $node)
+    {
         $node->children()
             ->arrayNode('stack')
                 ->addDefaultsIfNotSet()
@@ -112,13 +112,12 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
-        /**
-         * @param ArrayNodeDefinition $node
-         */
+    /**
+     * @param ArrayNodeDefinition $node
+     */
     private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
     {
         $node->children()

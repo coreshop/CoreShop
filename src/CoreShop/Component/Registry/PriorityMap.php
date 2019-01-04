@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -35,16 +35,16 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Add new item to map.
      *
-     * @param string $key name
-     * @param string $value value
-     * @param int $priority priority
+     * @param string $key      name
+     * @param string $value    value
+     * @param int    $priority priority
      *
      * @return PriorityMap
      */
     public function set($key, $value, $priority = 0)
     {
         $key = $this->getScalarKey($key);
-        $this->list[$key] = new \stdclass();
+        $this->list[$key] = new \stdClass();
         $this->list[$key]->value = $value;
         $this->list[$key]->priority = (int) $priority;
         $this->list[$key]->sequence = $this->lastSequence++;
@@ -55,7 +55,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get item from map.
      *
-     * @param $key
+     * @param string $key
      *
      * @return mixed
      */
@@ -69,7 +69,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Check if item in map.
      *
-     * @param $key
+     * @param string $key
      *
      * @return bool
      */
@@ -83,7 +83,7 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * remove item in map.
      *
-     * @param $key
+     * @param string $key
      */
     public function remove($key)
     {
@@ -97,11 +97,12 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * Get list of keys.
      *
-     * @return integer[]|string[]
+     * @return int[]|string[]
      */
     public function getKeys()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
+
         return array_keys($this->list);
     }
 
@@ -142,8 +143,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * ASC sort strategy.
      *
-     * @param $declaration1
-     * @param $declaration2
+     * @param \stdClass $declaration1
+     * @param \stdClass $declaration2
      *
      * @return int
      */
@@ -159,8 +160,8 @@ class PriorityMap implements \Iterator, \Countable
     /**
      * DESC sort strategy.
      *
-     * @param $declaration1
-     * @param $declaration2
+     * @param \stdClass $declaration1
+     * @param \stdClass $declaration2
      *
      * @return int
      */
@@ -178,7 +179,7 @@ class PriorityMap implements \Iterator, \Countable
      */
     public function rewind()
     {
-        uasort($this->list, [$this, $this->order.'SortStrategy']);
+        uasort($this->list, [$this, $this->order . 'SortStrategy']);
         reset($this->list);
     }
 

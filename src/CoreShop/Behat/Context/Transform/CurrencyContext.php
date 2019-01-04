@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,14 +30,13 @@ final class CurrencyContext implements Context
     private $currencyRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface      $sharedStorage
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CurrencyRepositoryInterface $currencyRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->currencyRepository = $currencyRepository;
     }
@@ -63,6 +62,6 @@ final class CurrencyContext implements Context
      */
     public function latestCurrency()
     {
-        return $this->sharedStorage->get("currency");
+        return $this->sharedStorage->get('currency');
     }
 }

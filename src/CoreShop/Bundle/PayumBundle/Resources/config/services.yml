@@ -1,6 +1,7 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/extension.yml" }
+    - { resource: 'services/form.yml' }
+    - { resource: 'services/extension.yml' }
+    - { resource: 'services/factory.yml' }
 
 services:
     _defaults:

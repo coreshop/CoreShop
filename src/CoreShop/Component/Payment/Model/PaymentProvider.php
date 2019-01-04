@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,6 +23,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     use ToggleableTrait;
     use TranslatableTrait {
         __construct as initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -50,7 +51,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     public function __toString()
     {
-        return $this->getName();
+        return $this->getIdentifier();
     }
 
     /**
@@ -75,26 +76,6 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName($language = null)
-    {
-        @trigger_error('getName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getTitle instead', E_USER_DEPRECATED);
-
-        return $this->getTitle($language);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name, $language = null)
-    {
-        @trigger_error('setName is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setTitle instead', E_USER_DEPRECATED);
-
-        $this->setTitle($name, $language);
     }
 
     /**
@@ -159,6 +140,20 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     public function setPosition($position)
     {
         $this->position = $position;
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     *
+     * @return PaymentProviderTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var PaymentProviderTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
     }
 
     /**

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -38,7 +38,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY.'/GeoLite2-City.mmdb';
+        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
         $record = null;
 
         if (file_exists($geoDbFile)) {
@@ -67,7 +67,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * Check if ip is private.
      *
-     * @param $clientIp
+     * @param string $clientIp
      *
      * @return bool
      */

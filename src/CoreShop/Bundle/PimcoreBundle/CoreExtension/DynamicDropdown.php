@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,11 +20,11 @@ use Pimcore\Model\Element;
 class DynamicDropdown extends Href
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopDynamicDropdown";
+    public $fieldtype = 'coreShopDynamicDropdown';
 
     /**
      * @var string
@@ -52,7 +52,7 @@ class DynamicDropdown extends Href
     public $sortBy;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $onlyPublished;
 
@@ -169,7 +169,7 @@ class DynamicDropdown extends Href
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
-        return Service::getElementById("object", $data);
+        return Service::getElementById('object', $data);
     }
 
     /**
@@ -198,9 +198,9 @@ class DynamicDropdown extends Href
         if (is_int($data)) {
             return [
                 [
-                    "dest_id" => $data,
-                    "type" => "object",
-                    "fieldname" => $this->getName(),
+                    'dest_id' => $data,
+                    'type' => 'object',
+                    'fieldname' => $this->getName(),
                 ],
             ];
         }

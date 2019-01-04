@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,7 @@ namespace CoreShop\Component\Registry;
 final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInterface
 {
     /**
-     * @var array
+     * @var PriorityMap
      */
     private $priortyMap;
 
@@ -117,6 +117,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key === $identifier) {
                 $nextIndex = $index + 1;
+
                 break;
             }
         }
@@ -139,6 +140,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key === $identifier) {
                 $nextIndex = $index + 1;
+
                 break;
             }
         }
@@ -147,7 +149,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     }
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool|int|string
      */
@@ -159,6 +161,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         foreach ($keys as $index => $key) {
             if ($key == $identifier) {
                 $prevIndex = $index - 1;
+
                 break;
             }
         }
@@ -187,6 +190,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
     public function hasPreviousTo($identifier)
     {
         $prevIndex = $this->getPreviousIndex($identifier);
+
         return $prevIndex >= 0;
     }
 
@@ -201,7 +205,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
         if ($prevIndex >= 0) {
             $previousElements = [];
 
-            for ($i = $prevIndex; $i > 0; --$i) {
+            for ($i = $prevIndex; $i > 0; $i--) {
                 $previousElements[] = $this->get($keys[$i]);
             }
 

@@ -2,11 +2,12 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Loader;
 
-use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
 use CoreShop\Bundle\FixtureBundle\Fixture\LoadedFixtureVersionAwareInterface;
 use CoreShop\Bundle\FixtureBundle\Fixture\Sorter\DataFixturesSorter;
 use CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Bundle\FixtureBundle\Model\DataFixtureInterface;
+use CoreShop\Bundle\FixtureBundle\Repository\DataFixtureRepositoryInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,20 +24,36 @@ class DataFixturesLoader extends ContainerAwareLoader
     protected $ref;
 
     /**
-     * Constructor.
-     *
-     * @param EntityManager $em
-     * @param ContainerInterface $container
+     * @var UpdateDataFixturesFixture
      */
-    public function __construct(EntityManager $em, ContainerInterface $container)
-    {
+    protected $updateDataFixturesFixture;
+
+    /**
+     * @var DataFixtureRepositoryInterface
+     */
+    protected $dataFixtureRepository;
+
+    /**
+     * @param EntityManager                  $em
+     * @param ContainerInterface             $container
+     * @param UpdateDataFixturesFixture      $updateDataFixturesFixture
+     * @param DataFixtureRepositoryInterface $dataFixtureRepository
+     */
+    public function __construct(
+        EntityManager $em,
+        ContainerInterface $container,
+        UpdateDataFixturesFixture $updateDataFixturesFixture,
+        DataFixtureRepositoryInterface $dataFixtureRepository
+    ) {
         parent::__construct($container);
 
         $this->em = $em;
+        $this->updateDataFixturesFixture = $updateDataFixturesFixture;
+        $this->dataFixtureRepository = $dataFixtureRepository;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getFixtures()
     {
@@ -61,7 +78,7 @@ class DataFixturesLoader extends ContainerAwareLoader
                 $toBeLoadFixtureClassNames[get_class($fixture)] = $version;
             }
 
-            $updateFixture = new UpdateDataFixturesFixture();
+            $updateFixture = $this->updateDataFixturesFixture;
             $updateFixture->setDataFixtures($toBeLoadFixtureClassNames);
             $fixtures[get_class($updateFixture)] = $updateFixture;
         }
@@ -70,7 +87,7 @@ class DataFixturesLoader extends ContainerAwareLoader
     }
 
     /**
-     * Determines whether the given data fixture is already loaded or not
+     * Determines whether the given data fixture is already loaded or not.
      *
      * @param object $fixtureObject
      *
@@ -81,8 +98,8 @@ class DataFixturesLoader extends ContainerAwareLoader
         if (!is_array($this->loadedFixtures) || count($this->loadedFixtures) === 0) {
             $this->loadedFixtures = [];
 
-            $loadedFixtures = $this->em->getRepository('CoreShopFixtureBundle:DataFixture')->findAll();
-            /** @var DataFixture $fixture */
+            $loadedFixtures = $this->dataFixtureRepository->findAll();
+            /** @var DataFixtureInterface $fixture */
             foreach ($loadedFixtures as $fixture) {
                 $this->loadedFixtures[$fixture->getClassName()] = $fixture->getVersion() ?: '0.0';
             }

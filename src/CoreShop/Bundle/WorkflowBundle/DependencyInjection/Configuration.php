@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
@@ -59,7 +59,7 @@ final class Configuration implements ConfigurationInterface
             ->arrayNode('transitions')
                 ->beforeNormalization()
                     ->always()
-                    ->then(function($transitions) {
+                    ->then(function ($transitions) {
                         // It's an indexed array, we let the validation occurs
                         if (isset($transitions[0])) {
                             return $transitions;
@@ -94,7 +94,9 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array($v); })
+                                ->then(function ($v) {
+                                    return array($v);
+                                })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')
@@ -105,7 +107,9 @@ final class Configuration implements ConfigurationInterface
                             ->performNoDeepMerging()
                             ->beforeNormalization()
                                 ->ifString()
-                                ->then(function($v) { return array($v); })
+                                ->then(function ($v) {
+                                    return array($v);
+                                })
                             ->end()
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')
@@ -115,7 +119,6 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
             ->end();
-
     }
 
     /**
@@ -153,9 +156,9 @@ final class Configuration implements ConfigurationInterface
 
     /**
      * @param ArrayNodeDefinition $callbacks
-     * @param string      $type
+     * @param string              $type
      */
-    protected function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
+    private function addSubCallbackSection(ArrayNodeDefinition $callbacks, $type)
     {
         $callbacks
             ->children()

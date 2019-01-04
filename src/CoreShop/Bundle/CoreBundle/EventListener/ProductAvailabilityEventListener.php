@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,40 +17,44 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
-use Pimcore\Model\Version;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    /**
-     * @var CartRepositoryInterface
-     */
-    private $cartRepository;
-
     /**
      * @var CartItemRepositoryInterface
      */
     private $cartItemRepository;
 
     /**
-     * @param CartRepositoryInterface $cartRepository
+     * @var FactoryInterface
+     */
+    private $pimcoreModelFactory;
+
+    /**
+     * @var PurchasableInterface[]
+     */
+    private $productIdsToCheck = [];
+
+    /**
      * @param CartItemRepositoryInterface $cartItemRepository
+     * @param FactoryInterface            $pimcoreModelFactory
      */
     public function __construct(
-        CartRepositoryInterface $cartRepository,
-        CartItemRepositoryInterface $cartItemRepository
-    )
-    {
-        $this->cartRepository = $cartRepository;
+        CartItemRepositoryInterface $cartItemRepository,
+        FactoryInterface $pimcoreModelFactory
+    ) {
         $this->cartItemRepository = $cartItemRepository;
+        $this->pimcoreModelFactory = $pimcoreModelFactory;
     }
 
     /**
      * @param DataObjectEvent $event
      */
-    public function checkCartsAfterUpdate(DataObjectEvent $event)
+    public function preUpdateListener(DataObjectEvent $event)
     {
         $object = $event->getObject();
 
@@ -58,30 +62,66 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        // we need to check if product was active before! if no version is available, we can't do anything.
-        $versions = $object->getVersions();
-        if (empty($versions) || !$versions[1] instanceof Version) {
+        if (in_array($object->getId(), $this->productIdsToCheck)) {
             return;
         }
 
-        /**
-         * return if new state is published
-         *
-         * @var \Pimcore\Model\Version $currentVersion
-         **/
-        $currentVersion = $versions[0];
-        if (!$currentVersion->getData() instanceof PurchasableInterface || $currentVersion->getData()->isPublished() === true) {
+        $originalItem = $this->pimcoreModelFactory->build(get_class($object));
+        $originalItem->getDao()->getById($object->getId());
+
+        if (!$originalItem instanceof PurchasableInterface) {
             return;
         }
 
-        /**
-         *
-         * return if last state was not published.
-         *
-         * @var \Pimcore\Model\Version $prevVersion
-         **/
-        $prevVersion = $versions[1];
-        if (!$prevVersion->getData() instanceof PurchasableInterface || $prevVersion->getData()->isPublished() === false) {
+        if (!$object instanceof Concrete) {
+            return;
+        }
+
+        if (!$originalItem instanceof Concrete) {
+            return;
+        }
+
+        if ($object->getPublished() === $originalItem->isPublished()) {
+            return;
+        }
+
+        $this->productIdsToCheck[$object->getId()] = $object->getId();
+    }
+
+    /**
+     * @param DataObjectEvent $event
+     */
+    public function postUpdateListener(DataObjectEvent $event)
+    {
+        $object = $event->getObject();
+
+        if (!$object instanceof PurchasableInterface) {
+            return;
+        }
+
+        if (!in_array($object->getId(), $this->productIdsToCheck)) {
+            return;
+        }
+
+        unset($this->productIdsToCheck[$object->getId()]);
+
+        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
+
+        if (count($cartItems) === 0) {
+            return;
+        }
+
+        $this->informCarts($cartItems);
+    }
+
+    /**
+     * @param DataObjectEvent $event
+     */
+    public function postDeleteListener(DataObjectEvent $event)
+    {
+        $object = $event->getObject();
+
+        if (!$object instanceof PurchasableInterface) {
             return;
         }
 
@@ -92,37 +132,16 @@ final class ProductAvailabilityEventListener
         }
 
         $this->informCarts($cartItems);
-
     }
 
     /**
-     * @param DataObjectEvent $event
-     */
-    public function checkCartsAfterDelete(DataObjectEvent $event)
-    {
-        $object = $event->getObject();
-
-        if (!$object instanceof PurchasableInterface) {
-            return;
-        }
-
-        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
-
-        if (count($cartItems) === 0) {
-            return;
-        }
-
-        $this->informCarts($cartItems);
-    }
-
-    /**
-     * @param $cartItems
+     * @param array $cartItems
      */
     private function informCarts($cartItems)
     {
         /** @var CartItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {
-            $cart = $cartItem->getParent();
+            $cart = $cartItem->getCart();
             if (!$cart instanceof CartInterface) {
                 continue;
             }
@@ -132,11 +151,15 @@ final class ProductAvailabilityEventListener
             }
 
             $cart->removeItem($cartItem);
+            $cartItem->delete();
 
-            VersionHelper::useVersioning(function() use ($cart) {
-                $cart->setNeedsRecalculation(true);
-                $cart->save();
-            }, false);
+            VersionHelper::useVersioning(
+                function () use ($cart) {
+                    $cart->setNeedsRecalculation(true);
+                    $cart->save();
+                },
+                false
+            );
         }
     }
 }

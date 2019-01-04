@@ -1,0 +1,3 @@
+# CoreShop Workflow Bundle
+
+TBD

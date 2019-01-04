@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,6 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,6 +29,7 @@ class OrderPaymentController extends PimcoreController
 {
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function updateStateAction(Request $request)
@@ -48,13 +48,15 @@ class OrderPaymentController extends PimcoreController
         }
 
         $workflow->apply($payment, $transition);
-        return $this->viewHandler->handle(['success' => true]);
 
+        return $this->viewHandler->handle(['success' => true]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     *
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function addPaymentAction(Request $request)
@@ -68,12 +70,12 @@ class OrderPaymentController extends PimcoreController
         $paymentProviderId = $request->get('paymentProvider');
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "'.$orderId.'" not found']);
+            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $payments = $this->getPaymentRepository()->findForPayable($order);
         $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
-        $totalPayed = array_sum(array_map(function(PaymentInterface $payment) {
+        $totalPayed = array_sum(array_map(function (PaymentInterface $payment) {
             if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
                 $payment->getState() === PaymentInterface::STATE_REFUNDED) {
                 return 0;
@@ -89,11 +91,11 @@ class OrderPaymentController extends PimcoreController
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
                 /**
-                 * @var PaymentInterface|PimcoreModelInterface
+                 * @var PaymentInterface $payment
                  */
                 $tokenGenerator = new UniqueTokenGenerator(true);
                 $uniqueId = $tokenGenerator->generate(15);
-                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())).'_'.$uniqueId;
+                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
                 $payment = $this->getPaymentFactory()->createNew();
                 $payment->setNumber($orderNumber);
@@ -115,12 +117,17 @@ class OrderPaymentController extends PimcoreController
 
                 return $this->viewHandler->handle([
                     'success' => true,
-                    'totalPayed' => $totalPayed
+                    'totalPayed' => $totalPayed,
                 ]);
             }
-        } else {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Provider '$paymentProvider' not found"]);
         }
+
+        return $this->viewHandler->handle(
+            [
+                'success' => false,
+                'message' => sprintf('Payment Provider %s not found', $request->get('paymentProvider')),
+            ]
+        );
     }
 
     /**
@@ -132,7 +139,7 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager|object
+     * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
     {
@@ -170,5 +177,4 @@ class OrderPaymentController extends PimcoreController
     {
         return $this->get('coreshop.repository.order');
     }
-
 }

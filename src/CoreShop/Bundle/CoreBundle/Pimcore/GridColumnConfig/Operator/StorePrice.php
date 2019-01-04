@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,17 +37,16 @@ class StorePrice extends AbstractOperator
 
     /**
      * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param \stdClass $config
-     * @param null $context
+     * @param MoneyFormatterInterface  $moneyFormatter
+     * @param \stdClass                $config
+     * @param null                     $context
      */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,
         \stdClass $config,
         $context = null
-    )
-    {
+    ) {
         parent::__construct($config, $context);
 
         $this->storeRepository = $storeRepository;
@@ -57,6 +56,7 @@ class StorePrice extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
@@ -65,7 +65,7 @@ class StorePrice extends AbstractOperator
         $result->label = $this->label;
 
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         $store = $this->storeRepository->find($this->storeId);
 

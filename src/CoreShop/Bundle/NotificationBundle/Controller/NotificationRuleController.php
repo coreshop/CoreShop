@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\NotificationBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
 
 class NotificationRuleController extends ResourceController
@@ -41,8 +42,8 @@ class NotificationRuleController extends ResourceController
         }
 
         foreach ($types as $type) {
-            $actionParameter = 'coreshop.notification_rule.actions.'.$type;
-            $conditionParameter = 'coreshop.notification_rule.conditions.'.$type;
+            $actionParameter = 'coreshop.notification_rule.actions.' . $type;
+            $conditionParameter = 'coreshop.notification_rule.conditions.' . $type;
 
             if ($this->container->hasParameter($actionParameter)) {
                 if (!array_key_exists($type, $actions)) {
@@ -71,11 +72,21 @@ class NotificationRuleController extends ResourceController
 
     public function sortAction(Request $request)
     {
+        /**
+         * @var EntityRepository $repository
+         */
+        $repository = $this->repository;
         $rule = $request->get('rule');
         $toRule = $request->get('toRule');
         $position = $request->get('position');
 
+        /**
+         * @var NotificationRuleInterface $rule
+         */
         $rule = $this->repository->find($rule);
+        /**
+         * @var NotificationRuleInterface $toRule
+         */
         $toRule = $this->repository->find($toRule);
 
         $direction = $rule->getSort() < $toRule->getSort() ? 'down' : 'up';
@@ -87,14 +98,14 @@ class NotificationRuleController extends ResourceController
             $toSort = $toRule->getSort();
 
             if ($position === 'before') {
-                $toSort -= 1;
+                $toSort--;
             }
 
             $criteria = new Criteria();
             $criteria->where($criteria->expr()->gte('sort', $fromSort));
             $criteria->where($criteria->expr()->lte('sort', $toSort));
 
-            $result = $this->repository->matching($criteria);
+            $result = $repository->matching($criteria);
 
             foreach ($result as $newRule) {
                 if ($newRule instanceof NotificationRuleInterface) {
@@ -117,7 +128,7 @@ class NotificationRuleController extends ResourceController
             $criteria->where($criteria->expr()->gte('sort', $fromSort));
             $criteria->where($criteria->expr()->lte('sort', $toSort));
 
-            $result = $this->repository->matching($criteria);
+            $result = $repository->matching($criteria);
 
             foreach ($result as $newRule) {
                 if ($newRule instanceof NotificationRuleInterface) {

@@ -1,7 +1,5 @@
 sudo: false
 language: php
-services:
-    - redis
 
 addons:
     mariadb: '10.1'
@@ -10,50 +8,57 @@ addons:
 env:
     global:
         - PIMCORE_ENVIRONMENT=test
-        - CORESHOP_TEST=1
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - CORESHOP_RUN_BEHAT=1
-        - CORESHOP_RUN_ECS=0
+        - PIMCORE_VERSION="^5"
+        - CORESHOP_TEST=1
+        - CORESHOP_SUITE=application
 
 matrix:
     include:
         - sudo: required
           php: 7.1
           env:
-            - CORESHOP_RUN_ECS=1
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_BRANCH="tags/v5.4.0"
+            - CORESHOP_SUITE=codestyle
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="tags/v5.4.0"
+            - CORESHOP_SUITE=stan
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="tags/v5.4.1"
+            - PIMCORE_VERSION="~5.4.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="tags/v5.4.1"
+            - PIMCORE_VERSION="~5.4.0"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_BRANCH="master"
+            - PIMCORE_VERSION="^5"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_BRANCH="master"
+            - PIMCORE_VERSION="^5"
+
+        - sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_VERSION="dev-master"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_VERSION="dev-master"
     allow_failures:
         - env:
-            - CORESHOP_RUN_ECS=1
+            - CORESHOP_SUITE=codestyle
+        - env:
+            - PIMCORE_VERSION="dev-master"
     fast_finish: true
 
 cache:

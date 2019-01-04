@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -42,18 +42,16 @@ final class ProductContext implements Context
      */
     private $productRepository;
 
-
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $productFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param FactoryInterface           $productFactory
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
         ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productRepository = $productRepository;
@@ -236,6 +234,17 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (products) price is ([^"]+) for (store "[^"]+")$/
+     */
+    public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStorePrice($price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @param string $productName
      *
      * @return ProductInterface
@@ -256,8 +265,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @param string $productName
-     * @param int $price
+     * @param string              $productName
+     * @param int                 $price
      * @param StoreInterface|null $store
      *
      * @return ProductInterface

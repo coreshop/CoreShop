@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,8 +26,8 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('current_password', PasswordType::class, [
-            'label'       => 'coreshop.form.customer.current_password',
-            'mapped'      => false,
+            'label' => 'coreshop.form.customer.current_password',
+            'mapped' => false,
             'constraints' => new UserPassword(),
         ]);
 
@@ -36,7 +36,7 @@ class ChangePasswordType extends AbstractType
                 'type' => PasswordType::class,
                 'invalid_message' => 'coreshop.form.customer.password.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.new_password'],
-                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat']
+                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat'],
             ]);
     }
 

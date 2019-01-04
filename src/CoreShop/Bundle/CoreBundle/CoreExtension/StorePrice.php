@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,7 @@ use Pimcore\Model;
 class StorePrice extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
@@ -39,21 +39,21 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     public $defaultValue;
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
     public $queryColumnType = null;
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
     public $columnType = null;
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -174,7 +174,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $code .= '* @return ' . $this->getPhpdocType() . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function get' . ucfirst($key) . ' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
-        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+        $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
@@ -229,7 +229,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
+
         if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
             $data = $this->load($object, ['force' => true]);
 
@@ -264,7 +270,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $data = [];
 
             /**
-             * @var $price ProductStorePriceInterface
+             * @var ProductStorePriceInterface $price
              */
             foreach ($prices as $price) {
                 $data[$price->getStore()->getId()] = $price->getPrice();
@@ -299,16 +305,17 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 }
 
                 /**
-                 * @var $storePrice ProductStorePriceInterface
+                 * @var ProductStorePriceInterface $storePrice
                  */
                 $storePrice = null;
 
                 /**
-                 * @var $searchStorePrice ProductStorePriceInterface
+                 * @var ProductStorePriceInterface $searchStorePrice
                  */
                 foreach ($storePrices as $searchStorePrice) {
                     if ($searchStorePrice->getStore()->getId() === $storeId) {
                         $storePrice = $searchStorePrice;
+
                         break;
                     }
                 }
@@ -339,22 +346,22 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
         $storeData = [];
 
         /**
-         * @var $price ProductStorePriceInterface
+         * @var ProductStorePriceInterface $price
          */
         foreach ($prices as $price) {
             $priceValue = $price->getPrice();
-            $priceValue = doubleval(sprintf('%0.2f', $priceValue / 100));
+            $priceValue = round($priceValue / 100, 2);
 
             $storeData[$price->getStore()->getId()] = [
                 'name' => $price->getStore()->getName(),
                 'currencySymbol' => $price->getStore()->getCurrency()->getSymbol(),
-                'price' => $priceValue
+                'price' => $priceValue,
             ];
         }
 
         //Fill missing stores with null values
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         foreach ($stores as $store) {
             if (array_key_exists($store->getId(), $storeData)) {
@@ -364,7 +371,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
             $storeData[$store->getId()] = [
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
-                'price' => 0
+                'price' => 0,
             ];
         }
 
@@ -386,7 +393,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 continue;
             }
 
-            $validData[$storeId] = (int)round((round($price, 2) * 100), 0);
+            $validData[$storeId] = (int) round((round($price, 2) * 100), 0);
         }
 
         return $validData;
@@ -441,7 +448,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function getForCsvExport($object, $params = [])
     {
-        return 'NOT SUPPORTED';
+        $data = $this->getDataFromObjectParam($object, $params);
+
+        if (!is_array($data) || empty($data)) {
+            return '{}';
+        }
+
+        return json_encode($data);
     }
 
     /**
@@ -449,7 +462,43 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-        return 'NOT SUPPORTED';
+        if (!$object) {
+            throw new \Exception('This version of Pimcore is not supported for storePrice import.');
+        }
+        $repo = $this->getProductStorePriceRepository();
+        $storeRepo = $this->getStoreRepository();
+
+        $data = $importValue == '' ? [] : json_decode($importValue, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException(sprintf('Error decoding Store Price JSON `%s`: %s', $importValue, json_last_error_msg()));
+        }
+
+        $this->checkValidity($data, true);
+
+        if (is_array($data) && !empty($data)) {
+            foreach ($data as $storeId => $newPrice) {
+                $store = $storeRepo->find($storeId);
+
+                if (!$store instanceof StoreInterface) {
+                    throw new \InvalidArgumentException(sprintf('Store with ID %s not found', $storeId));
+                }
+            }
+        }
+
+        $oldStorePrices = $repo->findForProductAndProperty($object, $this->getName());
+
+        if (is_array($oldStorePrices) && !empty($oldStorePrices)) {
+            foreach ($oldStorePrices as $oldStorePrice) {
+                $storeId = $oldStorePrice->getStore()->getId();
+
+                if (!array_key_exists($storeId, $data)) {
+                    $data[$storeId] = $oldStorePrice->getPrice();
+                }
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -469,17 +518,17 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return float|int
      */
     protected function toNumeric($value)
     {
-        if (strpos((string)$value, '.') === false) {
-            return (int)$value;
+        if (strpos((string) $value, '.') === false) {
+            return (int) $value;
         }
 
-        return (float)$value;
+        return (float) $value;
     }
 
     /**

@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -69,8 +69,11 @@ coreshop.filter.abstract = Class.create({
         return data;
     },
 
-    getFieldsComboBox: function () {
-        if (!this.fieldsCombo) {
+    getFieldsComboBox: function (fieldName) {
+        fieldName = Ext.isDefined(fieldName) ? fieldName : 'field';
+        var comboName = fieldName + 'sCombo';
+
+        if (!this[comboName]) {
 
             this.valueStore = new Ext.data.ArrayStore({
                 proxy: new Ext.data.HttpProxy({
@@ -82,10 +85,10 @@ coreshop.filter.abstract = Class.create({
                 ])
             });
 
-            this.fieldsCombo = Ext.create({
+            this[comboName] = Ext.create({
                 xtype: 'combo',
-                fieldLabel: t('coreshop_filters_field'),
-                name: 'field',
+                fieldLabel: t('coreshop_filters_' + fieldName),
+                name: fieldName,
                 width: 400,
                 store: this.parent.getFieldsStore(),
                 displayField: 'name',
@@ -95,7 +98,7 @@ coreshop.filter.abstract = Class.create({
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                value: this.data.configuration.hasOwnProperty('field') ? this.data.configuration.field : null,
+                value: this.data.configuration.hasOwnProperty(fieldName) ? this.data.configuration[fieldName] : null,
                 listeners: {
                     change: function (combo, newValue) {
                         this.onFieldChange.call(this, combo, newValue);
@@ -104,11 +107,11 @@ coreshop.filter.abstract = Class.create({
             });
         }
 
-        if (this.data.configuration.hasOwnProperty('field') && this.data.configuration.field) {
-            this.onFieldChange(this.fieldsCombo, this.data.configuration.field);
+        if (this.data.configuration.hasOwnProperty(fieldName) && this.data.configuration[fieldName]) {
+            this.onFieldChange(this[comboName], this.data.configuration[fieldName]);
         }
 
-        return this.fieldsCombo;
+        return this[comboName];
     },
 
     onFieldChange: function (combo, newValue) {

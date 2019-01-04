@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -39,7 +39,7 @@ final class StoreBasedCartContext implements CartContextInterface
     private $cart;
 
     /**
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface    $cartContext
      * @param ShopperContextInterface $shopperContext
      */
     public function __construct(CartContextInterface $cartContext, ShopperContextInterface $shopperContext)
@@ -67,7 +67,6 @@ final class StoreBasedCartContext implements CartContextInterface
             $cart->setStore($store);
             $cart->setCurrency($store->getCurrency());
             $cart->setLocaleCode($this->shopperContext->getLocaleCode());
-
         } catch (StoreNotFoundException $exception) {
             throw new CartNotFoundException('CoreShop was not able to prepare the cart.', $exception);
         } catch (CurrencyNotFoundException $exception) {
@@ -86,7 +85,7 @@ final class StoreBasedCartContext implements CartContextInterface
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
      */
     private function setCustomerAndAddressOnCart(CartInterface $cart, CustomerInterface $customer)

@@ -21,7 +21,7 @@
     "coreshop/store": "^2.0",
     "coreshop/resource-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",
-    "liip/theme-bundle": "^1.4",
+    "coreshop/theme-bundle": "^2,0",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {
@@ -36,7 +36,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

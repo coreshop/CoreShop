@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,8 +17,9 @@ use Pimcore\Tool\Admin;
 final class ResourceLoader
 {
     /**
-     * @param $resources
-     * @param $minify
+     * @param array $resources
+     * @param bool  $minify
+     *
      * @return array
      */
     public function loadResources($resources, $minify = false)
@@ -27,16 +28,14 @@ final class ResourceLoader
             return $resources;
         }
 
-        $scriptContents = "";
+        $scriptContents = '';
 
         foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT.$scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT.$scriptUrl)."\n\n\n";
+            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
+                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
             }
         }
 
         return [Admin::getMinimizedScriptPath($scriptContents)];
     }
 }
-
-\class_alias(ResourceLoader::class, 'CoreShop\Bundle\ResourceBundle\Pimcore\ResourceLoader');

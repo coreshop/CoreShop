@@ -28,13 +28,6 @@ build:
 #                          file: 'lib/CoreShop/build/coverage.clover'
 #                          format: 'clover'
         analysis:
-            dependencies:
-                override:
-                    - 'COMPOSER_MEMORY_LIMIT=-1 composer req doctrine/instantiator:1.0.5 --no-interaction --no-scripts'
-
-            project_setup:
-                override:
-                    - 'true'
             tests:
                 override:
                     - php-scrutinizer-run

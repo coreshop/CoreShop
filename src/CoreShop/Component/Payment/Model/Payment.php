@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -163,25 +163,5 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
         }
 
         $this->details = $details;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderId()
-    {
-        @trigger_error('getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead', E_USER_DEPRECATED);
-
-        return $this->orderId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderId($orderId)
-    {
-        @trigger_error('setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead', E_USER_DEPRECATED);
-
-        $this->orderId = $orderId;
     }
 }

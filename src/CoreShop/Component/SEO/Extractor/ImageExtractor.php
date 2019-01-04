@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,6 +16,7 @@ use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Pimcore\Model\Asset\Image;
 use Pimcore\Tool;
+use Webmozart\Assert\Assert;
 
 final class ImageExtractor implements ExtractorInterface
 {
@@ -33,8 +34,10 @@ final class ImageExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, SEOImageAwareInterface::class);
+
         /**
-         * @var $object SEOImageAwareInterface
+         * @var SEOImageAwareInterface $object
          */
         $ogImage = Tool::getHostUrl() . $object->getImage()->getThumbnail('seo');
         $seoMetadata->addExtraProperty('og:image', $ogImage);

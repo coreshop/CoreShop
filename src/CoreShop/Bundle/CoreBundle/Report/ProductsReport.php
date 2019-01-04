@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -24,7 +25,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class ProductsReport implements ReportInterface
+class ProductsReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -67,13 +68,13 @@ class ProductsReport implements ReportInterface
     private $orderItemRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeContext
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeContext
      * @param PimcoreRepositoryInterface $orderRepository,
      * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param StackRepository $productStackRepository
+     * @param StackRepository            $productStackRepository
      */
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -83,8 +84,7 @@ class ProductsReport implements ReportInterface
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $orderItemRepository,
         StackRepository $productStackRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -129,7 +129,7 @@ class ProductsReport implements ReportInterface
         if ($objectTypeFilter === 'container') {
             $unionData = [];
             foreach ($this->productStackRepository->getClassIds() as $id) {
-                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_'.$id.'_'.$locale;
+                $unionData[] = 'SELECT `o_id`, `name`, `o_type` FROM object_localized_' . $id . '_' . $locale;
             }
 
             $union = join(' UNION ALL ', $unionData);
@@ -150,9 +150,7 @@ class ProductsReport implements ReportInterface
                 WHERE products.o_type = 'object' AND `order`.store = $storeId AND `order`.orderState = '$orderCompleteState' AND `order`.orderDate > ? AND `order`.orderDate < ?
                 GROUP BY products.o_id
             LIMIT $offset,$limit";
-
         } else {
-
             $productTypeCondition = '1=1';
             if ($objectTypeFilter === 'object') {
                 $productTypeCondition = 'orderItems.mainObjectId = NULL';
@@ -174,7 +172,7 @@ class ProductsReport implements ReportInterface
                 FROM object_query_$orderClassId AS orders
                 INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
                 INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
-                INNER JOIN object_localized_query_".$orderItemClassId."_".$locale." AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
+                INNER JOIN object_localized_query_" . $orderItemClassId . '_' . $locale . " AS orderItemsTranslated ON orderItems.oo_id = orderItemsTranslated.ooo_id
                 WHERE `orders`.store = $storeId AND $productTypeCondition AND `orders`.orderState = '$orderCompleteState' AND `orders`.orderDate > ? AND `orders`.orderDate < ?
                 GROUP BY orderItems.objectId
                 ORDER BY orderCount DESC
@@ -183,16 +181,29 @@ class ProductsReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($productSales as &$sale) {
             $sale['salesPriceFormatted'] = $this->moneyFormatter->format($sale['salesPrice'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $locale);
             $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $locale);
-            $sale['name'] = $sale['productName'].' (Id: '.$sale['productId'].')';
+            $sale['name'] = $sale['productName'] . ' (Id: ' . $sale['productId'] . ')';
         }
 
         return array_values($productSales);
+    }
+
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        foreach ($data as &$entry) {
+            unset($entry['salesPrice']);
+            unset($entry['sales']);
+            unset($entry['profit']);
+        }
+
+        return $data;
     }
 
     /**

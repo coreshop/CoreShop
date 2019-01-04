@@ -20,7 +20,6 @@
   "require": {
     "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^1.6",
-    "friendsofsymfony/rest-bundle": "^2.1",
     "jms/serializer-bundle": "^1.1",
     "stof/doctrine-extensions-bundle": "^1.2",
     "coreshop/pimcore-bundle": "^2.0",
@@ -50,7 +49,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

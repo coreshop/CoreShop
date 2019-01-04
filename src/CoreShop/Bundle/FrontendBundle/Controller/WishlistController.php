@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,6 +31,7 @@ class WishlistController extends FrontendController
 
         if (!$product instanceof ProductInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
             return $this->redirect($redirect);
         }
 
@@ -42,9 +43,10 @@ class WishlistController extends FrontendController
 
         $this->getWishlistModifier()->addItem($this->getWishlist(), $product, $quantity);
 
-        $this->addFlash('success', 'coreshop.ui.item_added');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getWishlist(), 'coreshop_wishlist_summary'));
+
         return $this->redirect($redirect);
     }
 
@@ -61,7 +63,7 @@ class WishlistController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', 'coreshop.ui.item_removed');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
         $this->getWishlistModifier()->updateItemQuantity($this->getWishlist(), $product, 0);
 
@@ -75,8 +77,8 @@ class WishlistController extends FrontendController
      */
     public function summaryAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist:summary.html'), [
-            'wishlist' => $this->getWishlist()
+        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
+            'wishlist' => $this->getWishlist(),
         ]);
     }
 

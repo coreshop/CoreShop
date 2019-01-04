@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,15 +28,15 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setSku($sku);
 
     /**
-     * @param string|null $language
+     * @param string $language
      *
-     * @return mixed
+     * @return string
      */
     public function getName($language = null);
 
     /**
-     * @param $name
-     * @param string|null $language
+     * @param string $name
+     * @param string $language
      */
     public function setName($name, $language = null);
 
@@ -71,7 +71,7 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getImages();
 
     /**
-     * @param $images
+     * @param mixed $images
      */
     public function setImages($images);
 
@@ -103,23 +103,23 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     /**
      * Get all Variants Differences.
      *
-     * @param $language
-     * @param $type
-     * @param $field
+     * @param string $language
+     * @param string $type
+     * @param string $field
      *
      * @return array|bool
      */
     public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
 
     /**
-     * @param string|null $language
+     * @param string $language
      *
      * @return string
      */
     public function getShortDescription($language = null);
 
     /**
-     * @param string $shortDescription
+     * @param string      $shortDescription
      * @param string|null $language
      */
     public function setShortDescription($shortDescription, $language = null);
@@ -132,7 +132,7 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function getDescription($language = null);
 
     /**
-     * @param string $description
+     * @param string      $description
      * @param string|null $language
      */
     public function setDescription($description, $language = null);

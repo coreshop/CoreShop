@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,6 +20,8 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Webmozart\Assert\Assert;
 
@@ -51,25 +53,32 @@ final class ShippingContext implements Context
     private $carrierPriceCalculator;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param FactoryInterface $addressFactory
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
+     * @var CarrierShippingRuleCheckerInterface
+     */
+    private $carrierShippingRuleChecker;
+
+    /**
+     * @param SharedStorageInterface              $sharedStorage
+     * @param CarrierRepositoryInterface          $carrierRepository
+     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
+     * @param FactoryInterface                    $addressFactory
+     * @param CarrierPriceCalculatorInterface     $carrierPriceCalculator
+     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
-        CarrierPriceCalculatorInterface $carrierPriceCalculator
-    )
-    {
+        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->addressFactory = $addressFactory;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
     }
 
     /**
@@ -96,7 +105,7 @@ final class ShippingContext implements Context
 
         Assert::true($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,
-            'address' => $address
+            'address' => $address,
         ]));
     }
 
@@ -110,7 +119,7 @@ final class ShippingContext implements Context
 
         Assert::false($this->ruleValidationProcessor->isValid($carrier, $rule, [
             'shippable' => $cart,
-            'address' => $address
+            'address' => $address,
         ]));
     }
 
@@ -122,5 +131,24 @@ final class ShippingContext implements Context
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
         Assert::same(intval($price), $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+    }
+
+    /**
+     * @Then /^the (carrier "[^"]+") should be valid for (my cart)$/
+     */
+    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, CartInterface $cart)
+    {
+        $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
+
+        $ruleResult = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
+
+        if ($ruleResult instanceof ShippingRuleGroupInterface) {
+            $ruleResult = true;
+        }
+
+        Assert::true(
+            $ruleResult,
+            sprintf('Asserted that the Carrier %s is valid for my cart, but it is not', $carrier->getTitle('en'))
+        );
     }
 }

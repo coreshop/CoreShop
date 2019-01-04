@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,7 @@ use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
-use Liip\ThemeBundle\LiipThemeBundle;
+use CoreShop\Bundle\ThemeBundle\CoreShopThemeBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -52,7 +52,7 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         parent::registerDependentBundles($collection);
 
         $collection->addBundle(new CoreShopCurrencyBundle(), 2700);
-        $collection->addBundle(new LiipThemeBundle(), 1100);
+        $collection->addBundle(new CoreShopThemeBundle(), 2800);
     }
 
     /**

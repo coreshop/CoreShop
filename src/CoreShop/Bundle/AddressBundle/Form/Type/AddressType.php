@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,7 +16,6 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 
 final class AddressType extends AbstractResourceType
 {
@@ -28,7 +27,7 @@ final class AddressType extends AbstractResourceType
         $builder
             ->add('company', TextType::class, [
                 'label' => 'coreshop.form.address.company',
-                'required' => false
+                'required' => false,
             ])
             ->add('salutation', SalutationChoiceType::class, [
                 'label' => 'coreshop.form.address.salutation',
@@ -57,7 +56,7 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('phoneNumber', TextType::class, [
                 'label' => 'coreshop.form.address.phone_number',
-                'required' => false
+                'required' => false,
             ])
             ->add('_redirect', HiddenType::class, array(
                 'mapped' => false,

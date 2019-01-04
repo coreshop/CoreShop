@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -74,7 +74,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
                         {
                             xtype: 'gridcolumn',
                             dataIndex: 'amount',
-                            text: t('coreshop_quantity'),
+                            text: t('coreshop_amount'),
                             flex: 1,
                             renderer: function (value) {
                                 return coreshop.util.format.currency(me.sale.currency.symbol, value);

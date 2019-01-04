@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -71,7 +71,7 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -79,19 +79,15 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param $name
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setName($name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getIsoCode()
     {
@@ -99,15 +95,11 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param mixed $isoCode
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
-
-        return $this;
     }
 
     /**
@@ -119,19 +111,15 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param int $numericIsoCode
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setNumericIsoCode($numericIsoCode)
     {
         $this->numericIsoCode = $numericIsoCode;
-
-        return $this;
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getSymbol()
     {
@@ -139,9 +127,7 @@ class Currency extends AbstractResource implements CurrencyInterface
     }
 
     /**
-     * @param string $symbol
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setSymbol($symbol)
     {

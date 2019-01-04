@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,6 +24,7 @@ class OrderCommentController extends PimcoreController
 {
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function listAction(Request $request)
@@ -44,7 +45,7 @@ class OrderCommentController extends PimcoreController
                 'text' => $note->getDescription(),
                 'date' => $note->getDate(),
                 'userName' => $user ? $user->getName() : 'anonymous',
-                'submitAsEmail' => isset($noteData['submitAsEmail']) && $noteData['submitAsEmail']['data'] === true
+                'submitAsEmail' => isset($noteData['submitAsEmail']) && $noteData['submitAsEmail']['data'] === true,
             ];
         }
 
@@ -53,6 +54,7 @@ class OrderCommentController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
      */
     public function addAction(Request $request)
@@ -68,7 +70,6 @@ class OrderCommentController extends PimcoreController
         }
 
         try {
-
             $objectNoteService = $this->get('coreshop.object_note_service');
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
@@ -84,6 +85,7 @@ class OrderCommentController extends PimcoreController
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function deleteAction(Request $request)

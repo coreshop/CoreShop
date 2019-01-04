@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Installer\Provider;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,30 +42,30 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [
-            'coreshop:install:fixtures'
+            'coreshop:install:fixtures',
         ]);
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper $questionHelper
+     * @param QuestionHelper  $questionHelper
      *
      * @return array
      */
     private function getRequiredCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper)
     {
         if ($input->getOption('no-interaction')) {
-            $commands['doctrine:schema:update'] = ['--force' => true];
+            $commands['coreshop:resources:drop-tables'] = ['application-name' => 'coreshop', '--force' => true];
         }
 
         return $this->setupDatabase($input, $output, $questionHelper);
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param QuestionHelper $questionHelper
+     * @param QuestionHelper  $questionHelper
      *
      * @return array
      */
@@ -73,16 +74,16 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
         $outputStyle = new SymfonyStyle($input, $output);
 
         if (!$this->isSchemaPresent()) {
-            return ['doctrine:schema:create'];
+            return ['coreshop:resources:create-tables' => ['application-name' => 'coreshop', '--force' => true]];
         }
 
         $outputStyle->writeln('Seems like your database contains schema.');
-        $outputStyle->writeln('<error>Warning! This action will erase your database.</error>');
+        $outputStyle->writeln('<error>Warning! This action will erase your CoreShop Tables.</error>');
         $question = new ConfirmationQuestion('Do you want to reset your CoreShop scheme it? (y/N) ', false);
         if ($questionHelper->ask($input, $output, $question)) {
             return [
-                'doctrine:schema:drop' => ['--force' => true],
-                'doctrine:schema:create',
+                'coreshop:resources:drop-tables' => ['application-name' => 'coreshop', '--force' => true],
+                'coreshop:resources:create-tables' => ['application-name' => 'coreshop', '--force' => true],
             ];
         }
 
@@ -102,6 +103,11 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
      */
     private function getSchemaManager()
     {
-        return $this->doctrineRegistry->getManager()->getConnection()->getSchemaManager();
+        /**
+         * @var EntityManager $manager
+         */
+        $manager = $this->doctrineRegistry->getManager();
+
+        return $manager->getConnection()->getSchemaManager();
     }
 }

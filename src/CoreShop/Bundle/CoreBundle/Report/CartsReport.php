@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -49,10 +49,8 @@ class CartsReport implements ReportInterface, PortletInterface
     private $cartRepository;
 
     /**
-     * CartsReport constructor.
-     *
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
      * @param PimcoreRepositoryInterface $orderRepository,
      * @param PimcoreRepositoryInterface $cartRepository
      */
@@ -61,14 +59,12 @@ class CartsReport implements ReportInterface, PortletInterface
         Connection $db,
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $cartRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->orderRepository = $orderRepository;
         $this->cartRepository = $cartRepository;
     }
-
 
     /**
      * {@inheritdoc}
@@ -88,6 +84,7 @@ class CartsReport implements ReportInterface, PortletInterface
 
     /**
      * @param ParameterBag $parameterBag
+     *
      * @return array
      */
     protected function getData(ParameterBag $parameterBag)
@@ -141,7 +138,7 @@ class CartsReport implements ReportInterface, PortletInterface
             ";
         }
 
-        $data = $this->db->fetchAll(implode(PHP_EOL.'UNION ALL'.PHP_EOL, $queries).'  ORDER BY timestamp ASC');
+        $data = $this->db->fetchAll(implode(PHP_EOL . 'UNION ALL' . PHP_EOL, $queries) . '  ORDER BY timestamp ASC');
 
         foreach ($data as &$day) {
             $date = Carbon::createFromTimestamp(strtotime($day['timestamp']));

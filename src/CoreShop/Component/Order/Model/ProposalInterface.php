@@ -6,27 +6,23 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends
-    ResourceInterface,
-    CurrencyAwareInterface,
-    StoreAwareInterface,
-    LocaleAwareInterface,
-    AdjustableInterface
+interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface
 {
-
     /**
      * @return CurrencyInterface
      */
@@ -34,6 +30,7 @@ interface ProposalInterface extends
 
     /**
      * @param CurrencyInterface $currency
+     *
      * @return mixed
      */
     public function setCurrency($currency);
@@ -75,60 +72,59 @@ interface ProposalInterface extends
     public function getItems();
 
     /**
+     * @param ProposalItemInterface[] $items
+     */
+    public function setItems($items);
+
+    /**
      * @return bool
      */
     public function hasItems();
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      */
     public function addItem($item);
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      */
     public function removeItem($item);
 
     /**
-     * @param $item
+     * @param ProposalItemInterface $item
      *
      * @return bool
      */
     public function hasItem($item);
 
     /**
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function getCustomer();
 
     /**
-     * @param $customer
-     *
-     * @return static
+     * @param CustomerInterface $customer
      */
     public function setCustomer($customer);
 
     /**
-     * @return mixed
+     * @return AddressInterface|null
      */
     public function getShippingAddress();
 
     /**
-     * @param $shippingAddress
-     *
-     * @return static
+     * @param AddressInterface $shippingAddress
      */
     public function setShippingAddress($shippingAddress);
 
     /**
-     * @return mixed
+     * @return AddressInterface|null
      */
     public function getInvoiceAddress();
 
     /**
-     * @param $invoiceAddress
-     *
-     * @return static
+     * @param AddressInterface $invoiceAddress
      */
     public function setInvoiceAddress($invoiceAddress);
 
@@ -166,5 +162,4 @@ interface ProposalInterface extends
      * @param \Pimcore\Model\DataObject\Objectbrick $additionalData
      */
     public function setAdditionalData($additionalData);
-
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,7 +51,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
@@ -69,6 +69,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         if (array_key_exists('checkout_manager_factory', $config)) {
             $alias = new Alias(sprintf('coreshop.checkout_manager.factory.%s', $config['checkout_manager_factory']));
+            $alias->setPublic(true);
+
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
         } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
@@ -92,7 +94,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
     /**
      * @param ContainerBuilder $container
-     * @param                  $config
+     * @param array            $config
      */
     private function registerCheckout(ContainerBuilder $container, $config)
     {
@@ -116,7 +118,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
             $checkoutManagerFactory = new Definition(DefaultCheckoutManagerFactory::class, [
                 new Reference($stepsLocatorId),
-                $priorityMap
+                $priorityMap,
             ]);
 
             $container->setDefinition($checkoutManagerFactoryId, $checkoutManagerFactory);

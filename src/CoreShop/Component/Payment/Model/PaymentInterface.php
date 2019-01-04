@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,6 +19,7 @@ use CoreShop\Component\Resource\Model\TimestampableInterface;
 interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceInterface, TimestampableInterface
 {
     const STATE_NEW = 'new';
+    const STATE_AUTHORIZED = 'authorized';
     const STATE_PROCESSING = 'processing';
     const STATE_COMPLETED = 'completed';
     const STATE_FAILED = 'failed';
@@ -32,29 +33,27 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function getPaymentProvider();
 
     /**
-     * @param $paymentProvider
-     *
-     * @return mixed
+     * @param PaymentProviderInterface $paymentProvider
      */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider);
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
     public function getDatePayment();
 
     /**
-     * @param $datePayment
+     * @param \DateTime $datePayment
      */
     public function setDatePayment($datePayment);
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getState();
 
     /**
-     * @param $state
+     * @param string $state
      */
     public function setState($state);
 
@@ -74,21 +73,7 @@ interface PaymentInterface extends \Payum\Core\Model\PaymentInterface, ResourceI
     public function setTotalAmount($amount);
 
     /**
-     * @param $number
+     * @param string $number
      */
     public function setNumber($number);
-
-    /**
-     * @deprecated setOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use setOrder from Core Component instead
-     *
-     * @param int $orderId
-     */
-    public function setOrderId($orderId);
-
-    /**
-     * @deprecated getOrderId is deprecated since 2.0.0-beta.2 and will be removed in 2.0.0, use getOrder from Core Component instead
-     *
-     * @return int
-     */
-    public function getOrderId();
 }

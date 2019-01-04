@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,8 +16,8 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Zend\Paginator\AdapterAggregateInterface;
 use Zend\Paginator\Adapter\AdapterInterface;
+use Zend\Paginator\AdapterAggregateInterface;
 
 interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
 {
@@ -45,9 +45,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
-     * Listing constructor.
-     *
-     * @param IndexInterface $index
+     * @param IndexInterface  $index
      * @param WorkerInterface $worker
      */
     public function __construct(IndexInterface $index, WorkerInterface $worker);
@@ -65,7 +63,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addCondition(ConditionInterface $condition, $fieldName);
 
@@ -75,7 +73,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * and exclude functionality in group by results.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addQueryCondition(ConditionInterface $condition, $fieldName);
 
@@ -83,21 +81,21 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * Adds relation condition to product list.
      *
      * @param ConditionInterface $condition
-     * @param string $fieldName
+     * @param string             $fieldName
      */
     public function addRelationCondition(ConditionInterface $condition, $fieldName);
 
     /**
      * Reset filter condition for fieldname.
      *
-     * @param $fieldName
+     * @param string $fieldName
      */
     public function resetCondition($fieldName);
 
     /**
      * Reset query condition for fieldname.
      *
-     * @param $fieldName
+     * @param string $fieldName
      */
     public function resetQueryCondition($fieldName);
 
@@ -109,7 +107,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * sets order direction.
      *
-     * @param $order
+     * @param string $order
      */
     public function setOrder($order);
 
@@ -123,17 +121,17 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * sets order key.
      *
-     * @param $orderKey string | array  - either single field name, or array of field names or array of arrays (field name, direction)
+     * @param mixed $orderKey array or string - either single field name, or array of field names or array of arrays (field name, direction)
      */
     public function setOrderKey($orderKey);
 
     /**
-     * @return string | array
+     * @return mixed
      */
     public function getOrderKey();
 
     /**
-     * @param $limit int
+     * @param int $limit
      */
     public function setLimit($limit);
 
@@ -143,7 +141,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getLimit();
 
     /**
-     * @param $offset int
+     * @param int $offset
      */
     public function setOffset($offset);
 
@@ -153,7 +151,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getOffset();
 
     /**
-     * @param $category
+     * @param PimcoreModelInterface $category
      */
     public function setCategory(PimcoreModelInterface $category);
 
@@ -173,7 +171,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     public function getEnabled();
 
     /**
-     * @param $variantMode
+     * @param string $variantMode
      */
     public function setVariantMode($variantMode);
 
@@ -192,9 +190,9 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * loads group by values based on fieldname either from local variable if prepared or directly from product index.
      *
-     * @param $fieldName
-     * @param bool $countValues
-     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
+     * @param string $fieldName
+     * @param bool   $countValues
+     * @param bool   $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
@@ -205,9 +203,9 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * loads group by values based on relation fieldname either from local variable if prepared or directly from product index.
      *
-     * @param      $fieldName
-     * @param bool $countValues
-     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
+     * @param string $fieldName
+     * @param bool   $countValues
+     * @param bool   $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
@@ -218,9 +216,9 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * loads group by values based on relation fieldname either from local variable if prepared or directly from product index.
      *
-     * @param      $fieldName
-     * @param bool $countValues
-     * @param bool $fieldNameShouldBeExcluded => set to false for and-conditions
+     * @param string $fieldName
+     * @param bool   $countValues
+     * @param bool   $fieldNameShouldBeExcluded => set to false for and-conditions
      *
      * @return array
      *
@@ -232,8 +230,8 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * returns order by statement for similarity calculations based on given fields and object ids
      * returns cosine similarity calculation.
      *
-     * @param $fields
-     * @param $objectId
+     * @param string $fields
+     * @param int    $objectId
      *
      * @return string
      */

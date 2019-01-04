@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
@@ -18,7 +18,6 @@ use CoreShop\Bundle\FrontendBundle\Controller\CheckoutController;
 use CoreShop\Bundle\FrontendBundle\Controller\CurrencyController;
 use CoreShop\Bundle\FrontendBundle\Controller\CustomerController;
 use CoreShop\Bundle\FrontendBundle\Controller\IndexController;
-use CoreShop\Bundle\FrontendBundle\Controller\LanguageController;
 use CoreShop\Bundle\FrontendBundle\Controller\MailController;
 use CoreShop\Bundle\FrontendBundle\Controller\OrderController;
 use CoreShop\Bundle\FrontendBundle\Controller\ProductController;
@@ -46,8 +45,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('view_suffix')->defaultValue('twig')->end()
                 ->scalarNode('view_bundle')->defaultValue('CoreShopFrontend')->end()
-            ->end()
-        ;
+            ->end();
 
         $this->addPimcoreResourcesSection($rootNode);
         $this->addControllerSection($rootNode);
@@ -68,7 +66,6 @@ final class Configuration implements ConfigurationInterface
                     ->scalarNode('register')->defaultValue(RegisterController::class)->end()
                     ->scalarNode('customer')->defaultValue(CustomerController::class)->end()
                     ->scalarNode('currency')->defaultValue(CurrencyController::class)->end()
-                    ->scalarNode('language')->defaultValue(LanguageController::class)->end()
                     ->scalarNode('search')->defaultValue(SearchController::class)->end()
                     ->scalarNode('cart')->defaultValue(CartController::class)->end()
                     ->scalarNode('checkout')->defaultValue(CheckoutController::class)->end()

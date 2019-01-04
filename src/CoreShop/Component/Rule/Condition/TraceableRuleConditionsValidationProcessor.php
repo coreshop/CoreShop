@@ -6,13 +6,12 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Rule\Condition;
 
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -89,11 +88,11 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
     }
 
     /**
-     * @param ResourceInterface $subject
-     * @param RuleInterface $rule
-     * @param bool $ruleResult
+     * @param ResourceInterface       $subject
+     * @param RuleInterface           $rule
+     * @param bool                    $ruleResult
      * @param ConditionInterface|null $condition
-     * @param bool $conditionResult
+     * @param bool                    $conditionResult
      */
     protected function addProcessedRule(ResourceInterface $subject, RuleInterface $rule, $ruleResult = false, ConditionInterface $condition = null, $conditionResult = false)
     {
@@ -101,7 +100,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
             $this->processed[$subject->getId()] = [
                 'subject' => $subject,
                 'type' => get_class($subject),
-                'rules' => []
+                'rules' => [],
             ];
         }
 
@@ -120,7 +119,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
                 'rule' => $rule,
                 'result' => $ruleResult,
                 'conditions' => [],
-                'actions' => $actions
+                'actions' => $actions,
             ];
         }
 
@@ -130,7 +129,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
                 'condition' => $condition,
                 'configuration' => $condition->getConfiguration(),
                 'type' => $condition->getType(),
-                'result' => $conditionResult
+                'result' => $conditionResult,
             ];
         }
     }

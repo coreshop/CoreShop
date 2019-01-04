@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,11 +19,11 @@ use Pimcore\Model\DataObject\Service;
 class SuperBoxSelect extends Multihref
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = "coreShopSuperBoxSelect";
+    public $fieldtype = 'coreShopSuperBoxSelect';
 
     /**
      * @var string
@@ -131,7 +131,7 @@ class SuperBoxSelect extends Multihref
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getObjectsAllowed()
     {
@@ -151,7 +151,7 @@ class SuperBoxSelect extends Multihref
         $elements = array();
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $id) {
-                $elements[] = Service::getElementById("object", $id);
+                $elements[] = Service::getElementById('object', $id);
             }
         }
 
@@ -172,7 +172,7 @@ class SuperBoxSelect extends Multihref
                 $return[] = $element->getId();
             }
 
-            return implode(",", $return);
+            return implode(',', $return);
         }
 
         return false;

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,6 +18,7 @@ class QuoteController extends AbstractSaleDetailController
 {
     /**
      * @return mixed
+     *
      * @throws \Exception
      */
     public function getFolderConfigurationAction()
@@ -31,7 +32,7 @@ class QuoteController extends AbstractSaleDetailController
         $folderPath = $this->getParameter('coreshop.folder.quote');
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
-        $folder = DataObject::getByPath('/'.$folderPath);
+        $folder = DataObject::getByPath('/' . $folderPath);
 
         if ($folder instanceof DataObject\Folder) {
             $folderId = $folder->getId();
@@ -42,7 +43,6 @@ class QuoteController extends AbstractSaleDetailController
         }
 
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-
     }
 
     /**

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,7 +30,8 @@ class Expression extends AbstractPlaceholder
     public function getReplacement()
     {
         $expr = \Pimcore::getContainer()->get('coreshop.expression_language');
-        $expression = $this->getPlaceholderConfig()->expression;
+        $config = $this->getPlaceholderConfig();
+        $expression = $config->get('expression');
 
         return $expr->evaluate($expression, [
             'value' => $this->getValue(),
@@ -38,7 +39,7 @@ class Expression extends AbstractPlaceholder
             'config' => $this->getPlaceholderConfig()->toArray(),
             'container' => \Pimcore::getContainer(),
             'params' => $this->getParams(),
-            'placeholder' => $this
+            'placeholder' => $this,
         ]);
     }
 }

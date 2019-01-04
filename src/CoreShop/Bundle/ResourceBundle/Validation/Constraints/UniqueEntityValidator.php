@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,7 +22,7 @@ use Webmozart\Assert\Assert;
 final class UniqueEntityValidator extends ConstraintValidator
 {
     /**
-     * @param Concrete $entity
+     * @param Concrete   $entity
      * @param Constraint $constraint
      */
     public function validate($entity, Constraint $constraint)
@@ -30,7 +30,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         Assert::isInstanceOf($entity, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {
-            throw new UnexpectedTypeException($constraint, __NAMESPACE__.'\UniqueEntity');
+            throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\UniqueEntity');
         }
 
         if (!is_array($constraint->fields) && !is_string($constraint->fields)) {
@@ -50,7 +50,7 @@ final class UniqueEntityValidator extends ConstraintValidator
         $errorPath = $fields[0];
         $criteria = [];
         foreach ($fields as $fieldName) {
-            $getter = 'get'.ucfirst($fieldName);
+            $getter = 'get' . ucfirst($fieldName);
             if (!method_exists($entity, $getter)) {
                 throw new ConstraintDefinitionException(sprintf('The field "%s" is not mapped by Concrete, so it cannot be validated for uniqueness.', $fieldName));
             }
@@ -71,18 +71,16 @@ final class UniqueEntityValidator extends ConstraintValidator
 
                 foreach ($criteriaValue as $criteriaSubValue) {
                     if (is_null($criteriaSubValue)) {
-                        $subConditions[] = $criteriaName.' IS NULL';
-                    }
-                    else {
-                        $subConditions[] = $criteriaName.' = ?';
+                        $subConditions[] = $criteriaName . ' IS NULL';
+                    } else {
+                        $subConditions[] = $criteriaName . ' = ?';
                         $values[] = $criteriaSubValue;
                     }
                 }
 
-                $condition[] = '('.implode(' OR ', $subConditions).')';
-            }
-            else {
-                $condition[] = $criteriaName.' = ?';
+                $condition[] = '(' . implode(' OR ', $subConditions) . ')';
+            } else {
+                $condition[] = $criteriaName . ' = ?';
                 $values[] = $criteriaValue;
             }
         }
@@ -92,7 +90,6 @@ final class UniqueEntityValidator extends ConstraintValidator
         $elements = $list->load();
 
         if (count($elements) > 0) {
-
             if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $elements[0]->getId()) {
                 return;
             }

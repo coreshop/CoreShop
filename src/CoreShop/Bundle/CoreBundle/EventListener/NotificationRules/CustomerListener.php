@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,7 +31,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getCustomer();
 
@@ -55,7 +55,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getSubject();
 
@@ -82,7 +82,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getCustomer();
 
@@ -94,7 +94,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             return;
         }
 
-        $user->setNewsletterToken(hash('md5', $user->getId().$user->getEmail().mt_rand().time()));
+        $user->setNewsletterToken(hash('md5', $user->getId() . $user->getEmail() . mt_rand() . time()));
 
         VersionHelper::useVersioning(
             function () use ($user) {
@@ -104,11 +104,10 @@ final class CustomerListener extends AbstractNotificationRuleListener
         );
 
         $confirmLink = $event->getConfirmLink();
-        $confirmLink = $confirmLink.(parse_url(
-                $confirmLink,
-                PHP_URL_QUERY
-            ) ? '&' : '?').'token='.$user->getNewsletterToken();
-
+        $confirmLink = $confirmLink . (parse_url(
+            $confirmLink,
+            PHP_URL_QUERY
+        ) ? '&' : '?') . 'token=' . $user->getNewsletterToken();
 
         $params = $this->prepareCustomerParameters($user);
         $params = array_merge(
@@ -131,7 +130,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getSubject();
 
@@ -152,6 +151,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
 
     /**
      * @param CustomerInterface $customer
+     *
      * @return array
      */
     private function prepareCustomerParameters(CustomerInterface $customer)
@@ -164,6 +164,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
             'lastname' => $customer->getLastname(),
             'email' => $customer->getEmail(),
             'object' => $customer,
+            'store' => $this->shopperContext->hasStore() ? $this->shopperContext->getStore() : null,
         ];
     }
 }

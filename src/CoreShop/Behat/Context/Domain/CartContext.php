@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Webmozart\Assert\Assert;
 
@@ -32,13 +33,12 @@ final class CartContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param CartContextInterface $cartContext
+     * @param CartContextInterface   $cartContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
     }
@@ -53,6 +53,21 @@ final class CartContext implements Context
             1,
             sprintf(
                 'There should be only one product in the cart, but found %d',
+                count($this->cartContext->getCart()->getItems())
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be two products in my cart$/
+     */
+    public function thereShouldBeTwoProductsInTheCart()
+    {
+        Assert::eq(
+            count($this->cartContext->getCart()->getItems()),
+            2,
+            sprintf(
+                'There should be only two products in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
             )
         );
@@ -159,13 +174,17 @@ final class CartContext implements Context
      */
     public function cartShippingCostShouldBeExcludingTax($shipping)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $shipping,
-            $this->cartContext->getCart()->getShipping(false),
+            $cart->getShipping(false),
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $this->cartContext->getCart()->getShipping(false)
+                $cart->getShipping(false)
             )
         );
     }
@@ -175,13 +194,34 @@ final class CartContext implements Context
      */
     public function cartShippingCostShouldBeIncludingTax($shipping)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $shipping,
-            $this->cartContext->getCart()->getShipping(true),
+            $cart->getShipping(true),
             sprintf(
                 'Cart shipping is expected to be %s, but it is %s',
                 $shipping,
-                $this->cartContext->getCart()->getShipping(true)
+                $cart->getShipping(true)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (carts) shipping tax rate should be "([^"]+)"$/
+     * @Then /^the (loaded carts) shipping tax rate should be "([^"]+)"$/
+     */
+    public function cartShippingTaxRateShouldBe(CartInterface $cart, $shippingTaxRate)
+    {
+        Assert::eq(
+            $shippingTaxRate,
+            $cart->getShippingTaxRate(),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shippingTaxRate,
+                $cart->getShippingTaxRate()
             )
         );
     }
@@ -191,13 +231,17 @@ final class CartContext implements Context
      */
     public function cartShouldUseCarrier(CarrierInterface $carrier)
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $carrier->getId(),
-            $this->cartContext->getCart()->getCarrier()->getId(),
+            $cart->getCarrier()->getId(),
             sprintf(
                 'Cart is expected to use carrier %s, but found %s',
-                $carrier->getIdentifier(),
-                $this->cartContext->getCart()->getCarrier()->getName()
+                $carrier->getTitle('en'),
+                $cart->getCarrier()->getTitle('en')
             )
         );
     }
@@ -207,9 +251,60 @@ final class CartContext implements Context
      */
     public function cartShouldNotHaveACarrier()
     {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::null(
-            $this->cartContext->getCart()->getCarrier(),
+            $cart->getCarrier(),
             'Cart is expected to not have a carrier but found one'
+        );
+    }
+
+    /**
+     * @Then /^the cart discount should be "([^"]+)" including tax$/
+     */
+    public function cartDiscountShouldBeIncludingTax($total)
+    {
+        Assert::eq(
+            $total,
+            $this->cartContext->getCart()->getDiscount(true),
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $this->cartContext->getCart()->getDiscount(true)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart discount should be "([^"]+)" excluding tax$/
+     */
+    public function cartDiscountShouldBeExcludingTax($total)
+    {
+        Assert::eq(
+            $total,
+            $this->cartContext->getCart()->getDiscount(false),
+            sprintf(
+                'Cart discount is expected to be %s, but it is %s',
+                $total,
+                $this->cartContext->getCart()->getDiscount(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be no product in (my cart)$/
+     */
+    public function thereShouldBeNoProductInMyCart(CartInterface $cart)
+    {
+        Assert::eq(
+            $cart->getItems(),
+            0,
+            sprintf(
+                'There should be noe product in the cart, but found %d',
+                count($cart->getItems())
+            )
         );
     }
 }

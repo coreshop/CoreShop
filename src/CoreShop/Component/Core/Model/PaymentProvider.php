@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,6 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 use CoreShop\Component\Store\Model\StoresAwareTrait;
-
 
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
@@ -49,5 +48,13 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     public function getGatewayConfig()
     {
         return $this->gatewayConfig;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s', $this->getIdentifier());
     }
 }

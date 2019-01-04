@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+echo "RUNNING PHPSTAN"
+
+bin/console cache:warmup --env=dev
+vendor/bin/phpstan analyse -c phpstan.travis.neon src -l 2

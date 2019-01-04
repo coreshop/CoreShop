@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,14 +30,13 @@ final class CategoryContext implements Context
     private $categoryRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface      $sharedStorage
      * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CategoryRepositoryInterface $categoryRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->categoryRepository = $categoryRepository;
     }
@@ -47,6 +46,9 @@ final class CategoryContext implements Context
      */
     public function getCategoryByName($categoryName)
     {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
         $list = $this->categoryRepository->getList();
         $list->setLocale('en');
         $list->setCondition('name = ?', [$categoryName]);

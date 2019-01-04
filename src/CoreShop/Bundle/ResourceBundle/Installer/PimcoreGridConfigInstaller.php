@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,33 +29,33 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**
      * @var RegistryInterface
      */
-    protected $metaDataRegistry;
+    private $metaDataRegistry;
 
     /**
      * @var GridConfigInstallerInterface
      */
-    protected $gridConfigInstaller;
+    private $gridConfigInstaller;
 
     /**
      * @var ObjectManager
      */
-    protected $objectManager;
+    private $objectManager;
 
     /**
      * @var PimcoreClassInstallerInterface
      */
-    protected $pimcoreClassInstaller;
+    private $pimcoreClassInstaller;
 
     /**
-     * @param KernelInterface $kernel
-     * @param RegistryInterface $metaDataRegistry
-     * @param ObjectManager $objectManager
-     * @param GridConfigInstallerInterface $gridConfigInstaller
+     * @param KernelInterface                $kernel
+     * @param RegistryInterface              $metaDataRegistry
+     * @param ObjectManager                  $objectManager
+     * @param GridConfigInstallerInterface   $gridConfigInstaller
      * @param PimcoreClassInstallerInterface $classInstaller
      */
     public function __construct(
@@ -64,8 +64,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         ObjectManager $objectManager,
         GridConfigInstallerInterface $gridConfigInstaller,
         PimcoreClassInstallerInterface $classInstaller
-    )
-    {
+    ) {
         $this->kernel = $kernel;
         $this->metaDataRegistry = $metaDataRegistry;
         $this->objectManager = $objectManager;
@@ -122,10 +121,11 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * @param $classIdentifier
+     * @param string $classIdentifier
+     *
      * @return int
      */
-    protected function findClassId($classIdentifier)
+    private function findClassId($classIdentifier)
     {
         $metadata = $this->metaDataRegistry->get($classIdentifier);
 
@@ -135,9 +135,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             if ($repository instanceof PimcoreRepositoryInterface) {
                 return $repository->getClassId();
             }
-        }
-        catch (\InvalidArgumentException $ex) {
-
+        } catch (\InvalidArgumentException $ex) {
         }
 
         $freshlyInstalledClasses = $this->pimcoreClassInstaller->getInstalledClasses();

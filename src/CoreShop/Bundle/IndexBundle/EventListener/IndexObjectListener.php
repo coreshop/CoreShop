@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Event\Model\ElementEventInterface;
 use Pimcore\Model\DataObject\AbstractObject;
@@ -51,7 +52,9 @@ final class IndexObjectListener
                 return;
             }
 
-            $this->indexUpdaterService->updateIndices($object);
+            InheritanceHelper::useInheritedValues(function () use ($object) {
+                $this->indexUpdaterService->updateIndices($object);
+            });
 
             $classDefinition = ClassDefinition::getById($object->getClassId());
             if ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants()) {
@@ -63,7 +66,7 @@ final class IndexObjectListener
     /**
      * @param AbstractObject $object
      */
-    protected function updateInheritableChildren(AbstractObject $object)
+    private function updateInheritableChildren(AbstractObject $object)
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;
@@ -73,7 +76,9 @@ final class IndexObjectListener
         /** @var AbstractObject $child */
         foreach ($children as $child) {
             if (get_class($child) === get_class($object)) {
-                $this->indexUpdaterService->updateIndices($child);
+                InheritanceHelper::useInheritedValues(function () use ($child) {
+                    $this->indexUpdaterService->updateIndices($child);
+                });
                 $this->updateInheritableChildren($child);
             }
         }
@@ -91,7 +96,9 @@ final class IndexObjectListener
                 return;
             }
 
-            $this->indexUpdaterService->removeIndices($object);
+            InheritanceHelper::useInheritedValues(function () use ($object) {
+                $this->indexUpdaterService->removeIndices($object);
+            });
         }
     }
 }

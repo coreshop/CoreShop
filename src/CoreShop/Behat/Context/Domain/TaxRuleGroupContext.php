@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,7 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\TaxRuleRepositoryInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -56,12 +56,12 @@ final class TaxRuleGroupContext implements Context
     private $countryContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface $addressFactory
-     * @param RepositoryInterface $taxRuleGroupRepository
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @param SharedStorageInterface        $sharedStorage
+     * @param FactoryInterface              $addressFactory
+     * @param RepositoryInterface           $taxRuleGroupRepository
+     * @param TaxRuleRepositoryInterface    $taxRuleRepository
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param CountryContextInterface $countryContext
+     * @param CountryContextInterface       $countryContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -70,8 +70,7 @@ final class TaxRuleGroupContext implements Context
         TaxRuleRepositoryInterface $taxRuleRepository,
         TaxCalculatorFactoryInterface $taxCalculatorFactory,
         CountryContextInterface $countryContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->addressFactory = $addressFactory;
         $this->taxRuleGroupRepository = $taxRuleGroupRepository;
@@ -79,7 +78,6 @@ final class TaxRuleGroupContext implements Context
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->countryContext = $countryContext;
     }
-
 
     /**
      * @Then /^there should be a tax rule group "([^"]+)" with "([^"]+)" (?:rule|rules)$/
@@ -95,11 +93,11 @@ final class TaxRuleGroupContext implements Context
         );
 
         /**
-         * @var $group TaxRuleGroupInterface
+         * @var TaxRuleGroupInterface $group
          */
         $group = reset($groups);
 
-        $rules = $this->taxRuleRepository->getByGroupId($group->getId());
+        $rules = $this->taxRuleRepository->findByGroup($group);
 
         Assert::eq(
             count($rules),

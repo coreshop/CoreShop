@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,6 +23,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
@@ -42,16 +43,15 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     private $cartManager;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface  $formFactory
      * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface $cartManager
+     * @param CartManagerInterface  $cartManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->formFactory = $formFactory;
         $this->tokenStorage = $tokenStorage;
         $this->cartManager = $cartManager;
@@ -78,6 +78,8 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     public function validate(CartInterface $cart)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         return $cart->hasItems()
             && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
             && $cart->getInvoiceAddress() instanceof AddressInterface;
@@ -109,11 +111,13 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         $customer = $this->getCustomer();
 
         return [
             'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems()
+            'hasShippableItems' => $cart->hasShippableItems(),
         ];
     }
 
@@ -134,14 +138,16 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     }
 
     /**
-     * @param Request $request
-     * @param CartInterface $cart
+     * @param Request           $request
+     * @param CartInterface     $cart
      * @param CustomerInterface $customer
      *
      * @return \Symfony\Component\Form\FormInterface
      */
     private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
     {
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         $options = [
             'customer' => $customer,
         ];

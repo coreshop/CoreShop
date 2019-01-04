@@ -6,14 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\AddressBundle\Collector;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
-use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,13 +27,12 @@ final class CountryCollector extends DataCollector
 
     /**
      * @param CountryContextInterface $countryContext
-     * @param bool $countryChangeSupport
+     * @param bool                    $countryChangeSupport
      */
     public function __construct(
         CountryContextInterface $countryContext,
         $countryChangeSupport = false
-    )
-    {
+    ) {
         $this->countryContext = $countryContext;
 
         $this->data = [

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -26,6 +26,7 @@ use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class ProductFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
@@ -57,7 +58,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
     {
         return [
             CategoryFixture::class,
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 
@@ -66,6 +67,11 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
      */
     public function load(ObjectManager $manager)
     {
+        /**
+         * @var KernelInterface $kernel
+         */
+        $kernel = $this->container->get('kernel');
+
         if (!count($this->container->get('coreshop.repository.product')->findAll())) {
             $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
             $stores = $this->container->get('coreshop.repository.store')->findAll();
@@ -79,7 +85,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
 
             for ($i = 0; $i < $productsCount; $i++) {
                 /**
-                 * @var $usedCategory CategoryInterface
+                 * @var CategoryInterface $usedCategory
                  */
                 $usedCategory = $categories[rand(0, count($categories) - 1)];
                 $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/products/%s', $usedCategory->getName()));
@@ -87,10 +93,10 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $images = [];
 
                 for ($j = 0; $j < 3; $j++) {
-                    $imagePath = $this->container->get('kernel')->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
+                    $imagePath = $kernel->locateResource(sprintf('@CoreShopCoreBundle/Resources/fixtures/image%s.jpeg', rand(1, 3)));
 
-                    $fileName = 'image'.($i).'_'.($j).'.jpg';
-                    $fullPath = $folder->getFullPath().'/'.$fileName;
+                    $fileName = 'image' . ($i) . '_' . ($j) . '.jpg';
+                    $fullPath = $folder->getFullPath() . '/' . $fileName;
 
                     $existingImage = Asset::getByPath($fullPath);
 
@@ -109,13 +115,13 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 }
 
                 /**
-                 * @var $product ProductInterface
+                 * @var ProductInterface $product
                  */
                 $product = $this->container->get('coreshop.factory.product')->createNew();
                 $product->setName($faker->words(3, true));
                 $product->setSku($faker->ean13);
                 $product->setShortDescription($faker->text());
-                $product->setDescription(implode("<br/>", $faker->paragraphs(3)));
+                $product->setDescription(implode('<br/>', $faker->paragraphs(3)));
                 $product->setEan($faker->ean13);
                 $product->setActive(true);
                 $product->setCategories([$usedCategory]);

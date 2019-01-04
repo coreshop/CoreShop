@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -215,11 +215,32 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
                     this.filter();
                 }.bind(this)
             }
+            ,
+            {
+                xtype: 'button',
+                flex: 1,
+                text: t('coreshop_report_export'),
+                iconCls: 'pimcore_icon_download',
+                handler: function () {
+                    this.download();
+                }.bind(this)
+            }
         ];
     },
 
     filter: function () {
         this.getStore().load();
+    },
+
+    download: function () {
+        var me = this;
+
+        var url = '/admin/coreshop/report/export?report=' + me.reportType;
+        var filterParams = me.getFilterParams();
+
+        url += '&' + Ext.urlEncode(filterParams);
+
+        pimcore.helpers.download(url);
     },
 
     getStore: function () {

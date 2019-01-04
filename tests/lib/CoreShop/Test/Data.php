@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,7 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\Product;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -176,8 +176,6 @@ class Data
             $taxRuleGroup = $taxRuleGroupFactory->createNew();
             $taxRuleGroup->setName('20');
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->addStore(self::$store);
-            $taxRuleGroup->addStore(self::$storeGrossPrices);
 
             /**
              * @var $taxRule TaxRuleInterface

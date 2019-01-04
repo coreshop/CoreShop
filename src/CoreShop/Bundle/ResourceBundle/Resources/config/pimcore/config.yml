@@ -7,6 +7,8 @@ jms_serializer:
             coreshop-resource:
                 namespace_prefix: "Pimcore"
                 path: "@CoreShopResourceBundle/Resources/config/serializer"
+    property_naming:
+        id: 'jms_serializer.identical_property_naming_strategy'
 
 doctrine:
     dbal:

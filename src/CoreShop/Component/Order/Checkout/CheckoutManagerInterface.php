@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,52 +19,52 @@ interface CheckoutManagerInterface
 {
     /**
      * @param CheckoutStepInterface $step
-     * @param $priority
+     * @param int                   $priority
      */
     public function addCheckoutStep(CheckoutStepInterface $step, $priority);
 
     /**
-     * @return CheckoutStepInterface[]
+     * @return string[]
      */
     public function getSteps();
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getNextStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool
      */
     public function hasNextStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return CheckoutStepInterface|null
      */
     public function getPreviousStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return bool
      */
     public function hasPreviousStep($identifier);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
      * @return CheckoutStepInterface[]
      */
@@ -72,7 +72,7 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
+     * @param CartInterface         $cart
      *
      * @return mixed
      */
@@ -80,24 +80,24 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
-     * @param Request $request
+     * @param CartInterface         $cart
+     * @param Request               $request
      *
      * @return mixed
      */
     public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
 
     /**
-     * @param $identifier
+     * @param string $identifier
      *
-     * @return mixed
+     * @return int
      */
     public function getCurrentStepIndex($identifier);
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface $cart
-     * @param Request $request
+     * @param CartInterface         $cart
+     * @param Request               $request
      *
      * @return mixed
      */

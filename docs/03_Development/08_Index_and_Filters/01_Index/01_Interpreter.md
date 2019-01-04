@@ -47,11 +47,13 @@ final class MyInterpreterType extends AbstractType
 ```
 
 ```php
-namespace AppBundle\Index\Interpreter;
+namespace AppBundle\CoreShop\Index\Interpreter;
+
+use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 
 class MyInterpreter implements InterpreterInterface
 {
-    public function interpret($value, IndexColumnInterface $config = null) {
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = []) {
         //Do some interpretation here
 
         return $value;
@@ -63,7 +65,7 @@ class MyInterpreter implements InterpreterInterface
 
 ```yaml
 app.index.interpreter.my_interpreter:
-    class: AppBundle\Index\Interpreter\MyInterpreter
+    class: AppBundle\CoreShop\Index\Interpreter\MyInterpreter
     tags:
-     - { name: coreshop.index.interpreter, type: app-my-interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType}
+     - { name: coreshop.index.interpreter, type: my_interpreter, form-type: AppBundle\Index\Form\Type\MyInterpreterType}
 ```

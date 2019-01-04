@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -54,11 +54,11 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     protected $localeProvider;
 
     /**
-     * @param ObjectServiceInterface $objectService
-     * @param string $pathForItems
+     * @param ObjectServiceInterface              $objectService
+     * @param string                              $pathForItems
      * @param TransformerEventDispatcherInterface $eventDispatcher
-     * @param CurrencyConverterInterface $currencyConverter
-     * @param TranslationLocaleProviderInterface $localeProvider
+     * @param CurrencyConverterInterface          $currencyConverter
+     * @param TranslationLocaleProviderInterface  $localeProvider
      */
     public function __construct(
         ObjectServiceInterface $objectService,
@@ -66,8 +66,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         TransformerEventDispatcherInterface $eventDispatcher,
         CurrencyConverterInterface $currencyConverter,
         TranslationLocaleProviderInterface $localeProvider
-    )
-    {
+    ) {
         $this->objectService = $objectService;
         $this->pathForItems = $pathForItems;
         $this->eventDispatcher = $eventDispatcher;
@@ -81,7 +80,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
     public function transformSaleItem(ProposalInterface $sale, ProposalItemInterface $cartItem, ProposalItemInterface $saleItem, $type)
     {
         /**
-         * @var $sale SaleInterface
+         * @var $sale     SaleInterface
          * @var $cartItem CartItemInterface
          * @var $saleItem OrderItemInterface
          */
@@ -94,7 +93,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->eventDispatcher->dispatchPreEvent($type, $cartItem, ['sale' => $sale, 'cart' => $cartItem->getCart(), 'item' => $saleItem]);
 
-        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath().'/'.$this->pathForItems);
+        $itemFolder = $this->objectService->createFolderByPath($sale->getFullPath() . '/' . $this->pathForItems);
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
@@ -159,7 +158,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
             $saleItem->setName($cartItem->getProduct()->getName($locale), $locale);
         }
 
-        VersionHelper::useVersioning(function() use ($saleItem) {
+        VersionHelper::useVersioning(function () use ($saleItem) {
             $saleItem->save();
         }, false);
 

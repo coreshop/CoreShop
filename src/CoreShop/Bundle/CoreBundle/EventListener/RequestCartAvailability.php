@@ -6,19 +6,18 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartAvailability
@@ -34,43 +33,35 @@ final class RequestCartAvailability
     private $shopperContext;
 
     /**
-     * @var ConfigurationServiceInterface
-     */
-    private $configurationService;
-
-    /**
      * @var RequestHelper
      */
     private $pimcoreRequestHelper;
 
     /**
-     * @var SessionInterface
+     * @var Session
      */
     private $session;
 
     /**
-     * @param CartManagerInterface          $cartManager
-     * @param ShopperContextInterface       $shopperContext
-     * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper                 $pimcoreRequestHelper
-     * @param SessionInterface              $session
+     * @param CartManagerInterface    $cartManager
+     * @param ShopperContextInterface $shopperContext
+     * @param RequestHelper           $pimcoreRequestHelper
+     * @param Session                 $session
      */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
-        ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper,
-        SessionInterface $session
+        Session $session
     ) {
         $this->cartManager = $cartManager;
         $this->shopperContext = $shopperContext;
-        $this->configurationService = $configurationService;
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
         $this->session = $session;
     }
 
     /**
-     * Check if Cart needs a recalculation because of changed items from system
+     * Check if Cart needs a recalculation because of changed items from system.
      *
      * @param GetResponseEvent $event
      */

@@ -6,14 +6,12 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -21,31 +19,14 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 final class CustomersConditionChecker implements ConditionCheckerInterface
 {
     /**
-     * @var CustomerContextInterface
-     */
-    private $customerContext;
-
-    /**
-     * @param CustomerContextInterface $customerContext
-     */
-    public function __construct(CustomerContextInterface $customerContext)
-    {
-        $this->customerContext = $customerContext;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        try {
-            $customer = $this->customerContext->getCustomer();
-
-            return in_array($customer->getId(), $configuration['customers']);
-        } catch (CustomerNotFoundException $ex) {
-            //If some goes wrong, we can ignore it, since it means that there is no Customer in the context
+        if (!array_key_exists('customer', $params)) {
+            return false;
         }
 
-        return false;
+        return in_array($params['customer']->getId(), $configuration['customers']);
     }
 }

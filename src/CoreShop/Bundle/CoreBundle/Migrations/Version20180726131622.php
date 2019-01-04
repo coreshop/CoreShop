@@ -18,25 +18,25 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
     public function up(Schema $schema)
     {
         $backendCreatedField = [
-            "fieldtype" => "checkbox",
-            "defaultValue" => 0,
-            "queryColumnType" => "tinyint(1)",
-            "columnType" => "tinyint(1)",
-            "phpdocType" => "boolean",
-            "name" => "backendCreated",
-            "title" => "Backend Created",
-            "tooltip" => "",
-            "mandatory" => false,
-            "noteditable" => true,
-            "index" => false,
-            "locked" => false,
-            "style" => "",
-            "permissions" => null,
-            "datatype" => "data",
-            "relationType" => false,
-            "invisible" => false,
-            "visibleGridView" => false,
-            "visibleSearch" => false
+            'fieldtype' => 'checkbox',
+            'defaultValue' => 0,
+            'queryColumnType' => 'tinyint(1)',
+            'columnType' => 'tinyint(1)',
+            'phpdocType' => 'boolean',
+            'name' => 'backendCreated',
+            'title' => 'Backend Created',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => true,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
+            'visibleGridView' => false,
+            'visibleSearch' => false,
         ];
 
         $order = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
@@ -64,6 +64,5 @@ class Version20180726131622 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

@@ -19,6 +19,7 @@
   ],
   "require": {
     "php": "^7.0",
+    "coreshop/resource-bundle": "^2.0",
     "symfony/framework-bundle": "^3.3",
     "symfony/doctrine-bridge": "^3.3",
     "symfony/twig-bundle": "^3.3",
@@ -38,7 +39,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

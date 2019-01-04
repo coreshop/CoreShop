@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,12 +15,12 @@ namespace CoreShop\Bundle\PimcoreBundle;
 final class Events
 {
     /**
-     * Fired before a order mail will be sent
+     * Fired before a order mail will be sent.
      */
     const PRE_MAIL_SEND = 'coreshop.mail.pre_send';
 
     /**
-     * Fired after a order mail has been sent
+     * Fired after a order mail has been sent.
      */
     const POST_MAIL_SEND = 'coreshop.mail.post_send';
 }

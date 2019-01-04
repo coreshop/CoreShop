@@ -20,6 +20,7 @@ default:
                 - coreshop.behat.context.transform.customer
                 - coreshop.behat.context.transform.address
                 - coreshop.behat.context.transform.payment
+                - coreshop.behat.context.transform.shipping
 
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
@@ -35,6 +36,7 @@ default:
                 - coreshop.behat.context.setup.payment
                 - coreshop.behat.context.setup.order_shipment
                 - coreshop.behat.context.setup.order_invoice
+                - coreshop.behat.context.setup.shipping
 
                 - coreshop.behat.context.domain.order
                 - coreshop.behat.context.domain.notification_rule

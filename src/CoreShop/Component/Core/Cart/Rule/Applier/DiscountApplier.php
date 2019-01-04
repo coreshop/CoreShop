@@ -6,14 +6,17 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
+use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
@@ -37,18 +40,34 @@ class DiscountApplier implements DiscountApplierInterface
     private $taxCollector;
 
     /**
+     * @var AddressProviderInterface
+     */
+    private $defaultAddressProvider;
+
+    /**
+     * @var AdjustmentFactoryInterface
+     */
+    private $adjustmentFactory;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
+     * @param AddressProviderInterface             $defaultAddressProvider
+     * @param AdjustmentFactoryInterface           $adjustmentFactory
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxCollectorInterface $taxCollector
+        TaxCollectorInterface $taxCollector,
+        AddressProviderInterface $defaultAddressProvider,
+        AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
+        $this->defaultAddressProvider = $defaultAddressProvider;
+        $this->adjustmentFactory = $adjustmentFactory;
     }
 
     /**
@@ -79,14 +98,13 @@ class DiscountApplier implements DiscountApplierInterface
 
             if ($withTax) {
                 $itemDiscountGross = $applicableAmount;
-            }
-            else {
+            } else {
                 $itemDiscountNet = $applicableAmount;
             }
 
             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
                 $item->getProduct(),
-                $cart->getShippingAddress()
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -98,8 +116,7 @@ class DiscountApplier implements DiscountApplierInterface
 
                 $taxItems = $item->getTaxes();
                 $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
-            }
-            else {
+            } else {
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount;
                 } else {
@@ -111,7 +128,16 @@ class DiscountApplier implements DiscountApplierInterface
             $totalDiscountGross += $itemDiscountGross;
         }
 
-        $cartPriceRuleItem->setDiscount((int)round($totalDiscountNet), false);
-        $cartPriceRuleItem->setDiscount((int)round($totalDiscountGross), true);
+        $cartPriceRuleItem->setDiscount((int) round($totalDiscountNet), false);
+        $cartPriceRuleItem->setDiscount((int) round($totalDiscountGross), true);
+
+        $cart->addAdjustment(
+            $this->adjustmentFactory->createWithData(
+                AdjustmentInterface::CART_PRICE_RULE,
+                $cartPriceRuleItem->getCartPriceRule()->getName(),
+                -1 * $cartPriceRuleItem->getDiscount(true),
+                -1 * $cartPriceRuleItem->getDiscount(false)
+            )
+        );
     }
 }

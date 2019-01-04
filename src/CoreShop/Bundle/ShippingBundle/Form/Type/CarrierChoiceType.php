@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -42,14 +42,14 @@ final class CarrierChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function(Options $options) {
+                'choices' => function (Options $options) {
                     $carriers = $this->carrierRepository->findAll();
 
                     /*
                      * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
                      * "usort(): Array was modified by the user comparison function"
                      */
-                    @usort($carriers, function($a, $b) {
+                    @usort($carriers, function ($a, $b) {
                         return $a->getIdentifier() < $b->getIdentifier() ? -1 : 1;
                     });
 
@@ -63,9 +63,9 @@ final class CarrierChoiceType extends AbstractType
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
@@ -79,7 +79,7 @@ final class CarrierChoiceType extends AbstractType
             }
         }
         $view->vars = array_merge($view->vars, [
-            'choices_description' => $description
+            'choices_description' => $description,
         ]);
     }
 

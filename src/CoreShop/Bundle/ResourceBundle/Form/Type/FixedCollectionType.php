@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,7 +30,7 @@ final class FixedCollectionType extends AbstractType
             $entryOptions = $options['entry_options']($entry);
 
             $builder->add($entryName, $entryType, array_replace([
-                'property_path' => '['.$entryName.']',
+                'property_path' => '[' . $entryName . ']',
                 'block_name' => 'entry',
             ], $entryOptions));
         }
@@ -51,7 +51,7 @@ final class FixedCollectionType extends AbstractType
         $resolver->setRequired('entry_name');
         $resolver->setAllowedTypes('entry_name', ['callable']);
 
-        $resolver->setDefault('entry_options', function() {
+        $resolver->setDefault('entry_options', function () {
             return [];
         });
         $resolver->setAllowedTypes('entry_options', ['array', 'callable']);
@@ -71,12 +71,12 @@ final class FixedCollectionType extends AbstractType
      */
     private function optionalCallableNormalizer()
     {
-        return function(Options $options, $value) {
+        return function (Options $options, $value) {
             if (is_callable($value)) {
                 return $value;
             }
 
-            return function() use ($value) {
+            return function () use ($value) {
                 return $value;
             };
         };

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,13 +36,12 @@ final class OrderContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager    $stateMachineManager
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         StateMachineManager $stateMachineManager
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->stateMachineManager = $stateMachineManager;
     }
@@ -138,6 +137,54 @@ final class OrderContext implements Context
                 'Order is expected to weigh %skg, but it weighs %skg',
                 $kg,
                 $order->getWeight()
+            )
+        );
+    }
+
+    /**
+     * @Then /^(the order) shipping should be "([^"]+)" including tax$/
+     */
+    public function orderShippingShouldBeIncludingTax(OrderInterface $order, $shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $order->getShipping(true),
+            sprintf(
+                'Order shipping is expected to be %s, but it is %s',
+                $shipping,
+                $order->getShipping(true)
+            )
+        );
+    }
+
+    /**
+     * @Then /^(the order) shipping should be "([^"]+)" excluding tax$/
+     */
+    public function orderShippingShouldBeExcludingTax(OrderInterface $order, $shipping)
+    {
+        Assert::eq(
+            $shipping,
+            $order->getShipping(false),
+            sprintf(
+                'Order shipping is expected to be %s, but it is %s',
+                $shipping,
+                $order->getShipping(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^(the order) shipping tax rate should be "([^"]+)"$/
+     */
+    public function orderShippingTaxShouldBe(OrderInterface $order, $shippingTaxRate)
+    {
+        Assert::eq(
+            $shippingTaxRate,
+            $order->getShippingTaxRate(),
+            sprintf(
+                'Order shipping tax rate is expected to be %s, but it is %s',
+                $shippingTaxRate,
+                $order->getShippingTaxRate()
             )
         );
     }

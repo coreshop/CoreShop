@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -34,13 +34,12 @@ final class PimcoreClassContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
+     * @param ClassStorageInterface  $classStorage
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
     }
@@ -91,9 +90,9 @@ final class PimcoreClassContext implements Context
     {
         if ($definition instanceof Objectbrick\Definition) {
             $field = $definition->getFieldDefinition($name);
-        } else if ($definition instanceof Fieldcollection\Definition) {
+        } elseif ($definition instanceof Fieldcollection\Definition) {
             $field = $definition->getFieldDefinition($name);
-        } else if ($definition instanceof ClassDefinition) {
+        } elseif ($definition instanceof ClassDefinition) {
             $field = $definition->getFieldDefinition($name);
         } else {
             throw new \InvalidArgumentException(sprintf('Definition with type %s is not supported', null !== $definition ? get_class($definition) : 'null'));

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -22,22 +22,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     /**
      * @var array
      */
-    protected $repositories = [];
+    private $repositories = [];
 
     /**
      * @var array
      */
-    protected $modelsToUpdate = [];
+    private $modelsToUpdate = [];
 
     /**
      * @var array
      */
-    protected $modelsToInsert = [];
+    private $modelsToInsert = [];
 
     /**
      * @var array
      */
-    protected $modelsToRemove = [];
+    private $modelsToRemove = [];
 
     /**
      * {@inheritdoc}
@@ -195,8 +195,8 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $className
-     * @param $repository
+     * @param string $className
+     * @param string $repository
      */
     public function registerRepository($className, $repository)
     {
@@ -204,10 +204,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
+     *
      * @return int
      */
-    protected function getResourceId($resource)
+    private function getResourceId($resource)
     {
         $id = spl_object_hash($resource);
 
@@ -219,10 +220,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
+     *
      * @return string
      */
-    protected function getResourceClassName($resource)
+    private function getResourceClassName($resource)
     {
         $className = get_class($resource);
 
@@ -234,10 +236,11 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param $resource
+     * @param string $resource
+     *
      * @return bool
      */
-    protected function isResourceNew($resource)
+    private function isResourceNew($resource)
     {
         if ($resource instanceof ElementInterface) {
             return is_null($resource->getId()) || $resource->getId() === 0;

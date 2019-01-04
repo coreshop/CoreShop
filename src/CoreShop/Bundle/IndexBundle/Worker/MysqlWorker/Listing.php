@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -349,6 +349,7 @@ class Listing extends AbstractListing
                 }
             }
         }
+
         return $this->objects;
     }
 
@@ -453,7 +454,7 @@ class Listing extends AbstractListing
         $queryBuilder->where($this->worker->renderCondition(new MatchCondition('active', 1), 'q'));
 
         if ($this->getCategory()) {
-            $categoryCondition = "," . $this->getCategory()->getId() . ",";
+            $categoryCondition = ',' . $this->getCategory()->getId() . ',';
             $queryBuilder->andWhere($this->worker->renderCondition(new LikeCondition('parentCategoryIds', 'both', $categoryCondition), 'q'));
         }
         $extensions = $this->getWorker()->getExtensions($this->getIndex());
@@ -551,12 +552,13 @@ class Listing extends AbstractListing
 
     /**
      * @param QueryBuilder $queryBuilder
+     *
      * @return string
      */
     public function addJoins(QueryBuilder $queryBuilder)
     {
         foreach ($this->queryJoins as $table => $tableJoins) {
-            $joinType = isset($tableJoins['type']) ? ' '.$tableJoins['type'] : ' LEFT';
+            $joinType = isset($tableJoins['type']) ? ' ' . $tableJoins['type'] : ' LEFT';
             if (empty($tableJoins['joinTableAlias'])) {
                 continue;
             }
@@ -567,12 +569,15 @@ class Listing extends AbstractListing
             switch (strtolower($joinType)) {
                 case 'inner':
                     $function = 'innerJoin';
+
                     break;
                 case 'left':
                     $function = 'leftJoin';
+
                     break;
                 case 'right':
                     $function = 'rightJoin';
+
                     break;
                 default:
                     break;
@@ -600,11 +605,12 @@ class Listing extends AbstractListing
             $this->addJoins($queryBuilder);
             $this->totalCount = $this->dao->getCount($queryBuilder);
         }
+
         return $this->totalCount;
     }
 
     /**
-     * @return PimcoreModelInterface|boolean
+     * @return PimcoreModelInterface|bool
      */
     public function current()
     {
@@ -650,7 +656,7 @@ class Listing extends AbstractListing
     }
 
     /**
-     * @return PimcoreModelInterface|boolean
+     * @return PimcoreModelInterface|bool
      */
     public function next()
     {

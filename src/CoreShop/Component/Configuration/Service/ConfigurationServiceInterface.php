@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,23 +17,23 @@ use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 interface ConfigurationServiceInterface
 {
     /**
-     * @param $key
-     * @param bool $returnObject
+     * @param string $key
+     * @param bool   $returnObject
      *
      * @return ConfigurationInterface
      */
     public function get($key, $returnObject = false);
 
     /**
-     * @param $key
-     * @param $data
+     * @param string $key
+     * @param mixed  $data
      *
      * @return ConfigurationInterface
      */
     public function set($key, $data);
 
     /**
-     * @param $key
+     * @param string $key
      *
      * @return ConfigurationInterface
      */

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,13 +32,12 @@ class TaxCollector implements TaxCollectorInterface
 
     /**
      * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface $taxItemFactory
+     * @param FactoryInterface    $taxItemFactory
      */
     public function __construct(
         RepositoryInterface $taxRateRepository,
         FactoryInterface $taxItemFactory
-    )
-    {
+    ) {
         $this->taxRateRepository = $taxRateRepository;
         $this->taxItemFactory = $taxItemFactory;
     }
@@ -74,14 +73,14 @@ class TaxCollector implements TaxCollectorInterface
     }
 
     /**
-     * @param $taxId
-     * @param $amount
-     * @param $usedTaxes
+     * @param int   $taxId
+     * @param int   $amount
+     * @param array $usedTaxes
      */
     private function addTaxToArray($taxId, $amount, &$usedTaxes)
     {
         /**
-         * @var $tax TaxRateInterface
+         * @var TaxRateInterface $tax
          */
         $tax = $this->taxRateRepository->find($taxId);
 
@@ -95,7 +94,7 @@ class TaxCollector implements TaxCollectorInterface
 
         if (!array_key_exists($tax->getId(), $usedTaxes)) {
             /**
-             * @var $item TaxItemInterface
+             * @var TaxItemInterface $item
              */
             $item = $this->taxItemFactory->createNew();
             $item->setName($tax->getName());

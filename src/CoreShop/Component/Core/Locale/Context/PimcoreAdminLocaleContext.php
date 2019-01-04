@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -44,18 +44,17 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     private $requestStack;
 
     /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
+     * @param PimcoreContextResolver             $pimcoreContextResolver
+     * @param TokenStorageUserResolver           $tokenStorageUserResolver
      * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack $requestStack
+     * @param RequestStack                       $requestStack
      */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
         TranslationLocaleProviderInterface $localeProvider,
         RequestStack $requestStack
-    )
-    {
+    ) {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
         $this->localeProvider = $localeProvider;

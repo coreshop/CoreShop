@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,11 +51,6 @@ class ResourceController extends AdminController
     protected $manager;
 
     /**
-     * @var ViewHandler
-     */
-    protected $viewHandler;
-
-    /**
      * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
@@ -71,14 +66,14 @@ class ResourceController extends AdminController
     protected $formErrorSerializer;
 
     /**
-     * @param MetadataInterface $metadata
-     * @param RepositoryInterface $repository
-     * @param FactoryInterface $factory
-     * @param ObjectManager $manager
-     * @param ViewHandler $viewHandler
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param MetadataInterface            $metadata
+     * @param RepositoryInterface          $repository
+     * @param FactoryInterface             $factory
+     * @param ObjectManager                $manager
+     * @param ViewHandler                  $viewHandler
+     * @param EventDispatcherInterface     $eventDispatcher
      * @param ResourceFormFactoryInterface $resourceFormFactory
-     * @param ErrorSerializer $formErrorSerializer
+     * @param ErrorSerializer              $formErrorSerializer
      */
     public function __construct(
         MetadataInterface $metadata,
@@ -89,13 +84,13 @@ class ResourceController extends AdminController
         EventDispatcherInterface $eventDispatcher,
         ResourceFormFactoryInterface $resourceFormFactory,
         ErrorSerializer $formErrorSerializer
-    )
-    {
+    ) {
+        parent::__construct($viewHandler);
+
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->viewHandler = $viewHandler;
         $this->eventDispatcher = $eventDispatcher;
         $this->resourceFormFactory = $resourceFormFactory;
         $this->formErrorSerializer = $formErrorSerializer;

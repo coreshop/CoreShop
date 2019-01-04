@@ -91,6 +91,10 @@
     background: url(../img/cart-abandoned.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_report_manufacturer {
+    background: url(../img/manufacturer.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_report_vouchers {
     background: url(../img/cart.svg) center center no-repeat !important;
 }
@@ -153,4 +157,13 @@
 
 .coreshop_rule_icon_condition_backendCreated {
     background: url(../img/orders-backend.svg) center center no-repeat !important;
+}
+
+.x-tool-download {
+    font: 16px/1 FontAwesome;
+    background: none;
+}
+
+.x-tool-download:before {
+    content: "\f0ed";
 }

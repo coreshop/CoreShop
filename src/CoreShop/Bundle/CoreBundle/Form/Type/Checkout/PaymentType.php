@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -50,12 +50,11 @@ final class PaymentType extends AbstractResourceType
      */
     public function __construct(
         $dataClass,
-        array $validationGroups = [],
+        array $validationGroups,
         FormTypeRegistryInterface $formTypeRegistry,
         PaymentProviderRepositoryInterface $paymentProviderRepository,
         array $gatewayFactories
-    )
-    {
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->formTypeRegistry = $formTypeRegistry;
@@ -72,9 +71,9 @@ final class PaymentType extends AbstractResourceType
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
                 'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
                 'label' => 'coreshop.ui.payment_provider',
-                'subject' => $options['payment_subject']
+                'subject' => $options['payment_subject'],
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
                 if (null === $type) {
                     return;
@@ -86,7 +85,7 @@ final class PaymentType extends AbstractResourceType
                     $this->removeConfigurationFields($event->getForm());
                 }
             })
-            ->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) use ($options) {
+            ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $data = $event->getData();
 
                 if (!isset($data['paymentProvider'])) {
@@ -150,7 +149,7 @@ final class PaymentType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param string $configurationType
+     * @param string        $configurationType
      */
     protected function addConfigurationFields(FormInterface $form, $configurationType)
     {
@@ -174,7 +173,7 @@ final class PaymentType extends AbstractResourceType
 
     /**
      * @param FormInterface $form
-     * @param mixed $data
+     * @param mixed         $data
      *
      * @return string|null
      */

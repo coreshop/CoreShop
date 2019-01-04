@@ -8,13 +8,14 @@ use CoreShop\Component\Core\Model\SaleItemInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Transformer\ProposalItemTransformerInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
 
 final class CartItemToSaleItemTransformer implements ProposalItemTransformerInterface
 {
     /**
      * @var ProposalItemTransformerInterface
      */
-    protected $innerCartItemToSaleItemTransformer;
+    private $innerCartItemToSaleItemTransformer;
 
     /**
      * @param ProposalItemTransformerInterface $innerCartItemToSaleItemTransformer
@@ -25,9 +26,10 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
     }
 
     /**
-     * @param ProposalInterface $proposal
+     * @param ProposalInterface     $proposal
      * @param ProposalItemInterface $fromProposalItem
      * @param ProposalItemInterface $toProposal
+     *
      * @return mixed
      */
     public function transform(ProposalInterface $proposal, ProposalItemInterface $fromProposalItem, ProposalItemInterface $toProposal)
@@ -38,7 +40,7 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
             $mainObjectId = null;
 
             if ($fromProposalItem->getProduct() instanceof ProductInterface) {
-                if ($fromProposalItem->getProduct()->getType() === 'variant') {
+                if ($fromProposalItem->getProduct()->getType() === AbstractObject::OBJECT_TYPE_VARIANT) {
                     $mainProduct = $fromProposalItem->getProduct()->getVariantMaster();
                     $toProposal->setMainObjectId($mainProduct->getId());
                 }

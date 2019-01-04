@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,9 +37,9 @@ final class CommandExecutor
     private $application;
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param Application $application
+     * @param Application     $application
      */
     public function __construct(InputInterface $input, OutputInterface $output, Application $application)
     {
@@ -49,8 +49,8 @@ final class CommandExecutor
     }
 
     /**
-     * @param string $command
-     * @param array $parameters
+     * @param string               $command
+     * @param array                $parameters
      * @param OutputInterface|null $output
      *
      * @return $this

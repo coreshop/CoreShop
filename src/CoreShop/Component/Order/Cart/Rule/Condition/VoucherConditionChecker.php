@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -39,6 +39,10 @@ class VoucherConditionChecker extends AbstractConditionChecker
      */
     public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
+        if (null === $voucher) {
+            return false;
+        }
+
         Assert::isInstanceOf($cart, CartInterface::class);
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
@@ -65,6 +69,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
                     if ($rule instanceof ProposalCartPriceRuleItemInterface) {
                         if ($rule->getCartPriceRule()->getIsVoucherRule() && $rule->getVoucherCode() !== $storedCode->getCode()) {
                             $valid = false;
+
                             break;
                         }
                     }
@@ -73,6 +78,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
 
             return $valid;
         }
+
         return true;
     }
 }

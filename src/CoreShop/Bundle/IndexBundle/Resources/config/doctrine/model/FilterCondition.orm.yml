@@ -8,10 +8,6 @@ CoreShop\Component\Index\Model\FilterCondition:
             id: true
             generator:
                 strategy: AUTO
-        field:
-            column: field
-            type: string
-            nullable: true
         type:
             column: type
             type: string

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,13 +14,15 @@ namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class AbandonedCartsReport implements ReportInterface
+class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 {
     /**
      * @var int
@@ -48,24 +50,29 @@ class AbandonedCartsReport implements ReportInterface
     private $customerRepository;
 
     /**
-     * AbandonedCartsReport constructor.
-     *
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
+     * @var LocaleContextInterface
+     */
+    private $localeContext;
+
+    /**
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
      * @param PimcoreRepositoryInterface $cartRepository,
      * @param PimcoreRepositoryInterface $customerRepository
+     * @param LocaleContextInterface     $localeContext
      */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
         PimcoreRepositoryInterface $cartRepository,
-        PimcoreRepositoryInterface $customerRepository
-    )
-    {
+        PimcoreRepositoryInterface $customerRepository,
+        LocaleContextInterface $localeContext
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->cartRepository = $cartRepository;
         $this->customerRepository = $customerRepository;
+        $this->localeContext = $localeContext;
     }
 
     /**
@@ -135,7 +142,7 @@ class AbandonedCartsReport implements ReportInterface
                      LIMIT $offset,$limit";
 
         $data = $this->db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
-        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));
@@ -147,6 +154,23 @@ class AbandonedCartsReport implements ReportInterface
         }
 
         return array_values($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExportReportData(ParameterBag $parameterBag)
+    {
+        $data = $this->getReportData($parameterBag);
+
+        $formatter = new \IntlDateFormatter($this->localeContext->getLocaleCode(), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::MEDIUM);
+
+        foreach ($data as &$entry) {
+            $entry['creationDate'] = $formatter->format($entry['creationDate']);
+            $entry['modificationDate'] = $formatter->format($entry['modificationDate']);
+        }
+
+        return $data;
     }
 
     /**

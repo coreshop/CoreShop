@@ -34,8 +34,7 @@ class Version20180109172304 extends AbstractPimcoreMigration implements Containe
             'bodyStyle' => '',
             'datatype' => 'layout',
             'permissions' => null,
-            'childs' =>
-                [
+            'childs' => [
                     [
                         'fieldtype' => 'input',
                         'width' => null,
@@ -131,7 +130,7 @@ class Version20180109172304 extends AbstractPimcoreMigration implements Containe
                         'invisible' => false,
                         'visibleGridView' => false,
                         'visibleSearch' => false,
-                    ]
+                    ],
                 ],
             'locked' => null,
         ];

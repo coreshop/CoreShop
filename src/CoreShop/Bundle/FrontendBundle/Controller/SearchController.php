@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -23,7 +23,7 @@ class SearchController extends FrontendController
         $form = $this->createSearchForm();
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
@@ -42,18 +42,18 @@ class SearchController extends FrontendController
                 'name LIKE ?',
                 'description LIKE ?',
                 'shortDescription LIKE ?',
-                'sku LIKE ?'
+                'sku LIKE ?',
             ];
             $queryParams = [
-                '%'.$text.'%',
-                '%'.$text.'%',
-                '%'.$text.'%',
-                '%'.$text.'%',
-                '%'.$this->container->get('coreshop.context.store')->getStore()->getId().'%'
+                '%' . $text . '%',
+                '%' . $text . '%',
+                '%' . $text . '%',
+                '%' . $text . '%',
+                '%' . $this->container->get('coreshop.context.store')->getStore()->getId() . '%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).') AND stores LIKE ?', $queryParams);
+            $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);
@@ -61,9 +61,10 @@ class SearchController extends FrontendController
 
             return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
-                'searchText' => $text
+                'searchText' => $text,
             ]);
         }
+
         return $this->redirectToRoute('coreshop_index');
     }
 
@@ -71,7 +72,7 @@ class SearchController extends FrontendController
     {
         return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
-            'method' => 'GET'
+            'method' => 'GET',
         ]);
     }
 }

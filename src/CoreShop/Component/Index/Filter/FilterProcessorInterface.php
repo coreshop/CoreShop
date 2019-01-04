@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,18 +19,18 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 interface FilterProcessorInterface
 {
     /**
-     * @param FilterInterface $filter
+     * @param FilterInterface  $filter
      * @param ListingInterface $list
-     * @param ParameterBag $parameterBag
+     * @param ParameterBag     $parameterBag
      *
      * @return mixed
      */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag);
 
     /**
-     * @param FilterInterface $filter
+     * @param FilterInterface  $filter
      * @param ListingInterface $list
-     * @param $currentFilter
+     * @param array            $currentFilter
      *
      * @return mixed
      */

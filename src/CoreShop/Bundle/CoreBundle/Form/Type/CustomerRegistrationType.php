@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,21 +32,21 @@ class CustomerRegistrationType extends AbstractType
             ->add('customer', CustomerType::class, [
                 'label' => 'coreshop.form.customer_registration.customer',
                 'label_attr' => [
-                    'class' => 'cs-customer'
+                    'class' => 'cs-customer',
                 ],
                 'allow_password_field' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']])
-                ]
+                    new Valid(['groups' => ['coreshop']]),
+                ],
             ])
             ->add('address', AddressType::class, [
                 'label' => 'coreshop.form.customer_registration.address',
                 'label_attr' => [
-                    'class' => 'cs-address'
+                    'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']])
-                ]
+                    new Valid(['groups' => ['coreshop']]),
+                ],
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',

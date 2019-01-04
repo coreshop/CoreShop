@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,8 +37,8 @@ final class CartExpireCommand extends Command
 
     /**
      * @param ProposalExpirationInterface $cartExpiration
-     * @param int $days
-     * @param array $params
+     * @param int                         $days
+     * @param array                       $params
      */
     public function __construct(ProposalExpirationInterface $cartExpiration, $days = 0, $params = [])
     {
@@ -58,17 +58,20 @@ final class CartExpireCommand extends Command
             ->setName('coreshop:cart:expire')
             ->setDescription('Expire abandoned Carts')
             ->addOption(
-                'days', 'days',
+                'days',
+                'days',
                 InputOption::VALUE_OPTIONAL,
                 'Older than'
             )
             ->addOption(
-                'anonymous', 'a',
+                'anonymous',
+                'a',
                 InputOption::VALUE_NONE,
                 'Delete only anonymous carts'
             )
             ->addOption(
-                'user', 'u',
+                'user',
+                'u',
                 InputOption::VALUE_NONE,
                 'Delete only user carts'
             );
@@ -77,7 +80,7 @@ final class CartExpireCommand extends Command
     /**
      * Execute command.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @return int

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,13 +30,12 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
+     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
      */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
-    )
-    {
+    ) {
         $this->cartPriceRuleValidator = $cartPriceRuleValidator;
         $this->proposalCartPriceRuleCalculator = $proposalCartPriceRuleCalculator;
     }
@@ -46,10 +45,6 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
      */
     public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
     {
-        if ($cart->hasPriceRule($cartPriceRule)) {
-            return false;
-        }
-
         if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
             $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $cartPriceRule, $voucherCode);
 

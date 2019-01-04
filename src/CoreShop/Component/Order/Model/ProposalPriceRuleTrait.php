@@ -62,7 +62,7 @@ trait ProposalPriceRuleTrait
     /**
      * {@inheritdoc}
      */
-    public function addPriceRule($priceRule)
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule)
     {
         if (!$this->hasPriceRule($priceRule)) {
             $items = $this->getPriceRuleItems();
@@ -80,16 +80,30 @@ trait ProposalPriceRuleTrait
     /**
      * {@inheritdoc}
      */
-    public function removePriceRule($priceRule)
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule)
     {
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
-                $arrayItem = $items->get($i);
+            for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
+                $item = $items->get($i);
 
-                if ($arrayItem->getCartPriceRule()->getId() === $priceRule->getId()) {
+                if (!$item instanceof ProposalCartPriceRuleItem) {
+                    continue;
+                }
+
+                if (!$item->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                    continue;
+                }
+
+                if (!$priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                    continue;
+                }
+
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
+                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
                     $items->remove($i);
+
                     break;
                 }
             }
@@ -101,18 +115,27 @@ trait ProposalPriceRuleTrait
     /**
      * {@inheritdoc}
      */
-    public function hasPriceRule($priceRule)
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule)
     {
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
-                if ($item instanceof ProposalCartPriceRuleItem) {
-                    if ($item->getCartPriceRule() instanceof CartPriceRuleInterface) {
-                        if ($item->getCartPriceRule()->getId() === $priceRule->getId()) {
-                            return true;
-                        }
-                    }
+                if (!$item instanceof ProposalCartPriceRuleItem) {
+                    continue;
+                }
+
+                if (!$item->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                    continue;
+                }
+
+                if (!$priceRule->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                    continue;
+                }
+
+                if ($item->getCartPriceRule()->getId() === $priceRule->getCartPriceRule()->getId()
+                    && $item->getVoucherCode() === $priceRule->getVoucherCode()) {
+                    return true;
                 }
             }
         }
@@ -120,4 +143,43 @@ trait ProposalPriceRuleTrait
         return false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCartPriceRule(
+        CartPriceRuleInterface $priceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ) {
+        return null !== $this->getPriceRuleByCartPriceRule($priceRule, $voucherCode);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPriceRuleByCartPriceRule(
+        CartPriceRuleInterface $priceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    ) {
+        $items = $this->getPriceRuleItems();
+
+        if ($items instanceof Fieldcollection) {
+            foreach ($items as $item) {
+                if (!$item instanceof ProposalCartPriceRuleItem) {
+                    continue;
+                }
+
+                if (!$item->getCartPriceRule() instanceof CartPriceRuleInterface) {
+                    continue;
+                }
+
+                if ($item->getCartPriceRule()->getId() === $priceRule->getId()) {
+                    if (null === $voucherCode || $voucherCode->getCode() === $item->getVoucherCode()) {
+                        return $item;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 }

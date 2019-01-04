@@ -6,12 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\Pimcore\LinkGenerator;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Pimcore\DataObject\AbstractSluggableLinkGenerator;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -35,8 +36,8 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
     private $urlGenerator;
 
     /**
-     * @param string $type
-     * @param string $routeName
+     * @param string                $type
+     * @param string                $routeName
      * @param UrlGeneratorInterface $urlGenerator
      */
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
@@ -49,15 +50,23 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
     public function generate(Concrete $object, array $params = []): string
     {
         /**
-         * @var $object Concrete
+         * @var Concrete $object
          */
         Assert::isInstanceOf($object, Concrete::class);
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;
 
+        $name = InheritanceHelper::useInheritedValues(function () use ($object, $locale) {
+            if (method_exists($object, 'getName')) {
+                return $object->getName($locale);
+            }
+
+            return '';
+        });
+
         $routeParams = [
-            'name' => $this->slugify($object->getName($locale)),
-            $this->type => $object->getId()
+            'name' => $this->slugify($name),
+            $this->type => $object->getId(),
         ];
 
         if (isset($locale)) {

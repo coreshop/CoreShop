@@ -1,0 +1,3 @@
+# CoreShop Inventory Bundle
+
+TBD

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -26,6 +27,7 @@ class CartPriceRuleController extends ResourceController
 {
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getConfigAction(Request $request)
@@ -38,6 +40,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getVoucherCodesAction(Request $request)
@@ -54,6 +57,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function createVoucherCodeAction(Request $request)
@@ -74,7 +78,7 @@ class CartPriceRuleController extends ResourceController
             /** @var FactoryInterface $voucherCodeFactory */
             $voucherCodeFactory = $this->get('coreshop.factory.cart_price_rule_voucher_code');
 
-            /** @var $codeObject CartPriceRuleVoucherCodeInterface */
+            /** @var CartPriceRuleVoucherCodeInterface $codeObject */
             $codeObject = $voucherCodeFactory->createNew();
             $codeObject->setCode($resource->getCode());
             $codeObject->setCreationDate(new \DateTime());
@@ -84,6 +88,7 @@ class CartPriceRuleController extends ResourceController
 
             $this->manager->persist($codeObject);
             $this->manager->flush();
+
             return $this->viewHandler->handle(['success' => true]);
         }
 
@@ -92,6 +97,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function generateVoucherCodesAction(Request $request)
@@ -125,7 +131,7 @@ class CartPriceRuleController extends ResourceController
         $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
-            $fileName = $priceRule->getName().'_vouchercodes';
+            $fileName = $priceRule->getName() . '_vouchercodes';
             $csvData = [];
 
             $csvData[] = implode(',', [
@@ -162,6 +168,7 @@ class CartPriceRuleController extends ResourceController
 
     /**
      * @param Request $request
+     *
      * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
      */
     public function deleteVoucherCodeAction(Request $request)
@@ -174,6 +181,9 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
+        /**
+         * @var RepositoryInterface $repository
+         */
         $repository = $this->manager
             ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode');
 
@@ -181,6 +191,7 @@ class CartPriceRuleController extends ResourceController
 
         if ($code instanceof CartPriceRuleVoucherCode) {
             $repository->remove($code);
+
             return $this->viewHandler->handle(['success' => true, 'id' => $id]);
         }
 
@@ -188,7 +199,7 @@ class CartPriceRuleController extends ResourceController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator|object
+     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
      */
     protected function getVoucherCodeGenerator()
     {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -49,9 +49,9 @@ class PaymentProvidersReport implements ReportInterface
     private $orderRepository;
 
     /**
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param RepositoryInterface $paymentProviderRepository
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param RepositoryInterface        $paymentProviderRepository
      * @param PimcoreRepositoryInterface $orderRepository
      */
     public function __construct(
@@ -59,8 +59,7 @@ class PaymentProvidersReport implements ReportInterface
         Connection $db,
         RepositoryInterface $paymentProviderRepository,
         PimcoreRepositoryInterface $orderRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->paymentProviderRepository = $paymentProviderRepository;
@@ -90,7 +89,7 @@ class PaymentProvidersReport implements ReportInterface
             return [];
         }
 
-        $tableName = 'object_query_'.$this->orderRepository->getClassId();
+        $tableName = 'object_query_' . $this->orderRepository->getClassId();
         $sql = "
             SELECT  paymentProvider, 
                     COUNT(1) as total, 

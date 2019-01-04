@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -39,7 +39,7 @@ final class InstallCommand extends AbstractInstallCommand
         [
             'command' => 'folders',
             'message' => 'Install CoreShop Object Folders.',
-        ]
+        ],
     ];
 
     /**
@@ -58,26 +58,25 @@ final class InstallCommand extends AbstractInstallCommand
     private $bundle;
 
     /**
-     * @param KernelInterface $kernel
+     * @param KernelInterface         $kernel
      * @param CommandDirectoryChecker $directoryChecker
-     * @param Installer $installer
-     * @param MigrationManager $migrationManager
-     * @param Bundle $bundle
+     * @param Installer               $installer
+     * @param MigrationManager        $migrationManager
+     * @param Bundle                  $bundle
      */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
         Installer $installer,
         MigrationManager $migrationManager,
-        Bundle $bundle)
-    {
+        Bundle $bundle
+    ) {
         parent::__construct($kernel, $directoryChecker);
 
         $this->installer = $installer;
         $this->migrationManager = $migrationManager;
         $this->bundle = $bundle;
     }
-
 
     /**
      * {@inheritdoc}
@@ -116,7 +115,7 @@ EOT
                     count($this->commands),
                     $command['message']
                 ));
-                $this->commandExecutor->runCommand('coreshop:install:'.$command['command'], [], $output);
+                $this->commandExecutor->runCommand('coreshop:install:' . $command['command'], [], $output);
             } catch (RuntimeException $exception) {
                 $errored = true;
             }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,18 +16,15 @@ use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 
-interface CartInterface extends
-    ProposalInterface,
-    PimcoreModelInterface,
-    StorageListInterface
+interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
 {
     /**
-     * @param $order
+     * @param OrderInterface $order
      */
     public function setOrder($order);
 
     /**
-     * @return mixed
+     * @return OrderInterface|null
      */
     public function getOrder();
 
@@ -52,26 +49,37 @@ interface CartInterface extends
     public function hasPriceRules();
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
-    public function addPriceRule($priceRule);
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      */
-    public function removePriceRule($priceRule);
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @param $priceRule
+     * @param ProposalCartPriceRuleItemInterface $priceRule
      *
      * @return bool
      */
-    public function hasPriceRule($priceRule);
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
 
     /**
-     * @return int
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return bool
      */
-    public function getDiscountPercentage();
+    public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
+
+    /**
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return ProposalCartPriceRuleItemInterface|null
+     */
+    public function getPriceRuleByCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
 
     /**
      * @return PaymentProviderInterface
@@ -80,6 +88,7 @@ interface CartInterface extends
 
     /**
      * @param PaymentProviderInterface $paymentProvider
+     *
      * @return PaymentProviderInterface
      */
     public function setPaymentProvider($paymentProvider);

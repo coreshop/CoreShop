@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -53,6 +53,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuAction(Request $request)
@@ -66,6 +67,7 @@ class CategoryController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function menuLeftAction(Request $request)
@@ -82,12 +84,13 @@ class CategoryController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
-            'activeSubCategories' => $activeSubCategories
+            'activeSubCategories' => $activeSubCategories,
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -126,17 +129,16 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-
             $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
-            $filteredList->addCondition(new LikeCondition('stores', 'both', $this->getContext()->getStore()->getId()), 'stores');
+            $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
             $filteredList->setCategory($category);
 
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)).'_'.(empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
@@ -156,10 +158,9 @@ class CategoryController extends FrontendController
             $viewParameters['currentFilter'] = $currentFilter;
             $viewParameters['paginator'] = $paginator;
             $viewParameters['conditions'] = $preparedConditions;
-
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', $this->defaultSortName.'_'.$this->defaultSortDirection);
+            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
@@ -174,7 +175,7 @@ class CategoryController extends FrontendController
                 'order' => $sortParsed['direction'],
                 'categories' => $categories,
                 'store' => $this->getContext()->getStore(),
-                'return_type' => 'list'
+                'return_type' => 'list',
             ];
 
             if ($variantMode !== ListingInterface::VARIANT_MODE_HIDE) {
@@ -199,7 +200,7 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get('coreshop.tracking.manager')->trackPurchasableImpression($product);
+            $this->get('coreshop.tracking.manager')->trackProductImpression($product);
         }
 
         $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
@@ -208,7 +209,7 @@ class CategoryController extends FrontendController
     }
 
     /**
-     * @param $sortString
+     * @param string $sortString
      *
      * @return array
      */

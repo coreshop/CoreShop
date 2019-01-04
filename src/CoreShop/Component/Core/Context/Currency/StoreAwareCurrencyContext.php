@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,16 +37,15 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
     private $currencyRepository;
 
     /**
-     * @param CurrencyContextInterface $currencyContext
-     * @param StoreContextInterface $storeContext
+     * @param CurrencyContextInterface    $currencyContext
+     * @param StoreContextInterface       $storeContext
      * @param CurrencyRepositoryInterface $currencyRepository
      */
     public function __construct(
         CurrencyContextInterface $currencyContext,
         StoreContextInterface $storeContext,
         CurrencyRepositoryInterface $currencyRepository
-    )
-    {
+    ) {
         $this->currencyContext = $currencyContext;
         $this->storeContext = $storeContext;
         $this->currencyRepository = $currencyRepository;
@@ -75,13 +74,13 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
 
     /**
      * @param CurrencyInterface $currency
-     * @param StoreInterface $store
+     * @param StoreInterface    $store
      *
      * @return bool
      */
     private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
     {
-        return in_array($currency->getIsoCode(), array_map(function(CurrencyInterface $currency) {
+        return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
         }, $this->getCurrenciesForStore($store)));
     }

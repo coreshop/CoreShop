@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -49,9 +49,10 @@ final class OrderMailNoteEventListener
 
     /**
      * @param OrderInterface $order
-     * @param Email $emailDocument
-     * @param Mail $mail
-     * @param array $params
+     * @param Email          $emailDocument
+     * @param Mail           $mail
+     * @param array          $params
+     *
      * @return bool
      */
     private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, $params = [])
@@ -64,17 +65,23 @@ final class OrderMailNoteEventListener
         $noteInstance->addData('subject', 'text', $mail->getSubjectRendered());
 
         $mailTos = [];
+        $recipients = isset($params['recipient']) && !empty($params['recipient']) ? $params['recipient'] : $mail->getTo();
 
-        foreach ($mail->getTo() as $mail => $name) {
-            if ($name) {
-                $mailTos[] = sprintf('%s <%s>', $name, $mail);
+        if (is_array($recipients)) {
+            foreach ($recipients as $mail => $name) {
+                if ($name) {
+                    $mailTos[] = sprintf('%s <%s>', $name, $mail);
+                } else {
+                    $mailTos[] = $mail;
+                }
             }
-            else {
-                $mailTos[] = $mail;
-            }
+        } elseif (is_string($recipients)) {
+            $mailTos[] = $recipients;
         }
 
-        $noteInstance->addData('recipient', 'text', implode(', ', $mailTos));
+        $noteInstance->addData('recipient', 'text', (empty($mailTos) ? '--' : implode(', ', $mailTos)));
+
+        unset($params['recipient']);
 
         foreach ($params as $key => $value) {
             if (is_string($value)) {

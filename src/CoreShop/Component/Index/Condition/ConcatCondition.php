@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class ConcatCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
@@ -30,9 +30,9 @@ class ConcatCondition implements ConditionInterface
     private $conditions;
 
     /**
-     * @param $fieldName
+     * @param string $fieldName
      * @param string $operator
-     * @param array $conditions
+     * @param array  $conditions
      */
     public function __construct($fieldName, string $operator, array $conditions)
     {
@@ -40,8 +40,6 @@ class ConcatCondition implements ConditionInterface
         $this->operator = $operator;
         $this->conditions = $conditions;
     }
-
-
 
     /**
      * @return mixed
@@ -52,7 +50,7 @@ class ConcatCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {

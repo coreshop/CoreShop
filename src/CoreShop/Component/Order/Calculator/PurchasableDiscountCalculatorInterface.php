@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,8 +18,10 @@ interface PurchasableDiscountCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param int $basePrice
+     * @param array                $context
+     * @param int                  $basePrice
+     *
      * @return int
      */
-    public function getDiscount(PurchasableInterface $purchasable, $basePrice);
+    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice);
 }

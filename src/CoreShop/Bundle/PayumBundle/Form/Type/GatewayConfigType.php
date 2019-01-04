@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -34,10 +34,9 @@ final class GatewayConfigType extends AbstractResourceType
      */
     public function __construct(
         $dataClass,
-        array $validationGroups = [],
+        array $validationGroups,
         FormTypeRegistryInterface $gatewayConfigurationTypeRegistry
-    )
-    {
+    ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->gatewayConfigurationTypeRegistry = $gatewayConfigurationTypeRegistry;
@@ -50,7 +49,7 @@ final class GatewayConfigType extends AbstractResourceType
     {
         $builder
             ->add('factoryName', TextType::class)
-            ->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $gatewayConfig = $event->getData();
 
                 if (!$gatewayConfig instanceof GatewayConfigInterface) {

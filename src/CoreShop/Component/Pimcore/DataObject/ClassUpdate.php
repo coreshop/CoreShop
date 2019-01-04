@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,7 +33,8 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
     private $fieldsToRename = [];
 
     /**
-     * @param $className
+     * @param string $className
+     *
      * @throws ClassDefinitionNotFoundException
      */
     public function __construct($className)
@@ -62,19 +63,16 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         return DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
     }
 
-
     public function renameField($fieldName, $newFieldName)
     {
         $this->findField(
             $fieldName,
-            function (&$foundField, $index, &$parent) use($fieldName, $newFieldName) {
+            function (&$foundField, $index, &$parent) use ($fieldName, $newFieldName) {
                 $this->fieldsToRename[$fieldName] = [
                     'newName' => $newFieldName,
-                    'definition' => $foundField
+                    'definition' => $foundField,
                 ];
             }
         );
     }
 }
-
-class_alias(ClassUpdate::class, 'CoreShop\Component\Pimcore\ClassUpdate');

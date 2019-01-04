@@ -6,9 +6,8 @@ The concept of Purchasable allows us to decouple CoreShops Order Component from 
 in ways of which object types can be used.
 
 > A Purchasable does not a have Price directly
-> You can either implement a [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
-> or implement [```CoreShop\Component\Order\Model\PriceAwarePurchasableInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Model/PriceAwarePurchasableInterface.php).
-> to your model and CoreShop will take that price for further calculations
+> You need create a class that implements [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).
+> in order to calculate price
 
 # Implementation of a new Purchasable Price Calculator
 To implement a new custom Purchasable Price Calculator, you need to implement the interface [```CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Calculator/PurchasablePriceCalculatorInterface.php).

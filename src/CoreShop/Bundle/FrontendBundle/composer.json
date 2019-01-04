@@ -20,7 +20,7 @@
   "require": {
     "php": "^7.0",
     "coreshop/core-bundle": "^2.0",
-    "dachcom-digital/emailizr": "~1.0.0"
+    "dachcom-digital/emailizr": "^1.0.6"
   },
   "config": {
     "bin-dir": "bin"
@@ -34,7 +34,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

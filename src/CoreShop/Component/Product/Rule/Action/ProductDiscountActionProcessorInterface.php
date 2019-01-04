@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,11 +15,12 @@ namespace CoreShop\Component\Product\Rule\Action;
 interface ProductDiscountActionProcessorInterface extends ActionProcessorInterface
 {
     /**
-     * @param $subject
-     * @param $price
+     * @param mixed $subject
+     * @param int   $price
+     * @param array $context
      * @param array $configuration
      *
      * @return mixed
      */
-    public function getDiscount($subject, $price, array $configuration);
+    public function getDiscount($subject, $price, array $context, array $configuration);
 }

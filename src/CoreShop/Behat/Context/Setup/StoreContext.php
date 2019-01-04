@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
@@ -60,14 +60,13 @@ final class StoreContext implements Context
     private $fixedStoreContext;
 
     /**
-     * StoreContext constructor.
-     * @param SharedStorageInterface $sharedStorage
-     * @param EntityManagerInterface $entityManager
-     * @param FactoryInterface $storeFactory
+     * @param SharedStorageInterface   $sharedStorage
+     * @param EntityManagerInterface   $entityManager
+     * @param FactoryInterface         $storeFactory
      * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface $currencyFactory
-     * @param FactoryInterface $countryFactory
-     * @param FixedStoreContext $fixedStoreContext
+     * @param FactoryInterface         $currencyFactory
+     * @param FactoryInterface         $countryFactory
+     * @param FixedStoreContext        $fixedStoreContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -77,8 +76,7 @@ final class StoreContext implements Context
         FactoryInterface $currencyFactory,
         FactoryInterface $countryFactory,
         FixedStoreContext $fixedStoreContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
@@ -111,6 +109,14 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^I am in (store "[^"]+")$/
+     */
+    public function iAmInStore(StoreInterface $store)
+    {
+        $this->fixedStoreContext->setStore($store);
+    }
+
+    /**
      * @Given /^the site has a store "([^"]+)" with (country "[^"]+") and (currency "[^"]+")$/
      */
     public function siteHasAStoreWithCountryAndCurrency($name, CountryInterface $country, CurrencyInterface $currency)
@@ -131,21 +137,32 @@ final class StoreContext implements Context
     }
 
     /**
-     * @param $name
+     * @Given /^the (store "[^"]+") uses theme "([^"]+)"$/
+     */
+    public function theStoreusesTheme(StoreInterface $store, $template)
+    {
+        $store->setTemplate($template);
+
+        $this->saveStore($store);
+    }
+
+    /**
+     * @param string                 $name
      * @param CurrencyInterface|null $currency
-     * @param CountryInterface|null $country
+     * @param CountryInterface|null  $country
+     *
      * @return StoreInterface
      */
     private function createStore($name, CurrencyInterface $currency = null, CountryInterface $country = null, $grossValues = false)
     {
         /**
-         * @var $store StoreInterface
+         * @var StoreInterface $store
          */
         $store = $this->storeFactory->createNew();
 
         if (null === $currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface $currency
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setIsoCode('EUR');
@@ -159,7 +176,7 @@ final class StoreContext implements Context
 
         if (null === $country) {
             /**
-             * @var $country CountryInterface
+             * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
             $country->setName('Austria');

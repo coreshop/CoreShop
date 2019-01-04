@@ -5,7 +5,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
@@ -57,6 +57,7 @@ coreshop.order.sale.list = Class.create({
                 if (typeof data.editlock === 'object') {
                     Ext.Ajax.request({
                         url: '/admin/element/unlock-element',
+                        method: 'PUT',
                         params: {
                             id: data.editlock.cid,
                             type: 'object'
@@ -256,93 +257,110 @@ coreshop.order.sale.list = Class.create({
         var searchLayout = this.search.getLayout();
 
         if (searchLayout) {
-            searchLayout.on('afterLayout', function (layout) {
+            searchLayout.on('afterrender', function (layout) {
 
                 layout.setTitle(t('coreshop_' + this.type + '_manage'));
                 layout.setIconCls('coreshop_icon_' + this.type);
 
-                var gridPanels = layout.query('gridpanel');
-                if (gridPanels.length > 0) {
-                    var grid = gridPanels[0];
-                    if (!grid._coreshop_listener) {
-
-                        grid._coreshop_listener = true;
+                searchLayout.onBefore('add', function (item) {
+                    var gridQuery = item.query('grid');
+                    if (gridQuery.length > 0) {
                         this.setGridPaginator(layout);
                         this.setupContextMenuPlugin();
-
-                        var label = new Ext.Toolbar.TextItem({
-                            text: t('coreshop_order_list_filter') + ':'
-                        });
-                        var toolbar = layout.down('toolbar');
-
-                        try {
-                            var searchAndMove = toolbar.down('[iconCls*=pimcore_icon_search]');
-                            var justChildrenCheckbox = toolbar.down('[name=onlyDirectChildren]');
-
-                            if (searchAndMove) {
-                                searchAndMove.next().destroy();
-                                searchAndMove.destroy();
-                            }
-
-                            if (justChildrenCheckbox) {
-                                justChildrenCheckbox.next().destroy();
-                                justChildrenCheckbox.destroy();
-                            }
-                        }
-                        catch (ex) {
-
-                        }
-
-                        toolbar.insert(2, [
-                            label,
-                            {
-                                xtype: 'combo',
-                                value: 'none',
-                                store: this.getFilterStore(),
-                                flex: 1,
-                                valueField: 'id',
-                                displayField: 'name',
-                                queryMode: 'local',
-                                disabled: false,
-                                name: 'coreshopFilter',
-                                listeners: {
-                                    'change': function (field) {
-                                        grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
-                                        this.getGridPaginator().moveFirst();
-                                    }.bind(this)
-                                }
-                            }
-                        ]);
-
-                        grid.on('beforeedit', function (grid, cell) {
-                            if (cell.column.hasEditor() === false) {
-                                return false;
-                            }
-                        });
-
-                        grid.on('celldblclick', function (view, td, cellIndex, record, tr, rowIndex, e, eOpts) {
-
-                            if (!view.panel) {
-                                return;
-                            }
-
-                            var column = view.panel.columns[cellIndex - 1];
-                            if (column && column.hasEditor() === false) {
-                                view.setLoading(t('loading'));
-                                data = grid.getStore().getAt(rowIndex);
-                                this.open(data.id, function () {
-                                    view.setLoading(false);
-                                });
-                                return false;
-                            }
-                        }.bind(this));
+                        this.enhanceGridLayout(gridQuery[0]);
                     }
-                }
+                }.bind(this));
+
             }.bind(this));
+
+            this.tabbar.add(searchLayout);
+
         }
 
-        this.tabbar.add(searchLayout);
         return this.tabbar;
+    },
+
+    enhanceGridLayout(grid) {
+
+        var toolbar;
+
+        grid.on('beforeedit', function (grid, cell) {
+            if (cell.column.hasEditor() === false) {
+                return false;
+            }
+        });
+
+        grid.on('celldblclick', function (view, td, cellIndex, record, tr, rowIndex) {
+
+            if (!view.panel) {
+                return;
+            }
+
+            var column = view.panel.columns[cellIndex - 1];
+            if (column && column.hasEditor() === false) {
+                view.setLoading(t('loading'));
+                data = grid.getStore().getAt(rowIndex);
+                this.open(data.id, function () {
+                    view.setLoading(false);
+                });
+                return false;
+            }
+        }.bind(this));
+
+        coreshop.broker.fireEvent('sales.list.enhancing.grid', grid);
+
+        toolbar = grid.query('toolbar');
+        if (toolbar.length > 0) {
+            this.enhanceToolbarLayout(grid, toolbar[0]);
+        }
+
+    },
+
+    enhanceToolbarLayout(grid, toolbar) {
+
+        var label = new Ext.Toolbar.TextItem({
+            text: t('coreshop_order_list_filter') + ':'
+        });
+
+        try {
+            var searchAndMove = toolbar.down('[iconCls*=pimcore_icon_search]');
+            var justChildrenCheckbox = toolbar.down('[name=onlyDirectChildren]');
+
+            if (searchAndMove) {
+                searchAndMove.next().destroy();
+                searchAndMove.destroy();
+            }
+
+            if (justChildrenCheckbox) {
+                justChildrenCheckbox.next().destroy();
+                justChildrenCheckbox.destroy();
+            }
+        } catch (ex) {
+            // fail silently.
+        }
+
+        toolbar.insert(2, [
+            label,
+            {
+                xtype: 'combo',
+                value: 'none',
+                store: this.getFilterStore(),
+                flex: 1,
+                valueField: 'id',
+                displayField: 'name',
+                queryMode: 'local',
+                disabled: false,
+                name: 'coreshopFilter',
+                listeners: {
+                    'change': function (field) {
+                        grid.getStore().getProxy().setExtraParam('coreshop_filter', field.getValue());
+                        this.getGridPaginator().moveFirst();
+                    }.bind(this)
+                }
+            }
+        ]);
+
+        coreshop.broker.fireEvent('sales.list.enhancing.toolbar', toolbar, grid);
     },
 
     open: function (id, callback) {
@@ -351,6 +369,9 @@ coreshop.order.sale.list = Class.create({
 
     setGridPaginator: function (layout) {
         this.gridPaginator = layout.down('pagingtoolbar');
+
+        coreshop.broker.fireEvent('sales.list.enhancing.grid-paginator', this.gridPaginator);
+
     },
 
     getGridPaginator: function () {

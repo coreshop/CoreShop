@@ -26,7 +26,7 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
                     'salutations',
                     'simple_array',
                     [
-                        'notnull' => false
+                        'notnull' => false,
                     ]
                 );
             } else {
@@ -60,7 +60,6 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
 
         /** @var CountryInterface $country */
         foreach ($countryRepository->findAll() as $country) {
-
             //set salutation
             $country->setSalutations($defaultSalutations);
 
@@ -72,7 +71,6 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
             }
 
             $manager->persist($country);
-
         }
 
         $manager->flush();
@@ -84,6 +82,5 @@ class Version20180328093814 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

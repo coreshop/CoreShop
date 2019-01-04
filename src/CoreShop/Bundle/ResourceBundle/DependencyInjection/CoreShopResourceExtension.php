@@ -6,23 +6,22 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
-use Pimcore\DependencyInjection\ConfigMerger;
-use ReflectionClass;
+use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CoreShopResourceExtension extends AbstractModelExtension implements PrependExtensionInterface
+final class CoreShopResourceExtension extends AbstractModelExtension
 {
     /**
      * {@inheritdoc}
@@ -30,7 +29,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
     public function load(array $config, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
         $loader->load('services.yml');
 
@@ -52,67 +51,20 @@ final class CoreShopResourceExtension extends AbstractModelExtension implements 
             $container->setParameter('coreshop.all.stack', []);
         }
 
-        $this->loadPersistence($config['drivers'], $config['resources'], $loader);
-    }
+        $bundles = $container->getParameter('kernel.bundles');
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $fosRestConfigs = $container->getExtensionConfig('fos_rest');
-        $fosRestConfigs[] = [
-            'format_listener' => [
-                'rules' => [
-                    [
-                        'path' => '^/admin/coreshop',
-                        'priorities' => ['json', 'xml'],
-                        'fallback_format' => 'json',
-                        'prefer_extension' => true
-                    ],
-                    [
-                        'path' => '^/',
-                        'stop' => true
-                    ]
-                ]
-            ]
-        ];
+        if (!array_key_exists('FOSRestBundle', $bundles)) {
+            $bodyListener = new Definition(BodyListener::class);
+            $bodyListener->addTag('kernel.event_listener', [
+                'event' => 'kernel.request',
+                'method' => 'onKernelRequest',
+                'priority' => 10,
+            ]);
 
-        if (count($fosRestConfigs) > 1) {
-            $configMerger = new ConfigMerger();
-
-            $restConfigs = [];
-            foreach ($fosRestConfigs as $rest) {
-                if (!is_array($rest)) {
-                    continue;
-                }
-
-                $restConfigs = $configMerger->merge($restConfigs, $rest);
-            }
-
-            $fosRestConfigs = [$restConfigs];
-
-            $this->setExtensionConfig($container, 'fos_rest', $fosRestConfigs);
+            $container->setDefinition('coreshop.body_listener', $bodyListener);
         }
-    }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param $name
-     * @param array $config
-     * @throws \ReflectionException
-     */
-    private function setExtensionConfig(ContainerBuilder $container, $name, array $config = [])
-    {
-        $reflector = new ReflectionClass($container);
-        $property = $reflector->getProperty('extensionConfigs');
-        $property->setAccessible(true);
-
-        $extensionConfigs = $property->getValue($container);
-        $extensionConfigs[$name] = $config;
-
-        $property->setValue($container, $extensionConfigs);
-        $property->setAccessible(false);
+        $this->loadPersistence($config['drivers'], $config['resources'], $loader);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

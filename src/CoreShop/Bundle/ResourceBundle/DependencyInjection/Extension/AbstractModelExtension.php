@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,9 +20,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class AbstractModelExtension extends AbstractPimcoreExtension
 {
     /**
-     * @param string $applicationName
-     * @param string $driver
-     * @param array $resources
+     * @param string           $applicationName
+     * @param string           $driver
+     * @param array            $resources
      * @param ContainerBuilder $container
      */
     protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
@@ -58,8 +58,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param $applicationName
-     * @param array $models
+     * @param string           $applicationName
+     * @param array            $models
      * @param ContainerBuilder $container
      */
     protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
@@ -85,8 +85,8 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
     }
 
     /**
-     * @param $applicationName
-     * @param $stack
+     * @param string           $applicationName
+     * @param array            $stack
      * @param ContainerBuilder $container
      */
     public function registerStack($applicationName, $stack, ContainerBuilder $container)
@@ -140,7 +140,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $applicationPermissions = [];
             $applicationParameter = sprintf('%s.permissions', $applicationName);
             $resourcePermissions = [];
-            $globalParameter = sprintf('coreshop.all.permissions', $applicationName);
+            $globalParameter = 'coreshop.all.permissions';
 
             if ($container->hasParameter($applicationParameter)) {
                 $applicationPermissions = $container->getParameter($applicationParameter);

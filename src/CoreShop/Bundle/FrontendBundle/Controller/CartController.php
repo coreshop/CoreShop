@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,7 +21,6 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -45,6 +44,7 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function summaryAction(Request $request)
@@ -61,38 +61,24 @@ class CartController extends FrontendController
                 $voucherCode = $this->getCartPriceRuleVoucherRepository()->findByCode($code);
 
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
-                    $this->addFlash('error', 'coreshop.ui.error.voucher.not_found');
+                    $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.not_found'));
+
                     return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                         'cart' => $this->getCart(),
-                        'form' => $form->createView()
+                        'form' => $form->createView(),
                     ]);
-                }
-
-                // TODO: would be better to do that inside the form
-                foreach ($this->getCart()->getPriceRules() as $rule) {
-                    if (!$rule instanceof CartPriceRuleInterface) {
-                        continue;
-                    }
-
-                    if ($rule->getId() === $voucherCode->getCartPriceRule()->getId()) {
-                        $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
-                        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
-                            'cart' => $this->getCart(),
-                            'form' => $form->createView()
-                        ]);
-                    }
                 }
 
                 $priceRule = $voucherCode->getCartPriceRule();
 
                 if ($this->getCartPriceRuleProcessor()->process($cart, $priceRule, $voucherCode)) {
                     $this->getCartManager()->persistCart($cart);
-                    $this->addFlash('success', 'coreshop.ui.success.voucher.stored');
+                    $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.success.voucher.stored'));
                 } else {
-                    $this->addFlash('error', 'coreshop.ui.error.voucher.invalid');
+                    $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.invalid'));
                 }
             } else {
-                $this->addFlash('success', 'coreshop.ui.cart_updated');
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
             }
 
             $this->get('event_dispatcher')->dispatch('coreshop.cart.update', new GenericEvent($cart));
@@ -105,28 +91,27 @@ class CartController extends FrontendController
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function shipmentCalculationAction(Request $request)
     {
         $cart = $this->getCart();
         $form = $this->createForm(ShippingCalculatorType::class, null, [
-                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment')
-            ]
-        );
+                'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment'),
+            ]);
 
         $availableCarriers = [];
         $form->handleRequest($request);
 
         //check if there is a shipping calculation request
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
-
             $shippingCalculatorFormData = $form->getData();
             $carrierPriceCalculator = $this->get('coreshop.carrier.price_calculator.taxed');
             $carriersResolver = $this->get('coreshop.carrier.resolver');
@@ -141,22 +126,22 @@ class CartController extends FrontendController
                 $price = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress);
                 $priceWithoutTax = $carrierPriceCalculator->getPrice($carrier, $cart, $virtualAddress, false);
                 $availableCarriers[] = [
-                    'name'            => $carrier->getLabel(),
-                    'isFreeShipping'  => $price === 0,
-                    'price'           => $price,
+                    'name' => $carrier->getTitle(),
+                    'isFreeShipping' => $price === 0,
+                    'price' => $price,
                     'priceWithoutTax' => $priceWithoutTax,
-                    'data'            => $carrier
+                    'data' => $carrier,
                 ];
             }
-            uasort($availableCarriers, function($a, $b) {
-                return ($a['price'] > $b['price']);
+            uasort($availableCarriers, function ($a, $b) {
+                return $a['price'] > $b['price'];
             });
         }
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
-            'availableCarriers' => $availableCarriers
+            'availableCarriers' => $availableCarriers,
         ]);
     }
 
@@ -171,6 +156,7 @@ class CartController extends FrontendController
 
         if (!$product instanceof PurchasableInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
             return $this->redirect($redirect);
         }
 
@@ -194,6 +180,7 @@ class CartController extends FrontendController
 
             if (!$hasStock) {
                 $this->addFlash('error', $this->get('translator')->trans('coreshop.cart_item.not_sufficient_stock', ['%stockable%' => $product->getName()], 'validators'));
+
                 return $this->redirect($redirect);
             }
         }
@@ -201,9 +188,9 @@ class CartController extends FrontendController
         $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableAdd($this->getCart(), $product, $quantity);
+        $this->get('coreshop.tracking.manager')->trackCartAdd($this->getCart(), $product, $quantity);
 
-        $this->addFlash('success', 'coreshop.ui.item_added');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
         return $this->redirect($redirect);
     }
@@ -225,12 +212,12 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $this->addFlash('success', 'coreshop.ui.item_removed');
+        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
         $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartPurchasableRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
+        $this->get('coreshop.tracking.manager')->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -261,6 +248,7 @@ class CartController extends FrontendController
 
     /**
      * @param Request $request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createQuoteAction(Request $request)

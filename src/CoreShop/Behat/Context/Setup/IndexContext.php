@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -64,13 +64,13 @@ final class IndexContext implements Context
     private $indexColumnFactory;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface $classStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $indexFactory
-     * @param RepositoryInterface $indexRepository
+     * @param SharedStorageInterface   $sharedStorage
+     * @param ClassStorageInterface    $classStorage
+     * @param ObjectManager            $objectManager
+     * @param FactoryInterface         $indexFactory
+     * @param RepositoryInterface      $indexRepository
      * @param ServiceRegistryInterface $workerServiceRegistry
-     * @param FactoryInterface $indexColumnFactory
+     * @param FactoryInterface         $indexColumnFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -80,8 +80,7 @@ final class IndexContext implements Context
         RepositoryInterface $indexRepository,
         ServiceRegistryInterface $workerServiceRegistry,
         FactoryInterface $indexColumnFactory
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
@@ -109,7 +108,7 @@ final class IndexContext implements Context
 
         foreach ($hash as $row) {
             /**
-             * @var $column IndexColumnInterface
+             * @var IndexColumnInterface $column
              */
             $column = $this->indexColumnFactory->createNew();
             $column->setName($row['name']);
@@ -178,8 +177,8 @@ final class IndexContext implements Context
 
     /**
      * @param IndexInterface $index
-     * @param TableIndex $tableIndex
-     * @param bool $localized
+     * @param TableIndex     $tableIndex
+     * @param bool           $localized
      */
     private function addIndexToIndex(IndexInterface $index, TableIndex $tableIndex, $localized = false)
     {
@@ -199,14 +198,14 @@ final class IndexContext implements Context
     }
 
     /**
-     * @param $name
-     * @param $class
+     * @param string $name
+     * @param string $class
      * @param string $type
      */
     private function createIndex($name, $class, $type = 'mysql')
     {
         /**
-         * @var $index IndexInterface
+         * @var IndexInterface $index
          */
         $index = $this->indexFactory->createNew();
         $index->setName($name);
@@ -228,7 +227,7 @@ final class IndexContext implements Context
         }
 
         /**
-         * @var $worker WorkerInterface
+         * @var WorkerInterface $worker
          */
         $worker = $this->workerServiceRegistry->get($worker);
         $worker->createOrUpdateIndexStructures($index);
@@ -237,7 +236,5 @@ final class IndexContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('index', $index);
-
-
     }
 }

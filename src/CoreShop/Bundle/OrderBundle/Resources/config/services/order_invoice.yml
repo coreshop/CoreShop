@@ -12,8 +12,6 @@ services:
             - '@coreshop.object_service'
             - '%coreshop.folder.order_invoice_item%'
             - '@coreshop.transformer.event_dispatcher'
-            - '@coreshop.factory.tax_rate'
-            - '@coreshop.factory.tax_item'
 
     coreshop.order.transformer.order_to_invoice:
         class: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
@@ -27,7 +25,7 @@ services:
             - '@coreshop.factory.order_invoice_item'
             - '@coreshop.repository.order_invoice'
             - '@coreshop.transformer.event_dispatcher'
-            - '@coreshop.factory.tax_item'
+            - '@coreshop.factory.adjustment'
 
     coreshop.order.transformer.order_to_invoice.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier

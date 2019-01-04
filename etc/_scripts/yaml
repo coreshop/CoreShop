@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+echo "BEHAT TESTS"
+bin/console lint:yaml src --no-debug

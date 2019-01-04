@@ -105,6 +105,20 @@ class AppExtension extends AbstractModelExtension
         //Register the model to the container
         $this->registerPimcoreModels('app', $config['pimcore'], $container);
 
+        //Alternative you can do it manually like:
+
+        $this->registerPimcoreModels('app', [
+            'product_set' => [
+                'path' => '/product-sets',
+                'classes' => [
+                    'model' => 'Pimcore\Model\DataObject\ProductSet',
+                    'interface' => ProductInterface::class,
+                    'factory' => PimcoreFactory::class,
+                    'type' => CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT
+                ]
+            ]
+        ], $container);
+
         $loader->load('services.yml');
     }
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,6 +24,8 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->items = [];
     }
 
@@ -79,13 +81,16 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
      */
     public function removeItem($item)
     {
+        Assert::isInstanceOf($item, StorageListItemInterface::class);
+
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
+
                 break;
             }
         }
@@ -98,9 +103,11 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
      */
     public function hasItem($item)
     {
+        Assert::isInstanceOf($item, StorageListItemInterface::class);
+
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; ++$i) {
+        for ($i = 0, $c = count($items); $i < $c; $i++) {
             $arrayItem = $items[$i];
 
             if ($arrayItem->getId() === $item->getId()) {

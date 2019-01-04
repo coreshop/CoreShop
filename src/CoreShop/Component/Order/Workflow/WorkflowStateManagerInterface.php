@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,18 +24,20 @@ interface WorkflowStateManagerInterface
     public function getStateHistory(ProposalInterface $proposal);
 
     /**
-     * @param      $workflowName
-     * @param      $value
-     * @param bool $forFrontend
+     * @param string $workflowName
+     * @param string $value
+     * @param bool   $forFrontend
+     *
      * @return array
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true);
 
     /**
-     * @param       $subject
-     * @param       $workflowName
-     * @param array $transitions
-     * @param bool $forFrontend
+     * @param mixed  $subject
+     * @param string $workflowName
+     * @param array  $transitions
+     * @param bool   $forFrontend
+     *
      * @return mixed
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);

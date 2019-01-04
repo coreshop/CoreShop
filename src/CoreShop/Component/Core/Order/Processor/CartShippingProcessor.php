@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -53,11 +53,11 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $adjustmentFactory;
 
     /**
-     * @param TaxedShippingCalculatorInterface $carrierPriceCalculator
+     * @param TaxedShippingCalculatorInterface   $carrierPriceCalculator
      * @param ShippableCarrierValidatorInterface $carrierValidator
-     * @param DefaultCarrierResolverInterface $defaultCarrierResolver
-     * @param AddressProviderInterface $defaultAddressProvider
-     * @param AdjustmentFactoryInterface $adjustmentFactory
+     * @param DefaultCarrierResolverInterface    $defaultCarrierResolver
+     * @param AddressProviderInterface           $defaultAddressProvider
+     * @param AdjustmentFactoryInterface         $adjustmentFactory
      */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
@@ -65,8 +65,7 @@ final class CartShippingProcessor implements CartProcessorInterface
         DefaultCarrierResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider,
         AdjustmentFactoryInterface $adjustmentFactory
-    )
-    {
+    ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
@@ -79,8 +78,6 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     public function process(CartInterface $cart)
     {
-        $cart->removeAdjustments(AdjustmentInterface::SHIPPING);
-
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;
         }
@@ -112,7 +109,7 @@ final class CartShippingProcessor implements CartProcessorInterface
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface    $cart
      * @param AddressInterface $address
      */
     private function resolveDefaultCarrier(CartInterface $cart, AddressInterface $address)
@@ -124,7 +121,6 @@ final class CartShippingProcessor implements CartProcessorInterface
         try {
             $cart->setCarrier($this->defaultCarrierResolver->getDefaultCarrier($cart, $address));
         } catch (UnresolvedDefaultCarrierException $ex) {
-
         }
     }
 }

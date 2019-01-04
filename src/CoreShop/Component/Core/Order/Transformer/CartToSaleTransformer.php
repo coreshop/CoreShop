@@ -6,7 +6,6 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\QuoteInterface;
-use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
@@ -18,21 +17,21 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
     /**
      * @var ProposalTransformerInterface
      */
-    protected $innerCartToOrderTransformer;
+    private $innerCartToOrderTransformer;
 
     /**
      * @param ProposalTransformerInterface $innerCartToOrderTransformer
      */
     public function __construct(
         ProposalTransformerInterface $innerCartToOrderTransformer
-    )
-    {
+    ) {
         $this->innerCartToOrderTransformer = $innerCartToOrderTransformer;
     }
 
     /**
      * @param ProposalInterface $cart
      * @param ProposalInterface $sale
+     *
      * @return ProposalInterface|mixed
      */
     public function transform(ProposalInterface $cart, ProposalInterface $sale)

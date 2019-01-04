@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,7 +37,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
      */
     public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false)
     {
-        list ($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
     }
@@ -47,13 +47,14 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
      */
     public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false)
     {
-        list ($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
+        list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
         return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 
     /**
-     * @param $arguments
+     * @param array $arguments
+     *
      * @return array
      */
     protected function prepareParameters($arguments)
@@ -102,7 +103,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
             $object,
             $routeName,
             $params,
-            $relative
+            $relative,
         ];
     }
 

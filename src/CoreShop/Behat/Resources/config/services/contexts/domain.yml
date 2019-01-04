@@ -3,6 +3,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.repository.product'
             - '@__symfony__.coreshop.product.price_calculator'
             - '@__symfony__.coreshop.product.taxed_price_calculator'
@@ -13,6 +14,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductSpecificPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.product_specific_price_rule.processor'
         tags:
             - { name: fob.context_service }
@@ -21,6 +23,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ProductPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
             - '@__symfony__.coreshop.product_price_rule.processor'
         tags:
             - { name: fob.context_service }
@@ -95,6 +98,7 @@ services:
             - '@__symfony__.coreshop.shipping_rule.processor'
             - '@__symfony__.coreshop.factory.address'
             - '@__symfony__.coreshop.carrier.price_calculator'
+            - '@__symfony__.coreshop.carrier.shipping_rule.checker'
         tags:
             - { name: fob.context_service }
 
@@ -185,5 +189,40 @@ services:
             - '@__symfony__.coreshop.repository.filter'
             - '@__symfony__.coreshop.factory.filter.list'
             - '@__symfony__.coreshop.filter.processor'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.tracking:
+        class: CoreShop\Behat\Context\Domain\TrackingContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.tracking.extractor'
+            - '@__symfony__.coreshop.registry.tracking.tracker'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.index_condition:
+        class: CoreShop\Behat\Context\Domain\IndexConditionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.registry.index.worker'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.cart_price_rule:
+        class: CoreShop\Behat\Context\Domain\CartPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
+            - '@__symfony__.coreshop.cart_price_rule.rule_validation.processor'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.theme:
+        class: CoreShop\Behat\Context\Domain\ThemeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.theme.resolver'
+            - '@__symfony__.coreshop.theme.active_theme'
         tags:
             - { name: fob.context_service }

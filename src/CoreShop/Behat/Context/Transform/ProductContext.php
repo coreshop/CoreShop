@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,14 +30,13 @@ final class ProductContext implements Context
     private $productRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface     $sharedStorage
      * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductRepositoryInterface $productRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->productRepository = $productRepository;
     }
@@ -48,6 +47,9 @@ final class ProductContext implements Context
      */
     public function getProductByName($productName)
     {
+        /**
+         * @var \Pimcore\Model\DataObject\Listing\Concrete $list
+         */
         $list = $this->productRepository->getList();
         $list->setLocale('en');
         $list->setCondition('name = ?', [$productName]);
@@ -59,7 +61,10 @@ final class ProductContext implements Context
             sprintf('%d products has been found with name "%s".', count($list->getObjects()), $productName)
         );
 
-        return reset($list->getObjects());
+        $product = \reset($list->getObjects());
+
+        //This is to not run into cache issues
+        return $this->productRepository->forceFind($product->getId());
     }
 
     /**

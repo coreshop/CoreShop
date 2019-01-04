@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -39,16 +39,15 @@ final class CustomerNewsletterConfirmListener
     private $eventDispatcher;
 
     /**
-     * @param LinkGeneratorInterface $linkGenerator
-     * @param RequestStack $requestStack
+     * @param LinkGeneratorInterface   $linkGenerator
+     * @param RequestStack             $requestStack
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
         RequestStack $requestStack,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         $this->linkGenerator = $linkGenerator;
         $this->requestStack = $requestStack;
         $this->eventDispatcher = $eventDispatcher;
@@ -62,7 +61,7 @@ final class CustomerNewsletterConfirmListener
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
         /**
-         * @var $user CustomerInterface
+         * @var CustomerInterface $user
          */
         $user = $event->getSubject();
 

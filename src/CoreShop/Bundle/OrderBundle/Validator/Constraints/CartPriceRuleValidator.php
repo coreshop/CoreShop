@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,7 +36,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
     /**
      * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
      */
     public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
@@ -80,7 +80,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
 
             $voucherCode = $this->voucherCodeRepository->findByCode($ruleItem->getVoucherCode());
 
-            if (!$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
+            if ($voucherCode && !$this->ruleValidationProcessor->isValidCartRule($value, $cartRule, $voucherCode)) {
                 $this->context->addViolation(
                     $constraint->message,
                     ['%rule%' => $cartRule->getName()]

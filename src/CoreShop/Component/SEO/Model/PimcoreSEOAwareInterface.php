@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -16,25 +16,27 @@ interface PimcoreSEOAwareInterface extends SEOAwareInterface
 {
     /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getPimcoreMetaTitle($language = null);
 
     /**
-     * @param $pimcoreMetaTitle
-     * @param null $language
+     * @param string $pimcoreMetaTitle
+     * @param string $language
      */
     public function setPimcoreMetaTitle($pimcoreMetaTitle, $language = null);
 
     /**
-     * @param string|null $language
+     * @param string $language
+     *
      * @return string
      */
     public function getPimcoreMetaDescription($language = null);
 
     /**
-     * @param $pimcoreMetaDescription
-     * @param null $language
+     * @param string $pimcoreMetaDescription
+     * @param string $language
      */
     public function setPimcoreMetaDescription($pimcoreMetaDescription, $language = null);
 }

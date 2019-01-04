@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,7 @@ namespace CoreShop\Component\Index\Condition;
 class RangeCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
@@ -30,8 +30,7 @@ class RangeCondition implements ConditionInterface
     private $to;
 
     /**
-     * InCondition constructor.
-     * @param $fieldName
+     * @param string $fieldName
      * @param string $from
      * @param string $to
      */
@@ -43,7 +42,7 @@ class RangeCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFieldName()
     {
@@ -51,7 +50,7 @@ class RangeCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {

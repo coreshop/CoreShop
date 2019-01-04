@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,10 +14,8 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
-use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use CoreShop\DependencyAnalysis\ReferenceValidator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -55,7 +53,6 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -69,7 +66,7 @@ final class PimcoreDriver extends AbstractDriver
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
@@ -86,21 +83,21 @@ final class PimcoreDriver extends AbstractDriver
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler')
+                new Reference('coreshop.resource_controller.view_handler'),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
         if (null !== $suffix && 'default' !== $suffix) {
-            $serviceId .= '_'.$suffix;
+            $serviceId .= '_' . $suffix;
         }
 
         $container->setDefinition($serviceId, $definition);
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
     protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
@@ -165,9 +162,12 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
+        $alias = new Alias('pimcore.dao.object_manager');
+        $alias->setPublic(true);
+
         $container->setAlias(
             $metadata->getServiceId('manager'),
-            new Alias('pimcore.dao.object_manager')
+            $alias
         );
     }
 }

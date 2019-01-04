@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,8 +29,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
      */
     public function __construct(
         PrioritizedServiceRegistryInterface $shippingCalculatorRegistry
-    )
-    {
+    ) {
         $this->shippingCalculatorRegistry = $shippingCalculatorRegistry;
     }
 
@@ -42,13 +41,14 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
         $netPrice = 0;
 
         /**
-         * @var $calculator CarrierPriceCalculatorInterface
+         * @var CarrierPriceCalculatorInterface $calculator
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
             $price = $calculator->getPrice($carrier, $shippable, $address);
 
             if (false !== $price && null !== $price) {
                 $netPrice = $price;
+
                 break;
             }
         }

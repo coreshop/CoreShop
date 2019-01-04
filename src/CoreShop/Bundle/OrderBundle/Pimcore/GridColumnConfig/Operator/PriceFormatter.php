@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,20 +30,17 @@ class PriceFormatter extends AbstractOperator
     private $localeService;
 
     /**
-     * OrderState constructor.
-     *
      * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeService
-     * @param \stdClass $config
-     * @param null $context
+     * @param LocaleContextInterface  $localeService
+     * @param \stdClass               $config
+     * @param null                    $context
      */
     public function __construct(
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         \stdClass $config,
         $context = null
-    )
-    {
+    ) {
         parent::__construct($config, $context);
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
@@ -51,6 +48,7 @@ class PriceFormatter extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
@@ -73,5 +71,4 @@ class PriceFormatter extends AbstractOperator
 
         return $result;
     }
-
 }

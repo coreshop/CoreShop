@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -51,11 +51,11 @@ final class CountryContext implements Context
     private $fixedCountryContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $countryFactory
+     * @param SharedStorageInterface     $sharedStorage
+     * @param ObjectManager              $objectManager
+     * @param FactoryInterface           $countryFactory
      * @param CountryRepositoryInterface $countryRepository
-     * @param FixedCountryContext $fixedCountryContext
+     * @param FixedCountryContext        $fixedCountryContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +63,7 @@ final class CountryContext implements Context
         FactoryInterface $countryFactory,
         CountryRepositoryInterface $countryRepository,
         FixedCountryContext $fixedCountryContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->countryFactory = $countryFactory;
@@ -143,7 +142,7 @@ final class CountryContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createCountry($name, CurrencyInterface $currency)
     {
@@ -151,7 +150,7 @@ final class CountryContext implements Context
 
         if (!$country) {
             /**
-             * @var $country CountryInterface
+             * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
             $country->setName($name, 'en');

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,16 +37,15 @@ final class ShippingContext implements Context
     private $shippingRuleRepository;
 
     /**
-     * @param SharedStorageInterface $sharedStorage,
+     * @param SharedStorageInterface     $sharedStorage,
      * @param CarrierRepositoryInterface $carrierRepository
-     * @param RepositoryInterface $shippingRuleRepository
+     * @param RepositoryInterface        $shippingRuleRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RepositoryInterface $shippingRuleRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->shippingRuleRepository = $shippingRuleRepository;

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,28 +25,28 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     /**
      * @var NumberGeneratorInterface
      */
-    protected $numberGenerator;
+    private $numberGenerator;
 
     /**
      * @var ConfigurationServiceInterface
      */
-    protected $configurationService;
+    private $configurationService;
 
     /**
      * @var string
      */
-    protected $prefixConfigurationKey;
+    private $prefixConfigurationKey;
 
     /**
      * @var string
      */
-    protected $suffixConfigurationKey;
+    private $suffixConfigurationKey;
 
     /**
-     * @param NumberGeneratorInterface $numberGenerator
+     * @param NumberGeneratorInterface      $numberGenerator
      * @param ConfigurationServiceInterface $configurationService
-     * @param string $prefixConfigurationKey
-     * @param string $suffixConfigurationKey
+     * @param string                        $prefixConfigurationKey
+     * @param string                        $suffixConfigurationKey
      */
     public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
     {
@@ -65,9 +65,9 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
 
         if ($model instanceof SaleInterface) {
             $store = $model->getStore();
-        } else if ($model instanceof OrderDocumentInterface) {
+        } elseif ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();
-        } else if ($model instanceof StoreAwareInterface) {
+        } elseif ($model instanceof StoreAwareInterface) {
             $store = $model->getStore();
         }
 

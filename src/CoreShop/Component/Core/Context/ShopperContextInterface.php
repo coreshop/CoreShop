@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,14 +19,13 @@ use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
-interface ShopperContextInterface extends
-    StoreContextInterface,
-    CurrencyContextInterface,
-    LocaleContextInterface,
-    CountryContextInterface,
-    CustomerContextInterface,
-    CartContextInterface
+interface ShopperContextInterface extends StoreContextInterface, CurrencyContextInterface, LocaleContextInterface, CountryContextInterface, CustomerContextInterface, CartContextInterface
 {
+    /**
+     * @return array
+     */
+    public function getContext();
+
     /**
      * @return bool
      */

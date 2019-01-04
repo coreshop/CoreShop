@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -36,7 +36,7 @@ class Cart extends AbstractProposal implements CartInterface
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
                 if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId(
-                    ) === $product->getId()) {
+                ) === $product->getId()) {
                     return $item;
                 }
             }
@@ -75,21 +75,6 @@ class Cart extends AbstractProposal implements CartInterface
         $total = $this->getSubtotal($withTax);
 
         return $total + $this->getAdjustmentsTotal(null, $withTax);
-    }
-
-    /**
-     * {@inheritdocs}
-     */
-    public function getDiscountPercentage()
-    {
-        $totalDiscount = $this->getDiscount();
-        $totalWithoutDiscount = $this->getSubtotal();
-
-        if ($totalWithoutDiscount > 0) {
-            return $totalDiscount / $totalWithoutDiscount;
-        }
-
-        return 0;
     }
 
     /**

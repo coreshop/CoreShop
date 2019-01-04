@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,18 +15,18 @@ namespace CoreShop\Component\Index\Condition;
 class IsCondition implements ConditionInterface
 {
     /**
-     * @var $string
+     * @var string
      */
     private $fieldName;
 
     /**
-     * @var $string
+     * @var string
      */
     private $value;
 
     /**
-     * @param $fieldName
-     * @param $value
+     * @param string $fieldName
+     * @param string $value
      */
     public function __construct($fieldName, $value)
     {
@@ -35,7 +35,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getFieldName()
     {
@@ -43,7 +43,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $fieldName
+     * @param string $fieldName
      */
     public function setFieldName($fieldName)
     {
@@ -51,7 +51,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
@@ -59,7 +59,7 @@ class IsCondition implements ConditionInterface
     }
 
     /**
-     * @param mixed $value
+     * @param string $value
      */
     public function setValue($value)
     {

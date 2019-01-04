@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -92,7 +92,7 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param $object
+     * @param mixed $object
      *
      * @return ProductSpecificPriceRuleInterface[]
      */
@@ -100,7 +100,17 @@ class ProductSpecificPriceRules extends Data
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
+
+        if (!method_exists($object, 'getO__loadedLazyFields')) {
+            return $data;
+        }
+
         if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
             $data = $this->load($object, ['force' => true]);
 
@@ -135,7 +145,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -145,7 +155,7 @@ class ProductSpecificPriceRules extends Data
         $data = [
             'actions' => array_keys($this->getConfigActions()),
             'conditions' => array_keys($this->getConfigConditions()),
-            'rules' => []
+            'rules' => [],
         ];
 
         if ($object instanceof ProductInterface) {
@@ -165,7 +175,7 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $object
+     * @param null  $object
      * @param array $params
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -173,6 +183,7 @@ class ProductSpecificPriceRules extends Data
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         $prices = [];
+        $errors = [];
 
         if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
@@ -205,13 +216,17 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param Concrete $object
-     * @param array $params
+     * @param array    $params
      */
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            $getter = $this->getName();
-            $existingPriceRules = $object->$getter;
+            //TODO: Remove once CoreShop requires min Pimcore 5.5
+            if (method_exists($object, 'getObjectVar')) {
+                $existingPriceRules = $object->getObjectVar($this->getName());
+            } else {
+                $existingPriceRules = $object->{$this->getName()};
+            }
 
             $all = $this->load($object, ['force' => true]);
             $founds = [];
@@ -265,9 +280,9 @@ class ProductSpecificPriceRules extends Data
 
     /**
      * @param mixed $data
-     * @param null $relatedObject
+     * @param null  $relatedObject
      * @param mixed $params
-     * @param null $idMapper
+     * @param null  $idMapper
      *
      * @return ProductSpecificPriceRuleInterface[]
      *
@@ -279,7 +294,7 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * @param \stdClass[]
+     * @param \stdClass[] $array
      *
      * @return array
      */

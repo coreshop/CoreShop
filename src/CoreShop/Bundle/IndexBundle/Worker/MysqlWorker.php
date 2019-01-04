@@ -6,15 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
-use CoreShop\Bundle\IndexBundle\Condition\MysqlRenderer;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
-use CoreShop\Component\Index\Condition\ConditionInterface;
+use CoreShop\Component\Index\Condition\ConditionRendererInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -22,8 +21,9 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Db;
+use Doctrine\DBAL\Types\Type;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
@@ -31,26 +31,35 @@ class MysqlWorker extends AbstractWorker
     /**
      * Database.
      *
-     * @var \Pimcore\Db\Connection
+     * @var Connection
      */
     protected $database;
 
     /**
-     * @param ServiceRegistryInterface $extensionsRegistry
-     * @param ServiceRegistryInterface $getterServiceRegistry
-     * @param ServiceRegistryInterface $interpreterServiceRegistry
+     * @param ServiceRegistryInterface   $extensionsRegistry
+     * @param ServiceRegistryInterface   $getterServiceRegistry
+     * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
+     * @param ConditionRendererInterface $conditionRenderer
+     * @param Connection                 $connection
      */
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
-        FilterGroupHelperInterface $filterGroupHelper
-    )
-    {
-        parent::__construct($extensionsRegistry, $getterServiceRegistry, $interpreterServiceRegistry, $filterGroupHelper);
+        FilterGroupHelperInterface $filterGroupHelper,
+        ConditionRendererInterface $conditionRenderer,
+        Connection $connection
+    ) {
+        parent::__construct(
+            $extensionsRegistry,
+            $getterServiceRegistry,
+            $interpreterServiceRegistry,
+            $filterGroupHelper,
+            $conditionRenderer
+        );
 
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
@@ -94,8 +103,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -132,7 +143,7 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('indexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['indexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
@@ -148,8 +159,10 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
+     *
      * @throws \Exception
      */
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -180,7 +193,7 @@ class MysqlWorker extends AbstractWorker
 
         if (array_key_exists('localizedIndexes', $index->getConfiguration())) {
             /**
-             * @var $tableIndex TableIndex
+             * @var TableIndex $tableIndex
              */
             foreach ($index->getConfiguration()['localizedIndexes'] as $tableIndex) {
                 if ($tableIndex->getType() === TableIndex::TABLE_INDEX_TYPE_UNIQUE) {
@@ -196,7 +209,8 @@ class MysqlWorker extends AbstractWorker
 
     /**
      * @param IndexInterface $index
-     * @param Schema $tableSchema
+     * @param Schema         $tableSchema
+     *
      * @return Schema
      */
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
@@ -216,6 +230,7 @@ class MysqlWorker extends AbstractWorker
      * Create Localized Views.
      *
      * @param IndexInterface $index
+     *
      * @return array
      */
     protected function createLocalizedViews(IndexInterface $index)
@@ -245,6 +260,18 @@ QUERY;
         }
 
         return $queries;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function typeCastValues(IndexColumnInterface $column, $value)
+    {
+        $doctrineType = $this->renderFieldType($column->getColumnType());
+
+        $type = Type::getType($doctrineType);
+
+        return $type->convertToDatabaseValue($value, $this->database->getDatabasePlatform());
     }
 
     /**
@@ -290,13 +317,13 @@ QUERY;
             try {
                 $this->doInsertData($index, $preparedData['data']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
                 $this->doInsertLocalizedData($index, $preparedData['localizedData']);
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index table: ' . $e->getMessage(), [$e]);
             }
 
             try {
@@ -305,7 +332,7 @@ QUERY;
                     $this->database->insert($this->getRelationTablename($index), $rd);
                 }
             } catch (\Exception $e) {
-                $this->logger->warn('Error during updating index relation table: ' . $e->getMessage(), [$e]);
+                $this->logger->warning('Error during updating index relation table: ' . $e->getMessage(), [$e]);
             }
         } else {
             $this->logger->info('Don\'t adding object ' . $object->getId() . ' to index.');
@@ -318,7 +345,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param $data
+     * @param array          $data
      */
     protected function doInsertData(IndexInterface $index, $data)
     {
@@ -345,7 +372,7 @@ QUERY;
      * Insert data into mysql-table.
      *
      * @param IndexInterface $index
-     * @param $data
+     * @param array          $data
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
@@ -385,36 +412,24 @@ QUERY;
     /**
      * {@inheritdoc}
      */
-    public function renderCondition(ConditionInterface $condition, $prefix = null)
-    {
-        $renderer = new MysqlRenderer();
-
-        return $renderer->render($condition, $prefix);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function renderFieldType($type)
     {
+        //Check if the Mapping type is available in doctrine
+        $doctrineType = strtolower($type);
+
         switch ($type) {
-            case IndexColumnInterface::FIELD_TYPE_INTEGER:
-                return 'integer';
-
-            case IndexColumnInterface::FIELD_TYPE_BOOLEAN:
-                return 'boolean';
-
             case IndexColumnInterface::FIELD_TYPE_DATE:
-                return 'datetime';
+                $doctrineType = 'date';
 
+                break;
             case IndexColumnInterface::FIELD_TYPE_DOUBLE:
-                return 'double';
+                $doctrineType = 'decimal';
 
-            case IndexColumnInterface::FIELD_TYPE_STRING:
-                return 'string';
+                break;
+        }
 
-            case IndexColumnInterface::FIELD_TYPE_TEXT:
-                return 'text';
+        if (Type::hasType($doctrineType)) {
+            return Type::getType($doctrineType)->getName();
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');
@@ -456,7 +471,7 @@ QUERY;
      * get localized view name.
      *
      * @param IndexInterface $index
-     * @param $language
+     * @param string         $language
      *
      * @return string
      */

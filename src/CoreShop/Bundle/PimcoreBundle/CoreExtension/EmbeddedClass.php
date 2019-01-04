@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -62,7 +62,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $objectData = [];
 
             $editmodeHelper = new EditmodeHelper();
-            list("objectData" => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
+            list('objectData' => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
@@ -99,7 +99,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             if (array_key_exists('id', $objectData)) {
                 $embeddedObject = $this->findInstance($objectData['id']);
-            } else if (array_key_exists('originalIndex', $objectData)) {
+            } elseif (array_key_exists('originalIndex', $objectData)) {
                 $embeddedObject = $this->findInstanceByIndex($object, $objectData['originalIndex']);
             }
 
@@ -134,12 +134,23 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
                     }
 
                     if (method_exists($fd, 'isRemoteOwner') and $fd->isRemoteOwner()) {
-                        $remoteClass = DataObject\ClassDefinition::getByName($fd->getOwnerClassName());
-                        $relations = $embeddedObject->getRelationData($fd->getOwnerFieldName(), false, $remoteClass->getId());
-                        $toAdd = $this->detectAddedRemoteOwnerRelations($relations, $value);
-                        $toDelete = $this->detectDeletedRemoteOwnerRelations($relations, $value);
-                        if (count($toAdd) > 0 or count($toDelete) > 0) {
-                            $this->processRemoteOwnerRelations($embeddedObject, $toDelete, $toAdd, $fd->getOwnerFieldName());
+                        if (method_exists($fd, 'getOwnerClassName') && method_exists($fd, 'getOwnerFieldName')) {
+                            $remoteClass = DataObject\ClassDefinition::getByName($fd->getOwnerClassName());
+                            $relations = $embeddedObject->getRelationData(
+                                $fd->getOwnerFieldName(),
+                                false,
+                                $remoteClass->getId()
+                            );
+                            $toAdd = $this->detectAddedRemoteOwnerRelations($relations, $value);
+                            $toDelete = $this->detectDeletedRemoteOwnerRelations($relations, $value);
+                            if (count($toAdd) > 0 or count($toDelete) > 0) {
+                                $this->processRemoteOwnerRelations(
+                                    $embeddedObject,
+                                    $toDelete,
+                                    $toAdd,
+                                    $fd->getOwnerFieldName()
+                                );
+                            }
                         }
                     } else {
                         $embeddedObject->setValue($key, $fd->getDataFromEditmode($value, $embeddedObject));
@@ -150,7 +161,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
             $embeddedObjects[] = $embeddedObject;
         }
 
-        usort($embeddedObjects, function($objectA, $objectB) {
+        usort($embeddedObjects, function ($objectA, $objectB) {
             if ($objectA->getIndex() === $objectB->getIndex()) {
                 return 0;
             }
@@ -179,7 +190,12 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
@@ -267,8 +283,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -290,8 +306,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param  array $relations
-     * @param  array $value
+     * @param array $relations
+     * @param array $value
      *
      * @return array
      */
@@ -330,6 +346,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
                             $owner->setUserModification($this->getAdminUser()->getId());
                             $owner->save();
                             Logger::debug('Saved object id [ ' . $owner->getId() . ' ] by remote modification through [' . $object->getId() . '], Action: deleted [ ' . $object->getId() . " ] from [ $ownerFieldName]");
+
                             break;
                         }
                     }
@@ -353,7 +370,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * Get user from user proxy object which is registered on security component
+     * Get user from user proxy object which is registered on security component.
      *
      * @param bool $proxyUser Return the proxy user (UserInterface) instead of the pimcore model
      *
@@ -381,7 +398,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
     }
 
     /**
-     * @param $id
+     * @param int $id
+     *
      * @return DataObject\Concrete
      */
     private function findInstance($id)
@@ -393,7 +411,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
     /**
      * @param DataObject\Concrete $object
-     * @param $index
+     * @param int                 $index
+     *
      * @return mixed
      */
     private function findInstanceByIndex(DataObject\Concrete $object, $index)

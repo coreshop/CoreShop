@@ -14,8 +14,10 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
      * Returns array of object references.
      *
      * @param ObjectManager $objectManager
-     * @param string $className
+     * @param string        $className
+     *
      * @return array
+     *
      * @see getObjectReferencesByIds
      */
     protected function getObjectReferences(ObjectManager $objectManager, $className)
@@ -28,7 +30,7 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
 
         $idsResult = $objectRepository
             ->createQueryBuilder('t')
-            ->select('t.'.$idField)
+            ->select('t.' . $idField)
             ->getQuery()
             ->getArrayResult();
 
@@ -45,8 +47,9 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
      * other entities' relation.
      *
      * @param ObjectManager $objectManager
-     * @param string $className
-     * @param array $ids
+     * @param string        $className
+     * @param array         $ids
+     *
      * @return array
      */
     protected function getObjectReferencesByIds(ObjectManager $objectManager, $className, array $ids)
@@ -54,8 +57,9 @@ abstract class AbstractEntityReferenceFixture extends AbstractFixture implements
         $entities = [];
 
         foreach ($ids as $id) {
-            /** @var EntityManager $objectManager */
-            $entities[] = $objectManager->getReference($className, $id);
+            if ($objectManager instanceof EntityManager) {
+                $entities[] = $objectManager->getReference($className, $id);
+            }
         }
 
         return $entities;

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -19,6 +19,7 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,7 +58,9 @@ class OrderController extends FrontendController
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->get('cancel')->isClicked()) {
+            $cancelButton = $form->get('cancel');
+
+            if ($cancelButton instanceof ClickableInterface && $form->isSubmitted() && $cancelButton->isClicked()) {
                 $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
                 $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
 
@@ -76,7 +79,7 @@ class OrderController extends FrontendController
                 }
 
                 return $this->redirectToRoute('coreshop_index');
-            } else if ($form->isValid()) {
+            } elseif ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -87,7 +90,7 @@ class OrderController extends FrontendController
         $args = [
             'order' => $order,
             'payment' => $payment,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ];
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
@@ -117,5 +120,3 @@ class OrderController extends FrontendController
         return $this->get('form.factory');
     }
 }
-
-

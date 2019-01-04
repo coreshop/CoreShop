@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -64,12 +64,10 @@ class CategoriesReport implements ReportInterface
     private $orderItemRepository;
 
     /**
-     * CategoriesReport constructor.
-     *
-     * @param RepositoryInterface $storeRepository
-     * @param Connection $db
-     * @param MoneyFormatterInterface $moneyFormatter
-     * @param LocaleContextInterface $localeService
+     * @param RepositoryInterface        $storeRepository
+     * @param Connection                 $db
+     * @param MoneyFormatterInterface    $moneyFormatter
+     * @param LocaleContextInterface     $localeService
      * @param PimcoreRepositoryInterface $orderRepository,
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
@@ -80,8 +78,7 @@ class CategoriesReport implements ReportInterface
         LocaleContextInterface $localeService,
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $orderItemRepository
-    )
-    {
+    ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
@@ -114,7 +111,6 @@ class CategoriesReport implements ReportInterface
             return [];
         }
 
-
         $query = "
             SELECT 
               orderItems.product__id,
@@ -132,8 +128,7 @@ class CategoriesReport implements ReportInterface
 
         $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function() use ($productSales) {
-
+        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
             $catSales = [];
             foreach ($productSales as $productSale) {
                 $product = DataObject::getById($productSale['product__id']);
@@ -143,8 +138,9 @@ class CategoriesReport implements ReportInterface
                         foreach ($categories as $category) {
                             $catId = $category->getId();
                             if (!isset($catSales[$catId])) {
+                                $name = !empty($category->getName()) ? $category->getName() : $category->getKey();
                                 $catSales[$catId] = $productSale;
-                                $catSales[$catId]['name'] = $category->getName();
+                                $catSales[$catId]['name'] = sprintf('%s (Id: %d)', $name, $category->getId());
                             } else {
                                 $catSales[$catId]['sales'] += $productSale['sales'];
                                 $catSales[$catId]['profit'] += $productSale['profit'];
@@ -157,10 +153,9 @@ class CategoriesReport implements ReportInterface
             }
 
             return $catSales;
-
         });
 
-        usort($catSales, function($a, $b) {
+        usort($catSales, function ($a, $b) {
             return $b['orderCount'] <=> $a['orderCount'];
         });
 

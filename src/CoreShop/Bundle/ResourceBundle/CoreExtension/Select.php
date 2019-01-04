@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
-
 
 abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
 {
@@ -69,7 +68,12 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function preGetData($object, $params = [])
     {
-        $data = $object->{$this->getName()};
+        //TODO: Remove once CoreShop requires min Pimcore 5.5
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
@@ -80,6 +84,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
                 //This could cause Problems with translations, therefore, we need to set
                 //the value here
                 $object->setValue($this->getName(), $tmpData);
+
                 return $tmpData;
             }
         }
@@ -157,6 +162,26 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
         }
 
         return parent::getDataForSearchIndex($object, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getForWebserviceExport($object, $params = [])
+    {
+        if ($object instanceof ResourceInterface) {
+            return $object->getId();
+        }
+
+        return parent::getForWebserviceExport($object, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
+    {
+        return $this->getRepository()->find($value);
     }
 
     /**

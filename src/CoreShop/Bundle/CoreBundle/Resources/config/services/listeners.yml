@@ -44,11 +44,12 @@ services:
     coreshop.listener.product_check_availability:
         class: CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener
         arguments:
-            - '@coreshop.repository.cart'
             - '@coreshop.repository.cart_item'
+            - '@Pimcore\Model\Factory'
         tags:
-            - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: checkCartsAfterUpdate }
-            - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: checkCartsAfterDelete }
+            - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: preUpdateListener }
+            - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: postUpdateListener }
+            - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: postDeleteListener }
 
     coreshop.listener.update_cart_price_rules:
         class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
@@ -65,7 +66,6 @@ services:
         arguments:
            - '@coreshop.cart.manager'
            - '@coreshop.context.shopper'
-           - '@coreshop.configuration.service'
            - '@pimcore.http.request_helper'
            - '@session'
         tags:

@@ -6,12 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -24,11 +25,20 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     private $productPriceCalculator;
 
     /**
-     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
+     * @var ShopperContextInterface
      */
-    public function __construct(TaxedProductPriceCalculatorInterface $productPriceCalculator)
-    {
+    private $shopperContext;
+
+    /**
+     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
+     * @param ShopperContextInterface              $shopperContext
+     */
+    public function __construct(
+        TaxedProductPriceCalculatorInterface $productPriceCalculator,
+        ShopperContextInterface $shopperContext
+    ) {
         $this->productPriceCalculator = $productPriceCalculator;
+        $this->shopperContext = $shopperContext;
     }
 
     /**
@@ -36,7 +46,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getPrice($product, $withTax);
+        return $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -44,7 +54,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getDiscountPrice($product, $withTax);
+        return $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -52,7 +62,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getRetailPrice(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getRetailPrice($product, $withTax);
+        return $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**
@@ -60,7 +70,7 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
      */
     public function getDiscount(PurchasableInterface $product, $withTax = true)
     {
-        return $this->productPriceCalculator->getDiscount($product, $withTax);
+        return $this->productPriceCalculator->getDiscount($product, $this->shopperContext->getContext(), $withTax);
     }
 
     /**

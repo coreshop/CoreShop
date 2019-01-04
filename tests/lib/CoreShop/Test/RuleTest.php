@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -157,6 +157,8 @@ abstract class RuleTest extends Base
      */
     protected function assertPriceRuleCondition($subject, RuleInterface $rule, $params = [], $trueOrFalse = true)
     {
+        $params = array_merge($params, $this->getContext());
+
         $result = $this->getConditionValidator()->isValid($subject, $rule, $params);
         if ($trueOrFalse) {
             $this->assertTrue($result);
@@ -214,5 +216,19 @@ abstract class RuleTest extends Base
         $this->assertInstanceOf(ActionInterface::class, $action);
 
         return $action;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getContext()
+    {
+        return [
+            'store' => $this->get('coreshop.context.shopper')->getStore(),
+            'customer' => $this->get('coreshop.context.shopper')->hasCustomer() ? $this->get('coreshop.context.shopper')->getCustomer() : null,
+            'currency' => $this->get('coreshop.context.shopper')->getCurrency(),
+            'country' => $this->get('coreshop.context.shopper')->getCountry(),
+            'cart' => $this->get('coreshop.context.shopper')->getCart()
+        ];
     }
 }

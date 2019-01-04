@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -31,7 +31,23 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
             $parent = $parent->getParent();
         } while ($parent != null);
 
-        throw new \InvalidArgumentException("Order Invoice could not be found!");
+        throw new \InvalidArgumentException('Order Invoice could not be found!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        return $this->getTotal(true) - $this->getTotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotalTax()
+    {
+        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
     }
 
     /**
@@ -117,38 +133,6 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalTax($totalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxes()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTaxes($taxes)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getBaseTotal($withTax = true)
     {
         return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
@@ -190,38 +174,6 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
      * {@inheritdoc}
      */
     public function setBaseTotalGross($baseTotalGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTotalTax()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalTax($baseTotalTax)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseTaxes()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTaxes($baseTaxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

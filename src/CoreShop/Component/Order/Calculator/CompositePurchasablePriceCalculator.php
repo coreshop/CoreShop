@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,15 +33,15 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
     {
         $price = false;
 
         /**
-         * @var $calculator PurchasablePriceCalculatorInterface
+         * @var PurchasablePriceCalculatorInterface $calculator
          */
         foreach ($this->calculators->all() as $calculator) {
-            $actionPrice = $calculator->getPrice($purchasable, $includingDiscounts);
+            $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

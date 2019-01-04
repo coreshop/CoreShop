@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -43,17 +43,16 @@ final class TaxRateContext implements Context
 
     /**
      * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $taxRateFactory
-     * @param RepositoryInterface $taxRateRepository
+     * @param ObjectManager          $objectManager
+     * @param FactoryInterface       $taxRateFactory
+     * @param RepositoryInterface    $taxRateRepository
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $taxRateFactory,
         RepositoryInterface $taxRateRepository
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRateFactory = $taxRateFactory;
@@ -79,12 +78,12 @@ final class TaxRateContext implements Context
     }
 
     /**
-     * @param $name
+     * @param string $name
      */
     private function createTaxRate($name, $rate)
     {
         /**
-         * @var $taxRate TaxRateInterface
+         * @var TaxRateInterface $taxRate
          */
         $taxRate = $this->taxRateFactory->createNew();
         $taxRate->setName($name, 'en');

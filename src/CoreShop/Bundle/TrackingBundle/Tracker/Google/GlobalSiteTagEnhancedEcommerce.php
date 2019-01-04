@@ -6,20 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
-use CoreShop\Bundle\TrackingBundle\Model\ActionData;
-use CoreShop\Bundle\TrackingBundle\Model\ImpressionData;
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
-use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver;
+use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\Google\Tracker as GoogleTracker;
 use Pimcore\Analytics\TrackerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -32,7 +26,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     public $tracker;
 
     /**
-     * @var ConfigResolver
+     * @var ConfigResolverInterface
      */
     public $config;
 
@@ -47,7 +41,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function setConfigResolver(ConfigResolver $config)
+    public function setConfigResolver(ConfigResolverInterface $config)
     {
         $this->config = $config;
     }
@@ -60,24 +54,22 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix' => 'CoreShopTrackingBundle:Tracking/gtm/classic'
+            'template_prefix' => '@CoreShopTracking/Tracking/gtag',
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $item = $this->itemBuilder->buildPurchasableViewItem($product);
-
         $parameters = [];
         $actionData = [
-            'items' => [$this->transformProductAction($item)]
+            'items' => [$this->transformProductAction($product)],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -91,17 +83,15 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $item = $this->itemBuilder->buildPurchasableImpressionItem($product);
-
         $parameters = [];
         $actionData = [
-            'items' => [$this->transformProductImpression($item)]
+            'items' => [$this->transformProductAction($product)],
         ];
 
         $parameters['actionData'] = $actionData;
@@ -115,41 +105,39 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->trackPurchasableAction($product, 'add', $quantity);
+        $this->trackCartAction($product, 'add', $quantity);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $this->trackPurchasableAction($product, 'remove', $quantity);
+        $this->trackCartAction($product, 'remove', $quantity);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
-
-        $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
-        $cartCoupon = $this->itemBuilder->buildCouponByCart($cart);
 
         $parameters = [];
-        $actionData['items'] = $items;
+        $parameters['items'] = $cart['items'];
+        $actionData = [];
 
         if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
             $actionData['checkout_step'] = $stepIdentifier + 1;
@@ -157,8 +145,8 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
                 $actionData['checkout_option'] = $checkoutOption;
             }
 
-            if (!empty($cartCoupon)) {
-                $actionData['coupon'] = $cartCoupon;
+            if (!empty($cart['voucher'])) {
+                $actionData['coupon'] = $cart['voucher'];
             }
         }
 
@@ -167,20 +155,19 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
         if ($this->isGoogleTagMode() === false) {
             return;
         }
 
-        $orderData = $this->itemBuilder->buildOrderAction($order);
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $orderData = $this->transformOrder($order);
+        $items = $order['items'];
 
         $actionData = array_merge($this->transformOrder($orderData), ['items' => []]);
 
@@ -192,89 +179,71 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $result = $this->renderTemplate('checkout_complete', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function trackPurchasableAction(PurchasableInterface $product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, $quantity = 1)
     {
-        $item = $this->itemBuilder->buildPurchasableActionItem($product);
-        $item->setQuantity($quantity);
+        $product = $this->transformProductAction($product);
+        $product['quantity'] = $quantity;
 
         $parameters = [];
         $actionData = [];
-        $actionData['items'][] = $this->transformProductAction($item);
+        $actionData['items'][] = $product;
 
         $parameters['actionData'] = $actionData;
         $parameters['event'] = $action === 'remove' ? 'remove_from_cart' : 'add_to_cart';
 
         $result = $this->renderTemplate('product_action', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
-     * Transform ActionData into gtag data array
+     * Transform ActionData into classic analytics data array.
      *
-     * @param ActionData $actionData
+     * @param array $actionData
+     *
      * @return array
      */
-    protected function transformOrder(ActionData $actionData)
+    protected function transformOrder($actionData)
     {
         return [
-            'transaction_id' => $actionData->getId(),
-            'affiliation'    => $actionData->getAffiliation() ?: '',
-            'value'          => $actionData->getRevenue(),
-            'currency'       => $actionData->getCurrency(),
-            'tax'            => $actionData->getTax(),
-            'shipping'       => $actionData->getShipping()
+            'id' => $actionData['id'],
+            'affiliation' => $actionData['affiliation'] ?: '',
+            'total' => $actionData['total'],
+            'tax' => $actionData['totalTax'],
+            'shipping' => $actionData['shipping'],
+            'currency' => $actionData['currency'],
         ];
     }
 
     /**
-     * Transform product action into gtag data object
+     * Transform product action into enhanced data object.
      *
-     * @param ProductData $item
+     * @param array $item
+     *
      * @return array
      */
-    protected function transformProductAction(ProductData $item)
+    protected function transformProductAction($item)
     {
         return $this->filterNullValues([
-            'id'            => $item->getId(),
-            'name'          => $item->getName(),
-            'category'      => $item->getCategory(),
-            'brand'         => $item->getBrand(),
-            'variant'       => $item->getVariant(),
-            'price'         => round($item->getPrice(), 2),
-            'quantity'      => $item->getQuantity() ?: 1,
-            'list_position' => $item->getPosition()
-        ]);
-    }
-
-    /**
-     * Transform product action into enhanced data object
-     *
-     * @param ImpressionData $item
-     * @return array
-     */
-    protected function transformProductImpression(ImpressionData $item)
-    {
-        return $this->filterNullValues([
-            'id'       => $item->getId(),
-            'name'     => $item->getName(),
-            'category' => $item->getCategory(),
-            'brand'    => $item->getBrand(),
-            'variant'  => $item->getVariant(),
-            'price'    => round($item->getPrice(), 2),
-            'list'     => $item->getList(),
-            'position' => $item->getPosition()
+            'id' => $item['id'],
+            'name' => $item['name'],
+            'category' => $item['category'],
+            'brand' => $item['brand'],
+            'variant' => $item['variant'],
+            'price' => round($item['price'], 2),
+            'quantity' => $item['quantity'] ?: 1,
+            'position' => $item['position'],
+            'currency' => $item['currency'],
         ]);
     }
 
     /**
      * @param array $items
+     *
      * @return array
      */
     protected function buildCheckoutCalls(array $items)
@@ -297,6 +266,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
             return false;
         }
 
-        return $config->gtagcode;
+        return $config->get('gtagcode');
     }
 }

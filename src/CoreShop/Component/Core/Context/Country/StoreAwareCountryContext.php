@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,7 +32,7 @@ final class StoreAwareCountryContext implements CountryContextInterface
 
     /**
      * @param CountryContextInterface $countryContext
-     * @param StoreContextInterface $storeContext
+     * @param StoreContextInterface   $storeContext
      */
     public function __construct(CountryContextInterface $countryContext, StoreContextInterface $storeContext)
     {
@@ -63,12 +63,13 @@ final class StoreAwareCountryContext implements CountryContextInterface
 
     /**
      * @param CountryInterface $country
-     * @param StoreInterface $store
+     * @param StoreInterface   $store
+     *
      * @return bool
      */
     private function isCountryAvailable(CountryInterface $country, StoreInterface $store)
     {
-        return in_array($country->getIsoCode(), array_map(function(CountryInterface $country) {
+        return in_array($country->getIsoCode(), array_map(function (CountryInterface $country) {
             return $country->getIsoCode();
         }, $store->getCountries()->toArray()));
     }

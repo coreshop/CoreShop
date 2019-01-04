@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,7 +28,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel
@@ -89,7 +89,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
             if (count($sites) > 0) {
                 /**
-                 * @var $site Site
+                 * @var Site $site
                  */
                 $site = $sites[0];
                 $rootDocument = $site->getRootDocument();
@@ -105,7 +105,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 );
 
                 foreach ($validLanguages as $language) {
-                    $languageDocument = Document::getByPath($rootDocument->getRealFullPath().'/'.$language);
+                    $languageDocument = Document::getByPath($rootDocument->getRealFullPath() . '/' . $language);
 
                     if (!$languageDocument instanceof Document) {
                         $languageDocument = new Document\Page();
@@ -122,7 +122,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                         foreach ($languagesDone as $doneLanguage) {
                             $translatedDocument = Document::getByPath(
                                 $rootDocument->getRealFullPath(
-                                ).'/'.$doneLanguage.'/'.$docData['path'].'/'.$docData['key']
+                                ) . '/' . $doneLanguage . '/' . $docData['path'] . '/' . $docData['key']
                             );
 
                             if ($translatedDocument) {
@@ -142,26 +142,27 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
     /**
      * @param Document $rootDocument
-     * @param          $language
-     * @param          $properties
+     * @param string   $language
+     * @param array    $properties
+     *
      * @return Document
      */
     private function installDocument(Document $rootDocument, $language, $properties)
     {
-        $path = $rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'].'/'.$properties['key'];
+        $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
         if (!Document\Service::pathExists($path)) {
-            $class = "Pimcore\\Model\\Document\\".ucfirst($properties['type']);
+            $class = 'Pimcore\\Model\\Document\\' . ucfirst($properties['type']);
 
             if (\Pimcore\Tool::classExists($class)) {
-                /** @var Document $document */
+                /** @var Document\Page $document */
                 $document = new $class();
                 $document->setParent(
-                    Document::getByPath($rootDocument->getRealFullPath().'/'.$language.'/'.$properties['path'])
+                    Document::getByPath($rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'])
                 );
 
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
-                $document->setProperty("language", $language, 'text', true);
+                $document->setProperty('language', $language, 'text', true);
 
                 if (isset($properties['name'])) {
                     $document->setName($properties['name']);

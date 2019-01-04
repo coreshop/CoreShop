@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,12 +14,10 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\FixedCurrencyContext;
-use CoreShop\Component\Currency\Model\ExchangeRateInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
@@ -51,11 +49,11 @@ final class CurrencyContext implements Context
     private $fixedCurrencyContext;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager $objectManager
-     * @param FactoryInterface $currencyFactory
+     * @param SharedStorageInterface      $sharedStorage
+     * @param ObjectManager               $objectManager
+     * @param FactoryInterface            $currencyFactory
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param FixedCurrencyContext $fixedCurrencyContext
+     * @param FixedCurrencyContext        $fixedCurrencyContext
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -63,8 +61,7 @@ final class CurrencyContext implements Context
         FactoryInterface $currencyFactory,
         CurrencyRepositoryInterface $currencyRepository,
         FixedCurrencyContext $fixedCurrencyContext
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->currencyFactory = $currencyFactory;
@@ -103,8 +100,8 @@ final class CurrencyContext implements Context
     }
 
     /**
-     * @param $name
-     * @param $iso
+     * @param string $name
+     * @param string $iso
      */
     private function createCurrency($name, $iso)
     {
@@ -112,7 +109,7 @@ final class CurrencyContext implements Context
 
         if (!$currency) {
             /**
-             * @var $currency CurrencyInterface
+             * @var CurrencyInterface $currency
              */
             $currency = $this->currencyFactory->createNew();
             $currency->setName($name);

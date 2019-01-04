@@ -1,0 +1,21 @@
+{% if objects|length > 0 %}
+<div class="list-group">
+    {% if label %}
+        <div class="list-group-item">
+            {{ label|trans }}
+        </div>
+    {% endif %}
+
+    <div class="list-group-item">
+        <div class="filter-group filter-group-checkbox">
+            {% for value in values %}
+                {% set object = pimcore_object(value.value) %}
+                <label class="radio">
+                    <input name="{{ fieldName }}" type="radio" value="{{ object.id }}"  {% if currentValues == object.id %}  checked="checked" {% endif %}>
+                    ({{ value.count }}) {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                </label>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,41 +1,17 @@
 CoreShop Pimcore Bundle
 =======================
 
-# CoreShop
-This Component is part of the CoreShop Project (https://www.github.com/coreshop/CoreShop). But it's designed to be used
-without as well.
+CoreShop
+------
 
-# Features
-## Class Installer
-Handles installation of Pimcore Classes, Objectbricks and Fieldcollections.
+![CoreShop](http://www.coreshop.org/assets/img/coreshop-logo.svg)
 
-## Twig Extensions
-## Tests
-
-Test if a element is instance of a certain Pimcore Element like: Asset, Object, Document and all it subtypes:
-
-```twig
-{% if news is object %}
-
-{% endif %}
-
-{% if news is object_class('News') %}
-
-{% endif %}
-
-{% if document is document_page %}
-
-{% endif %}
-
-{% if image is asset_image %}
-
-{% endif %}
-```
+CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled components to get highest quality of code. [Read more on coreshop.org](http://www.coreshop.org)
 
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.0.0/).
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Bundles/Pimcore_Bundle.html).
 
 Bug tracking
 ------------

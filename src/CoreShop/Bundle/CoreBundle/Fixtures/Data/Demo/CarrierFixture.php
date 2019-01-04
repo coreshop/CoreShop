@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -52,7 +52,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     public function getDependencies()
     {
         return [
-            TaxRuleGroupFixture::class
+            TaxRuleGroupFixture::class,
         ];
     }
 
@@ -68,7 +68,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
             $faker->addProvider(new Lorem($faker));
 
             /**
-             * @var $carrier CarrierInterface
+             * @var CarrierInterface $carrier
              */
             $carrier = $this->container->get('coreshop.factory.carrier')->createNew();
             $carrier->setIdentifier('Standard');

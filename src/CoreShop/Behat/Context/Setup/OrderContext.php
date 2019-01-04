@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -60,12 +60,12 @@ final class OrderContext implements Context
     private $stateMachineApplier;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param StoreContextInterface $storeContext
+     * @param SharedStorageInterface       $sharedStorage
+     * @param StoreContextInterface        $storeContext
      * @param ProposalTransformerInterface $orderTransformer
-     * @param FactoryInterface $orderFactory
-     * @param PaymentRepositoryInterface $paymentRepository
-     * @param StateMachineApplier $stateMachineApplier
+     * @param FactoryInterface             $orderFactory
+     * @param PaymentRepositoryInterface   $paymentRepository
+     * @param StateMachineApplier          $stateMachineApplier
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -74,8 +74,7 @@ final class OrderContext implements Context
         FactoryInterface $orderFactory,
         PaymentRepositoryInterface $paymentRepository,
         StateMachineApplier $stateMachineApplier
-    )
-    {
+    ) {
         $this->sharedStorage = $sharedStorage;
         $this->storeContext = $storeContext;
         $this->orderTransformer = $orderTransformer;
@@ -129,5 +128,4 @@ final class OrderContext implements Context
     {
         $this->stateMachineApplier->apply($order, OrderShipmentTransitions::IDENTIFIER, $transition);
     }
-
 }

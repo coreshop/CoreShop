@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,15 +33,14 @@ class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, $price)
+    public function getDiscount(ProductInterface $subject, array $context, $price)
     {
         $discount = 0;
 
         foreach ($this->discountCalculator->all() as $calculator) {
-            $discount += $calculator->getDiscount($subject, $price);
+            $discount += $calculator->getDiscount($subject, $context, $price);
         }
 
         return $discount;
-
     }
 }

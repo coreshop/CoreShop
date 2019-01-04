@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -35,8 +35,8 @@ class Product extends Base
     {
         $this->printTestName();
 
-        $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1));
-        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, false));
+        $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1, $this->getContext()));
+        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, $this->getContext(), false));
     }
 
     public function testProductPriceGross()
@@ -45,8 +45,8 @@ class Product extends Base
 
         self::get('coreshop.context.store.fixed')->setStore(Data::$storeGrossPrices);
 
-        $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1));
-        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, false));
+        $this->assertEquals(1800, $this->getPriceCalculator()->getPrice(Data::$product1, $this->getContext()));
+        $this->assertEquals(1500, $this->getPriceCalculator()->getPrice(Data::$product1, $this->getContext(), false));
 
         self::get('coreshop.context.store.fixed')->setStore(Data::$store);
     }
@@ -57,5 +57,19 @@ class Product extends Base
     private function getPriceCalculator()
     {
         return $this->get('coreshop.product.taxed_price_calculator');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getContext()
+    {
+        return [
+            'store' => $this->get('coreshop.context.shopper')->getStore(),
+            'customer' => $this->get('coreshop.context.shopper')->hasCustomer() ? $this->get('coreshop.context.shopper')->getCustomer() : null,
+            'currency' => $this->get('coreshop.context.shopper')->getCurrency(),
+            'country' => $this->get('coreshop.context.shopper')->getCountry(),
+            'cart' => $this->get('coreshop.context.shopper')->getCart()
+        ];
     }
 }

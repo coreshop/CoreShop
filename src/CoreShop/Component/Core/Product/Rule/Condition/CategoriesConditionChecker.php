@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,7 +18,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
 
 final class CategoriesConditionChecker implements ConditionCheckerInterface
@@ -29,11 +29,10 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->__traitConstruct($categoryRepository, $storeContext);
+        $this->__traitConstruct($categoryRepository);
     }
 
     /**
@@ -41,12 +40,15 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
+        Assert::keyExists($params, 'store');
+        Assert::isInstanceOf($params['store'], StoreInterface::class);
+
         /**
          * @var $subject ProductInterface
          */
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $params['store'], $configuration['recursive'] ?: false);
 
         if (!is_array($subject->getCategories())) {
             return false;

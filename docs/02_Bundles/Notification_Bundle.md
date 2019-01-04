@@ -1,0 +1,3 @@
+# CoreShop Notification Bundle
+
+TBD

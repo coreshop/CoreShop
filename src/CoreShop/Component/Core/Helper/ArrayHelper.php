@@ -6,14 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Core\Helper;
 
 use Carbon\Carbon;
-use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 class ArrayHelper
@@ -26,15 +26,15 @@ class ArrayHelper
         $args = func_get_args();
         $diff = [];
         foreach (array_shift($args) as $key => $val) {
-            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; ++$i) {
+            for ($i = 0, $j = 0, $tmp = [$val], $count = count($args); $i < $count; $i++) {
                 if (is_array($val)) {
                     if (!isset($args[$i][$key]) || !is_array($args[$i][$key]) || empty($args[$i][$key])) {
-                        ++$j;
+                        $j++;
                     } else {
                         $tmp[] = $args[$i][$key];
                     }
                 } elseif (!array_key_exists($key, $args[$i]) || $args[$i][$key] !== $val) {
-                    ++$j;
+                    $j++;
                 }
             }
             if (is_array($val)) {
@@ -53,12 +53,12 @@ class ArrayHelper
     }
 
     /**
-     * @param AbstractObject $object
-     * @param null $fieldDefintions
+     * @param Concrete $object
+     * @param null     $fieldDefintions
      *
      * @return array|false
      */
-    public static function objectToArray(AbstractObject $object, $fieldDefintions = null)
+    public static function objectToArray(Concrete $object, $fieldDefintions = null)
     {
         //if the given object is an array then loop through each element
         if (is_array($object)) {
@@ -81,7 +81,7 @@ class ArrayHelper
         $collection = [];
         foreach ($fieldDefintions as $fd) {
             $fieldName = $fd->getName();
-            $getter = 'get'.ucfirst($fieldName);
+            $getter = 'get' . ucfirst($fieldName);
             $value = $object->$getter();
 
             switch ($fd->getFieldtype()) {
@@ -90,14 +90,16 @@ class ArrayHelper
                         /* @var $value Fieldcollection */
                         $def = $value->getItemDefinitions();
                         if (method_exists($def['children'], 'getFieldDefinitions')) {
-                            $collection[$fieldName] = _objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
+                            $collection[$fieldName] = static::objectToArray($value->getItems(), $def['children']->getFieldDefinitions());
                         }
                     }
+
                     break;
 
                 case 'date':
                     /* @var $value \Pimcore\Date */
                     $collection[$fieldName] = ($value instanceof Carbon) ? $value->getTimestamp() : 0;
+
                     break;
                 default:
                     /* @var $value string */

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,7 +18,7 @@ use Pimcore\Model;
 class Money extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
@@ -35,21 +35,21 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public $defaultValue;
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var string
      */
     public $queryColumnType = 'bigint(20)';
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var string
      */
     public $columnType = 'bigint(20)';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -162,9 +162,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataFromResource
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -180,9 +180,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataForQueryResource
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -194,23 +194,23 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataForEditmode
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        return doubleval(sprintf('%0.2f', $data / 100));
+        return round($data / 100, 2);
     }
 
     /**
      * @see Model\DataObject\ClassDefinition\Data::getDataFromEditmode
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -226,9 +226,9 @@ class Money extends Model\DataObject\ClassDefinition\Data
     /**
      * @see Model\DataObject\ClassDefinition\Data::getVersionPreview
      *
-     * @param float $data
+     * @param float                                $data
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -238,21 +238,21 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * Checks if data is valid for current data field
+     * Checks if data is valid for current data field.
      *
      * @param mixed $data
-     * @param bool $omitMandatoryCheck
+     * @param bool  $omitMandatoryCheck
      *
      * @throws \Exception
      */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
+            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data ['.$data.']');
+            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
@@ -263,22 +263,22 @@ class Money extends Model\DataObject\ClassDefinition\Data
             }
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is not at least '.$this->getMinValue());
+                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
             }
 
             if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ '.$this->getName().' ] is bigger than '.$this->getMaxValue());
+                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
             }
         }
     }
 
     /**
-     * converts object data to a simple string value or CSV Export
+     * converts object data to a simple string value or CSV Export.
      *
      * @abstract
      *
      * @param Model\DataObject\AbstractObject $object
-     * @param array $params
+     * @param array                           $params
      *
      * @return string
      */
@@ -290,11 +290,11 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * fills object field data values from CSV Import String
+     * fills object field data values from CSV Import String.
      *
-     * @param string $importValue
+     * @param string                               $importValue
      * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
+     * @param mixed                                $params
      *
      * @return float
      */
@@ -307,7 +307,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
 
     /** True if change is allowed in edit mode.
      * @param string $object
-     * @param mixed $params
+     * @param mixed  $params
      *
      * @return bool
      */
@@ -317,7 +317,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $data
+     * @param mixed $data
      *
      * @return bool
      */
@@ -327,7 +327,7 @@ class Money extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return float|int
      */

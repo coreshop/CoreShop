@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -38,14 +38,13 @@ final class ORMTranslatableListener implements EventSubscriber
     private $translatableEntityLocaleAssigner;
 
     /**
-     * @param RegistryInterface $resourceMetadataRegistry
+     * @param RegistryInterface  $resourceMetadataRegistry
      * @param ContainerInterface $container
      */
     public function __construct(
         RegistryInterface $resourceMetadataRegistry,
         ContainerInterface $container
-    )
-    {
+    ) {
         $this->resourceMetadataRegistry = $resourceMetadataRegistry;
         $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
     }
@@ -118,7 +117,7 @@ final class ORMTranslatableListener implements EventSubscriber
         }
 
         /** @var MetadataInterface $translationResourceMetadata */
-        $translationResourceMetadata = $this->resourceMetadataRegistry->get($resourceMetadata->getAlias().'_translation');
+        $translationResourceMetadata = $this->resourceMetadataRegistry->get($resourceMetadata->getAlias() . '_translation');
 
         if (!$metadata->hasAssociation('translations')) {
             $metadata->mapOneToMany([
@@ -183,7 +182,7 @@ final class ORMTranslatableListener implements EventSubscriber
         if (!$this->hasUniqueConstraint($metadata, $columns)) {
             $constraints = isset($metadata->table['uniqueConstraints']) ? $metadata->table['uniqueConstraints'] : [];
 
-            $constraints[$metadata->getTableName().'_uniq_trans'] = [
+            $constraints[$metadata->getTableName() . '_uniq_trans'] = [
                 'columns' => $columns,
             ];
 
@@ -197,7 +196,7 @@ final class ORMTranslatableListener implements EventSubscriber
      * Check if a unique constraint has been defined.
      *
      * @param ClassMetadata $metadata
-     * @param array $columns
+     * @param array         $columns
      *
      * @return bool
      */

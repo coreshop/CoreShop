@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -32,7 +32,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
      * @param string $formRegistry
      * @param string $parameter
      * @param string $tag
-     * @param $type
+     * @param string $type
      */
     public function __construct($registry, $formRegistry, $parameter, $tag, $type)
     {
@@ -62,7 +62,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
                 if (!isset($tag['type'], $tag['form-type'], $tag['notification-type'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `type`, `form-type` and `notification-type`` attributes.');
+                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type`, `form-type` and `notification-type`` attributes.');
                 }
 
                 $type = $tag['notification-type'];
@@ -70,7 +70,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                 if (!array_key_exists($type, $registries)) {
                     $registries[$type] = new Definition(
                         ServiceRegistry::class,
-                        [ConditionCheckerInterface::class, 'notification-rule-'.$this->type.'-'.$type]
+                        [ConditionCheckerInterface::class, 'notification-rule-' . $this->type . '-' . $type]
                     );
 
                     $formRegistries[$type] = new Definition(
@@ -79,8 +79,8 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 
                     $types[] = $type;
 
-                    $container->setDefinition($this->registry.'.'.$type, $registries[$type]);
-                    $container->setDefinition($this->formRegistry.'.'.$type, $formRegistries[$type]);
+                    $container->setDefinition($this->registry . '.' . $type, $registries[$type]);
+                    $container->setDefinition($this->formRegistry . '.' . $type, $formRegistries[$type]);
                 }
 
                 $map[$tag['notification-type']][$tag['type']] = $tag['type'];
@@ -98,10 +98,10 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         }
 
         foreach ($map as $type => $realMap) {
-            $container->setParameter($this->parameter.'.'.$type, $realMap);
+            $container->setParameter($this->parameter . '.' . $type, $realMap);
         }
 
-        $container->setParameter($this->parameter.'.types', $types);
+        $container->setParameter($this->parameter . '.types', $types);
         $container->setParameter($this->parameter, $registeredTypes);
     }
 }

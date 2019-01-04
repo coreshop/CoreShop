@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,7 +28,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
-            ['condition' => 'stores LIKE ?', 'variable' => '%,'.$store->getId().',%']
+            ['condition' => 'stores LIKE ?', 'variable' => '%,' . $store->getId() . ',%'],
         ];
 
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
@@ -48,7 +48,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             'order' => 'ASC',
             'order_key_quote' => true,
             'object_types' => null,
-            'return_type' => 'objects'
+            'return_type' => 'objects',
         ]);
 
         $resolver->setRequired(['store']);
@@ -61,14 +61,15 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
         $resolver->setAllowedTypes('return_type', 'string');
         $resolver->setAllowedValues('return_type', ['objects', 'list']);
-        $resolver->setAllowedValues('object_types', function($value) {
+        $resolver->setAllowedValues('object_types', function ($value) {
             $valid = [
                 null,
                 AbstractObject::OBJECT_TYPE_FOLDER,
                 AbstractObject::OBJECT_TYPE_OBJECT,
-                AbstractObject::OBJECT_TYPE_VARIANT
+                AbstractObject::OBJECT_TYPE_VARIANT,
             ];
             $isvalid = $value === null || !array_diff($value, $valid);
+
             return $isvalid;
         });
 
@@ -84,7 +85,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             $list->addConditionParam('active = ?', 1);
         }
 
-        $classId = $list->getClassId();
+        $classId = $this->getClassId();
         if (count($listOptions['categories']) > 0) {
             $categoryIds = [];
             foreach ($listOptions['categories'] as $category) {
@@ -93,12 +94,12 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 }
             }
             if (count($categoryIds) > 0) {
-                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_'.$classId.' WHERE fieldname = "categories" AND dest_id IN ('.join(',', $categoryIds).')))');
+                $list->addConditionParam('(o_id IN (SELECT DISTINCT src_id FROM object_relations_' . $classId . ' WHERE fieldname = "categories" AND dest_id IN (' . join(',', $categoryIds) . ')))');
             }
         }
 
         if ($listOptions['store'] instanceof StoreInterface) {
-            $list->addConditionParam('stores LIKE ?', '%,'.$listOptions['store']->getId().',%');
+            $list->addConditionParam('stores LIKE ?', '%,' . $listOptions['store']->getId() . ',%');
         }
 
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);

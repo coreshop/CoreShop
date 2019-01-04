@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,9 +15,9 @@ namespace CoreShop\Component\Pimcore\DataObject;
 class ClassLoader
 {
     /**
-     * Force loads a class, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a class, this makes sense if a class is installed and needs to be used in the same request.
      *
-     * @param $className
+     * @param string $className
      */
     public static function forceLoadDataObjectClass($className)
     {
@@ -30,9 +30,9 @@ class ClassLoader
     }
 
     /**
-     * Force loads a field-collection, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a field-collection, this makes sense if a class is installed and needs to be used in the same request.
      *
-     * @param $fieldCollection
+     * @param string $fieldCollection
      */
     public static function forceLoadFieldCollection($fieldCollection)
     {
@@ -45,9 +45,9 @@ class ClassLoader
     }
 
     /**
-     * Force loads a bick, this makes sense if a class is installed and needs to be used in the same request
+     * Force loads a bick, this makes sense if a class is installed and needs to be used in the same request.
      *
-     * @param $brickName
+     * @param string $brickName
      */
     public static function forceLoadBrick($brickName)
     {
@@ -60,10 +60,10 @@ class ClassLoader
     }
 
     /**
-     * Require class
+     * Require class.
      *
-     * @param $fileName
-     * @param $className
+     * @param string $fileName
+     * @param string $className
      */
     protected static function loadClass($fileName, $className)
     {
@@ -73,16 +73,16 @@ class ClassLoader
     }
 
     /**
-     * Normalize a Pimcore DataObject ClassName
+     * Normalize a Pimcore DataObject ClassName.
      *
-     * @param $className
+     * @param string $className
+     *
      * @return string
      */
     protected static function normalizeClassName($className)
     {
         $classNameExploded = explode('\\', $className);
+
         return ucfirst($classNameExploded[count($classNameExploded) - 1]);
     }
 }
-
-class_alias(ClassLoader::class, 'CoreShop\Component\Pimcore\ClassLoader');

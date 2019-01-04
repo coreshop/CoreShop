@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-phpenv config-add $CS_HOME/etc/_config/php.ini
-composer install --no-scripts

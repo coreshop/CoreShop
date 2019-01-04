@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -50,7 +50,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
     {
         return [
             ShippingRuleFixture::class,
-            CarrierFixture::class
+            CarrierFixture::class,
         ];
     }
 
@@ -63,7 +63,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
             $carrier = $this->getReference('carrier');
 
             /**
-             * @var $shippingRuleGroup ShippingRuleGroupInterface
+             * @var ShippingRuleGroupInterface $shippingRuleGroup
              */
             $shippingRuleGroup = $this->container->get('coreshop.factory.shipping_rule_group')->createNew();
             $shippingRuleGroup->setShippingRule($this->getReference('shippingRule0'));

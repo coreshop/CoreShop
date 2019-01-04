@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -25,7 +25,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * @var KernelInterface
      */
-    protected $kernel;
+    private $kernel;
 
     /**<
      * @param KernelInterface $kernel
@@ -87,10 +87,11 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     }
 
     /**
-     * Check if route is already installed
+     * Check if route is already installed.
      *
-     * @param $name
-     * @param $properties
+     * @param string $name
+     * @param array  $properties
+     *
      * @return Staticroute
      */
     private function installRoute($name, $properties)

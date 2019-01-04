@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
@@ -15,12 +15,14 @@ namespace CoreShop\Test\PHPUnit\Suites;
 use CoreShop\Test\Setup;
 use CoreShop\Test\SuiteBase;
 use PHPUnit\Framework\TestSuite;
+use Pimcore\Bootstrap;
 
 class AllTests extends SuiteBase
 {
     public static function suite()
     {
-        self::bootKernel();
+        \Pimcore::setKernel(self::createKernel());
+        \Pimcore::getKernel()->boot();
 
         Setup::setupPimcore();
         Setup::setupCoreShop();
@@ -51,6 +53,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\PHPUnit\\Suites\\ShippingRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\NotificationRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\StorageList',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',
         ];
 
         shuffle($tests);

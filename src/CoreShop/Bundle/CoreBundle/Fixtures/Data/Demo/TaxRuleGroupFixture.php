@@ -6,14 +6,14 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Model\TaxRuleInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -51,7 +51,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function getDependencies()
     {
         return [
-            TaxRateFixture::class
+            TaxRateFixture::class,
         ];
     }
 
@@ -61,18 +61,15 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         if (!count($this->container->get('coreshop.repository.tax_rule_group')->findAll())) {
-            $defaultStore = $this->container->get('coreshop.repository.store')->findStandard();
-
             /**
-             * @var $taxRuleGroup TaxRuleGroupInterface
+             * @var TaxRuleGroupInterface $taxRuleGroup
              */
             $taxRuleGroup = $this->container->get('coreshop.factory.tax_rule_group')->createNew();
             $taxRuleGroup->setName('AT');
             $taxRuleGroup->setActive(true);
-            $taxRuleGroup->addStore($defaultStore);
 
             /**
-             * @var $taxRule TaxRuleInterface
+             * @var TaxRuleInterface $taxRule
              */
             $taxRule = $this->container->get('coreshop.factory.tax_rule')->createNew();
             $taxRule->setCountry($this->container->get('coreshop.repository.country')->findByCode('AT'));

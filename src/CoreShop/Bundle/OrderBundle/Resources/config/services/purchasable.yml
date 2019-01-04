@@ -8,11 +8,6 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface
             - purchasable-retail-price-calculators
 
-    coreshop.order.purchasable.price_calculator.price_aware:
-        class: CoreShop\Component\Order\Calculator\PriceAwarePurchasableCalculator
-        tags:
-          - { name: coreshop.order.purchasable.retail_price_calculator, type: price_aware, priority: 10 }
-
     coreshop.order.purchasable.retail_price_calculator:
         class: CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator
         arguments:
@@ -56,11 +51,19 @@ services:
         arguments:
             - '@coreshop.registry.order.purchasable.price_calculators'
 
-    coreshop.order.purchasable.price_calculator.product:
-        class: CoreShop\Component\Order\Calculator\DefaultPurchasablePriceCalculator
+    coreshop.order.purchasable.price_calculactor.default:
+        class: CoreShop\Component\Order\Calculator\PurchasablePriceCalculator
         arguments:
             - '@coreshop.order.purchasable.retail_price_calculator'
             - '@coreshop.order.purchasable.price_discount_calculator'
             - '@coreshop.order.purchasable.discount_calculator'
         tags:
             - { name: coreshop.order.purchasable.price_calculator, type: default, priority: 10 }
+
+    coreshop.order.purchasable.calculator:
+        class: CoreShop\Component\Order\Calculator\PurchasableCalculator
+        arguments:
+            - '@coreshop.order.purchasable.price_calculator'
+            - '@coreshop.order.purchasable.retail_price_calculator'
+            - '@coreshop.order.purchasable.price_discount_calculator'
+            - '@coreshop.order.purchasable.discount_calculator'

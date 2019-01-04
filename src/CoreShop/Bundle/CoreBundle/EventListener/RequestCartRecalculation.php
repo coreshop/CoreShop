@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -42,18 +41,17 @@ final class RequestCartRecalculation
     private $pimcoreRequestHelper;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param ShopperContextInterface $shopperContext
+     * @param CartManagerInterface          $cartManager
+     * @param ShopperContextInterface       $shopperContext
      * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper $pimcoreRequestHelper
+     * @param RequestHelper                 $pimcoreRequestHelper
      */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
         ConfigurationServiceInterface $configurationService,
         RequestHelper $pimcoreRequestHelper
-    )
-    {
+    ) {
         $this->cartManager = $cartManager;
         $this->shopperContext = $shopperContext;
         $this->configurationService = $configurationService;
@@ -61,7 +59,7 @@ final class RequestCartRecalculation
     }
 
     /**
-     * Force Cart to be recalculated
+     * Force Cart to be recalculated.
      *
      * @param GetResponseEvent $event
      */

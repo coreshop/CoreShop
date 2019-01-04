@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,7 +20,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {
@@ -30,11 +29,10 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
 
     /**
      * @param CategoryRepositoryInterface $categoryRepository
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository, StoreContextInterface $storeContext)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
-        $this->__traitConstruct($categoryRepository, $storeContext);
+        $this->__traitConstruct($categoryRepository);
     }
 
     /**
@@ -42,7 +40,7 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      */
     public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
     {
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $cart->getStore(), $configuration['recursive'] ?: false);
 
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

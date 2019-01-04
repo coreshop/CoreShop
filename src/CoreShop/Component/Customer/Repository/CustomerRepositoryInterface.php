@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -18,17 +18,19 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
-     * Find customer by reset token
+     * Find customer by reset token.
      *
-     * @param $resetToken
+     * @param string $resetToken
+     *
      * @return CustomerInterface|null
      */
     public function findByResetToken($resetToken);
 
     /**
-     * Find customer by newsletter token
+     * Find customer by newsletter token.
      *
-     * @param $newsletterToken
+     * @param string $newsletterToken
+     *
      * @return CustomerInterface|null
      */
     public function findByNewsletterToken($newsletterToken);
@@ -36,28 +38,28 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * Find Customer by email.
      *
-     * @param $email
-     * @param $isGuest
+     * @param string $email
+     * @param bool   $isGuest
      *
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function findUniqueByEmail($email, $isGuest);
 
     /**
      * Find Guest Customer by Email.
      *
-     * @param $email
+     * @param string $email
      *
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function findGuestByEmail($email);
 
     /**
      * Find Customer by Email.
      *
-     * @param $email
+     * @param string $email
      *
-     * @return mixed
+     * @return CustomerInterface|null
      */
     public function findCustomerByEmail($email);
 }

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -28,11 +28,9 @@ class OrderState extends AbstractOperator
     private $workflowManager;
 
     /**
-     * OrderState constructor.
-     *
      * @param WorkflowStateManagerInterface $workflowManager
-     * @param \stdClass $config
-     * @param null $context
+     * @param \stdClass                     $config
+     * @param null                          $context
      */
     public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
@@ -43,6 +41,7 @@ class OrderState extends AbstractOperator
 
     /**
      * @param \Pimcore\Model\Element\ElementInterface $element
+     *
      * @return null|\stdClass|string
      */
     public function getLabeledValue($element)
@@ -63,22 +62,27 @@ class OrderState extends AbstractOperator
         switch ($result->def->name) {
             case 'orderState':
                 $workflow = 'coreshop_order';
+
                 break;
 
             case 'paymentState':
                 $workflow = 'coreshop_order_payment';
+
                 break;
 
             case 'shippingState':
                 $workflow = 'coreshop_order_shipment';
+
                 break;
 
             case 'invoiceState':
                 $workflow = 'coreshop_order_invoice';
+
                 break;
 
             default:
                 $result->value = '--';
+
                 return $result;
         }
 
@@ -90,7 +94,7 @@ class OrderState extends AbstractOperator
         if ($this->highlightLabel === true) {
             $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
             $backgroundColor = join(',', $rgb);
-            $result->value = '<span class="rounded-color" style="background-color: rgba('.$backgroundColor.', '.$opacity.'); color: '.$textColor.';">'.$state['label'].'</span>';
+            $result->value = '<span class="rounded-color" style="background-color: rgba(' . $backgroundColor . ', ' . $opacity . '); color: ' . $textColor . ';">' . $state['label'] . '</span>';
         } else {
             $result->value = $state['label'];
         }
@@ -99,7 +103,8 @@ class OrderState extends AbstractOperator
     }
 
     /**
-     * @param $hex
+     * @param string $hex
+     *
      * @return array
      */
     private function hex2rgb($hex)
@@ -107,22 +112,24 @@ class OrderState extends AbstractOperator
         $hex = str_replace('#', '', $hex);
 
         if (strlen($hex) == 3) {
-            $r = hexdec(substr($hex, 0, 1).substr($hex, 0, 1));
-            $g = hexdec(substr($hex, 1, 1).substr($hex, 1, 1));
-            $b = hexdec(substr($hex, 2, 1).substr($hex, 2, 1));
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
         } else {
             $r = hexdec(substr($hex, 0, 2));
             $g = hexdec(substr($hex, 2, 2));
             $b = hexdec(substr($hex, 4, 2));
         }
         $rgb = [$r, $g, $b];
+
         return $rgb;
     }
 
     /**
-     * @param $r
-     * @param $g
-     * @param $b
+     * @param int $r
+     * @param int $g
+     * @param int $b
+     *
      * @return string
      */
     private function getContrastColor($r, $g, $b)
@@ -136,9 +143,9 @@ class OrderState extends AbstractOperator
             0.0722 * pow(0 / 255, 2.2);
 
         if ($l1 > $l2) {
-            $contrastRatio = (int)(($l1 + 0.05) / ($l2 + 0.05));
+            $contrastRatio = (int) (($l1 + 0.05) / ($l2 + 0.05));
         } else {
-            $contrastRatio = (int)(($l2 + 0.05) / ($l1 + 0.05));
+            $contrastRatio = (int) (($l2 + 0.05) / ($l1 + 0.05));
         }
 
         if ($contrastRatio > 7) {

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,14 +30,13 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
     private $carrierPriceCalculator;
 
     /**
-     * @param CarriersResolverInterface $carriersResolver
+     * @param CarriersResolverInterface       $carriersResolver
      * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
      */
     public function __construct(
         CarriersResolverInterface $carriersResolver,
         CarrierPriceCalculatorInterface $carrierPriceCalculator
-    )
-    {
+    ) {
         $this->carriersResolver = $carriersResolver;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
     }
@@ -53,11 +52,11 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
             throw new UnresolvedDefaultCarrierException();
         }
 
-        uasort($carriers, function($a, $b) use ($shippable, $address) {
+        uasort($carriers, function ($a, $b) use ($shippable, $address) {
             $aPrice = $this->carrierPriceCalculator->getPrice($a, $shippable, $address);
             $bPrice = $this->carrierPriceCalculator->getPrice($b, $shippable, $address);
 
-            return ($aPrice > $bPrice);
+            return $aPrice > $bPrice;
         });
 
         return reset($carriers);

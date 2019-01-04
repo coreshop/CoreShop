@@ -6,17 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Matomo;
 
-use CoreShop\Bundle\TrackingBundle\Model\ProductData;
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Pimcore\Analytics\TrackerInterface;
 use Pimcore\Analytics\Piwik\Tracker as PiwikTracker;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,12 +50,12 @@ final class Matomo extends AbstractEcommerceTracker
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_prefix'    => 'CoreShopTrackingBundle:Tracking/matomo',
+            'template_prefix' => '@CoreShopTracking/Tracking/matomo',
 
             // by default, a cart add/remove delegates to cart update
             // if you manually trigger cart update on every change you can
             // can set this to false to avoid handling of add/remove
-            'handle_cart_add'    => true,
+            'handle_cart_add' => true,
             'handle_cart_remove' => true,
         ]);
 
@@ -83,34 +79,26 @@ final class Matomo extends AbstractEcommerceTracker
      *
      * {@inheritdoc}
      */
-    public function trackPurchasableView(PurchasableInterface $product)
+    public function trackProduct($product)
     {
-        $item = $this->itemBuilder->buildPurchasableViewItem($product);
-
         $call = [
             'setEcommerceView',
-            $item->getId(),
-            $item->getName(),
-            $item->getCategory(),
-            $item->getPrice()
+            $product['id'],
+            $product['name'],
+            $product['category'],
         ];
 
-        $call[] = $this->filterCategories([$item->getCategory()]);
-
-        $price = $item->getPrice();
-        if (!empty($price)) {
-            $call[] = $price;
-        }
+        $call[] = $this->filterCategories([$product['categories']]);
+        $call[] = $product['price'];
 
         $result = $this->renderCalls([$call]);
         $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackPurchasableImpression(PurchasableInterface $product)
+    public function trackProductImpression($product)
     {
         // not implemented
     }
@@ -118,45 +106,42 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableAdd(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1)
     {
         if ($this->handleCartAdd) {
-            $this->trackPurchasableAction($cart, 'add', $quantity);
+            $this->trackCartAction($cart, 'add', $quantity);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCartPurchasableRemove(CartInterface $cart, PurchasableInterface $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1)
     {
         if ($this->handleCartRemove) {
-            $this->trackPurchasableAction($cart, 'remove', $quantity);
+            $this->trackCartAction($cart, 'remove', $quantity);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function trackPurchasableAction(CartInterface $cart, $action, $quantity = 1)
+    protected function trackCartAction($cart, $action, $quantity = 1)
     {
-        $items = $this->itemBuilder->buildCheckoutItemsByCart($cart);
-
-        $calls = $this->buildItemCalls($items);
+        $calls = $this->buildItemCalls($cart['items']);
         $calls[] = [
             'trackEcommerceCartUpdate',
-            $cart->getTotal() / 100
+            $cart['total'],
         ];
 
         $result = $this->renderCalls($calls);
         $this->tracker->addCodePart($result, PiwikTracker::BLOCK_BEFORE_TRACK);
-
     }
 
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep(CartInterface $cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
     {
         // not implemented (not supported by Matomo)
     }
@@ -164,19 +149,20 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete(OrderInterface $order)
+    public function trackCheckoutComplete($order)
     {
-        $items = $this->itemBuilder->buildCheckoutItems($order);
+        $items = $order['items'];
+
         $calls = $this->buildItemCalls($items);
 
         $calls[] = [
             'trackEcommerceOrder',
-            $order->getId(),
-            $order->getTotal() / 100,
-            $order->getSubtotal() / 100,
-            $order->getTotalTax() / 100,
-            $order->getShipping() / 100,
-            $order->getDiscount() / 100
+            $order['id'],
+            $order['total'],
+            $order['subtotal'],
+            $order['tax'],
+            $order['shipping'],
+            $order['discount'],
         ];
 
         $result = $this->renderCalls($calls);
@@ -184,7 +170,7 @@ final class Matomo extends AbstractEcommerceTracker
     }
 
     /**
-     * @param ProductData[] $items
+     * @param array $items
      *
      * @return array
      */
@@ -194,11 +180,11 @@ final class Matomo extends AbstractEcommerceTracker
         foreach ($items as $item) {
             $calls[] = [
                 'addEcommerceItem',
-                $item->getId(),
-                $item->getName(),
-                $item->getCategory(),
-                $item->getPrice(),
-                $item->getQuantity()
+                $item['id'],
+                $item['name'],
+                $item['category'],
+                $item['price'],
+                $item['quantity'],
             ];
         }
 
@@ -206,19 +192,9 @@ final class Matomo extends AbstractEcommerceTracker
     }
 
     /**
-     * @param array $calls
-     * @return string
-     */
-    private function renderCalls(array $calls)
-    {
-        return $this->renderTemplate('calls', [
-            'calls' => $calls
-        ]);
-    }
-
-    /**
-     * @param     $categories
-     * @param int $limit
+     * @param array $categories
+     * @param int   $limit
+     *
      * @return array|null|string
      */
     private function filterCategories($categories, int $limit = 5)
@@ -235,19 +211,27 @@ final class Matomo extends AbstractEcommerceTracker
 
             $result = [];
             foreach ($categories as $category) {
-                $category = trim((string)$category);
+                $category = trim((string) $category['name']);
                 if (!empty($category)) {
                     $result[] = $category;
                 }
             }
 
-            $result = array_slice($result, 0, $limit);
-        } else {
-            $result = trim((string)$categories);
+            return array_slice($result, 0, $limit);
         }
 
-        if (!empty($result)) {
-            return $result;
-        }
+        return [];
+    }
+
+    /**
+     * @param array $calls
+     *
+     * @return string
+     */
+    private function renderCalls(array $calls)
+    {
+        return $this->renderTemplate('calls', [
+            'calls' => $calls,
+        ]);
     }
 }

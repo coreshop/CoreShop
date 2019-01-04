@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,7 +37,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
 
     /**
      * @param KernelInterface $kernel
-     * @param string $translationClass
+     * @param string          $translationClass
      */
     public function __construct(KernelInterface $kernel, $translationClass = Website::class)
     {
@@ -96,14 +96,16 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     }
 
     /**
-     * @param $applicationName
+     * @param string $applicationName
+     *
      * @return mixed
      */
-    protected abstract function getIdentifier($applicationName = null);
+    abstract protected function getIdentifier($applicationName = null);
 
     /**
-     * @param $name
-     * @param $properties
+     * @param string $name
+     * @param array  $properties
+     *
      * @return AbstractTranslation
      */
     private function installTranslation($name, $properties)
@@ -116,7 +118,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         //no data found. set translation.
         if (empty($translationData)) {
             $translation->setTranslations($coreShopTranslationData);
-            //there are already some translations. only update empty ones!
+        //there are already some translations. only update empty ones!
         } else {
             $mergedData = array_merge($coreShopTranslationData, array_filter($translationData));
             $translation->setTranslations($mergedData);

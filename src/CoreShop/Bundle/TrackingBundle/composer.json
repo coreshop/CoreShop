@@ -18,8 +18,8 @@
     }
   ],
   "require": {
-    "coreshop/order-bundle": "^2.0",
     "coreshop/registry": "^2.0",
+    "coreshop/tracking": "^2.0",
     "pimcore/pimcore": "^5.4.0"
   },
   "config": {
@@ -34,7 +34,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

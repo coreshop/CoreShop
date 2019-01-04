@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,7 +17,6 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Classificationstore;
 use Pimcore\Model\DataObject\Classificationstore\KeyConfig;
-
 
 /**
  * TODO: This class needs some hard refactoring! Currently only copy&paste from Version 1!
@@ -34,9 +33,9 @@ class VariantHelper
     /**
      * @param ProductInterface $master
      * @param ProductInterface $currentProduct
-     * @param string $type
-     * @param string $field
-     * @param string $language
+     * @param string           $type
+     * @param string           $field
+     * @param string           $language
      *
      * @return array
      */
@@ -50,10 +49,12 @@ class VariantHelper
         switch ($type) {
             case 'objectbricks':
                 $baseData = self::getVariantValuesFromBrick($master, $field, $language);
+
                 break;
 
             case 'classificationstore':
                 $baseData = self::getVariantValuesFromClassificationStore($master, $field, $language);
+
                 break;
         }
 
@@ -114,13 +115,17 @@ class VariantHelper
 
     /**
      * @param ProductInterface $master
-     * @param string $classificationStoreField
-     * @param string $language
+     * @param string           $classificationStoreField
+     * @param string           $language
      *
      * @return array
      */
     public static function getVariantValuesFromClassificationStore(ProductInterface $master, $classificationStoreField = 'classificationStore', $language = 'en')
     {
+        if (!method_exists($master, 'getClassId')) {
+            throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+        }
+
         $productClassDefinition = ClassDefinition::getById($master->getClassId());
 
         $definition = $productClassDefinition->getFieldDefinition($classificationStoreField);
@@ -128,7 +133,7 @@ class VariantHelper
         if ($definition instanceof ClassDefinition\Data\Classificationstore) {
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
-            $getter = 'get'.ucfirst($classificationStoreField);
+            $getter = 'get' . ucfirst($classificationStoreField);
 
             $storeId = $definition->getStoreId();
 
@@ -145,7 +150,7 @@ class VariantHelper
                 foreach ($relations as $relation) {
                     $keyConfig = KeyConfig::getById($relation->getKeyId());
 
-                    $dimensionInfo[$groupConfig->getId().$keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
+                    $dimensionInfo[$groupConfig->getId() . $keyConfig->getId()] = self::getClassificationValidMethods($groupConfig, $keyConfig);
                 }
             }
 
@@ -171,10 +176,10 @@ class VariantHelper
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__'.$keyData['groupId'].$keyData['keyId'].'__';
+                            $secureNameSpace = '__' . $keyData['groupId'] . $keyData['keyId'] . '__';
                             $variantName = $keyData['name'];
 
-                            $compareValues[$secureNameSpace.$variantName][$productId] = $value;
+                            $compareValues[$secureNameSpace . $variantName][$productId] = $value;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                     }
@@ -194,8 +199,8 @@ class VariantHelper
      * get data for variants from a brick-field.
      *
      * @param ProductInterface $master
-     * @param string $brickField
-     * @param string $language
+     * @param string           $brickField
+     * @param string           $language
      *
      * @return array
      *
@@ -203,6 +208,10 @@ class VariantHelper
      */
     public static function getVariantValuesFromBrick(ProductInterface $master, $brickField = 'variants', $language = 'en')
     {
+        if (!method_exists($master, 'getClassId')) {
+            throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+        }
+
         $productClassDefinition = ClassDefinition::getById($master->getClassId());
 
         $definition = $productClassDefinition->getFieldDefinition($brickField);
@@ -211,6 +220,9 @@ class VariantHelper
             $productVariants = self::getAllChildren($master);
             $variantsAndMaster = array_merge([$master], $productVariants);
 
+            if (!method_exists($master, 'getVariants')) {
+                throw new \InvalidArgumentException(sprintf('getClassId in Object %s not found', $master));
+            }
             //we do have some dimension entries!
             $variantData = $master->getVariants();
 
@@ -260,13 +272,13 @@ class VariantHelper
                             }
 
                             if (!is_string($variantValue) && !is_numeric($variantValue)) {
-                                throw new \Exception('Variant return value needs to be string or numeric, '.gettype($variantValue).' given.');
+                                throw new \Exception('Variant return value needs to be string or numeric, ' . gettype($variantValue) . ' given.');
                             }
 
                             //Add a namespace, so fields from different blocks can have same name!
-                            $secureNameSpace = '__'.$getter->getType().'__';
+                            $secureNameSpace = '__' . $getter->getType() . '__';
 
-                            $compareValues[$secureNameSpace.$variantName][$productId] = $variantValue;
+                            $compareValues[$secureNameSpace . $variantName][$productId] = $variantValue;
                             $variantUrls[$productVariant->getId()] = $productVariant->getName();
                         }
                         //}
@@ -284,9 +296,9 @@ class VariantHelper
     }
 
     /**
-     * @param $tmpArray
-     * @param $allowedProductIds
-     * @param $filtered
+     * @param array $tmpArray
+     * @param array $allowedProductIds
+     * @param array $filtered
      *
      * @return mixed
      */
@@ -306,8 +318,8 @@ class VariantHelper
     }
 
     /**
-     * @param $value
-     * @param $array
+     * @param mixed $value
+     * @param array $array
      *
      * @return array
      */
@@ -326,7 +338,7 @@ class VariantHelper
 
     /**
      * @param Classificationstore\GroupConfig $group
-     * @param KeyConfig $field
+     * @param KeyConfig                       $field
      *
      * @return array
      */
@@ -346,8 +358,8 @@ class VariantHelper
     }
 
     /**
-     * @param      $getter
-     * @param bool $restrictTypes
+     * @param mixed $getter
+     * @param bool  $restrictTypes
      *
      * @return array
      */
@@ -394,20 +406,22 @@ class VariantHelper
         $list = \Pimcore::getContainer()->get('coreshop.repository.product')->getList();
 
         $condition = 'o_path LIKE ?';
-        $conditionParams = [$object->getFullPath().'/%'];
+        $conditionParams = [$object->getFullPath() . '/%'];
 
-        $storeParams = [];
+        if (method_exists($object, 'getStores')) {
+            $storeParams = [];
 
-        foreach ($object->getStores() as $shop) {
-            $storeParams[] = "stores LIKE '%,".$shop.",%'";
+            foreach ($object->getStores() as $shop) {
+                $storeParams[] = "stores LIKE '%," . $shop . ",%'";
+            }
+
+            $condition .= ' AND (' . implode(' OR ', $storeParams) . ')';
+
+            $list->setCondition($condition, $conditionParams);
+            $list->setOrderKey('o_key');
+            $list->setOrder('asc');
+            $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
         }
-
-        $condition .= ' AND ('.implode(' OR ', $storeParams).')';
-
-        $list->setCondition($condition, $conditionParams);
-        $list->setOrderKey('o_key');
-        $list->setOrder('asc');
-        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         return $list->load();
     }

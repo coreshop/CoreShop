@@ -2,21 +2,41 @@
 
 namespace CoreShop\Bundle\FixtureBundle\Fixture;
 
-use CoreShop\Bundle\FixtureBundle\Entity\DataFixture;
+use CoreShop\Bundle\FixtureBundle\Repository\DataFixtureRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class UpdateDataFixturesFixture extends AbstractFixture
 {
     /**
+     * @var FactoryInterface
+     */
+    protected $fixtureFactory;
+
+    /**
+     * @var DataFixtureRepositoryInterface
+     */
+    protected $fixtureRepository;
+
+    /**
      * @var array
-     *  key - class name
-     *  value - current loaded version
+     *            key - class name
+     *            value - current loaded version
      */
     protected $dataFixturesClassNames;
 
     /**
-     * Set a list of data fixtures to be updated
+     * @param FactoryInterface $fixtureFactory
+     */
+    public function __construct(FactoryInterface $fixtureFactory, DataFixtureRepositoryInterface $fixtureRepository)
+    {
+        $this->fixtureFactory = $fixtureFactory;
+        $this->fixtureRepository = $fixtureRepository;
+    }
+
+    /**
+     * Set a list of data fixtures to be updated.
      *
      * @param array $classNames
      */
@@ -35,18 +55,16 @@ class UpdateDataFixturesFixture extends AbstractFixture
             foreach ($this->dataFixturesClassNames as $className => $version) {
                 $dataFixture = null;
                 if ($version !== null) {
-                    $dataFixture = $manager
-                        ->getRepository('CoreShopFixtureBundle:DataFixture')
-                        ->findOneBy(['className' => $className]);
+                    $dataFixture = $this->fixtureRepository->findOneBy(['className' => $className]);
                 }
                 if (!$dataFixture) {
-                    $dataFixture = new DataFixture();
+                    $dataFixture = $this->fixtureFactory->createNew();
                     $dataFixture->setClassName($className);
                 }
 
-                $dataFixture
-                    ->setVersion($version)
-                    ->setLoadedAt($loadedAt);
+                $dataFixture->setVersion($version);
+                $dataFixture->setLoadedAt($loadedAt);
+
                 $manager->persist($dataFixture);
             }
             $manager->flush();

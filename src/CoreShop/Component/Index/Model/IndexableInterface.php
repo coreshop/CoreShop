@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,12 +20,12 @@ interface IndexableInterface
     public function getId();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIndexableEnabled();
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function getIndexable();
 
@@ -50,13 +50,14 @@ interface IndexableInterface
     public function getType();
 
     /**
-     * @param $language
+     * @param string $language
+     *
      * @return string
      */
     public function getIndexableName($language);
 
     /**
-     * @return static|null
+     * @return mixed
      */
     public function getParent();
 }

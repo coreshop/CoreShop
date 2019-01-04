@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,7 +29,6 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
     protected $tag;
 
     /**
-     * RegisterImplementationLoaderPass constructor.
      * @param string $implementationLoader
      * @param string $tag
      */
@@ -39,6 +38,9 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
         $this->tag = $tag;
     }
 
+    /**
+     * @param ContainerBuilder $container
+     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has($this->implementationLoader)) {

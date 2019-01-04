@@ -6,15 +6,15 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\SEO\Extractor;
 
-use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Pimcore\Model\Document\Page;
+use Webmozart\Assert\Assert;
 
 final class DocumentExtractor implements ExtractorInterface
 {
@@ -31,6 +31,8 @@ final class DocumentExtractor implements ExtractorInterface
      */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
     {
+        Assert::isInstanceOf($object, Page::class);
+
         /**
          * @var $object Page
          */

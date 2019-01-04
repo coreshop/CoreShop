@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -75,6 +75,7 @@ trait AdjustableTrait
 
     /**
      * @param string|null $type
+     *
      * @return AdjustmentInterface[]
      */
     public function getAdjustments(string $type = null)
@@ -149,11 +150,12 @@ trait AdjustableTrait
         $items = $this->getAdjustmentItems();
 
         if ($items instanceof Fieldcollection) {
-            for ($i = 0, $c = $items->getCount(); $i < $c; ++$i) {
+            for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
                 $arrayItem = $items->get($i);
 
                 if ($arrayItem === $adjustment) {
                     $items->remove($i);
+
                     break;
                 }
             }
@@ -244,5 +246,5 @@ trait AdjustableTrait
     /**
      * {@inheritdoc}
      */
-    protected abstract function recalculateAfterAdjustmentChange();
+    abstract protected function recalculateAfterAdjustmentChange();
 }

@@ -2,6 +2,21 @@
 
 For CoreShop to determine the current cart it uses a concept called context and context resolver.
 
+The Cart Context implements the Interface [```CoreShop\Component\Order\Context\CartContextInterface```](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Component/Order/Context/CartContextInterface.php) and is implemented in the Service
+```coreshop.context.cart```:
+
+## Getting the current Cart
+
+If you want to get the current cart, you simply use the service:
+
+```php
+$cartContext = $container->get('coreshop.context.cart');
+
+// Get current cart, if none exists, it creates a new one
+$cart = $cartContext->getCart();
+
+```
+
 ## Context
 
 | Name | Priority | Description|

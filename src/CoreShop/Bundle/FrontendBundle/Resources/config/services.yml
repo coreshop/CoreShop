@@ -29,11 +29,6 @@ services:
         parent: coreshop.frontend.controller.abstract
         public: true
 
-    coreshop.frontend.controller.language:
-        class: '%coreshop.frontend.controller.language%'
-        parent: coreshop.frontend.controller.abstract
-        public: true
-
     coreshop.frontend.controller.search:
         class: '%coreshop.frontend.controller.search%'
         parent: coreshop.frontend.controller.abstract
@@ -96,7 +91,9 @@ services:
         arguments:
             - '@coreshop.order.payment_provider'
             - '@coreshop.repository.order'
-            - '@coreshop.object_service'
+            - '@coreshop.factory.payum_get_status'
+            - '@coreshop.factory.payum_resolve_next_route'
+            - '@coreshop.factory.payum_confirm_order'
         calls:
             - [setContainer, ['@service_container']]
 
@@ -106,3 +103,11 @@ services:
         arguments:
             - '%coreshop.frontend.view_bundle%'
             - '%coreshop.frontend.view_suffix%'
+
+    coreshop.frontend.twig.locale_switcher:
+        class: CoreShop\Bundle\FrontendBundle\Twig\LocaleSwitcherExtension
+        arguments:
+            - '@Pimcore\Model\Document\Service'
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: twig.extension }

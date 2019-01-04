@@ -68,12 +68,13 @@
     "coreshop/workflow-bundle": "self.version",
     "coreshop/seo": "self.version",
     "coreshop/seo-bundle": "self.version",
-    "coreshop/pimcore-bundle": "self.version"
+    "coreshop/pimcore-bundle": "self.version",
+    "coreshop/tracking": "self.version",
+    "coreshop/theme-bundle": "self.version"
   },
   "require": {
     "doctrine/orm": "~2.5",
     "jms/serializer-bundle": "^1.3",
-    "friendsofsymfony/rest-bundle": "^2.1",
     "webmozart/assert": "^1.2",
     "doctrine/doctrine-cache-bundle": "^1.3",
     "payum/payum-bundle": "^2.2",
@@ -81,12 +82,12 @@
     "payum/sofort": "^1.4",
     "payum/paypal-express-checkout-nvp": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",
-    "rinvex/country": "^3.1",
+    "rinvex/countries": "^5.0",
     "gedmo/doctrine-extensions": "^2.4.12",
     "stof/doctrine-extensions-bundle": "^1.2",
     "fzaninotto/faker": "^1.6",
     "liip/theme-bundle": "^1.4",
-    "dachcom-digital/emailizr": "~1.0.0",
+    "dachcom-digital/emailizr": "^1.0.6",
     "symfony/twig-bundle": "~3.2",
     "doctrine/data-fixtures": "^1.0",
     "pimcore/pimcore": "^5.4.0"
@@ -100,9 +101,19 @@
     "friends-of-behat/service-container-extension": "^1.0",
     "friends-of-behat/symfony-extension": "^1.2",
     "friends-of-behat/variadic-extension": "^1.1",
-    "mamuz/php-dependency-analysis": "^1.3",
     "symplify/easy-coding-standard": "^4.3.0",
-    "leanphp/behat-code-coverage": "^3.2"
+    "leanphp/behat-code-coverage": "^3.2",
+    "phpstan/phpstan": "^0.10.5",
+    "phpstan/phpstan-doctrine": "^0.10",
+    "phpstan/phpstan-shim": "^0.10",
+    "phpstan/phpstan-symfony": "^0.10",
+    "phpstan/phpstan-webmozart-assert": "^0.10"
+  },
+  "conflict": {
+    "dpfaffenbauer/process-manager": "<2.4"
+  },
+  "suggest": {
+    "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
   },
   "autoload": {
     "psr-4": {
@@ -150,7 +161,7 @@
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative",
     "branch-alias": {
-      "dev-master": "2.0-dev"
+      "dev-master": "2.1-dev"
     }
   }
 }

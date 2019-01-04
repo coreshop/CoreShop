@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -29,7 +29,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public abstract function save();
+    abstract public function save();
 
     /**
      * {@inheritdoc}
@@ -53,6 +53,18 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     public function hasField($fieldName)
     {
         return array_key_exists($fieldName, $this->fieldDefinitions);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldDefinition($fieldName)
+    {
+        if (!$this->hasField($fieldName)) {
+            throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
+        }
+
+        return $this->fieldDefinitions[$fieldName];
     }
 
     /**
@@ -157,6 +169,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                 if ($child['name'] === $fieldName) {
                     $callback($child, $index, $children);
                     $found = true;
+
                     break;
                 } else {
                     if (array_key_exists('childs', $child)) {
@@ -175,5 +188,3 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         }
     }
 }
-
-class_alias(AbstractDefinitionUpdate::class, 'CoreShop\Component\Pimcore\AbstractDefinitionUpdate');

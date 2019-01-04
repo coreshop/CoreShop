@@ -6,12 +6,13 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
 namespace CoreShop\Component\Notification\Rule\Action;
 
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Pimcore\Model\Document;
@@ -64,12 +65,12 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
 
             $params['rule'] = $rule;
 
-            unset($params['recipient'], $params['_locale']);
-
             if ($mailDocument instanceof Document\Email) {
                 $params['object'] = $subject;
 
-                $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
+                InheritanceHelper::useInheritedValues(function () use ($mailDocument, $subject, $recipient, $params) {
+                    $this->mailProcessor->sendMail($mailDocument, $subject, $recipient, [], $params);
+                });
             }
         }
     }

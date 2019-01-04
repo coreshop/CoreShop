@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,8 +15,6 @@ namespace CoreShop\Component\Core\Notification\Rule\Action\Order;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
-use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterface
@@ -27,18 +25,11 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
     protected $orderMailActionProcessor;
 
     /**
-     * @var StoreContextInterface
-     */
-    protected $storeContext;
-
-    /**
      * @param OrderMailActionProcessor $orderMailActionProcessor
-     * @param StoreContextInterface $storeContext
      */
-    public function __construct(OrderMailActionProcessor $orderMailActionProcessor, StoreContextInterface $storeContext)
+    public function __construct(OrderMailActionProcessor $orderMailActionProcessor)
     {
         $this->orderMailActionProcessor = $orderMailActionProcessor;
-        $this->storeContext = $storeContext;
     }
 
     /**
@@ -56,14 +47,6 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
 
         if ($subject instanceof StoreAwareInterface) {
             $store = $subject->getStore();
-        }
-
-        if (!$store instanceof StoreInterface) {
-            try {
-                $store = $this->storeContext->getStore();
-            } catch (StoreNotFoundException $exception) {
-
-            }
         }
 
         if (!$store instanceof StoreInterface) {

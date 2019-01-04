@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -39,7 +39,7 @@ interface WorkerInterface
     /**
      * deletes given element from index.
      *
-     * @param IndexInterface $index
+     * @param IndexInterface     $index
      * @param IndexableInterface $object
      */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
@@ -47,13 +47,14 @@ interface WorkerInterface
     /**
      * updates given element in index.
      *
-     * @param IndexInterface $index
+     * @param IndexInterface     $index
      * @param IndexableInterface $object
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
     /**
      * @param IndexInterface $index
+     *
      * @return IndexExtensionInterface[]
      */
     public function getExtensions(IndexInterface $index);
@@ -71,7 +72,7 @@ interface WorkerInterface
      * Renders the condition to fit the service.
      *
      * @param ConditionInterface $condition
-     * @param string $prefix
+     * @param string             $prefix
      *
      * @return mixed
      */
@@ -80,7 +81,7 @@ interface WorkerInterface
     /**
      * Renders field type for the service.
      *
-     * @param $type
+     * @param string $type
      *
      * @return mixed
      */

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -27,14 +27,14 @@ class FieldCollectionGetter implements GetterInterface
         $fieldValues = [];
         $collectionField = $config->getGetterConfig()['collectionField'];
 
-        $collectionContainerGetter = 'get'.ucfirst($collectionField);
+        $collectionContainerGetter = 'get' . ucfirst($collectionField);
         $collectionContainer = $object->$collectionContainerGetter();
         $validItems = [];
-        $fieldGetter = 'get'.ucfirst($config->getObjectKey());
+        $fieldGetter = 'get' . ucfirst($config->getObjectKey());
 
         if ($collectionContainer instanceof Fieldcollection) {
             foreach ($collectionContainer->getItems() as $item) {
-                $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\'.$columnConfig['className'];
+                $className = 'Pimcore\Model\DataObject\Fieldcollection\Data\\' . $columnConfig['className'];
                 if (is_a($item, $className)) {
                     $validItems[] = $item;
                 }

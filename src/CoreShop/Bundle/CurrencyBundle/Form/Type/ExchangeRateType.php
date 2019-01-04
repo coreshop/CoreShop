@@ -8,7 +8,6 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
 final class ExchangeRateType extends AbstractResourceType
 {
     /**
@@ -24,11 +23,11 @@ final class ExchangeRateType extends AbstractResourceType
             ])
             ->add('fromCurrency', CurrencyChoiceType::class, [
                 'required' => true,
-                'empty_data' => false
+                'empty_data' => false,
             ])
             ->add('toCurrency', CurrencyChoiceType::class, [
                 'required' => true,
-                'empty_data' => false
+                'empty_data' => false,
             ]);
     }
 

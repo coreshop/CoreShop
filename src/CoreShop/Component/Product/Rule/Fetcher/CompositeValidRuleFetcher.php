@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -20,7 +20,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ServiceRegistryInterface
      */
-    protected $validRuleFetchers;
+    private $validRuleFetchers;
 
     /**
      * @param ServiceRegistryInterface $validRuleFetchers
@@ -33,15 +33,15 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         $rules = [];
 
         /**
-         * @var $validRuleFetcher ValidRulesFetcherInterface
+         * @var ValidRulesFetcherInterface $validRuleFetcher
          */
         foreach ($this->validRuleFetchers->all() as $validRuleFetcher) {
-            $rules = array_merge($rules, $validRuleFetcher->getValidRules($product));
+            $rules = array_merge($rules, $validRuleFetcher->getValidRules($product, $context));
         }
 
         return $rules;

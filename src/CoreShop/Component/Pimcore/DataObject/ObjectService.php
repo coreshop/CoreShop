@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -33,7 +33,7 @@ class ObjectService implements ObjectServiceInterface
     {
         /**
          * @var $fromObject Concrete
-         * @var $toObject Concrete
+         * @var $toObject   Concrete
          */
         Assert::isInstanceOf($fromObject, Concrete::class);
         Assert::isInstanceOf($toObject, Concrete::class);
@@ -42,8 +42,8 @@ class ObjectService implements ObjectServiceInterface
         $toFd = $toObject->getClass()->getFieldDefinitions();
 
         foreach ($toFd as $def) {
-            $fromGetter = 'get'.ucfirst($def->getName());
-            $toSetter = 'set'.ucfirst($def->getName());
+            $fromGetter = 'get' . ucfirst($def->getName());
+            $toSetter = 'set' . ucfirst($def->getName());
 
             if (method_exists($fromObject, $fromGetter) && method_exists($toObject, $toSetter)) {
                 $toObject->$toSetter($fromObject->$fromGetter());
@@ -51,5 +51,3 @@ class ObjectService implements ObjectServiceInterface
         }
     }
 }
-
-\class_alias(ObjectService::class, 'CoreShop\Component\Resource\Pimcore\ObjectService');

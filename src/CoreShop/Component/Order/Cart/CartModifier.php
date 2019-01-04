@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -37,7 +37,7 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param FactoryInterface $cartItemFactory
+     * @param FactoryInterface         $cartItemFactory
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
@@ -53,7 +53,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $product PurchasableInterface
+         * @var $product     PurchasableInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);
@@ -74,7 +74,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $item CartItemInterface
+         * @var $item        CartItemInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
@@ -94,7 +94,7 @@ class CartModifier implements StorageListModifierInterface
     {
         /**
          * @var $storageList CartInterface
-         * @var $product PurchasableInterface
+         * @var $product     PurchasableInterface
          */
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($product, PurchasableInterface::class);

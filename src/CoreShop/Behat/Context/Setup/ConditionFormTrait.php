@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,8 +21,9 @@ use Webmozart\Assert\Assert;
 trait ConditionFormTrait
 {
     /**
-     * @param $class
-     * @param $type
+     * @param string $class
+     * @param string $type
+     *
      * @throws \Exception
      */
     protected function assertConditionForm($class, $type)
@@ -35,8 +36,9 @@ trait ConditionFormTrait
     }
 
     /**
-     * @param $type
-     * @param $data
+     * @param string $type
+     * @param mixed  $data
+     *
      * @return ConditionInterface
      */
     protected function createConditionWithForm($type, $data)
@@ -60,8 +62,10 @@ trait ConditionFormTrait
     }
 
     /**
-     * @param $type
+     * @param string $type
+     *
      * @return FormInterface
+     *
      * @throws \Exception
      */
     protected function getConditionForm($type)
@@ -76,15 +80,15 @@ trait ConditionFormTrait
     /**
      * @return FormTypeRegistryInterface
      */
-    protected abstract function getConditionFormRegistry();
+    abstract protected function getConditionFormRegistry();
 
     /**
      * @return FormFactoryInterface
      */
-    protected abstract function getFormFactory();
+    abstract protected function getFormFactory();
 
     /**
      * @return string
      */
-    protected abstract function getConditionFormClass();
+    abstract protected function getConditionFormClass();
 }

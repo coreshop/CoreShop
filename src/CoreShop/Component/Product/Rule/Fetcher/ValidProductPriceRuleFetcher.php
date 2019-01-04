@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,16 +21,16 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
     /**
      * @var ProductPriceRuleRepositoryInterface
      */
-    protected $productPriceRuleRepository;
+    private $productPriceRuleRepository;
 
     /**
      * @var RuleValidationProcessorInterface
      */
-    protected $ruleValidationProcessor;
+    private $ruleValidationProcessor;
 
     /**
      * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
+     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
      */
     public function __construct(ProductPriceRuleRepositoryInterface $productPriceRuleRepository, RuleValidationProcessorInterface $ruleValidationProcessor)
     {
@@ -41,13 +41,13 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context)
     {
         $validRules = [];
         $rules = $this->productPriceRuleRepository->findActive();
 
         foreach ($rules as $rule) {
-            if (!$this->ruleValidationProcessor->isValid($product, $rule)) {
+            if (!$this->ruleValidationProcessor->isValid($product, $rule, $context)) {
                 continue;
             }
 

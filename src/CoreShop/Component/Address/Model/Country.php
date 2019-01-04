@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -24,6 +24,7 @@ class Country extends AbstractResource implements CountryInterface
     use TimestampableTrait;
     use TranslatableTrait {
         __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
     }
 
     /**
@@ -173,6 +174,20 @@ class Country extends AbstractResource implements CountryInterface
     public function getZoneName()
     {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     *
+     * @return CountryTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var CountryTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
     }
 
     /**

@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -41,18 +41,17 @@ final class OrderStateHistoryLogger
     private $noteIdentifier;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManager  $stateMachineManager
      * @param NoteServiceInterface $noteService
-     * @param TranslatorInterface $translator
-     * @param string $noteIdentifier
+     * @param TranslatorInterface  $translator
+     * @param string               $noteIdentifier
      */
     public function __construct(
         StateMachineManager $stateMachineManager,
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
         $noteIdentifier
-    )
-    {
+    ) {
         $this->stateMachineManager = $stateMachineManager;
         $this->noteService = $noteService;
         $this->translator = $translator;
@@ -61,7 +60,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param OrderInterface $order
-     * @param Event $event
+     * @param Event          $event
      */
     public function log(OrderInterface $order, Event $event)
     {
@@ -71,19 +70,20 @@ final class OrderStateHistoryLogger
         $from = $this->getFrom($transition->getFroms());
         $to = $this->getTo($transition->getTos());
 
-        $fromValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$from;
-        $toValue = 'coreshop_workflow_state_'.$event->getWorkflowName().'_'.$to;
+        $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
+        $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
 
         $objectIdInfo = '';
         // add id if it's not an order (since payment/shipping/invoice could be more than one)
         if (!$subject instanceof OrderInterface) {
-            $objectIdInfo = ' (Id '.$subject->getId().')';
+            $objectIdInfo = ' (Id ' . $subject->getId() . ')';
         }
 
         $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
         $note->setTitle(
-            sprintf('%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop_workflow_name_'.$event->getWorkflowName(), [], 'admin'),
+            sprintf(
+                '%s%s: %s %s %s %s',
+                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
                 $objectIdInfo,
                 $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
                 $this->translator->trans($fromValue, [], 'admin'),
@@ -100,6 +100,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param array $froms
+     *
      * @return mixed
      */
     private function getFrom(array $froms)
@@ -109,6 +110,7 @@ final class OrderStateHistoryLogger
 
     /**
      * @param array $tos
+     *
      * @return mixed
      */
     private function getTo(array $tos)

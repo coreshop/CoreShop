@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -17,28 +17,28 @@ use Pimcore\Model;
 class SerializedData extends Model\DataObject\ClassDefinition\Data
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */
     public $fieldtype = 'SerializedData';
 
     /**
-     * Type for the column to query
+     * Type for the column to query.
      *
      * @var array
      */
     public $queryColumnType = null;
 
     /**
-     * Type for the column
+     * Type for the column.
      *
      * @var array
      */
     public $columnType = 'LONGBLOB';
 
     /**
-     * Type for the generated phpdoc
+     * Type for the generated phpdoc.
      *
      * @var string
      */
@@ -57,7 +57,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        return unserialize($data) ?: null;
+        return (is_string($data) ? unserialize($data) : $data) ?: null;
     }
 
     /**
@@ -169,7 +169,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-
     }
 
     /**
@@ -188,7 +187,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     public function setValues($data = [])
     {
         foreach ($data as $key => $value) {
-            $method = 'set'.$key;
+            $method = 'set' . $key;
             if (method_exists($this, $method)) {
                 $this->$method($value);
             }
@@ -197,5 +196,3 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
         return $this;
     }
 }
-
-class_alias(SerializedData::class, 'CoreShop\Bundle\ResourceBundle\CoreExtension\SerializedData');

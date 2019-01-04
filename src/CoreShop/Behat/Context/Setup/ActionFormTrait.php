@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -21,8 +21,9 @@ use Webmozart\Assert\Assert;
 trait ActionFormTrait
 {
     /**
-     * @param $class
-     * @param $type
+     * @param string $class
+     * @param string $type
+     *
      * @throws \Exception
      */
     protected function assertActionForm($class, $type)
@@ -55,8 +56,10 @@ trait ActionFormTrait
     }
 
     /**
-     * @param $type
+     * @param string $type
+     *
      * @return FormInterface
+     *
      * @throws \Exception
      */
     protected function getActionForm($type)
@@ -71,15 +74,15 @@ trait ActionFormTrait
     /**
      * @return FormTypeRegistryInterface
      */
-    protected abstract function getActionFormRegistry();
+    abstract protected function getActionFormRegistry();
 
     /**
      * @return FormFactoryInterface
      */
-    protected abstract function getFormFactory();
+    abstract protected function getFormFactory();
 
     /**
      * @return string
      */
-    protected abstract function getActionFormClass();
+    abstract protected function getActionFormClass();
 }

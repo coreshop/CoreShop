@@ -12,6 +12,9 @@ function split()
 
     SHA1=`./bin/splitsh-lite --prefix=$1`
     git push $2 "$SHA1:$CURRENT_BRANCH"
+
+    # Use this to split a new branch
+    #git push $2 "$SHA1:refs/heads/$CURRENT_BRANCH"
 }
 
 function split_new_repo()
@@ -65,6 +68,7 @@ remote pimcore git@github.com:CoreShop/Pimcore.git
 remote storage-list git@github.com:CoreShop/StorageList.git
 remote inventory git@github.com:CoreShop/Inventory.git
 remote seo git@github.com:CoreShop/SEO.git
+remote tracking git@github.com:CoreShop/Tracking.git
 
 remote address-bundle git@github.com:CoreShop/AddressBundle.git
 remote configuration-bundle git@github.com:CoreShop/ConfigurationBundle.git
@@ -92,6 +96,7 @@ remote inventory-bundle git@github.com:CoreShop/InventoryBundle.git
 remote workflow-bundle git@github.com:CoreShop/WorkflowBundle.git
 remote seo-bundle git@github.com:CoreShop/SEOBundle.git
 remote pimcore-bundle git@github.com:CoreShop/PimcoreBundle.git
+remote theme-bundle git@github.com:CoreShop/ThemeBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
@@ -115,6 +120,7 @@ split 'src/CoreShop/Component/Pimcore' pimcore
 split 'src/CoreShop/Component/StorageList' storage-list
 split 'src/CoreShop/Component/Inventory' inventory
 split 'src/CoreShop/Component/SEO' seo
+split 'src/CoreShop/Component/Tracking' tracking
 
 split 'src/CoreShop/Bundle/AddressBundle' address-bundle
 split 'src/CoreShop/Bundle/ConfigurationBundle' configuration-bundle
@@ -142,3 +148,4 @@ split 'src/CoreShop/Bundle/InventoryBundle' inventory-bundle
 split 'src/CoreShop/Bundle/WorkflowBundle' workflow-bundle
 split 'src/CoreShop/Bundle/SEOBundle' seo-bundle
 split 'src/CoreShop/Bundle/PimcoreBundle' pimcore-bundle
+split 'src/CoreShop/Bundle/ThemeBundle' theme-bundle

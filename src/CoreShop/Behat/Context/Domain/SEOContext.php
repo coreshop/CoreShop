@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -15,10 +15,6 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
@@ -47,10 +43,10 @@ final class SEOContext implements Context
     private $headMeta;
 
     /**
-     * @param SharedStorageInterface $sharedStorage
+     * @param SharedStorageInterface   $sharedStorage
      * @param SEOPresentationInterface $seoPresentation
-     * @param HeadTitle $headTitle
-     * @param HeadMeta $headMeta
+     * @param HeadTitle                $headTitle
+     * @param HeadMeta                 $headMeta
      */
     public function __construct(SharedStorageInterface $sharedStorage, SEOPresentationInterface $seoPresentation, HeadTitle $headTitle, HeadMeta $headMeta)
     {
@@ -85,6 +81,7 @@ final class SEOContext implements Context
         foreach ($this->headMeta as $item) {
             if ($item->name === 'description') {
                 $descriptionItem = $item;
+
                 break;
             }
         }

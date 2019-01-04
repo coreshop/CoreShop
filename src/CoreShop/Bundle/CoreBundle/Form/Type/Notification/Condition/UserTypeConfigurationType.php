@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2017 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
@@ -30,7 +30,7 @@ final class UserTypeConfigurationType extends AbstractType
                     UserTypeChecker::TYPE_PASSWORD_RESET,
                     UserTypeChecker::TYPE_REGISTER,
                     UserTypeChecker::TYPE_NEWSLETTER_DOUBLE_OPT_IN,
-                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED
+                    UserTypeChecker::TYPE_NEWSLETTER_CONFIRMED,
                 ],
             ]);
     }
