@@ -110,7 +110,7 @@ final class IndexCommand extends Command
 
             $batchList = new BatchListing($list, $perLoop);
 
-            $batchLists[] = $batchList;
+            $batchLists[$class] = $batchList;
 
             $total += $batchList->count();
         }
@@ -120,7 +120,7 @@ final class IndexCommand extends Command
         /**
          * @var BatchListing $batchList
          */
-        foreach ($batchLists as $batchList) {
+        foreach ($batchLists as $class => $batchList) {
             $total = $batchList->count();
 
             if (0 === $total) {
@@ -163,10 +163,10 @@ final class IndexCommand extends Command
     }
 
     /**
-     * @param $type
-     * @param $info
+     * @param string $type
+     * @param string $info
      */
-    private function dispatchInfo($type, $info)
+    private function dispatchInfo(string $type, string $info)
     {
         $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
     }
