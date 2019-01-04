@@ -23,6 +23,12 @@
     "coreshop/resource-bundle": "^2.0",
     "pimcore/pimcore": "^5.4.0"
   },
+  "conflict": {
+    "dpfaffenbauer/process-manager": "<2.4"
+  },
+  "suggest": {
+    "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status."
+  },
   "config": {
     "bin-dir": "bin"
   },

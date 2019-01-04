@@ -7,5 +7,6 @@ services:
         arguments:
           - '@coreshop.repository.index'
           - '@coreshop.index.updater'
+          - '@event_dispatcher'
         tags:
           - { name: console.command, command: 'coreshop:index' }

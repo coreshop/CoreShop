@@ -14,12 +14,16 @@ namespace CoreShop\Bundle\IndexBundle\Command;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Service\IndexUpdaterServiceInterface;
+use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexCommand extends Command
 {
@@ -34,13 +38,23 @@ final class IndexCommand extends Command
     protected $indexUpdater;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * @param RepositoryInterface          $indexRepository
      * @param IndexUpdaterServiceInterface $indexUpdater
+     * @param EventDispatcherInterface     $eventDispatcher
      */
-    public function __construct(RepositoryInterface $indexRepository, IndexUpdaterServiceInterface $indexUpdater)
-    {
+    public function __construct(
+        RepositoryInterface $indexRepository,
+        IndexUpdaterServiceInterface $indexUpdater,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->indexRepository = $indexRepository;
         $this->indexUpdater = $indexUpdater;
+        $this->eventDispatcher = $eventDispatcher;
 
         parent::__construct();
     }
@@ -77,21 +91,46 @@ final class IndexCommand extends Command
             }
         }
 
+        $this->dispatchInfo('classes', 'Classes: ' . implode(', ', $classesToUpdate));
+
+        $batchLists = [];
+        $total = 0;
+
         foreach ($classesToUpdate as $class) {
             $class = ucfirst($class);
 
-            $list = '\Pimcore\Model\DataObject\\' . $class . '\Listing';
+            /**
+             * @var Listing $list
+             */
+            $list = '\Pimcore\Model\DataObject\\'.$class.'\Listing';
             $list = new $list();
 
             $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
-            $total = $list->getTotalCount();
             $perLoop = 10;
+
+            $batchList = new BatchListing($list, $perLoop);
+
+            $batchLists[] = $batchList;
+
+            $total += $batchList->count();
+        }
+
+        $this->dispatchInfo('start', $total);
+
+        /**
+         * @var BatchListing $batchList
+         */
+        foreach ($batchLists as $batchList) {
+            $total = $batchList->count();
 
             if (0 === $total) {
                 $output->writeln(sprintf('<info>No Object found for class %s</info>', $class));
+                $this->dispatchInfo('status', sprintf('No Object found for class %s', $class));
 
                 continue;
             }
+
+            $this->dispatchInfo('status', sprintf('Processing %s Objects of class "%s"', $total, $class));
 
             $output->writeln(sprintf('<info>Processing %s Objects of class "%s"</info>', $total, $class));
             $progress = new ProgressBar($output, $total);
@@ -100,28 +139,35 @@ final class IndexCommand extends Command
             );
             $progress->start();
 
-            for ($i = 0; $i < (ceil($total / $perLoop)); $i++) {
-                $list->setLimit($perLoop);
-                $list->setOffset($i * $perLoop);
-                $objects = $list->load();
+            foreach ($batchList as $object) {
+                $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
+                $progress->advance();
 
-                foreach ($objects as $object) {
-                    $progress->setMessage(sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
-                    $progress->advance();
+                $this->dispatchInfo('progress', sprintf('Index %s (%s)', $object->getFullPath(), $object->getId()));
 
-                    $this->indexUpdater->updateIndices($object);
-                }
-
-                //\Pimcore::collectGarbage();
+                $this->indexUpdater->updateIndices($object);
             }
 
             $progress->finish();
             $output->writeln('');
+
+            $this->dispatchInfo('status', sprintf('Processed %s Objects of class "%s"', $total, $class));
         }
 
         $output->writeln('');
         $output->writeln('<info>Done</info>');
 
+        $this->dispatchInfo('finished', sprintf('Finished Indexing Classes %s', implode(', ', $classesToUpdate)));
+
         return 0;
+    }
+
+    /**
+     * @param $type
+     * @param $info
+     */
+    private function dispatchInfo($type, $info)
+    {
+        $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
     }
 }

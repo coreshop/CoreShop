@@ -29,6 +29,8 @@ final class CoreShopIndexExtension extends AbstractModelExtension
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
@@ -36,5 +38,9 @@ final class CoreShopIndexExtension extends AbstractModelExtension
         $container->setParameter('coreshop.index.mapping_types', array_keys($config['mapping_types']));
 
         $loader->load('services.yml');
+
+        if (array_key_exists('ProcessManagerBundle', $bundles)) {
+            $loader->load('services/process_manager.yml');
+        }
     }
 }
