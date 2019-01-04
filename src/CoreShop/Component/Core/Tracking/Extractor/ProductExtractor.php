@@ -68,7 +68,7 @@ class ProductExtractor implements TrackingExtractorInterface
         return array_merge($data, [
             'id' => $object->getId(),
             'name' => $object->getName(),
-            'category' => count($categories) > 0 ? $categories[0]->getName() : '',
+            'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
             'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
             'price' => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
             'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
