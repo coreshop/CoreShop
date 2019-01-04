@@ -45,7 +45,6 @@ final class ThemeRequestListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         if (!$event->isMasterRequest()) {
-
             $exception = $event->getRequest()->get('exception', null);
 
             if (empty($exception)) {
@@ -56,7 +55,6 @@ final class ThemeRequestListener
         try {
             $this->themeResolver->resolveTheme($this->activeTheme);
         } catch (ThemeNotResolvedException $exception) {
-
         }
     }
 }

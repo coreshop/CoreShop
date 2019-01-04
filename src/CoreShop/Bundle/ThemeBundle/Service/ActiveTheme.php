@@ -75,7 +75,7 @@ class ActiveTheme implements ActiveThemeInterface
     {
         if (in_array($theme, $this->themes, true)) {
             $this->themes = array_filter($this->themes, function ($e) use ($theme) {
-                return ($e !== $theme);
+                return $e !== $theme;
             });
 
             $this->sync();

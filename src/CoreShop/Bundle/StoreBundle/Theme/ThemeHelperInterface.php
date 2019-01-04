@@ -22,6 +22,5 @@ if (interface_exists(NewThemeHelperInterface::class)) {
      */
     interface ThemeHelperInterface
     {
-
     }
 }

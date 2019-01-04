@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\ThemeBundle\Service;
 interface ThemeResolverInterface
 {
     /**
-     * Resolve Themes and ActiveTheme and stores it into ActiveThemeInterface $activeTheme
+     * Resolve Themes and ActiveTheme and stores it into ActiveThemeInterface $activeTheme.
      */
     public function resolveTheme(/*ActiveThemeInterface $activeTheme*/);
 }

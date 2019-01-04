@@ -39,6 +39,7 @@ final class ThemeHelper implements ThemeHelperInterface
     /**
      * @param string   $themeName
      * @param \Closure $function
+     *
      * @return mixed
      */
     public function useTheme($themeName, \Closure $function)

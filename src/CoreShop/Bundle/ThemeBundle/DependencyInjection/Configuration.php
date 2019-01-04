@@ -12,13 +12,6 @@
 
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\StoreBundle\Controller\StoreController;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
-use CoreShop\Component\Resource\Factory\Factory;
-use CoreShop\Component\Store\Model\Store;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
