@@ -22,6 +22,5 @@ if (interface_exists(NewThemeResolverInterface::class)) {
      */
     interface ThemeResolverInterface
     {
-
     }
 }

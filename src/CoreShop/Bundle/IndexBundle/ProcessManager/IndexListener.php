@@ -79,7 +79,7 @@ final class IndexListener
             $this->process->setTotal($event->getSubject());
             $this->process->save();
 
-            $this->processLogger->info($this->process, 'Total to Process: '.$event->getSubject());
+            $this->processLogger->info($this->process, 'Total to Process: ' . $event->getSubject());
         }
     }
 

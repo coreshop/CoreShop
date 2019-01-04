@@ -22,6 +22,5 @@ if (class_exists(CompositeThemeResolver::class)) {
      */
     class ThemeResolver
     {
-
     }
 }

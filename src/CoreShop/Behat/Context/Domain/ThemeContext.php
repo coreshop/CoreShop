@@ -37,6 +37,7 @@ final class ThemeContext implements Context
 
     /**
      * ThemeContext constructor.
+     *
      * @param SharedStorageInterface $sharedStorage
      * @param ThemeResolverInterface $themeResolver
      * @param ActiveThemeInterface   $activeTheme

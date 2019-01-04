@@ -22,6 +22,5 @@ if (class_exists(NewThemeHelper::class)) {
      */
     class ThemeHelper
     {
-
     }
 }
