@@ -109,6 +109,12 @@
     "phpstan/phpstan-symfony": "^0.10",
     "phpstan/phpstan-webmozart-assert": "^0.10"
   },
+  "conflict": {
+    "dpfaffenbauer/process-manager": "<2.4"
+  },
+  "suggest": {
+    "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
+  },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\": "src/CoreShop/Bundle/",
