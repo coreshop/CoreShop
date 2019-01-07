@@ -63,14 +63,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     /**
      * {@inheritdoc}
      */
-    public function getDataForQueryResource($data, $object = null, $params = [])
-    {
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         return $data;
