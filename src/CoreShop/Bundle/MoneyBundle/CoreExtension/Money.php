@@ -13,9 +13,11 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
 
-class Money extends Model\DataObject\ClassDefinition\Data
+class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
@@ -33,20 +35,6 @@ class Money extends Model\DataObject\ClassDefinition\Data
      * @var int
      */
     public $defaultValue;
-
-    /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = 'bigint(20)';
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = 'bigint(20)';
 
     /**
      * Type for the generated phpdoc.
@@ -141,6 +129,38 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function getMinValue()
     {
         return $this->minValue;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'bigint(20)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueryColumnType()
+    {
+        return 'bigint(20)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setColumnType($columnType)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryColumnType($queryColumnType)
+    {
+
     }
 
     /**

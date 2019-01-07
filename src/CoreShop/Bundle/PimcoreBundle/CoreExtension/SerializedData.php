@@ -12,9 +12,10 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
 
-class SerializedData extends Model\DataObject\ClassDefinition\Data
+class SerializedData extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
@@ -98,6 +99,22 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     public function getColumnType()
     {
         return 'LONGBLOB';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setColumnType($columnType)
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryColumnType($queryColumnType)
+    {
+
     }
 
     /**
