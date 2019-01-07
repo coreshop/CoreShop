@@ -33,3 +33,7 @@ parameters:
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children()/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save()./'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::delete()./'
+
+        # Pimcore BC Breaks
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Multihref not found/'
