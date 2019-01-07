@@ -267,18 +267,6 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * Returns the data which should be stored in the query columns.
-     *
-     * @param mixed $data
-     *
-     * @return string
-     */
-    public function getDataForQueryResource($data)
-    {
-        return 'not_supported';
-    }
-
-    /**
      * @param mixed $data
      * @param null  $relatedObject
      * @param mixed $params
