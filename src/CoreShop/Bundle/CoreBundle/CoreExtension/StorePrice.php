@@ -16,10 +16,11 @@ namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
-class StorePrice extends Model\DataObject\ClassDefinition\Data
+class StorePrice extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -37,20 +38,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
      * @var int
      */
     public $defaultValue;
-
-    /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = null;
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = null;
 
     /**
      * Type for the generated phpdoc.
@@ -330,6 +317,25 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data
                 $storePrice->setStore($store);
 
                 $em->persist($storePrice);
+            }
+        }
+
+        $em->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($object, $params = [])
+    {
+        $em = \Pimcore::getContainer()->get('coreshop.manager.product_store_price');
+        $repo = $this->getProductStorePriceRepository();
+
+        $storePrices = $repo->findForProductAndProperty($object, $this->getName());
+
+        if (is_array($storePrices) && !empty($storePrices)) {
+            foreach ($storePrices as $price) {
+                $em->remove($price);
             }
         }
 

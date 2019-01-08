@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Component\Pimcore\BCLayer\Href;
+use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use Pimcore\Model\DataObject;
 
 abstract class AbstractSaleController extends PimcoreController
@@ -44,13 +46,13 @@ abstract class AbstractSaleController extends PimcoreController
 
             $fieldData = $data->$getter();
 
-            if ($def instanceof DataObject\ClassDefinition\Data\Href) {
+            if ($def instanceof Href) {
                 if ($fieldData instanceof DataObject\Concrete) {
                     if (!in_array($fieldData->getId(), $loadedObjects)) {
                         $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
                     }
                 }
-            } elseif ($def instanceof DataObject\ClassDefinition\Data\Multihref) {
+            } elseif ($def instanceof Multihref) {
                 $objectData[$key] = [];
 
                 if (!is_array($fieldData)) {

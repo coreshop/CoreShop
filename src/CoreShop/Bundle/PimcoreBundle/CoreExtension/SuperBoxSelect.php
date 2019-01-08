@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\ClassDefinition\Data\Multihref;
+use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use Pimcore\Model\DataObject\Service;
 
 class SuperBoxSelect extends Multihref

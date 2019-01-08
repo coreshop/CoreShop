@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\Href;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\ClassDefinition\Data\Href;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Model\Element;
 
@@ -188,24 +188,6 @@ class DynamicDropdown extends Href
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForResource($data, $object = null, $params = [])
-    {
-        if (is_int($data)) {
-            return [
-                [
-                    'dest_id' => $data,
-                    'type' => 'object',
-                    'fieldname' => $this->getName(),
-                ],
-            ];
-        }
-
-        return parent::getDataForResource($data, $object, $params);
     }
 
     /**
