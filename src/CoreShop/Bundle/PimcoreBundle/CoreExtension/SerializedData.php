@@ -25,20 +25,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Re
     public $fieldtype = 'SerializedData';
 
     /**
-     * Type for the column to query.
-     *
-     * @var array
-     */
-    public $queryColumnType = null;
-
-    /**
-     * Type for the column.
-     *
-     * @var array
-     */
-    public $columnType = 'LONGBLOB';
-
-    /**
      * Type for the generated phpdoc.
      *
      * @var string
