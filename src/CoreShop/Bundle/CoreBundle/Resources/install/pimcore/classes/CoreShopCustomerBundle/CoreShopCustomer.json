@@ -53,10 +53,7 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
                                 "name": "salutation",
@@ -77,10 +74,7 @@
                             {
                                 "fieldtype": "firstname",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "name": "firstname",
                                 "title": "Firstname",
@@ -100,10 +94,7 @@
                             {
                                 "fieldtype": "lastname",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "name": "lastname",
                                 "title": "Lastname",
@@ -123,10 +114,7 @@
                             {
                                 "fieldtype": "email",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "name": "email",
                                 "title": "Email",
@@ -146,9 +134,6 @@
                             {
                                 "fieldtype": "password",
                                 "width": "",
-                                "queryColumnType": "varchar(190)",
-                                "columnType": "varchar(190)",
-                                "phpdocType": "string",
                                 "algorithm": "md5",
                                 "salt": "",
                                 "saltlocation": "back",
@@ -170,9 +155,6 @@
                             {
                                 "fieldtype": "newsletterActive",
                                 "defaultValue": 0,
-                                "queryColumnType": "tinyint(1)",
-                                "columnType": "tinyint(1)",
-                                "phpdocType": "boolean",
                                 "name": "newsletterActive",
                                 "title": "Newsletter Active",
                                 "tooltip": "",
@@ -191,9 +173,6 @@
                             {
                                 "fieldtype": "newsletterConfirmed",
                                 "defaultValue": 0,
-                                "queryColumnType": "tinyint(1)",
-                                "columnType": "tinyint(1)",
-                                "phpdocType": "boolean",
                                 "name": "newsletterConfirmed",
                                 "title": "Newsletter Confirmed",
                                 "tooltip": "",
@@ -212,10 +191,7 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
                                 "name": "newsletterToken",
@@ -236,9 +212,6 @@
                             {
                                 "fieldtype": "checkbox",
                                 "defaultValue": 0,
-                                "queryColumnType": "tinyint(1)",
-                                "columnType": "tinyint(1)",
-                                "phpdocType": "boolean",
                                 "name": "isGuest",
                                 "title": "Is Guest",
                                 "tooltip": "",
@@ -274,9 +247,6 @@
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
-                                "queryColumnType": "varchar(190)",
-                                "columnType": "varchar(190)",
-                                "phpdocType": "string",
                                 "name": "gender",
                                 "title": "Gender",
                                 "tooltip": "",
@@ -294,11 +264,7 @@
                             },
                             {
                                 "fieldtype": "input",
-                                "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "name": "passwordResetHash",
                                 "title": "Reset Password Hash",
@@ -317,11 +283,7 @@
                             },
                             {
                                 "fieldtype": "input",
-                                "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
                                 "name": "localeCode",
@@ -360,12 +322,6 @@
                         "childs": [
                             {
                                 "fieldtype": "multihref",
-                                "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
-                                "queryColumnType": "text",
-                                "phpdocType": "array",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -389,7 +345,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -399,11 +354,6 @@
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -426,7 +376,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -452,12 +401,6 @@
                         "childs": [
                             {
                                 "fieldtype": "multihref",
-                                "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
-                                "queryColumnType": "text",
-                                "phpdocType": "array",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -481,7 +424,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -21,7 +22,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
-class ProductSpecificPriceRules extends Data
+class ProductSpecificPriceRules extends Data implements CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -267,15 +268,19 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * Returns the data which should be stored in the query columns.
-     *
-     * @param mixed $data
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getDataForQueryResource($data)
+    public function delete($object, $params = [])
     {
-        return 'not_supported';
+        if ($object instanceof ProductInterface) {
+            $all = $this->load($object, ['force' => true]);
+
+            foreach ($all as $price) {
+                $this->getEntityManager()->remove($price);
+            }
+
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**

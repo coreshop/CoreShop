@@ -12,9 +12,10 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
 
-class SerializedData extends Model\DataObject\ClassDefinition\Data
+class SerializedData extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
@@ -22,20 +23,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
      * @var string
      */
     public $fieldtype = 'SerializedData';
-
-    /**
-     * Type for the column to query.
-     *
-     * @var array
-     */
-    public $queryColumnType = null;
-
-    /**
-     * Type for the column.
-     *
-     * @var array
-     */
-    public $columnType = 'LONGBLOB';
 
     /**
      * Type for the generated phpdoc.
@@ -58,14 +45,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return (is_string($data) ? unserialize($data) : $data) ?: null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataForQueryResource($data, $object = null, $params = [])
-    {
-        return null;
     }
 
     /**
