@@ -54,15 +54,11 @@
                         "childs": [
                             {
                                 "fieldtype": "localizedfields",
-                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
                                 "childs": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,
-                                        "queryColumnType": "varchar",
-                                        "columnType": "varchar",
                                         "columnLength": 190,
-                                        "phpdocType": "string",
                                         "regex": "",
                                         "unique": null,
                                         "name": "name",
@@ -84,9 +80,6 @@
                                         "fieldtype": "textarea",
                                         "width": "",
                                         "height": "",
-                                        "queryColumnType": "longtext",
-                                        "columnType": "longtext",
-                                        "phpdocType": "string",
                                         "name": "description",
                                         "title": "Description",
                                         "tooltip": "",
@@ -130,15 +123,12 @@
                             },
                             {
                                 "fieldtype": "coreShopFilter",
-                                "phpdocType": "CoreShop\\Component\\Index\\Model\\Filter",
                                 "allowEmpty": true,
                                 "options": null,
                                 "width": "",
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
-                                "queryColumnType": "int(11)",
-                                "columnType": "int(11)",
                                 "columnLength": 190,
                                 "name": "filter",
                                 "title": "Filter",
@@ -163,9 +153,6 @@
                                 "maxItems": "",
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
-                                "queryColumnType": "text",
-                                "columnType": "text",
-                                "phpdocType": "array",
                                 "name": "stores",
                                 "title": "Stores",
                                 "tooltip": "",
@@ -190,7 +177,6 @@
                                     "id": "int(11)",
                                     "type": "enum('document','asset','object')"
                                 },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -239,15 +225,11 @@
                         "childs": [
                             {
                                 "fieldtype": "localizedfields",
-                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
                                 "childs": [
                                     {
                                         "fieldtype": "input",
                                         "width": null,
-                                        "queryColumnType": "varchar",
-                                        "columnType": "varchar",
                                         "columnLength": 190,
-                                        "phpdocType": "string",
                                         "regex": "",
                                         "unique": false,
                                         "name": "pimcoreMetaTitle",
@@ -269,9 +251,6 @@
                                         "fieldtype": "textarea",
                                         "width": "",
                                         "height": "",
-                                        "queryColumnType": "longtext",
-                                        "columnType": "longtext",
-                                        "phpdocType": "string",
                                         "name": "pimcoreMetaDescription",
                                         "title": "Meta Description",
                                         "tooltip": "",

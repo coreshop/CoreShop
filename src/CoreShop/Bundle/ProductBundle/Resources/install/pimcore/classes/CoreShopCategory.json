@@ -39,15 +39,11 @@
                 "childs": [
                     {
                         "fieldtype": "localizedfields",
-                        "phpdocType": "\\Pimcore\\Model\\DataObject\\Localizedfield",
                         "childs": [
                             {
                                 "fieldtype": "input",
                                 "width": null,
-                                "queryColumnType": "varchar",
-                                "columnType": "varchar",
                                 "columnLength": 190,
-                                "phpdocType": "string",
                                 "regex": "",
                                 "name": "name",
                                 "title": "Name",
@@ -68,9 +64,6 @@
                                 "fieldtype": "textarea",
                                 "width": "",
                                 "height": "",
-                                "queryColumnType": "longtext",
-                                "columnType": "longtext",
-                                "phpdocType": "string",
                                 "name": "description",
                                 "title": "Description",
                                 "tooltip": "",
@@ -121,7 +114,6 @@
                             "id": "int(11)",
                             "type": "enum('document','asset','object')"
                         },
-                        "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                         "objectsAllowed": true,
                         "assetsAllowed": false,
                         "assetTypes": [],
