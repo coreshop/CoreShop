@@ -104,22 +104,6 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Re
     /**
      * {@inheritdoc}
      */
-    public function setColumnType($columnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQueryColumnType($queryColumnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         return true;

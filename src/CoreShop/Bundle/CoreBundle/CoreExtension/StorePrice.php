@@ -153,22 +153,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     /**
      * {@inheritdoc}
      */
-    public function setColumnType($columnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQueryColumnType($queryColumnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCode($class)
     {
         $key = $this->getName();

@@ -150,22 +150,6 @@ class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePer
     /**
      * {@inheritdoc}
      */
-    public function setColumnType($columnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setQueryColumnType($queryColumnType)
-    {
-
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
