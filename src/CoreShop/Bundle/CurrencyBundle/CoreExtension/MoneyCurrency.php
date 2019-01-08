@@ -30,26 +30,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public $width;
 
     /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = [
-        'value' => 'bigint(20)',
-        'currency' => 'int',
-    ];
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = [
-        'value' => 'bigint(20)',
-        'currency' => 'int',
-    ];
-
-    /**
      * Type for the generated phpdoc.
      *
      * @var string
@@ -116,6 +96,28 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public function getMinValue()
     {
         return $this->minValue;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueryColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
     }
 
     /**

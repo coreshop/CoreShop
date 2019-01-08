@@ -13,6 +13,7 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Bundle\AdminBundle\Security\User\User as UserProxy;
@@ -22,7 +23,7 @@ use Pimcore\Model\Element;
 use Pimcore\Model\User;
 use Pimcore\Tool;
 
-final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
+final class EmbeddedClass extends Multihref
 {
     /**
      * @var int
