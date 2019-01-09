@@ -46,8 +46,8 @@ final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
         if (\func_num_args() === 0) {
             trigger_error(
                 'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-            E_USER_DEPRECATED
-                );
+                E_USER_DEPRECATED
+            );
             $activeTheme = $this->activeTheme;
         } else {
             $activeTheme = func_get_arg(0);
