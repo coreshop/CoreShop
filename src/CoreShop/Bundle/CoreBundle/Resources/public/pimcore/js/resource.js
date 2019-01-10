@@ -413,6 +413,8 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             Ext.get('pimcore_menu_coreshop').on('mousedown', function (e, el) {
                 toolbar.showSubMenu.call(this._menu, e, el);
             }.bind(this));
+
+            coreshop.broker.fireEvent('coreShop.menu.initialized', this, this._menu);
         }
 
         Ext.get('coreshop_status').set(
@@ -423,10 +425,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
         );
 
         pimcore.helpers.initMenuTooltips();
-
-        $(document).trigger('coreShopReady');
-
-        //coreshop.plugin.broker.fireEvent('coreshopReady', this);
 
         //Add Report Definition
         pimcore.report.broker.addGroup('coreshop', 'coreshop_reports', 'coreshop_icon_report');
