@@ -22,7 +22,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Re
      *
      * @var string
      */
-    public $fieldtype = 'SerializedData';
+    public $fieldtype = 'coreShopSerializedData';
 
     /**
      * Type for the generated phpdoc.

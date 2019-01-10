@@ -27,7 +27,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      *
      * @var string
      */
-    public $fieldtype = 'int';
+    public $fieldtype = 'coreShopStorePrice';
 
     /**
      * @var float
