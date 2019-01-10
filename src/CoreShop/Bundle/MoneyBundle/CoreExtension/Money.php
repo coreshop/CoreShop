@@ -24,7 +24,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePer
      *
      * @var string
      */
-    public $fieldtype = 'int';
+    public $fieldtype = 'coreShopMoney';
 
     /**
      * @var float
