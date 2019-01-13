@@ -50,3 +50,17 @@ core_shop_frontend:
     controllers:
         product: AppBundle\Controller\ProductController
 ```
+
+**3**: CoreShop Override Controller (optional)
+
+CoreShop uses services for controllers, if you need to extend a controller, simply override the service:
+
+```yaml
+services:
+    coreshop.frontend.controller.category:
+        class: AppBundle\Controller\ProductController
+        parent: coreshop.frontend.controller.abstract
+        public: true
+        autowire: true
+        autoconfigure: false
+```
