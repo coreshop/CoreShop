@@ -2,7 +2,6 @@
 coreshop_currency: 'Währung'
 coreshop_currency_isoCode: 'ISO Kennzeichnung'
 coreshop_currency_numericIsoCode: 'Nummerischer ISO'
-coreshop_currency_symbol: 'Symbol'
 coreshop_currency_multiselect: 'Währung Multiselect'
 coreshop_from_currency: 'Von Währung'
 coreshop_to_currency: 'Zu Währung'
