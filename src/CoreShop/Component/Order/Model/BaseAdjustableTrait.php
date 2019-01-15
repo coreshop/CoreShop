@@ -180,6 +180,22 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
+    public function removeBaseAdjustmentsRecursively(string $type = null)
+    {
+        $this->removeBaseAdjustments($type);
+
+        if (method_exists($this, 'getItems')) {
+            foreach ($this->getItems() as $item) {
+                if ($item instanceof BaseAdjustableInterface) {
+                    $item->removeBaseAdjustmentsRecursively($type);
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getBaseAdjustmentsTotal(?string $type = null, $withTax = true)
     {
         if (null === $type) {
