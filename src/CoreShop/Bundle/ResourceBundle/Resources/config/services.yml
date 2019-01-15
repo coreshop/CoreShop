@@ -25,6 +25,11 @@ services:
             - { name: jms_serializer.handler, type: relation<?>, direction: serialization, format: json, method: serializeRelation}
             - { name: jms_serializer.handler, type: relation<?>, direction: deserialization, format: json, method: deserializeRelation}
 
+    coreshop.jms_serializer.handler.pimcore_object:
+        class: CoreShop\Bundle\ResourceBundle\Serialization\PimcoreObjectHandler
+        tags:
+            - { name: jms_serializer.handler, type: pimcoreObject, direction: serialization, format: json, method: serializeRelation}
+
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
