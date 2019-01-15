@@ -74,15 +74,7 @@ class OrderController extends AbstractSaleDetailController
      */
     public function getStatesAction(Request $request)
     {
-        $identifiers = [
-            OrderTransitions::IDENTIFIER,
-            OrderShipmentTransitions::IDENTIFIER,
-            OrderPaymentTransitions::IDENTIFIER,
-            OrderInvoiceTransitions::IDENTIFIER,
-            PaymentTransitions::IDENTIFIER,
-            InvoiceTransitions::IDENTIFIER,
-            ShipmentTransitions::IDENTIFIER,
-        ];
+        $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
         $workflowStateManager = $this->getWorkflowStateManager();
