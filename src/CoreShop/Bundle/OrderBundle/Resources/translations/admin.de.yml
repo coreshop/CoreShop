@@ -256,3 +256,5 @@ coreshop_creating_order_finished_detail: 'Bestellung wurde erfolgreich erstellt,
 coreshop_creating_quote_finished: 'Angebot wurde erstellt'
 coreshop_creating_quote_finished_detail: 'Angebot wurde erfolgreich erstellt, wie wollen Sie fortfahren?'
 coreshop_creating_order_finished_revise_link: 'Direktlink für die Bestellung'
+coreshop_adjustments: 'Adjustment'
+coreshop_adjustment_identifier: 'Adjustment Typ'
