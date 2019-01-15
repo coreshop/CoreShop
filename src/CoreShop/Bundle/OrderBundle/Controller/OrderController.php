@@ -30,6 +30,7 @@ use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -261,7 +262,11 @@ class OrderController extends AbstractSaleDetailController
             $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
 
-        return $order;
+        $event = new GenericEvent($sale, $order);
+
+        $this->get('event_dispatcher')->dispatch('coreshop.order.prepare_details', $event);
+
+        return $event->getArguments();
     }
 
     /**
