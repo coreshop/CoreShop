@@ -22,12 +22,12 @@ class ProcessableOrderItems implements ProcessableInterface
     /**
      * @var OrderDocumentRepositoryInterface
      */
-    private $documentsRepository;
+    protected $documentsRepository;
 
     /**
      * @var string
      */
-    private $stateCancelled;
+    protected $stateCancelled;
 
     /**
      * @param OrderDocumentRepositoryInterface $documentsRepository
