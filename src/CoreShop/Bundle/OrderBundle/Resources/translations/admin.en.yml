@@ -255,3 +255,5 @@ coreshop_creating_order_finished_detail: 'The order has been created successfull
 coreshop_creating_quote_finished: 'Quote has been created'
 coreshop_creating_quote_finished_detail: 'The quote has been created successfully, how do you want to continue?'
 coreshop_creating_order_finished_revise_link: 'Direct Link for Order'
+coreshop_adjustments: 'Adjustments'
+coreshop_adjustment_identifier: 'Adjustment Type'
