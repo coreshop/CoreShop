@@ -1,8 +1,6 @@
 ---
 coreshop_save_error: 'Fehler beim speichern des Elements'
 coreshop_payment_provider: 'Payment Anbieter'
-coreshop_identifier: 'Identifier'
-coreshop_position: 'Position'
 coreshop_instructions: 'Anleitung'
 coreshop_payment_provider_factory: 'Typ'
 coreshop_username: 'Benutzername'
