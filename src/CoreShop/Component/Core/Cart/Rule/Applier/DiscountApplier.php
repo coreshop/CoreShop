@@ -128,8 +128,38 @@ class DiscountApplier implements DiscountApplierInterface
             $totalDiscountGross += $itemDiscountGross;
         }
 
-        $cartPriceRuleItem->setDiscount((int) round($totalDiscountNet), false);
-        $cartPriceRuleItem->setDiscount((int) round($totalDiscountGross), true);
+        $totalDiscountNet = (int) round($totalDiscountNet);
+        $totalDiscountGross = (int) round($totalDiscountGross);
+
+        $totalAmountNet = [];
+        $totalAmountGross = [];
+
+        foreach ($cart->getItems() as $item) {
+            $totalAmountNet[] = $item->getTotal(false);
+            $totalAmountGross[] = $item->getTotal(true);
+        }
+
+        $distributedAmountNet = $this->distributor->distribute($totalAmountNet, $totalDiscountNet);
+        $distributedAmountGross = $this->distributor->distribute($totalAmountGross, $totalDiscountGross);
+
+        foreach ($cart->getItems() as $index => $item) {
+            $amountNet = $distributedAmountNet[$index];
+            $amountGross = $distributedAmountGross[$index];
+
+            if ($amountNet === 0) {
+                continue;
+            }
+
+            $item->addAdjustment($this->adjustmentFactory->createWithData(
+                AdjustmentInterface::CART_PRICE_RULE,
+                $cartPriceRuleItem->getCartPriceRule()->getName(),
+                -1 * $amountGross,
+                -1 * $amountNet
+            ));
+        }
+
+        $cartPriceRuleItem->setDiscount($totalDiscountNet, false);
+        $cartPriceRuleItem->setDiscount($totalDiscountGross, true);
 
         $cart->addAdjustment(
             $this->adjustmentFactory->createWithData(

@@ -45,6 +45,11 @@ interface BaseAdjustableInterface
     public function removeBaseAdjustments(string $type = null);
 
     /**
+     * @param string|null $type
+     */
+    public function removeBaseAdjustmentsRecursively(string $type = null);
+
+    /**
      * Recalculates adjustments total. Should be used after adjustment change.
      */
     public function recalculateBaseAdjustmentsTotal();

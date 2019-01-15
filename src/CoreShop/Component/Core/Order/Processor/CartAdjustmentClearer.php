@@ -20,7 +20,7 @@ final class CartAdjustmentClearer implements CartProcessorInterface
 {
     public function process(CartInterface $cart)
     {
-        $cart->removeAdjustments(AdjustmentInterface::CART_PRICE_RULE);
-        $cart->removeAdjustments(AdjustmentInterface::SHIPPING);
+        $cart->removeAdjustmentsRecursively(AdjustmentInterface::CART_PRICE_RULE);
+        $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);
     }
 }
