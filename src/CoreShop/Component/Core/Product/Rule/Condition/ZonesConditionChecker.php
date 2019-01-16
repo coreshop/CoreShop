@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
+use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
