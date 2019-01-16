@@ -24,7 +24,7 @@ final class ZonesConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        if (!array_key_exists('country', $params)) {
+        if (!array_key_exists('country', $params) || !$params['country'] instanceof CountryInterface) {
             return false;
         }
 

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -23,7 +24,7 @@ final class CustomersConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        if (!array_key_exists('customer', $params)) {
+        if (!array_key_exists('customer', $params) || !$params['customer'] instanceof CustomerInterface) {
             return false;
         }
 
