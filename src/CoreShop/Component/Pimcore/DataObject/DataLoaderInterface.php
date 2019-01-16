@@ -12,15 +12,14 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
-use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject;
 
 interface DataLoaderInterface
 {
     /**
-     * @param Concrete $data
-     * @param array    $loadedObjects
-     *
-     * @return array
+     * @param DataObject\Concrete $data
+     * @param array               $loadedObjects
+     * @return mixed
      */
-    public function getDataForObject(Concrete $data, $loadedObjects = []);
+    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);
 }

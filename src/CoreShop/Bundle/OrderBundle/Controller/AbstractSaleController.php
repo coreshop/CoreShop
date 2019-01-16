@@ -12,10 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
-use CoreShop\Component\Pimcore\BCLayer\Href;
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use Pimcore\Model\DataObject;
 

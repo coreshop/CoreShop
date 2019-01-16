@@ -13,8 +13,6 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
-use CoreShop\Component\Pimcore\BCLayer\Href;
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use Pimcore\Model\DataObject;
 
 class DataLoader implements DataLoaderInterface
@@ -42,13 +40,13 @@ class DataLoader implements DataLoaderInterface
 
             $fieldData = $data->$getter();
 
-            if ($def instanceof Href) {
+            if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation || $def instanceof DataObject\ClassDefinition\Data\Href) {
                 if ($fieldData instanceof DataObject\Concrete) {
                     if (!in_array($fieldData->getId(), $loadedObjects)) {
                         $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
                     }
                 }
-            } elseif ($def instanceof Multihref) {
+            } elseif ($def instanceof DataObject\ClassDefinition\Data\ManyToManyRelation || $def instanceof DataObject\ClassDefinition\Data\Multihref) {
                 $objectData[$key] = [];
 
                 if (!is_array($fieldData)) {
