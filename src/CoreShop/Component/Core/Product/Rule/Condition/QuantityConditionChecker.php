@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -25,7 +26,7 @@ final class QuantityConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        if (array_key_exists('cart', $params)) {
+        if (array_key_exists('cart', $params) || !$params['cart'] instanceof CartInterface) {
             return false;
         }
 
