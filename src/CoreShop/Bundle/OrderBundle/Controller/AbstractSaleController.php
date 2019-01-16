@@ -12,10 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
-use CoreShop\Component\Pimcore\BCLayer\Href;
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
+use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use Pimcore\Model\DataObject;
 
 abstract class AbstractSaleController extends PimcoreController
@@ -28,63 +26,8 @@ abstract class AbstractSaleController extends PimcoreController
      */
     protected function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
     {
-        if (!$data instanceof DataObject\AbstractObject) {
-            return [];
-        }
+        $dataLoader = new DataLoader();
 
-        $objectData = [];
-        DataObject\Service::loadAllObjectFields($data);
-
-        $loadedObjects[] = $data->getId();
-
-        foreach ($data->getClass()->getFieldDefinitions() as $key => $def) {
-            $getter = 'get' . ucfirst($key);
-
-            if (!method_exists($data, $getter)) {
-                continue;
-            }
-
-            $fieldData = $data->$getter();
-
-            if ($def instanceof Href) {
-                if ($fieldData instanceof DataObject\Concrete) {
-                    if (!in_array($fieldData->getId(), $loadedObjects)) {
-                        $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
-                    }
-                }
-            } elseif ($def instanceof Multihref) {
-                $objectData[$key] = [];
-
-                if (!is_array($fieldData)) {
-                    continue;
-                }
-
-                foreach ($fieldData as $object) {
-                    if ($object instanceof DataObject\Concrete) {
-                        if (!in_array($object->getId(), $loadedObjects)) {
-                            $objectData[$key][] = $this->getDataForObject($object, $loadedObjects);
-                        }
-                    }
-                }
-            } elseif ($def instanceof DataObject\ClassDefinition\Data) {
-                if ($def instanceof Money) {
-                    $value = $fieldData;
-                } else {
-                    $value = $def->getDataForEditmode($fieldData, $data, false);
-                }
-
-                $objectData[$key] = $value;
-            } else {
-                $objectData[$key] = null;
-            }
-        }
-
-        $loadedObjects[] = $data->getId();
-
-        $objectData['o_id'] = $data->getId();
-        $objectData['o_creationDate'] = $data->getCreationDate();
-        $objectData['o_modificationDate'] = $data->getModificationDate();
-
-        return $objectData;
+        return $dataLoader->getDataForObject($data, $loadedObjects);
     }
 }
