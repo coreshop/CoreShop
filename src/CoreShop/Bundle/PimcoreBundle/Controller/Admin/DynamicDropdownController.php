@@ -31,7 +31,7 @@ final class DynamicDropdownController extends AdminController
     public function optionsAction(Request $request)
     {
         $folderName = $request->get('folderName');
-        $parentFolderPath = preg_replace('@[^a-zA-Z0-9/\-_]@', '', $folderName);
+        $parentFolderPath = preg_replace('@[^a-zA-Z0-9/\-_\s]@', '', $folderName);
         $sort = $request->get('sortBy');
         $options = [];
 
