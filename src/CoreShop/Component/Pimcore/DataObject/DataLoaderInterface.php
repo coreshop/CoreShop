@@ -10,24 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\Controller;
+namespace CoreShop\Component\Pimcore\DataObject;
 
-use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
-use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use Pimcore\Model\DataObject;
 
-abstract class AbstractSaleController extends PimcoreController
+interface DataLoaderInterface
 {
     /**
      * @param DataObject\Concrete $data
      * @param array               $loadedObjects
-     *
-     * @return array
+     * @return mixed
      */
-    protected function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
-    {
-        $dataLoader = new DataLoader();
-
-        return $dataLoader->getDataForObject($data, $loadedObjects);
-    }
+    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);
 }
