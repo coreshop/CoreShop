@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Product\Rule\Condition;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoresConditionChecker implements ConditionCheckerInterface
 {
@@ -23,7 +24,7 @@ final class StoresConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        if (!array_key_exists('store', $params)) {
+        if (!array_key_exists('store', $params) || !$params['store'] instanceof StoreInterface) {
             return false;
         }
 
