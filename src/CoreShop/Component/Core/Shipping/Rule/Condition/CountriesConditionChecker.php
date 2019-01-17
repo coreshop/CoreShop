@@ -26,6 +26,6 @@ class CountriesConditionChecker extends AbstractConditionChecker
     {
         $country = $address->getCountry();
 
-        return in_array($country->getId(), $configuration['countries'], true);
+        return in_array($country->getId(), $configuration['countries']);
     }
 }

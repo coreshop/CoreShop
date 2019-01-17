@@ -38,6 +38,6 @@ class ZonesConditionChecker extends AbstractConditionChecker
             return false;
         }
 
-        return in_array($zone->getId(), $configuration['zones'], true);
+        return in_array($zone->getId(), $configuration['zones']);
     }
 }

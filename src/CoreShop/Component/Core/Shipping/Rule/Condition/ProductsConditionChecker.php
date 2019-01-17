@@ -29,7 +29,7 @@ class ProductsConditionChecker extends AbstractConditionChecker
 
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {
-                if (in_array($item->getProduct()->getId(), $configuration['products'], true)) {
+                if (in_array($item->getProduct()->getId(), $configuration['products'])) {
                     return true;
                 }
             }

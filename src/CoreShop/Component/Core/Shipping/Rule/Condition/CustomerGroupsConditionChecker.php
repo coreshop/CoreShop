@@ -41,7 +41,7 @@ final class CustomerGroupsConditionChecker extends AbstractConditionChecker
 
         foreach ($shippable->getCustomer()->getCustomerGroups() as $group) {
             if ($group instanceof ResourceInterface) {
-                if (in_array($group->getId(), $configuration['customerGroups'], true)) {
+                if (in_array($group->getId(), $configuration['customerGroups'])) {
                     return true;
                 }
             }
