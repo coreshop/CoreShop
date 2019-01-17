@@ -13,13 +13,12 @@
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
-use Webmozart\Assert\Assert;
 
 final class CustomerGroupsConditionChecker extends AbstractConditionChecker
 {
@@ -32,10 +31,9 @@ final class CustomerGroupsConditionChecker extends AbstractConditionChecker
         AddressInterface $address,
         array $configuration
     ) {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        if (!$shippable instanceof CustomerAwareInterface) {
+            return false;
+        }
 
         if (!$shippable->getCustomer() instanceof CustomerInterface) {
             return false;

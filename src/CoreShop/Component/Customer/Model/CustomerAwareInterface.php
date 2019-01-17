@@ -10,17 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Pimcore\DataObject;
+namespace CoreShop\Component\Customer\Model;
 
-use Pimcore\Model\DataObject;
-
-interface DataLoaderInterface
+interface CustomerAwareInterface
 {
     /**
-     * @param DataObject\Concrete $data
-     * @param array               $loadedObjects
-     *
-     * @return mixed
+     * @return CustomerInterface|null
      */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);
+    public function getCustomer();
+
+    /**
+     * @param CustomerInterface|null $customer
+     */
+    public function setCustomer($customer);
 }

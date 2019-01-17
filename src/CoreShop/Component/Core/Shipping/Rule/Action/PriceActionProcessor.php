@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Core\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -49,17 +49,17 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
      */
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
-
         $price = $configuration['price'];
-        $currency = $this->currencyRepository->find($configuration['currency']);
 
-        Assert::isInstanceOf($currency, CurrencyInterface::class);
+        if ($shippable instanceof CurrencyAwareInterface) {
+            $currency = $this->currencyRepository->find($configuration['currency']);
 
-        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
+            Assert::isInstanceOf($currency, CurrencyInterface::class);
+
+            return $this->moneyConverter->convert($price, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
+        }
+
+        return $price;
     }
 
     /**
