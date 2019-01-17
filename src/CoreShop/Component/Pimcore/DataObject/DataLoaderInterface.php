@@ -19,6 +19,7 @@ interface DataLoaderInterface
     /**
      * @param DataObject\Concrete $data
      * @param array               $loadedObjects
+     *
      * @return mixed
      */
     public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);

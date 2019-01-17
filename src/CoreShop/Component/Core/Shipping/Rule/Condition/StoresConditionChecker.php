@@ -13,12 +13,10 @@
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
-use Webmozart\Assert\Assert;
 
 final class StoresConditionChecker extends AbstractConditionChecker
 {

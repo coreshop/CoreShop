@@ -16,18 +16,12 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerAwareInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends ResourceInterface,
-    CurrencyAwareInterface,
-    StoreAwareInterface,
-    LocaleAwareInterface,
-    AdjustableInterface,
-    CustomerAwareInterface
+interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface, CustomerAwareInterface
 {
     /**
      * @return CurrencyInterface
