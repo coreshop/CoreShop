@@ -14,15 +14,14 @@ namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Taxation\TaxApplicatorInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use Webmozart\Assert\Assert;
 
 final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
@@ -61,11 +60,6 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
      */
     public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
     {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
-
         $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
 
         if (!$carrier instanceof CoreCarrierInterface) {
@@ -74,7 +68,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
 
         $taxCalculator = $this->getTaxCalculator($carrier, $address);
 
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
+        if ($taxCalculator instanceof TaxCalculatorInterface && $shippable instanceof StoreAwareInterface) {
             return $this->taxApplicator->applyTax($price, ['store' => $shippable->getStore()], $taxCalculator, $withTax);
         }
 
