@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
@@ -30,11 +31,10 @@ final class CurrenciesConditionChecker extends AbstractConditionChecker
         AddressInterface $address,
         array $configuration
     ) {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        if (!$shippable instanceof CurrencyAwareInterface) {
+            return false;
+        }
 
-        return in_array($shippable->getCurrency()->getId(), $configuration['currencies']);
+        return in_array($shippable->getCurrency()->getId(), $configuration['currencies'], true);
     }
 }

@@ -69,7 +69,6 @@ services:
         tags:
             - { name: coreshop.shipping_rule.action, type: discountAmount, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType }
 
-
     coreshop.carrier.price_calculator.taxed:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
@@ -81,5 +80,6 @@ services:
         class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery
         decorates: coreshop.carrier.resolver
         arguments:
+            - '@coreshop.carrier.cart.store_based_resolver.inner'
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'

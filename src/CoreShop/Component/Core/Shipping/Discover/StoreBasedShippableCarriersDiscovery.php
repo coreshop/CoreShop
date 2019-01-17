@@ -13,15 +13,19 @@
 namespace CoreShop\Component\Core\Shipping\Discover;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
-use Webmozart\Assert\Assert;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
+    /**
+     * @var CarriersResolverInterface
+     */
+    private $inner;
+
     /**
      * @var CarrierRepositoryInterface
      */
@@ -33,13 +37,16 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     private $shippableCarrierValidator;
 
     /**
+     * @param CarriersResolverInterface          $inner
      * @param CarrierRepositoryInterface         $carrierRepository
      * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
      */
     public function __construct(
+        CarriersResolverInterface $inner,
         CarrierRepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator
     ) {
+        $this->inner = $inner;
         $this->carrierRepository = $carrierRepository;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }
@@ -49,20 +56,19 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
      */
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
     {
-        /**
-         * @var CartInterface $shippable
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        if ($shippable instanceof StoreAwareInterface) {
+            $carriers = $this->carrierRepository->findForStore($shippable->getStore());
+            $availableCarriers = [];
 
-        $carriers = $this->carrierRepository->findForStore($shippable->getStore());
-        $availableCarriers = [];
-
-        foreach ($carriers as $carrier) {
-            if ($this->shippableCarrierValidator->isCarrierValid($carrier, $shippable, $address)) {
-                $availableCarriers[] = $carrier;
+            foreach ($carriers as $carrier) {
+                if ($this->shippableCarrierValidator->isCarrierValid($carrier, $shippable, $address)) {
+                    $availableCarriers[] = $carrier;
+                }
             }
+
+            return $availableCarriers;
         }
 
-        return $availableCarriers;
+        return $this->inner->resolveCarriers($shippable, $address);
     }
 }

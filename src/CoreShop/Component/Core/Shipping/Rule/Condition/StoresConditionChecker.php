@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Webmozart\Assert\Assert;
 
 final class StoresConditionChecker extends AbstractConditionChecker
@@ -30,11 +31,10 @@ final class StoresConditionChecker extends AbstractConditionChecker
         AddressInterface $address,
         array $configuration
     ) {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        if (!$shippable instanceof StoreAwareInterface) {
+            return false;
+        }
 
-        return in_array($shippable->getStore()->getId(), $configuration['stores']);
+        return in_array($shippable->getStore()->getId(), $configuration['stores'], true);
     }
 }
