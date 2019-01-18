@@ -22,11 +22,6 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 final class CartItemProcessor implements CartItemProcessorInterface
 {
     /**
-     * @var PurchasableCalculatorInterface
-     */
-    private $productPriceCalculator;
-
-    /**
      * @var ProductTaxCalculatorFactoryInterface
      */
     private $taxCalculator;
@@ -37,16 +32,13 @@ final class CartItemProcessor implements CartItemProcessorInterface
     private $defaultAddressProvider;
 
     /**
-     * @param PurchasableCalculatorInterface       $productPriceCalculator
      * @param ProductTaxCalculatorFactoryInterface $taxCalculator
      * @param AddressProviderInterface             $defaultAddressProvider
      */
     public function __construct(
-        PurchasableCalculatorInterface $productPriceCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculator,
         AddressProviderInterface $defaultAddressProvider
     ) {
-        $this->productPriceCalculator = $productPriceCalculator;
         $this->taxCalculator = $taxCalculator;
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
@@ -54,18 +46,13 @@ final class CartItemProcessor implements CartItemProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function processCartItem(CartItemInterface $cartItem, int $itemPrice, array $context)
+    public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
         $product = $cartItem->getProduct();
         $cart = $context['cart'];
         $store = $context['store'];
 
         $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
-
-        $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
-        $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
-        $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
-        $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             if ($store->getUseGrossPrice()) {

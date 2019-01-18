@@ -69,9 +69,22 @@ final class CartItemsProcessor implements CartProcessorInterface
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $itemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
+            $product = $item->getProduct();
 
-            $this->cartItemProcessor->processCartItem($item, $itemPrice, $context);
+            $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
+            $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
+            $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
+            $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
+            $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
+
+            $this->cartItemProcessor->processCartItem(
+                $item,
+                $itemPrice,
+                $itemRetailPrice,
+                $itemDiscountPrice,
+                $itemDiscount,
+                $context
+            );
         }
     }
 }
