@@ -1,0 +1,7 @@
+core_shop_tier_pricing:
+    pimcore_admin:
+        js:
+            tier_pricing_core_extension_data_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/data/coreShopTierPrice.js'
+            tier_pricing_core_extension_tag_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/tags/coreShopTierPrice.js'
+        css:
+            core: '/bundles/coreshoptierpricing/pimcore/css/core.css'

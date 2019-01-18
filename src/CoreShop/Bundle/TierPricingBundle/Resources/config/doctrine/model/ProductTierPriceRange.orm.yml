@@ -1,0 +1,36 @@
+CoreShop\Component\TierPricing\Model\ProductTierPriceRange:
+    type: mappedSuperclass
+    table: coreshop_product_tier_price_range
+    fields:
+        id:
+            column: id
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        rangeFrom:
+            column: range_from
+            type: integer
+        rangeTo:
+            column: range_to
+            type: integer
+        price:
+            column: price
+            type: integer
+        percentageDiscount:
+            column: percentage_discount
+            type: float
+        highlighted:
+            column: highlighted
+            type: boolean
+    manyToOne:
+        tierPrice:
+            targetEntity: CoreShop\Component\TierPricing\Model\ProductTierPriceInterface
+            inversedBy: ranges
+            orphanRemoval: false
+            joinColumn:
+                name: tier_price_id
+                referencedColumnName: id
+                nullable: true
+                cascade:
+                    - 'persist'

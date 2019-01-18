@@ -1,0 +1,9 @@
+imports:
+    - { resource: "admin.yml" }
+
+pimcore:
+    objects:
+        class_definitions:
+            data:
+                map:
+                    coreShopTierPrice: CoreShop\Bundle\TierPricingBundle\CoreExtension\TierPrice
