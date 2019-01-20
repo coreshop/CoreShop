@@ -2,17 +2,22 @@ services:
     _defaults:
         public: true
 
+    coreshop.cart_item.processor:
+        class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
+        arguments:
+            - '@coreshop.product.tax_factory'
+            - '@coreshop.provider.store_based_default_address_provider'
+
     coreshop.cart_processor.adjustments_clearer:
         class: CoreShop\Component\Core\Order\Processor\CartAdjustmentClearer
         tags:
             - { name: coreshop.cart_processor, priority: 650 }
 
     coreshop.cart_processor.items:
-        class: CoreShop\Component\Core\Order\Processor\CartItemProcessor
+        class: CoreShop\Component\Core\Order\Processor\CartItemsProcessor
         arguments:
             - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.product.tax_factory'
-            - '@coreshop.provider.store_based_default_address_provider'
+            - '@coreshop.cart_item.processor'
         tags:
             - { name: coreshop.cart_processor, priority: 600 }
 
