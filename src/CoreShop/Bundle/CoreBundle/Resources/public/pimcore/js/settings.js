@@ -485,6 +485,8 @@ coreshop.core.settings = Class.create({
             ]
         });
 
+        coreshop.broker.fireEvent('coreShop.settings.store', this, shopPanel);
+
         return shopPanel;
     }
 });
