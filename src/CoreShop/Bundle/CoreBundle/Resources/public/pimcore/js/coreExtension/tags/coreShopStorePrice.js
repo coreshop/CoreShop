@@ -101,9 +101,19 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
                 xtype: 'numberfield',
                 fieldLabel: this.fieldConfig.title,
                 name: this.fieldConfig.name,
-                componentCls: "object_field",
+                componentCls: 'object_field',
+                coreshopStore: store,
                 labelWidth: 250,
-                value: this.defaultValue
+                value: this.defaultValue,
+                listeners: {
+                    afterrender: function(comp, value) {
+                        coreshop.broker.fireEvent('core.store_price.price_initialize', value, comp.coreshopStore, this.object);
+
+                    }
+                    change: function(comp, value) {
+                        coreshop.broker.fireEvent('core.store_price.price_change', value, comp.coreshopStore, this.object);
+                    }.bind(this)
+                }
             };
 
             if (storeData) {

@@ -1,4 +1,4 @@
-CoreShop Theme Bundle
+CoreShop Tier Pricing Bundle
 ==================
 
 CoreShop
@@ -11,7 +11,7 @@ CoreShop is an eCommerce Solution for Pimcore. It is build from decoupled compon
 Documentation
 -------------
 
-Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Bundles/Theme_Bundle.html).
+Documentation is available on [**coreshop.org**](https://www.coreshop.org/docs/2.1.0/Bundles/Tier_Pricing_Bundle.html).
 
 Bug tracking
 ------------

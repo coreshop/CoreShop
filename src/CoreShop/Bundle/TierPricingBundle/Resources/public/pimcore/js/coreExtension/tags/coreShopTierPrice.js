@@ -14,6 +14,7 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
 
     type: 'coreShopTierPrice',
     storeFields: {},
+    productGlobalStorePrice: {},
 
     initialize: function (data, fieldConfig) {
 
@@ -144,12 +145,25 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
             this.context.containerType = 'localizedfield';
         }
 
+        coreshop.broker.addListener('core.store_price.price_initialize', function (value, store, object) {
+            if (object.id === this.object.id) {
+                this.productGlobalStorePrice[store.getId()] = value;
+                console.log(this.productGlobalStorePrice);
+            }
+        }, this);
+
+        coreshop.broker.addListener('core.store_price.price_change', function (value, store, object) {
+            if (object.id === this.object.id) {
+                this.productGlobalStorePrice[store.getId()] = value;
+            }
+        }, this);
+
         Ext.Object.each(stores, function (key, store) {
 
             var storeData = this.data.hasOwnProperty(store.getId()) ? this.data[store.getId()] : [],
                 item;
 
-            this.storeFields[store.getId()] = _.generateGrid(storeData);
+            this.storeFields[store.getId()] = _.generateGrid(storeData, store);
 
             item = {
                 xtype: 'panel',
@@ -255,7 +269,7 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
         return isDirty;
     },
 
-    generateGrid: function (storeData) {
+    generateGrid: function (storeData, store) {
 
         var panel,
             columns = [
@@ -270,7 +284,9 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
                     text: t('coreshop_tier_range_from'),
                     flex: 1,
                     sortable: false,
+                    readOnly: true,
                     dataIndex: 'tier_range_from',
+                    name: 'tier_range_from',
                     getEditor: function () {
                         return new Ext.form.NumberField({
                             minValue: 0
@@ -288,6 +304,7 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
                     flex: 1,
                     sortable: false,
                     dataIndex: 'tier_range_to',
+                    name: 'tier_range_to',
                     getEditor: function () {
                         return new Ext.form.NumberField({
                             minValue: 1
@@ -305,6 +322,7 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
                     flex: 1,
                     sortable: false,
                     dataIndex: 'tier_price',
+                    name: 'tier_price',
                     getEditor: function () {
                         return new Ext.form.NumberField({
                             minValue: 0
@@ -323,11 +341,19 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
                     flex: 1,
                     sortable: false,
                     dataIndex: 'tier_percentage_discount',
+                    name: 'tier_percentage_discount',
                     getEditor: function () {
+
+                        if (!this.productGlobalStorePrice.hasOwnProperty(store.getId()) || this.productGlobalStorePrice[store.getId()] === 0) {
+                            return false;
+                        }
+
                         return new Ext.form.NumberField({
-                            minValue: 0
+                            minValue: 0,
+                            maxValue: 100
                         });
-                    },
+
+                    }.bind(this),
                     renderer: function (value) {
                         if (value !== undefined) {
                             return value + '%';
@@ -340,6 +366,7 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
                     flex: 1,
                     sortable: false,
                     dataIndex: 'tier_highlight',
+                    name: 'tier_highlight',
                     getEditor: function () {
                         return new Ext.form.Checkbox({});
                     },
@@ -367,6 +394,16 @@ pimcore.object.tags.coreShopTierPrice = Class.create(pimcore.object.tags.abstrac
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1,
             listeners: {
+                edit: function (editor, context) {
+                    var record = context.record;
+                    if (context.column.name === 'tier_price') {
+                        record.set('tier_percentage_discount', 0);
+                    } else if (context.column.name === 'tier_percentage_discount') {
+                        if (this.productGlobalStorePrice.hasOwnProperty(store.getId())) {
+                            record.set('tier_price', (this.productGlobalStorePrice[store.getId()] / 100 * record.get('tier_percentage_discount')));
+                        }
+                    }
+                }.bind(this),
                 beforeedit: function (editor) {
                     editor.editors.each(function (e) {
                         try {
