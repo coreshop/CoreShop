@@ -17,11 +17,6 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 class ProductTierPriceRange extends AbstractResource implements ProductTierPriceRangeInterface
 {
     /**
-     * @var ProductTierPriceInterface
-     */
-    protected $tierPrice;
-
-    /**
      * @var int
      */
     protected $id;
@@ -50,22 +45,6 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
      * @var bool
      */
     protected $highlighted;
-
-    /**
-     * @inheritdoc
-     */
-    public function getTierPrice()
-    {
-        return $this->tierPrice;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setTierPrice(ProductTierPriceInterface $tierPrice)
-    {
-        $this->tierPrice = $tierPrice;
-    }
 
     /**
      * @inheritdoc

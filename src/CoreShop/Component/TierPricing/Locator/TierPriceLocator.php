@@ -12,35 +12,23 @@
 
 namespace CoreShop\Component\TierPricing\Locator;
 
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceInterface;
+use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 
 class TierPriceLocator implements TierPriceLocatorInterface
 {
     /**
-     * @param PurchasableInterface $purchasable
-     * @param StoreInterface       $store
-     * @param int                  $quantity
-     *
-     * @return ProductTierPriceRangeInterface|null
+     * @inheritdoc
      */
-    public function locate(PurchasableInterface $purchasable, StoreInterface $store, int $quantity)
+    public function locate(ProductSpecificTierPriceRuleInterface $priceRule, int $quantity)
     {
-        $tierPrice = $purchasable->getTierPricing($store);
-
-        if (!$tierPrice instanceof ProductTierPriceInterface) {
-            return null;
-        }
-
-        if ($tierPrice->getRanges()->isEmpty()) {
+        if ($priceRule->getRanges()->isEmpty()) {
             return null;
         }
 
         $cheapestTierPrice = null;
         /** @var ProductTierPriceRangeInterface $range */
-        foreach ($tierPrice->getRanges() as $range) {
+        foreach ($priceRule->getRanges() as $range) {
             if ($range->getRangeFrom() > $quantity) {
                 break;
             }

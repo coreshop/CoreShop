@@ -1,7 +1,18 @@
 core_shop_tier_pricing:
     pimcore_admin:
         js:
-            tier_pricing_core_extension_data_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/data/coreShopTierPrice.js'
-            tier_pricing_core_extension_tag_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/tags/coreShopTierPrice.js'
+            tier_pricing_core_extension_data_specific_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/data/coreShopProductSpecificTierPriceRules.js'
+            tier_pricing_core_extension_tag_specific_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/tags/coreShopProductSpecificTierPriceRules.js'
+            tier_pricing_product_specific_tier_price_object_item: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/object/item.js'
+            tier_pricing_product_specific_tier_price_rule_ranges: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/ranges.js'
+            tier_pricing_product_specific_tier_price_rule_condition: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice//condition.js'
+            tier_pricing_product_specific_tier_price_condition_nested: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/nested.js'
+            tier_pricing_product_specific_tier_price_condition_timespan: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/timespan.js'
+            # tier_pricing_product_specific_tier_price_condition_countries: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/countries.js'
+            # tier_pricing_product_specific_tier_price_condition_currencies: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/currencies.js'
+            # tier_pricing_product_specific_tier_price_condition_customer_groups: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/customerGroups.js'
+            # tier_pricing_product_specific_tier_price_condition_customers: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/customers.js'
+            # tier_pricing_product_specific_tier_price_condition_stores: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/stores.js'
+            # tier_pricing_product_specific_tier_price_condition_zones: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/zones.js'
         css:
             core: '/bundles/coreshoptierpricing/pimcore/css/core.css'

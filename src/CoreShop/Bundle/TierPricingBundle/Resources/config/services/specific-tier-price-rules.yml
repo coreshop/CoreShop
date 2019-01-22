@@ -1,0 +1,98 @@
+parameters:
+    coreshop.form.type.product_specific_tier_price_rule.validation_groups: [coreshop]
+    coreshop.form.type.product_specific_tier_price_rule.rule.validation_groups: [coreshop]
+    coreshop.form.type.product_specific_tier_price_rule.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.product_specific_tier_price_rule.range.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+  # Forms
+    coreshop.form.type.product_specific_tier_price_rule:
+        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleType
+        arguments:
+            - '%coreshop.model.product_specific_tier_price_rule.class%'
+            - '%coreshop.form.type.product_specific_price_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.product_specific_tier_price_rule.range:
+        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRangeType
+        arguments:
+            - '%coreshop.model.product_tier_price_range.class%'
+            - '%coreshop.form.type.product_specific_tier_price_rule.range.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.product_specific_tier_price_rule.type.rule_condition.collection:
+        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleConditionCollectionType
+        arguments:
+            - '@coreshop.registry.product_specific_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.product_specific_tier_price_rule.type.rule_condition:
+        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleConditionType
+        arguments:
+            - '%coreshop.model.rule_condition.class%'
+            - '%coreshop.form.type.product_specific_price_rule.rule_condition.validation_groups%'
+            - '@coreshop.form_registry.product_specific_price_rule.conditions'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.product_specific_tier_price_rule.type.rule_condition_choice:
+        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleConditionChoiceType
+        arguments:
+            - '%coreshop.product_specific_tier_price_rule.conditions%'
+        tags:
+            - { name: form.type }
+
+    # Services
+    coreshop.registry.product_specific_tier_price_rule.conditions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
+            - specific-product-tier-price-rule-conditions
+
+    coreshop.form_registry.product_specific_tier_price_rule.conditions:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    # Price Rule Processor
+    coreshop.product_specific_tier_price_rule.conditions.processor:
+        class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor
+        shared: false
+        arguments:
+            - '@coreshop.registry.product_specific_tier_price_rule.conditions'
+            - 'Product Specific Tier Price Rules'
+
+    coreshop.product_specific_tier_price_rule.processor:
+        class: CoreShop\Component\Rule\Condition\RuleValidationProcessor
+        arguments:
+            - '@coreshop.product_specific_tier_price_rule.conditions.processor'
+
+    # Price Calculators
+#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher:
+#        class: CoreShop\Component\TierPricing\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher
+#        arguments:
+#            - '@coreshop.product_specific_price_rule.processor'
+#        tags:
+#            - { name: coreshop.product.rules.fetcher, type: product-specific-tiering-rules }
+#
+#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached:
+#        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
+#        decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
+#        arguments:
+#            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached.inner'
+#            - '@request_stack'
+#
+#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
+#      class: CoreShop\Component\Product\Rule\Calculator\ProductPriceRuleCalculator
+#      arguments:
+#          - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
+#          - '@coreshop.registry.product_specific_price_rule.actions'
+#      tags:
+#          - { name: coreshop.product.retail_price_calculator, type: product_specific_tier_price_rules, priority: 30 }
+#          - { name: coreshop.product.discount_price_calculator, type: product_specific_tier_price_rules, priority: 30 }
+#          - { name: coreshop.product.discount_calculator, type: product_specific_tier_price_rules, priority: 30 }
+#

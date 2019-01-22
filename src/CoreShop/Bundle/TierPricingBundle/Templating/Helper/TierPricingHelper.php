@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class TierPricingHelper extends Helper implements TierPricingHelperInterface
@@ -37,16 +36,7 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
      */
     public function hasActiveTierPricing(ProductInterface $product)
     {
-        if (!method_exists($product, 'getTierPricing')) {
-            return false;
-        }
-
-        $tierPrice = $product->getTierPricing($this->shopperContext->getStore());
-        if (!$tierPrice instanceof ProductTierPriceInterface) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 
     /**
@@ -54,16 +44,7 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
      */
     public function getTierPriceRanges(ProductInterface $product)
     {
-        if ($this->hasActiveTierPricing($product) === false) {
-            return [];
-        }
-
-        /** @var ProductTierPriceInterface $tierPrice */
-        $tierPrice = $product->getTierPricing($this->shopperContext->getStore());
-        $ranges = $tierPrice->getRanges();
-
-        return $ranges->toArray();
-
+        return [];
     }
 
     /**

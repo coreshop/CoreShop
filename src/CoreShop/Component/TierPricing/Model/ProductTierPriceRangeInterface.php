@@ -17,16 +17,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface ProductTierPriceRangeInterface extends ResourceInterface
 {
     /**
-     * @return ProductTierPriceInterface
-     */
-    public function getTierPrice();
-
-    /**
-     * @param ProductTierPriceInterface $tierPrice
-     */
-    public function setTierPrice(ProductTierPriceInterface $tierPrice);
-
-    /**
      * @return int
      */
     public function getRangeFrom();

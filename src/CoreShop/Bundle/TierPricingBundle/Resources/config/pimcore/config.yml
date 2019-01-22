@@ -6,4 +6,4 @@ pimcore:
         class_definitions:
             data:
                 map:
-                    coreShopTierPrice: CoreShop\Bundle\TierPricingBundle\CoreExtension\TierPrice
+                    coreShopProductSpecificTierPriceRules: CoreShop\Bundle\TierPricingBundle\CoreExtension\ProductSpecificTierPriceRules

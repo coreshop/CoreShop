@@ -14,9 +14,11 @@ namespace CoreShop\Component\TierPricing\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Order\Processor\CartItemsProcessor;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\TierPricing\Locator\TierPriceLocatorInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use Webmozart\Assert\Assert;
@@ -24,7 +26,7 @@ use Webmozart\Assert\Assert;
 class CartItemTierPriceProcessor implements CartProcessorInterface
 {
     /**
-     * @var CartProcessorInterface
+     * @var CartItemsProcessor
      */
     protected $innerCartProcessor;
 
@@ -39,18 +41,26 @@ class CartItemTierPriceProcessor implements CartProcessorInterface
     private $productPriceCalculator;
 
     /**
+     * @var CartItemProcessorInterface
+     */
+    private $cartItemProcessor;
+
+    /**
      * @param CartProcessorInterface         $innerCartProcessor
      * @param TierPriceLocatorInterface      $tierPriceLocator
      * @param PurchasableCalculatorInterface $productPriceCalculator
+     * @param CartItemProcessorInterface     $cartItemProcessor
      */
     public function __construct(
         CartProcessorInterface $innerCartProcessor,
         TierPriceLocatorInterface $tierPriceLocator,
-        PurchasableCalculatorInterface $productPriceCalculator
+        PurchasableCalculatorInterface $productPriceCalculator,
+        CartItemProcessorInterface $cartItemProcessor
     ) {
         $this->innerCartProcessor = $innerCartProcessor;
         $this->tierPriceLocator = $tierPriceLocator;
         $this->productPriceCalculator = $productPriceCalculator;
+        $this->cartItemProcessor = $cartItemProcessor;
     }
 
     /**
@@ -78,15 +88,28 @@ class CartItemTierPriceProcessor implements CartProcessorInterface
          */
         foreach ($cart->getItems() as $item) {
 
-            $tierItemPrice = $this->tierPriceLocator->locate($item->getProduct(), $store, $item->getQuantity());
+            //$tierItemPrice = $this->tierPriceLocator->locate(null, $item->getQuantity());
+            $tierItemPrice = null;
+
             if ($tierItemPrice instanceof ProductTierPriceRangeInterface) {
                 $itemPrice = $tierItemPrice->getPrice();
             } else {
                 $itemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
             }
 
-            $this->innerCartProcessor->processItem($item, $itemPrice, $context);
+            $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($item->getProduct(), $context);
+            $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($item->getProduct(), $context);
+            $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($item->getProduct(), $context);
+            $itemDiscount = $this->productPriceCalculator->getDiscount($item->getProduct(), $context, $itemPriceWithoutDiscount);
 
+            $this->cartItemProcessor->processCartItem(
+                $item,
+                $itemPrice,
+                $itemRetailPrice,
+                $itemDiscountPrice,
+                $itemDiscount,
+                $context
+            );
         }
     }
 }

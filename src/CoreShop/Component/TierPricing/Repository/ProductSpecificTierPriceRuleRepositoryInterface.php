@@ -10,18 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\TierPricing\Locator;
+namespace CoreShop\Component\TierPricing\Repository;
 
+use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 
-interface TierPriceLocatorInterface
+interface ProductSpecificTierPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
-     * @param ProductSpecificTierPriceRuleInterface $priceRule
-     * @param int                                   $quantity
+     * @param ProductInterface $product
      *
-     * @return ProductTierPriceRangeInterface|null
+     * @return ProductSpecificTierPriceRuleInterface[]
      */
-    public function locate(ProductSpecificTierPriceRuleInterface $priceRule, int $quantity);
+    public function findForProduct(ProductInterface $product);
 }

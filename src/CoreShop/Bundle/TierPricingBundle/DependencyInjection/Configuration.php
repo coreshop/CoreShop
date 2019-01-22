@@ -12,16 +12,17 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\DependencyInjection;
 
-use CoreShop\Bundle\TierPricingBundle\Doctrine\ORM\ProductTierPriceRepository;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceRange;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use CoreShop\Component\TierPricing\Model\ProductTierPrice;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceInterface;
 use CoreShop\Component\Resource\Factory\Factory;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleType;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRange;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
+use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRule;
+use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
+use CoreShop\Bundle\TierPricingBundle\Doctrine\ORM\ProductSpecificTierPriceRuleRepository;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -53,21 +54,6 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->arrayNode('product_tier_price')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(ProductTierPrice::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductTierPriceInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ProductTierPriceRepository::class)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
                         ->arrayNode('product_tier_price_range')
                             ->addDefaultsIfNotSet()
                             ->children()
@@ -83,6 +69,24 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
+
+                        ->arrayNode('product_specific_tier_price_rule')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(ProductSpecificTierPriceRule::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProductSpecificTierPriceRuleInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(ProductSpecificTierPriceRuleRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(ProductSpecificTierPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+
                     ->end()
                 ->end()
             ->end();

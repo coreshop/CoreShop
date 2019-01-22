@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\InventoryBundle\Twig;
+namespace CoreShop\Bundle\TierPricingBundle\Twig;
 
 use CoreShop\Bundle\TierPricingBundle\Templating\Helper\TierPricingHelper;
 

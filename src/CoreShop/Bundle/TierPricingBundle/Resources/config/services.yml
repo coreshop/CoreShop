@@ -1,3 +1,7 @@
+imports:
+    - { resource: "services/rules.yml" }
+    - { resource: "services/specific-tier-price-rules.yml" }
+
 services:
 
     coreshop.templating.helper.tier_pricing:
@@ -8,7 +12,7 @@ services:
             - { name: templating.helper, alias: coreshop_inventory }
 
     coreshop.twig.extension.tier_pricing:
-        class: CoreShop\Bundle\InventoryBundle\Twig\TierPricingExtension
+        class: CoreShop\Bundle\TierPricingBundle\Twig\TierPricingExtension
         public: false
         arguments:
           - '@coreshop.templating.helper.tier_pricing'
@@ -26,5 +30,6 @@ services:
             - '@coreshop.cart_processor.items.inner'
             - '@coreshop.tier_pricing.locator.tier_price'
             - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.cart_item.processor'
         tags:
             - { name: coreshop.cart_processor, priority: 580 }
