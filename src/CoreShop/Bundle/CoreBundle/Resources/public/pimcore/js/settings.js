@@ -450,7 +450,7 @@ coreshop.core.settings = Class.create({
                         },
                         {
                             fieldLabel: t('coreshop_wkhtmltopdf_params'),
-                            name: 'system.invoice.wktml',
+                            name: 'system.invoice.wkhtml',
                             value: this.getValue(shopId, 'system.invoice.wkhtml')
                         }
                     ]
