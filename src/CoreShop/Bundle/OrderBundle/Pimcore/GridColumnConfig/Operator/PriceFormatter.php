@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
@@ -64,7 +65,11 @@ class PriceFormatter extends AbstractOperator
         $c = $children[0];
         $result = $c->getLabeledValue($element);
 
-        if ($element instanceof SaleInterface) {
+        if ($element instanceof CurrencyAwareInterface) {
+            $currency = $element->getCurrency();
+            $result->value = $this->moneyFormatter->format($result->value, $currency->getIsoCode(), $this->localeService->getLocaleCode());
+        }
+        elseif ($element instanceof SaleInterface) {
             $store = $element->getStore();
             $result->value = $this->moneyFormatter->format($result->value, $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
         }
