@@ -1,8 +1,8 @@
-pimcore.registerNS('pimcore.object.gridcolumn.operator.priceformatter');
+pimcore.registerNS('pimcore.object.gridcolumn.operator.coreshop_price_formatter');
 
-pimcore.object.gridcolumn.operator.priceformatter = Class.create(pimcore.object.gridcolumn.Abstract, {
+pimcore.object.gridcolumn.operator.coreshop_price_formatter = Class.create(pimcore.object.gridcolumn.Abstract, {
     type: 'operator',
-    class: 'PriceFormatter',
+    class: 'coreshop_price_formatter',
     iconCls: 'coreshop_icon_operator_priceformatter',
     defaultText: 'coreshop_operator_priceformatter',
     group: 'coreshop',
