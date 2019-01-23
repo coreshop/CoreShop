@@ -32,17 +32,17 @@ class CartItemTierPriceProcessor implements CartProcessorInterface
     /**
      * @var PurchasableCalculatorInterface
      */
-    private $productPriceCalculator;
+    protected $productPriceCalculator;
+
+    /**
+     * @var ProductTierPriceCalculatorInterface
+     */
+    protected $productTierPriceCalculator;
 
     /**
      * @var CartItemProcessorInterface
      */
-    private $productTierPriceCalculator;
-
-    /**
-     * @var CartItemProcessorInterface
-     */
-    private $cartItemProcessor;
+    protected $cartItemProcessor;
 
     /**
      * @param CartProcessorInterface              $innerCartProcessor

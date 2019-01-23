@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class TierPricingHelper extends Helper implements TierPricingHelperInterface
@@ -24,11 +25,20 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
     protected $shopperContext;
 
     /**
-     * @param ShopperContextInterface $shopperContext
+     * @var ProductTierPriceCalculatorInterface
      */
-    public function __construct(ShopperContextInterface $shopperContext
+    protected $productTierPriceCalculator;
+
+    /**
+     * @param ShopperContextInterface             $shopperContext
+     * @param ProductTierPriceCalculatorInterface $productTierPriceCalculator
+     */
+    public function __construct(
+        ShopperContextInterface $shopperContext,
+        ProductTierPriceCalculatorInterface $productTierPriceCalculator
     ) {
         $this->shopperContext = $shopperContext;
+        $this->productTierPriceCalculator = $productTierPriceCalculator;
     }
 
     /**
@@ -36,7 +46,13 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
      */
     public function hasActiveTierPricing(ProductInterface $product)
     {
-        return false;
+        $tierPriceRules = $this->productTierPriceCalculator->getTierPriceRulesForProduct($product, $this->shopperContext->getContext());
+
+        if (count($tierPriceRules) === 0) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -44,7 +60,14 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
      */
     public function getTierPriceRanges(ProductInterface $product)
     {
-        return [];
+        if ($this->hasActiveTierPricing($product) === false) {
+            return [];
+        }
+
+        $tierPriceRules = $this->productTierPriceCalculator->getTierPriceRulesForProduct($product, $this->shopperContext->getContext());
+        $tierPriceRule = $tierPriceRules[0];
+
+        return $tierPriceRule->getRanges();
     }
 
     /**

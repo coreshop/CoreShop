@@ -1,6 +1,6 @@
 imports:
-    - { resource: "services/rules.yml" }
-    - { resource: "services/specific-tier-price-rules.yml" }
+    - { resource: 'services/rules.yml' }
+    - { resource: 'services/specific-tier-price-rules.yml' }
 
 services:
 
@@ -8,6 +8,7 @@ services:
         class: CoreShop\Bundle\TierPricingBundle\Templating\Helper\TierPricingHelper
         arguments:
             - '@coreshop.context.shopper'
+            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
         tags:
             - { name: templating.helper, alias: coreshop_inventory }
 

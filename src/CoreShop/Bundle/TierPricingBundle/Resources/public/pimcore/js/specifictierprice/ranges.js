@@ -18,59 +18,31 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         this.ruleId = ruleId;
     },
 
-    postSaveObject: function (object, task, fieldName) {
+    postSaveObject: function (object, refreshedData, task, fieldName) {
         if (this.isDirty()) {
-            this.remapTierPriceIds(object, fieldName);
+            this.remapTierPriceIds(refreshedData);
         } else {
             this.commitStoreChanges();
         }
     },
 
-    remapTierPriceIds: function (object, fieldName) {
+    remapTierPriceIds: function (refreshedData) {
 
-        if (this.ruleId === null) {
+        var grid = this.rangesContainer.query('[name=tier-price-grid]')[0];
+
+        if (this.ruleId === null || refreshedData === null) {
             this.commitStoreChanges();
             return;
         }
 
         this.rangesContainer.setLoading(true);
 
-        Ext.Ajax.request({
-            url: '/admin/object/get',
-            params: {id: object.id},
-            ignoreErrors: true,
-            success: function (response) {
-                try {
-                    var dataObject = Ext.decode(response.responseText);
-                    if (!dataObject.hasOwnProperty('data') || !dataObject.data.hasOwnProperty(fieldName)) {
-                        this.rangesContainer.setLoading(false);
-                        return;
-                    }
+        if (refreshedData.hasOwnProperty('ranges') && Ext.isArray(refreshedData.ranges)) {
+            grid.getStore().setData(this.adjustRangeStoreData(refreshedData.ranges));
+        }
 
-                    var tierPriceRules = dataObject.data[fieldName],
-                        grid = this.rangesContainer.query('[name=tier-price-grid]')[0];
-
-                    if (tierPriceRules.hasOwnProperty('rules') && Ext.isArray(tierPriceRules.rules)) {
-                        Ext.Array.each(tierPriceRules.rules, function (rule, key) {
-                            if (rule.id === this.ruleId && rule.hasOwnProperty('ranges') && Ext.isArray(rule.ranges)) {
-                                grid.getStore().setData(this.adjustRangeStoreData(rule.ranges));
-                            }
-                        }.bind(this));
-                    }
-
-                    this.commitStoreChanges();
-
-                } catch (e) {
-                    console.log(e);
-                }
-
-                this.rangesContainer.setLoading(false);
-
-            }.bind(this),
-            failure: function () {
-                this.rangesContainer.setLoading(false);
-            }.bind(this),
-        });
+        this.rangesContainer.setLoading(false);
+        this.commitStoreChanges();
     },
 
     commitStoreChanges: function () {
@@ -143,7 +115,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     sortable: false,
                     dataIndex: 'rangeId',
                     hideable: false,
-                    //hidden: true
+                    hidden: true
                 },
                 {
                     text: t('coreshop_tier_range_from'),

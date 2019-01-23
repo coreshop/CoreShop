@@ -46,22 +46,49 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
     /**
      * {@inheritdoc}
      */
+    public function getTierPriceRulesForProduct(ProductInterface $subject, array $context)
+    {
+        /** @var ProductSpecificTierPriceRuleInterface[] $rules */
+        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+
+        if (!is_array($rules)) {
+            return [];
+        }
+
+        // sort by priority! higher prio first!
+        usort($rules, function (ProductSpecificTierPriceRuleInterface $a, ProductSpecificTierPriceRuleInterface $b) {
+            if ($a->getPriority() === $b->getPriority()) {
+                return 0;
+            }
+            return ($a->getPriority() > $b->getPriority()) ? -1 : 1;
+        });
+
+        return $rules;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTierPriceForCartItem(ProductInterface $subject, CartItemInterface $cartItem, array $context)
     {
         $price = 0;
 
         /** @var ProductSpecificTierPriceRuleInterface[] $rules */
-        $rules = $this->validRulesFetcher->getValidRules($subject, $context);
+        $tierPriceRules = $this->getTierPriceRulesForProduct($subject, $context);
 
-        if (!is_array($rules)) {
+        if (!is_array($tierPriceRules)) {
             return false;
         }
 
-        foreach ($rules as $rule) {
-            $locatedTierPrice = $this->tierPriceLocator->locate($rule->getRanges(), $cartItem->getQuantity());
-            if ($locatedTierPrice instanceof ProductTierPriceRangeInterface) {
-                $price = $locatedTierPrice->getPrice();
-            }
+        if (count($tierPriceRules) === 0) {
+            return false;
+        }
+
+        $tierPriceRule = $tierPriceRules[0];
+        $locatedTierPrice = $this->tierPriceLocator->locate($tierPriceRule->getRanges(), $cartItem->getQuantity());
+
+        if ($locatedTierPrice instanceof ProductTierPriceRangeInterface) {
+            $price = $locatedTierPrice->getPrice();
         }
 
         return $price === 0 ? false : $price;

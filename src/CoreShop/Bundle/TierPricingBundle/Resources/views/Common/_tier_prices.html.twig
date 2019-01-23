@@ -4,17 +4,21 @@
     <h3>{{ 'coreshop.ui.tier_pricing.tier_prices' }}</h3>
     <table class="table table-striped">
         <thead class="">
-            <tr class="">
-                <th scope="col">{{ 'coreshop.ui.tier_pricing.quantity' }}</th>
-                <th scope="col">{{ 'coreshop.ui.tier_pricing.price_per_item' }}</th>
-            </tr>
-            </thead>
+        <tr class="">
+            <th scope="col">{{ 'coreshop.ui.tier_pricing.quantity' }}</th>
+            <th scope="col">{{ 'coreshop.ui.tier_pricing.price_per_item' }}</th>
+        </tr>
+        </thead>
         <tbody class="">
         {% for range in ranges %}
             <tr class="">
                 <td class="">{{ 'coreshop.ui.tier_pricing.starting_from' }} <span class="">{{ range.getRangeFrom() }}</span>
                 </td>
-                <td class="">{{ currency.convertAndFormat(range.getPrice()) }}</td>
+                <td class="">{{ currency.convertAndFormat(range.getPrice()) }}
+                    {% if range.isHighlighted() %}
+                        <span class="badge badge-info">{{ 'best offer' }}</span>
+                    {% endif %}
+                </td>
             </tr>
         {% endfor %}
         </tbody>

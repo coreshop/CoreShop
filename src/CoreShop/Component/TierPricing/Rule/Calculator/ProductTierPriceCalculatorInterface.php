@@ -14,9 +14,18 @@ namespace CoreShop\Component\TierPricing\Rule\Calculator;
 
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 
 interface ProductTierPriceCalculatorInterface
 {
+    /**
+     * @param ProductInterface $subject
+     * @param array            $context
+     *
+     * @return array|ProductSpecificTierPriceRuleInterface[]
+     */
+    public function getTierPriceRulesForProduct(ProductInterface $subject, array $context);
+
     /**
      * @param ProductInterface  $subject
      * @param CartItemInterface $cartItem

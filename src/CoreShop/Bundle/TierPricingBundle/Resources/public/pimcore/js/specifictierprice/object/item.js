@@ -16,7 +16,14 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
 
     iconCls: 'coreshop_icon_price_rule',
 
+    postSaveObject: function (object, refreshedRuleData, task, fieldName) {
+        // remove dirty flag!
+        this.settingsForm.getForm().setValues(this.settingsForm.getForm().getValues());
+        this.ranges.postSaveObject(object, refreshedRuleData, task, fieldName);
+    },
+
     getPanel: function () {
+
         this.panel = new Ext.TabPanel({
             activeTab: 0,
             closable: true,
@@ -24,10 +31,8 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
             forceLayout: true,
             iconCls: this.iconCls,
             items: this.getItems(),
-            listeners: {
-                added: function (panel) {
-                    panel.setTitle(this.generatePanelTitle(this.data.name, this.data.active));
-                }.bind(this)
+            tabConfig: {
+                html: this.generatePanelTitle(this.data.name, this.data.active)
             }
         });
 
@@ -46,7 +51,6 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
     initPanel: function () {
         this.panel = this.getPanel();
         this.parentPanel.getTabPanel().add(this.panel);
-        this.parentPanel.getTabPanel().setActiveTab(this.panel);
     },
 
     getRangeContainerClass: function () {
@@ -84,78 +88,76 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
     },
 
     getSettings: function () {
-        var data = this.data;
-
         this.settingsForm = Ext.create('Ext.form.Panel', {
+            trackResetOnLoad: true,
             iconCls: 'coreshop_icon_settings',
             title: t('settings'),
             bodyStyle: 'padding:10px;',
             autoScroll: true,
             border: false,
-            items: [{
-                xtype: 'textfield',
-                name: 'name',
-                fieldLabel: t('name'),
-                width: 250,
-                value: data.name,
-                enableKeyEvents: true,
-                listeners: {
-                    keyup: function(field) {
-                        var activeField = field.up('form').getForm().findField('active');
-                        this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue()));
-                    }.bind(this)
-                }
-            }, {
-                xtype: 'numberfield',
-                name: 'priority',
-                fieldLabel: t('coreshop_priority'),
-                value: this.data.priority ? this.data.priority : 0,
-                width: 250
-            }, {
-                xtype: 'checkbox',
-                name: 'inherit',
-                fieldLabel: t('coreshop_inherit'),
-                hidden: true, // currently not implemented
-                checked: this.data.inherit == '1'
-            }, {
-                xtype: 'checkbox',
-                name: 'active',
-                fieldLabel: t('active'),
-                checked: this.data.active,
-                listeners: {
-                    change: function(field, state) {
-                        var nameField = field.up('form').getForm().findField('name');
-                        this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue()));
-                    }.bind(this)
-                }
-            }]
+            items: [
+                {
+                    xtype: 'textfield',
+                    name: 'name',
+                    fieldLabel: t('name'),
+                    width: 250,
+                    value: this.data.name,
+                    enableKeyEvents: true,
+                    listeners: {
+                        keyup: function (field) {
+                            var activeField = field.up('form').getForm().findField('active');
+                            this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue()));
+                        }.bind(this)
+                    }
+                }, {
+                    xtype: 'numberfield',
+                    name: 'priority',
+                    fieldLabel: t('coreshop_priority'),
+                    value: this.data.priority ? this.data.priority : 0,
+                    width: 250
+                }, {
+                    xtype: 'checkbox',
+                    name: 'active',
+                    fieldLabel: t('active'),
+                    checked: this.data.active,
+                    listeners: {
+                        change: function (field, state) {
+                            var nameField = field.up('form').getForm().findField('name');
+                            this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue()));
+                        }.bind(this)
+                    }
+                }]
         });
 
         return this.settingsForm;
     },
 
-    getSaveData: function () {
-        var saveData;
-        if (this.settingsForm.getEl()) {
-            saveData = this.settingsForm.getForm().getFieldValues();
-            saveData['conditions'] = this.conditions.getConditionsData();
-            saveData['ranges'] = this.ranges.getRangesData();
-
-            if (this.data.id) {
-                saveData['id'] = this.data.id;
-            }
-
-            return saveData;
-        }
-
-        return {};
+    getId: function () {
+        return this.data.id ? this.data.id : null;
     },
 
-    postSaveObject: function(object, task, fieldName) {
-        this.ranges.postSaveObject(object, task, fieldName);
+    getSaveData: function () {
+
+        var saveData;
+
+        if (!this.settingsForm.getForm()) {
+            return {};
+        }
+
+        saveData = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['ranges'] = this.ranges.getRangesData();
+
+        if (this.data.id) {
+            saveData['id'] = this.data.id;
+        }
+
+        return saveData;
+
     },
 
     isDirty: function () {
+
         if (this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
             return true;
         }
@@ -164,6 +166,10 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
             return true;
         }
 
-        return !!this.ranges.isDirty();
+        if (this.ranges.isDirty()) {
+            return true;
+        }
+
+        return false;
     }
 });

@@ -183,7 +183,6 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             handler: function (grid, rowIndex) {
                                 var record = grid.getStore().getAt(rowIndex);
                                 grid.getStore().removeAt(rowIndex);
-                                console.log(record);
                             }.bind(this)
                         }]
                     }

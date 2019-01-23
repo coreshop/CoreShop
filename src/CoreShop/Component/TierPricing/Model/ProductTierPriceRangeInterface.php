@@ -62,6 +62,11 @@ interface ProductTierPriceRangeInterface extends ResourceInterface
     public function getHighlighted();
 
     /**
+     * @return bool
+     */
+    public function isHighlighted();
+
+    /**
      * @param bool $highlighted
      */
     public function setHighlighted(bool $highlighted);

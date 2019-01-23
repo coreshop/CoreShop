@@ -137,6 +137,14 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     /**
      * @inheritdoc
      */
+    public function isHighlighted()
+    {
+        return $this->highlighted === true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function setHighlighted(bool $highlighted)
     {
         $this->highlighted = $highlighted;
