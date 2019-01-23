@@ -12,23 +12,23 @@
 
 namespace CoreShop\Component\TierPricing\Locator;
 
-use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
+use Doctrine\Common\Collections\Collection;
 
 class TierPriceLocator implements TierPriceLocatorInterface
 {
     /**
      * @inheritdoc
      */
-    public function locate(ProductSpecificTierPriceRuleInterface $priceRule, int $quantity)
+    public function locate(Collection $ranges, int $quantity)
     {
-        if ($priceRule->getRanges()->isEmpty()) {
+        if ($ranges->isEmpty()) {
             return null;
         }
 
         $cheapestTierPrice = null;
         /** @var ProductTierPriceRangeInterface $range */
-        foreach ($priceRule->getRanges() as $range) {
+        foreach ($ranges as $range) {
             if ($range->getRangeFrom() > $quantity) {
                 break;
             }

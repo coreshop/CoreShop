@@ -12,14 +12,12 @@
 
 namespace CoreShop\Component\TierPricing\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Model\TimestampableInterface;
-use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 
+use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface ProductSpecificTierPriceRuleInterface extends ResourceInterface, TimestampableInterface, ToggleableInterface
+interface ProductSpecificTierPriceRuleInterface extends RuleInterface
 {
     /**
      * @return string

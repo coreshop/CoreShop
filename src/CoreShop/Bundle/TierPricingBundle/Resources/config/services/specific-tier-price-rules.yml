@@ -72,27 +72,22 @@ services:
             - '@coreshop.product_specific_tier_price_rule.conditions.processor'
 
     # Price Calculators
-#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher:
-#        class: CoreShop\Component\TierPricing\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher
-#        arguments:
-#            - '@coreshop.product_specific_price_rule.processor'
-#        tags:
-#            - { name: coreshop.product.rules.fetcher, type: product-specific-tiering-rules }
-#
-#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached:
-#        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
-#        decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
-#        arguments:
-#            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached.inner'
-#            - '@request_stack'
-#
-#    coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
-#      class: CoreShop\Component\Product\Rule\Calculator\ProductPriceRuleCalculator
-#      arguments:
-#          - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
-#          - '@coreshop.registry.product_specific_price_rule.actions'
-#      tags:
-#          - { name: coreshop.product.retail_price_calculator, type: product_specific_tier_price_rules, priority: 30 }
-#          - { name: coreshop.product.discount_price_calculator, type: product_specific_tier_price_rules, priority: 30 }
-#          - { name: coreshop.product.discount_calculator, type: product_specific_tier_price_rules, priority: 30 }
-#
+    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher:
+        class: CoreShop\Component\TierPricing\Rule\Fetcher\ValidProductSpecificTierPriceRuleFetcher
+        arguments:
+            - '@coreshop.product_specific_tier_price_rule.processor'
+        tags:
+            - { name: coreshop.product.rules.fetcher, type: product-specific-tiering-rules }
+
+    coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached:
+        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
+        decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
+        arguments:
+            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached.inner'
+            - '@request_stack'
+
+    coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
+      class: CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculator
+      arguments:
+          - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
+          - '@coreshop.tier_pricing.locator.tier_price'

@@ -28,8 +28,8 @@ services:
         decoration_inner_name: coreshop.cart_processor.items.inner
         arguments:
             - '@coreshop.cart_processor.items.inner'
-            - '@coreshop.tier_pricing.locator.tier_price'
             - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
             - '@coreshop.cart_item.processor'
         tags:
             - { name: coreshop.cart_processor, priority: 580 }

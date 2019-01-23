@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\TierPricing\Model;
 
+use CoreShop\Component\Rule\Model\ActionInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
@@ -132,6 +133,45 @@ class ProductSpecificTierPriceRule implements ProductSpecificTierPriceRuleInterf
         $this->conditions->removeElement($condition);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        return new ArrayCollection();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasActions()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAction(ActionInterface $action)
+    {
+        throw new \Exception('actions are not supported in tier price rules. use hasRange() instead.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAction(ActionInterface $range)
+    {
+        throw new \Exception('actions are not supported in tier price rules. use addRange() instead.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAction(ActionInterface $range)
+    {
+        throw new \Exception('actions are not supported in tier price rules. use addRange() instead.');
+    }
 
     /**
      * {@inheritdoc}

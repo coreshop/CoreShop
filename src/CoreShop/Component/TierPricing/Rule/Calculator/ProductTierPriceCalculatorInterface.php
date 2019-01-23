@@ -10,18 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\TierPricing\Locator;
+namespace CoreShop\Component\TierPricing\Rule\Calculator;
 
-use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
-use Doctrine\Common\Collections\Collection;
+use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 
-interface TierPriceLocatorInterface
+interface ProductTierPriceCalculatorInterface
 {
     /**
-     * @param Collection|ProductTierPriceRangeInterface[] $ranges
-     * @param int             $quantity
+     * @param ProductInterface  $subject
+     * @param CartItemInterface $cartItem
+     * @param array             $context
      *
-     * @return ProductTierPriceRangeInterface|null
+     * @return bool|int
      */
-    public function locate(Collection $ranges, int $quantity);
+    public function getTierPriceForCartItem(ProductInterface $subject, CartItemInterface $cartItem, array $context);
 }
