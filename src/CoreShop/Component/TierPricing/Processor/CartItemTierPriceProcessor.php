@@ -87,12 +87,13 @@ class CartItemTierPriceProcessor implements CartProcessorInterface
          */
         foreach ($cart->getItems() as $item) {
 
+            $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
             $tierItemPrice = $this->productTierPriceCalculator->getTierPriceForCartItem($item->getProduct(), $item, $context);
 
-            if ($tierItemPrice !== false) {
-                $itemPrice = $tierItemPrice;
+            if ($tierItemPrice === false) {
+                $itemPrice = $realItemPrice;
             } else {
-                $itemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
+                $itemPrice = $tierItemPrice;
             }
 
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($item->getProduct(), $context);

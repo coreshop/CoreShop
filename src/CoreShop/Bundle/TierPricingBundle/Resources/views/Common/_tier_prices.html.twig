@@ -1,4 +1,4 @@
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
 <div class="tier-prices d-block">
     <h3>{{ 'coreshop.ui.tier_pricing.tier_prices' }}</h3>
@@ -14,7 +14,7 @@
             <tr class="">
                 <td class="">{{ 'coreshop.ui.tier_pricing.starting_from' }} <span class="">{{ range.getRangeFrom() }}</span>
                 </td>
-                <td class="">{{ currency.convertAndFormat(range.getPrice()) }}
+                <td class="">{{ currency.convertAndFormat( coreshop_get_calculated_tier_price(range, product) ) }}
                     {% if range.isHighlighted() %}
                         <span class="badge badge-info">{{ 'best offer' }}</span>
                     {% endif %}

@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 
 interface TierPricingHelperInterface
 {
@@ -29,5 +30,13 @@ interface TierPricingHelperInterface
      * @return array
      */
     public function getTierPriceRanges(ProductInterface $product);
+
+    /**
+     * @param ProductTierPriceRangeInterface $range
+     * @param ProductInterface               $product
+     *
+     * @return mixed
+     */
+    public function getCalculatedRangePrice(ProductTierPriceRangeInterface $range, ProductInterface $product);
 
 }

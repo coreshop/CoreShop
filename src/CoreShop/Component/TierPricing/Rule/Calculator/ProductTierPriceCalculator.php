@@ -13,6 +13,7 @@
 namespace CoreShop\Component\TierPricing\Rule\Calculator;
 
 use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\TierPricing\Locator\TierPriceLocatorInterface;
@@ -21,6 +22,11 @@ use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 
 final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInterface
 {
+    /**
+     * @var PurchasableCalculatorInterface
+     */
+    protected $productPriceCalculator;
+
     /**
      * @var ValidRulesFetcherInterface
      */
@@ -32,13 +38,16 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
     private $tierPriceLocator;
 
     /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param TierPriceLocatorInterface  $tierPriceLocator
+     * @param PurchasableCalculatorInterface $productPriceCalculator
+     * @param ValidRulesFetcherInterface     $validRulesFetcher
+     * @param TierPriceLocatorInterface      $tierPriceLocator
      */
     public function __construct(
+        PurchasableCalculatorInterface $productPriceCalculator,
         ValidRulesFetcherInterface $validRulesFetcher,
         TierPriceLocatorInterface $tierPriceLocator
     ) {
+        $this->productPriceCalculator = $productPriceCalculator;
         $this->validRulesFetcher = $validRulesFetcher;
         $this->tierPriceLocator = $tierPriceLocator;
     }
@@ -71,8 +80,6 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
      */
     public function getTierPriceForCartItem(ProductInterface $subject, CartItemInterface $cartItem, array $context)
     {
-        $price = 0;
-
         /** @var ProductSpecificTierPriceRuleInterface[] $rules */
         $tierPriceRules = $this->getTierPriceRulesForProduct($subject, $context);
 
@@ -87,10 +94,37 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
         $tierPriceRule = $tierPriceRules[0];
         $locatedTierPrice = $this->tierPriceLocator->locate($tierPriceRule->getRanges(), $cartItem->getQuantity());
 
-        if ($locatedTierPrice instanceof ProductTierPriceRangeInterface) {
-            $price = $locatedTierPrice->getPrice();
+        if (!$locatedTierPrice instanceof ProductTierPriceRangeInterface) {
+            return false;
         }
 
-        return $price === 0 ? false : $price;
+        $price = $this->calculateRangePrice($locatedTierPrice, $subject, $context);
+
+        return !is_numeric($price) || $price === 0 ? false : $price;
+    }
+
+    /**
+     * @param ProductTierPriceRangeInterface $range
+     * @param ProductInterface               $subject
+     * @param array                          $context
+     *
+     * @return bool|int|string
+     */
+    public function calculateRangePrice(ProductTierPriceRangeInterface $range, ProductInterface $subject, array $context)
+    {
+        $realItemPrice = $this->productPriceCalculator->getPrice($subject, $context, true);
+
+        $tierPrice = $range->getPrice();
+        $tierPercentageDiscount = $price = $range->getPercentageDiscount();
+
+        if ($tierPercentageDiscount > 0) {
+            $price = (int)round(($tierPercentageDiscount / 100) * $realItemPrice);
+        } else {
+            // @todo: calculate with currency?
+            $price = $tierPrice;
+        }
+
+        return $price;
+
     }
 }

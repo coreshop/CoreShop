@@ -13,7 +13,9 @@
 namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
@@ -25,19 +27,27 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
     protected $shopperContext;
 
     /**
+     * @var TaxedProductPriceCalculatorInterface
+     */
+    private $productPriceCalculator;
+
+    /**
      * @var ProductTierPriceCalculatorInterface
      */
     protected $productTierPriceCalculator;
 
     /**
      * @param ShopperContextInterface             $shopperContext
+     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
      * @param ProductTierPriceCalculatorInterface $productTierPriceCalculator
      */
     public function __construct(
         ShopperContextInterface $shopperContext,
+        TaxedProductPriceCalculatorInterface $productPriceCalculator,
         ProductTierPriceCalculatorInterface $productTierPriceCalculator
     ) {
         $this->shopperContext = $shopperContext;
+        $this->productPriceCalculator = $productPriceCalculator;
         $this->productTierPriceCalculator = $productTierPriceCalculator;
     }
 
@@ -68,6 +78,16 @@ class TierPricingHelper extends Helper implements TierPricingHelperInterface
         $tierPriceRule = $tierPriceRules[0];
 
         return $tierPriceRule->getRanges();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCalculatedRangePrice(ProductTierPriceRangeInterface $range, ProductInterface $product)
+    {
+        $price = $this->productTierPriceCalculator->calculateRangePrice($range, $product, $this->shopperContext->getContext());
+
+        return $price;
     }
 
     /**

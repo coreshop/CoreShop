@@ -8,6 +8,7 @@ services:
         class: CoreShop\Bundle\TierPricingBundle\Templating\Helper\TierPricingHelper
         arguments:
             - '@coreshop.context.shopper'
+            - '@coreshop.product.taxed_price_calculator'
             - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
         tags:
             - { name: templating.helper, alias: coreshop_inventory }

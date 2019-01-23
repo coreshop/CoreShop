@@ -165,11 +165,12 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                             minValue: 0
                         });
                     },
-                    renderer: function (value) {
+                    renderer: function (value, d) {
                         if (value === undefined) {
                             // @todo: find currency (from currency row / selector (?)
                             return coreshop.util.format.currency('', 0);
                         } else {
+                            d.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
                             return coreshop.util.format.currency('', parseFloat(value) * 100);
                         }
                     }
@@ -186,8 +187,9 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                             maxValue: 100
                         });
                     }.bind(this),
-                    renderer: function (value) {
+                    renderer: function (value, d) {
                         if (value !== undefined) {
+                            d.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
                             return value + '%';
                         }
                         return '--';

@@ -37,6 +37,7 @@ final class TierPricingExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('coreshop_tier_pricing_available', [$this->helper, 'hasActiveTierPricing']),
             new \Twig_SimpleFunction('coreshop_get_tier_price_ranges', [$this->helper, 'getTierPriceRanges']),
+            new \Twig_SimpleFunction('coreshop_get_calculated_tier_price', [$this->helper, 'getCalculatedRangePrice']),
         ];
     }
 }

@@ -89,5 +89,6 @@ services:
     coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
       class: CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculator
       arguments:
+          - '@coreshop.order.purchasable.calculator'
           - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
           - '@coreshop.tier_pricing.locator.tier_price'
