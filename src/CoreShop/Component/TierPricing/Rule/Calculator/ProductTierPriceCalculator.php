@@ -118,7 +118,7 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
         $tierPercentageDiscount = $price = $range->getPercentageDiscount();
 
         if ($tierPercentageDiscount > 0) {
-            $price = (int)round(($tierPercentageDiscount / 100) * $realItemPrice);
+            $price = $realItemPrice - ( (int)round(($tierPercentageDiscount / 100) * $realItemPrice) );
         } else {
             // @todo: calculate with currency?
             $price = $tierPrice;
