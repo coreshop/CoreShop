@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 class StoreMailConfigurationType extends AbstractType
