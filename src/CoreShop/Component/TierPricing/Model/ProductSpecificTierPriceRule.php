@@ -236,24 +236,6 @@ class ProductSpecificTierPriceRule implements ProductSpecificTierPriceRuleInterf
     /**
      * {@inheritdoc}
      */
-    public function getInherit()
-    {
-        return $this->inherit;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setInherit($inherit)
-    {
-        $this->inherit = $inherit;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return $this->priority;

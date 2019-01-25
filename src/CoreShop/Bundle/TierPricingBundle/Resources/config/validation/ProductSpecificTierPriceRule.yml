@@ -1,0 +1,8 @@
+CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRule:
+    properties:
+        name:
+            -   NotBlank: { groups: [coreshop] }
+        ranges:
+            -   Count: { groups: [coreshop], min: 1 }
+        active:
+            -   Type: { type: boolean, groups: [coreshop] }

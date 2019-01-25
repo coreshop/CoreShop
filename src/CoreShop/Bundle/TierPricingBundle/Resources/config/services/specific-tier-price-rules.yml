@@ -1,6 +1,5 @@
 parameters:
     coreshop.form.type.product_specific_tier_price_rule.validation_groups: [coreshop]
-    coreshop.form.type.product_specific_tier_price_rule.rule.validation_groups: [coreshop]
     coreshop.form.type.product_specific_tier_price_rule.rule_condition.validation_groups: [coreshop]
     coreshop.form.type.product_specific_tier_price_rule.range.validation_groups: [coreshop]
 
@@ -13,7 +12,7 @@ services:
         class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleType
         arguments:
             - '%coreshop.model.product_specific_tier_price_rule.class%'
-            - '%coreshop.form.type.product_specific_price_rule.validation_groups%'
+            - '%coreshop.form.type.product_specific_tier_price_rule.validation_groups%'
         tags:
             - { name: form.type }
 
@@ -36,7 +35,7 @@ services:
         class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleConditionType
         arguments:
             - '%coreshop.model.rule_condition.class%'
-            - '%coreshop.form.type.product_specific_price_rule.rule_condition.validation_groups%'
+            - '%coreshop.form.type.product_specific_tier_price_rule.rule_condition.validation_groups%'
             - '@coreshop.form_registry.product_specific_price_rule.conditions'
         tags:
             - { name: form.type }

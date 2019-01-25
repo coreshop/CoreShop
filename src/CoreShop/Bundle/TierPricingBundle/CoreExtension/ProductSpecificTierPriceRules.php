@@ -348,30 +348,13 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
             return $storedRule;
         }
 
-        // all elements has been removed.
-        if (!isset($currentRule['ranges']) || empty($currentRule['ranges'])) {
-
-            foreach ($storedRule->getRanges() as $range) {
-                $this->getRangeEntityManager()->remove($range);
-            }
-
-            $storedRule->getRanges()->clear();
-            $this->getEntityManager()->refresh($storedRule);
-
-            return $storedRule;
-        }
+        $currentRanges = isset($currentRule['ranges']) && is_array($currentRule['ranges']) ? $currentRule['ranges'] : [];
 
         $keepIds = [];
-        if (is_array($currentRule['ranges'])) {
-            foreach ($currentRule['ranges'] as $currentRange) {
-                if (isset($currentRange['id']) && $currentRange['id'] !== null) {
-                    $keepIds[] = (int)$currentRange['id'];
-                }
+        foreach ($currentRanges as $currentRange) {
+            if (isset($currentRange['id']) && $currentRange['id'] !== null) {
+                $keepIds[] = (int)$currentRange['id'];
             }
-        }
-
-        if (count($keepIds) === 0) {
-            return $storedRule;
         }
 
         $invalidatedRanges = $storedRule->getRanges()->filter(function (ProductTierPriceRangeInterface $priceRange) use ($keepIds) {

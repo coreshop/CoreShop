@@ -79,7 +79,7 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
         var rangContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.data.id ? this.data.id : null, this.parentPanel.getClipboardManager());
+        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getClipboardManager());
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
@@ -155,8 +155,21 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
         return this.settings;
     },
 
+    hasId: function () {
+        return this.data.id && this.data.id !== null;
+    },
+
+    setId: function (id) {
+        this.data.id = id;
+    },
+
     getId: function () {
         return this.data.id ? this.data.id : null;
+    },
+
+    resetDeepId: function() {
+        this.setId(null);
+        this.ranges.resetDeepId();
     },
 
     getSaveData: function () {
@@ -171,8 +184,8 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['ranges'] = this.ranges.getRangesData();
 
-        if (this.data.id) {
-            saveData['id'] = this.data.id;
+        if (this.hasId()) {
+            saveData['id'] = this.getId();
         }
 
         return saveData;

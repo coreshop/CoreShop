@@ -65,6 +65,11 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
 
     },
 
+    unmarkInherited:function ($super) {
+        $super();
+        this.removeIdsFromPriceRules();
+    },
+
     reloadPriceRuleData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
@@ -204,6 +209,12 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
         this.panels = [];
 
         this.showPriceRules(activeTabIndex);
+    },
+
+    removeIdsFromPriceRules: function() {
+        Ext.each(this.panels, function (panelClass) {
+           panelClass.resetDeepId();
+        });
     },
 
     showPriceRules: function (lastActiveItemIndex) {

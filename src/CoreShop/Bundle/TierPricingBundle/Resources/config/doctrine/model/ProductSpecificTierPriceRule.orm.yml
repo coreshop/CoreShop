@@ -14,9 +14,6 @@ CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRule:
         active:
             column: active
             type: boolean
-        inherit:
-            column: inherit
-            type: boolean
         priority:
             column: priority
             type: integer

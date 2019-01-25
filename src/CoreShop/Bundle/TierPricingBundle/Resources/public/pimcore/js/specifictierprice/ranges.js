@@ -100,6 +100,13 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         return ranges;
     },
 
+    resetDeepId: function () {
+        var grid = this.rangesContainer.query('[name=tier-price-grid]')[0];
+        grid.getStore().each(function (record) {
+            record.set('rangeId', null);
+        });
+    },
+
     isDirty: function () {
 
         var grid = this.rangesContainer.query('[name=tier-price-grid]')[0],

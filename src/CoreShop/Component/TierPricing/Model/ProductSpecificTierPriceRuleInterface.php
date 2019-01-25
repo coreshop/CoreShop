@@ -84,16 +84,6 @@ interface ProductSpecificTierPriceRuleInterface extends RuleInterface
     public function removeRange(ProductTierPriceRangeInterface $priceRange);
 
     /**
-     * @return bool
-     */
-    public function getInherit();
-
-    /**
-     * @param bool $inherit
-     */
-    public function setInherit($inherit);
-
-    /**
      * @return int
      */
     public function getPriority();

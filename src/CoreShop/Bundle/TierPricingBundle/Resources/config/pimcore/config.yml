@@ -7,3 +7,10 @@ pimcore:
             data:
                 map:
                     coreShopProductSpecificTierPriceRules: CoreShop\Bundle\TierPricingBundle\CoreExtension\ProductSpecificTierPriceRules
+
+jms_serializer:
+    metadata:
+        directories:
+            coreshop-tier-pricing:
+                namespace_prefix: "CoreShop\\Component\\TierPricing"
+                path: "@CoreShopTierPricingBundle/Resources/config/serializer"
