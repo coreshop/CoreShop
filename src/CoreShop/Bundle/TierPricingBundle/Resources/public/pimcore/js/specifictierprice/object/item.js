@@ -15,11 +15,20 @@ pimcore.registerNS('coreshop.tier_pricing.specific_tier_price.object.item');
 coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
+    clipBoardDispatcherId: null,
+
+    ranges: null,
+    conditions: null,
+    settings: null,
 
     postSaveObject: function (object, refreshedRuleData, task, fieldName) {
         // remove dirty flag!
-        this.settingsForm.getForm().setValues(this.settingsForm.getForm().getValues());
+        this.settings.getForm().setValues(this.settings.getForm().getValues());
         this.ranges.postSaveObject(object, refreshedRuleData, task, fieldName);
+    },
+
+    onClipboardUpdated: function () {
+        this.ranges.onClipboardUpdated();
     },
 
     getPanel: function () {
@@ -32,15 +41,20 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
             iconCls: this.iconCls,
             items: this.getItems(),
             tabConfig: {
-                html: this.generatePanelTitle(this.data.name, this.data.active)
+                html: this.generatePanelTitle(this.data.name, this.data.active, this.data.priority)
             }
         });
 
         return this.panel;
     },
 
-    generatePanelTitle: function (title, active) {
+    generatePanelTitle: function (title, active, priority) {
         var data = [title];
+
+        if (priority !== undefined) {
+            data.push('<em>(Prio: ' + priority + ')</em>');
+        }
+
         if (active === false) {
             data.push('<span class="pimcore_rule_disabled standalone"></span>')
         }
@@ -65,7 +79,7 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
         var rangContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.data.id ? this.data.id : null);
+        this.ranges = new rangContainerClass(this.data.id ? this.data.id : null, this.parentPanel.getClipboardManager());
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
@@ -88,7 +102,7 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
     },
 
     getSettings: function () {
-        this.settingsForm = Ext.create('Ext.form.Panel', {
+        this.settings = Ext.create('Ext.form.Panel', {
             trackResetOnLoad: true,
             iconCls: 'coreshop_icon_settings',
             title: t('settings'),
@@ -105,8 +119,9 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
                     enableKeyEvents: true,
                     listeners: {
                         keyup: function (field) {
-                            var activeField = field.up('form').getForm().findField('active');
-                            this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue()));
+                            var activeField = field.up('form').getForm().findField('active'),
+                                priorityField = field.up('form').getForm().findField('priority');
+                            this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue(), priorityField.getValue()));
                         }.bind(this)
                     }
                 }, {
@@ -114,7 +129,14 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
                     name: 'priority',
                     fieldLabel: t('coreshop_priority'),
                     value: this.data.priority ? this.data.priority : 0,
-                    width: 250
+                    width: 250,
+                    listeners: {
+                        change: function (field) {
+                            var nameField = field.up('form').getForm().findField('name'),
+                                activeField = field.up('form').getForm().findField('active');
+                            this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), activeField.getValue(), field.getValue()));
+                        }.bind(this)
+                    }
                 }, {
                     xtype: 'checkbox',
                     name: 'active',
@@ -122,14 +144,15 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
                     checked: this.data.active,
                     listeners: {
                         change: function (field, state) {
-                            var nameField = field.up('form').getForm().findField('name');
-                            this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue()));
+                            var nameField = field.up('form').getForm().findField('name'),
+                                priorityField = field.up('form').getForm().findField('priority');
+                            this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue(), priorityField.getValue()));
                         }.bind(this)
                     }
                 }]
         });
 
-        return this.settingsForm;
+        return this.settings;
     },
 
     getId: function () {
@@ -140,11 +163,11 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
 
         var saveData;
 
-        if (!this.settingsForm.getForm()) {
+        if (!this.settings.getForm()) {
             return {};
         }
 
-        saveData = this.settingsForm.getForm().getFieldValues();
+        saveData = this.settings.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();
         saveData['ranges'] = this.ranges.getRangesData();
 
@@ -158,7 +181,7 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
 
     isDirty: function () {
 
-        if (this.settingsForm.form.monitor && this.settingsForm.getForm().isDirty()) {
+        if (this.settings.form.monitor && this.settings.getForm().isDirty()) {
             return true;
         }
 

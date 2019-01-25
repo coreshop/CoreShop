@@ -33,12 +33,22 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
      */
     dirty: false,
 
+    /**
+     * null|object
+     */
+    clipboardManager: null,
+
     initialize: function (data, fieldConfig) {
         this.data = data.rules;
         this.fieldConfig = fieldConfig;
         this.panels = [];
         this.conditions = data.conditions;
         this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+        this.clipboardManager = new coreshop.tier_pricing.clipboardManager();
+    },
+
+    getClipboardManager: function () {
+        return this.clipboardManager;
     },
 
     postSaveObject: function (object, task) {
@@ -121,12 +131,6 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
         };
     },
 
-    getLayoutEdit: function () {
-        this.component = this.getEditLayout();
-
-        return this.component;
-    },
-
     getLayoutShow: function () {
         this.component = this.getLayoutEdit();
         this.component.on('afterrender', function () {
@@ -138,6 +142,15 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
 
     getName: function () {
         return this.fieldConfig.name;
+    },
+
+    getLayoutEdit: function () {
+        this.component = this.getEditLayout();
+        this.component.on('beforedestroy', function () {
+            this.clipboardManager.clear();
+        }.bind(this));
+
+        return this.component;
     },
 
     getEditLayout: function () {
@@ -152,8 +165,7 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
                         type: 'coreshop-add',
                         tooltip: t('add'),
                         handler: function () {
-                            var newPanel = new coreshop.tier_pricing.specific_tier_price.object.item(this, {}, null, 'productSpecificTierPriceRule');
-                            this.panels.push(newPanel);
+                            var newPanel = this.createItemPanel({}, null);
                             this.getTabPanel().setActiveItem(newPanel.panel);
                         }.bind(this)
                     }
@@ -199,19 +211,34 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
         var activePanel;
 
         Ext.each(this.data, function (data) {
-            var newPanel = new coreshop.tier_pricing.specific_tier_price.object.item(this, data, data.id, 'productSpecificTierPriceRule');
-            this.panels.push(newPanel);
-            newPanel.panel.on('beforedestroy', function () {
-                var index = this.panels.indexOf(newPanel);
-                this.panels.splice(index, 1);
-                this.dirty = true;
-            }.bind(this));
+            this.createItemPanel(data, data.id);
         }.bind(this));
 
         if (this.panels.length > 0) {
             activePanel = lastActiveItemIndex && this.panels[lastActiveItemIndex] ? this.panels[lastActiveItemIndex].panel : this.panels[0].panel;
             this.getTabPanel().setActiveItem(activePanel);
         }
+    },
+
+    createItemPanel: function (data, id) {
+
+        var panelItem = new coreshop.tier_pricing.specific_tier_price.object.item(this, data, id, 'productSpecificTierPriceRule'),
+            eventId = Ext.id();
+
+        this.clipboardManager.registerDispatcher(eventId, function (object) {
+            panelItem.onClipboardUpdated(object);
+        }.bind(this));
+
+        this.panels.push(panelItem);
+
+        panelItem.panel.on('beforedestroy', function () {
+            var index = this.panels.indexOf(panelItem);
+            this.clipboardManager.unRegisterDispatcher(eventId);
+            this.panels.splice(index, 1);
+            this.dirty = true;
+        }.bind(this));
+
+        return panelItem;
     },
 
     getTabPanel: function () {

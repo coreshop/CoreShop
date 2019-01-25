@@ -1,6 +1,7 @@
 core_shop_tier_pricing:
     pimcore_admin:
         js:
+            tier_pricing_clipboard: '/bundles/coreshoptierpricing/pimcore/js/clipboardManager.js'
             tier_pricing_core_extension_data_specific_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/data/coreShopProductSpecificTierPriceRules.js'
             tier_pricing_core_extension_tag_specific_tier_price: '/bundles/coreshoptierpricing/pimcore/js/coreExtension/tags/coreShopProductSpecificTierPriceRules.js'
             tier_pricing_product_specific_tier_price_object_item: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/object/item.js'

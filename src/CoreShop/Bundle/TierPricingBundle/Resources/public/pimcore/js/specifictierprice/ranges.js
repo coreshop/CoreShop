@@ -13,9 +13,14 @@
 pimcore.registerNS('coreshop.tier_pricing.specific_tier_price.ranges');
 coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
 
+    internalTmpId: null,
     ruleId: null,
-    initialize: function (ruleId) {
+    clipboardManager: null,
+
+    initialize: function (ruleId, clipboardManager) {
+        this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
+        this.clipboardManager = clipboardManager;
     },
 
     postSaveObject: function (object, refreshedData, task, fieldName) {
@@ -73,6 +78,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
     addRanges: function (data) {
         this.rangesContainer.add(this.generateGrid(data));
         this.rangesContainer.updateLayout();
+        this.checkClipboard();
     },
 
     getRangesData: function () {
@@ -220,6 +226,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                         icon: '/bundles/pimcoreadmin/img/flat-color-icons/delete.svg',
                         handler: function (grid, rowIndex) {
                             grid.getStore().removeAt(rowIndex);
+                            this.checkClipboard();
                         }.bind(this)
                     }]
                 }
@@ -275,17 +282,95 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     viewConfig: {
                         forceFit: true
                     },
-                    tbar: [{
-                        text: t('add'),
-                        handler: this.onAdd,
-                        iconCls: 'pimcore_icon_add'
-                    }]
+                    tbar: [
+                        {
+                            text: t('add'),
+                            handler: this.onAdd.bind(this),
+                            iconCls: 'pimcore_icon_add'
+                        },
+                        {
+                            text: t('coreshop_tier_pricing_copy_ranges'),
+                            handler: this.onCopy.bind(this),
+                            iconCls: 'pimcore_icon_copy',
+                            name: 'clipboard-copy-btn'
+                        },
+                        {
+                            text: t('coreshop_tier_pricing_paste_ranges'),
+                            handler: this.onPaste.bind(this),
+                            iconCls: 'pimcore_icon_paste',
+                            name: 'clipboard-paste-btn'
+                        }]
                 }
             ]
         });
 
         return panel;
 
+    },
+
+    onClipboardUpdated: function () {
+        this.checkClipboard();
+    },
+
+    checkClipboard: function () {
+
+        var grid = this.rangesContainer.query('[name=tier-price-grid]')[0],
+            copyBtn = this.rangesContainer.query('toolbar button[name=clipboard-copy-btn]')[0],
+            pasteBtn = this.rangesContainer.query('toolbar button[name=clipboard-paste-btn]')[0],
+            pasteBtnVisible = false, pasteBtnTooltipText, cbData;
+
+        copyBtn.setVisible(grid.getStore().getRange().length > 0);
+
+        if (this.clipboardManager.hasData('tierPriceRange')) {
+            cbData = this.clipboardManager.getData('tierPriceRange');
+            pasteBtnTooltipText = cbData.records.length + ' ' + t('coreshop_tier_pricing_paste_entry_amounts');
+            if (cbData.id !== this.internalTmpId) {
+                pasteBtnVisible = true;
+            }
+        } else {
+            pasteBtnTooltipText = '--';
+        }
+
+        pasteBtn.setVisible(pasteBtnVisible);
+        pasteBtn.setTooltip(pasteBtnTooltipText);
+    },
+
+    onCopy: function (btn) {
+
+        this.rangesContainer.setLoading(true);
+        var grid = this.rangesContainer.query('[name=tier-price-grid]')[0];
+
+        if (grid.getStore().getRange().length === 0) {
+            this.clipboardManager.removeData('tierPriceRange');
+            return;
+        }
+
+        this.clipboardManager.addData('tierPriceRange', {id: this.internalTmpId, records: grid.getStore().getData().items});
+        this.checkClipboard();
+
+        setTimeout(function () {
+            this.rangesContainer.setLoading(false);
+        }.bind(this), 200);
+
+    },
+
+    onPaste: function (btn) {
+
+        var grid = this.rangesContainer.query('[name=tier-price-grid]')[0],
+            cbData;
+
+        if (!this.clipboardManager.hasData('tierPriceRange')) {
+            return;
+        }
+
+        cbData = this.clipboardManager.getData('tierPriceRange');
+        Ext.Array.each(cbData.records, function (record) {
+            var copy = record.copy(null);
+            copy.set('rangeId', null);
+            grid.getStore().add(copy);
+        });
+
+        this.checkClipboard();
     },
 
     onAdd: function (btn) {
@@ -303,6 +388,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         });
 
         grid.getStore().add(newEntry);
+        this.checkClipboard();
     },
 
     adjustRangeStoreData: function (data) {
