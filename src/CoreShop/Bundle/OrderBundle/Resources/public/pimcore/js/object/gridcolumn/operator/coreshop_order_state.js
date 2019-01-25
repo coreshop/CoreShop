@@ -1,8 +1,8 @@
-pimcore.registerNS('pimcore.object.gridcolumn.operator.orderstate');
+pimcore.registerNS('pimcore.object.gridcolumn.operator.coreshop_order_state');
 
-pimcore.object.gridcolumn.operator.orderstate = Class.create(pimcore.object.gridcolumn.Abstract, {
+pimcore.object.gridcolumn.operator.coreshop_order_state = Class.create(pimcore.object.gridcolumn.Abstract, {
     type: 'operator',
-    class: 'OrderState',
+    class: 'coreshop_order_state',
     iconCls: 'coreshop_icon_operator_orderstate',
     defaultText: 'coreshop_operator_orderstate',
     group: 'coreshop',
