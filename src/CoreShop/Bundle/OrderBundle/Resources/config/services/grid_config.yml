@@ -7,7 +7,7 @@ services:
         arguments:
             - '@coreshop.workflow.state_manager'
         tags:
-            - { name: pimcore.data_object.grid_column_config.operator_factory, id: OrderState }
+            - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_order_state }
 
     coreshop.data_object.grid_column_config.operator.factory.price_formatter:
         class: CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\PriceFormatterFactory
@@ -15,4 +15,4 @@ services:
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
         tags:
-            - { name: pimcore.data_object.grid_column_config.operator_factory, id: PriceFormatter }
+            - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_price_formatter }
