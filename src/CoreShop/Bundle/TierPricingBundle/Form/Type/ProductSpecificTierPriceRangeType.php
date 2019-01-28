@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\Form\Type;
 
+use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -42,6 +43,7 @@ final class ProductSpecificTierPriceRangeType extends AbstractResourceType
                 ]
             ])
             ->add('amount', MoneyType::class, [])
+            ->add('currency', CurrencyChoiceType::class, [])
             ->add('percentage', NumberType::class, [])
             ->add('pseudoPrice', MoneyType::class, [])
             ->add('highlighted', CheckboxType::class, []);

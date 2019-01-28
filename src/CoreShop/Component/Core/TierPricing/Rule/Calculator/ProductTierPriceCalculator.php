@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Core\TierPricing\Rule\Calculator;
 
+use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -20,6 +22,7 @@ use CoreShop\Component\TierPricing\Model\ProductTierPriceRange;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use \CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface as BaseProductTierPriceCalculatorInterface;
+use Webmozart\Assert\Assert;
 
 final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInterface
 {
@@ -27,6 +30,11 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
      * @var ProductTierPriceCalculatorInterface
      */
     private $inner;
+
+    /**
+     * @var CurrencyConverterInterface
+     */
+    protected $moneyConverter;
 
     /**
      * @var PurchasableCalculatorInterface
@@ -40,15 +48,18 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
 
     /**
      * @param BaseProductTierPriceCalculatorInterface $inner
-     * @param PurchasableCalculatorInterface $productPriceCalculator
-     * @param TierPriceLocatorInterface      $tierPriceLocator
+     * @param CurrencyConverterInterface              $moneyConverter
+     * @param PurchasableCalculatorInterface          $productPriceCalculator
+     * @param TierPriceLocatorInterface               $tierPriceLocator
      */
     public function __construct(
         BaseProductTierPriceCalculatorInterface $inner,
+        CurrencyConverterInterface $moneyConverter,
         PurchasableCalculatorInterface $productPriceCalculator,
         TierPriceLocatorInterface $tierPriceLocator
     ) {
         $this->inner = $inner;
+        $this->moneyConverter = $moneyConverter;
         $this->productPriceCalculator = $productPriceCalculator;
         $this->tierPriceLocator = $tierPriceLocator;
     }
@@ -109,20 +120,88 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
         $pricingBehaviour = $range->getPricingBehaviour();
 
         if ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_FIXED) {
-            // @todo: calculate with currency?
-            $price = $range->getAmount();
+            return $this->calculateFixed($realItemPrice, $range, $context);
         } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_AMOUNT_DISCOUNT) {
-            // @todo: calculate with currency?
-            $price = max($realItemPrice - $range->getAmount(), 0);
+            return $this->calculateAmountDiscount($realItemPrice, $range, $context);
         } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_AMOUNT_INCREASE) {
-            // @todo: calculate with currency?
-            $price = $realItemPrice + $range->getAmount();
+            return $this->calculateAmountIncrease($realItemPrice, $range, $context);
         } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_PERCENTAGE_DISCOUNT) {
-            $price = max($realItemPrice - ((int)round(($range->getPercentage() / 100) * $realItemPrice)), 0);
+            return $this->calculatePercentageDiscount($realItemPrice, $range, $context);
         } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_PERCENTAGE_INCREASE) {
-            $price = $realItemPrice + ((int)round(($range->getPercentage() / 100) * $realItemPrice));
+            return $this->calculatePercentageIncrease($realItemPrice, $range, $context);
         }
 
         return $price;
+    }
+
+    /**
+     * @param int                            $realItemPrice
+     * @param ProductTierPriceRangeInterface $range
+     * @param array                          $context
+     *
+     * @return int
+     */
+    private function calculateFixed(int $realItemPrice, ProductTierPriceRangeInterface $range, array $context)
+    {
+        Assert::isInstanceOf($range->getCurrency(), CurrencyInterface::class);
+        $currentContextCurrency = $context['currency'];
+
+        return $this->moneyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
+    }
+
+    /**
+     * @param int                            $realItemPrice
+     * @param ProductTierPriceRangeInterface $range
+     * @param array                          $context
+     *
+     * @return mixed
+     */
+    private function calculateAmountDiscount(int $realItemPrice, ProductTierPriceRangeInterface $range, array $context)
+    {
+        Assert::isInstanceOf($range->getCurrency(), CurrencyInterface::class);
+        $currentContextCurrency = $context['currency'];
+        $currencyAwareAmount = $this->moneyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
+
+        return max($realItemPrice - $currencyAwareAmount, 0);
+    }
+
+    /**
+     * @param int                            $realItemPrice
+     * @param ProductTierPriceRangeInterface $range
+     * @param array                          $context
+     *
+     * @return int
+     */
+    private function calculateAmountIncrease(int $realItemPrice, ProductTierPriceRangeInterface $range, array $context)
+    {
+        Assert::isInstanceOf($range->getCurrency(), CurrencyInterface::class);
+        $currentContextCurrency = $context['currency'];
+        $currencyAwareAmount = $this->moneyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
+
+        return $realItemPrice + $currencyAwareAmount;
+    }
+
+    /**
+     * @param int                            $realItemPrice
+     * @param ProductTierPriceRangeInterface $range
+     * @param array                          $context
+     *
+     * @return mixed
+     */
+    private function calculatePercentageDiscount(int $realItemPrice, ProductTierPriceRangeInterface $range, array $context)
+    {
+        return max($realItemPrice - ((int)round(($range->getPercentage() / 100) * $realItemPrice)), 0);
+    }
+
+    /**
+     * @param int                            $realItemPrice
+     * @param ProductTierPriceRangeInterface $range
+     * @param array                          $context
+     *
+     * @return int
+     */
+    private function calculatePercentageIncrease(int $realItemPrice, ProductTierPriceRangeInterface $range, array $context)
+    {
+        return $realItemPrice + ((int)round(($range->getPercentage() / 100) * $realItemPrice));
     }
 }

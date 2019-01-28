@@ -29,3 +29,10 @@ CoreShop\Component\TierPricing\Model\ProductTierPriceRange:
         highlighted:
             column: highlighted
             type: boolean
+    manyToOne:
+        currency:
+            targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
+            joinColumn:
+                name: currencyId
+                referencedColumnName: id
+                onDelete: 'SET NULL'

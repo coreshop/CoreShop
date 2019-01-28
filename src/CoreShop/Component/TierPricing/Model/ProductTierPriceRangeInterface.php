@@ -13,6 +13,7 @@
 namespace CoreShop\Component\TierPricing\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 interface ProductTierPriceRangeInterface extends ResourceInterface
 {
@@ -55,6 +56,16 @@ interface ProductTierPriceRangeInterface extends ResourceInterface
      * @param int $amount
      */
     public function setAmount(int $amount);
+
+    /**
+     * @return CurrencyInterface|null
+     */
+    public function getCurrency();
+
+    /**
+     * @param CurrencyInterface $currency
+     */
+    public function setCurrency(CurrencyInterface $currency = null);
 
     /**
      * @return float

@@ -4,6 +4,7 @@ services:
         decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
         arguments:
             - '@coreshop.core.tier_pricing.price_calculator.product_specific_tier_price_rules.inner'
+            - '@coreshop.currency_converter'
             - '@coreshop.order.purchasable.calculator'
             - '@coreshop.tier_pricing.locator.tier_price'
 

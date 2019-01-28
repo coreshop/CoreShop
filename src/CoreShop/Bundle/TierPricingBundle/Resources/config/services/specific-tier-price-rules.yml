@@ -88,4 +88,5 @@ services:
     coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
       class: CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculator
       arguments:
+          - '@coreshop.currency_converter'
           - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'

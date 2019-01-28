@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\TierPricing\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 
 class ProductTierPriceRange extends AbstractResource implements ProductTierPriceRangeInterface
@@ -46,6 +47,11 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
      * @var int
      */
     protected $amount;
+
+    /**
+     * @var CurrencyInterface|null
+     */
+    protected $currency;
 
     /**
      * @var float
@@ -140,6 +146,22 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     public function setAmount(int $amount)
     {
         $this->amount = $amount;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setCurrency(CurrencyInterface $currency = null)
+    {
+        $this->currency = $currency;
     }
 
     /**
