@@ -102,7 +102,6 @@ pimcore.object.tags.coreShopStorePrice = Class.create(pimcore.object.tags.abstra
                 fieldLabel: this.fieldConfig.title,
                 name: this.fieldConfig.name,
                 componentCls: 'object_field',
-                coreshopStore: store,
                 labelWidth: 250,
                 value: this.defaultValue
             };
