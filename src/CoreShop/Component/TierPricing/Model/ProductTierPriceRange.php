@@ -16,6 +16,12 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 
 class ProductTierPriceRange extends AbstractResource implements ProductTierPriceRangeInterface
 {
+    const PRICING_BEHAVIOUR_FIXED = 'fixed';
+    const PRICING_BEHAVIOUR_AMOUNT_DISCOUNT = 'amount_discount';
+    const PRICING_BEHAVIOUR_AMOUNT_INCREASE = 'amount_increase';
+    const PRICING_BEHAVIOUR_PERCENTAGE_DISCOUNT = 'percentage_discount';
+    const PRICING_BEHAVIOUR_PERCENTAGE_INCREASE = 'percentage_increase';
+
     /**
      * @var int
      */
@@ -32,14 +38,24 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     protected $rangeTo;
 
     /**
+     * @var string
+     */
+    protected $pricingBehaviour;
+
+    /**
      * @var int
      */
-    protected $price;
+    protected $amount;
 
     /**
      * @var float
      */
-    protected $percentageDiscount;
+    protected $percentage;
+
+    /***
+     * @var int
+     */
+    protected $pseudoPrice;
 
     /**
      * @var bool
@@ -97,33 +113,73 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     /**
      * @inheritdoc
      */
-    public function getPrice()
+    public function getPricingBehaviour()
     {
-        return $this->price;
+        return $this->pricingBehaviour;
+    }
+
+    /**
+     * @param string $pricingBehaviour
+     */
+    public function setPricingBehaviour(string $pricingBehaviour)
+    {
+        $this->pricingBehaviour = $pricingBehaviour;
     }
 
     /**
      * @inheritdoc
      */
-    public function setPrice(int $price)
+    public function getAmount()
     {
-        $this->price = $price;
+        return $this->amount;
     }
 
     /**
      * @inheritdoc
      */
-    public function getPercentageDiscount()
+    public function setAmount(int $amount)
     {
-        return $this->percentageDiscount;
+        $this->amount = $amount;
     }
 
     /**
      * @inheritdoc
      */
-    public function setPercentageDiscount(float $percentageDiscount)
+    public function getPercentage()
     {
-        $this->percentageDiscount = $percentageDiscount;
+        return $this->percentage;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPercentage(float $percentage)
+    {
+        $this->percentage = $percentage;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPseudoPrice()
+    {
+        return $this->pseudoPrice;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function hasPseudoPrice()
+    {
+        return $this->pseudoPrice !== 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPseudoPrice(int $pseudoPrice)
+    {
+        $this->pseudoPrice = $pseudoPrice;
     }
 
     /**

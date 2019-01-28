@@ -14,12 +14,18 @@ CoreShop\Component\TierPricing\Model\ProductTierPriceRange:
         rangeTo:
             column: range_to
             type: integer
-        price:
-            column: price
+        pricingBehaviour:
+            column: pricing_behaviour
+            type: string
+        amount:
+            column: amount
             type: integer
-        percentageDiscount:
-            column: percentage_discount
+        percentage:
+            column: percentage
             type: float
+        pseudoPrice:
+            column: pseudo_price
+            type: integer
         highlighted:
             column: highlighted
             type: boolean

@@ -91,8 +91,10 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                 'id': record.get('rangeId'),
                 'rangeFrom': record.get('rangeFrom'),
                 'rangeTo': record.get('rangeTo'),
-                'price': record.get('price'),
-                'percentageDiscount': record.get('percentageDiscount'),
+                'pricingBehaviour': record.get('pricingBehaviour'),
+                'amount': record.get('amount'),
+                'percentage': record.get('percentage'),
+                'pseudoPrice': record.get('pseudoPrice'),
                 'highlighted': record.get('highlighted'),
             });
         });
@@ -160,52 +162,126 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                             minValue: 1
                         });
                     },
-                    renderer: function (value) {
+                    renderer: function (value, cell, record, rowIndex) {
+                        var lastElement = record.store.getRange().length === (rowIndex + 1);
+
                         if (value === undefined || value === null) {
                             return '0' + ' ' + t('coreshop_tier_quantity_amount');
                         }
-                        return value + ' ' + t('coreshop_tier_quantity_amount');
+                        return value + ' ' + t('coreshop_tier_quantity_amount') + (lastElement === true ? '+' : '');
                     }
                 },
                 {
-                    text: t('coreshop_tier_new_price'),
+                    text: t('coreshop_tier_pricing_behaviour'),
                     flex: 1,
                     sortable: false,
-                    dataIndex: 'price',
-                    name: 'tier_price',
+                    dataIndex: 'pricingBehaviour',
+                    name: 'pricing_behaviour',
+                    getEditor: function () {
+                        return new Ext.form.ComboBox({
+                            store: [
+                                ['fixed', t('coreshop_tier_behaviour_fixed')],
+                                ['amount_discount', t('coreshop_tier_behaviour_amount_discount')],
+                                ['amount_increase', t('coreshop_tier_behaviour_amount_increase')],
+                                ['percentage_discount', t('coreshop_tier_behaviour_percentage_discount')],
+                                ['percentage_increase', t('coreshop_tier_behaviour_percentage_increase')]
+                            ],
+                            listeners: {
+                                change: function (field, e) {
+                                    var selectedModel = this.up('grid').getSelectionModel().getSelection()[0];
+                                    if (field.getValue() === 'percentage_increase' || field.getValue() === 'percentage_discount') {
+                                        selectedModel.set('amount', 0);
+                                    } else if (field.getValue() === 'fixed' || field.getValue() === 'amount_increase' || field.getValue() === 'amount_discount') {
+                                        selectedModel.set('percentage', 0);
+                                    }
+                                },
+                            },
+                            triggerAction: 'all',
+                            editable: false,
+                            queryMode: 'local'
+                        });
+                    },
+                    renderer: function (value) {
+                        if (value === undefined || value === null) {
+                            return t('coreshop_tier_behaviour_nothing_selected');
+                        }
+                        return t('coreshop_tier_behaviour_' + value);
+                    }
+                },
+                {
+                    text: t('coreshop_tier_amount'),
+                    flex: 1,
+                    sortable: false,
+                    dataIndex: 'amount',
+                    name: 'tier_amount',
                     getEditor: function () {
                         return new Ext.form.NumberField({
                             minValue: 0
                         });
                     },
-                    renderer: function (value, d) {
+                    renderer: function (value, cell, record) {
+                        var prefix = '';
+                        if (record.get('pricingBehaviour') === 'amount_increase') {
+                            prefix = '+';
+                        } else if (record.get('pricingBehaviour') === 'amount_discount') {
+                            prefix = '-';
+                        }
+
                         if (value === undefined) {
                             // @todo: find currency (from currency row / selector (?)
                             return coreshop.util.format.currency('', 0);
                         } else {
-                            d.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
-                            return coreshop.util.format.currency('', parseFloat(value) * 100);
+                            cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
+                            return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
                         }
                     }
                 },
                 {
-                    text: t('coreshop_tier_percentage_discount'),
+                    text: t('coreshop_tier_percentage'),
                     flex: 1,
                     sortable: false,
-                    dataIndex: 'percentageDiscount',
-                    name: 'tier_percentage_discount',
+                    dataIndex: 'percentage',
+                    name: 'tier_percentage',
                     getEditor: function () {
                         return new Ext.form.NumberField({
                             minValue: 0,
                             maxValue: 100
                         });
                     }.bind(this),
-                    renderer: function (value, d) {
+                    renderer: function (value, cell, record) {
+                        var prefix = '';
+                        if (record.get('pricingBehaviour') === 'percentage_increase') {
+                            prefix = '+';
+                        } else if (record.get('pricingBehaviour') === 'percentage_discount') {
+                            prefix = '-';
+                        }
+
+                        cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
                         if (value !== undefined) {
-                            d.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
-                            return value + '%';
+                            return prefix + value + '%';
                         }
                         return '--';
+                    }
+                },
+                {
+                    text: t('coreshop_tier_pseudo_price'),
+                    flex: 1,
+                    sortable: false,
+                    dataIndex: 'pseudoPrice',
+                    name: 'pseudo_price',
+                    getEditor: function () {
+                        return new Ext.form.NumberField({
+                            minValue: 0
+                        });
+                    },
+                    renderer: function (value, cell, record) {
+                        if (value === undefined) {
+                            // @todo: find currency (from currency row / selector (?)
+                            return coreshop.util.format.currency('', 0);
+                        } else {
+                            cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
+                            return coreshop.util.format.currency('', parseFloat(value) * 100);
+                        }
                     }
                 },
                 {
@@ -234,6 +310,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                         handler: function (grid, rowIndex) {
                             grid.getStore().removeAt(rowIndex);
                             this.checkClipboard();
+                            grid.up('grid').getView().refresh();
                         }.bind(this)
                     }]
                 }
@@ -242,15 +319,18 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         this.cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1,
             listeners: {
-                edit: function (editor, context) {
+                beforeedit: function (editor, context) {
                     var record = context.record;
-                    if (context.column.name === 'tier_price') {
-                        record.set('percentageDiscount', 0);
-                    } else if (context.column.name === 'tier_percentage_discount') {
-                        record.set('price', 0);
+                    if (context.column.name === 'tier_amount') {
+                        if (record.get('pricingBehaviour') === 'percentage_increase' || record.get('pricingBehaviour') === 'percentage_discount') {
+                            return false;
+                        }
+                    } else if (context.column.name === 'tier_percentage') {
+                        if (record.get('pricingBehaviour') === 'fixed' || record.get('pricingBehaviour') === 'amount_increase' || record.get('pricingBehaviour') === 'amount_discount') {
+                            return false;
+                        }
                     }
-                }.bind(this),
-                beforeedit: function (editor) {
+
                     editor.editors.each(function (e) {
                         try {
                             e.completeEdit();
@@ -381,6 +461,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
     },
 
     onAdd: function (btn) {
+
         var grid = btn.up('grid'),
             modelClass = grid.getStore().getModel(),
             lastEntry = grid.getStore().last(),
@@ -389,13 +470,17 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         newEntry = new modelClass({
             rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
             rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
-            percentageDiscount: 0,
-            price: 0,
+            pricingBehaviour: 'fixed',
+            amount: 0,
+            percentage: 0,
+            pseudoPrice: 0,
             rangeId: null
         });
 
         grid.getStore().add(newEntry);
         this.checkClipboard();
+        grid.getView().refresh();
+
     },
 
     adjustRangeStoreData: function (data) {
@@ -410,10 +495,18 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                 data[key]['rangeId'] = range['id'];
                 delete data[key]['id'];
             }
-            if (range.hasOwnProperty('price')) {
-                p = parseInt(range['price']);
+
+            if (range.hasOwnProperty('amount')) {
+                p = parseInt(range['amount']);
                 if (p > 0) {
-                    data[key]['price'] = parseInt(range['price']) / 100;
+                    data[key]['amount'] = parseInt(range['amount']) / 100;
+                }
+            }
+
+            if (range.hasOwnProperty('pseudoPrice')) {
+                p = parseInt(range['pseudoPrice']);
+                if (p > 0) {
+                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / 100;
                 }
             }
         });

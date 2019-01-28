@@ -18,6 +18,9 @@
                     {% if range.isHighlighted() %}
                         <span class="badge badge-info">{{ 'best offer' }}</span>
                     {% endif %}
+                    {% if range.hasPseudoPrice() %}
+                        <del>{{ currency.convertAndFormat( range.getPseudoPrice() ) }}</del>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

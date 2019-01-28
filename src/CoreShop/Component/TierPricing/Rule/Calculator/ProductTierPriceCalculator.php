@@ -18,6 +18,7 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\TierPricing\Locator\TierPriceLocatorInterface;
 use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRange;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 
 final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInterface
@@ -114,14 +115,22 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
     {
         $realItemPrice = $this->productPriceCalculator->getPrice($subject, $context, true);
 
-        $tierPrice = $range->getPrice();
-        $tierPercentageDiscount = $price = $range->getPercentageDiscount();
+        $price = 0;
+        $pricingBehaviour = $range->getPricingBehaviour();
 
-        if ($tierPercentageDiscount > 0) {
-            $price = $realItemPrice - ( (int)round(($tierPercentageDiscount / 100) * $realItemPrice) );
-        } else {
+        if ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_FIXED) {
             // @todo: calculate with currency?
-            $price = $tierPrice;
+            $price = $range->getAmount();
+        } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_AMOUNT_DISCOUNT) {
+            // @todo: calculate with currency?
+            $price = max($realItemPrice - $range->getAmount(), 0);
+        } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_AMOUNT_INCREASE) {
+            // @todo: calculate with currency?
+            $price = $realItemPrice + $range->getAmount();
+        } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_PERCENTAGE_DISCOUNT) {
+            $price = max($realItemPrice - ((int)round(($range->getPercentage() / 100) * $realItemPrice)), 0);
+        } elseif ($pricingBehaviour === ProductTierPriceRange::PRICING_BEHAVIOUR_PERCENTAGE_INCREASE) {
+            $price = $realItemPrice + ((int)round(($range->getPercentage() / 100) * $realItemPrice));
         }
 
         return $price;
