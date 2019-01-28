@@ -550,7 +550,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
             rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
             pricingBehaviour: 'fixed',
             amount: 0,
-            currency: null,
+            currency: lastEntry !== null ? lastEntry.get('currency') : null,
             percentage: 0,
             pseudoPrice: 0,
             rangeId: null
