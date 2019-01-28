@@ -12,36 +12,26 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Calculator;
 
-use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
+use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
 interface ProductTierPriceCalculatorInterface
 {
     /**
-     * @param ProductInterface $subject
+     * @param TierPriceAwareInterface $subject
      * @param array            $context
      *
-     * @return array|ProductSpecificTierPriceRuleInterface[]
+     * @return ProductSpecificTierPriceRuleInterface[]
      */
-    public function getTierPriceRulesForProduct(ProductInterface $subject, array $context);
-
-    /**
-     * @param ProductInterface  $subject
-     * @param CartItemInterface $cartItem
-     * @param array             $context
-     *
-     * @return bool|int
-     */
-    public function getTierPriceForCartItem(ProductInterface $subject, CartItemInterface $cartItem, array $context);
+    public function getTierPriceRulesForProduct(TierPriceAwareInterface $subject, array $context);
 
     /**
      * @param ProductTierPriceRangeInterface $range
-     * @param ProductInterface               $subject
+     * @param TierPriceAwareInterface               $subject
      * @param array                          $context
      *
      * @return int
      */
-    public function calculateRangePrice(ProductTierPriceRangeInterface $range, ProductInterface $subject, array $context);
+    public function calculateRangePrice(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, array $context);
 }

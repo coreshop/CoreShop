@@ -10,18 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\TierPricing\Repository;
+namespace CoreShop\Component\TierPricing\Model;
 
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
-use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
-use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface ProductSpecificTierPriceRuleRepositoryInterface extends RuleRepositoryInterface
+interface TierPriceAwareInterface extends ResourceInterface
 {
     /**
-     * @param TierPriceAwareInterface $product
-     *
      * @return ProductSpecificTierPriceRuleInterface[]
      */
-    public function findForProduct(TierPriceAwareInterface $product);
+    public function getSpecificTierPriceRules();
 }

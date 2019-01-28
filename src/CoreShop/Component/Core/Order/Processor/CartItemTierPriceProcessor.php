@@ -10,16 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\TierPricing\Processor;
+namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Order\Processor\CartItemsProcessor;
+use CoreShop\Component\Core\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
-use CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;
 use Webmozart\Assert\Assert;
 
 class CartItemTierPriceProcessor implements CartProcessorInterface

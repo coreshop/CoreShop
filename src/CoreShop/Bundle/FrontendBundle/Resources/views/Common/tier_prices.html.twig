@@ -14,7 +14,7 @@
             <tr class="">
                 <td class="">{{ 'coreshop.ui.tier_pricing.starting_from' }} <span class="">{{ range.getRangeFrom() }}</span>
                 </td>
-                <td class="">{{ currency.convertAndFormat( coreshop_get_calculated_tier_price(range, product) ) }}
+                <td class="">{{ currency.convertAndFormat( coreshop_tier_price_calculated(range, product) ) }}
                     {% if range.isHighlighted() %}
                         <span class="badge badge-info">{{ 'best offer' }}</span>
                     {% endif %}

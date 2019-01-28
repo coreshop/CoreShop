@@ -10,18 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\TierPricing\Repository;
+namespace CoreShop\Component\TierPricing\Rule\Fetcher;
 
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
-use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
+use CoreShop\Component\Rule\Model\RuleInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
-interface ProductSpecificTierPriceRuleRepositoryInterface extends RuleRepositoryInterface
+interface ValidRulesFetcherInterface
 {
     /**
      * @param TierPriceAwareInterface $product
+     * @param array                   $context
      *
-     * @return ProductSpecificTierPriceRuleInterface[]
+     * @return RuleInterface[]
      */
-    public function findForProduct(TierPriceAwareInterface $product);
+    public function getValidRules(TierPriceAwareInterface $product, array $context);
 }

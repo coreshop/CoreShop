@@ -2,44 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.tier_pricing.rule.condition.customers:
-        class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
-
-    coreshop.tier_pricing.rule.condition.customer_groups:
-        class: CoreShop\Component\Core\Product\Rule\Condition\CustomerGroupsConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
-
-    coreshop.tier_pricing.rule.condition.countries:
-        class: CoreShop\Component\Core\Product\Rule\Condition\CountriesConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
-
-    coreshop.tier_pricing.rule.condition.zones:
-        class: CoreShop\Component\Core\Product\Rule\Condition\ZonesConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
-
-    coreshop.tier_pricing.rule.condition.stores:
-        class: CoreShop\Component\Core\Product\Rule\Condition\StoresConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
-
-    coreshop.tier_pricing.rule.condition.currencies:
-        class: CoreShop\Component\Core\Product\Rule\Condition\CurrenciesConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
-
     coreshop.tier_pricing.condition.nested:
         class: CoreShop\Component\Rule\Condition\NestedConditionChecker
         arguments:
             - '@coreshop.product_specific_tier_price_rule.conditions.processor'
         tags:
             - { name: coreshop.product_specific_tier_price_rule.condition, type: nested, form-type: CoreShop\Bundle\TierPricingBundle\Form\Type\Rule\Condition\ProductSpecificTierPriceNestedConfigurationType }
-
-    coreshop.tier_pricing.condition.timespan:
-        class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
-        tags:
-            - { name: coreshop.product_specific_tier_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\TierPricingBundle\Form\Type\Rule\Condition\TimespanConfigurationType }

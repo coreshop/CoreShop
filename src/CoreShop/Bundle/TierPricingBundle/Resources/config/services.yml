@@ -3,35 +3,21 @@ imports:
     - { resource: 'services/specific-tier-price-rules.yml' }
 
 services:
-
     coreshop.templating.helper.tier_pricing:
         class: CoreShop\Bundle\TierPricingBundle\Templating\Helper\TierPricingHelper
         arguments:
             - '@coreshop.context.shopper'
-            - '@coreshop.product.taxed_price_calculator'
             - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
         tags:
-            - { name: templating.helper, alias: coreshop_inventory }
+            - { name: templating.helper, alias: coreshop_tier_price }
 
     coreshop.twig.extension.tier_pricing:
         class: CoreShop\Bundle\TierPricingBundle\Twig\TierPricingExtension
         public: false
         arguments:
-          - '@coreshop.templating.helper.tier_pricing'
+            - '@coreshop.templating.helper.tier_pricing'
         tags:
             - { name: twig.extension }
 
     coreshop.tier_pricing.locator.tier_price:
         class: CoreShop\Component\TierPricing\Locator\TierPriceLocator
-
-    coreshop.cart_processor.items_tier_price:
-        class: CoreShop\Component\TierPricing\Processor\CartItemTierPriceProcessor
-        decorates: coreshop.cart_processor.items
-        decoration_inner_name: coreshop.cart_processor.items.inner
-        arguments:
-            - '@coreshop.cart_processor.items.inner'
-            - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
-            - '@coreshop.cart_item.processor'
-        tags:
-            - { name: coreshop.cart_processor, priority: 580 }

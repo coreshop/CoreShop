@@ -12,31 +12,31 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
+use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
 interface TierPricingHelperInterface
 {
     /**
-     * @param ProductInterface $product
+     * @param TierPriceAwareInterface $product
      *
      * @return bool
      */
-    public function hasActiveTierPricing(ProductInterface $product);
+    public function hasActiveTierPricing(TierPriceAwareInterface $product);
 
     /**
-     * @param ProductInterface $product
+     * @param TierPriceAwareInterface $product
      *
      * @return array
      */
-    public function getTierPriceRanges(ProductInterface $product);
+    public function getTierPriceRanges(TierPriceAwareInterface $product);
 
     /**
      * @param ProductTierPriceRangeInterface $range
-     * @param ProductInterface               $product
+     * @param TierPriceAwareInterface        $product
      *
      * @return mixed
      */
-    public function getCalculatedRangePrice(ProductTierPriceRangeInterface $range, ProductInterface $product);
+    public function getCalculatedRangePrice(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $product);
 
 }

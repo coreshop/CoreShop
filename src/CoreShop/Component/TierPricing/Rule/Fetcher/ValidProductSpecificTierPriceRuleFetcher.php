@@ -12,9 +12,8 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Fetcher;
 
-use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
+use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
 final class ValidProductSpecificTierPriceRuleFetcher implements ValidRulesFetcherInterface
 {
@@ -34,7 +33,7 @@ final class ValidProductSpecificTierPriceRuleFetcher implements ValidRulesFetche
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product, array $context)
+    public function getValidRules(TierPriceAwareInterface $product, array $context)
     {
         $validRules = [];
         $rules = $product->getSpecificTierPriceRules();

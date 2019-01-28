@@ -90,7 +90,7 @@
             {% endif %}
 
             {% if coreshop_tier_pricing_available(product) %}
-                {% include '@CoreShopTierPricing/Common/_tier_prices.html.twig' with { ranges: coreshop_get_tier_price_ranges(product) } %}
+                {% include '@CoreShopFrontend/Common/tier_prices.html.twig' with { ranges: coreshop_tier_price_ranges(product) } %}
             {% endif %}
 
             <div class="price">

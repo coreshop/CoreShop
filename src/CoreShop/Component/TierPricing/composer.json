@@ -1,7 +1,7 @@
 {
-  "name": "coreshop/tier-pricing-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Tier Pricing Bundle",
+  "name": "coreshop/tier-pricing",
+  "type": "library",
+  "description": "CoreShop Tier Pricing Component.",
   "keywords": [
     "coreshop",
     "pimcore",
@@ -24,17 +24,15 @@
     }
   ],
   "require": {
-    "coreshop/tier-pricing": "^2.1",
-    "coreshop/rule-bundle": "^2.1",
-    "coreshop/money-bundle": "^2.1",
-    "pimcore/pimcore": "^5.4.0"
+    "coreshop/resource": "^2.0",
+    "coreshop/rule": "^2.0"
   },
   "config": {
     "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\TierPricingBundle\\": ""
+      "CoreShop\\Component\\TierPricing\\": ""
     }
   },
   "minimum-stability": "dev",

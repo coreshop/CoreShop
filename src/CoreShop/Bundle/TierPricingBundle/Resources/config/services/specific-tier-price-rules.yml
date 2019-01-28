@@ -79,7 +79,7 @@ services:
             - { name: coreshop.product.rules.fetcher, type: product-specific-tiering-rules }
 
     coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached:
-        class: CoreShop\Component\Product\Rule\Fetcher\MemoryCachedValidRuleFetcher
+        class: CoreShop\Component\TierPricing\Rule\Fetcher\MemoryCachedValidRuleFetcher
         decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
         arguments:
             - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher.memory_cached.inner'
@@ -88,6 +88,4 @@ services:
     coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
       class: CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculator
       arguments:
-          - '@coreshop.order.purchasable.calculator'
           - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'
-          - '@coreshop.tier_pricing.locator.tier_price'
