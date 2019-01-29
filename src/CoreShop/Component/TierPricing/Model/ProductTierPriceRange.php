@@ -17,12 +17,6 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 
 class ProductTierPriceRange extends AbstractResource implements ProductTierPriceRangeInterface
 {
-    const PRICING_BEHAVIOUR_FIXED = 'fixed';
-    const PRICING_BEHAVIOUR_AMOUNT_DISCOUNT = 'amount_discount';
-    const PRICING_BEHAVIOUR_AMOUNT_INCREASE = 'amount_increase';
-    const PRICING_BEHAVIOUR_PERCENTAGE_DISCOUNT = 'percentage_discount';
-    const PRICING_BEHAVIOUR_PERCENTAGE_INCREASE = 'percentage_increase';
-
     /**
      * @var int
      */
@@ -44,24 +38,9 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     protected $pricingBehaviour;
 
     /**
-     * @var int
-     */
-    protected $amount;
-
-    /**
-     * @var CurrencyInterface|null
-     */
-    protected $currency;
-
-    /**
      * @var float
      */
     protected $percentage;
-
-    /***
-     * @var int
-     */
-    protected $pseudoPrice;
 
     /**
      * @var bool
@@ -69,7 +48,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     protected $highlighted;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -77,7 +56,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setId($id)
     {
@@ -85,7 +64,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRangeFrom()
     {
@@ -93,7 +72,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setRangeFrom(int $rangeFrom)
     {
@@ -101,7 +80,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getRangeTo()
     {
@@ -109,7 +88,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setRangeTo(int $rangeTo)
     {
@@ -117,7 +96,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPricingBehaviour()
     {
@@ -125,7 +104,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @param string $pricingBehaviour
+     * {@inheritdoc}
      */
     public function setPricingBehaviour(string $pricingBehaviour)
     {
@@ -133,39 +112,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getAmount()
-    {
-        return $this->amount;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setAmount(int $amount)
-    {
-        $this->amount = $amount;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getCurrency()
-    {
-        return $this->currency;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setCurrency(CurrencyInterface $currency = null)
-    {
-        $this->currency = $currency;
-    }
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getPercentage()
     {
@@ -173,7 +120,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setPercentage(float $percentage)
     {
@@ -181,23 +128,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
-     */
-    public function getPseudoPrice()
-    {
-        return $this->pseudoPrice;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function hasPseudoPrice()
-    {
-        return $this->pseudoPrice !== 0;
-    }
-
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setPseudoPrice(int $pseudoPrice)
     {
@@ -205,7 +136,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function getHighlighted()
     {
@@ -213,7 +144,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function isHighlighted()
     {
@@ -221,7 +152,7 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function setHighlighted(bool $highlighted)
     {

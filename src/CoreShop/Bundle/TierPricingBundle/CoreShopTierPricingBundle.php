@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\TierPricingBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\TierPricingBundle\DependencyInjection\Compiler\ProductSpecificTierPriceRuleConditionPass;
+use CoreShop\Bundle\TierPricingBundle\DependencyInjection\Compiler\ProductTierPriceActionPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopTierPricingBundle extends AbstractResourceBundle
@@ -34,6 +35,7 @@ class CoreShopTierPricingBundle extends AbstractResourceBundle
         parent::build($container);
 
         $container->addCompilerPass(new ProductSpecificTierPriceRuleConditionPass());
+        $container->addCompilerPass(new ProductTierPriceActionPass());
     }
 
     /**

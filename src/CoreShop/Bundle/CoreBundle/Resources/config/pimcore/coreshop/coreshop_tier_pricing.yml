@@ -1,0 +1,5 @@
+core_shop_tier_pricing:
+    resources:
+        product_tier_price_range:
+            classes:
+                model: CoreShop\Component\Core\Model\ProductTierPriceRange

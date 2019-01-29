@@ -24,6 +24,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class ProductSpecificTierPriceRangeType extends AbstractResourceType
 {
     /**
+     * @var array
+     */
+    private $actionTypes;
+
+    /**
+     * @param       $dataClass
+     * @param array $actionTypes
+     * @param array $validationGroups
+     */
+    public function __construct($dataClass, array $actionTypes, array $validationGroups = [])
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->actionTypes = $actionTypes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options = [])
@@ -34,18 +51,8 @@ final class ProductSpecificTierPriceRangeType extends AbstractResourceType
             ->add('rangeFrom', IntegerType::class, [])
             ->add('rangeTo', IntegerType::class, [])
             ->add('pricingBehaviour', ChoiceType::class, [
-                'choices' => [
-                    'fixed'               => 'fixed',
-                    'amount_discount'     => 'amount_discount',
-                    'amount_increase'     => 'amount_increase',
-                    'percentage_discount' => 'percentage_discount',
-                    'percentage_increase' => 'percentage_increase',
-                ]
+                'choices' => $this->actionTypes
             ])
-            ->add('amount', MoneyType::class, [])
-            ->add('currency', CurrencyChoiceType::class, [])
-            ->add('percentage', NumberType::class, [])
-            ->add('pseudoPrice', MoneyType::class, [])
             ->add('highlighted', CheckboxType::class, []);
     }
 

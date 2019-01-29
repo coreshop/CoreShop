@@ -7,7 +7,7 @@ services:
     _defaults:
         public: true
 
-  # Forms
+    # Forms
     coreshop.form.type.product_specific_tier_price_rule:
         class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRuleType
         arguments:
@@ -20,6 +20,7 @@ services:
         class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRangeType
         arguments:
             - '%coreshop.model.product_tier_price_range.class%'
+            - '%coreshop.product_tier_price.actions%'
             - '%coreshop.form.type.product_specific_tier_price_rule.range.validation_groups%'
         tags:
             - { name: form.type }
@@ -88,5 +89,5 @@ services:
     coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules:
       class: CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculator
       arguments:
-          - '@coreshop.currency_converter'
+          - '@coreshop.registry.product_tier_price.actions'
           - '@coreshop.tier_pricing.price_calculator.product_specific_tier_price_valid_rules_fetcher'

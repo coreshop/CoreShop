@@ -1,0 +1,17 @@
+services:
+    coreshop.registry.product_tier_price.actions:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\TierPricing\Rule\Action\TierPriceActionInterface
+            - tier-price-action
+
+    coreshop.tier_price.action.percentage_decrease:
+        class: CoreShop\Component\TierPricing\Rule\Action\PercentageDecreaseAction
+        tags:
+            - { name: coreshop.product_tier_price.action, type: percentage_decrease }
+
+    coreshop.tier_price.action.percentage_increase:
+        class: CoreShop\Component\TierPricing\Rule\Action\PercentageIncreaseAction
+        tags:
+            - { name: coreshop.product_tier_price.action, type: percentage_increase }
+

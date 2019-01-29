@@ -94,6 +94,14 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
     }
 
     /**
+     * @return array
+     */
+    private function getConfigActions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_tier_price.actions');
+    }
+
+    /**
      * @param mixed $object
      *
      * @return ProductSpecificTierPriceRuleInterface[]
@@ -156,6 +164,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
     {
         $data = [
             'conditions' => array_keys($this->getConfigConditions()),
+            'actions' => array_keys($this->getConfigActions()),
             'rules'      => [],
         ];
 

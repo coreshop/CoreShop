@@ -48,26 +48,6 @@ interface ProductTierPriceRangeInterface extends ResourceInterface
     public function setPricingBehaviour(string $pricingBehaviour);
 
     /**
-     * @return int
-     */
-    public function getAmount();
-
-    /**
-     * @param int $amount
-     */
-    public function setAmount(int $amount);
-
-    /**
-     * @return CurrencyInterface|null
-     */
-    public function getCurrency();
-
-    /**
-     * @param CurrencyInterface $currency
-     */
-    public function setCurrency(CurrencyInterface $currency = null);
-
-    /**
      * @return float
      */
     public function getPercentage();
@@ -76,21 +56,6 @@ interface ProductTierPriceRangeInterface extends ResourceInterface
      * @param float $percentage
      */
     public function setPercentage(float $percentage);
-
-    /**
-     * @return int
-     */
-    public function getPseudoPrice();
-
-    /**
-     * @return bool
-     */
-    public function hasPseudoPrice();
-
-    /**
-     * @param int $pseudoPrice
-     */
-    public function setPseudoPrice(int $pseudoPrice);
 
     /**
      * @return bool

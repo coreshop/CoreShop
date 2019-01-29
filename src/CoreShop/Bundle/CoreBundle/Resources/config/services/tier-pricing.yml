@@ -4,7 +4,7 @@ services:
         decorates: 'coreshop.tier_pricing.price_calculator.product_specific_tier_price_rules'
         arguments:
             - '@coreshop.core.tier_pricing.price_calculator.product_specific_tier_price_rules.inner'
-            - '@coreshop.currency_converter'
+            - '@coreshop.registry.product_tier_price.actions'
             - '@coreshop.order.purchasable.calculator'
             - '@coreshop.tier_pricing.locator.tier_price'
 
@@ -54,3 +54,17 @@ services:
         class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
         tags:
             - { name: coreshop.product_specific_tier_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\TierPricingBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+
+    coreshop.tier_pricing.action.amount_decrease:
+        class: CoreShop\Component\Core\TierPricing\Rule\Action\AmountDecreaseAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_tier_price.action, type: amount_decrease }
+
+    coreshop.tier_pricing.action.amount_increase:
+        class: CoreShop\Component\Core\TierPricing\Rule\Action\AmountIncreaseAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_tier_price.action, type: amount_increase }

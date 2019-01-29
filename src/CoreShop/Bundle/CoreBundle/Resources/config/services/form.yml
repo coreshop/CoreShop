@@ -37,6 +37,11 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
 
+    coreshop.form.extension.type.product_specific_tier_price_rule:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\ProductSpecificTierPriceRangeTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRangeType }
+
     coreshop.form.type.address_choice:
         class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
         arguments:

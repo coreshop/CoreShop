@@ -1,6 +1,7 @@
 imports:
     - { resource: 'services/rules.yml' }
     - { resource: 'services/specific-tier-price-rules.yml' }
+    - { resource: 'services/actions.yml' }
 
 services:
     coreshop.templating.helper.tier_pricing:
@@ -21,3 +22,4 @@ services:
 
     coreshop.tier_pricing.locator.tier_price:
         class: CoreShop\Component\TierPricing\Locator\TierPriceLocator
+

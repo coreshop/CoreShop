@@ -17,22 +17,9 @@ CoreShop\Component\TierPricing\Model\ProductTierPriceRange:
         pricingBehaviour:
             column: pricing_behaviour
             type: string
-        amount:
-            column: amount
-            type: integer
         percentage:
             column: percentage
             type: float
-        pseudoPrice:
-            column: pseudo_price
-            type: integer
         highlighted:
             column: highlighted
             type: boolean
-    manyToOne:
-        currency:
-            targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
-            joinColumn:
-                name: currencyId
-                referencedColumnName: id
-                onDelete: 'SET NULL'

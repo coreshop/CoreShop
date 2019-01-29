@@ -43,6 +43,7 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
         this.fieldConfig = fieldConfig;
         this.panels = [];
         this.conditions = data.conditions;
+        this.actions = data.actions;
         this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
         this.clipboardManager = new coreshop.tier_pricing.clipboardManager();
     },
@@ -295,5 +296,9 @@ pimcore.object.tags.coreShopProductSpecificTierPriceRules = Class.create(pimcore
 
     getConditions: function () {
         return this.conditions;
+    },
+
+    getActions: function () {
+        return this.actions;
     }
 });
