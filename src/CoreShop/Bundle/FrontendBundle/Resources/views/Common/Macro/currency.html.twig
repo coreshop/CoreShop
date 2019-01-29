@@ -8,6 +8,12 @@
     {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
 {%- endmacro -%}
 
+{%- macro convertAndFormatFromCustomCurrency(fromCurrencyIso, amount) -%}
+    {% from _self import format %}
+
+    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+{%- endmacro -%}
+
 {%- macro getPrice(product, with_tax) -%}
     {% from _self import convertAndFormat %}
 

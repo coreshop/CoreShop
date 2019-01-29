@@ -2,8 +2,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
+use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -27,6 +29,35 @@ class Version20190114155520 extends AbstractPimcoreMigration implements Containe
             $this->addSql('ALTER TABLE coreshop_product_specific_tier_price_rule_ranges ADD CONSTRAINT FK_8BE4180B3BC99698 FOREIGN KEY (tier_price_rule_id) REFERENCES coreshop_product_specific_tier_price_rule (id) ON DELETE CASCADE;');
             $this->addSql('ALTER TABLE coreshop_product_specific_tier_price_rule_ranges ADD CONSTRAINT FK_8BE4180B2A82D0B1 FOREIGN KEY (range_id) REFERENCES coreshop_product_tier_price_range (id) ON DELETE CASCADE;');
         }
+
+        $specificTierPriceField = [
+            'fieldtype'       => 'coreShopProductSpecificTierPriceRules',
+            'height'          => null,
+            'name'            => 'specificTierPriceRules',
+            'title'           => 'Specific Tier Price Rules',
+            'tooltip'         => '',
+            'mandatory'       => false,
+            'noteditable'     => false,
+            'index'           => false,
+            'locked'          => false,
+            'style'           => '',
+            'permissions'     => null,
+            'datatype'        => 'data',
+            'relationType'    => false,
+            'invisible'       => false,
+            'visibleGridView' => false,
+            'visibleSearch'   => false,
+        ];
+
+        $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
+        $classUpdater = new ClassUpdate($productClass);
+        if (!$classUpdater->hasField('specificTierPriceRules')) {
+            $classUpdater->insertFieldAfter('specificPriceRules', $specificTierPriceField);
+            $classUpdater->save();
+        }
+
+        //update translations
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
     public function postUp(Schema $schema)

@@ -17,13 +17,16 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
     ruleId: null,
     clipboardManager: null,
 
+    amountBasedBehaviour: ['fixed', 'amount_discount', 'amount_increase'],
+    percentBasedBehaviour: ['percentage_discount', 'percentage_increase'],
+
     initialize: function (ruleId, clipboardManager) {
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
         this.clipboardManager = clipboardManager;
     },
 
-    postSaveObject: function (object, refreshedData, task, fieldName) {
+    postSaveObject: function (object, refreshedData) {
         if (this.isDirty()) {
             this.remapTierPriceIds(refreshedData);
         } else {
@@ -41,7 +44,6 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         }
 
         this.rangesContainer.setLoading(true);
-
         if (refreshedData.hasOwnProperty('ranges') && Ext.isArray(refreshedData.ranges)) {
             grid.getStore().setData(this.adjustRangeStoreData(refreshedData.ranges));
         }
@@ -133,7 +135,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
 
     generateGrid: function (storeData, store) {
 
-        var currencyBaseStore, rangeCurrencyStore, panel, columns, cellEditing,
+        var _ = this, currencyBaseStore, rangeCurrencyStore, panel, columns, cellEditing,
             cloneStore = function (store) {
                 var records = [];
                 store.each(function (r) {
@@ -203,7 +205,6 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                 },
                 renderer: function (value, cell, record, rowIndex) {
                     var lastElement = record.store.getRange().length === (rowIndex + 1);
-
                     if (value === undefined || value === null) {
                         return '0' + ' ' + t('coreshop_tier_quantity_amount');
                     }
@@ -226,15 +227,26 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                             ['percentage_increase', t('coreshop_tier_behaviour_percentage_increase')]
                         ],
                         listeners: {
-                            change: function (field, e) {
-                                var selectedModel = this.up('grid').getSelectionModel().getSelection()[0];
-                                if (field.getValue() === 'percentage_increase' || field.getValue() === 'percentage_discount') {
+                            change: function (field) {
+                                var grid = this.up('grid'),
+                                    selectedModel = grid.getSelectionModel().getSelected().getAt(0);
+
+                                if (_.isInArray(field.getValue(), _.percentBasedBehaviour)) {
                                     selectedModel.set('amount', 0);
+                                    selectedModel.set('pseudoPrice', 0);
                                     selectedModel.set('currency', null);
-                                } else if (field.getValue() === 'fixed' || field.getValue() === 'amount_increase' || field.getValue() === 'amount_discount') {
+                                } else if (_.isInArray(field.getValue(), _.amountBasedBehaviour)) {
                                     selectedModel.set('percentage', 0);
                                 }
                             },
+                            select: function (combo) {
+                                var grid = this.up('grid'),
+                                    selectedModel = grid.getSelectionModel().getSelected().getAt(0);
+
+                                selectedModel.set('pricingBehaviour', combo.getValue());
+                                combo.up('editor').completeEdit(true);
+                                combo.up('grid').getView().refresh();
+                            }
                         },
                         triggerAction: 'all',
                         editable: false,
@@ -267,10 +279,11 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                         prefix = '-';
                     }
 
-                    cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
+                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                        _.setDisabledStyleForCell(cell);
+                    }
 
                     if (value === undefined) {
-                        // @todo: find currency (from currency row / selector (?)
                         return coreshop.util.format.currency('', 0);
                     } else {
                         return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
@@ -292,10 +305,12 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                         allowBlank: true
                     });
                 },
-                renderer: function (currency, cell) {
+                renderer: function (currency, cell, record) {
                     var store, currencyObject;
 
-                    cell.tdStyle = currency === null ? 'color: grey; font-style: italic;' : '';
+                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                        _.setDisabledStyleForCell(cell);
+                    }
 
                     if (!isNaN(currency)) {
                         store = pimcore.globalmanager.get('coreshop_currencies');
@@ -330,7 +345,10 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                         prefix = '-';
                     }
 
-                    cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
+                    if (_.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
+                        _.setDisabledStyleForCell(cell);
+                    }
+
                     if (value !== undefined) {
                         return prefix + value + '%';
                     }
@@ -349,11 +367,15 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     });
                 },
                 renderer: function (value, cell, record) {
+
+                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                        _.setDisabledStyleForCell(cell);
+                    }
+
                     if (value === undefined) {
-                        // @todo: find currency (from currency row / selector (?)
                         return coreshop.util.format.currency('', 0);
                     } else {
-                        cell.tdStyle = value === 0 ? 'color: grey; font-style: italic;' : '';
+
                         return coreshop.util.format.currency('', parseFloat(value) * 100);
                     }
                 }
@@ -395,18 +417,13 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
             listeners: {
                 beforeedit: function (editor, context) {
                     var record = context.record;
-                    if (context.column.name === 'tier_amount') {
-                        if (record.get('pricingBehaviour') === 'percentage_increase' || record.get('pricingBehaviour') === 'percentage_discount') {
-                            return false;
-                        }
-                    } else if (context.column.name === 'tier_percentage') {
-                        if (record.get('pricingBehaviour') === 'fixed' || record.get('pricingBehaviour') === 'amount_increase' || record.get('pricingBehaviour') === 'amount_discount') {
-                            return false;
-                        }
-                    } else if (context.column.name === 'currency') {
-                        if (record.get('pricingBehaviour') === 'percentage_increase' || record.get('pricingBehaviour') === 'percentage_discount') {
-                            return false;
-                        }
+
+                    if (_.isInArray(context.column.name, ['tier_amount', 'currency', 'pseudo_price'])
+                        && _.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
+                        return false;
+                    } else if (context.column.name === 'tier_percentage'
+                        && _.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
+                        return false;
                     }
 
                     editor.editors.each(function (e) {
@@ -464,7 +481,8 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                             handler: this.onPaste.bind(this),
                             iconCls: 'pimcore_icon_paste',
                             name: 'clipboard-paste-btn'
-                        }]
+                        }
+                    ]
                 }
             ]
         });
@@ -591,5 +609,19 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
         });
 
         return data;
+    },
+
+    setDisabledStyleForCell(cellMeta) {
+
+        if (!cellMeta.hasOwnProperty('tdStyle')) {
+            cellMeta.tdStyle = '';
+        }
+
+        cellMeta.tdStyle += ' color: #000000; font-style: italic;';
+        cellMeta.tdStyle += ' opacity: 0.2; background: #c3c3c3; cursor: default !important;';
+    },
+
+    isInArray(key, heyStack) {
+        return heyStack.indexOf(key) !== -1;
     }
 });
