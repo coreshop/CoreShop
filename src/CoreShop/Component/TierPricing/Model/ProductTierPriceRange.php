@@ -129,14 +129,6 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     /**
      * {@inheritdoc}
      */
-    public function setPseudoPrice(int $pseudoPrice)
-    {
-        $this->pseudoPrice = $pseudoPrice;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getHighlighted()
     {
         return $this->highlighted;

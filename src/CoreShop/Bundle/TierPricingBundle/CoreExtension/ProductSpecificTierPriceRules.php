@@ -236,7 +236,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
     }
 
     /**
-     * @param       $object
+     * @param mixed $object
      * @param array $params
      *
      * @throws \Doctrine\ORM\ORMException

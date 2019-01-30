@@ -26,9 +26,9 @@ final class ProductSpecificTierPriceRangeType extends AbstractResourceType
     private $actionTypes;
 
     /**
-     * @param       $dataClass
-     * @param array $actionTypes
-     * @param array $validationGroups
+     * @param string $dataClass
+     * @param array  $actionTypes
+     * @param array  $validationGroups
      */
     public function __construct($dataClass, array $actionTypes, array $validationGroups = [])
     {
