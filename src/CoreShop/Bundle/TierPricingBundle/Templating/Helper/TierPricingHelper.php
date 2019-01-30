@@ -13,8 +13,6 @@
 namespace CoreShop\Bundle\TierPricingBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;

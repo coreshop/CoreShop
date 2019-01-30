@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\Collection;
 class TierPriceLocator implements TierPriceLocatorInterface
 {
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function locate(Collection $ranges, int $quantity)
     {

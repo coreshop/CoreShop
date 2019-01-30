@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Fetcher;
 
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;

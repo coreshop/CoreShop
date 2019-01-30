@@ -37,7 +37,8 @@ class AmountDecreaseAction implements TierPriceActionInterface
     /**
      * {@inheritdoc}
      */
-    public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context) {
+    public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context)
+    {
         /**
          * @var \CoreShop\Component\Core\Model\ProductTierPriceRangeInterface $range
          */
@@ -49,4 +50,3 @@ class AmountDecreaseAction implements TierPriceActionInterface
         return max($realItemPrice - $currencyAwareAmount, 0);
     }
 }
-

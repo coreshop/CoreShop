@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Action;
 
-use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
@@ -23,6 +22,6 @@ class PercentageIncreaseAction implements TierPriceActionInterface
      */
     public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context)
     {
-        return $realItemPrice + ((int)round(($range->getPercentage() / 100) * $realItemPrice));
+        return $realItemPrice + ((int) round(($range->getPercentage() / 100) * $realItemPrice));
     }
 }

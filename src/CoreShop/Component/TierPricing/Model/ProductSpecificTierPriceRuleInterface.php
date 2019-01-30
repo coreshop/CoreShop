@@ -13,7 +13,6 @@
 namespace CoreShop\Component\TierPricing\Model;
 
 use CoreShop\Component\Rule\Model\ConditionInterface;
-
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 

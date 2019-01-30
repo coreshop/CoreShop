@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\TierPricing\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 
 class ProductTierPriceRange extends AbstractResource implements ProductTierPriceRangeInterface

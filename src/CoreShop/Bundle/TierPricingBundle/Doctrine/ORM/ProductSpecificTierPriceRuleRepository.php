@@ -54,4 +54,3 @@ class ProductSpecificTierPriceRuleRepository extends EntityRepository implements
             ->getResult();
     }
 }
-

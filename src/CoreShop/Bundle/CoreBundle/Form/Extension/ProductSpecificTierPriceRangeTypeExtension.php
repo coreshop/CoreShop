@@ -30,8 +30,7 @@ final class ProductSpecificTierPriceRangeTypeExtension extends AbstractTypeExten
             ->add('amount', MoneyType::class, [])
             ->add('currency', CurrencyChoiceType::class, [])
             ->add('percentage', NumberType::class, [])
-            ->add('pseudoPrice', MoneyType::class, [])
-        ;
+            ->add('pseudoPrice', MoneyType::class, []);
     }
 
     /**

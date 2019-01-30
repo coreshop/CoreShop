@@ -12,13 +12,10 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\Form\Type;
 
-use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
-use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductSpecificTierPriceRangeType extends AbstractResourceType
@@ -51,7 +48,7 @@ final class ProductSpecificTierPriceRangeType extends AbstractResourceType
             ->add('rangeFrom', IntegerType::class, [])
             ->add('rangeTo', IntegerType::class, [])
             ->add('pricingBehaviour', ChoiceType::class, [
-                'choices' => $this->actionTypes
+                'choices' => $this->actionTypes,
             ])
             ->add('highlighted', CheckboxType::class, []);
     }

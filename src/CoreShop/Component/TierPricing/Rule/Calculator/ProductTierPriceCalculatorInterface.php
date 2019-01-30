@@ -20,7 +20,7 @@ interface ProductTierPriceCalculatorInterface
 {
     /**
      * @param TierPriceAwareInterface $subject
-     * @param array            $context
+     * @param array                   $context
      *
      * @return ProductSpecificTierPriceRuleInterface[]
      */
@@ -28,7 +28,7 @@ interface ProductTierPriceCalculatorInterface
 
     /**
      * @param ProductTierPriceRangeInterface $range
-     * @param TierPriceAwareInterface               $subject
+     * @param TierPriceAwareInterface        $subject
      * @param array                          $context
      *
      * @return int

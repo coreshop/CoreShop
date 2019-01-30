@@ -37,7 +37,8 @@ class FixedAction implements TierPriceActionInterface
     /**
      * {@inheritdoc}
      */
-    public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context) {
+    public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context)
+    {
         /**
          * @var \CoreShop\Component\Core\Model\ProductTierPriceRangeInterface $range
          */
@@ -48,4 +49,3 @@ class FixedAction implements TierPriceActionInterface
         return $this->currencyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
     }
 }
-

@@ -25,8 +25,7 @@ final class TimespanConfigurationType extends AbstractType
     {
         $builder
             ->add('dateFrom', NumberType::class)
-            ->add('dateTo', NumberType::class)
-        ;
+            ->add('dateTo', NumberType::class);
     }
 
     /**

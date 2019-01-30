@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Order\Processor\CartItemsProcessor;
 use CoreShop\Component\Core\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -75,18 +74,17 @@ class CartItemTierPriceProcessor implements CartProcessorInterface
         Assert::isInstanceOf($store, StoreInterface::class);
 
         $context = [
-            'store'    => $store,
+            'store' => $store,
             'customer' => $cart->getCustomer() ?: null,
             'currency' => $cart->getCurrency(),
-            'country'  => $store->getBaseCountry(),
-            'cart'     => $cart,
+            'country' => $store->getBaseCountry(),
+            'cart' => $cart,
         ];
 
         /**
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-
             $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
             $tierItemPrice = $this->productTierPriceCalculator->getTierPriceForCartItem($item->getProduct(), $item, $context);
 

@@ -13,7 +13,6 @@
 namespace CoreShop\Component\TierPricing\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 interface ProductTierPriceRangeInterface extends ResourceInterface
 {
@@ -71,5 +70,4 @@ interface ProductTierPriceRangeInterface extends ResourceInterface
      * @param bool $highlighted
      */
     public function setHighlighted(bool $highlighted);
-
 }

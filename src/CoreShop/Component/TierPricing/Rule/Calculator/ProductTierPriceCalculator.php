@@ -12,11 +12,9 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Calculator;
 
-use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
-use CoreShop\Component\TierPricing\Model\ProductTierPriceRange;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use CoreShop\Component\TierPricing\Rule\Action\TierPriceActionInterface;

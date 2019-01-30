@@ -21,7 +21,7 @@ use CoreShop\Component\TierPricing\Locator\TierPriceLocatorInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use CoreShop\Component\TierPricing\Rule\Action\TierPriceActionInterface;
-use \CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface as BaseProductTierPriceCalculatorInterface;
+use CoreShop\Component\TierPricing\Rule\Calculator\ProductTierPriceCalculatorInterface as BaseProductTierPriceCalculatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInterface
@@ -48,9 +48,9 @@ final class ProductTierPriceCalculator implements ProductTierPriceCalculatorInte
 
     /**
      * @param BaseProductTierPriceCalculatorInterface $inner
-     * @param ServiceRegistryInterface            $actionRegistry
-     * @param PurchasableCalculatorInterface      $productPriceCalculator
-     * @param TierPriceLocatorInterface           $tierPriceLocator
+     * @param ServiceRegistryInterface                $actionRegistry
+     * @param PurchasableCalculatorInterface          $productPriceCalculator
+     * @param TierPriceLocatorInterface               $tierPriceLocator
      */
     public function __construct(
         BaseProductTierPriceCalculatorInterface $inner,

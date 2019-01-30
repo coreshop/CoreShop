@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\TierPricing\Rule\Action;
 
-use CoreShop\Component\TierPricing\Model\ProductSpecificTierPriceRuleInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 
@@ -23,6 +22,7 @@ interface TierPriceActionInterface
      * @param TierPriceAwareInterface        $subject
      * @param int                            $realItemPrice
      * @param array                          $context
+     *
      * @return int
      */
     public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context);

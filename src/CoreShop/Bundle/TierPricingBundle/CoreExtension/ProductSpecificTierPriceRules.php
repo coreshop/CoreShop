@@ -165,7 +165,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
         $data = [
             'conditions' => array_keys($this->getConfigConditions()),
             'actions' => array_keys($this->getConfigActions()),
-            'rules'      => [],
+            'rules' => [],
         ];
 
         if ($object instanceof ProductInterface) {
@@ -186,6 +186,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
      * @param array $params
      *
      * @return array|mixed
+     *
      * @throws \Exception
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
@@ -195,7 +196,6 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
 
         if ($data && $object instanceof Concrete) {
             foreach ($data as $rule) {
-
                 $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
                 $storedRule = null;
@@ -333,12 +333,12 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array)$value);
+                    $array[$key] = $this->arrayCastRecursive((array) $value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array)$array);
+            return $this->arrayCastRecursive((array) $array);
         }
 
         return $array;
@@ -349,6 +349,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
      * @param array                                 $currentRule
      *
      * @return ProductSpecificTierPriceRuleInterface
+     *
      * @throws \Doctrine\ORM\ORMException
      */
     protected function checkForRangeOrphans(ProductSpecificTierPriceRuleInterface $storedRule, array $currentRule)
@@ -362,7 +363,7 @@ class ProductSpecificTierPriceRules extends Data implements CustomResourcePersis
         $keepIds = [];
         foreach ($currentRanges as $currentRange) {
             if (isset($currentRange['id']) && $currentRange['id'] !== null) {
-                $keepIds[] = (int)$currentRange['id'];
+                $keepIds[] = (int) $currentRange['id'];
             }
         }
 

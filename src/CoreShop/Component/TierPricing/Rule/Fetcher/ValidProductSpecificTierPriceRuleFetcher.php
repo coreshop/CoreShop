@@ -38,7 +38,6 @@ final class ValidProductSpecificTierPriceRuleFetcher implements ValidRulesFetche
         $validRules = [];
         $rules = $product->getSpecificTierPriceRules();
 
-
         if (!is_array($rules)) {
             return [];
         }

@@ -19,7 +19,7 @@ interface TierPriceLocatorInterface
 {
     /**
      * @param Collection|ProductTierPriceRangeInterface[] $ranges
-     * @param int             $quantity
+     * @param int                                         $quantity
      *
      * @return ProductTierPriceRangeInterface|null
      */

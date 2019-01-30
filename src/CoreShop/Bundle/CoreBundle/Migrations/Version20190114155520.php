@@ -31,22 +31,22 @@ class Version20190114155520 extends AbstractPimcoreMigration implements Containe
         }
 
         $specificTierPriceField = [
-            'fieldtype'       => 'coreShopProductSpecificTierPriceRules',
-            'height'          => null,
-            'name'            => 'specificTierPriceRules',
-            'title'           => 'Specific Tier Price Rules',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => false,
-            'index'           => false,
-            'locked'          => false,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => false,
+            'fieldtype' => 'coreShopProductSpecificTierPriceRules',
+            'height' => null,
+            'name' => 'specificTierPriceRules',
+            'title' => 'Specific Tier Price Rules',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
@@ -71,6 +71,5 @@ class Version20190114155520 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

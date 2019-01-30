@@ -38,5 +38,4 @@ interface TierPricingHelperInterface
      * @return mixed
      */
     public function getCalculatedRangePrice(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $product);
-
 }

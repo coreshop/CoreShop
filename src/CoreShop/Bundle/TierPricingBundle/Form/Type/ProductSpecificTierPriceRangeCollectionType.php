@@ -40,24 +40,23 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
              * @var ProductTierPriceRangeInterface $tierPricesRange
              */
             foreach ($data as $rowIndex => $tierPricesRange) {
-
                 $realRowIndex = $rowIndex + 1;
 
                 if (!is_numeric($tierPricesRange->getRangeFrom())) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . ' needs to be numeric'));
-                } elseif ((int)$tierPricesRange->getRangeFrom() < 0) {
+                } elseif ((int) $tierPricesRange->getRangeFrom() < 0) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
-                } elseif ((int)$tierPricesRange->getRangeFrom() <= $lastEnd) {
+                } elseif ((int) $tierPricesRange->getRangeFrom() <= $lastEnd) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
                 }
 
                 if (!is_numeric($tierPricesRange->getRangeTo())) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . ' needs to be numeric'));
-                } elseif ((int)$tierPricesRange->getRangeTo() <= $tierPricesRange->getRangeFrom()) {
+                } elseif ((int) $tierPricesRange->getRangeTo() <= $tierPricesRange->getRangeFrom()) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . '  needs to be greater than ' . $tierPricesRange->getRangeFrom()));
                 }
 
-                $lastEnd = (int)$tierPricesRange->getRangeTo();
+                $lastEnd = (int) $tierPricesRange->getRangeTo();
             }
         });
     }
@@ -65,26 +64,24 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public
-    function configureOptions(
+    public function configureOptions(
         OptionsResolver $resolver
     ) {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add'      => true,
-            'allow_delete'   => true,
-            'by_reference'   => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
             'error_bubbling' => false,
-            'entry_type'     => ProductSpecificTierPriceRangeType::class
+            'entry_type' => ProductSpecificTierPriceRangeType::class,
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public
-    function getParent()
+    public function getParent()
     {
         return CollectionType::class;
     }
@@ -92,8 +89,7 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public
-    function getBlockPrefix()
+    public function getBlockPrefix()
     {
         return 'coreshop_product_specific_tier_price_range_collection';
     }
