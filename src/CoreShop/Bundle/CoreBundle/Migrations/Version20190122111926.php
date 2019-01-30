@@ -24,7 +24,7 @@ class Version20190122111926 extends AbstractPimcoreMigration
             $actualConfig = json_decode($actualConfig, true);
 
             if (is_array($actualConfig)) {
-                array_walk_recursive($actualConfig, function(&$value, $key) {
+                array_walk_recursive($actualConfig, function (&$value, $key) {
                     if ($key !== 'class') {
                         return;
                     }
@@ -32,10 +32,12 @@ class Version20190122111926 extends AbstractPimcoreMigration
                     switch ($value) {
                         case 'OrderState':
                             $value = 'coreshop_order_state';
+
                             break;
 
                         case 'PriceFormatter':
                             $value = 'coreshop_price_formatter';
+
                             break;
                     }
                 });
@@ -52,6 +54,5 @@ class Version20190122111926 extends AbstractPimcoreMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

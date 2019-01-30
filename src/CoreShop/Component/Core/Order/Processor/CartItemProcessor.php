@@ -15,7 +15,6 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
