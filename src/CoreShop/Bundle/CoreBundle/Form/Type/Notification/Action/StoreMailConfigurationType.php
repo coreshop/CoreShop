@@ -33,8 +33,8 @@ class StoreMailConfigurationType extends AbstractType
                 'entry_options' => [
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'entry_type' => NumberType::class
-                ]
+                    'entry_type' => NumberType::class,
+                ],
             ])
             ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }

@@ -44,7 +44,6 @@ final class CartItemsProcessor implements CartProcessorInterface
         $this->cartItemProcessor = $cartItemProcessor;
     }
 
-
     /**
      * {@inheritdoc}
      */

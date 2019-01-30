@@ -68,8 +68,7 @@ class PriceFormatter extends AbstractOperator
         if ($element instanceof CurrencyAwareInterface) {
             $currency = $element->getCurrency();
             $result->value = $this->moneyFormatter->format($result->value, $currency->getIsoCode(), $this->localeService->getLocaleCode());
-        }
-        elseif ($element instanceof SaleInterface) {
+        } elseif ($element instanceof SaleInterface) {
             $store = $element->getStore();
             $result->value = $this->moneyFormatter->format($result->value, $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
         }
