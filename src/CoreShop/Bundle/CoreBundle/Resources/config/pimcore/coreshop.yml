@@ -9,3 +9,4 @@ imports:
     - { resource: "coreshop/coreshop_configuration.yml" }
     - { resource: "coreshop/coreshop_product.yml" }
     - { resource: "coreshop/coreshop_customer.yml" }
+    - { resource: "coreshop/coreshop_tier_pricing.yml" }

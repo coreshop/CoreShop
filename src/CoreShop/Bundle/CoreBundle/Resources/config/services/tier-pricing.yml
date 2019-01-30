@@ -68,3 +68,10 @@ services:
             - '@coreshop.currency_converter'
         tags:
             - { name: coreshop.product_tier_price.action, type: amount_increase }
+
+    coreshop.tier_pricing.action.fixed:
+        class: CoreShop\Component\Core\TierPricing\Rule\Action\FixedAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_tier_price.action, type: fixed }

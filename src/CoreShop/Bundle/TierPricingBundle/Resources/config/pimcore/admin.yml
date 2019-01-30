@@ -8,8 +8,5 @@ core_shop_tier_pricing:
             tier_pricing_product_specific_tier_price_rule_ranges: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/ranges.js'
             tier_pricing_product_specific_tier_price_rule_condition: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice//condition.js'
             tier_pricing_product_specific_tier_price_condition_nested: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/conditions/nested.js'
-            tier_pricing_product_action_abstract: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/actions/abstract.js'
-            tier_pricing_product_action_percentage_decrease: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/actions/percentageDecrease.js'
-            tier_pricing_product_action_percentage_increase: '/bundles/coreshoptierpricing/pimcore/js/specifictierprice/actions/percentageIncrease.js'
         css:
             tier_pricing: '/bundles/coreshoptierpricing/pimcore/css/tier-pricing.css'

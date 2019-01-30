@@ -79,7 +79,7 @@ coreshop.tier_pricing.specific_tier_price.object.item = Class.create(coreshop.ru
         var rangContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getActions(), this.parentPanel.getClipboardManager());
+        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getClipboardManager());
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
