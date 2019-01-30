@@ -16,3 +16,4 @@ imports:
     - suites/domain/filter.yml
     - suites/domain/tracking.yml
     - suites/domain/theme.yml
+    - suites/domain/tier_pricing.yml

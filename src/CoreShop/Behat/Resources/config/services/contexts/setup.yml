@@ -290,3 +290,15 @@ services:
             - '@__symfony__.coreshop.factory.cart_price_rule_voucher_code'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.product_specific_tier_price_rule:
+        class: CoreShop\Behat\Context\Setup\ProductSpecificTierPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.product_tier_price_range'
+            - '@__symfony__.form.factory'
+            - '@__symfony__.coreshop.form_registry.product_specific_price_rule.conditions'
+            - '@__symfony__.coreshop.factory.product_specific_tier_price_rule'
+        tags:
+            - { name: fob.context_service }

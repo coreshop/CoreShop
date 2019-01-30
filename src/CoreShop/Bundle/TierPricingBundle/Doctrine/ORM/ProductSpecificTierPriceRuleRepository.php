@@ -13,10 +13,10 @@
 namespace CoreShop\Bundle\TierPricingBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
-use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
+use CoreShop\Component\TierPricing\Repository\ProductSpecificTierPriceRuleRepositoryInterface;
 
-class ProductSpecificTierPriceRuleRepository extends EntityRepository implements RepositoryInterface
+class ProductSpecificTierPriceRuleRepository extends EntityRepository implements ProductSpecificTierPriceRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -32,7 +32,7 @@ class ProductSpecificTierPriceRuleRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findForProduct(ProductInterface $product)
+    public function findForProduct(TierPriceAwareInterface $product)
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :productId')
@@ -52,5 +52,13 @@ class ProductSpecificTierPriceRuleRepository extends EntityRepository implements
             ->setParameter('conditionType', $conditionType)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findWithActionOfType($actionType)
+    {
+        throw new \Exception('actions are not supported in tier price rules.');
     }
 }

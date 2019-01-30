@@ -39,12 +39,12 @@ class ProductTierPriceRange extends AbstractResource implements ProductTierPrice
     /**
      * @var float
      */
-    protected $percentage;
+    protected $percentage = 0;
 
     /**
      * @var bool
      */
-    protected $highlighted;
+    protected $highlighted = false;
 
     /**
      * {@inheritdoc}

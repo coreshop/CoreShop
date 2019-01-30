@@ -19,16 +19,17 @@ class ProductTierPriceRange extends BaseProductTierPriceRange implements Product
     /**
      * @var int
      */
-    protected $amount;
+    protected $amount = 0;
 
     /**
      * @var CurrencyInterface|null
      */
     protected $currency;
-    /***
+
+    /**
      * @var int
      */
-    protected $pseudoPrice;
+    protected $pseudoPrice = 0;
 
     /**
      * {@inheritdoc}
