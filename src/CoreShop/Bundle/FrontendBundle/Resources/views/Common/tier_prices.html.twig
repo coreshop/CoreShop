@@ -23,9 +23,9 @@
                         <small>{{ 'coreshop.ui.tier_pricing.list_price'|trans }}
                             <del>{{ currency.convertAndFormatFromCustomCurrency(range.getCurrency.isoCode, range.getPseudoPrice()) }}</del>
                         </small>
-                    {% elseif range.getPricingBehaviour() == 'percentage_discount' %}
+                    {% elseif range.getPricingBehaviour() == 'percentage_decrease' %}
                         <small>{{ 'coreshop.ui.tier_pricing.you_save'|trans }}: {{ range.getPercentage() }}%</small>
-                    {% elseif range.getPricingBehaviour() == 'amount_discount' %}
+                    {% elseif range.getPricingBehaviour() == 'amount_decrease' %}
                         <small>{{ 'coreshop.ui.tier_pricing.you_save'|trans }}: {{currency.convertAndFormatFromCustomCurrency(range.getCurrency.isoCode, range.getAmount()) }}</small>
                     {% endif %}
                 </td>

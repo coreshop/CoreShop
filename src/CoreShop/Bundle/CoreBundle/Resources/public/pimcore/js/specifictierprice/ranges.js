@@ -275,7 +275,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     var prefix = '';
                     if (record.get('pricingBehaviour') === 'amount_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'amount_discount') {
+                    } else if (record.get('pricingBehaviour') === 'amount_decrease') {
                         prefix = '-';
                     }
 
@@ -341,7 +341,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     var prefix = '';
                     if (record.get('pricingBehaviour') === 'percentage_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'percentage_discount') {
+                    } else if (record.get('pricingBehaviour') === 'percentage_decrease') {
                         prefix = '-';
                     }
 
@@ -617,8 +617,8 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
             cellMeta.tdStyle = '';
         }
 
-        cellMeta.tdStyle += ' color: #000000; font-style: italic;';
-        cellMeta.tdStyle += ' opacity: 0.2; background: #c3c3c3; cursor: default !important;';
+        cellMeta.tdStyle += ' color: #c1c1c1; font-style: italic;';
+        cellMeta.tdStyle += ' background: #eaeaea; cursor: default !important;';
     },
 
     isInArray(key, heyStack) {

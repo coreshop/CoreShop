@@ -17,8 +17,8 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
     ruleId: null,
     clipboardManager: null,
 
-    amountBasedBehaviour: ['fixed', 'amount_discount', 'amount_increase'],
-    percentBasedBehaviour: ['percentage_discount', 'percentage_increase'],
+    amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
+    percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
 
     initialize: function (ruleId, clipboardManager) {
         this.internalTmpId = Ext.id();
@@ -221,9 +221,9 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     return new Ext.form.ComboBox({
                         store: [
                             ['fixed', t('coreshop_tier_behaviour_fixed')],
-                            ['amount_discount', t('coreshop_tier_behaviour_amount_discount')],
+                            ['amount_decrease', t('coreshop_tier_behaviour_amount_decrease')],
                             ['amount_increase', t('coreshop_tier_behaviour_amount_increase')],
-                            ['percentage_discount', t('coreshop_tier_behaviour_percentage_discount')],
+                            ['percentage_decrease', t('coreshop_tier_behaviour_percentage_decrease')],
                             ['percentage_increase', t('coreshop_tier_behaviour_percentage_increase')]
                         ],
                         listeners: {
@@ -275,7 +275,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     var prefix = '';
                     if (record.get('pricingBehaviour') === 'amount_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'amount_discount') {
+                    } else if (record.get('pricingBehaviour') === 'amount_decrease') {
                         prefix = '-';
                     }
 
@@ -341,7 +341,7 @@ coreshop.tier_pricing.specific_tier_price.ranges = Class.create({
                     var prefix = '';
                     if (record.get('pricingBehaviour') === 'percentage_increase') {
                         prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'percentage_discount') {
+                    } else if (record.get('pricingBehaviour') === 'percentage_decrease') {
                         prefix = '-';
                     }
 

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\Form\Type;
 
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
@@ -24,6 +25,19 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductSpecificTierPriceRangeCollectionType extends AbstractType
 {
+    /**
+     * @var ServiceRegistryInterface
+     */
+    private $actionRegistry;
+
+    /**
+     * @param ServiceRegistryInterface $actionRegistry
+     */
+    public function __construct(ServiceRegistryInterface $actionRegistry)
+    {
+        $this->actionRegistry = $actionRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -40,23 +54,34 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
              * @var ProductTierPriceRangeInterface $tierPricesRange
              */
             foreach ($data as $rowIndex => $tierPricesRange) {
-                $realRowIndex = $rowIndex + 1;
 
+                $action = $this->actionRegistry->get($tierPricesRange->getPricingBehaviour());
+                $action->dispatchFormValidation($event->getForm(), $tierPricesRange);
+                if ($event->getForm()->getErrors()->count() > 0) {
+                    break;
+                }
+
+                $realRowIndex = $rowIndex + 1;
                 if (!is_numeric($tierPricesRange->getRangeFrom())) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . ' needs to be numeric'));
-                } elseif ((int) $tierPricesRange->getRangeFrom() < 0) {
+                    break;
+                } elseif ((int)$tierPricesRange->getRangeFrom() < 0) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
-                } elseif ((int) $tierPricesRange->getRangeFrom() <= $lastEnd) {
+                    break;
+                } elseif ((int)$tierPricesRange->getRangeFrom() <= $lastEnd) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
+                    break;
                 }
 
                 if (!is_numeric($tierPricesRange->getRangeTo())) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . ' needs to be numeric'));
-                } elseif ((int) $tierPricesRange->getRangeTo() <= $tierPricesRange->getRangeFrom()) {
+                    break;
+                } elseif ((int)$tierPricesRange->getRangeTo() <= $tierPricesRange->getRangeFrom()) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . '  needs to be greater than ' . $tierPricesRange->getRangeFrom()));
+                    break;
                 }
 
-                $lastEnd = (int) $tierPricesRange->getRangeTo();
+                $lastEnd = (int)$tierPricesRange->getRangeTo();
             }
         });
     }
@@ -70,11 +95,11 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add' => true,
-            'allow_delete' => true,
-            'by_reference' => false,
+            'allow_add'      => true,
+            'allow_delete'   => true,
+            'by_reference'   => false,
             'error_bubbling' => false,
-            'entry_type' => ProductSpecificTierPriceRangeType::class,
+            'entry_type'     => ProductSpecificTierPriceRangeType::class,
         ]);
     }
 
