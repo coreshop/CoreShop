@@ -23,6 +23,7 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Tool;
 
@@ -310,7 +311,10 @@ final class ProductContext implements Context
     {
         $variant = $this->createSimpleProduct($productName);
         $variant->setParent($product);
-        $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
+
+        if ($variant instanceof Concrete) {
+            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
+        }
 
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
