@@ -16,19 +16,13 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.product_specific_tier_price_rule_range_collection:
-        class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRangeCollectionType
-        arguments:
-            - '@coreshop.registry.product_tier_price.actions'
-        tags:
-            - { name: form.type }
-
     coreshop.form.type.product_specific_tier_price_rule.range:
         class: CoreShop\Bundle\TierPricingBundle\Form\Type\ProductSpecificTierPriceRangeType
         arguments:
             - '%coreshop.model.product_tier_price_range.class%'
-            - '%coreshop.product_tier_price.actions%'
             - '%coreshop.form.type.product_specific_tier_price_rule.range.validation_groups%'
+            - '%coreshop.product_tier_price.actions%'
+            - '%coreshop.product_tier_price.ranges.action_constraints%'
         tags:
             - { name: form.type }
 

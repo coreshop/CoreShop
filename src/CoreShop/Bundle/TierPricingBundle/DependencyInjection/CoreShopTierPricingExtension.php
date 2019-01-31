@@ -30,6 +30,8 @@ class CoreShopTierPricingExtension extends AbstractModelExtension
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
+        $container->setParameter('coreshop.product_tier_price.ranges.action_constraints', $config['action_constraints']);
+
         $loader->load('services.yml');
     }
 }

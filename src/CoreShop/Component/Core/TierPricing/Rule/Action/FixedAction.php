@@ -17,8 +17,6 @@ use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
 use CoreShop\Component\TierPricing\Rule\Action\TierPriceActionInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
 use Webmozart\Assert\Assert;
 
 class FixedAction implements TierPriceActionInterface
@@ -49,20 +47,5 @@ class FixedAction implements TierPriceActionInterface
         $currentContextCurrency = $context['currency'];
 
         return $this->currencyConverter->convert($range->getAmount(), $range->getCurrency()->getIsoCode(), $currentContextCurrency->getIsoCode());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dispatchFormValidation(FormInterface $form, ProductTierPriceRangeInterface $range)
-    {
-        /**
-         * @var \CoreShop\Component\Core\Model\ProductTierPriceRangeInterface $range
-         */
-        Assert::isInstanceOf($range, \CoreShop\Component\Core\Model\ProductTierPriceRangeInterface::class);
-
-        if (!$range->getCurrency() instanceof CurrencyInterface) {
-            $form->addError(new FormError('no currency selected'));
-        }
     }
 }

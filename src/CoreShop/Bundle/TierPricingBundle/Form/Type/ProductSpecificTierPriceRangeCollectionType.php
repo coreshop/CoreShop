@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\TierPricingBundle\Form\Type;
 
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
@@ -25,19 +24,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductSpecificTierPriceRangeCollectionType extends AbstractType
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $actionRegistry;
-
-    /**
-     * @param ServiceRegistryInterface $actionRegistry
-     */
-    public function __construct(ServiceRegistryInterface $actionRegistry)
-    {
-        $this->actionRegistry = $actionRegistry;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -54,12 +40,6 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
              * @var ProductTierPriceRangeInterface $tierPricesRange
              */
             foreach ($data as $rowIndex => $tierPricesRange) {
-
-                $action = $this->actionRegistry->get($tierPricesRange->getPricingBehaviour());
-                $action->dispatchFormValidation($event->getForm(), $tierPricesRange);
-                if ($event->getForm()->getErrors()->count() > 0) {
-                    break;
-                }
 
                 $realRowIndex = $rowIndex + 1;
                 if (!is_numeric($tierPricesRange->getRangeFrom())) {
@@ -89,9 +69,8 @@ class ProductSpecificTierPriceRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(
-        OptionsResolver $resolver
-    ) {
+    public function configureOptions(OptionsResolver $resolver)
+    {
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([

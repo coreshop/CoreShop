@@ -14,7 +14,6 @@ namespace CoreShop\Component\TierPricing\Rule\Action;
 
 use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use CoreShop\Component\TierPricing\Model\TierPriceAwareInterface;
-use Symfony\Component\Form\FormInterface;
 
 interface TierPriceActionInterface
 {
@@ -27,12 +26,4 @@ interface TierPriceActionInterface
      * @return int
      */
     public function calculate(ProductTierPriceRangeInterface $range, TierPriceAwareInterface $subject, int $realItemPrice, array $context);
-
-    /**
-     * @param FormInterface                  $form
-     * @param ProductTierPriceRangeInterface $range
-     *
-     * @return mixed
-     */
-    public function dispatchFormValidation(FormInterface $form, ProductTierPriceRangeInterface $range);
 }

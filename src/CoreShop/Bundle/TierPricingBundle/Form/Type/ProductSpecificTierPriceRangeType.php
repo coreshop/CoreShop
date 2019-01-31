@@ -13,28 +13,39 @@
 namespace CoreShop\Bundle\TierPricingBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Bundle\TierPricingBundle\Validation\Constraints\TieringRangeCurrencyAware;
+use CoreShop\Component\TierPricing\Model\ProductTierPriceRangeInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductSpecificTierPriceRangeType extends AbstractResourceType
 {
     /**
      * @var array
      */
-    private $actionTypes;
+    protected $actionTypes;
+
+    /**
+     * @var array
+     */
+    protected $actionConstraints;
 
     /**
      * @param string $dataClass
-     * @param array  $actionTypes
      * @param array  $validationGroups
+     * @param array  $actionTypes
+     * @param array  $actionConstraints
      */
-    public function __construct($dataClass, array $actionTypes, array $validationGroups = [])
+    public function __construct($dataClass, array $validationGroups, array $actionTypes, array $actionConstraints)
     {
         parent::__construct($dataClass, $validationGroups);
 
         $this->actionTypes = $actionTypes;
+        $this->actionConstraints = $actionConstraints;
     }
 
     /**
@@ -51,6 +62,32 @@ final class ProductSpecificTierPriceRangeType extends AbstractResourceType
                 'choices' => $this->actionTypes,
             ])
             ->add('highlighted', CheckboxType::class, []);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $constraints = [];
+        foreach ($this->actionConstraints as $constraint) {
+            $constraintClass = $constraint['class'];
+            $constraints[] = new $constraintClass(['groups' => $constraint['groups']]);
+        }
+
+        $resolver->setDefaults([
+            'constraints'       => $constraints,
+            'validation_groups' => function (FormInterface $form) {
+                $validationGroups = ['coreshop_tier_pricing_range_validation_default'];
+                /** @var ProductTierPriceRangeInterface $data */
+                $data = $form->getData();
+                $validationGroups[] = sprintf('coreshop_tier_pricing_range_validation_behaviour_%s', $data->getPricingBehaviour());
+
+                return $validationGroups;
+            },
+        ]);
     }
 
     /**

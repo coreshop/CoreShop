@@ -37,6 +37,16 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->arrayNode('action_constraints')
+                    ->prototype('array')
+                    ->children()
+                        ->scalarNode('class')->end()
+                        ->arrayNode('groups')
+                            ->useAttributeAsKey('name')
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         $this->addModelsSection($rootNode);
