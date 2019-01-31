@@ -45,6 +45,13 @@ services:
         tags:
             - { name: coreshop.product_price_rule.condition, type: categories, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType }
 
+    coreshop.product_price_rule.condition.products:
+        class: CoreShop\Component\Core\Product\Rule\Condition\ProductsConditionChecker
+        arguments:
+            - '@coreshop.repository.product'
+        tags:
+            - { name: coreshop.product_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
+
     coreshop.product_price_rule.condition.quantity:
         class: CoreShop\Component\Core\Product\Rule\Condition\QuantityConditionChecker
         tags:
@@ -60,6 +67,8 @@ services:
 
     coreshop.cart_price_rule.condition.products:
         class: CoreShop\Component\Core\Cart\Rule\Condition\ProductsConditionChecker
+        arguments:
+            - '@coreshop.repository.product'
         tags:
             - { name: coreshop.cart_price_rule.condition, type: products, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
 

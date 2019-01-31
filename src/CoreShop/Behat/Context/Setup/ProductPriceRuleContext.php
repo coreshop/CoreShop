@@ -19,6 +19,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionType;
@@ -26,7 +27,6 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -315,6 +315,33 @@ final class ProductPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
+            'include_variants' => false
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
+     */
+    public function theProductPriceRuleHasAProductConditionWhichIncludesVariants(
+        ProductPriceRuleInterface $rule,
+        ProductInterface $product,
+        ProductInterface $product2 = null
+    ) {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $configuration = [
+            'products' => [
+                $product->getId(),
+            ],
+            'include_variants' => true
         ];
 
         if (null !== $product2) {

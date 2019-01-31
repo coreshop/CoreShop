@@ -7,7 +7,6 @@ core_shop_product:
             product_price_rule_action: '/bundles/coreshopproduct/pimcore/js/product/pricerule/action.js'
             product_price_rule_condition: '/bundles/coreshopproduct/pimcore/js/product/pricerule/condition.js'
             product_price_rule_condition_nested: '/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/nested.js'
-            product_price_rule_condition_products: '/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/products.js'
             product_price_rule_condition_timespan: '/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/timespan.js'
             product_price_rule_condition_weight: '/bundles/coreshopproduct/pimcore/js/product/pricerule/conditions/weight.js'
             product_price_rule_action_discount_amount: '/bundles/coreshopproduct/pimcore/js/product/pricerule/actions/discountAmount.js'

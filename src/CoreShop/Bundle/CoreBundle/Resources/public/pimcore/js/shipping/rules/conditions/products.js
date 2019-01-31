@@ -30,9 +30,18 @@ coreshop.shippingrule.conditions.products = Class.create(coreshop.rules.conditio
             fieldtype: 'objects'
         });
 
+        this.includeVariants = Ext.create({
+            xtype: 'checkbox',
+            fieldLabel: t('coreshop_condition_include_variants'),
+            name: 'include_variants',
+            checked: this.data ? this.data.include_variants : false
+        });
+
+
         this.form = new Ext.form.Panel({
             items: [
-                this.products.getLayoutEdit()
+                this.products.getLayoutEdit(),
+                this.includeVariants
             ]
         });
 
@@ -41,7 +50,8 @@ coreshop.shippingrule.conditions.products = Class.create(coreshop.rules.conditio
 
     getValues: function () {
         return {
-            products: this.products.getValue()
+            products: this.products.getValue(),
+            include_variants: this.includeVariants.getValue()
         };
     }
 });
