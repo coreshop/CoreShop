@@ -410,6 +410,30 @@ final class CartPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
+            'include_variants' => false,
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (cart rule) has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
+     */
+    public function theCartPriceRuleHasAProductWithVariantsCondition(CartPriceRuleInterface $rule, ProductInterface $product, ProductInterface $product2 = null)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $configuration = [
+            'products' => [
+                $product->getId(),
+            ],
+            'include_variants' => true,
         ];
 
         if (null !== $product2) {

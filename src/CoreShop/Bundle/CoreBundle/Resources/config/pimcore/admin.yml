@@ -47,6 +47,7 @@ core_shop_core:
             product_price_rule_condition_stores: '/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/stores.js'
             product_price_rule_condition_zones: '/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/zones.js'
             product_price_rule_condition_categories: '/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/categories.js'
+            product_price_rule_condition_products: '/bundles/coreshopcore/pimcore/js/product/pricerule/conditions/products.js'
             product_specific_price_rule_condition_countries: '/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/countries.js'
             product_specific_price_rule_condition_currencies: '/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/currencies.js'
             product_specific_price_rule_condition_customer_groups: '/bundles/coreshopcore/pimcore/js/product/specificprice/conditions/customerGroups.js'
