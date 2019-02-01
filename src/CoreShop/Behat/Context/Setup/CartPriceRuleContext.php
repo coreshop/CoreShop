@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -479,6 +480,19 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(FreeShippingConfigurationType::class, 'freeShipping');
 
         $this->addAction($rule, $this->createActionWithForm('freeShipping'));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action gift-product with (product "[^"]+")$/
+     * @Given /^the (cart rule) has a action gift-product with (product "[^"]+")$/
+     */
+    public function theCartPriceRuleHasAGiftProductAction(CartPriceRuleInterface $rule, ProductInterface $product)
+    {
+        $this->assertActionForm(GiftProductConfigurationType::class, 'giftProduct');
+
+        $this->addAction($rule, $this->createActionWithForm('giftProduct', [
+            'product' => $product->getId(),
+        ]));
     }
 
     /**

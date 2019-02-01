@@ -42,12 +42,18 @@ final class ProductsConditionChecker extends AbstractConditionChecker
         $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $cart->getStore(), $configuration['include_variants'] ?: false);
 
         foreach ($cart->getItems() as $item) {
+            if ($item->getIsGiftItem()) {
+                continue;
+            }
+
             $product = $item->getProduct();
 
-            if ($product instanceof ProductInterface) {
-                if (in_array($product->getId(), $productIdsToCheck)) {
-                    return true;
-                }
+            if (!$product instanceof ProductInterface) {
+                continue;
+            }
+
+            if (in_array($product->getId(), $productIdsToCheck)) {
+                return true;
             }
         }
 

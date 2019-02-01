@@ -16,6 +16,8 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use Webmozart\Assert\Assert;
 
@@ -69,6 +71,82 @@ final class CartContext implements Context
             sprintf(
                 'There should be only two products in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should not be in my cart$/
+     */
+    public function theProductShouldNotBeInMyCart(ProductInterface $product)
+    {
+        Assert::null(
+            $this->cartContext->getCart()->getItemForProduct($product),
+            sprintf(
+                'Product %s found in cart',
+                $product->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should be in my cart$/
+     */
+    public function theProductShouldBeInMyCart(ProductInterface $product)
+    {
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($this->cartContext->getCart()->getItems() as $item) {
+            if ($item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::notNull(
+            $cartItem,
+            sprintf(
+                'Product %s not found in cart',
+                $product->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should be in my cart as gift$/
+     */
+    public function theProductShouldBeInMyCartAsGift(ProductInterface $product)
+    {
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($this->cartContext->getCart()->getItems() as $item) {
+            if (!$item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::true(
+            $cartItem ? $cartItem->getIsGiftItem() : false,
+            sprintf(
+                'Product %s is not in the Cart or is not a gift',
+                $product->getName()
             )
         );
     }
@@ -299,10 +377,10 @@ final class CartContext implements Context
     public function thereShouldBeNoProductInMyCart(CartInterface $cart)
     {
         Assert::eq(
-            $cart->getItems(),
+            count($cart->getItems()),
             0,
             sprintf(
-                'There should be noe product in the cart, but found %d',
+                'There should be no product in the cart, but found %d',
                 count($cart->getItems())
             )
         );
