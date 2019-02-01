@@ -14,12 +14,14 @@ namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository as BaseProductRepository;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
+use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface
+class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -32,6 +34,49 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         ];
 
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllVariants(ProductInterface $product, $recursive = true)
+    {
+        $list = $this->getList();
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
+
+        if ($recursive) {
+            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%s']);
+        }
+        else {
+            $list->setCondition('o_parentId =', [$product->getId()]);
+        }
+
+        return $list->getObjects();
+    }
+
+     /**
+     * {@inheritdoc}
+     */
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
+    {
+        $list = $this->getList();
+        $dao = $list->getDao();
+
+        $db = \Pimcore\Db::get();
+        $query = $db->select()
+            ->from($dao->getTableName(), ['oo_id'])
+            ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
+            ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
+            ->where('o_type = ?', 'variant')
+        ;
+
+        $variantIds = [];
+
+        foreach ($query->execute()->fetchAll() as $column) {
+            $variantIds[] = $column['oo_id'];
+        }
+
+        return $variantIds;
     }
 
     /**

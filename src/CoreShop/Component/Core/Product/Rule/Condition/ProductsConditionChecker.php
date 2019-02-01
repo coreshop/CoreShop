@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Rule\Condition;
+namespace CoreShop\Component\Core\Product\Rule\Condition;
 
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
+use CoreShop\Component\Core\Rule\Condition\ProductVariantsCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
@@ -20,6 +23,18 @@ use Webmozart\Assert\Assert;
 
 class ProductsConditionChecker implements ConditionCheckerInterface
 {
+    use ProductVariantsCheckerTrait {
+        ProductVariantsCheckerTrait::__construct as private __traitConstruct;
+    }
+
+    /**
+     * @param ProductVariantRepositoryInterface $productRepository
+     */
+    public function __construct(ProductVariantRepositoryInterface $productRepository)
+    {
+        $this->__traitConstruct($productRepository);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,6 +42,12 @@ class ProductsConditionChecker implements ConditionCheckerInterface
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        return in_array($subject->getId(), $configuration['products']);
+        if (!array_key_exists('store', $params) || !$params['store'] instanceof StoreInterface) {
+            return false;
+        }
+
+        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $params['store'], $configuration['include_variants'] ?: false);
+
+        return in_array($subject->getId(), $productIdsToCheck);
     }
 }

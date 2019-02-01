@@ -338,6 +338,21 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
             'products' => [$product->getId()],
+            'include_variants' => false,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (shipping rule) has a condition products with (product "[^"]+") which includes variants$/
+     */
+    public function theShippingRuleHasAProductsWithVariantsCondition(ShippingRuleInterface $rule, ProductInterface $product)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => [$product->getId()],
+            'include_variants' => true,
         ]));
     }
 
@@ -353,6 +368,23 @@ final class ShippingContext implements Context
             'products' => array_map(function ($product) {
                 return $product->getId();
             }, $products),
+            'include_variants' => false,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
+     * @Given /^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
+     */
+    public function theShippingRuleHasAProductsConditionWithTwoProductsWithVariants(ShippingRuleInterface $rule, array $products)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => array_map(function ($product) {
+                return $product->getId();
+            }, $products),
+            'include_variants' => true,
         ]));
     }
 
