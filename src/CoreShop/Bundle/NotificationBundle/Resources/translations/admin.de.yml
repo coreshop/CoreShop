@@ -1,5 +1,5 @@
 ---
 coreshop_email_document: 'Email Dokument'
-coreshop_notification_rule: 'Benachrichtigungsregel'
+coreshop_notification_rule: 'Notification Rule'
 coreshop_notification_rule_type: 'Regel-Typ'
 coreshop_mail_rule_do_not_send_to_designated_recipient: 'Nicht an vorgesehenen Empfänger senden'
