@@ -51,7 +51,10 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 
                     Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);
 
-                    $actionCommand->unApplyRule($cart, $action->getConfiguration(), $priceRuleItem);
+                    $config = $action->getConfiguration();
+                    $config['action'] = $action;
+
+                    $actionCommand->unApplyRule($cart, $config, $priceRuleItem);
                 }
             }
 

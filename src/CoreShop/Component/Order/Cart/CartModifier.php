@@ -12,10 +12,10 @@
 
 namespace CoreShop\Component\Order\Cart;
 
+use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
@@ -27,7 +27,7 @@ use Webmozart\Assert\Assert;
 class CartModifier implements StorageListModifierInterface
 {
     /**
-     * @var FactoryInterface
+     * @var CartItemFactoryInterface
      */
     protected $cartItemFactory;
 
@@ -37,10 +37,10 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param FactoryInterface         $cartItemFactory
+     * @param CartItemFactoryInterface $cartItemFactory
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CartItemFactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
     {
         $this->cartItemFactory = $cartItemFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -102,12 +102,6 @@ class CartModifier implements StorageListModifierInterface
         $item = $storageList->getItemForProduct($product);
 
         if ($item instanceof CartItemInterface) {
-            if ($quantity <= 0) {
-                $this->removeItem($storageList, $item);
-
-                return false;
-            }
-
             $newQuantity = $quantity;
 
             if ($increaseAmount) {
@@ -118,21 +112,17 @@ class CartModifier implements StorageListModifierInterface
                 }
             }
 
-            $item->setQuantity($newQuantity);
-        } else {
-            /**
-             * @var CartItemInterface
-             */
-            $item = $this->cartItemFactory->createNew();
-            $item->setKey(uniqid());
-            $item->setParent($storageList);
-            $item->setQuantity($quantity);
-            $item->setProduct($product);
-            $item->setPublished(true);
+            if ($newQuantity <= 0) {
+                $this->removeItem($storageList, $item);
 
-            $storageList->addItem($item);
+                return false;
+            }
+
+            $item->setQuantity($newQuantity);
+
+            return $item;
         }
 
-        return $item;
+        return $this->cartItemFactory->createWithCart($storageList, $product, $quantity);
     }
 }

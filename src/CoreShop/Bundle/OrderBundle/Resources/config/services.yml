@@ -79,3 +79,11 @@ services:
         public: false
         arguments:
             - '@coreshop.custom_factory.adjustment.inner'
+
+    coreshop.custom_factory.cart_item:
+        class: CoreShop\Component\Order\Factory\CartItemFactory
+        decorates: coreshop.factory.cart_item
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@coreshop.custom_factory.cart_item.inner'
