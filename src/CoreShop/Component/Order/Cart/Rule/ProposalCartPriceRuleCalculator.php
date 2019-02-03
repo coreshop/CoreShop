@@ -74,7 +74,10 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
 
                 Assert::isInstanceOf($actionCommand, CartPriceRuleActionProcessorInterface::class);
 
-                $result |= $actionCommand->applyRule($cart, $action->getConfiguration(), $priceRuleItem);
+                $config = $action->getConfiguration();
+                $config['action'] = $action;
+
+                $result |= $actionCommand->applyRule($cart, $config, $priceRuleItem);
             }
         }
 

@@ -91,8 +91,8 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         $minToday = new Carbon();
 
         //abandoned = 48h before today.
-        $maxTo = $maxToday->subDay(2)->addSecond(1);
-        $minFrom = $minToday->subDay(3);
+        $maxTo = $maxToday->subDays(2)->addSeconds(1);
+        $minFrom = $minToday->subDays(3);
 
         $page = $parameterBag->get('page', 1);
         $limit = $parameterBag->get('limit', 50);
