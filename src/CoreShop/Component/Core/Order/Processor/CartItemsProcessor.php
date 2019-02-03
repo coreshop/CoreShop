@@ -68,6 +68,19 @@ final class CartItemsProcessor implements CartProcessorInterface
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
+            if ($item->getIsGiftItem()) {
+                $this->cartItemProcessor->processCartItem(
+                    $item,
+                    0,
+                    0,
+                    0,
+                    0,
+                    $context
+                );
+
+                continue;
+            }
+
             $product = $item->getProduct();
 
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);

@@ -118,7 +118,8 @@ services:
         class: CoreShop\Component\Core\Cart\Rule\Action\GiftProductActionProcessor
         arguments:
             - '@coreshop.repository.product'
-            - '@coreshop.cart.modifier'
+            - '@coreshop.factory.cart_item'
+            - '@coreshop.factory.adjustment'
         tags:
             - { name: coreshop.cart_price_rule.action, type: giftProduct, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType }
 

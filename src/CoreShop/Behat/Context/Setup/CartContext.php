@@ -79,6 +79,23 @@ final class CartContext implements Context
     }
 
     /**
+     * @Given /^I remove the (product "[^"]+") from my cart$/
+     * @Given /^I remove another (product "[^"]+") from my cart$/
+     */
+    public function removeProductFromCart(ProductInterface $product)
+    {
+        $cart = $this->cartContext->getCart();
+
+        $cartItem = $cart->getItemForProduct($product);
+
+        if (null !== $cartItem) {
+            $this->cartModifier->removeItem($cart, $cartItem);
+
+            $this->cartManager->persistCart($cart);
+        }
+    }
+
+    /**
      * @Given /^the cart belongs to (customer "[^"]+")$/
      */
     public function theCartBelongsToCustomer(CustomerInterface $customer)
