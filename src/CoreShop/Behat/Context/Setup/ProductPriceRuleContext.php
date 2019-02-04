@@ -315,7 +315,7 @@ final class ProductPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
-            'include_variants' => false
+            'include_variants' => false,
         ];
 
         if (null !== $product2) {
@@ -341,7 +341,7 @@ final class ProductPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
-            'include_variants' => true
+            'include_variants' => true,
         ];
 
         if (null !== $product2) {

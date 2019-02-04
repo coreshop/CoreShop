@@ -232,6 +232,7 @@ abstract class AbstractWorker implements WorkerInterface
     /**
      * @param IndexInterface $index
      * @param array          $value
+     *
      * @return mixed
      */
     abstract protected function handleArrayValues(IndexInterface $index, array $value);

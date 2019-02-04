@@ -21,6 +21,7 @@ interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterfa
     /**
      * @param ProductInterface $product
      * @param bool             $recursive
+     *
      * @return ProductInterface[]
      */
     public function findAllVariants(ProductInterface $product, $recursive = true);
@@ -28,6 +29,7 @@ interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterfa
     /**
      * @param ProductInterface $product
      * @param StoreInterface   $store
+     *
      * @return array
      */
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store);
