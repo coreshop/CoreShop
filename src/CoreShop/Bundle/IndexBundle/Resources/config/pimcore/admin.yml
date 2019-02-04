@@ -17,6 +17,7 @@ core_shop_index:
             index_interpreter_nested_relational: '/bundles/coreshopindex/pimcore/js/index/interpreters/nestedrelational.js'
             index_interpreter_objectproperty: '/bundles/coreshopindex/pimcore/js/index/interpreters/objectproperty.js'
             index_interpreter_expression: '/bundles/coreshopindex/pimcore/js/index/interpreters/expression.js'
+            index_interpreter_iterator: '/bundles/coreshopindex/pimcore/js/index/interpreters/iterator.js'
             index_interpreter_objecttype: '/bundles/coreshopindex/pimcore/js/index/objecttype/abstract.js'
             index_worker_abstract: '/bundles/coreshopindex/pimcore/js/index/worker/abstract.js'
             index_worker_mysql: '/bundles/coreshopindex/pimcore/js/index/worker/mysql.js'
