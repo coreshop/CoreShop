@@ -40,6 +40,9 @@ final class IteratorInterpreter implements InterpreterInterface
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');
 
         $interpreter = $interpreterConfig['interpreter'];
+        /**
+         * @var InterpreterInterface $interpreterObject
+         */
         $interpreterObject = $this->interpreterRegistry->get($interpreter['type']);
 
         foreach ($value as &$val) {
