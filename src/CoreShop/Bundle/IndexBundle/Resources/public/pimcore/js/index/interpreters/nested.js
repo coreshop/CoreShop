@@ -1,15 +1,15 @@
-/**
- * Import Definitions.
- *
- * LICENSE
+/*
+ * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2016-2018 w-vision AG (https://www.w-vision.ch)
- * @license    https://github.com/w-vision/ImportDefinitions/blob/master/gpl-3.0.txt GNU General Public License version 3 (GPLv3)
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
  */
+
 
 pimcore.registerNS('coreshop.index.interpreters.nested');
 
@@ -18,7 +18,11 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
         // init
         var _this = this;
         var addMenu = [];
-        var records = pimcore.globalmanager.get('coreshop_index_interpreters').getRange().map(function(interpreter) {return interpreter.get('type')});
+        var store = pimcore.globalmanager.get('coreshop_index_interpreters').getRange();
+
+        store.clearFilter();
+
+        var records = store.map(function(interpreter) {return interpreter.get('type')});
 
         Ext.each(records, function (interpreter) {
             if (interpreter === 'abstract')

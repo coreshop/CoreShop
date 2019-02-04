@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -7,11 +8,21 @@
  *
  * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
  */
 
-pimcore.registerNS('coreshop.index.interpreters.nestedrelational');
+namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
 
-coreshop.index.interpreters.nestedrelational = Class.create(coreshop.index.interpreters.nested, {
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 
-});
+final class IteratorInterpreterType extends AbstractType
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('interpreter', InterpreterType::class);
+    }
+}
