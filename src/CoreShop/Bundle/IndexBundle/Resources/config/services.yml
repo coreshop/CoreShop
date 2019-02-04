@@ -197,6 +197,13 @@ services:
         tags:
           - { name: coreshop.index.interpreter, type: nestedRelational, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
 
+    coreshop.index.interpreter.iterator:
+        class: CoreShop\Component\Index\Interpreter\IteratorInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+            - { name: coreshop.index.interpreter, type: iterator, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\IteratorInterpreterType}
+
     # Index Column Types
     coreshop.index.column_type.classification_store:
         class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
