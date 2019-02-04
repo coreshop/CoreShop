@@ -277,6 +277,14 @@ QUERY;
     /**
      * {@inheritdoc}
      */
+    protected function handleArrayValues(IndexInterface $index, array $value)
+    {
+        return ',' . implode($value, ',') . ',';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {

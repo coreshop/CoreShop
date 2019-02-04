@@ -192,7 +192,7 @@ abstract class AbstractWorker implements WorkerInterface
 
                 if (!$isLocalizedValue) {
                     if (is_array($value)) {
-                        $value = ',' . implode($value, ',') . ',';
+                        $value = $this->handleArrayValues($index, $value);
                     }
 
                     $value = $this->typeCastValues($column, $value);
@@ -228,6 +228,13 @@ abstract class AbstractWorker implements WorkerInterface
      * @return mixed
      */
     abstract protected function typeCastValues(IndexColumnInterface $column, $value);
+
+    /**
+     * @param IndexInterface $index
+     * @param array          $value
+     * @return mixed
+     */
+    abstract protected function handleArrayValues(IndexInterface $index, array $value);
 
     /**
      * @param IndexColumnInterface $column
