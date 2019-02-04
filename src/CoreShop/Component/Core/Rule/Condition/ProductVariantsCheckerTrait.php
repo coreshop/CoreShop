@@ -12,10 +12,7 @@
 
 namespace CoreShop\Component\Core\Rule\Condition;
 
-use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 

@@ -305,6 +305,7 @@ final class ProductContext implements Context
      * @param string              $productName
      * @param int                 $price
      * @param StoreInterface|null $store
+     *
      * @return ProductInterface
      */
     private function createVariant(ProductInterface $product, string $productName, int $price = 100, StoreInterface $store = null)

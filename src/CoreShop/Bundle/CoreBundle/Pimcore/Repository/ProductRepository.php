@@ -46,15 +46,14 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         if ($recursive) {
             $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%s']);
-        }
-        else {
+        } else {
             $list->setCondition('o_parentId =', [$product->getId()]);
         }
 
         return $list->getObjects();
     }
 
-     /**
+    /**
      * {@inheritdoc}
      */
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
@@ -67,8 +66,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
             ->from($dao->getTableName(), ['oo_id'])
             ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
             ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
-            ->where('o_type = ?', 'variant')
-        ;
+            ->where('o_type = ?', 'variant');
 
         $variantIds = [];
 
