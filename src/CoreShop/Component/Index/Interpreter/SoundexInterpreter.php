@@ -35,6 +35,6 @@ class SoundexInterpreter implements InterpreterInterface
 
         $soundEx = soundex($string);
 
-        return (int)ord(substr($soundEx, 0, 1)) . substr($soundEx, 1);
+        return (int) ord(substr($soundEx, 0, 1)) . substr($soundEx, 1);
     }
 }
