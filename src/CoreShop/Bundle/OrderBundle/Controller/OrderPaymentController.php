@@ -65,7 +65,7 @@ class OrderPaymentController extends PimcoreController
 
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = doubleval($request->get('amount', 0)) * 100;
+        $amount = (double)$request->get('amount', 0) * 100;
 
         $paymentProviderId = $request->get('paymentProvider');
 

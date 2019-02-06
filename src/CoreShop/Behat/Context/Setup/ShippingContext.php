@@ -475,7 +475,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => intval($price),
+            'price' => (int)$price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -489,7 +489,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
 
         $this->addAction($rule, $this->createActionWithForm('additionAmount', [
-            'amount' => intval($amount),
+            'amount' => (int)$amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -503,7 +503,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
 
         $this->addAction($rule, $this->createActionWithForm('additionPercent', [
-            'percent' => intval($amount),
+            'percent' => (int)$amount,
         ]));
     }
 
@@ -516,7 +516,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => intval($amount),
+            'amount' => (int)$amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -530,7 +530,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($amount),
+            'percent' => (int)$amount,
         ]));
     }
 

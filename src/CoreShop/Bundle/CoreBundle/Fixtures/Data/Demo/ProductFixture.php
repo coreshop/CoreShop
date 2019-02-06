@@ -129,7 +129,7 @@ class ProductFixture extends AbstractFixture implements ContainerAwareInterface,
                 $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);
 
                 foreach ($stores as $store) {
-                    $product->setStorePrice(intval($faker->randomFloat(2, 200, 400)) * 100, $store);
+                    $product->setStorePrice((int)$faker->randomFloat(2, 200, 400) * 100, $store);
                 }
 
                 $product->setTaxRule($this->getReference('taxRule'));

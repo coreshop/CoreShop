@@ -86,11 +86,11 @@ final class CurrencyContext implements Context
 
         Assert::same(
             count($validCurrencies),
-            intval($countOfCurrencies),
+            (int)$countOfCurrencies,
             sprintf(
                 'Found "%s" valid currencies instead of of "%s"',
                 count($validCurrencies),
-                intval($countOfCurrencies)
+                (int)$countOfCurrencies
             )
         );
     }
@@ -100,7 +100,7 @@ final class CurrencyContext implements Context
      */
     public function currencyShouldBeFormatted($amount, CurrencyInterface $currency, $locale, $shouldBeFormat)
     {
-        $format = $this->moneyFormatter->format(intval($amount), $currency->getIsoCode(), $locale);
+        $format = $this->moneyFormatter->format((int)$amount, $currency->getIsoCode(), $locale);
 
         Assert::eq(
             $format,

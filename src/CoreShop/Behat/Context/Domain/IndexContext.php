@@ -100,11 +100,11 @@ final class IndexContext implements Context
         Assert::isArray($productEntry, sprintf('Could not find index entry for object %s', $object->getId()));
 
         Assert::same(
-            intval($productEntry['o_id']),
+            (int)$productEntry['o_id'],
             $object->getId(),
             sprintf(
                 'Expected to find id %s in index but found %s instead',
-                intval($productEntry['o_id']),
+                (int)$productEntry['o_id'],
                 $object->getId()
             )
         );
