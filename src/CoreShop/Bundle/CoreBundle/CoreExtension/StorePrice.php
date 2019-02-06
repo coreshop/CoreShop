@@ -573,7 +573,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     }
 
     /**
-     * @param $object
+     * @param Model\DataObject\Concrete $object
      */
     protected function markAsLoaded($object)
     {
