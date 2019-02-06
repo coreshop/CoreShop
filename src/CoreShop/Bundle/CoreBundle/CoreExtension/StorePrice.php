@@ -200,10 +200,10 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
 
         //TODO: Remove interface_exists once CoreShop requires min Pimcore 5.5
         if (interface_exists(Model\DataObject\DirtyIndicatorInterface::class)) {
-            $code .= "\t".'$isEqual = $fd->isEqual($currentData, $'.$key.');'."\n";
-            $code .= "\t".'if (!$isEqual) {'."\n";
-            $code .= "\t\t".'$this->markFieldDirty("'.$key.'", true);'."\n";
-            $code .= "\t".'}'."\n";
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+            $code .= "\t" . 'if (!$isEqual) {' . "\n";
+            $code .= "\t\t" . '$this->markFieldDirty("' . $key . '", true);' . "\n";
+            $code .= "\t" . '}' . "\n";
         }
 
         $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $currentData);' . "\n";
@@ -577,14 +577,15 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     protected function markAsLoaded($object)
     {
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+
         if (method_exists($this, 'markLazyloadedFieldAsLoaded')) {
             $this->markLazyloadedFieldAsLoaded($object);
-        }
-        else {
-            if ($object instanceof Model\DataObject\Concrete) {
-                if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-                    $object->addO__loadedLazyField($this->getName());
-                }
+        } else {
+            if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+                $object->addO__loadedLazyField($this->getName());
             }
         }
     }
