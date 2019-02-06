@@ -48,8 +48,8 @@ final class ExchangeRateContext implements Context
     public function priceOfCurrencyShouldExchangeToPriceInCurrency($fromPrice, CurrencyInterface $fromCurrency, $toPrice, CurrencyInterface $toCurrency)
     {
         Assert::same(
-            $this->currencyConverter->convert((int)$fromPrice, $fromCurrency->getIsoCode(), $toCurrency->getIsoCode()),
-            (int)$toPrice,
+            $this->currencyConverter->convert((int) $fromPrice, $fromCurrency->getIsoCode(), $toCurrency->getIsoCode()),
+            (int) $toPrice,
             sprintf(
                 'Given exchanged value (%s %s) is different from actual value (%s %s)',
                 $fromPrice,

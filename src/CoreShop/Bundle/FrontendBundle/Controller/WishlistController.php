@@ -35,7 +35,7 @@ class WishlistController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $quantity = (int)$request->get('quantity', 1);
+        $quantity = (int) $request->get('quantity', 1);
 
         if (!is_int($quantity)) {
             $quantity = 1;

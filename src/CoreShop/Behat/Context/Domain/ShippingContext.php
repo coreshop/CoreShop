@@ -130,7 +130,7 @@ final class ShippingContext implements Context
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+        Assert::same((int) $price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
     }
 
     /**

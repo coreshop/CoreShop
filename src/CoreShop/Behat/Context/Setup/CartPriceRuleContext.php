@@ -453,7 +453,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$discount,
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -466,7 +466,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }

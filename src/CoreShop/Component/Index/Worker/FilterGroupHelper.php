@@ -55,7 +55,7 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 $values = $list->getGroupByRelationValues($field);
 
                 foreach ($values as &$id) {
-                    $id = (int)$id;
+                    $id = (int) $id;
                     $obj = Concrete::getById($id);
 
                     if ($obj) {

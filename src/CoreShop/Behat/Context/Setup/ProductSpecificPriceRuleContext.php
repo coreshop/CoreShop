@@ -268,7 +268,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => (int)$discount,
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -281,7 +281,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => (int)$amount,
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -295,7 +295,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
-            'price' => (int)$price,
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -309,7 +309,7 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => (int)$price,
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
