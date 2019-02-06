@@ -577,7 +577,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     protected function markAsLoaded($object)
     {
-        if (method_exists('markLazyloadedFieldAsLoaded', $this)) {
+        if (method_exists($this, 'markLazyloadedFieldAsLoaded')) {
             $this->markLazyloadedFieldAsLoaded($object);
         }
         else {
