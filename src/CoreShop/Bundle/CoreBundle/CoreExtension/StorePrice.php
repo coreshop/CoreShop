@@ -166,7 +166,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
         $code .= "\t" . 'if (is_array($data) && array_key_exists($store->getId(), $data) && is_numeric($data[$store->getId()])) {' . "\n";
-        $code .= "\t\t" . 'return intval($data[$store->getId()]);' . "\n";
+        $code .= "\t\t" . 'return (int)$data[$store->getId()];' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t return null;" . "\n";
         $code .= "}\n\n";
@@ -182,6 +182,8 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
         $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function set' . ucfirst($key) . ' ($' . $key . ', \CoreShop\Component\Store\Model\StoreInterface $store = null) {' . "\n";
+        $code .= "\t" . '$fd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
+        $code .= "\t" . '$currentData = $this->get' . ucfirst($this->getName()) . '();' . "\n";
         $code .= "\t" . 'if (is_null($' . $key . ')) {' . "\n";
         $code .= "\t\t" . 'return $this;' . "\n";
         $code .= "\t" . '}' . "\n";
@@ -190,12 +192,21 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
         $code .= "\t\t" . 'throw new \InvalidArgumentException(sprintf(\'Expected value to either be an array or an int, "%s" given\', gettype($storePrice)));' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'if (is_array($' . $key . ')) {' . "\n";
-        $code .= "\t\t" . '$this->' . $key . ' = $' . $key . ';' . "\n";
+        $code .= "\t\t" . '$currentData = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'else if (!is_null($store)) {' . "\n";
-        $code .= "\t\t" . '$this->' . $key . '[$store->getId()] = $' . $key . ';' . "\n";
+        $code .= "\t\t" . '$currentData[$store->getId()] = $' . $key . ';' . "\n";
         $code .= "\t" . '}' . "\n";
-        $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $this->' . $key . ');' . "\n";
+
+        //TODO: Remove interface_exists once CoreShop requires min Pimcore 5.5
+        if (interface_exists(Model\DataObject\DirtyIndicatorInterface::class)) {
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+            $code .= "\t" . 'if (!$isEqual) {' . "\n";
+            $code .= "\t\t" . '$this->markFieldDirty("' . $key . '", true);' . "\n";
+            $code .= "\t" . '}' . "\n";
+        }
+
+        $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $currentData);' . "\n";
         $code .= "\t" . 'return $this;' . "\n";
         $code .= "}\n\n";
 
@@ -222,12 +233,25 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
             $data = $object->{$this->getName()};
         }
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $data = $this->load($object, ['force' => true]);
+        if ($object instanceof Model\DataObject\Concrete) {
+            if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+                $data = $this->load($object, ['force' => true]);
 
-            $setter = 'set' . ucfirst($this->getName());
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+                //TODO: Remove once CoreShop requires min Pimcore 5.5
+                if (method_exists($object, 'setObjectVar')) {
+                    $object->setObjectVar($this->getName(), $data);
+                } else {
+                    $object->{$this->getName()} = $data;
+                }
+
+                $this->markAsLoaded($object);
+
+                //TODO: Remove interface_exists once CoreShop requires min Pimcore 5.5
+                if (interface_exists(Model\DataObject\DirtyIndicatorInterface::class)) {
+                    if ($object instanceof Model\DataObject\DirtyIndicatorInterface) {
+                        $object->markFieldDirty($this->getName(), false);
+                    }
+                }
             }
         }
 
@@ -239,9 +263,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
-        }
+        $this->markAsLoaded($object);
 
         return $data;
     }
@@ -520,6 +542,52 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     public function isEmpty($data)
     {
         return is_null($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLazyLoading()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDirtyDetection()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual($oldValue, $newValue)
+    {
+        if (!is_array($oldValue) || !is_array($newValue)) {
+            return false;
+        }
+
+        return $oldValue === $newValue;
+    }
+
+    /**
+     * @param Model\DataObject\Concrete $object
+     */
+    protected function markAsLoaded($object)
+    {
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+
+        if (method_exists($this, 'markLazyloadedFieldAsLoaded')) {
+            $this->markLazyloadedFieldAsLoaded($object);
+        } else {
+            if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+                $object->addO__loadedLazyField($this->getName());
+            }
+        }
     }
 
     /**
