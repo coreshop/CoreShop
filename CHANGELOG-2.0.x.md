@@ -13,6 +13,7 @@
    - [Order] Check also for CurrencyAwareInterface in PriceFormatter Gird Operator (https://github.com/coreshop/CoreShop/pull/788) 
    - [Index] Introduce Iterator Interpreter (https://github.com/coreshop/CoreShop/pull/802)
    - [Index] Introduce new Abstract function in AbstractWorker to allow handling of array data (https://github.com/coreshop/CoreShop/pull/803)
+   - [Pimcore] add object_method twig function (https://github.com/coreshop/CoreShop/pull/809)
  - Bugs:
    - [Core] Fix Gift Cart Price Rule Action (https://github.com/coreshop/CoreShop/pull/796)
    - [Core] Fix Invoice WKHTML Settings (https://github.com/coreshop/CoreShop/pull/786)
