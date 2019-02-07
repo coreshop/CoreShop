@@ -72,7 +72,7 @@ final class ExchangeRateContext implements Context
         $exchangeRate = $this->exchangeRateFactory->createNew();
         $exchangeRate->setFromCurrency($fromCurrency);
         $exchangeRate->setToCurrency($toCurrency);
-        $exchangeRate->setExchangeRate(floatval($rate));
+        $exchangeRate->setExchangeRate($rate);
 
         $this->objectManager->persist($exchangeRate);
         $this->objectManager->flush();
