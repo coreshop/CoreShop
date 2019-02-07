@@ -186,10 +186,10 @@ services:
         tags:
             - { name: fob.context_service }
 
-    coreshop.behat.context.transform.product_specific_tier_price_rule:
-        class: CoreShop\Behat\Context\Transform\ProductSpecificTierPriceRuleContext
+    coreshop.behat.context.transform.product_quantity_price_rule:
+        class: CoreShop\Behat\Context\Transform\ProductQuantityPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.repository.product_specific_tier_price_rule'
+            - '@__symfony__.coreshop.repository.product_quantity_price_rule'
         tags:
             - { name: fob.context_service }

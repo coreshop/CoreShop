@@ -220,7 +220,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getSpecificTierPriceRules()
+    public function getQuantityPriceRules()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

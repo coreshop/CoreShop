@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.product_quantity_price_rules.conditions.nested:
+        class: CoreShop\Component\Rule\Condition\NestedConditionChecker
+        arguments:
+            - '@coreshop.product_quantity_price_rules.conditions.processor'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: nested, form-type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition\ProductQuantityPriceRuleNestedConfigurationType }

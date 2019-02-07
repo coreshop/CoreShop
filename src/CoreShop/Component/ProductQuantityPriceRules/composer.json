@@ -1,0 +1,45 @@
+{
+  "name": "coreshop/product-quantity-price-rules",
+  "type": "library",
+  "description": "CoreShop Product Quantity Price Rules Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Stefan Hagspiel",
+      "email": "shagspiel@dachcom.com",
+      "homepage": "https://www.dachcom.com/",
+      "role": "Developer"
+    },
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "coreshop/resource": "^2.0",
+    "coreshop/rule": "^2.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\ProductQuantityPriceRules\\": ""
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.1-dev"
+    }
+  }
+}

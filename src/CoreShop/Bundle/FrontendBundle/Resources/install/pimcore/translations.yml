@@ -1169,43 +1169,43 @@ translations:
           en: 'incl. %s%% Tax'
           de: 'inkl. %s%% Steuer'
 
-  coreshop.ui.tier_pricing.tier_prices:
+  coreshop.ui.product_quantity_price_rules.ranges_available:
       languages:
-          de_CH: 'Staffelpreise'
-          en: 'Tier Prices'
-          de: 'Staffelpreise'
+          de_CH: 'Sonderkonditionen verfügbar'
+          en: 'Special conditions available'
+          de: 'Sonderkonditionen verfügbar'
 
-  coreshop.ui.tier_pricing.quantity:
+  coreshop.ui.product_quantity_price_rules.quantity:
       languages:
           de_CH: 'Menge'
           en: 'Quantity'
           de: 'Menge'
 
-  coreshop.ui.tier_pricing.price_per_item:
+  coreshop.ui.product_quantity_price_rules.price_per_item:
       languages:
           de_CH: 'Preis pro Stück'
           en: 'Price per Item'
           de: 'Preis pro Stück'
 
-  coreshop.ui.tier_pricing.starting_from:
+  coreshop.ui.product_quantity_price_rules.starting_from:
       languages:
           de_CH: 'ab'
           en: 'starting from'
           de: 'ab'
 
-  coreshop.ui.tier_pricing.best_offer:
+  coreshop.ui.product_quantity_price_rules.best_offer:
       languages:
           de_CH: 'Bestpreis'
           en: 'Best Offer'
           de: 'Bestpreis'
 
-  coreshop.ui.tier_pricing.list_price:
+  coreshop.ui.product_quantity_price_rules.list_price:
       languages:
           de_CH: 'Unverb. Preisempf.'
           en: 'List Price'
           de: 'Unverb. Preisempf.'
 
-  coreshop.ui.tier_pricing.you_save:
+  coreshop.ui.product_quantity_price_rules.you_save:
       languages:
           de_CH: 'Sie sparen'
           en: 'You Save'

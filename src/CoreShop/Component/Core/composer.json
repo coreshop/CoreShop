@@ -34,7 +34,7 @@
     "coreshop/taxation": "^2.0",
     "coreshop/notification": "^2.0",
     "coreshop/payum-bundle": "^2.0",
-    "coreshop/tier-pricing": "^2.1"
+    "coreshop/product-quantity-price-rules": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

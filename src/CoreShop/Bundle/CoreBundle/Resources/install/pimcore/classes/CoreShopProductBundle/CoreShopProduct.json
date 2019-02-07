@@ -775,10 +775,10 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "coreShopProductSpecificTierPriceRules",
+                                "fieldtype": "coreShopProductQuantityPriceRules",
                                 "height": null,
-                                "name": "specificTierPriceRules",
-                                "title": "Specific Tier Price Rules",
+                                "name": "quantityPriceRules",
+                                "title": "Quantity Price Rules",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,

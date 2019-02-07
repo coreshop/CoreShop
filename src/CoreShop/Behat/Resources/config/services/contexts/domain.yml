@@ -227,11 +227,11 @@ services:
         tags:
             - { name: fob.context_service }
 
-    coreshop.behat.context.domain.product_specific_tier_price_rule:
-        class: CoreShop\Behat\Context\Domain\ProductSpecificTierPriceRuleContext
+    coreshop.behat.context.domain.product_quantity_price_rule:
+        class: CoreShop\Behat\Context\Domain\ProductQuantityPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.context.shopper'
-            - '@__symfony__.coreshop.product_specific_tier_price_rule.processor'
+            - '@__symfony__.coreshop.product_quantity_price_rules.processor'
         tags:
             - { name: fob.context_service }

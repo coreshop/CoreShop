@@ -39,7 +39,7 @@ use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
 use CoreShop\Bundle\StoreBundle\CoreShopStoreBundle;
 use CoreShop\Bundle\TaxationBundle\CoreShopTaxationBundle;
-use CoreShop\Bundle\TierPricingBundle\CoreShopTierPricingBundle;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreShopProductQuantityPriceRulesBundle;
 use CoreShop\Bundle\TrackingBundle\CoreShopTrackingBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
@@ -99,7 +99,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
         $collection->addBundle(new CoreShopTrackingBundle(), 2000);
         $collection->addBundle(new CoreShopFrontendBundle(), 1800);
         $collection->addBundle(new CoreShopPayumBundle(), 1700);
-        $collection->addBundle(new CoreShopTierPricingBundle(), 1600);
+        $collection->addBundle(new CoreShopProductQuantityPriceRulesBundle(), 1600);
     }
 
     /**

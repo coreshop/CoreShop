@@ -1,0 +1,12 @@
+core_shop_product_quantity_price_rules:
+    pimcore_admin:
+        js:
+            product_quantity_price_rules_clipboard: '/bundles/coreshopproductquantitypricerules/pimcore/js/clipboardManager.js'
+            product_quantity_price_rules_core_extension_data: '/bundles/coreshopproductquantitypricerules/pimcore/js/coreExtension/data/coreShopProductQuantityPriceRules.js'
+            product_quantity_price_rules_core_extension_tag: '/bundles/coreshopproductquantitypricerules/pimcore/js/coreExtension/tags/coreShopProductQuantityPriceRules.js'
+            product_quantity_price_rules_data_item: '/bundles/coreshopproductquantitypricerules/pimcore/js/productQuantityPriceRules/object/item.js'
+            product_quantity_price_rules_data_ranges: '/bundles/coreshopproductquantitypricerules/pimcore/js/productQuantityPriceRules/ranges.js'
+            product_quantity_price_rules_data_condition: '/bundles/coreshopproductquantitypricerules/pimcore/js/productQuantityPriceRules//condition.js'
+            product_quantity_price_rules_data_condition_nested: '/bundles/coreshopproductquantitypricerules/pimcore/js/productQuantityPriceRules/conditions/nested.js'
+        css:
+            product_quantity_price_rules: '/bundles/coreshopproductquantitypricerules/pimcore/css/product-quanity-price-rules.css'

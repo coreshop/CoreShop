@@ -1,0 +1,29 @@
+CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
+    exclusion_policy: ALL
+    xml_root_name: coreshop_product_quantity_price_rule
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed]
+        priority:
+            expose: true
+            type: integer
+            groups: [Detailed]
+        conditions:
+            expose: true
+            type: array
+            groups: [Detailed]
+        ranges:
+            expose: true
+            type: array
+            groups: [Detailed]

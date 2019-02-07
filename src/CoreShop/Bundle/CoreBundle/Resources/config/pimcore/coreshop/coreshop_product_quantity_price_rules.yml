@@ -1,0 +1,12 @@
+core_shop_product_quantity_price_rules:
+    resources:
+        product_quantity_price_rule_range:
+            classes:
+                model: CoreShop\Component\Core\Model\QuantityRange
+    action_constraints:
+        -
+            class: 'CoreShop\Bundle\CoreBundle\Validation\Constraints\QuantityRangePriceCurrencyAware'
+            groups:
+                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_fixed'
+                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_amount_decrease'
+                - 'coreshop_product_quantity_price_rules_range_validation_behaviour_amount_increase'

@@ -89,8 +89,8 @@
                 <hr/>
             {% endif %}
 
-            {% if coreshop_tier_pricing_available(product) %}
-                {% include '@CoreShopFrontend/Common/tier_prices.html.twig' with { ranges: coreshop_tier_price_ranges(product) } %}
+            {% if coreshop_quantity_price_rule_ranges_available(product) %}
+                {% include '@CoreShopFrontend/Common/quantity_price_ranges.html.twig' with { ranges: coreshop_quantity_price_rule_ranges(product) } %}
             {% endif %}
 
             <div class="price">
