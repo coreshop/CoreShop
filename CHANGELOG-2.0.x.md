@@ -1,5 +1,25 @@
 # Within V2
 
+## 2.0.3
+ - Features:
+   - [All] Replace intval with int cast (https://github.com/coreshop/CoreShop/pull/805)
+   - [Core] Store Price Dirty Detection if installed Pimcore Version >= 5.5 (https://github.com/coreshop/CoreShop/pull/807)
+   - [Core] Allow Variants in Product Rule Conditions (https://github.com/coreshop/CoreShop/pull/794)
+   - [Core] Add Event for Settings (https://github.com/coreshop/CoreShop/pull/785)
+   - [Core] Extract CartItem Processor (https://github.com/coreshop/CoreShop/pull/784)
+   - [Core] Decouple Shipping Calculator from Cart (https://github.com/coreshop/CoreShop/pull/783)
+   - [Order] extract DataLoader into Pimcore Component (https://github.com/coreshop/CoreShop/pull/782)
+   - [Order] rename Pimcore Grid Operators to be more CoreShop specific (https://github.com/coreshop/CoreShop/pull/787)
+   - [Order] Check also for CurrencyAwareInterface in PriceFormatter Gird Operator (https://github.com/coreshop/CoreShop/pull/788) 
+   - [Index] Introduce Iterator Interpreter (https://github.com/coreshop/CoreShop/pull/802)
+   - [Index] Introduce new Abstract function in AbstractWorker to allow handling of array data (https://github.com/coreshop/CoreShop/pull/803)
+ - Bugs:
+   - [Core] Fix Gift Cart Price Rule Action (https://github.com/coreshop/CoreShop/pull/796)
+   - [Core] Fix Invoice WKHTML Settings (https://github.com/coreshop/CoreShop/pull/786)
+   - [Core] Rule Conditions: Check on type (https://github.com/coreshop/CoreShop/pull/779)
+   - [Core] Add Translation for Adjustments (https://github.com/coreshop/CoreShop/pull/774)
+   - [Pimcore] allow spaces in DynamicDropdown (https://github.com/coreshop/CoreShop/pull/781)
+   
 # 2.0.2
  - Pimcore:
    - This release makes CoreShop compatible with Pimcore 5.6.0 (https://github.com/coreshop/CoreShop/pull/762)
