@@ -55,7 +55,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if (intval($data)) {
+            if ((int) $data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -109,7 +109,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if (intval($data) > 0) {
+        if ((int) $data > 0) {
             return $this->getRepository()->find($data);
         }
 

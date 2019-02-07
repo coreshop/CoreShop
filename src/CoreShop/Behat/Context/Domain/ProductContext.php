@@ -75,7 +75,7 @@ final class ProductContext implements Context
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
+        Assert::same((int) $price, $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true));
     }
 
     /**
@@ -83,7 +83,7 @@ final class ProductContext implements Context
      */
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
+        Assert::same((int) $price, $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -91,7 +91,7 @@ final class ProductContext implements Context
      */
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
+        Assert::same((int) $price, $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -131,7 +131,7 @@ final class ProductContext implements Context
      */
     public function productTaxedPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
+        Assert::same((int) $price, $this->taxedProductPriceCalculator->getPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
@@ -139,7 +139,7 @@ final class ProductContext implements Context
      */
     public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price)
     {
-        Assert::same(intval($price), $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
+        Assert::same((int) $price, $this->taxedProductPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext()));
     }
 
     /**
