@@ -1,5 +1,25 @@
 # Within V2
 
+# 2.0.2
+ - Pimcore:
+   - This release makes CoreShop compatible with Pimcore 5.6.0 (https://github.com/coreshop/CoreShop/pull/762)
+ - Features:
+   - [Core] Adds a new CoreShop JS Event to add custom Menu Items to the CoreShop Menu (https://github.com/coreshop/CoreShop/pull/765)
+   - [Resource] [ResourceBundle] add JMS Serializer Handler for Pimcore Objects (https://github.com/coreshop/CoreShop/pull/766)
+ - Bugs:
+  - [Tracking] Fixes a Bug in the Tracking Manager when a Product does not have any categories applied (https://github.com/coreshop/CoreShop/pull/767)
+ 
+# 2.0.1
+ - Features:
+    - [Core] Remove login customer after successfully registration (https://github.com/coreshop/CoreShop/pull/735)
+ - Bugs:
+    - [Core] Countries are removed when removing Store (https://github.com/coreshop/CoreShop/pull/746)
+    - [Core] order Document State Resolver when a Document is cancelled (https://github.com/coreshop/CoreShop/pull/738)
+    - [Core] safe path for folders (https://github.com/coreshop/CoreShop/pull/742)
+    - [Core] Fix for StoreMailActionProcessor exception in Notification Rule (https://github.com/coreshop/CoreShop/pull/740)
+    - [Shipping] is invalid when no Shipping Rules are given (https://github.com/coreshop/CoreShop/pull/741)
+    - [Frontend] Inaccurate Store Filter Query in Category Controller (https://github.com/coreshop/CoreShop/pull/744)
+
 ## 2.0.0
  - CoreShop\Component\Index\Condition\RendererInterface has been deprecated in favor of CoreShop\Component\Index\Condition\DynamicRendererInterface to allow dynamic registration of condition renderers
 
