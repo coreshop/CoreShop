@@ -53,8 +53,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Then /^the (product quantity price rule "[^"]+") for (product "[^"]+") should be valid$/
-     * @Then /^the (product quantity price rule) should be valid for (product "[^"]+")$/
+     * @Then /^the (quantity price rule "[^"]+") for (product "[^"]+") should be valid$/
+     * @Then /^the (quantity price rule) should be valid for (product "[^"]+")$/
      */
     public function theSpecificPriceRuleForProductShouldBeValid(ProductQuantityPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {
@@ -62,8 +62,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Then /^the (product quantity price rule "[^"]+") for (product "[^"]+") should be invalid$/
-     * @Then /^the (product quantity price rule) should be invalid for (product "[^"]+")$/
+     * @Then /^the (quantity price rule "[^"]+") for (product "[^"]+") should be invalid$/
+     * @Then /^the (quantity price rule) should be invalid for (product "[^"]+")$/
      */
     public function theSpecificPriceRuleForProductShouldBeInvalid(ProductQuantityPriceRuleInterface $productSpecificPriceRule, ProductInterface $product)
     {

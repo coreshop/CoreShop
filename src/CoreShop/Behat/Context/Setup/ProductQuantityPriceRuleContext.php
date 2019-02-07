@@ -97,7 +97,7 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^adding a product quantity price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)"$/
      */
     public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
     {
@@ -115,8 +115,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") is active$/
-     * @Given /^the (product quantity price rule) is active$/
+     * @Given /^the (quantity price rule "[^"]+") is active$/
+     * @Given /^the (quantity price rule) is active$/
      */
     public function theProductQuantityPriceRuleIsActive(ProductQuantityPriceRuleInterface $rule)
     {
@@ -127,8 +127,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") is inactive$/
-     * @Given /^the (product quantity price rule) is inactive$/
+     * @Given /^the (quantity price rule "[^"]+") is inactive$/
+     * @Given /^the (quantity price rule) is inactive$/
      */
     public function theProductQuantityPriceRuleIsInActive(ProductQuantityPriceRuleInterface $rule)
     {
@@ -139,8 +139,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
-     * @Given /^the (product quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
+     * @Given /^the (quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
+     * @Given /^the (quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
      */
     public function theProductQuantityPriceRuleHasRangePercentageDecrease(ProductQuantityPriceRuleInterface $rule, int $from, int $to, $percentage)
     {
@@ -157,8 +157,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
-     * @Given /^the (product quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
+     * @Given /^the (quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
+     * @Given /^the (quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
      */
     public function theProductQuantityPriceRuleHasRangePercentageIncrease(ProductQuantityPriceRuleInterface $rule, int $from, int $to, $percentage)
     {
@@ -175,8 +175,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeAmountDecrease(
         ProductQuantityPriceRuleInterface $rule,
@@ -199,8 +199,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeAmountIncrease(
         ProductQuantityPriceRuleInterface $rule,
@@ -223,8 +223,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range from ([^"]+) to ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range from ([^"]+) to ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeFixed(ProductQuantityPriceRuleInterface $rule, int $from, int $to, $amount, CurrencyInterface $currency)
     {
@@ -242,8 +242,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition countries with (country "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition countries with (country "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition countries with (country "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition countries with (country "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasACountriesCondition(ProductQuantityPriceRuleInterface $rule, CountryInterface $country)
     {
@@ -257,8 +257,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition customers with (customer "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition customers with (customer "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasACustomerCondition(ProductQuantityPriceRuleInterface $rule, CustomerInterface $customer)
     {
@@ -272,8 +272,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
-     * @Given /^the (product quantity price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
+     * @Given /^the (quantity price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
      */
     public function theProductQuantityPriceRuleHasATimeSpanCondition(ProductQuantityPriceRuleInterface $rule, $from, $to)
     {
@@ -289,8 +289,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition customer-groups with (customer-group "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasACustomerGroupCondition(ProductQuantityPriceRuleInterface $rule, CustomerGroupInterface $group)
     {
@@ -304,8 +304,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition stores with (store "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition stores with (store "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition stores with (store "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition stores with (store "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasAStoreCondition(ProductQuantityPriceRuleInterface $rule, StoreInterface $store)
     {
@@ -319,8 +319,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition zones with (zone "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition zones with (zone "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasAZoneCondition(ProductQuantityPriceRuleInterface $rule, ZoneInterface $zone)
     {
@@ -334,8 +334,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition currencies with (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition currencies with (currency "[^"]+")$/
      */
     public function theProductsQuantityPriceRuleHasACurrencyCondition(ProductQuantityPriceRuleInterface $rule, CurrencyInterface $currency)
     {
@@ -349,8 +349,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (store "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasANestedConditionWithStores(
         ProductQuantityPriceRuleInterface $rule,
@@ -384,8 +384,8 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (product quantity price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
-     * @Given /^the (product quantity price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
+     * @Given /^the (quantity price rule) has a condition nested with operator "([^"]+)" for (store "[^"]+") and (country "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasANestedConditionWithStoreAndCountry(
         ProductQuantityPriceRuleInterface $rule,

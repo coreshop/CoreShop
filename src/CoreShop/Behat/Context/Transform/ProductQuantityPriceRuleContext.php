@@ -43,7 +43,7 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Transform /^product quantity price rule "([^"]+)"$/
+     * @Transform /^quantity price rule "([^"]+)"$/
      */
     public function getProductQuantityPriceRuleByProductAndName($ruleName)
     {
@@ -55,7 +55,7 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Transform /^(product quantity price rule)$/
+     * @Transform /^(quantity price rule)$/
      */
     public function getLatestSpecificProductQuantityPriceRule()
     {

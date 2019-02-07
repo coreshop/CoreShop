@@ -1,6 +1,6 @@
 default:
     suites:
-        domain_product:
+        product_quantity_price_rules:
             contexts_services:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
