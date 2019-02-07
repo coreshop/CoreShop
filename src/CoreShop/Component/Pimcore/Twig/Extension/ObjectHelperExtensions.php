@@ -49,6 +49,9 @@ final class ObjectHelperExtensions extends \Twig_Extension
     public function getFunctions()
     {
         return [
+            new \Twig_Function('object_method', function ($object, $methodName) {
+                return is_object($object) && method_exists($object, $methodName);
+            }),
             new \Twig_Function('object_select_options', function ($object, $field) {
                 return DataObject\Service::getOptionsForSelectField($object, $field);
             }),
