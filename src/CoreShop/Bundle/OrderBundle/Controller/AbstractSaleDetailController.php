@@ -135,7 +135,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function prepareSale(SaleInterface $sale)
     {
-        $date = intval($sale->getSaleDate()->getTimestamp());
+        $date = (int) $sale->getSaleDate()->getTimestamp();
 
         $element = [
             'o_id' => $sale->getId(),
