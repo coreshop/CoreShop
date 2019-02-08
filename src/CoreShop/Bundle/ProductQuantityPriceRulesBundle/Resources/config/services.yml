@@ -2,13 +2,15 @@ imports:
     - { resource: 'services/rules.yml' }
     - { resource: 'services/product-quantity-price-rules.yml' }
     - { resource: 'services/actions.yml' }
+    - { resource: 'services/calculator.yml' }
 
 services:
     coreshop.templating.helper.product_quantity_price:
         class: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceHelper
         arguments:
             - '@coreshop.context.shopper'
-            - '@coreshop.product_quantity_price_rules.price_calculator.range_price'
+            - '@coreshop.product.price_calculator'
+            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
         tags:
             - { name: templating.helper, alias: coreshop_product_quanity_price }
 
@@ -19,7 +21,3 @@ services:
             - '@coreshop.templating.helper.product_quantity_price'
         tags:
             - { name: twig.extension }
-
-    coreshop.product_quantity_price_rules.locator.quantity_range_price:
-        class: CoreShop\Component\ProductQuantityPriceRules\Locator\QuantityRangePriceLocator
-

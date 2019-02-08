@@ -1,13 +1,4 @@
 services:
-    coreshop.core.product_quantity_price_rules.price_calculator.range_price:
-        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Calculator\ProductQuantityRangePriceCalculator
-        decorates: 'coreshop.product_quantity_price_rules.price_calculator.range_price'
-        arguments:
-            - '@coreshop.core.product_quantity_price_rules.price_calculator.range_price.inner'
-            - '@coreshop.registry.product_quantity_price_rules.actions'
-            - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.product_quantity_price_rules.locator.quantity_range_price'
-
     coreshop.cart_processor.items_quantity_range_price:
         class: CoreShop\Component\Core\Order\Processor\CartItemQuantityRangePriceProcessor
         decorates: coreshop.cart_processor.items
@@ -15,7 +6,7 @@ services:
         arguments:
             - '@coreshop.cart_processor.items.inner'
             - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.product_quantity_price_rules.price_calculator.range_price'
+            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
             - '@coreshop.cart_item.processor'
         tags:
             - { name: coreshop.cart_processor, priority: 580 }

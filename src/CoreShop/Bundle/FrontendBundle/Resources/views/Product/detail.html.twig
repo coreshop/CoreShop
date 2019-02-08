@@ -90,7 +90,8 @@
             {% endif %}
 
             {% if coreshop_quantity_price_rule_ranges_available(product) %}
-                {% include '@CoreShopFrontend/Common/quantity_price_ranges.html.twig' with { ranges: coreshop_quantity_price_rule_ranges(product) } %}
+                {% set rule = coreshop_quantity_price_rule(product) %}
+                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
             {% endif %}
 
             <div class="price">

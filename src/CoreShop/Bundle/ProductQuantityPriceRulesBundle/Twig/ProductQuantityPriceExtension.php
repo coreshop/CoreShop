@@ -36,8 +36,9 @@ final class ProductQuantityPriceExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges_available', [$this->helper, 'hasActiveQuantityPriceRuleRanges']),
+            new \Twig_SimpleFunction('coreshop_quantity_price_rule', [$this->helper, 'getQuantityPriceRule']),
             new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges', [$this->helper, 'getQuantityPriceRuleRanges']),
-            new \Twig_SimpleFunction('coreshop_quantity_price_rule_range_price_calculated', [$this->helper, 'getQuantityPriceRuleRangePrice']),
+            new \Twig_SimpleFunction('coreshop_quantity_price_rule_item_price_calculated', [$this->helper, 'getQuantityPriceRuleItemPrice']),
         ];
     }
 }

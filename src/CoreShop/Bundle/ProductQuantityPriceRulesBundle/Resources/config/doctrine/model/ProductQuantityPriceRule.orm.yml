@@ -21,6 +21,9 @@ CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
             column: product
             type: integer
             nullable: false
+        calculationBehaviour:
+            column: calculation_behaviour
+            type: string
         creationDate:
             type: datetime
             gedmo:
@@ -49,19 +52,11 @@ CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE
+
+    oneToMany:
         ranges:
             targetEntity: CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface
-            cascade:
-                - all
-            joinTable:
-                name: coreshop_product_quantity_price_rule_ranges
-                joinColumns:
-                    product_quantity_price_rule_id:
-                        referencedColumnName: id
-                        nullable: false
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    range_id:
-                        referencedColumnName: id
-                        nullable: false
-                        onDelete: CASCADE
+            mappedBy: rule
+            orphanRemoval: true
+            cascade: [ persist, remove ]
+            fetch: LAZY

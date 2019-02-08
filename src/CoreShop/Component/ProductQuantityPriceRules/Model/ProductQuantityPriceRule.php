@@ -47,6 +47,11 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     public $name;
 
     /**
+     * @var string
+     */
+    public $calculationBehaviour;
+
+    /**
      * @var ArrayCollection|RuleInterface[]
      */
     protected $conditions;
@@ -203,6 +208,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     public function addRange(QuantityRangeInterface $range)
     {
         if (!$this->hasRange($range)) {
+            $range->setRule($this);
             $this->ranges->add($range);
         }
     }
@@ -212,6 +218,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
      */
     public function removeRange(QuantityRangeInterface $range)
     {
+        $range->setRule(null);
         $this->ranges->removeElement($range);
     }
 
@@ -231,6 +238,22 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCalculationBehaviour()
+    {
+        return $this->calculationBehaviour;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCalculationBehaviour($calculationBehaviour)
+    {
+        $this->calculationBehaviour = $calculationBehaviour;
     }
 
     /**

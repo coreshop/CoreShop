@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
@@ -27,6 +28,13 @@ interface ProductQuantityPriceHelperInterface
     /**
      * @param QuantityRangePriceAwareInterface $product
      *
+     * @return ProductQuantityPriceRuleInterface
+     */
+    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product);
+
+    /**
+     * @param QuantityRangePriceAwareInterface $product
+     *
      * @return array
      */
     public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product);
@@ -37,5 +45,5 @@ interface ProductQuantityPriceHelperInterface
      *
      * @return mixed
      */
-    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
+    public function getQuantityPriceRuleItemPrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
 }

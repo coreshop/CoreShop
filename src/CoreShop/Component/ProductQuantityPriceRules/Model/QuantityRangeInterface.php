@@ -70,4 +70,14 @@ interface QuantityRangeInterface extends ResourceInterface
      * @param bool $highlighted
      */
     public function setHighlighted(bool $highlighted);
+
+    /**
+     * @return ProductQuantityPriceRuleInterface
+     */
+    public function getRule();
+
+     /**
+     * @param ProductQuantityPriceRuleInterface $rule
+     */
+    public function setRule($rule);
 }

@@ -13,6 +13,7 @@ services:
         arguments:
             - '%coreshop.model.product_quantity_price_rule.class%'
             - '%coreshop.form.type.product_quantity_price_rules.validation_groups%'
+            - '%coreshop.product_quantity_price_rules.calculators%'
         tags:
             - { name: form.type }
 
@@ -72,23 +73,35 @@ services:
         arguments:
             - '@coreshop.product_quantity_price_rules.conditions.processor'
 
-    # Price Calculators
-    coreshop.product_quantity_price_rules.price_calculator.valid_price_rules_fetcher:
+    # Rule Fetcher
+    coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher
         arguments:
             - '@coreshop.product_quantity_price_rules.processor'
         tags:
             - { name: coreshop.product.rules.fetcher, type: product-quantity-price-rules }
 
-    coreshop.product_quantity_price_rules.price_calculator.valid_price_rules_fetcher.memory_cached:
+    coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher.memory_cached:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\MemoryCachedValidRuleFetcher
-        decorates: 'coreshop.product_quantity_price_rules.price_calculator.valid_price_rules_fetcher'
+        decorates: 'coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher'
         arguments:
-            - '@coreshop.product_quantity_price_rules.price_calculator.valid_price_rules_fetcher.memory_cached.inner'
+            - '@coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher.memory_cached.inner'
             - '@request_stack'
 
-    coreshop.product_quantity_price_rules.price_calculator.range_price:
-      class: CoreShop\Component\ProductQuantityPriceRules\Rule\Calculator\ProductQuantityRangePriceCalculator
+    # Detectors
+    coreshop.product_quantity_price_rules.detector.quantity_reference:
+      class: CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector
       arguments:
-          - '@coreshop.registry.product_quantity_price_rules.actions'
-          - '@coreshop.product_quantity_price_rules.price_calculator.valid_price_rules_fetcher'
+          - '@coreshop.product_quantity_price_rules.fetcher.rule'
+          - '@coreshop.product_quantity_price_rules.fetcher.price'
+
+    # Quantity Data Fetcher
+    coreshop.product_quantity_price_rules.fetcher.price:
+      class: CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityPriceFetcher
+      arguments:
+          - '@coreshop.registry.product_quantity_price_rules.calculators'
+
+    coreshop.product_quantity_price_rules.fetcher.rule:
+        class: CoreShop\Component\ProductQuantityPriceRules\Fetcher\QuantityRuleFetcher
+        arguments:
+            - '@coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher'

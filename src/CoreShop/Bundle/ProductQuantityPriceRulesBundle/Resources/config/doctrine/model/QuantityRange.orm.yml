@@ -23,3 +23,10 @@ CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
         highlighted:
             column: highlighted
             type: boolean
+    manyToOne:
+        rule:
+            targetEntity: CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface
+            inversedBy: ranges
+            joinColumn:
+                name: rule_id
+                referencedColumnName: id

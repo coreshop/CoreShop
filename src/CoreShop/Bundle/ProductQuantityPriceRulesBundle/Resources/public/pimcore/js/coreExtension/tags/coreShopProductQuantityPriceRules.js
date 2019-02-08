@@ -42,6 +42,7 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
         this.data = data.rules;
         this.fieldConfig = fieldConfig;
         this.panels = [];
+        this.storeData = data.stores;
         this.conditions = data.conditions;
         this.actions = data.actions;
         this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
@@ -296,6 +297,20 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
 
     getConditions: function () {
         return this.conditions;
+    },
+
+    getStoreData: function (section) {
+        return this.storeData[section];
+    },
+
+    getTranslatedtoreData: function (section) {
+        var translatedStoreData = [];
+
+        Ext.Array.each(this.getStoreData(section), function (entry) {
+            translatedStoreData.push([entry[0], t(entry[1])]);
+        });
+
+        return translatedStoreData;
     },
 
     getActions: function () {

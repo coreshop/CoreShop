@@ -162,10 +162,24 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
+        $calculationBehaviourTypes = [];
+        $pricingBehaviourTypes = [];
+
+        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators') as $type) {
+            $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
+        }
+        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions') as $type) {
+            $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_fixed_' . strtolower($type)];
+        }
+
         $data = [
             'conditions' => array_keys($this->getConfigConditions()),
             'actions'    => array_keys($this->getConfigActions()),
             'rules'      => [],
+            'stores'     => [
+                'calculationBehaviourTypes' => $calculationBehaviourTypes,
+                'pricingBehaviourTypes'     => $pricingBehaviourTypes,
+            ]
         ];
 
         if ($object instanceof ProductInterface) {

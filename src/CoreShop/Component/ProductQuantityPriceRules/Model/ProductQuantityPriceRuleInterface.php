@@ -29,6 +29,16 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function setName($name);
 
     /**
+     * @return string
+     */
+    public function getCalculationBehaviour();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCalculationBehaviour($calculationBehaviour);
+
+    /**
      * @return Collection|ConditionInterface[]
      */
     public function getConditions();

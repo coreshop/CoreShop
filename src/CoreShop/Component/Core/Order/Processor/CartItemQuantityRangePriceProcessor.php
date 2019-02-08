@@ -14,11 +14,11 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Calculator\ProductQuantityRangePriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use Webmozart\Assert\Assert;
 
 class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
@@ -34,9 +34,9 @@ class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
     protected $productPriceCalculator;
 
     /**
-     * @var ProductQuantityRangePriceCalculatorInterface
+     * @var QuantityReferenceDetectorInterface
      */
-    protected $productQuantityRangePriceCalculator;
+    protected $quantityReferenceDetector;
 
     /**
      * @var CartItemProcessorInterface
@@ -44,20 +44,20 @@ class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
     protected $cartItemProcessor;
 
     /**
-     * @param CartProcessorInterface                       $innerCartProcessor
-     * @param PurchasableCalculatorInterface               $productPriceCalculator
-     * @param CartItemProcessorInterface                   $cartItemProcessor
-     * @param ProductQuantityRangePriceCalculatorInterface $productQuantityRangePriceCalculator
+     * @param CartProcessorInterface             $innerCartProcessor
+     * @param PurchasableCalculatorInterface     $productPriceCalculator
+     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
+     * @param CartItemProcessorInterface         $cartItemProcessor
      */
     public function __construct(
         CartProcessorInterface $innerCartProcessor,
         PurchasableCalculatorInterface $productPriceCalculator,
-        ProductQuantityRangePriceCalculatorInterface $productQuantityRangePriceCalculator,
+        QuantityReferenceDetectorInterface $quantityReferenceDetector,
         CartItemProcessorInterface $cartItemProcessor
     ) {
         $this->innerCartProcessor = $innerCartProcessor;
         $this->productPriceCalculator = $productPriceCalculator;
-        $this->productQuantityRangePriceCalculator = $productQuantityRangePriceCalculator;
+        $this->quantityReferenceDetector = $quantityReferenceDetector;
         $this->cartItemProcessor = $cartItemProcessor;
     }
 
@@ -85,13 +85,14 @@ class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
-            $rangeItemPrice = $this->productQuantityRangePriceCalculator->getQuantityRangePriceForCartItem($item->getProduct(), $item, $context);
 
-            if ($rangeItemPrice === false) {
+            $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
+            $quantityItemPrice = $this->quantityReferenceDetector->detectPerQuantityPrice($item->getProduct(), $item->getQuantity(), $realItemPrice, $context);
+
+            if ($quantityItemPrice === false) {
                 $itemPrice = $realItemPrice;
             } else {
-                $itemPrice = $rangeItemPrice;
+                $itemPrice = $quantityItemPrice;
             }
 
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($item->getProduct(), $context);

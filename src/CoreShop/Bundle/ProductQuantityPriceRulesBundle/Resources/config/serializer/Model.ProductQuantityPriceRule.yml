@@ -11,6 +11,10 @@ CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
             expose: true
             type: string
             groups: [List, Detailed]
+        calculationBehaviour:
+            expose: true
+            type: string
+            groups: [List, Detailed]
         active:
             expose: true
             type: boolean

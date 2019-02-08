@@ -1,0 +1,129 @@
+<?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
+
+namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
+
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
+use Doctrine\Common\Collections\Collection;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface;
+
+class VolumeCalculator implements CalculatorInterface
+{
+    /**
+     * @var ServiceRegistryInterface
+     */
+    protected $actionRegistry;
+
+    /**
+     * @param ServiceRegistryInterface $actionRegistry
+     */
+    public function __construct(ServiceRegistryInterface $actionRegistry)
+    {
+        $this->actionRegistry = $actionRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function calculatePerQuantity(
+        ProductQuantityPriceRuleInterface $quantityPriceRule,
+        QuantityRangePriceAwareInterface $subject,
+        int $quantity,
+        int $originalPrice,
+        array $context
+    ) {
+        $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity);
+
+        if (!$locatedRange instanceof QuantityRangeInterface) {
+            return false;
+        }
+
+        $price = $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
+
+        return !is_numeric($price) || $price === 0 ? false : $price;
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function calculatePerItem(
+        ProductQuantityPriceRuleInterface $quantityPriceRule,
+        QuantityRangePriceAwareInterface $subject,
+        int $originalPrice,
+        array $context
+    ) {
+
+        throw new \Exception(sprintf('"%s" does not support the calculatePerItem() method. use calculatePerItemInRange() instead.', __CLASS__));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function calculatePerItemInRange(
+        QuantityRangeInterface $range,
+        QuantityRangePriceAwareInterface $subject,
+        int $originalPrice,
+        array $context
+    ) {
+        $price = $this->calculateRangePrice($range, $subject, $originalPrice, $context);
+
+        return !is_numeric($price) || $price === 0 ? false : $price;
+    }
+
+    /**
+     * @param QuantityRangeInterface           $range
+     * @param QuantityRangePriceAwareInterface $subject
+     * @param int                              $originalPrice
+     * @param array                            $context
+     *
+     * @return int
+     */
+    protected function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
+    {
+        $pricingBehaviour = $range->getPricingBehaviour();
+
+        /**
+         * @var ProductQuantityPriceRuleActionInterface $service
+         */
+        $service = $this->actionRegistry->get($pricingBehaviour);
+
+        return $service->calculate($range, $subject, $originalPrice, $context);
+    }
+
+    /**
+     * @param Collection $ranges
+     * @param int        $quantity
+     *
+     * @return QuantityRangeInterface|null
+     */
+    protected function locate(Collection $ranges, int $quantity)
+    {
+        if ($ranges->isEmpty()) {
+            return null;
+        }
+
+        $cheapestRangePrice = null;
+        /** @var QuantityRangeInterface $range */
+        foreach ($ranges as $range) {
+            if ($range->getRangeFrom() > $quantity) {
+                break;
+            }
+            $cheapestRangePrice = $range;
+        }
+
+        return $cheapestRangePrice;
+    }
+}

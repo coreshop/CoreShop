@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -21,12 +22,32 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class ProductQuantityPriceRuleType extends RuleType
 {
     /**
+     * @var array
+     */
+    protected $calculatorTypes;
+
+    /**
+     * @param string $dataClass
+     * @param array  $validationGroups
+     * @param array  $calculatorTypes
+     */
+    public function __construct($dataClass, array $validationGroups, array $calculatorTypes)
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->calculatorTypes = $calculatorTypes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', TextareaType::class)
+            ->add('calculationBehaviour', ChoiceType::class, [
+                'choices' => $this->calculatorTypes,
+            ])
             ->add('active', CheckboxType::class)
             ->add('priority', NumberType::class)
             ->add('conditions', ProductQuantityPriceRuleConditionCollectionType::class)

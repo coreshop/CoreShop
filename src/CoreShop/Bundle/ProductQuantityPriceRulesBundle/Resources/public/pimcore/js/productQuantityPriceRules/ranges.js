@@ -20,10 +20,11 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
     percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
 
-    initialize: function (ruleId, clipboardManager) {
+    initialize: function (ruleId, clipboardManager, pricingBehaviourTypes) {
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
         this.clipboardManager = clipboardManager;
+        this.pricingBehaviourTypes = pricingBehaviourTypes;
     },
 
     postSaveObject: function (object, refreshedData) {
@@ -219,13 +220,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 name: 'pricing_behaviour',
                 getEditor: function () {
                     return new Ext.form.ComboBox({
-                        store: [
-                            ['fixed', t('coreshop_product_quantity_price_rules_behaviour_fixed')],
-                            ['amount_decrease', t('coreshop_product_quantity_price_rules_behaviour_amount_decrease')],
-                            ['amount_increase', t('coreshop_product_quantity_price_rules_behaviour_amount_increase')],
-                            ['percentage_decrease', t('coreshop_product_quantity_price_rules_behaviour_percentage_decrease')],
-                            ['percentage_increase', t('coreshop_product_quantity_price_rules_behaviour_percentage_increase')]
-                        ],
+                        store: this.pricingBehaviourTypes,
                         listeners: {
                             change: function (field) {
                                 var grid = this.up('grid'),

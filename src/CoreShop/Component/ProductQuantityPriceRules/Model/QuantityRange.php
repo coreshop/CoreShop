@@ -47,6 +47,11 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     protected $highlighted = false;
 
     /**
+     * @var ProductQuantityPriceRuleInterface
+     */
+    protected $rule;
+
+    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -148,5 +153,21 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     public function setHighlighted(bool $highlighted)
     {
         $this->highlighted = $highlighted;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRule()
+    {
+        return $this->rule;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRule($rule)
+    {
+        $this->rule = $rule;
     }
 }

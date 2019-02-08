@@ -1,6 +1,6 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
-<div class="product-quantity-price-ranges d-block">
+<div class="product-quantity-price-ranges quantity-type-{{ rule.getCalculationBehaviour() }} d-block">
     <h3>{{ 'coreshop.ui.product_quantity_price_rules.ranges_available'|trans }}</h3>
     <table class="table table-striped">
         <thead class="">
@@ -10,12 +10,12 @@
         </tr>
         </thead>
         <tbody class="">
-        {% for range in ranges %}
+        {% for range in rule.getRanges() %}
             <tr class="">
                 <td class="">{{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.getRangeFrom() }}</span>
                 </td>
                 <td class="">
-                    {{ currency.convertAndFormat(coreshop_quantity_price_rule_range_price_calculated(range, product)) }}
+                    <span class="range-price">{{ currency.convertAndFormat(coreshop_quantity_price_rule_item_price_calculated(range, product)) }}</span>
                     {% if range.isHighlighted() %}
                         <span class="badge badge-info">{{ 'coreshop.ui.product_quantity_price_rules.best_offer'|trans }}</span>
                     {% endif %}
