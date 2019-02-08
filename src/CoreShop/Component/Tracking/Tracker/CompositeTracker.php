@@ -97,7 +97,7 @@ class CompositeTracker implements TrackerInterface
     {
         $cart = $this->extractTrackingData($cart);
 
-        $this->compositeTrackerCall('trackCartRemove', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
+        $this->compositeTrackerCall('trackCheckoutStep', [$cart, $stepIdentifier, $isFirstStep, $checkoutOption]);
     }
 
     /**
