@@ -79,7 +79,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         var rangContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedtoreData('pricingBehaviourTypes'));
+        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
@@ -132,7 +132,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
                     width: 250,
                     editable: false,
                     value: this.data.calculationBehaviour,
-                    store: this.parentPanel.getTranslatedtoreData('calculationBehaviourTypes')
+                    store: this.parentPanel.getTranslatedStoreData('calculationBehaviourTypes')
                 }, {
                     xtype: 'numberfield',
                     name: 'priority',

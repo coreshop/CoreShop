@@ -241,7 +241,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCalculationBehaviour()
     {

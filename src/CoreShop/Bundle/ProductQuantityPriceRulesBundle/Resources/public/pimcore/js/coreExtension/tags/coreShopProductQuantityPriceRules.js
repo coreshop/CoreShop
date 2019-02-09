@@ -303,7 +303,7 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
         return this.storeData[section];
     },
 
-    getTranslatedtoreData: function (section) {
+    getTranslatedStoreData: function (section) {
         var translatedStoreData = [];
 
         Ext.Array.each(this.getStoreData(section), function (entry) {
