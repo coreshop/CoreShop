@@ -27,25 +27,10 @@ interface CalculatorInterface
      *
      * @return bool|int
      */
-    public function calculatePerQuantity(
+    public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
         int $quantity,
-        int $originalPrice,
-        array $context
-    );
-
-    /**
-     * @param ProductQuantityPriceRuleInterface $quantityPriceRule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
-     * @return mixed
-     */
-    public function calculatePerItem(
-        ProductQuantityPriceRuleInterface $quantityPriceRule,
-        QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
     );
@@ -58,7 +43,7 @@ interface CalculatorInterface
      *
      * @return mixed
      */
-    public function calculatePerItemInRange(
+    public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,

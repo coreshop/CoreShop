@@ -45,5 +45,5 @@ interface ProductQuantityPriceHelperInterface
      *
      * @return mixed
      */
-    public function getQuantityPriceRuleItemPrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
+    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
 }

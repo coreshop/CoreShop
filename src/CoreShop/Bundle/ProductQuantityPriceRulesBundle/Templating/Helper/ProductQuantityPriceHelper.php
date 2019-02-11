@@ -97,10 +97,10 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
     /**
      * {@inheritdoc}
      */
-    public function getQuantityPriceRuleItemPrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product)
+    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product)
     {
         $realItemPrice = $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true);
-        $quantityPrice = $this->quantityReferenceDetector->detectPerItemInRangePrice($product, $range, $realItemPrice, $this->shopperContext->getContext());
+        $quantityPrice = $this->quantityReferenceDetector->detectRangePrice($product, $range, $realItemPrice, $this->shopperContext->getContext());
 
         return $quantityPrice;
     }

@@ -54,25 +54,7 @@ class QuantityPriceFetcher
          */
         $service = $this->calculatorRegistry->get($rule->getCalculationBehaviour());
 
-        return $service->calculatePerQuantity($rule, $subject, $quantity, $originalPrice, $context);
-    }
-
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
-     * @return bool|int
-     */
-    public function fetchItemPrice(ProductQuantityPriceRuleInterface $rule, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
-    {
-        /**
-         * @var CalculatorInterface $service
-         */
-        $service = $this->calculatorRegistry->get($rule->getCalculationBehaviour());
-
-        return $service->calculatePerItem($rule, $subject, $originalPrice, $context);
+        return $service->calculateForQuantity($rule, $subject, $quantity, $originalPrice, $context);
     }
 
     /**
@@ -83,13 +65,17 @@ class QuantityPriceFetcher
      *
      * @return bool|int
      */
-    public function fetchItemPriceInRange(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
-    {
+    public function fetchRangePrice(
+        QuantityRangeInterface $range,
+        QuantityRangePriceAwareInterface $subject,
+        int $originalPrice,
+        array $context
+    ) {
         /**
          * @var CalculatorInterface $service
          */
         $service = $this->calculatorRegistry->get($range->getRule()->getCalculationBehaviour());
 
-        return $service->calculatePerItemInRange($range, $subject, $originalPrice, $context);
+        return $service->calculateForRange($range, $subject, $originalPrice, $context);
     }
 }

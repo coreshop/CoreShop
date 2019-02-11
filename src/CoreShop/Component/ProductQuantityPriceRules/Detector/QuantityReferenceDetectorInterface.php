@@ -34,16 +34,7 @@ interface QuantityReferenceDetectorInterface
      *
      * @return bool|int
      */
-    public function detectPerQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context);
-
-    /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @return bool|int
-     */
-    public function detectPerItemPrice(QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context);
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context);
 
     /**
      * @param QuantityRangePriceAwareInterface $subject
@@ -53,5 +44,5 @@ interface QuantityReferenceDetectorInterface
      *
      * @return mixed
      */
-    public function detectPerItemInRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);
+    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);
 }

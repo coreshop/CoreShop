@@ -37,7 +37,7 @@ class VolumeCalculator implements CalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function calculatePerQuantity(
+    public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
         int $quantity,
@@ -45,7 +45,6 @@ class VolumeCalculator implements CalculatorInterface
         array $context
     ) {
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity);
-
         if (!$locatedRange instanceof QuantityRangeInterface) {
             return false;
         }
@@ -59,20 +58,7 @@ class VolumeCalculator implements CalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function calculatePerItem(
-        ProductQuantityPriceRuleInterface $quantityPriceRule,
-        QuantityRangePriceAwareInterface $subject,
-        int $originalPrice,
-        array $context
-    ) {
-
-        throw new \Exception(sprintf('"%s" does not support the calculatePerItem() method. use calculatePerItemInRange() instead.', __CLASS__));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function calculatePerItemInRange(
+    public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,

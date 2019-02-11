@@ -57,7 +57,7 @@ class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
     /**
      * {@inheritdoc}
      */
-    public function detectPerQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context)
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context)
     {
         $priceRule = $this->detectRule($subject, $context);
 
@@ -71,22 +71,8 @@ class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
     /**
      * {@inheritdoc}
      */
-    public function detectPerItemPrice(QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
+    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context)
     {
-        $priceRule = $this->detectRule($subject, $context);
-
-        if (!$priceRule instanceof ProductQuantityPriceRuleInterface) {
-            return false;
-        }
-
-        return $this->quantityPriceFetcher->fetchItemPrice($priceRule, $subject, $originalPrice, $context);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function detectPerItemInRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context)
-    {
-        return $this->quantityPriceFetcher->fetchItemPriceInRange($range, $subject, $originalPrice, $context);
+        return $this->quantityPriceFetcher->fetchRangePrice($range, $subject, $originalPrice, $context);
     }
 }

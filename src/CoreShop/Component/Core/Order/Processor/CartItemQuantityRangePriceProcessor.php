@@ -87,7 +87,7 @@ class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
 
             $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
-            $quantityItemPrice = $this->quantityReferenceDetector->detectPerQuantityPrice($item->getProduct(), $item->getQuantity(), $realItemPrice, $context);
+            $quantityItemPrice = $this->quantityReferenceDetector->detectQuantityPrice($item->getProduct(), $item->getQuantity(), $realItemPrice, $context);
 
             if ($quantityItemPrice === false) {
                 $itemPrice = $realItemPrice;
