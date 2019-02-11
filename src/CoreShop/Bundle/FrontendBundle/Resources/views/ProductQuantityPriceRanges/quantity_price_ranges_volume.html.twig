@@ -15,7 +15,7 @@
                 <td class="">{{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.getRangeFrom() }}</span>
                 </td>
                 <td class="">
-                    <span class="range-price">{{ currency.convertAndFormat(coreshop_quantity_price_rule_item_price_calculated(range, product)) }}</span>
+                    <span class="range-price">{{ currency.convertAndFormat(coreshop_quantity_price_rule_range_price_calculated(range, product)) }}</span>
                     {% if range.isHighlighted() %}
                         <span class="badge badge-info">{{ 'coreshop.ui.product_quantity_price_rules.best_offer'|trans }}</span>
                     {% endif %}
