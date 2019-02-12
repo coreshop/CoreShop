@@ -48,7 +48,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
-         * @var $purchasable StockableInterface
+         * @var StockableInterface $purchasable
          */
         $purchasable = $addCartItemCommand->getPurchasable();
 
