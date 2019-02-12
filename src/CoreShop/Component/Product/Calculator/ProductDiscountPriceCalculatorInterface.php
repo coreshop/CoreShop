@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 
 interface ProductDiscountPriceCalculatorInterface
@@ -20,7 +21,9 @@ interface ProductDiscountPriceCalculatorInterface
      * @param ProductInterface $subject
      * @param array            $context
      *
-     * @return mixed
+     * @throws NoDiscountPriceFoundException
+     *
+     * @return int
      */
     public function getDiscountPrice(ProductInterface $subject, array $context);
 }

@@ -15,6 +15,10 @@ namespace CoreShop\Component\Product\Rule\Calculator;
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
+use CoreShop\Component\Product\Exception\NoDiscountFoundException;
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
+use CoreShop\Component\Product\Exception\NoPriceFoundException;
+use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
@@ -53,7 +57,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
      */
     public function getRetailPrice(ProductInterface $subject, array $context)
     {
-        $price = 0;
+        $price = null;
 
         /**
          * @var RuleInterface[]
@@ -72,16 +76,24 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                         continue;
                     }
 
-                    $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
+                    try {
+                        $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
 
-                    if (false !== $actionPrice && null !== $actionPrice) {
                         $price = $actionPrice;
+                    }
+                    catch (NoRetailPriceFoundException $ex)
+                    {
+
                     }
                 }
             }
         }
 
-        return $price === 0 ? false : $price;
+        if (null === $price) {
+            throw new NoRetailPriceFoundException(__CLASS__);
+        }
+
+        return $price;
     }
 
     /**
@@ -89,7 +101,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
      */
     public function getDiscountPrice(ProductInterface $subject, array $context)
     {
-        $price = 0;
+        $price = null;
 
         /**
          * @var RuleInterface[]
@@ -108,16 +120,23 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                         continue;
                     }
 
-                    $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
-
-                    if (false !== $actionPrice && null !== $actionPrice) {
+                    try {
+                        $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
                         $price = $actionPrice;
+                    }
+                    catch (NoDiscountPriceFoundException $ex)
+                    {
+
                     }
                 }
             }
         }
 
-        return $price === 0 ? false : $price;
+        if (null === $price) {
+            throw new NoDiscountPriceFoundException(__CLASS__);
+        }
+
+        return $price;
     }
 
     /**

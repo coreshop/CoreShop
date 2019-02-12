@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasablePriceCalculatorInterface
@@ -20,6 +21,8 @@ interface PurchasablePriceCalculatorInterface
      * @param PurchasableInterface $purchasable
      * @param array                $context
      * @param bool                 $includingDiscounts
+     *
+     * @throws NoPurchasablePriceFoundException
      *
      * @return int
      */
