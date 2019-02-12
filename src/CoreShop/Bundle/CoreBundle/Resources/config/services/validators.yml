@@ -1,0 +1,7 @@
+services:
+    coreshop.validator.add_to_cart_availability:
+        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator
+        arguments:
+            - '@coreshop.inventory.availability_checker'
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_availability' }

@@ -12,6 +12,7 @@ imports:
     - { resource: "services/cart.yml" }
     - { resource: "services/grid_config.yml" }
     - { resource: "services/payment.yml" }
+    - { resource: "services/forms.yml" }
 
 services:
     _defaults:
@@ -87,3 +88,6 @@ services:
         public: false
         arguments:
             - '@coreshop.custom_factory.cart_item.inner'
+
+    coreshop.factory.add_to_cart_command:
+        class: CoreShop\Bundle\OrderBundle\Factory\AddToCartCommandFactory

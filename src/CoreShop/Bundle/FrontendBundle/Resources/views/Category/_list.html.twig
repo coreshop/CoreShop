@@ -28,15 +28,8 @@
                         <a href="{{ coreshop_path('coreshop_wishlist_add', {product: product.id}) }}" title="" class="btn btn-wishlist">
                             <i class="fa fa-heart"></i>
                         </a>
-
                         {% if coreshop_inventory_is_available(product) %}
-                        <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
-                            <button type="submit" class="btn btn-cart"
-                               rel="nofollow">
-                                {{ 'coreshop.ui.add_to_cart'|trans }}
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
-                        </form>
+                            {{ render(url('coreshop_cart_add', {'product': product.id})) }}
                         {% endif %}
                     </div>
                 </div>
