@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -51,7 +52,11 @@ class VolumeCalculator implements CalculatorInterface
 
         $price = $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
-        return !is_numeric($price) || $price === 0 ? false : $price;
+        if (!is_numeric($price) || $price === 0) {
+            throw new NoPriceFoundException(__CLASS__);
+        }
+
+        return $price;
 
     }
 
@@ -66,7 +71,11 @@ class VolumeCalculator implements CalculatorInterface
     ) {
         $price = $this->calculateRangePrice($range, $subject, $originalPrice, $context);
 
-        return !is_numeric($price) || $price === 0 ? false : $price;
+        if (!is_numeric($price) || $price === 0) {
+            throw new NoPriceFoundException(__CLASS__);
+        }
+
+        return $price;
     }
 
     /**

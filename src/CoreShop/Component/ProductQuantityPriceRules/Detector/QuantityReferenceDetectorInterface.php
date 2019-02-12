@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Detector;
 
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
@@ -22,7 +24,8 @@ interface QuantityReferenceDetectorInterface
      * @param QuantityRangePriceAwareInterface $subject
      * @param array                            $context
      *
-     * @return bool|ProductQuantityPriceRuleInterface
+     * @throws NoRuleFoundException
+     * @return ProductQuantityPriceRuleInterface
      */
     public function detectRule(QuantityRangePriceAwareInterface $subject, array $context);
 
@@ -32,7 +35,8 @@ interface QuantityReferenceDetectorInterface
      * @param int                              $originalPrice
      * @param array                            $context
      *
-     * @return bool|int
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context);
 
@@ -42,7 +46,8 @@ interface QuantityReferenceDetectorInterface
      * @param int                              $originalPrice
      * @param array                            $context
      *
-     * @return mixed
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);
 }

@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -57,9 +57,9 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
      */
     public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product)
     {
-        $productQuantityPriceRules = $this->quantityReferenceDetector->detectRule($product, $this->shopperContext->getContext());
-
-        if (!$productQuantityPriceRules instanceof ProductQuantityPriceRuleInterface) {
+        try {
+            $this->quantityReferenceDetector->detectRule($product, $this->shopperContext->getContext());
+        } catch (NoRuleFoundException $e) {
             return false;
         }
 
@@ -71,13 +71,7 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
      */
     public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product)
     {
-        if ($this->hasActiveQuantityPriceRuleRanges($product) === false) {
-            return [];
-        }
-
-        $productQuantityPriceRule = $this->quantityReferenceDetector->detectRule($product, $this->shopperContext->getContext());
-
-        return $productQuantityPriceRule;
+        return $this->quantityReferenceDetector->detectRule($product, $this->shopperContext->getContext());
     }
 
     /**
@@ -85,10 +79,6 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
      */
     public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product)
     {
-        if ($this->hasActiveQuantityPriceRuleRanges($product) === false) {
-            return [];
-        }
-
         $productQuantityPriceRule = $this->quantityReferenceDetector->detectRule($product, $this->shopperContext->getContext());
 
         return $productQuantityPriceRule->getRanges();

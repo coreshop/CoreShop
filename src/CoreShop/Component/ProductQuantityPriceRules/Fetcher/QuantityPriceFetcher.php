@@ -13,6 +13,7 @@
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -40,7 +41,8 @@ class QuantityPriceFetcher
      * @param int                               $originalPrice
      * @param array                             $context
      *
-     * @return bool|int
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
@@ -63,7 +65,8 @@ class QuantityPriceFetcher
      * @param int                              $originalPrice
      * @param array                            $context
      *
-     * @return bool|int
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function fetchRangePrice(
         QuantityRangeInterface $range,

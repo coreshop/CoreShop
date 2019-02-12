@@ -199,7 +199,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
      * @param null  $object
      * @param array $params
      *
-     * @return array|mixed
+     * @return array
      *
      * @throws \Exception
      */

@@ -19,6 +19,8 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use Webmozart\Assert\Assert;
 
 class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
@@ -87,12 +89,13 @@ class CartItemQuantityRangePriceProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
 
             $realItemPrice = $this->productPriceCalculator->getPrice($item->getProduct(), $context, true);
-            $quantityItemPrice = $this->quantityReferenceDetector->detectQuantityPrice($item->getProduct(), $item->getQuantity(), $realItemPrice, $context);
 
-            if ($quantityItemPrice === false) {
+            try {
+                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($item->getProduct(), $item->getQuantity(), $realItemPrice, $context);
+            } catch (NoRuleFoundException $exception) {
                 $itemPrice = $realItemPrice;
-            } else {
-                $itemPrice = $quantityItemPrice;
+            } catch (NoPriceFoundException $exception) {
+                $itemPrice = $realItemPrice;
             }
 
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($item->getProduct(), $context);

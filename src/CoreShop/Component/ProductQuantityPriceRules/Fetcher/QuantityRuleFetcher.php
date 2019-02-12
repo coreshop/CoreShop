@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface;
@@ -35,18 +36,19 @@ class QuantityRuleFetcher
      * @param QuantityRangePriceAwareInterface $subject
      * @param array                            $context
      *
-     * @return bool|ProductQuantityPriceRuleInterface|mixed
+     * @throws NoRuleFoundException
+     * @return ProductQuantityPriceRuleInterface
      */
     public function fetch(QuantityRangePriceAwareInterface $subject, array $context)
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
 
         if (!is_array($quantityPriceRules)) {
-            return false;
+            throw new NoRuleFoundException();
         }
 
         if (count($quantityPriceRules) === 0) {
-            return false;
+            throw new NoRuleFoundException();
         }
 
         return $quantityPriceRules[0];

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
@@ -25,7 +26,8 @@ interface CalculatorInterface
      * @param int                               $originalPrice
      * @param array                             $context
      *
-     * @return bool|int
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
@@ -41,7 +43,8 @@ interface CalculatorInterface
      * @param int                              $originalPrice
      * @param array                            $context
      *
-     * @return mixed
+     * @throws NoPriceFoundException
+     * @return int
      */
     public function calculateForRange(
         QuantityRangeInterface $range,
