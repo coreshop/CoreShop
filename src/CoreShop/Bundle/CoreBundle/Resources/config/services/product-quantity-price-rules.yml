@@ -1,16 +1,4 @@
 services:
-    coreshop.cart_processor.items_quantity_range_price:
-        class: CoreShop\Component\Core\Order\Processor\CartItemQuantityRangePriceProcessor
-        decorates: coreshop.cart_processor.items
-        decoration_inner_name: coreshop.cart_processor.items.inner
-        arguments:
-            - '@coreshop.cart_processor.items.inner'
-            - '@coreshop.order.purchasable.calculator'
-            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
-            - '@coreshop.cart_item.processor'
-        tags:
-            - { name: coreshop.cart_processor, priority: 580 }
-
     coreshop.product_quantity_price_rules.rule.condition.customers:
         class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
         tags:
