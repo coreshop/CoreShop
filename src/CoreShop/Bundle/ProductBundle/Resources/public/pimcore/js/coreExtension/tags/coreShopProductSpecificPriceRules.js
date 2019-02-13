@@ -83,7 +83,9 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
                         type: 'coreshop-add',
                         tooltip: t('add'),
                         handler: function () {
-                            this.panels.push(new coreshop.product.specificprice.object.item(this, {}, -1, 'productSpecificPriceRule'));
+                            var newPanel = new coreshop.product.specificprice.object.item(this, {}, -1, 'productSpecificPriceRule');
+                            this.panels.push(newPanel);
+                            this.getTabPanel().setActiveItem(newPanel.panel);
                         }.bind(this)
                     }
                 ]
@@ -104,7 +106,6 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
             panel.panel.on('beforedestroy', function () {
                 var index = this.panels.indexOf(panel);
                 this.panels.splice(index, 1);
-
                 this.dirty = true;
             }.bind(this));
         }.bind(this));

@@ -1,0 +1,62 @@
+CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRule:
+    type: mappedSuperclass
+    table: coreshop_product_quantity_price_rule
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+        active:
+            column: active
+            type: boolean
+        priority:
+            column: priority
+            type: integer
+        product:
+            column: product
+            type: integer
+            nullable: false
+        calculationBehaviour:
+            column: calculation_behaviour
+            type: string
+        creationDate:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update
+    manyToMany:
+        conditions:
+            targetEntity: CoreShop\Component\Rule\Model\ConditionInterface
+            cascade:
+                - all
+            joinTable:
+                name: coreshop_product_quantity_price_rule_conditions
+                joinColumns:
+                    product_quantity_price_rule_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    condition_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
+
+    oneToMany:
+        ranges:
+            targetEntity: CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface
+            mappedBy: rule
+            orphanRemoval: true
+            cascade: [ persist, remove ]
+            fetch: LAZY

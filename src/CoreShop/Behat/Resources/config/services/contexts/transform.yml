@@ -185,3 +185,11 @@ services:
             - '@__symfony__.coreshop.repository.cart_price_rule'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.product_quantity_price_rule:
+        class: CoreShop\Behat\Context\Transform\ProductQuantityPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.product_quantity_price_rule'
+        tags:
+            - { name: fob.context_service }

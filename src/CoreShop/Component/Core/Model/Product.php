@@ -220,6 +220,14 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getQuantityPriceRules()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIndexableEnabled()
     {
         return $this->getActive() && $this->getPublished();

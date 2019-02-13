@@ -26,8 +26,6 @@ class TimeSpanConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        Assert::isInstanceOf($subject, ProductInterface::class);
-
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);
         $dateTo = Carbon::createFromTimestamp($configuration['dateTo'] / 1000);
 

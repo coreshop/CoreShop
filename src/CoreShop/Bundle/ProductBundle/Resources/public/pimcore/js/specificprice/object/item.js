@@ -24,10 +24,8 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
             forceLayout: true,
             iconCls: this.iconCls,
             items: this.getItems(),
-            listeners: {
-                added: function (panel) {
-                    panel.setTitle(this.generatePanelTitle(this.data.name, this.data.active));
-                }.bind(this)
+            tabConfig: {
+                html: this.generatePanelTitle(this.data.name, this.data.active)
             }
         });
 
@@ -46,7 +44,6 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     initPanel: function () {
         this.panel = this.getPanel();
         this.parentPanel.getTabPanel().add(this.panel);
-        this.parentPanel.getTabPanel().setActiveTab(this.panel);
     },
 
     getActionContainerClass: function () {
@@ -74,7 +71,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 value: data.name,
                 enableKeyEvents: true,
                 listeners: {
-                    keyup: function(field) {
+                    keyup: function (field) {
                         var activeField = field.up('form').getForm().findField('active');
                         this.panel.setTitle(this.generatePanelTitle(field.getValue(), activeField.getValue()));
                     }.bind(this)
@@ -97,7 +94,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                 fieldLabel: t('active'),
                 checked: this.data.active,
                 listeners: {
-                    change: function(field, state) {
+                    change: function (field, state) {
                         var nameField = field.up('form').getForm().findField('name');
                         this.panel.setTitle(this.generatePanelTitle(nameField.getValue(), field.getValue()));
                     }.bind(this)
@@ -109,19 +106,23 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
     },
 
     getSaveData: function () {
-        if (this.settingsForm.getEl()) {
-            saveData = this.settingsForm.getForm().getFieldValues();
-            saveData['conditions'] = this.conditions.getConditionsData();
-            saveData['actions'] = this.actions.getActionsData();
 
-            if (this.data.id) {
-                saveData['id'] = this.data.id;
-            }
+        var saveData;
 
-            return saveData;
+        if (!this.settingsForm.getForm()) {
+            return {};
         }
 
-        return {};
+        saveData = this.settingsForm.getForm().getFieldValues();
+        saveData['conditions'] = this.conditions.getConditionsData();
+        saveData['actions'] = this.actions.getActionsData();
+
+        if (this.data.id) {
+            saveData['id'] = this.data.id;
+        }
+
+        return saveData;
+
     },
 
     isDirty: function () {

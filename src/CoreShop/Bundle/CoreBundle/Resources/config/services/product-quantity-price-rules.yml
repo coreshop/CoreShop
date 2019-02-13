@@ -1,0 +1,68 @@
+services:
+    coreshop.cart_processor.items_quantity_range_price:
+        class: CoreShop\Component\Core\Order\Processor\CartItemQuantityRangePriceProcessor
+        decorates: coreshop.cart_processor.items
+        decoration_inner_name: coreshop.cart_processor.items.inner
+        arguments:
+            - '@coreshop.cart_processor.items.inner'
+            - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
+            - '@coreshop.cart_item.processor'
+        tags:
+            - { name: coreshop.cart_processor, priority: 580 }
+
+    coreshop.product_quantity_price_rules.rule.condition.customers:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CustomersConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: customers, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.customer_groups:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CustomerGroupsConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: customerGroups, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.countries:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CountriesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: countries, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.zones:
+        class: CoreShop\Component\Core\Product\Rule\Condition\ZonesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: zones, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.stores:
+        class: CoreShop\Component\Core\Product\Rule\Condition\StoresConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: stores, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType }
+
+    coreshop.product_quantity_price_rules.rule.condition.currencies:
+        class: CoreShop\Component\Core\Product\Rule\Condition\CurrenciesConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
+
+    coreshop.product_quantity_price_rules.condition.timespan:
+        class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
+        tags:
+            - { name: coreshop.product_quantity_price_rules.condition, type: timespan, form-type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
+
+    coreshop.product_quantity_price_rules.action.amount_decrease:
+        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: amount_decrease }
+
+    coreshop.product_quantity_price_rules.action.amount_increase:
+        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountIncreaseAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: amount_increase }
+
+    coreshop.product_quantity_price_rules.action.fixed:
+        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\FixedAction
+        arguments:
+            - '@coreshop.currency_converter'
+        tags:
+            - { name: coreshop.product_quantity_price_rules.action, type: fixed }
