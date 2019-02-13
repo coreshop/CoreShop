@@ -69,6 +69,7 @@ remote storage-list git@github.com:CoreShop/StorageList.git
 remote inventory git@github.com:CoreShop/Inventory.git
 remote seo git@github.com:CoreShop/SEO.git
 remote tracking git@github.com:CoreShop/Tracking.git
+remote product-quantity-price-rules git@github.com:CoreShop/ProductQuantityPriceRules.git
 
 remote address-bundle git@github.com:CoreShop/AddressBundle.git
 remote configuration-bundle git@github.com:CoreShop/ConfigurationBundle.git
@@ -97,6 +98,7 @@ remote workflow-bundle git@github.com:CoreShop/WorkflowBundle.git
 remote seo-bundle git@github.com:CoreShop/SEOBundle.git
 remote pimcore-bundle git@github.com:CoreShop/PimcoreBundle.git
 remote theme-bundle git@github.com:CoreShop/ThemeBundle.git
+remote product-quantity-price-rules-bundle git@github.com:CoreShop/ProductQuantityPriceRulesBundle.git
 
 split 'src/CoreShop/Component/Resource' resource
 split 'src/CoreShop/Component/Registry' registry
