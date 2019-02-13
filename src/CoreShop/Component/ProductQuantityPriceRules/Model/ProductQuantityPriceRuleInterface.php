@@ -34,7 +34,7 @@ interface ProductQuantityPriceRuleInterface extends RuleInterface
     public function getCalculationBehaviour();
 
     /**
-     * {@inheritdoc}
+     * @param string $calculationBehaviour
      */
     public function setCalculationBehaviour($calculationBehaviour);
 
