@@ -18,6 +18,9 @@ use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use Webmozart\Assert\Assert;
 
 final class CartItemsProcessor implements CartProcessorInterface
@@ -28,19 +31,27 @@ final class CartItemsProcessor implements CartProcessorInterface
     private $productPriceCalculator;
 
     /**
+     * @var QuantityReferenceDetectorInterface
+     */
+    private $quantityReferenceDetector;
+
+    /**
      * @var CartItemProcessorInterface
      */
     private $cartItemProcessor;
 
     /**
      * @param PurchasableCalculatorInterface $productPriceCalculator
+     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
      * @param CartItemProcessorInterface     $cartItemProcessor
      */
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
+        QuantityReferenceDetectorInterface $quantityReferenceDetector,
         CartItemProcessorInterface $cartItemProcessor
     ) {
         $this->productPriceCalculator = $productPriceCalculator;
+        $this->quantityReferenceDetector = $quantityReferenceDetector;
         $this->cartItemProcessor = $cartItemProcessor;
     }
 
@@ -84,6 +95,15 @@ final class CartItemsProcessor implements CartProcessorInterface
             $product = $item->getProduct();
 
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
+
+            try {
+                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($item->getProduct(), $item->getQuantity(), $itemPrice, $context);
+            } catch (NoRuleFoundException $exception) {
+
+            } catch (NoPriceFoundException $exception) {
+
+            }
+
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
             $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
             $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
