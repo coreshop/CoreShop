@@ -14,6 +14,9 @@ doctrine:
     dbal:
         types:
             pimcoreObject: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
+            pimcoreDocument: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
+            pimcoreAsset: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
+            pimcoreSite: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
         mapping_types:
             enum: string
     orm:
