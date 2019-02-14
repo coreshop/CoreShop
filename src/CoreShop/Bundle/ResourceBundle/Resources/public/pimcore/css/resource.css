@@ -5,3 +5,7 @@
 .coreshop_icon_cursor {
     background: url(../img/cursor.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_settings {
+    background:url(../img/services.svg) center center no-repeat !important;
+}
