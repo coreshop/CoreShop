@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
@@ -47,6 +48,9 @@ final class CartItemProcessor implements CartItemProcessorInterface
      */
     public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
+        /**
+         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+         */
         $product = $cartItem->getProduct();
         $cart = $context['cart'];
         $store = $context['store'];
@@ -109,6 +113,10 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
             $cartItem->setItemDiscount($itemDiscount, false);
             $cartItem->setItemDiscount($itemDiscount, true);
+        }
+
+        if ($product instanceof ProductInterface) {
+            $cartItem->setDigitalProduct($product->getDigitalProduct());
         }
     }
 }
