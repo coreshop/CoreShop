@@ -48,9 +48,6 @@ final class CartItemProcessor implements CartItemProcessorInterface
      */
     public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
-        /**
-         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
-         */
         $product = $cartItem->getProduct();
         $cart = $context['cart'];
         $store = $context['store'];
@@ -116,6 +113,9 @@ final class CartItemProcessor implements CartItemProcessorInterface
         }
 
         if ($product instanceof ProductInterface) {
+            /**
+             * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+             */
             $cartItem->setDigitalProduct($product->getDigitalProduct());
         }
     }
