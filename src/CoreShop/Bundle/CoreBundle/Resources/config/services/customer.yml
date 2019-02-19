@@ -8,12 +8,16 @@ services:
     coreshop.customer.registration_service:
         class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
         arguments:
-            - '@coreshop.repository.customer'
+            - '@coreshop.customer.manager'
+
+    coreshop.customer.manager:
+        class: CoreShop\Bundle\CoreBundle\Customer\CustomerManager
+        arguments:
             - '@coreshop.object_service'
             - '@event_dispatcher'
-            - '@coreshop.context.locale'
             - '%coreshop.folder.customer%'
             - '%coreshop.folder.guest%'
+            - '%coreshop.folder.user%'
             - '%coreshop.folder.address%'
 
     coreshop.customer.login_service:

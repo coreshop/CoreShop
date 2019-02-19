@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 
 interface CustomerLoginServiceInterface
 {
     /**
-     * @param CustomerInterface $customer
+     * @param UserInterface $user
      */
-    public function loginCustomer(CustomerInterface $customer);
+    public function loginCustomer(UserInterface $user);
 }

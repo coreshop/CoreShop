@@ -12,8 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Security;
 
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\User\Repository\UserRepositoryInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,9 +21,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class ObjectUserProvider implements UserProviderInterface
 {
     /**
-     * @var CustomerRepositoryInterface
+     * @var UserRepositoryInterface
      */
-    protected $customerRepository;
+    protected $userRepository;
 
     /**
      * @var string
@@ -32,12 +31,12 @@ class ObjectUserProvider implements UserProviderInterface
     protected $className;
 
     /**
-     * @param CustomerRepositoryInterface $customerRepository
+     * @param UserRepositoryInterface $userRepository
      * @param string                      $className
      */
-    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
+    public function __construct(UserRepositoryInterface $userRepository, $className)
     {
-        $this->customerRepository = $customerRepository;
+        $this->userRepository = $userRepository;
         $this->className = $className;
     }
 
@@ -46,8 +45,9 @@ class ObjectUserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($emailAddress)
     {
-        $customer = $this->customerRepository->findCustomerByEmail($emailAddress);
-        if ($customer instanceof CustomerInterface) {
+        $customer = $this->userRepository->findByEmail($emailAddress);
+
+        if ($customer instanceof \CoreShop\Component\Core\Model\UserInterface) {
             return $customer;
         }
 
@@ -59,13 +59,11 @@ class ObjectUserProvider implements UserProviderInterface
      */
     public function refreshUser(UserInterface $user)
     {
-        if (!$user instanceof CustomerInterface) {
+        if (!$user instanceof \CoreShop\Component\Core\Model\UserInterface) {
             throw new UnsupportedUserException();
         }
 
-        $refreshedUser = $this->customerRepository->find($user->getId());
-
-        return $refreshedUser;
+        return $this->userRepository->find($user->getId());
     }
 
     /**

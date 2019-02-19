@@ -37,7 +37,7 @@ final class UniqueEntity extends Constraint
      */
     public function getRequiredOptions()
     {
-        return ['fields', 'values'];
+        return ['fields'];
     }
 
     /**

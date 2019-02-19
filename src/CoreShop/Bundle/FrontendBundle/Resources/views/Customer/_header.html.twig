@@ -1,4 +1,4 @@
-{%  if customer and not customer.isGuest() %}
+{% if customer and customer.user %}
     <li class="nav-item">
         <a class="nav-link" href="{{ coreshop_path(customer, 'coreshop_customer_profile') }}">
             {{ 'coreshop.ui.account'|trans }}

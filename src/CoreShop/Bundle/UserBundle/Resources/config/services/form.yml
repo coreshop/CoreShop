@@ -1,0 +1,21 @@
+parameters:
+    coreshop.form.type.user.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    coreshop.form.type.change_password:
+        class: CoreShop\Bundle\UserBundle\Form\Type\ChangePasswordType
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.request_reset_password:
+        class: CoreShop\Bundle\UserBundle\Form\Type\RequestResetPasswordType
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.reset_password:
+        class: CoreShop\Bundle\UserBundle\Form\Type\ResetPasswordType
+        tags:
+            - { name: form.type }

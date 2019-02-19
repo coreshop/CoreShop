@@ -2,6 +2,14 @@ services:
     _defaults:
         public: true
 
+    coreshop.context.customer.token_based:
+        class: CoreShop\Component\Core\Context\TokenBasedCustomerContext
+        public: false
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: coreshop.context.customer, priority: 10 }
+
     coreshop.context.cart.fixed:
         class: CoreShop\Component\Order\Context\FixedCartContext
         tags:

@@ -12,17 +12,11 @@
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
-interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, UserInterface, EquatableInterface, LocaleAwareInterface
+interface CustomerInterface extends ResourceInterface, PimcoreModelInterface
 {
-    const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
-    const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-
     /**
      * @return string
      */
@@ -72,36 +66,6 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
      * @param string $email
      */
     public function setEmail($email);
-
-    /**
-     * @return string
-     */
-    public function getPassword();
-
-    /**
-     * @param string $password
-     */
-    public function setPassword($password);
-
-    /**
-     * @return string
-     */
-    public function getPasswordResetHash();
-
-    /**
-     * @param string $passwordResetHash
-     */
-    public function setPasswordResetHash($passwordResetHash);
-
-    /**
-     * @return bool
-     */
-    public function getIsGuest();
-
-    /**
-     * @param bool $guest
-     */
-    public function setIsGuest($guest);
 
     /**
      * @return CustomerGroupInterface[]

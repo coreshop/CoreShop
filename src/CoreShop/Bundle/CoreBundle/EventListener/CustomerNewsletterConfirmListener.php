@@ -65,7 +65,7 @@ final class CustomerNewsletterConfirmListener
          */
         $user = $event->getSubject();
 
-        if ($user->getIsGuest() === true) {
+        if (null === $user->getUser()) {
             return;
         }
 

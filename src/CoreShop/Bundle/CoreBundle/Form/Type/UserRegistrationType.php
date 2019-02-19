@@ -10,33 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CustomerBundle\Form\Type;
+namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ResetPasswordType extends AbstractType
+final class UserRegistrationType extends AbstractResourceType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'coreshop.form.customer.password'],
-                'second_options' => ['label' => 'coreshop.form.customer.password_repeat'],
-            ]);
+                'first_options' => ['label' => 'coreshop.form.user.password.label'],
+                'second_options' => ['label' => 'coreshop.form.user.password.confirmation'],
+                'invalid_message' => 'coreshop.user.plainPassword.mismatch',
+            ])
+        ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'coreshop_reset_password';
-    }
 }

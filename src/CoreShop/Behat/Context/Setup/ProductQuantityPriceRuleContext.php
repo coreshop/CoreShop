@@ -107,6 +107,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $rule = $this->productQuantityPriceRuleFactory->createNew();
         $rule->setName($ruleName);
         $rule->setProduct($product->getId());
+        $rule->setCalculationBehaviour('volume');
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();

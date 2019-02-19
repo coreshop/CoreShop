@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\User;
 
+use CoreShop\Component\Core\Model\UserInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 
@@ -30,7 +31,13 @@ class UserTypeChecker extends AbstractConditionChecker
      */
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
-        if ($subject instanceof CustomerInterface) {
+        $customer = $subject;
+
+        if ($subject instanceof UserInterface) {
+            $customer = $subject->getCustomer();
+        }
+
+        if ($customer instanceof CustomerInterface) {
             $paramsToExist = [
                 'type',
             ];

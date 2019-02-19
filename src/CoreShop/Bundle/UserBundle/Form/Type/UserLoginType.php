@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CustomerBundle\Form\Type;
+namespace CoreShop\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -18,7 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class CustomerLoginType extends AbstractType
+class UserLoginType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -43,6 +43,6 @@ class CustomerLoginType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_customer_login';
+        return 'coreshop_user_login';
     }
 }

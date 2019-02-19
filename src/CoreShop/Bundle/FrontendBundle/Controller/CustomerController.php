@@ -13,9 +13,9 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
-use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
+use CoreShop\Bundle\UserBundle\Form\Type\ChangePasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -291,13 +291,13 @@ class CustomerController extends FrontendController
 
             if ($handledForm->isValid()) {
                 $formData = $handledForm->getData();
-                $customer->setPassword($formData['password']);
-                $customer->save();
+                $customer->getUser()->setPassword($formData['password']);
+                $customer->getUser()->save();
 
                 // todo: move this to a resource controller event
                 $event = new ResourceControllerEvent($customer, ['request' => $request]);
                 $this->get('event_dispatcher')->dispatch(
-                    sprintf('%s.%s.%s_post', 'coreshop', 'customer', 'change_password'),
+                    sprintf('%s.%s.%s_post', 'coreshop', 'user', 'change_password'),
                     $event
                 );
 

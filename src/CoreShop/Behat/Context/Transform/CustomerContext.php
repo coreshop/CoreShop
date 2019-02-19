@@ -38,7 +38,7 @@ final class CustomerContext implements Context
      */
     public function getCustomerByEmail($email)
     {
-        $customer = $this->customerRepository->findCustomerByEmail($email);
+        $customer = $this->customerRepository->findOneByEmail($email);
 
         Assert::isInstanceOf($customer, CustomerInterface::class);
 

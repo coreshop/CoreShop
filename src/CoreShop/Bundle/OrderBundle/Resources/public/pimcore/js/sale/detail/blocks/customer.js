@@ -50,15 +50,14 @@ coreshop.order.sale.detail.blocks.customer = Class.create(coreshop.order.sale.de
     updateSale: function () {
         var me = this;
 
-        var guestStr = me.sale.customer.isGuest ? ' –  ' + t('coreshop_is_guest') : '';
+        var guestStr = !me.sale.customer.user ? ' –  ' + t('coreshop_is_guest') : '';
         me.customerInfo.setTitle(t('coreshop_customer') + ': ' + (me.sale.customer ? me.sale.customer.firstname + ' (' + me.sale.customer.o_id + ')' : t('unknown')) + guestStr);
         me.customerInfo.removeAll();
 
         var items = [];
 
         if (me.sale.customer) {
-            if (!me.sale.customer.isGuest) {
-
+            if (me.sale.customer.user) {
                 items.push({
                     xtype: 'panel',
                     bodyPadding: 10,

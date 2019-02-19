@@ -18,48 +18,11 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
 {
     /**
-     * Find customer by reset token.
-     *
-     * @param string $resetToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByResetToken($resetToken);
-
-    /**
-     * Find customer by newsletter token.
-     *
-     * @param string $newsletterToken
-     *
-     * @return CustomerInterface|null
-     */
-    public function findByNewsletterToken($newsletterToken);
-
-    /**
      * Find Customer by email.
      *
      * @param string $email
-     * @param bool   $isGuest
      *
      * @return CustomerInterface|null
      */
-    public function findUniqueByEmail($email, $isGuest);
-
-    /**
-     * Find Guest Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findGuestByEmail($email);
-
-    /**
-     * Find Customer by Email.
-     *
-     * @param string $email
-     *
-     * @return CustomerInterface|null
-     */
-    public function findCustomerByEmail($email);
+    public function findOneByEmail($email);
 }

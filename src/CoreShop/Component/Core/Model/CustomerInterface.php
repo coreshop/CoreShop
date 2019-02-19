@@ -57,4 +57,14 @@ interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterfa
      * @param string $newsletterToken
      */
     public function setNewsletterToken($newsletterToken);
+
+    /**
+     * @return UserInterface|null
+     */
+    public function getUser();
+
+    /**
+     * @param UserInterface $user
+     */
+    public function setUser(UserInterface $user);
 }

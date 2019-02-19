@@ -10,15 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Customer\Context\RequestBased;
+namespace CoreShop\Component\Core\Context;
 
+use CoreShop\Component\Core\Model\UserInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
-use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-final class TokenBasedRequestResolver implements RequestResolverInterface
+final class TokenBasedCustomerContext implements CustomerContextInterface
 {
     /**
      * @var TokenStorageInterface
@@ -36,10 +36,10 @@ final class TokenBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCustomer(Request $request)
+    public function getCustomer()
     {
-        if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {
-            return $this->tokenStorage->getToken()->getUser();
+        if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof UserInterface) {
+            return $this->tokenStorage->getToken()->getUser()->getCustomer();
         }
 
         throw new CustomerNotFoundException();

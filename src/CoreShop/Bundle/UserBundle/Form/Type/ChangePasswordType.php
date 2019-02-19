@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CustomerBundle\Form\Type;
+namespace CoreShop\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -26,7 +26,7 @@ class ChangePasswordType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('current_password', PasswordType::class, [
-            'label' => 'coreshop.form.customer.current_password',
+            'label' => 'coreshop.form.user.current_password',
             'mapped' => false,
             'constraints' => new UserPassword(),
         ]);
@@ -34,9 +34,9 @@ class ChangePasswordType extends AbstractType
         $builder
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'invalid_message' => 'coreshop.form.customer.password.must_match',
-                'first_options' => ['label' => 'coreshop.form.customer.new_password'],
-                'second_options' => ['label' => 'coreshop.form.customer.new_password_repeat'],
+                'invalid_message' => 'coreshop.form.user.password.must_match',
+                'first_options' => ['label' => 'coreshop.form.user.new_password'],
+                'second_options' => ['label' => 'coreshop.form.user.new_password_repeat'],
             ]);
     }
 
