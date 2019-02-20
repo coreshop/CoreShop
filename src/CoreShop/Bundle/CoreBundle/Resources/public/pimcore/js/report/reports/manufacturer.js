@@ -25,6 +25,10 @@ coreshop.report.reports.manufacturer = Class.create(coreshop.report.abstractStor
 
     getStoreFields: function () {
         return [
+            {name: 'name', type: 'string'},
+            {name: 'manufacturerName', type: 'string'},
+            {name: 'orderCount', type: 'integer'},
+            {name: 'quantityCount', type: 'integer'},
             {name: 'sales', type: 'number'},
             {name: 'profit', type: 'number'}
         ];
@@ -44,8 +48,11 @@ coreshop.report.reports.manufacturer = Class.create(coreshop.report.abstractStor
                 columns: [
                     {
                         text: t('name'),
-                        dataIndex: 'name',
-                        flex: 3
+                        dataIndex: 'manufacturerName',
+                        flex: 3,
+                        renderer: function (value, metadata, record) {
+                            return record.get('name');
+                        }
                     },
                     {
                         text: t('coreshop_report_products_order_count'),
