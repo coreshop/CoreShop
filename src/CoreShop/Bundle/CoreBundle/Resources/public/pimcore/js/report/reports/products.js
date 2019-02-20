@@ -39,9 +39,12 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
 
     getStoreFields: function () {
         return [
+            {name: 'name', type: 'string'},
+            {name: 'productName', type: 'string'},
+            {name: 'orderCount', type: 'integer'},
+            {name: 'quantityCount', type: 'integer'},
             {name: 'sales', type: 'number'},
             {name: 'salesPrice', type: 'number'},
-            {name: 'count', type: 'integer'},
             {name: 'profit', type: 'number'}
         ];
     },
@@ -84,14 +87,14 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
             queryMode: 'local',
             listeners: {
                 change: function (combo, value) {
-                    this.panel.down('[name=dings]').setHidden(value !== 'container');
+                    this.panel.down('[name=objectTypeDescription]').setHidden(value !== 'container');
                 }.bind(this)
             }
         });
 
         fields.push({
             xtype: 'label',
-            name: 'dings',
+            name: 'objectTypeDescription',
             style: '',
             hidden: true,
             height: 40,
@@ -111,8 +114,11 @@ coreshop.report.reports.products = Class.create(coreshop.report.abstractStore, {
                 columns: [
                     {
                         text: t('name'),
-                        dataIndex: 'name',
-                        flex: 3
+                        dataIndex: 'productName',
+                        flex: 3,
+                        renderer: function (value, metadata, record) {
+                            return record.get('name');
+                        }
                     },
                     {
                         text: t('coreshop_report_products_order_count'),

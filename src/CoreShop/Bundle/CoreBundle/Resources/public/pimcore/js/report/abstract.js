@@ -70,6 +70,8 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
 
     getPanel: function () {
 
+        var grid;
+
         if (!this.panel) {
 
             var bbar = null;
