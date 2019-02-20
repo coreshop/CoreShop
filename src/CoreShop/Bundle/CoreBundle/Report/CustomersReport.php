@@ -95,7 +95,7 @@ class CustomersReport implements ReportInterface
         $query = "
             SELECT SQL_CALC_FOUND_ROWS
               customer.oo_id,
-              customer.email as `name`,
+              customer.email as `emailAddress`,
               SUM(orders.totalNet) as sales, 
               COUNT(customer.oo_id) as `orderCount`
             FROM object_query_$orderClassId AS orders
@@ -109,7 +109,7 @@ class CustomersReport implements ReportInterface
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format(
+            $result['salesFormatted'] = $this->moneyFormatter->format(
                 $result['sales'],
                 'EUR',
                 $this->localeContext->getLocaleCode()

@@ -153,13 +153,14 @@ class ManufacturerReport implements ReportInterface
         foreach ($results as $result) {
             $name = !empty($result['manufacturerName']) ? $result['manufacturerName'] : $result['manufacturerKey'];
             $data[] = [
-                'name'            => sprintf('%s (Id: %d)', $name, $result['manufacturerId']),
-                'sales'           => $result['sales'],
-                'profit'          => $result['profit'],
-                'quantityCount'   => $result['quantityCount'],
-                'orderCount'      => $result['orderCount'],
-                'salesFormatted'  => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
+                'name'             => sprintf('%s (Id: %d)', $name, $result['manufacturerId']),
+                'manufacturerName' => $name,
+                'sales'            => $result['sales'],
+                'profit'           => $result['profit'],
+                'quantityCount'    => $result['quantityCount'],
+                'orderCount'       => $result['orderCount'],
+                'salesFormatted'   => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted'  => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
             ];
         }
 
