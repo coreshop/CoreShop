@@ -29,7 +29,7 @@ class CustomerType extends AbstractResourceType
     protected $guestValidationGroups = [];
 
     /**
-     * @param string   $dataClass FQCN
+     * @param string   $dataClass             FQCN
      * @param string[] $validationGroups
      * @param string[] $guestValidationGroups
      */

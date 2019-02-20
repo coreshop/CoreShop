@@ -12,15 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
-use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
-use CoreShop\Component\Locale\Context\LocaleContextInterface;
-use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
-use Pimcore\File;
-use Pimcore\Model\DataObject\Service;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
@@ -42,7 +35,7 @@ final class RegistrationService implements RegistrationServiceInterface
      */
     public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false)
     {
-        trigger_error(sprintf('Class %s has been deprecated with 2.1.0 in favor of %s and will be removed with 2.2.0', RegistrationService::class, CustomerManagerInterface::class), E_USER_DEPRECATED);
+        trigger_error(sprintf('Class %s has been deprecated with 2.1.0 in favor of %s and will be removed with 2.2.0', self::class, CustomerManagerInterface::class), E_USER_DEPRECATED);
 
         $customer->setAddresses([$address]);
 

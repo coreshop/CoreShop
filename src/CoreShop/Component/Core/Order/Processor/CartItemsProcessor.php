@@ -41,9 +41,9 @@ final class CartItemsProcessor implements CartProcessorInterface
     private $cartItemProcessor;
 
     /**
-     * @param PurchasableCalculatorInterface $productPriceCalculator
+     * @param PurchasableCalculatorInterface     $productPriceCalculator
      * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
-     * @param CartItemProcessorInterface     $cartItemProcessor
+     * @param CartItemProcessorInterface         $cartItemProcessor
      */
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
@@ -99,9 +99,7 @@ final class CartItemsProcessor implements CartProcessorInterface
             try {
                 $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($item->getProduct(), $item->getQuantity(), $itemPrice, $context);
             } catch (NoRuleFoundException $exception) {
-
             } catch (NoPriceFoundException $exception) {
-
             }
 
             $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);

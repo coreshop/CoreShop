@@ -32,7 +32,7 @@ class ObjectUserProvider implements UserProviderInterface
 
     /**
      * @param UserRepositoryInterface $userRepository
-     * @param string                      $className
+     * @param string                  $className
      */
     public function __construct(UserRepositoryInterface $userRepository, $className)
     {

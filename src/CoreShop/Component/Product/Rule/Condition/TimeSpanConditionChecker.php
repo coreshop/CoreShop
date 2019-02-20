@@ -13,11 +13,9 @@
 namespace CoreShop\Component\Product\Rule\Condition;
 
 use Carbon\Carbon;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
-use Webmozart\Assert\Assert;
 
 class TimeSpanConditionChecker implements ConditionCheckerInterface
 {

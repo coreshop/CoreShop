@@ -67,13 +67,13 @@ class Version20190218163851 extends AbstractPimcoreMigration implements Containe
         }
 
         $classUpdater->replaceFieldProperties('password', [
-            'noteditable' => true
+            'noteditable' => true,
         ]);
         $classUpdater->replaceFieldProperties('passwordResetHash', [
-            'noteditable' => true
+            'noteditable' => true,
         ]);
         $classUpdater->replaceFieldProperties('isGuest', [
-            'noteditable' => true
+            'noteditable' => true,
         ]);
 
         $classUpdater->save();
@@ -110,6 +110,5 @@ class Version20190218163851 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

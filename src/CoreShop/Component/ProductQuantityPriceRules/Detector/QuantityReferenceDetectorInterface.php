@@ -25,6 +25,7 @@ interface QuantityReferenceDetectorInterface
      * @param array                            $context
      *
      * @throws NoRuleFoundException
+     *
      * @return ProductQuantityPriceRuleInterface
      */
     public function detectRule(QuantityRangePriceAwareInterface $subject, array $context);
@@ -36,6 +37,7 @@ interface QuantityReferenceDetectorInterface
      * @param array                            $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context);
@@ -47,6 +49,7 @@ interface QuantityReferenceDetectorInterface
      * @param array                            $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);

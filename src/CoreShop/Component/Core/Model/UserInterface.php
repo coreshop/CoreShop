@@ -19,6 +19,4 @@ interface UserInterface extends BaseUserInterface, CustomerAwareInterface
 {
     const CORESHOP_ROLE_DEFAULT = 'ROLE_USER';
     const CORESHOP_ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
-
-
 }

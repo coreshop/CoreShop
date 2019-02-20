@@ -43,9 +43,9 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     private $localeContext;
 
     /**
-     * @param FormFactoryInterface $formFactory
+     * @param FormFactoryInterface     $formFactory
      * @param CustomerManagerInterface $customerManager
-     * @param LocaleContextInterface $localeContext
+     * @param LocaleContextInterface   $localeContext
      */
     public function __construct(
         FormFactoryInterface $formFactory,

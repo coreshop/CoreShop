@@ -19,6 +19,7 @@ interface CustomerRepositoryInterface extends BaseCustomerRepositoryInterface
 {
     /**
      * @param string $email
+     *
      * @return CustomerInterface|null
      */
     public function findOneByEmailWithoutUser(string $email);

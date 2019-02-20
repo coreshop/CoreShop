@@ -30,8 +30,6 @@ final class UserRegistrationType extends AbstractResourceType
                 'first_options' => ['label' => 'coreshop.form.user.password.label'],
                 'second_options' => ['label' => 'coreshop.form.user.password.confirmation'],
                 'invalid_message' => 'coreshop.user.plainPassword.mismatch',
-            ])
-        ;
+            ]);
     }
-
 }

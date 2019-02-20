@@ -20,6 +20,7 @@ class User extends AbstractPimcoreModel implements UserInterface
 {
     /**
      * The salt to use for hashing.
+     *
      * @var string
      */
     protected $salt;
@@ -31,6 +32,7 @@ class User extends AbstractPimcoreModel implements UserInterface
 
     /**
      * Plain password. Used for model validation. Must not be persisted.
+     *
      * @var string
      */
     protected $plainPassword;
@@ -112,13 +114,13 @@ class User extends AbstractPimcoreModel implements UserInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getSalt()
     {
         // user has no salt as we use password_hash
         // which handles the salt by itself
-        return NULL;
+        return null;
     }
 
     /**

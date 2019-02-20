@@ -18,6 +18,7 @@ interface CustomerManagerInterface
 {
     /**
      * @param CustomerInterface $customer
+     *
      * @return CustomerInterface
      */
     public function persistCustomer(CustomerInterface $customer);

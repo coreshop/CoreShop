@@ -16,7 +16,6 @@ use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\UserBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\UserBundle\Form\Type\RequestResetPasswordType;
 use CoreShop\Bundle\UserBundle\Form\Type\ResetPasswordType;
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\UserInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;

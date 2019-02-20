@@ -29,7 +29,7 @@ final class RequestPasswordChangeEvent extends Event
 
     /**
      * @param UserInterface $user
-     * @param string            $resetLink
+     * @param string        $resetLink
      */
     public function __construct(UserInterface $user, $resetLink)
     {

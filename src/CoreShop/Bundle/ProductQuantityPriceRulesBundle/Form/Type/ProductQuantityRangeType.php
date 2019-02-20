@@ -77,7 +77,7 @@ final class ProductQuantityRangeType extends AbstractResourceType
         }
 
         $resolver->setDefaults([
-            'constraints'       => $constraints,
+            'constraints' => $constraints,
             'validation_groups' => function (FormInterface $form) {
                 $validationGroups = ['coreshop_product_quantity_price_rules_range_validation_default'];
                 /** @var QuantityRangeInterface $data */

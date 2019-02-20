@@ -76,7 +76,7 @@ interface QuantityRangeInterface extends ResourceInterface
      */
     public function getRule();
 
-     /**
+    /**
      * @param ProductQuantityPriceRuleInterface $rule
      */
     public function setRule($rule);

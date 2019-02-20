@@ -174,12 +174,12 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
 
         $data = [
             'conditions' => array_keys($this->getConfigConditions()),
-            'actions'    => array_keys($this->getConfigActions()),
-            'rules'      => [],
-            'stores'     => [
+            'actions' => array_keys($this->getConfigActions()),
+            'rules' => [],
+            'stores' => [
                 'calculationBehaviourTypes' => $calculationBehaviourTypes,
-                'pricingBehaviourTypes'     => $pricingBehaviourTypes,
-            ]
+                'pricingBehaviourTypes' => $pricingBehaviourTypes,
+            ],
         ];
 
         if ($object instanceof ProductInterface) {
@@ -347,12 +347,12 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
                     $array[$key] = $this->arrayCastRecursive($value);
                 }
                 if ($value instanceof \stdClass) {
-                    $array[$key] = $this->arrayCastRecursive((array)$value);
+                    $array[$key] = $this->arrayCastRecursive((array) $value);
                 }
             }
         }
         if ($array instanceof \stdClass) {
-            return $this->arrayCastRecursive((array)$array);
+            return $this->arrayCastRecursive((array) $array);
         }
 
         return $array;
@@ -377,7 +377,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
         $keepIds = [];
         foreach ($currentRanges as $currentRange) {
             if (isset($currentRange['id']) && $currentRange['id'] !== null) {
-                $keepIds[] = (int)$currentRange['id'];
+                $keepIds[] = (int) $currentRange['id'];
             }
         }
 

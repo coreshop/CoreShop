@@ -37,6 +37,7 @@ class QuantityRuleFetcher
      * @param array                            $context
      *
      * @throws NoRuleFoundException
+     *
      * @return ProductQuantityPriceRuleInterface
      */
     public function fetch(QuantityRangePriceAwareInterface $subject, array $context)

@@ -54,12 +54,12 @@ class CustomerManager implements CustomerManagerInterface
     private $addressFolder;
 
     /**
-     * @param ObjectServiceInterface $objectService
+     * @param ObjectServiceInterface   $objectService
      * @param EventDispatcherInterface $eventDispatcher
-     * @param string $customerFolder
-     * @param string $guestFolder
-     * @param string $userFolder
-     * @param string $addressFolder
+     * @param string                   $customerFolder
+     * @param string                   $guestFolder
+     * @param string                   $userFolder
+     * @param string                   $addressFolder
      */
     public function __construct(
         ObjectServiceInterface $objectService,
@@ -76,7 +76,6 @@ class CustomerManager implements CustomerManagerInterface
         $this->userFolder = $userFolder;
         $this->addressFolder = $addressFolder;
     }
-
 
     /**
      * {@inheritdoc}
