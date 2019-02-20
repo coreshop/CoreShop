@@ -84,12 +84,16 @@ class CustomersReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
+        $page = $parameterBag->get('page', 1);
+        $limit = $parameterBag->get('limit', 25);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+
         $orderClassId = $this->orderRepository->getClassId();
         $customerClassId = $this->customerRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
         $query = "
-            SELECT 
+            SELECT SQL_CALC_FOUND_ROWS
               customer.oo_id,
               customer.email as `name`,
               SUM(orders.totalNet) as sales, 
@@ -99,18 +103,20 @@ class CustomersReport implements ReportInterface
             WHERE  orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND customer.oo_id IS NOT NULL
             GROUP BY customer.oo_id
             ORDER BY COUNT(customer.oo_id) DESC
-        ";
+            LIMIT $offset,$limit";
 
-        $customerSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
-        foreach ($customerSales as &$sale) {
+        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+
+        foreach ($results as &$result) {
             $sale['salesFormatted'] = $this->moneyFormatter->format(
-                $sale['sales'],
+                $result['sales'],
                 'EUR',
                 $this->localeContext->getLocaleCode()
             );
         }
 
-        return array_values($customerSales);
+        return array_values($results);
     }
 
     /**

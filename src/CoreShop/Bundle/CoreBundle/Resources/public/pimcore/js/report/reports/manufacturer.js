@@ -30,6 +30,10 @@ coreshop.report.reports.manufacturer = Class.create(coreshop.report.abstractStor
         ];
     },
 
+    showPaginator: function () {
+        return true;
+    },
+
     getGrid: function () {
         return new Ext.Panel({
             layout: 'fit',

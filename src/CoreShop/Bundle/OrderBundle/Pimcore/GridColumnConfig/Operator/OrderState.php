@@ -89,7 +89,7 @@ class OrderState extends AbstractOperator
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
 
         $rgb = $this->hex2rgb($state['color']);
-        $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
+        $opacity = $workflow === 'coreshop_order' ? '1' : '0.3';
 
         if ($this->highlightLabel === true) {
             $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';
