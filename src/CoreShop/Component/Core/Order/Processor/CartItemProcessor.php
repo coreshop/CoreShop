@@ -12,11 +12,13 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartItemProcessorInterface
 {
@@ -47,6 +49,8 @@ final class CartItemProcessor implements CartItemProcessorInterface
      */
     public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
+        Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\CartItemInterface::class);
+
         $product = $cartItem->getProduct();
         $cart = $context['cart'];
         $store = $context['store'];
@@ -109,6 +113,13 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
             $cartItem->setItemDiscount($itemDiscount, false);
             $cartItem->setItemDiscount($itemDiscount, true);
+        }
+
+        if ($product instanceof ProductInterface) {
+            /**
+             * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+             */
+            $cartItem->setDigitalProduct($product->getDigitalProduct());
         }
     }
 }
