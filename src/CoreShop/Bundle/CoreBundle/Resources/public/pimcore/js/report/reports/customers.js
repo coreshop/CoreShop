@@ -29,6 +29,10 @@ coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
         ];
     },
 
+    showPaginator: function () {
+        return true;
+    },
+
     getGrid: function () {
         return new Ext.Panel({
             layout: 'fit',

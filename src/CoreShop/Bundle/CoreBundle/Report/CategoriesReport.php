@@ -61,6 +61,11 @@ class CategoriesReport implements ReportInterface
     /**
      * @var PimcoreRepositoryInterface
      */
+    private $categoryRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
     private $orderItemRepository;
 
     /**
@@ -68,7 +73,8 @@ class CategoriesReport implements ReportInterface
      * @param Connection                 $db
      * @param MoneyFormatterInterface    $moneyFormatter
      * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $orderRepository,
+     * @param PimcoreRepositoryInterface $orderRepository    ,
+     * @param PimcoreRepositoryInterface $categoryRepository ,
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
     public function __construct(
@@ -77,6 +83,7 @@ class CategoriesReport implements ReportInterface
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
         PimcoreRepositoryInterface $orderRepository,
+        PimcoreRepositoryInterface $categoryRepository,
         PimcoreRepositoryInterface $orderItemRepository
     ) {
         $this->storeRepository = $storeRepository;
@@ -84,6 +91,7 @@ class CategoriesReport implements ReportInterface
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
         $this->orderRepository = $orderRepository;
+        $this->categoryRepository = $categoryRepository;
         $this->orderItemRepository = $orderItemRepository;
     }
 
@@ -95,12 +103,19 @@ class CategoriesReport implements ReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $storeId = $parameterBag->get('store', null);
+        $orderCompleteState = OrderStates::STATE_COMPLETE;
+
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
+        $page = $parameterBag->get('page', 1);
+        $limit = $parameterBag->get('limit', 25);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+
         $orderClassId = $this->orderRepository->getClassId();
+        $categoryClassId = $this->categoryRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
-        $orderCompleteState = OrderStates::STATE_COMPLETE;
+        $locale = $this->localeService->getLocaleCode();
 
         if (is_null($storeId)) {
             return [];
@@ -112,59 +127,45 @@ class CategoriesReport implements ReportInterface
         }
 
         $query = "
-            SELECT 
-              orderItems.product__id,
-              SUM(orderItems.totalGross) AS sales, 
+            SELECT SQL_CALC_FOUND_ROWS
+              `categories`.oo_id as categoryId,
+              `categories`.o_key as categoryKey,
+              `localizedCategories`.name as categoryName,
+              `orders`.store,
+              SUM(orderItems.totalGross) AS sales,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
-            FROM object_query_$orderClassId AS orders
-            INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
-            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
+            FROM object_$categoryClassId AS categories
+            INNER JOIN object_localized_query_" . $categoryClassId . "_" . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
+            INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.targetId = categories.oo_id AND catProductDependencies.targettype = \"object\" 
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceid
+            INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
+            INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
             WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
-            GROUP BY orderItems.product__id
-            ORDER BY COUNT(orderItems.product__id) DESC
-        ";
+            GROUP BY categories.oo_id
+            ORDER BY quantityCount DESC
+            LIMIT $offset,$limit";
 
-        $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $catSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
-            $catSales = [];
-            foreach ($productSales as $productSale) {
-                $product = DataObject::getById($productSale['product__id']);
-                if ($product instanceof ProductInterface) {
-                    $categories = $product->getCategories();
-                    if (!empty($categories)) {
-                        foreach ($categories as $category) {
-                            $catId = $category->getId();
-                            if (!isset($catSales[$catId])) {
-                                $name = !empty($category->getName()) ? $category->getName() : $category->getKey();
-                                $catSales[$catId] = $productSale;
-                                $catSales[$catId]['name'] = sprintf('%s (Id: %d)', $name, $category->getId());
-                            } else {
-                                $catSales[$catId]['sales'] += $productSale['sales'];
-                                $catSales[$catId]['profit'] += $productSale['profit'];
-                                $catSales[$catId]['quantityCount'] += $productSale['quantityCount'];
-                                $catSales[$catId]['orderCount'] += $productSale['orderCount'];
-                            }
-                        }
-                    }
-                }
-            }
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
-            return $catSales;
-        });
-
-        usort($catSales, function ($a, $b) {
-            return $b['orderCount'] <=> $a['orderCount'];
-        });
-
-        foreach ($catSales as &$sale) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
+        $data = [];
+        foreach ($results as $result) {
+            $name = !empty($result['categoryName']) ? $result['categoryName'] : $result['categoryKey'];
+            $data[] = [
+                'name'            => sprintf('%s (Id: %d)', $name, $result['categoryId']),
+                'sales'           => $result['sales'],
+                'profit'          => $result['profit'],
+                'quantityCount'   => $result['quantityCount'],
+                'orderCount'      => $result['orderCount'],
+                'salesFormatted'  => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
+            ];
         }
 
-        return array_values($catSales);
+        return array_values($data);
     }
 
     /**
