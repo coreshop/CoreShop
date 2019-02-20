@@ -35,6 +35,7 @@ services:
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
             - '@coreshop.repository.order'
+            - '@coreshop.repository.category'
             - '@coreshop.repository.order_item'
         tags:
             - { name: coreshop.report, type: categories }
@@ -79,6 +80,7 @@ services:
             - '@doctrine.dbal.default_connection'
             - '@coreshop.money_formatter'
             - '@coreshop.context.locale'
+            - '@coreshop.repository.manufacturer'
             - '@coreshop.repository.order'
             - '@coreshop.repository.order_item'
         tags:

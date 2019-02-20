@@ -62,6 +62,11 @@ class ManufacturerReport implements ReportInterface
     /**
      * @var PimcoreRepositoryInterface
      */
+    private $manufacturerRepository;
+
+    /**
+     * @var PimcoreRepositoryInterface
+     */
     private $orderItemRepository;
 
     /**
@@ -69,6 +74,7 @@ class ManufacturerReport implements ReportInterface
      * @param Connection                 $db
      * @param MoneyFormatterInterface    $moneyFormatter
      * @param LocaleContextInterface     $localeService
+     * @param PimcoreRepositoryInterface $manufacturerRepository
      * @param PimcoreRepositoryInterface $orderRepository
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
@@ -77,6 +83,7 @@ class ManufacturerReport implements ReportInterface
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
         LocaleContextInterface $localeService,
+        PimcoreRepositoryInterface $manufacturerRepository,
         PimcoreRepositoryInterface $orderRepository,
         PimcoreRepositoryInterface $orderItemRepository
     ) {
@@ -84,6 +91,7 @@ class ManufacturerReport implements ReportInterface
         $this->db = $db;
         $this->moneyFormatter = $moneyFormatter;
         $this->localeService = $localeService;
+        $this->manufacturerRepository = $manufacturerRepository;
         $this->orderRepository = $orderRepository;
         $this->orderItemRepository = $orderItemRepository;
     }
@@ -99,7 +107,12 @@ class ManufacturerReport implements ReportInterface
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
 
+        $page = $parameterBag->get('page', 1);
+        $limit = $parameterBag->get('limit', 25);
+        $offset = $parameterBag->get('offset', $page === 1 ? 0 : ($page - 1) * $limit);
+
         $orderClassId = $this->orderRepository->getClassId();
+        $manufacturerClassId = $this->manufacturerRepository->getClassId();
         $orderItemClassId = $this->orderItemRepository->getClassId();
         $orderCompleteState = OrderStates::STATE_COMPLETE;
 
@@ -113,61 +126,45 @@ class ManufacturerReport implements ReportInterface
         }
 
         $query = "
-            SELECT 
-              orderItems.product__id,
-              SUM(orderItems.totalGross) AS sales, 
+            SELECT SQL_CALC_FOUND_ROWS
+              `manufacturers`.oo_id as manufacturerId,
+              `manufacturers`.name as manufacturerName,
+              `manufacturers`.o_key as manufacturerKey,
+              `orders`.store,
+              SUM(orderItems.totalGross) AS sales,
               SUM((orderItems.itemRetailPriceNet - orderItems.itemWholesalePrice) * orderItems.quantity) AS profit,
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
-            FROM object_query_$orderClassId AS orders
-            INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.src_id = orders.oo_id AND orderRelations.fieldname = \"items\"
-            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderRelations.dest_id = orderItems.oo_id
+            FROM object_$manufacturerClassId AS manufacturers
+            INNER JOIN dependencies AS manProductDependencies ON manProductDependencies.targetId = manufacturers.oo_id AND manProductDependencies.targettype = \"object\" 
+            INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = manProductDependencies.sourceid
+            INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
+            INNER JOIN object_query_$orderClassId AS `orders` ON `orders`.oo_id = orderRelations.src_id
             WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? AND orderItems.product__id IS NOT NULL
-            GROUP BY orderItems.product__id
-            ORDER BY COUNT(orderItems.product__id) DESC
-        ";
+            GROUP BY manufacturers.oo_id
+            ORDER BY quantityCount DESC
+            LIMIT $offset,$limit";
 
-        $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
-        $manufacturerSales = InheritanceHelper::useInheritedValues(function () use ($productSales) {
-            $manufacturerSales = [];
-            foreach ($productSales as $productSale) {
-                $product = DataObject::getById($productSale['product__id']);
-                if (!$product instanceof ProductInterface) {
-                    continue;
-                }
+        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
-                $manufacturer = $product->getManufacturer();
-                if (!$manufacturer instanceof ManufacturerInterface) {
-                    continue;
-                }
-
-                $manufacturerId = $manufacturer->getId();
-                if (!isset($manufacturerSales[$manufacturerId])) {
-                    $name = !empty($manufacturer->getName()) ? $manufacturer->getName() : $manufacturer->getKey();
-                    $manufacturerSales[$manufacturerId] = $productSale;
-                    $manufacturerSales[$manufacturerId]['name'] = sprintf('%s (Id: %d)', $name, $manufacturer->getId());
-                } else {
-                    $manufacturerSales[$manufacturerId]['sales'] += $productSale['sales'];
-                    $manufacturerSales[$manufacturerId]['profit'] += $productSale['profit'];
-                    $manufacturerSales[$manufacturerId]['quantityCount'] += $productSale['quantityCount'];
-                    $manufacturerSales[$manufacturerId]['orderCount'] += $productSale['orderCount'];
-                }
-            }
-
-            return $manufacturerSales;
-        });
-
-        usort($manufacturerSales, function ($a, $b) {
-            return $b['orderCount'] <=> $a['orderCount'];
-        });
-
-        foreach ($manufacturerSales as &$sale) {
-            $sale['salesFormatted'] = $this->moneyFormatter->format($sale['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
-            $sale['profitFormatted'] = $this->moneyFormatter->format($sale['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode());
+        $data = [];
+        foreach ($results as $result) {
+            $name = !empty($result['manufacturerName']) ? $result['manufacturerName'] : $result['manufacturerKey'];
+            $data[] = [
+                'name'            => sprintf('%s (Id: %d)', $name, $result['manufacturerId']),
+                'sales'           => $result['sales'],
+                'profit'          => $result['profit'],
+                'quantityCount'   => $result['quantityCount'],
+                'orderCount'      => $result['orderCount'],
+                'salesFormatted'  => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
+            ];
         }
 
-        return array_values($manufacturerSales);
+        return array_values($data);
+
     }
 
     /**
