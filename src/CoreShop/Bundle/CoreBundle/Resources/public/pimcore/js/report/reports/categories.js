@@ -30,6 +30,10 @@ coreshop.report.reports.categories = Class.create(coreshop.report.abstractStore,
         ];
     },
 
+    showPaginator: function () {
+        return true;
+    },
+
     getGrid: function () {
         return new Ext.Panel({
             layout: 'fit',
