@@ -156,6 +156,7 @@ class CategoriesReport implements ReportInterface
             $name = !empty($result['categoryName']) ? $result['categoryName'] : $result['categoryKey'];
             $data[] = [
                 'name'            => sprintf('%s (Id: %d)', $name, $result['categoryId']),
+                'categoryName'    => $name,
                 'sales'           => $result['sales'],
                 'profit'          => $result['profit'],
                 'quantityCount'   => $result['quantityCount'],
