@@ -9,18 +9,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  *
  */
-//pimcore.helpers.openElement = function (id, type, subtype) {
-
-pimcore.registerNS('coreshop.helpers.x');
-pimcore.registerNS('coreshop.util.format.currency');
-
-coreshop.helpers.long2ip = function (ip) {
-    if (!isFinite(ip)) {
-        return false
-    }
-
-    return [ip >>> 24, ip >>> 16 & 0xFF, ip >>> 8 & 0xFF, ip & 0xFF].join('.')
-};
 
 coreshop.helpers.createOrder = function () {
     pimcore.helpers.itemselector(
@@ -38,10 +26,6 @@ coreshop.helpers.createOrder = function () {
             }
         }
     );
-};
-
-coreshop.helpers.openProductByArticleNumber = function (articleNumber) {
-
 };
 
 coreshop.util.format.currency = function (currency, v) {
@@ -84,72 +68,4 @@ coreshop.helpers.showAbout = function () {
     });
 
     win.show();
-};
-
-coreshop.helpers.constrastColor = function (color) {
-    return (parseInt(color.replace('#', ''), 16) > 0xffffff / 2) ? 'black' : 'white';
-};
-
-coreshop.helpers.hexToRgb = function (hex) {
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16)
-    ] : null;
-};
-
-coreshop.helpers.openMessagingThread = function (id) {
-    var panelKey = 'coreshop_messaging_thread_' + id;
-
-    if (pimcore.globalmanager.exists(panelKey) == false) {
-
-        pimcore.globalmanager.add(panelKey, true);
-
-        Ext.Ajax.request({
-            url: '/admin/coreshop/messaging-thread/get',
-            params: {
-                id: id
-            },
-            success: function (response) {
-                var res = Ext.decode(response.responseText);
-
-                if (res.success) {
-                    pimcore.globalmanager.add(panelKey, new pimcore.plugin.coreshop.messaging.thread.item(null, res.data, panelKey, panelKey, 'thread'));
-                } else {
-                    Ext.Msg.alert(t('open_target'), t('problem_opening_new_target'));
-                }
-            }.bind(this)
-        });
-    } else {
-        var tab = pimcore.globalmanager.get('coreshop_messaging_thread_' + id);
-
-        if (Ext.isObject(tab) && Ext.isFunction(tab.activate)) {
-            tab.activate();
-        }
-    }
-};
-
-coreshop.helpers.requestNicePathData = function (targets, responseHandler) {
-    var elementData = Ext.encode(targets);
-
-    Ext.Ajax.request({
-        method: 'POST',
-        url: "/admin/coreshop/helper/get-nice-path",
-        params: {
-            targets: elementData
-        },
-        success: function (response) {
-            try {
-                var rdata = Ext.decode(response.responseText);
-                if (rdata.success) {
-
-                    var responseData = rdata.data;
-                    responseHandler(responseData);
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        }.bind(this)
-    });
 };
