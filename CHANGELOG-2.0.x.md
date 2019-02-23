@@ -1,20 +1,20 @@
 # Within V2
 
 ## 2.0.4
- - Features
-  - [Reports] Reports Grid Sorting (https://github.com/coreshop/CoreShop/pull/828)
-  - [Reports] Add Paginator To All Reports (https://github.com/coreshop/CoreShop/pull/826)
-  - [Pimcore] introduce twig placeholder (https://github.com/coreshop/CoreShop/pull/827)
-  - [Resource] add serialization for pimcore types (https://github.com/coreshop/CoreShop/pull/818)
-  - [Resource] add more doctrine-pimcore-types (https://github.com/coreshop/CoreShop/pull/816)
+ - Features:
+   - [Reports] Reports Grid Sorting (https://github.com/coreshop/CoreShop/pull/828)
+   - [Reports] Add Paginator To All Reports (https://github.com/coreshop/CoreShop/pull/826)
+   - [Pimcore] introduce twig placeholder (https://github.com/coreshop/CoreShop/pull/827)
+   - [Resource] add serialization for pimcore types (https://github.com/coreshop/CoreShop/pull/818)
+   - [Resource] add more doctrine-pimcore-types (https://github.com/coreshop/CoreShop/pull/816)
 
  - Bugs:
-  - [Order] fix code-generator length (https://github.com/coreshop/CoreShop/pull/833)
-  - [JS] Split JS Helpers into several regions of usability (https://github.com/coreshop/CoreShop/pull/829/files)
-  - [Core] fix for cart-item digital product never set (https://github.com/coreshop/CoreShop/pull/821)
-  - [Docs] Fix dead link (https://github.com/coreshop/CoreShop/pull/822)
-  - [Resource] move settings icon to resource-bundle (https://github.com/coreshop/CoreShop/pull/815)
-  - [Tracker] Update CompositeTracker::trackCheckoutStep (https://github.com/coreshop/CoreShop/pull/810)
+   - [Order] fix code-generator length (https://github.com/coreshop/CoreShop/pull/833)
+   - [JS] Split JS Helpers into several regions of usability (https://github.com/coreshop/CoreShop/pull/829)
+   - [Core] fix for cart-item digital product never set (https://github.com/coreshop/CoreShop/pull/821)
+   - [Docs] Fix dead link (https://github.com/coreshop/CoreShop/pull/822)
+   - [Resource] move settings icon to resource-bundle (https://github.com/coreshop/CoreShop/pull/815)
+   - [Tracker] Update CompositeTracker::trackCheckoutStep (https://github.com/coreshop/CoreShop/pull/810)
 
 ## 2.0.3
  - Features:
