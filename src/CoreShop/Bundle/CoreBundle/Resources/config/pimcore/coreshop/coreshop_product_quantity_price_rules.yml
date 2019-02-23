@@ -5,7 +5,7 @@ core_shop_product_quantity_price_rules:
                 model: CoreShop\Component\Core\Model\QuantityRange
     action_constraints:
         -
-            class: 'CoreShop\Bundle\CoreBundle\Validation\Constraints\QuantityRangePriceCurrencyAware'
+            class: 'CoreShop\Bundle\CoreBundle\Validator\Constraints\QuantityRangePriceCurrencyAware'
             groups:
                 - 'coreshop_product_quantity_price_rules_range_validation_behaviour_fixed'
                 - 'coreshop_product_quantity_price_rules_range_validation_behaviour_amount_decrease'
