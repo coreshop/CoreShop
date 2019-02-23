@@ -110,14 +110,7 @@
                         <i class="fa fa-heart"></i>
                     </a>
                     {% if coreshop_inventory_is_available(product) %}
-                        <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
-                            <div class="input-group">
-                                <input name="quantity" type="number" value="1" class="form-control">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-cart" rel="nofollow">{{ 'coreshop.ui.add_to_cart'|trans }} <i class="fa fa-shopping-cart"></i></button>
-                                </div>
-                            </div>
-                        </form>
+                        {{ render(url('coreshop_cart_add', {'product': product.id})) }}
                     {% endif %}
                 </div>
             </div>
