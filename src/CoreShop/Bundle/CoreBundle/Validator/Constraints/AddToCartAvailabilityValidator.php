@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
-use CoreShop\Bundle\OrderBundle\Controller\AddToCartInterface;
+use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
