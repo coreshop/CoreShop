@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
@@ -35,14 +36,22 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
      */
     public function getRetailPrice(ProductInterface $subject, array $context)
     {
-        $price = false;
+        $price = null;
 
+        /**
+         * @var ProductRetailPriceCalculatorInterface $calculator
+         */
         foreach ($this->retailPriceCalculator->all() as $calculator) {
-            $actionPrice = $calculator->getRetailPrice($subject, $context);
-
-            if (false !== $actionPrice && null !== $actionPrice) {
+            try {
+                $actionPrice = $calculator->getRetailPrice($subject, $context);
                 $price = $actionPrice;
+            } catch (NoRetailPriceFoundException $exception) {
+
             }
+        }
+
+        if (null === $price) {
+            throw new NoRetailPriceFoundException(__CLASS__);
         }
 
         return $price;

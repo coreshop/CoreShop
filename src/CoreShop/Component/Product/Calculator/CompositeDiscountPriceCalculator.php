@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Product\Calculator;
 
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
@@ -35,14 +36,23 @@ class CompositeDiscountPriceCalculator implements ProductDiscountPriceCalculator
      */
     public function getDiscountPrice(ProductInterface $subject, array $context)
     {
-        $price = false;
+        $price = null;
 
+        /**
+         * @var ProductDiscountPriceCalculatorInterface $calculator
+         */
         foreach ($this->discountPriceCalculator->all() as $calculator) {
-            $actionPrice = $calculator->getDiscountPrice($subject, $context, $context);
 
-            if (false !== $actionPrice && null !== $actionPrice) {
+            try {
+                $actionPrice = $calculator->getDiscountPrice($subject, $context);
                 $price = $actionPrice;
+            } catch (NoDiscountPriceFoundException $ex) {
+
             }
+        }
+
+        if (null === $price) {
+            throw new NoDiscountPriceFoundException(__CLASS__);
         }
 
         return $price;

@@ -14,8 +14,10 @@ namespace CoreShop\Component\Core\Order\Calculator;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
+use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 
 final class PurchasableProductDiscountPriceCalculator implements PurchasableDiscountPriceCalculatorInterface
 {
@@ -38,11 +40,13 @@ final class PurchasableProductDiscountPriceCalculator implements PurchasableDisc
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
     {
         if ($purchasable instanceof ProductInterface) {
-            $discount = $this->productPriceCalculator->getDiscountPrice($purchasable, $context);
+            try {
+                return $this->productPriceCalculator->getDiscountPrice($purchasable, $context);
+            } catch (NoDiscountPriceFoundException $ex) {
 
-            return $discount;
+            }
         }
 
-        return 0;
+        throw new NoPurchasableDiscountPriceFoundException(__CLASS__);
     }
 }
