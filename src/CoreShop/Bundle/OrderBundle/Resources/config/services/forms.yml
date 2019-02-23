@@ -5,7 +5,7 @@ services:
     coreshop.form.type.add_to_cart:
         class: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType
         arguments:
-            - 'CoreShop\Bundle\OrderBundle\Controller\AddToCartCommand'
+            - 'CoreShop\Bundle\OrderBundle\Controller\AddToCart'
             - '%coreshop.form.type.add_to_cart.validation_groups%'
         tags:
             - { name: form.type }

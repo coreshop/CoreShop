@@ -12,13 +12,11 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Bundle\OrderBundle\Controller\AddToCartCommand;
-use CoreShop\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use CoreShop\Bundle\OrderBundle\Controller\AddToCartInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
@@ -173,23 +171,23 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $addToCartCommand = $this->createAddToCartCommand($this->getCart(), $product, (int) $request->get('quantity', 1));
+        $addToCart = $this->createAddToCart($this->getCart(), $product, (int) $request->get('quantity', 1));
 
-        $form = $this->createForm(AddToCartType::class, $addToCartCommand);
+        $form = $this->createForm(AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
 
             if ($form->handleRequest($request)->isValid()) {
                 /**
-                 * @var AddToCartCommandInterface $addToCartCommand
+                 * @var AddToCartInterface $addToCart
                  */
-                $addToCartCommand = $form->getData();
+                $addToCart = $form->getData();
 
-                $this->getCartModifier()->addItem($addToCartCommand->getCart(), $addToCartCommand->getPurchasable(), $addToCartCommand->getQuantity());
+                $this->getCartModifier()->addItem($addToCart->getCart(), $addToCart->getPurchasable(), $addToCart->getQuantity());
                 $this->getCartManager()->persistCart($this->getCart());
 
-                $this->get('coreshop.tracking.manager')->trackCartAdd($addToCartCommand->getCart(), $addToCartCommand->getPurchasable(), $addToCartCommand->getQuantity());
+                $this->get('coreshop.tracking.manager')->trackCartAdd($addToCart->getCart(), $addToCart->getPurchasable(), $addToCart->getQuantity());
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
@@ -301,11 +299,11 @@ class CartController extends FrontendController
      * @param CartInterface        $cart
      * @param PurchasableInterface $purchasable
      * @param int                  $quantity
-     * @return AddToCartCommandInterface
+     * @return AddToCartInterface
      */
-    protected function createAddToCartCommand(CartInterface $cart, PurchasableInterface $purchasable, int $quantity)
+    protected function createAddToCart(CartInterface $cart, PurchasableInterface $purchasable, int $quantity)
     {
-        return $this->get('coreshop.factory.add_to_cart_command')->createWithCartAndPurchasableAndQuantity($cart, $purchasable, $quantity);
+        return $this->get('coreshop.factory.add_to_cart')->createWithCartAndPurchasableAndQuantity($cart, $purchasable, $quantity);
     }
 
     /**

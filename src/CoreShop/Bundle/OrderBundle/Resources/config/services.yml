@@ -89,5 +89,5 @@ services:
         arguments:
             - '@coreshop.custom_factory.cart_item.inner'
 
-    coreshop.factory.add_to_cart_command:
-        class: CoreShop\Bundle\OrderBundle\Factory\AddToCartCommandFactory
+    coreshop.factory.add_to_cart:
+        class: CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory

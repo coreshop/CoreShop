@@ -10,25 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\Controller;
+namespace CoreShop\Bundle\OrderBundle\Factory;
 
+use CoreShop\Bundle\OrderBundle\Controller\AddToCartInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-interface AddToCartCommandInterface
+interface AddToCartFactoryInterface
 {
     /**
-     * @return CartInterface
+     * @param CartInterface $cart
+     * @param PurchasableInterface $purchasable
+     * @param int $quantity
+     * @return AddToCartInterface
      */
-    public function getCart();
-
-    /**
-     * @return PurchasableInterface
-     */
-    public function getPurchasable();
-
-    /**
-     * @return int
-     */
-    public function getQuantity();
+    public function createWithCartAndPurchasableAndQuantity(
+        CartInterface $cart,
+        PurchasableInterface $purchasable,
+        int $quantity
+    );
 }

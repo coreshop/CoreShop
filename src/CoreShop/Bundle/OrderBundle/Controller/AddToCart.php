@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-final class AddToCartCommand implements AddToCartCommandInterface
+final class AddToCart implements AddToCartInterface
 {
     /**
      * @var CartInterface

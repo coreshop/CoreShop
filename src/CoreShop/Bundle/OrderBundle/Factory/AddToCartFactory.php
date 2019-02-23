@@ -12,21 +12,17 @@
 
 namespace CoreShop\Bundle\OrderBundle\Factory;
 
-use CoreShop\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use CoreShop\Bundle\OrderBundle\Controller\AddToCart;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
-interface AddToCartCommandFactoryInterface
+class AddToCartFactory implements AddToCartFactoryInterface
 {
     /**
-     * @param CartInterface $cart
-     * @param PurchasableInterface $purchasable
-     * @param int $quantity
-     * @return AddToCartCommandInterface
+     * {@inheritdoc}
      */
-    public function createWithCartAndPurchasableAndQuantity(
-        CartInterface $cart,
-        PurchasableInterface $purchasable,
-        int $quantity
-    );
+    public function createWithCartAndPurchasableAndQuantity(CartInterface $cart, PurchasableInterface $purchasable, int $quantity)
+    {
+        return new AddToCart($cart, $purchasable, $quantity);
+    }
 }

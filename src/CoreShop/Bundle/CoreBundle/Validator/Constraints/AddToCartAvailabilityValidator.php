@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
-use CoreShop\Bundle\OrderBundle\Controller\AddToCartCommandInterface;
+use CoreShop\Bundle\OrderBundle\Controller\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
@@ -38,13 +38,13 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     }
 
     /**
-     * @param AddToCartCommandInterface $addCartItemCommand
+     * @param AddToCartInterface $addCartItemCommand
      *
      * {@inheritdoc}
      */
     public function validate($addCartItemCommand, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addCartItemCommand, AddToCartCommandInterface::class);
+        Assert::isInstanceOf($addCartItemCommand, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**

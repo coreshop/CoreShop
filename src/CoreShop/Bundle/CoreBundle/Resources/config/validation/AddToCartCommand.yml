@@ -1,3 +1,3 @@
-CoreShop\Bundle\OrderBundle\Controller\AddToCartCommand:
+CoreShop\Bundle\OrderBundle\Controller\AddToCart:
     constraints:
         - \CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailability: { message: 'coreshop.cart_item.not_sufficient_stock', groups: ['coreshop'] }
