@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderStates;
@@ -399,11 +400,11 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @return WorkflowStateManagerInterface
+     * @return WorkflowStateInfoManagerInterface
      */
     private function getWorkflowStateManager()
     {
-        return $this->get('coreshop.workflow.state_manager');
+        return $this->get('coreshop.workflow.state_info_manager');
     }
 
     /**

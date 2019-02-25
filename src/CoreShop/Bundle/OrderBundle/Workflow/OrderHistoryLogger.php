@@ -12,11 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * @deprecated Class CoreShop\Bundle\OrderBundle\Workflow\OrderHistoryLogger is deprecated and will be removed with 2.1, use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface instead
+ */
 final class OrderHistoryLogger
 {
     /**
@@ -25,36 +27,20 @@ final class OrderHistoryLogger
     private $orderRepository;
 
     /**
-     * @var NoteServiceInterface
+     * @var HistoryLoggerInterface
      */
-    private $noteService;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $noteIdentifier;
+    private $historyLogger;
 
     /**
      * @param OrderRepositoryInterface $orderRepository
-     * @param NoteServiceInterface     $noteService
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
+     * @param HistoryLoggerInterface   $historyLogger
      */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
-        NoteServiceInterface $noteService,
-        TranslatorInterface $translator,
-        $noteIdentifier
+        HistoryLoggerInterface $historyLogger
     ) {
         $this->orderRepository = $orderRepository;
-        $this->noteService = $noteService;
-        $this->translator = $translator;
-        $this->noteIdentifier = $noteIdentifier;
+        $this->historyLogger = $historyLogger;
     }
 
     /**
@@ -65,25 +51,21 @@ final class OrderHistoryLogger
      */
     public function log($orderId = null, $message = null, $description = null, $translate = false)
     {
+        trigger_error(
+            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+                static::class,
+                __METHOD__,
+                HistoryLoggerInterface::class,
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
+
         $order = $this->orderRepository->find($orderId);
         if (!$order instanceof OrderInterface) {
             return;
         }
 
-        $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
-
-        $message = strip_tags($message);
-
-        if ($translate === true) {
-            $message = $this->translator->trans($message, [], 'admin');
-        }
-
-        $note->setTitle($this->translator->trans('coreshop_workflow_order_history_logger_prefix', [], 'admin') . ': ' . $message);
-
-        if (!is_null($description)) {
-            $note->setDescription($description);
-        }
-
-        $this->noteService->storeNote($note);
+        $this->historyLogger->log($order, $message, $description, $translate);
     }
 }

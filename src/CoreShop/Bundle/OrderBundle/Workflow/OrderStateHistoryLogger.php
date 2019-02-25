@@ -12,50 +12,26 @@
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
+use CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
-use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
 
+/**
+ * @deprecated Class CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger is deprecated and will be removed with 2.1, use CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface instead
+ */
 final class OrderStateHistoryLogger
 {
     /**
-     * @var StateMachineManager
+     * @var StateHistoryLoggerInterface
      */
-    private $stateMachineManager;
+    private $stateHistoryLogger;
 
     /**
-     * @var NoteServiceInterface
+     * @param StateHistoryLoggerInterface $stateHistoryLogger
      */
-    private $noteService;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $noteIdentifier;
-
-    /**
-     * @param StateMachineManager  $stateMachineManager
-     * @param NoteServiceInterface $noteService
-     * @param TranslatorInterface  $translator
-     * @param string               $noteIdentifier
-     */
-    public function __construct(
-        StateMachineManager $stateMachineManager,
-        NoteServiceInterface $noteService,
-        TranslatorInterface $translator,
-        $noteIdentifier
-    ) {
-        $this->stateMachineManager = $stateMachineManager;
-        $this->noteService = $noteService;
-        $this->translator = $translator;
-        $this->noteIdentifier = $noteIdentifier;
+    public function __construct(StateHistoryLoggerInterface $stateHistoryLogger)
+    {
+        $this->stateHistoryLogger = $stateHistoryLogger;
     }
 
     /**
@@ -64,57 +40,16 @@ final class OrderStateHistoryLogger
      */
     public function log(OrderInterface $order, Event $event)
     {
-        $subject = $event->getSubject();
-        $transition = $event->getTransition();
-
-        $from = $this->getFrom($transition->getFroms());
-        $to = $this->getTo($transition->getTos());
-
-        $fromValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $from;
-        $toValue = 'coreshop_workflow_state_' . $event->getWorkflowName() . '_' . $to;
-
-        $objectIdInfo = '';
-        // add id if it's not an order (since payment/shipping/invoice could be more than one)
-        if (!$subject instanceof OrderInterface) {
-            $objectIdInfo = ' (Id ' . $subject->getId() . ')';
-        }
-
-        $note = $this->noteService->createPimcoreNoteInstance($order, $this->noteIdentifier);
-        $note->setTitle(
-            sprintf(
-                '%s%s: %s %s %s %s',
-                $this->translator->trans('coreshop_workflow_name_' . $event->getWorkflowName(), [], 'admin'),
-                $objectIdInfo,
-                $this->translator->trans('coreshop_workflow_state_changed_from', [], 'admin'),
-                $this->translator->trans($fromValue, [], 'admin'),
-                $this->translator->trans('coreshop_workflow_state_changed_to', [], 'admin'),
-                $this->translator->trans($toValue, [], 'admin')
-            )
+        trigger_error(
+            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+                static::class,
+                __METHOD__,
+                StateHistoryLoggerInterface::class,
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
         );
 
-        $note->addData('workflow', 'text', $event->getWorkflowName());
-        $note->addData('transition', 'text', $transition->getName());
-
-        $this->noteService->storeNote($note);
-    }
-
-    /**
-     * @param array $froms
-     *
-     * @return mixed
-     */
-    private function getFrom(array $froms)
-    {
-        return reset($froms);
-    }
-
-    /**
-     * @param array $tos
-     *
-     * @return mixed
-     */
-    private function getTo(array $tos)
-    {
-        return reset($tos);
+        $this->stateHistoryLogger->log($order, $event);
     }
 }
