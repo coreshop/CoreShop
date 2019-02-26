@@ -12,16 +12,16 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
-use CoreShop\Component\Order\Model\ProposalInterface;
+use Pimcore\Model\Element\Note;
 
 interface WorkflowStateInfoManagerInterface
 {
     /**
-     * @param ProposalInterface $proposal
+     * @param $object
      *
-     * @return mixed
+     * @return Note[]
      */
-    public function getStateHistory($proposal);
+    public function getStateHistory($object);
 
     /**
      * @param string $workflowName
