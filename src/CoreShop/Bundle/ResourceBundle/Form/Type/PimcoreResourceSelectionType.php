@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
+use CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreResourceDataTransformer;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -33,6 +34,14 @@ class PimcoreResourceSelectionType extends AbstractType
     public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
+    }
+
+        /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addModelTransformer(new PimcoreResourceDataTransformer($this->repository));
     }
 
     /**
