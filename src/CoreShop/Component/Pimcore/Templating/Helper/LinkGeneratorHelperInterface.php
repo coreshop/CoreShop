@@ -23,7 +23,7 @@ interface LinkGeneratorHelperInterface extends HelperInterface
      *
      * @return string
      */
-    public function getPath($nameOrObject, $params, $relative = false);
+    public function getPath($nameOrObject, $params = [], $relative = false);
 
     /**
      * @param mixed $nameOrObject
@@ -32,5 +32,5 @@ interface LinkGeneratorHelperInterface extends HelperInterface
      *
      * @return string
      */
-    public function getUrl($nameOrObject, $parameters = array(), $schemeRelative = false);
+    public function getUrl($nameOrObject, $parameters = [], $schemeRelative = false);
 }
