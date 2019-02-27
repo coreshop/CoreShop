@@ -1,0 +1,17 @@
+CoreShop\Component\Product\Model\ProductUnit:
+    type: mappedSuperclass
+    table: coreshop_product_unit
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        identifier:
+            column: identifier
+            type: string
+            unique: true
+        defaultPrecision:
+            column: default_precision
+            type: integer

@@ -13,6 +13,8 @@
 pimcore.registerNS('coreshop.product.resource');
 coreshop.product.resource = Class.create(coreshop.resource, {
     initialize: function () {
+        coreshop.global.addStore('coreshop_product_units', 'coreshop/product_units');
+        pimcore.globalmanager.get('coreshop_product_units').load();
         coreshop.broker.fireEvent('resource.register', 'coreshop.product', this);
     },
 

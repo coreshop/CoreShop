@@ -8,3 +8,8 @@ coreshop_admin_product_price_rule:
           action: getConfig
           methods:
             - GET
+
+coreshop_admin_product_unit:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.product_unit

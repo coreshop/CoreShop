@@ -35,6 +35,9 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function setStores($stores);
 
     /**
+     * @deprecated since 2.1.0
+     * @use $product->getStoreValues()->getPrice() instead
+     *
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      *
      * @return int
@@ -42,10 +45,26 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
+     * @deprecated since 2.1.0
+     * @use $product->setStoreValues() instead
+     *
      * @param int                                                 $price
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      */
     public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+
+    /**
+     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
+     *
+     * @return ProductStoreValuesInterface
+     */
+    public function getStoreValues(\CoreShop\Component\Store\Model\StoreInterface $store = null);
+
+    /**
+     * @param array|ProductStoreValuesInterface                   $storeValues
+     * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
+     */
+    public function setStoreValues($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
      * @param TaxRuleGroupInterface $taxRule

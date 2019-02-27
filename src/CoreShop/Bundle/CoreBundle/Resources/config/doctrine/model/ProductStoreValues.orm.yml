@@ -1,0 +1,52 @@
+CoreShop\Component\Core\Model\ProductStoreValues:
+    type: mappedSuperclass
+    table: coreshop_product_store_values
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        product:
+            column: product
+            type: pimcoreObject
+        price:
+            column: price
+            type: integer
+        defaultUnitPrecision:
+            column: default_unit_precision
+            type: integer
+    manyToOne:
+        store:
+            targetEntity: CoreShop\Component\Store\Model\StoreInterface
+            joinColumn:
+                name: store
+                referencedColumnName: id
+                onDelete: 'SET NULL'
+        defaultUnit:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface
+            joinColumn:
+                name: default_unit
+                referencedColumnName: id
+                onDelete: 'SET NULL'
+    manyToMany:
+        additionalUnits:
+            targetEntity: CoreShop\Component\Product\Model\ProductAdditionalUnitInterface
+            cascade:
+                - all
+            joinTable:
+                name: coreshop_product_additional_units
+                joinColumns:
+                    product_store_values_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    additional_unit_id:
+                        referencedColumnName: id
+                        nullable: false
+                        onDelete: CASCADE
+    uniqueConstraints:
+        product_store:
+            columns: [product, store]

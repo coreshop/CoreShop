@@ -26,6 +26,7 @@ imports:
     - { resource: "services/routing.yml" }
     - { resource: "services/product-quantity-price-rules.yml" }
     - { resource: "services/validators.yml" }
+    - { resource: "services/product-store-values.yml" }
 
 services:
     _defaults:

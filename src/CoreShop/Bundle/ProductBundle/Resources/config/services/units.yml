@@ -1,0 +1,31 @@
+parameters:
+    coreshop.form.type.product_unit.validation_groups: [coreshop]
+    coreshop.form.type.product_additional_unit.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    # Forms
+    coreshop.form.type.product_unit:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType
+        arguments:
+            - '%coreshop.model.product_unit.class%'
+            - '%coreshop.form.type.product_unit.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.product_unit_choice:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitChoiceType
+        arguments:
+            - '@coreshop.repository.product_unit'
+        tags:
+            -  { name: form.type }
+
+    coreshop.form.type.product_additional_unit:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductAdditionalUnitType
+        arguments:
+            - '%coreshop.model.product_additional_unit.class%'
+            - '%coreshop.form.type.product_additional_unit.validation_groups%'
+        tags:
+            - { name: form.type }

@@ -1,0 +1,27 @@
+CoreShop\Component\Product\Model\ProductAdditionalUnit:
+    type: mappedSuperclass
+    table: coreshop_product_additional_unit
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        product:
+            column: product
+            type: pimcoreObject
+        precision:
+            column: '`precision`'
+            type: integer
+        conversionRate:
+            column: conversion_rate
+            type: float
+            nullable: false
+    manyToOne:
+        unit:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface
+            joinColumn:
+                name: unit
+                referencedColumnName: id
+                onDelete: 'CASCADE'
