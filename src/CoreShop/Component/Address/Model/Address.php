@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Address extends AbstractPimcoreModel implements AddressInterface

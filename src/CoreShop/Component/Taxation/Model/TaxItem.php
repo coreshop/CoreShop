@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Taxation\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
 class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
