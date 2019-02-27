@@ -12,12 +12,13 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
+use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Note;
 
 interface WorkflowStateInfoManagerInterface
 {
     /**
-     * @param $object
+     * @param DataObject $object
      *
      * @return Note[]
      */
