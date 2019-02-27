@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Product\Model\Product as BaseProduct;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class Product extends BaseProduct implements ProductInterface
 {

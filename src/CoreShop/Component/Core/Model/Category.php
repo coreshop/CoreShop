@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Product\Model\Category as BaseCategory;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class Category extends BaseCategory implements CategoryInterface
 {

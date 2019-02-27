@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ResourceBundle\Validation\Constraints;
+namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use Symfony\Component\Validator\Constraint;
