@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;

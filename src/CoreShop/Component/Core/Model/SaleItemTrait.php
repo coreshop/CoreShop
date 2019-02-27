@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 trait SaleItemTrait
 {

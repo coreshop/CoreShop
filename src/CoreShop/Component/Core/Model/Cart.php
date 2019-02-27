@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\Cart as BaseCart;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 class Cart extends BaseCart implements CartInterface
