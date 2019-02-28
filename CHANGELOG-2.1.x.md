@@ -19,3 +19,7 @@
    ```
    {{ render(url('coreshop_cart_add', {'product': product.id})) }}
    ``` 
+   
+ - Introduced Store Unit:
+    - Please add `product_unit` to permission table.
+    - If you don't use the `Store Price` element in your classes besides the `storePrice` field, you should delete the `coreshop_product_store_price` table after migration.

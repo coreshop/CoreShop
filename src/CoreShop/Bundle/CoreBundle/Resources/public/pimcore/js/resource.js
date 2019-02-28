@@ -262,6 +262,14 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             });
         }
 
+        if (user.isAllowed('coreshop_product_unit')) {
+            productsMenu.push({
+                text: t('coreshop_product_units'),
+                iconCls: 'coreshop_icon_product_units',
+                handler: this.openProductUnits
+            });
+        }
+
         if (productsMenu.length > 0) {
             coreShopMenuItems.push({
                 text: t('coreshop_product'),
@@ -602,6 +610,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
     openProductFilters: function () {
         coreshop.global.resource.open('coreshop.index', 'filter');
+    },
+
+    openProductUnits: function() {
+        coreshop.global.resource.open('coreshop.product', 'product_unit');
     },
 
     /*openMessagingContact: function () {

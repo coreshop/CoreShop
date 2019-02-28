@@ -25,7 +25,7 @@ final class ProductUnitType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('identifier', TextType::class)
+            ->add('name', TextType::class)
             ->add('defaultPrecision', IntegerType::class);
     }
 

@@ -19,12 +19,12 @@ interface ProductUnitInterface extends ResourceInterface
     /**
      * @return string
      */
-    public function getIdentifier();
+    public function getName();
 
     /**
      * @param string $identifier
      */
-    public function setIdentifier(string $identifier);
+    public function setName(string $identifier);
 
     /**
      * @return int

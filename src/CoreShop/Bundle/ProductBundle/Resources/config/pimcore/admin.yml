@@ -2,6 +2,8 @@ core_shop_product:
     pimcore_admin:
         js:
             resource: '/bundles/coreshopproduct/pimcore/js/resource.js'
+            product_unit_panel: '/bundles/coreshopproduct/pimcore/js/product/unit/panel.js'
+            product_unit_panel_object_item: '/bundles/coreshopproduct/pimcore/js/product/unit/object/item.js'
             product_price_rule_panel: '/bundles/coreshopproduct/pimcore/js/product/pricerule/panel.js'
             product_price_rule_item: '/bundles/coreshopproduct/pimcore/js/product/pricerule/item.js'
             product_price_rule_action: '/bundles/coreshopproduct/pimcore/js/product/pricerule/action.js'

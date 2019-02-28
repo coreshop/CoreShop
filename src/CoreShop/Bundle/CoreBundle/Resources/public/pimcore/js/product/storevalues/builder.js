@@ -82,7 +82,6 @@ coreshop.product.storeValues.builder = Class.create({
     getPriceField: function () {
 
         var price = this.getDataValue('price'),
-            currencySymbol = this.getDataValue('price'),
             priceField = new Ext.form.NumberField({
                 fieldLabel: t('coreshop_store_values_store_price'),
                 name: 'price',
@@ -93,7 +92,7 @@ coreshop.product.storeValues.builder = Class.create({
 
         if (price !== null) {
             priceField.setValue(price / 100);
-            priceField.setFieldLabel(priceField.fieldLabel + ' (' + currencySymbol + ')');
+            priceField.setFieldLabel(priceField.fieldLabel + ' (' + this.data.currencySymbol + ')');
         }
 
         if (this.fieldConfig.width) {
@@ -234,7 +233,7 @@ coreshop.product.storeValues.builder = Class.create({
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                displayField: 'identifier',
+                displayField: 'name',
                 valueField: 'id',
                 value: data.unitValue,
                 maxWidth: 190,

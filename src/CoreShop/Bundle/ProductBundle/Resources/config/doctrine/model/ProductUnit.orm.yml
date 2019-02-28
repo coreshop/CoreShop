@@ -8,10 +8,12 @@ CoreShop\Component\Product\Model\ProductUnit:
             id: true
             generator:
                 strategy: AUTO
-        identifier:
-            column: identifier
+        name:
+            column: name
             type: string
             unique: true
         defaultPrecision:
             column: default_precision
             type: integer
+            options:
+                default: 0

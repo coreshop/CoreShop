@@ -24,7 +24,7 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     /**
      * @var string
      */
-    protected $identifier;
+    protected $name;
 
     /**
      * @var integer
@@ -50,17 +50,17 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getName()
     {
-        return $this->identifier;
+        return $this->name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setIdentifier(string $identifier)
+    public function setName(string $name)
     {
-        $this->identifier = $identifier;
+        $this->name = $name;
     }
 
     /**

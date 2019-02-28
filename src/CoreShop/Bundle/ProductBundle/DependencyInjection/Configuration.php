@@ -13,12 +13,14 @@
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
+use CoreShop\Bundle\ProductBundle\Controller\ProductUnitController;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductAdditionalUnitRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
@@ -127,14 +129,16 @@ final class Configuration implements ConfigurationInterface
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
+                                ->scalarNode('permission')->defaultValue('product_unit')->cannotBeOverwritten()->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('model')->defaultValue(ProductUnit::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductUnitInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ProductUnitController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductUnitRepository::class)->end()
+                                        ->scalarNode('form')->defaultValue(ProductUnitType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -245,7 +249,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['product_price_rule'])
+                        ->defaultValue(['product_price_rule', 'product_unit'])
                     ->end()
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()

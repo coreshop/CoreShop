@@ -21,6 +21,8 @@ coreshop.product.resource = Class.create(coreshop.resource, {
     openResource: function (item) {
         if (item === 'product_price_rule') {
             this.openProductPriceRule();
+        }if (item === 'product_unit') {
+            this.openProductUnit();
         }
     },
 
@@ -30,6 +32,15 @@ coreshop.product.resource = Class.create(coreshop.resource, {
         }
         catch (e) {
             pimcore.globalmanager.add('coreshop_product_price_rule_panel', new coreshop.product.pricerule.panel());
+        }
+    },
+
+    openProductUnit: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_product_unit_panel').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_product_unit_panel', new coreshop.product.unit.panel());
         }
     }
 });
