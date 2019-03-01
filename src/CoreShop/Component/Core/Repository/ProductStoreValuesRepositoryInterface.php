@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\ProductStorePriceInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -22,7 +22,7 @@ interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
         /**
      * @param ProductInterface $product
      *
-     * @return ProductStorePriceInterface[]
+     * @return ProductStoreValuesInterface[]
      *
      *  Won't get you the direct price anymore, use findForProductAndKey
      */
@@ -32,7 +32,7 @@ interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
      * @param ProductInterface $product
      * @param StoreInterface   $store
      *
-     * @return ProductStorePriceInterface[]
+     * @return ProductStoreValuesInterface[]
      */
     public function findForProductAndStore(ProductInterface $product, StoreInterface $store);
 }

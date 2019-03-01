@@ -27,6 +27,11 @@ class ProductAdditionalUnit extends AbstractResource implements ProductAdditiona
     protected $product;
 
     /**
+     * @var int
+     */
+    protected $price;
+
+    /**
      * @var ProductUnitInterface
      */
     protected $unit;
@@ -71,6 +76,22 @@ class ProductAdditionalUnit extends AbstractResource implements ProductAdditiona
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPrice(int $price)
+    {
+        $this->price = $price;
     }
 
     /**

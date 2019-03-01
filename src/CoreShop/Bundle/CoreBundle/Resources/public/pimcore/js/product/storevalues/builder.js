@@ -15,13 +15,14 @@ coreshop.product.storeValues.builder = Class.create({
     data: null,
     store: null,
     fieldConfig: null,
-
     form: null,
-
-    uniteStore: null,
+    unitStore: null,
+    additionalUnitCounter: 0,
+    unitStoresInitialized: false,
 
     initialize: function (fieldConfig, store, data) {
 
+        this.additionalUnitCounter = 0;
         this.fieldConfig = fieldConfig;
         this.store = store;
         this.data = data;
@@ -34,7 +35,13 @@ coreshop.product.storeValues.builder = Class.create({
     setupForm: function () {
         this.form = new Ext.form.Panel({
             closable: false,
-            items: this.getItems()
+            items: this.getItems(),
+            listeners: {
+                afterrender: function (comp) {
+                    this.adjustUnitStores(true);
+                    this.adjustAdditionalUnitLabel();
+                }.bind(this),
+            }
         });
     },
 
@@ -43,23 +50,23 @@ coreshop.product.storeValues.builder = Class.create({
     },
 
     getItems: function () {
-
         return [
-            this.getFieldIdField(),
             this.getPriceField(),
             this.getDefaultUnitField(),
             this.geAdditionalUnitsField()
-        ]
+        ];
     },
 
     getDataValue: function (key) {
 
-        var data = this.data !== null && Ext.isObject(this.data) ? this.data : null;
+        var data, values;
+
+        data = this.data !== null && Ext.isObject(this.data) ? this.data : null;
         if (data === null) {
             return null;
         }
 
-        var values = data.values !== null && Ext.isObject(data.values) ? data.values : null;
+        values = data.values !== null && Ext.isObject(data.values) ? data.values : null;
         if (values === null) {
             return null;
         }
@@ -71,14 +78,6 @@ coreshop.product.storeValues.builder = Class.create({
         return null;
     },
 
-    getFieldIdField: function () {
-        return new Ext.form.NumberField({
-            name: 'id',
-            hidden: true,
-            value: this.getDataValue('id')
-        });
-    },
-
     getPriceField: function () {
 
         var price = this.getDataValue('price'),
@@ -87,6 +86,7 @@ coreshop.product.storeValues.builder = Class.create({
                 name: 'price',
                 componentCls: 'object_field',
                 labelWidth: 250,
+                minValue: 0,
                 value: 0
             });
 
@@ -126,7 +126,7 @@ coreshop.product.storeValues.builder = Class.create({
             }, false);
 
         return Ext.create('Ext.form.Panel', {
-            width: 750,
+            width: 950,
             items: [
                 {
                     xtype: 'fieldset',
@@ -141,70 +141,34 @@ coreshop.product.storeValues.builder = Class.create({
 
     geAdditionalUnitsField: function () {
 
-        var additionalUnitData = this.getDataValue('additionalUnits'),
-            addUnitField = function (fieldSet, data) {
+        var additionalUnitData = this.getDataValue('additionalUnits'), fieldSet;
 
-                var compositeField,
-                    count = fieldSet.query('button').length + 1,
-                    unitFieldForm = this.getUnitFormFields({
-                        unitName: 'additionalUnit.' + count + '.unit',
-                        unitLabel: 'coreshop_store_values_unit_type',
-                        unitValue: data !== null && Ext.isObject(data) ? data.unit.id : this.unitStore.first(),
-                        precisionName: 'additionalUnit.' + count + '.precision',
-                        precisionLabel: 'coreshop_store_values_unit_precision',
-                        precisionValue: data !== null ? data.precision : 0,
-                        conversionRateName: 'additionalUnit.' + count + '.conversionRate',
-                        conversionRateLabel: 'coreshop_store_values_unit_conversion_rate',
-                        conversionRateValue: data !== null ? data.conversionRate : 0,
-                    }, true);
-
-                // add id field if available
-                if (data !== null && data.hasOwnProperty('id')) {
-                    unitFieldForm.push({
-                        xtype: 'numberfield',
-                        name: 'additionalUnit.' + count + '.id',
-                        value: data.id,
-                        hidden: true
-                    });
-                }
-
-                compositeField = new Ext.form.FieldContainer({
-                    layout: 'hbox',
-                    hideLabel: true,
-                    itemCls: 'object_field',
-                    items: unitFieldForm
-                });
-
-                compositeField.add({xtype: 'tbfill'});
-                compositeField.add({
-                    xtype: 'button',
-                    iconCls: 'pimcore_icon_delete',
-                    handler: function (compositeField, el) {
-                        fieldSet.remove(compositeField);
-                        fieldSet.updateLayout();
-                    }.bind(this, compositeField)
-                });
-
-                fieldSet.add(compositeField);
-                fieldSet.updateLayout();
-
-            }.bind(this);
-
-        var fieldSet = new Ext.form.FieldSet({
+        fieldSet = new Ext.form.FieldSet({
             title: t('coreshop_store_values_additional_units_headline'),
             collapsible: false,
             autoHeight: true,
-            width: 750,
+            width: 950,
             style: 'margin-top: 20px;',
+            itemId: 'additional-units-fieldset',
+            listeners: {
+                afterrender: function () {
+                    this.checkAddUnitBlockAvailability(fieldSet);
+                }.bind(this)
+            },
             items: [{
                 xtype: 'toolbar',
                 style: 'margin-bottom: 10px; padding: 5px;',
+                height: 50,
                 items: ['->', {
                     xtype: 'button',
                     iconCls: 'pimcore_icon_add',
+                    itemId: 'additional-unit-add-button',
                     handler: function (b) {
                         var fieldSet = b.up('fieldset');
-                        addUnitField(fieldSet, null);
+                        this.addUnitField(fieldSet, null);
+                        this.checkAddUnitBlockAvailability(fieldSet);
+                        this.adjustUnitStores();
+                        this.adjustAdditionalUnitLabel();
                     }.bind(this)
                 }]
             }]
@@ -212,14 +176,146 @@ coreshop.product.storeValues.builder = Class.create({
 
         if (additionalUnitData !== null && Ext.isArray(additionalUnitData)) {
             Ext.Array.each(additionalUnitData, function (unit) {
-                addUnitField(fieldSet, unit);
-            });
+                this.addUnitField(fieldSet, unit);
+            }.bind(this));
         }
 
         return fieldSet;
     },
 
-    getUnitFormFields: function (data, extended) {
+    addUnitField: function (fieldSet, data) {
+
+        this.additionalUnitCounter++;
+
+        var hasId = data !== null && data.hasOwnProperty('id') && data.id !== null,
+            compositeField,
+            unitFieldForm = this.getUnitFormFields({
+                unitName: 'additionalUnit.' + this.additionalUnitCounter + '.unit',
+                unitLabel: 'coreshop_store_values_unit_type',
+                unitValue: data !== null && Ext.isObject(data) ? data.unit.id : this.unitStore.first(),
+                precisionName: 'additionalUnit.' + this.additionalUnitCounter + '.precision',
+                precisionLabel: 'coreshop_store_values_unit_precision',
+                precisionValue: data !== null ? data.precision : 0,
+                conversionRateName: 'additionalUnit.' + this.additionalUnitCounter + '.conversionRate',
+                conversionRateLabel: 'coreshop_store_values_unit_conversion_rate',
+                conversionRateValue: data !== null ? data.conversionRate : 0,
+                priceName: 'additionalUnit.' + this.additionalUnitCounter + '.price',
+                priceLabel: 'coreshop_store_values_unit_price',
+                priceValue: data !== null ? (data.price / 100) : 0,
+            }, true, hasId);
+
+        compositeField = new Ext.form.FieldContainer({
+            layout: 'hbox',
+            hideLabel: true,
+            itemCls: 'object_field additional-unit-field-container',
+            items: unitFieldForm
+        });
+
+        compositeField.add({xtype: 'tbfill'});
+        compositeField.add({
+            xtype: 'button',
+            itemId: 'additional-unit-delete-button',
+            iconCls: 'pimcore_icon_delete',
+            handler: function (compositeField, el) {
+                Ext.MessageBox.confirm(t('info'), t('coreshop_store_values_additional_unit_delete_confirm'), function (buttonValue) {
+                    if (buttonValue !== 'yes') {
+                        return;
+                    }
+                    fieldSet.remove(compositeField);
+                    this.checkAddUnitBlockAvailability(fieldSet);
+                    this.adjustUnitStores();
+                }.bind(this));
+
+            }.bind(this, compositeField)
+        });
+
+        // add id field if available
+        if (hasId === true) {
+            compositeField.add({
+                xtype: 'hidden',
+                name: 'additionalUnit.' + this.additionalUnitCounter + '.id',
+                value: data.id
+            });
+        }
+
+        fieldSet.add(compositeField);
+    },
+
+    adjustUnitStores: function (initializing) {
+
+        var combos = this.form.query('combo[itemCls~=unit-store]');
+
+        Ext.Array.each(combos, function (combo) {
+
+            var disallowed = [], clonedStore;
+            Ext.Array.each(combos, function (subCombo) {
+                if (combo.getValue() !== subCombo.getValue()) {
+                    disallowed.push(subCombo.getValue());
+                }
+            }.bind(this));
+
+            if (combo.readOnly === true) {
+                combo.setStore(this.unitStore);
+            } else {
+                clonedStore = this.cloneStore(this.unitStore, disallowed);
+                combo.setStore(clonedStore);
+                // current combo value is not allowed anymore
+                if (disallowed.indexOf(combo.getValue()) !== -1) {
+                    combo.setValue(clonedStore.first());
+                }
+            }
+        }.bind(this));
+
+        if (initializing === true) {
+            this.unitStoresInitialized = true;
+        }
+    },
+
+    adjustAdditionalUnitLabel: function () {
+
+        var unitData,
+            labelText,
+            defaultUnitStore = this.form.query('combo[cls~=default-unit-store]')[0],
+            additionalUnitLabels = this.form.getComponent('additional-units-fieldset').query('label[itemCls~=conversion-rate-label]'),
+            defaultUnitStoreValue = defaultUnitStore.getValue();
+
+        if (!defaultUnitStoreValue) {
+            labelText = '--';
+        } else {
+            unitData = this.unitStore.getById(defaultUnitStoreValue);
+            labelText = unitData.get('name');
+        }
+
+        Ext.Array.each(additionalUnitLabels, function (additionalUnitLabel) {
+            additionalUnitLabel.setText(labelText);
+        });
+    },
+
+    checkAddUnitBlockAvailability: function (comp) {
+        var additionalUnits = comp.query('fieldcontainer'),
+            addButton = comp.query('button[itemId="additional-unit-add-button"]')[0];
+        // -1 = default unit store cannot be selected
+        addButton.setVisible(additionalUnits.length < this.unitStore.getRange().length - 1);
+    },
+
+    cloneStore: function (store, disallowed) {
+        var records = [];
+        store.each(function (r) {
+            if (disallowed.indexOf(r.get('id')) === -1) {
+                records.push(r.copy());
+            }
+        });
+
+        var store2 = new Ext.data.Store({
+            recordType: store.recordType
+        });
+
+        store2.add(records);
+
+        return store2;
+    },
+
+    getUnitFormFields: function (data, extended, hasId) {
 
         var fields = [
             {
@@ -227,8 +323,10 @@ coreshop.product.storeValues.builder = Class.create({
                 fieldLabel: t(data.unitLabel),
                 name: data.unitName,
                 labelWidth: 80,
-                store: this.unitStore,
+                store: null,
                 triggerAction: 'all',
+                itemCls: 'unit-store',
+                cls: (data.unitName === 'defaultUnit' ? 'default-unit-store' : ''),
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
@@ -236,7 +334,19 @@ coreshop.product.storeValues.builder = Class.create({
                 displayField: 'name',
                 valueField: 'id',
                 value: data.unitValue,
-                maxWidth: 190,
+                maxWidth: data.unitName === 'defaultUnit' ? 250 : 200,
+                readOnly: hasId,
+                listeners: {
+                    change: function (comp, value) {
+                        if (comp.getName() === 'defaultUnit' && value) {
+                            this.adjustAdditionalUnitLabel();
+                        }
+                        if (this.unitStoresInitialized === true) {
+                            this.adjustUnitStores();
+                        }
+
+                    }.bind(this)
+                }
             },
             {
                 xtype: 'numberfield',
@@ -250,11 +360,22 @@ coreshop.product.storeValues.builder = Class.create({
         ];
 
         if (extended === true) {
+
+            fields.push({
+                xtype: 'numberfield',
+                fieldLabel: t(data.priceLabel),
+                name: data.priceName,
+                labelWidth: 70,
+                minValue: 0,
+                value: data.priceValue,
+                maxWidth: 170,
+            });
+
             fields.push({
                 xtype: 'numberfield',
                 fieldLabel: t(data.conversionRateLabel),
                 name: data.conversionRateName,
-                labelWidth: 120,
+                labelWidth: 110,
                 minValue: 0,
                 value: data.conversionRateValue,
                 decimalPrecision: 2,
@@ -264,6 +385,7 @@ coreshop.product.storeValues.builder = Class.create({
             fields.push({
                 xtype: 'label',
                 text: 'item',
+                itemCls: 'conversion-rate-label',
                 style: 'margin: 7px 0 0 -4px;'
             });
         }
@@ -272,7 +394,12 @@ coreshop.product.storeValues.builder = Class.create({
 
     },
 
-    postSaveObject: function () {
+    postSaveObject: function (object, refreshedData) {
+
+        if (Ext.isObject(refreshedData) && Ext.isObject(refreshedData.values)) {
+            this.data.values = refreshedData.values;
+        }
+
         this.form.getForm().getFields().each(function (item) {
             item.resetOriginalValue();
         });
@@ -287,6 +414,11 @@ coreshop.product.storeValues.builder = Class.create({
     },
 
     getValues: function () {
-        return this.form.getForm().getFieldValues();
+        var formValues = this.form.getForm().getFieldValues();
+        if (this.getDataValue('id') !== null) {
+            formValues['id'] = this.getDataValue('id');
+        }
+
+        return formValues;
     }
 });

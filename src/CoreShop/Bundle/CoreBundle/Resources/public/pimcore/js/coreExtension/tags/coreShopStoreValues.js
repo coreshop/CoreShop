@@ -39,11 +39,60 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     },
 
     postSaveObject: function (object, task) {
-        if (object.id === this.object.id && task === 'publish') {
-            Ext.Object.each(this.storeValuesBuilder, function (storeId, builder) {
-                builder.postSaveObject();
-            });
+
+        var fieldName = this.getName();
+
+        if (object.id !== this.object.id) {
+            return;
         }
+
+        if (this.isDirty()) {
+            this.reloadStoreValuesData(object, task, fieldName);
+        }
+    },
+
+    reloadStoreValuesData: function (object, task, fieldName) {
+        this.component.setLoading(true);
+        Ext.Ajax.request({
+            url: '/admin/object/get',
+            params: {id: object.id},
+            ignoreErrors: true,
+            success: function (response) {
+
+                this.dirty = false;
+
+                var refreshedObject = null,
+                    refreshedObjectData = null;
+                try {
+                    refreshedObject = Ext.decode(response.responseText);
+                    if (!refreshedObject.hasOwnProperty('data') || !refreshedObject.data.hasOwnProperty(fieldName)) {
+                        this.component.setLoading(false);
+                        return;
+                    }
+                    refreshedObjectData = refreshedObject.data[fieldName];
+                } catch (e) {
+                    console.log(e);
+                }
+
+                this.component.setLoading(false);
+                if (refreshedObjectData !== null) {
+                    this.dispatchPostSaveToBuilders(object, refreshedObjectData, task, fieldName);
+                }
+            }.bind(this),
+            failure: function () {
+                this.component.setLoading(false);
+            }.bind(this),
+        });
+    },
+
+    dispatchPostSaveToBuilders: function (object, refreshedData, task, fieldName) {
+        Ext.Object.each(this.storeValuesBuilder, function (storeId, builder) {
+            var refreshedStoreData = {};
+            if (Ext.isObject(refreshedData) && refreshedData.hasOwnProperty(storeId)) {
+                refreshedStoreData = refreshedData[storeId];
+            }
+            builder.postSaveObject(object, refreshedStoreData, task, fieldName);
+        });
     },
 
     getLayoutEdit: function () {

@@ -27,6 +27,16 @@ interface ProductAdditionalUnitInterface extends ResourceInterface
     public function setProduct(ProductInterface $product);
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPrice();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPrice(int $price);
+
+    /**
      * @return ProductUnitInterface
      */
     public function getUnit();

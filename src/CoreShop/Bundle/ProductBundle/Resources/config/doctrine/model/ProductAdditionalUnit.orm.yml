@@ -11,6 +11,9 @@ CoreShop\Component\Product\Model\ProductAdditionalUnit:
         product:
             column: product
             type: pimcoreObject
+        price:
+            column: price
+            type: integer
         precision:
             column: '`precision`'
             type: integer
@@ -24,4 +27,3 @@ CoreShop\Component\Product\Model\ProductAdditionalUnit:
             joinColumn:
                 name: unit
                 referencedColumnName: id
-                onDelete: 'CASCADE'

@@ -381,7 +381,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
 
-            $form->submit($this->parseStorePostData($storeData, $storeId, $object));
+            $parsedData = $this->expandDotNotationKeys($storeData);
+            $parsedData['storeId'] = $storeId;
+            $parsedData['objectId'] = $object->getId();
+
+            $form->submit($parsedData);
 
             if ($form->isValid()) {
                 $storeValues[] = $form->getData();
@@ -491,52 +495,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         }
 
         return (float) $value;
-    }
-
-    /**
-     * @param array            $data
-     * @param integer          $storeId
-     * @param ProductInterface $object
-     *
-     * @return array
-     */
-    protected function parseStorePostData(array $data, $storeId, $object)
-    {
-        $parsedData = $this->expandDotNotationKeys($data);
-
-        $price = null;
-        $defaultUnit = null;
-        $defaultUnitPrecision = 0;
-
-        if ($parsedData['price'] !== null) {
-            $price = (int) round((round($parsedData['price'], 2) * 100), 0);
-        }
-
-        if (is_numeric($parsedData['defaultUnit'])) {
-            $defaultUnit = (int) $parsedData['defaultUnit'];
-        }
-
-        if (is_numeric($parsedData['defaultUnitPrecision'])) {
-            $defaultUnitPrecision = (int) $parsedData['defaultUnitPrecision'];
-        }
-
-        $additionalUnits = [];
-        if (is_array($parsedData['additionalUnit'])) {
-            foreach ($parsedData['additionalUnit'] as $additionalUnit) {
-                $productAwareAdditionalUnit = $additionalUnit;
-                $productAwareAdditionalUnit['product'] = $object->getId();
-                $additionalUnits[] = $productAwareAdditionalUnit;
-            }
-        }
-
-        return [
-            'store'                => $storeId,
-            'product'              => $object->getId(),
-            'defaultUnit'          => $defaultUnit,
-            'price'                => $price,
-            'defaultUnitPrecision' => $defaultUnitPrecision,
-            'additionalUnits'      => $additionalUnits
-        ];
     }
 
     /**
