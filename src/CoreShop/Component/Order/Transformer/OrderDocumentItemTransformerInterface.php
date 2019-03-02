@@ -23,8 +23,9 @@ interface OrderDocumentItemTransformerInterface
      * @param OrderItemInterface         $orderItem
      * @param OrderDocumentItemInterface $documentItem
      * @param int                        $quantity
+     * @param array                      $options
      *
      * @return OrderDocumentItemInterface
      */
-    public function transform(OrderDocumentInterface $orderDocument, OrderItemInterface $orderItem, OrderDocumentItemInterface $documentItem, $quantity);
+    public function transform(OrderDocumentInterface $orderDocument, OrderItemInterface $orderItem, OrderDocumentItemInterface $documentItem, $quantity, $options = []);
 }
