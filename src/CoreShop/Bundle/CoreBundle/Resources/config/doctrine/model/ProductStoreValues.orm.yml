@@ -17,6 +17,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
         defaultUnitPrecision:
             column: default_unit_precision
             type: integer
+            nullable: true
     manyToOne:
         store:
             targetEntity: CoreShop\Component\Store\Model\StoreInterface
@@ -29,6 +30,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             joinColumn:
                 name: default_unit
                 referencedColumnName: id
+                nullable: true
     manyToMany:
         additionalUnits:
             targetEntity: CoreShop\Component\Product\Model\ProductAdditionalUnitInterface

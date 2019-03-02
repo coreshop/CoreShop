@@ -35,19 +35,13 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function setStores($stores);
 
     /**
-     * @deprecated since 2.1.0
-     * @use $product->getStoreValues()->getPrice() instead
-     *
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      *
-     * @return int
+     * @return int|array
      */
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
-     * @deprecated since 2.1.0
-     * @use $product->setStoreValues() instead
-     *
      * @param int                                                 $price
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      */
@@ -56,7 +50,7 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     /**
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      *
-     * @return ProductStoreValuesInterface
+     * @return array|ProductStoreValuesInterface
      */
     public function getStoreValues(\CoreShop\Component\Store\Model\StoreInterface $store = null);
 

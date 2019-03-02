@@ -167,7 +167,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
-        $code .= "\t" . 'if (is_array($data) && array_key_exists($store->getId(), $data) && $data[$store->getId()] instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {' . "\n";
+        $code .= "\t" . 'if (is_array($data)) {' . "\n";
+        $code .= "\t\t" . '/** @var \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValuesBlock */' . "\n";
+        $code .= "\t\t" . 'foreach ($data as $storeValuesBlock) {' . "\n";
+        $code .= "\t\t\t" . 'if ($storeValuesBlock->getStore()->getId() === $store->getId()) {' . "\n";
+        $code .= "\t\t\t\t" . 'return $storeValuesBlock;' . "\n";
+        $code .= "\t\t\t" . '}' . "\n";
+        $code .= "\t\t" . '}' . "\n";
         $code .= "\t\t" . 'return $data[$store->getId()];' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\treturn null;" . "\n";

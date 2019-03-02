@@ -34,27 +34,42 @@ coreshop.product.storeValues.builder = Class.create({
 
     setupForm: function () {
         this.form = new Ext.form.Panel({
-            closable: false,
-            items: this.getItems(),
-            listeners: {
-                afterrender: function (comp) {
-                    this.adjustUnitStores(true);
-                    this.adjustAdditionalUnitLabel();
-                }.bind(this),
-            }
+            closable: false
         });
+
+        this.getItems();
+    },
+
+    getItems: function () {
+
+        this.form.add([
+            this.getPriceField()
+        ]);
+
+        if (this.unitStore.isLoaded()) {
+            this.form.add(this.getUnitForm());
+        } else {
+            this.unitStore.load(function (store) {
+                this.form.add(this.getUnitForm());
+            }.bind(this));
+        }
     },
 
     getForm: function () {
         return this.form;
     },
 
-    getItems: function () {
+    getUnitForm: function () {
+
+        // do not show extra unit fields if no units are available.
+        if (this.unitStore.getRange().length === 0) {
+            return [];
+        }
+
         return [
-            this.getPriceField(),
             this.getDefaultUnitField(),
             this.geAdditionalUnitsField()
-        ];
+        ]
     },
 
     getDataValue: function (key) {
@@ -119,7 +134,7 @@ coreshop.product.storeValues.builder = Class.create({
             unitFieldForm = this.getUnitFormFields({
                 unitName: 'defaultUnit',
                 unitLabel: 'coreshop_store_values_unit_default_type',
-                unitValue: defaultUnit !== null ? defaultUnit.id : this.unitStore.first(),
+                unitValue: defaultUnit !== null ? defaultUnit.id : this.getDefaultUnitStoreValue(),
                 precisionName: 'defaultUnitPrecision',
                 precisionLabel: 'coreshop_store_values_unit_precision',
                 precisionValue: defaultUnitPrecision !== null ? defaultUnitPrecision : 0,
@@ -153,6 +168,8 @@ coreshop.product.storeValues.builder = Class.create({
             listeners: {
                 afterrender: function () {
                     this.checkAddUnitBlockAvailability(fieldSet);
+                    this.adjustUnitStores(true);
+                    this.adjustAdditionalUnitLabel();
                 }.bind(this)
             },
             items: [{
@@ -192,7 +209,7 @@ coreshop.product.storeValues.builder = Class.create({
             unitFieldForm = this.getUnitFormFields({
                 unitName: 'additionalUnit.' + this.additionalUnitCounter + '.unit',
                 unitLabel: 'coreshop_store_values_unit_type',
-                unitValue: data !== null && Ext.isObject(data) ? data.unit.id : this.unitStore.first(),
+                unitValue: data !== null && Ext.isObject(data) ? data.unit.id : this.getDefaultUnitStoreValue(),
                 precisionName: 'additionalUnit.' + this.additionalUnitCounter + '.precision',
                 precisionLabel: 'coreshop_store_values_unit_precision',
                 precisionValue: data !== null ? data.precision : 0,
@@ -269,6 +286,14 @@ coreshop.product.storeValues.builder = Class.create({
         if (initializing === true) {
             this.unitStoresInitialized = true;
         }
+    },
+
+    getDefaultUnitStoreValue: function () {
+        if (this.unitStore.isLoaded()) {
+            return this.unitStore.first().get('id');
+        }
+
+        return null;
     },
 
     adjustAdditionalUnitLabel: function () {

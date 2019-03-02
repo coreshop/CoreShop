@@ -165,6 +165,8 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
         }.bind(this));
 
+        tabPanel.setActiveItem(0);
+
         this.tabPanel = tabPanel;
         this.component = new Ext.Panel(wrapperConfig);
         this.component.add([this.tabPanel]);
