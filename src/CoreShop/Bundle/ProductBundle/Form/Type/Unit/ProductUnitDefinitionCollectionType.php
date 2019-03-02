@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Unit;
+namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
-use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductAdditionalUnitType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ProductAdditionalUnitCollectionType extends AbstractType
+class ProductUnitDefinitionCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -29,7 +28,7 @@ class ProductAdditionalUnitCollectionType extends AbstractType
         $resolver->setDefaults([
             'allow_add'      => true,
             'allow_delete'   => true,
-            'entry_type'     => ProductAdditionalUnitType::class,
+            'entry_type'     => ProductUnitDefinitionType::class,
         ]);
     }
 
@@ -46,6 +45,6 @@ class ProductAdditionalUnitCollectionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_additional_unit_collection';
+        return 'coreshop_product_unit_definition_collection';
     }
 }

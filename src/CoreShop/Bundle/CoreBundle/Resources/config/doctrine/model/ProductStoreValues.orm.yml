@@ -14,10 +14,6 @@ CoreShop\Component\Core\Model\ProductStoreValues:
         price:
             column: price
             type: integer
-        defaultUnitPrecision:
-            column: default_unit_precision
-            type: integer
-            nullable: true
     manyToOne:
         store:
             targetEntity: CoreShop\Component\Store\Model\StoreInterface
@@ -25,26 +21,32 @@ CoreShop\Component\Core\Model\ProductStoreValues:
                 name: store
                 referencedColumnName: id
                 onDelete: 'SET NULL'
-        defaultUnit:
-            targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface
+    oneToOne:
+        defaultUnitDefinition:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            cascade:
+                - 'persist'
+            orphanRemoval: true
             joinColumn:
-                name: default_unit
+                name: default_unit_definition
                 referencedColumnName: id
                 nullable: true
+                onDelete: 'SET NULL'
     manyToMany:
-        additionalUnits:
-            targetEntity: CoreShop\Component\Product\Model\ProductAdditionalUnitInterface
+        unitDefinitions:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
             cascade:
-                - all
+                - 'all'
+            orphanRemoval: true
             joinTable:
-                name: coreshop_product_additional_units
+                name: coreshop_product_unit_definitions
                 joinColumns:
                     product_store_values_id:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE
                 inverseJoinColumns:
-                    additional_unit_id:
+                    unit_definition_id:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE

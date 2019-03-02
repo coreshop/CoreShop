@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface as BaseQuantityRangeInterface;
 
 interface QuantityRangeInterface extends BaseQuantityRangeInterface
@@ -35,6 +36,16 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
      * @param CurrencyInterface $currency
      */
     public function setCurrency(CurrencyInterface $currency = null);
+
+    /**
+     * @return ProductUnitDefinitionInterface|null
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface|null $unitDefinition
+     */
+    public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition = null);
 
     /**
      * @return int

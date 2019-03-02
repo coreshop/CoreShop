@@ -19,6 +19,7 @@ coreshop.product.storeValues.builder = Class.create({
     unitStore: null,
     additionalUnitCounter: 0,
     unitStoresInitialized: false,
+    dirty: false,
 
     initialize: function (fieldConfig, store, data) {
 
@@ -27,6 +28,7 @@ coreshop.product.storeValues.builder = Class.create({
         this.store = store;
         this.data = data;
         this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
+        this.dirty = false;
 
         this.setupForm();
 
@@ -67,8 +69,8 @@ coreshop.product.storeValues.builder = Class.create({
         }
 
         return [
-            this.getDefaultUnitField(),
-            this.getAdditionalUnitsField()
+            this.getDefaultUnitDefinitionField(),
+            this.getAdditionalUnitDefinitionsField()
         ]
     },
 
@@ -127,18 +129,27 @@ coreshop.product.storeValues.builder = Class.create({
         return priceField;
     },
 
-    getDefaultUnitField: function () {
+    getDefaultUnitDefinitionField: function () {
 
-        var defaultUnit = this.getDataValue('defaultUnit'),
-            defaultUnitPrecision = this.getDataValue('defaultUnitPrecision'),
+        var defaultUnitDefinition = this.getDataValue('defaultUnitDefinition'),
+            hasId = defaultUnitDefinition !== null && defaultUnitDefinition.hasOwnProperty('id') && defaultUnitDefinition.id !== null,
             unitFieldForm = this.getUnitFormFields({
-                unitName: 'defaultUnit',
+                unitName: 'defaultUnitDefinition.unit',
                 unitLabel: 'coreshop_store_values_unit_default_type',
-                unitValue: defaultUnit !== null ? defaultUnit.id : this.getDefaultUnitStoreValue(),
-                precisionName: 'defaultUnitPrecision',
+                unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue(),
+                precisionName: 'defaultUnitDefinition.precision',
                 precisionLabel: 'coreshop_store_values_unit_precision',
-                precisionValue: defaultUnitPrecision !== null ? defaultUnitPrecision : 0,
+                precisionValue: defaultUnitDefinition !== null ? defaultUnitDefinition.precision : 0,
             }, false);
+
+        // add id field if available
+        if (hasId === true) {
+            unitFieldForm.push({
+                xtype: 'hidden',
+                name: 'defaultUnitDefinition.id',
+                value: defaultUnitDefinition.id
+            });
+        }
 
         return Ext.create('Ext.form.Panel', {
             width: 950,
@@ -154,9 +165,9 @@ coreshop.product.storeValues.builder = Class.create({
         });
     },
 
-    getAdditionalUnitsField: function () {
+    getAdditionalUnitDefinitionsField: function () {
 
-        var additionalUnitData = this.getDataValue('additionalUnits'), fieldSet;
+        var additionalUnitData = this.getDataValue('unitDefinitions'), fieldSet;
 
         fieldSet = new Ext.form.FieldSet({
             title: t('coreshop_store_values_additional_units_headline'),
@@ -239,6 +250,7 @@ coreshop.product.storeValues.builder = Class.create({
                         return;
                     }
                     fieldSet.remove(compositeField);
+                    this.dirty = true;
                     this.checkAddUnitBlockAvailability(fieldSet);
                     this.adjustUnitStores(false);
                 }.bind(this));
@@ -263,10 +275,10 @@ coreshop.product.storeValues.builder = Class.create({
         var recheck = false,
             combos,
             additionalUnitCombos = this.form.query('combo[itemCls~=unit-store][cls!=default-unit-store]'),
-            defaultUnitCombo = this.form.query('combo[cls~=default-unit-store]');
+            defaultUnitDefinitionCombo = this.form.query('combo[cls~=default-unit-store]');
 
         // default unit store needs to be last!
-        combos = Ext.Array.merge(additionalUnitCombos, defaultUnitCombo);
+        combos = Ext.Array.merge(additionalUnitCombos, defaultUnitDefinitionCombo);
 
         Ext.Array.each(combos, function (combo) {
 
@@ -293,6 +305,10 @@ coreshop.product.storeValues.builder = Class.create({
                     combo.resumeEvents(true);
                 }
             }
+
+            // finally: adjust precision default:
+            this.adjustDefaultPrecision(combo, combo.getName() !== 'defaultUnitDefinition.unit');
+
         }.bind(this));
 
         if (initializing === true) {
@@ -304,26 +320,29 @@ coreshop.product.storeValues.builder = Class.create({
         }
     },
 
-    getDefaultUnitStoreValue: function () {
-        if (this.unitStore.isLoaded()) {
-            return this.unitStore.first().get('id');
+    adjustDefaultPrecision: function (combo, isAdditional) {
+        var unitRecord = this.unitStore.getById(combo.getValue()),
+            precisionField = combo.up(isAdditional ? 'fieldcontainer' : 'fieldset').query('numberfield[itemCls="unit-precision"]')[0];
+        if (!unitRecord) {
+            return;
         }
 
-        return null;
+        precisionField.setValue(unitRecord.get('defaultPrecision'));
+
     },
 
     adjustAdditionalUnitLabel: function () {
 
         var unitData,
             labelText,
-            defaultUnitStore = this.form.query('combo[cls~=default-unit-store]')[0],
+            defaultUnitDefinitionStore = this.form.query('combo[cls~=default-unit-store]')[0],
             additionalUnitLabels = this.form.getComponent('additional-units-fieldset').query('label[itemCls~=conversion-rate-label]'),
-            defaultUnitStoreValue = defaultUnitStore.getValue();
+            defaultUnitDefinitionStoreValue = defaultUnitDefinitionStore.getValue();
 
-        if (!defaultUnitStoreValue) {
+        if (!defaultUnitDefinitionStoreValue) {
             labelText = '--';
         } else {
-            unitData = this.unitStore.getById(defaultUnitStoreValue);
+            unitData = this.unitStore.getById(defaultUnitDefinitionStoreValue);
             labelText = unitData.get('name');
         }
 
@@ -333,10 +352,10 @@ coreshop.product.storeValues.builder = Class.create({
     },
 
     checkAddUnitBlockAvailability: function (comp) {
-        var additionalUnits = comp.query('fieldcontainer'),
+        var unitDefinitions = comp.query('fieldcontainer'),
             addButton = comp.query('button[itemId="additional-unit-add-button"]')[0];
         // -1 = default unit store cannot be selected
-        addButton.setVisible(additionalUnits.length < this.unitStore.getRange().length - 1);
+        addButton.setVisible(unitDefinitions.length < this.unitStore.getRange().length - 1);
     },
 
     cloneStore: function (store, disallowed) {
@@ -356,6 +375,14 @@ coreshop.product.storeValues.builder = Class.create({
         return store2;
     },
 
+    getDefaultUnitStoreValue: function () {
+        if (this.unitStore.isLoaded()) {
+            return this.unitStore.first().get('id');
+        }
+
+        return null;
+    },
+
     getUnitFormFields: function (data, extended, hasId) {
 
         var fields = [
@@ -367,7 +394,7 @@ coreshop.product.storeValues.builder = Class.create({
                 store: null,
                 triggerAction: 'all',
                 itemCls: 'unit-store',
-                cls: (data.unitName === 'defaultUnit' ? 'default-unit-store' : ''),
+                cls: (data.unitName === 'defaultUnitDefinition.unit' ? 'default-unit-store' : ''),
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
@@ -375,16 +402,18 @@ coreshop.product.storeValues.builder = Class.create({
                 displayField: 'name',
                 valueField: 'id',
                 value: data.unitValue,
-                maxWidth: data.unitName === 'defaultUnit' ? 250 : 200,
+                maxWidth: data.unitName === 'defaultUnitDefinition.unit' ? 250 : 200,
                 readOnly: hasId,
                 listeners: {
                     change: function (comp, value) {
-                        if (comp.getName() === 'defaultUnit' && value) {
+                        if (comp.getName() === 'defaultUnitDefinition.unit' && value) {
                             this.adjustAdditionalUnitLabel();
                         }
                         if (this.unitStoresInitialized === true) {
                             this.adjustUnitStores();
                         }
+
+                        this.adjustDefaultPrecision(comp, comp.getName() !== 'defaultUnitDefinition.unit');
 
                     }.bind(this)
                 }
@@ -393,6 +422,7 @@ coreshop.product.storeValues.builder = Class.create({
                 xtype: 'numberfield',
                 fieldLabel: t(data.precisionLabel),
                 name: data.precisionName,
+                itemCls: 'unit-precision',
                 labelWidth: 80,
                 minValue: 0,
                 value: data.precisionValue,
@@ -441,12 +471,19 @@ coreshop.product.storeValues.builder = Class.create({
             this.data.values = refreshedData.values;
         }
 
+        this.dirty = false;
+
         this.form.getForm().getFields().each(function (item) {
             item.resetOriginalValue();
         });
     },
 
     isDirty: function () {
+
+        if (this.dirty === true) {
+            return true;
+        }
+
         if (this.form.getForm().isDirty()) {
             return true;
         }

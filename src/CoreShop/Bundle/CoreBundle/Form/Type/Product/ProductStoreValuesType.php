@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitChoiceType;
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Unit\ProductAdditionalUnitCollectionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionCollectionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -47,9 +47,8 @@ final class ProductStoreValuesType extends AbstractResourceType
             ->add('store', StoreChoiceType::class)
             ->add('product', ProductSelectionType::class)
             ->add('price', IntegerType::class)
-            ->add('defaultUnit', ProductUnitChoiceType::class)
-            ->add('defaultUnitPrecision', IntegerType::class)
-            ->add('additionalUnits', ProductAdditionalUnitCollectionType::class);
+            ->add('defaultUnitDefinition', ProductUnitDefinitionType::class)
+            ->add('unitDefinitions', ProductUnitDefinitionCollectionType::class);
     }
 
     /**
@@ -84,37 +83,32 @@ final class ProductStoreValuesType extends AbstractResourceType
         $objectId = $parsedData['objectId'];
 
         $price = null;
-        $defaultUnit = null;
-        $defaultUnitPrecision = 0;
+        $defaultUnitDefinition = null;
 
         if ($parsedData['price'] !== null) {
             $price = (int) round((round($parsedData['price'], 2) * 100), 0);
         }
 
-        if (is_numeric($parsedData['defaultUnit'])) {
-            $defaultUnit = (int) $parsedData['defaultUnit'];
+        if (is_array($parsedData['defaultUnitDefinition'])) {
+            $defaultUnitDefinition = $parsedData['defaultUnitDefinition'];
+            $defaultUnitDefinition['product'] = $objectId;
         }
 
-        if (is_numeric($parsedData['defaultUnitPrecision'])) {
-            $defaultUnitPrecision = (int) $parsedData['defaultUnitPrecision'];
-        }
-
-        $additionalUnits = [];
+        $unitDefinitions = [];
         if (is_array($parsedData['additionalUnit'])) {
-            foreach ($parsedData['additionalUnit'] as $additionalUnit) {
-                $productAwareAdditionalUnit = $additionalUnit;
-                $productAwareAdditionalUnit['product'] = $objectId;
-                $additionalUnits[] = $productAwareAdditionalUnit;
+            foreach ($parsedData['additionalUnit'] as $additionalUnitDefinition) {
+                $productAwareAdditionalUnitDefinition = $additionalUnitDefinition;
+                $productAwareAdditionalUnitDefinition['product'] = $objectId;
+                $unitDefinitions[] = $productAwareAdditionalUnitDefinition;
             }
         }
 
         return [
-            'store'                => $storeId,
-            'product'              => $objectId,
-            'defaultUnit'          => $defaultUnit,
-            'price'                => $price,
-            'defaultUnitPrecision' => $defaultUnitPrecision,
-            'additionalUnits'      => $additionalUnits
+            'store'                 => $storeId,
+            'product'               => $objectId,
+            'defaultUnitDefinition' => $defaultUnitDefinition,
+            'price'                 => $price,
+            'unitDefinitions'       => $unitDefinitions
         ];
     }
 

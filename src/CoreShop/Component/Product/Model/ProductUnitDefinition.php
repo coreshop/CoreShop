@@ -14,7 +14,7 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
-class ProductAdditionalUnit extends AbstractResource implements ProductAdditionalUnitInterface
+class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {
     /**
      * @var int
@@ -137,8 +137,21 @@ class ProductAdditionalUnit extends AbstractResource implements ProductAdditiona
     /**
      * {@inheritdoc}
      */
-    public function setConversionRate(float $conversionRate)
+    public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitName()
+    {
+        if ($unit = $this->getUnit()) {
+            return $unit->getName();
+        } else {
+            return null;
+        }
+    }
+
 }

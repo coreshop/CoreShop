@@ -1,6 +1,6 @@
-CoreShop\Component\Product\Model\ProductAdditionalUnit:
+CoreShop\Component\Product\Model\ProductUnitDefinition:
     type: mappedSuperclass
-    table: coreshop_product_additional_unit
+    table: coreshop_product_unit_definition
     fields:
         id:
             type: integer
@@ -14,13 +14,14 @@ CoreShop\Component\Product\Model\ProductAdditionalUnit:
         price:
             column: price
             type: integer
+            nullable: true
         precision:
             column: '`precision`'
             type: integer
         conversionRate:
             column: conversion_rate
             type: float
-            nullable: false
+            nullable: true
     manyToOne:
         unit:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface

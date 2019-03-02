@@ -15,3 +15,10 @@ CoreShop\Component\Core\Model\QuantityRange:
                 name: currencyId
                 referencedColumnName: id
                 onDelete: 'SET NULL'
+    oneToOne:
+        unitDefinition:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            joinColumn:
+                name: unit
+                referencedColumnName: id
+                nullable: true

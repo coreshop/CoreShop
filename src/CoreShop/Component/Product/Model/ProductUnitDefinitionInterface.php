@@ -14,7 +14,7 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface ProductAdditionalUnitInterface extends ResourceInterface
+interface ProductUnitDefinitionInterface extends ResourceInterface
 {
     /**
      * @return ProductInterface
@@ -57,12 +57,17 @@ interface ProductAdditionalUnitInterface extends ResourceInterface
     public function setPrecision(int $precision);
 
     /**
-     * @return float
+     * @return float|null
      */
     public function getConversionRate();
 
     /**
      * @param float $conversionRate
      */
-    public function setConversionRate(float $conversionRate);
+    public function setConversionRate(float $conversionRate = null);
+
+    /**
+     * @return string|null
+     */
+    public function getUnitName();
 }

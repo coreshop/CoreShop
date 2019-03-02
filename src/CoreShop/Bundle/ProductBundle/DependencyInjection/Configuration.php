@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
 use CoreShop\Bundle\ProductBundle\Controller\ProductUnitController;
-use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductAdditionalUnitRepository;
+use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitRepository;
@@ -23,12 +23,11 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository;
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
-use CoreShop\Component\Product\Model\ProductAdditionalUnit;
-use CoreShop\Component\Product\Model\ProductAdditionalUnitInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinition;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductPriceRule;
 use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
@@ -143,17 +142,17 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-                        ->arrayNode('product_additional_unit')
+                        ->arrayNode('product_unit_definition')
                             ->addDefaultsIfNotSet()
                             ->children()
                                 ->variableNode('options')->end()
                                 ->arrayNode('classes')
                                     ->addDefaultsIfNotSet()
                                     ->children()
-                                        ->scalarNode('model')->defaultValue(ProductAdditionalUnit::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductAdditionalUnitInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('model')->defaultValue(ProductUnitDefinition::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(ProductUnitDefinitionInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ProductAdditionalUnitRepository::class)->end()
+                                        ->scalarNode('repository')->defaultValue(ProductUnitDefinitionRepository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()

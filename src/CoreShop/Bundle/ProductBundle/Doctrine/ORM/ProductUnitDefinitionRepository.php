@@ -10,10 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Repository;
+namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Product\Repository\ProductUnitDefinitionRepositoryInterface;
 
-interface ProductAdditionalUnitRepositoryInterface extends RepositoryInterface
+class ProductUnitDefinitionRepository extends EntityRepository implements ProductUnitDefinitionRepositoryInterface
 {
 }

@@ -12,8 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Product\Model\ProductAdditionalUnitInterface;
-use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Doctrine\Common\Collections\Collection;
@@ -31,46 +30,36 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
     public function setPrice(int $price);
 
     /**
-     * @return ProductUnitInterface
+     * @return ProductUnitDefinitionInterface
      */
-    public function getDefaultUnit();
+    public function getDefaultUnitDefinition();
 
     /**
-     * @param ProductUnitInterface $unit
+     * @param ProductUnitDefinitionInterface $defaultUnitDefinition
      */
-    public function setDefaultUnit(ProductUnitInterface $unit);
+    public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition);
 
     /**
-     * @return int
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
      */
-    public function getDefaultUnitPrecision();
+    public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
     /**
-     * @param int $defaultUnitPrecision
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
      */
-    public function setDefaultUnitPrecision(int $defaultUnitPrecision);
+    public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
     /**
-     * @param ProductAdditionalUnitInterface $productAdditionalUnit
+     * @return Collection|ProductUnitDefinitionInterface[]
      */
-    public function addAdditionalUnit(ProductAdditionalUnitInterface $productAdditionalUnit);
-
-    /**
-     * @param ProductAdditionalUnitInterface $productAdditionalUnit
-     */
-    public function removeAdditionalUnit(ProductAdditionalUnitInterface $productAdditionalUnit);
-
-    /**
-     * @return Collection|ProductAdditionalUnitInterface[]
-     */
-    public function getAdditionalUnits();
+    public function getUnitDefinitions();
 
     /**
      * @param string $identifier
      *
-     * @return ProductAdditionalUnitInterface|null
+     * @return ProductUnitDefinitionInterface|null
      */
-    public function getAdditionalUnit(string $identifier);
+    public function getUnitDefinition(string $identifier);
 
     /**
      * @return ProductInterface

@@ -1,6 +1,6 @@
 parameters:
     coreshop.form.type.product_unit.validation_groups: [coreshop]
-    coreshop.form.type.product_additional_unit.validation_groups: [coreshop]
+    coreshop.form.type.product_unit_definition.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -22,10 +22,10 @@ services:
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.product_additional_unit:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductAdditionalUnitType
+    coreshop.form.type.product.unit_definition:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionType
         arguments:
-            - '%coreshop.model.product_additional_unit.class%'
-            - '%coreshop.form.type.product_additional_unit.validation_groups%'
+            - '%coreshop.model.product_unit_definition.class%'
+            - '%coreshop.form.type.product_unit_definition.validation_groups%'
         tags:
             - { name: form.type }

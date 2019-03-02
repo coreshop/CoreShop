@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-final class ProductAdditionalUnitType extends AbstractResourceType
+final class ProductUnitDefinitionType extends AbstractResourceType
 {
     /**
      * {@inheritdoc}
@@ -56,6 +56,6 @@ final class ProductAdditionalUnitType extends AbstractResourceType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_additional_unit';
+        return 'coreshop_product_unit_definition';
     }
 }
