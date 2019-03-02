@@ -68,7 +68,7 @@ coreshop.product.storeValues.builder = Class.create({
 
         return [
             this.getDefaultUnitField(),
-            this.geAdditionalUnitsField()
+            this.getAdditionalUnitsField()
         ]
     },
 
@@ -154,7 +154,7 @@ coreshop.product.storeValues.builder = Class.create({
         });
     },
 
-    geAdditionalUnitsField: function () {
+    getAdditionalUnitsField: function () {
 
         var additionalUnitData = this.getDataValue('additionalUnits'), fieldSet;
 
@@ -182,9 +182,9 @@ coreshop.product.storeValues.builder = Class.create({
                     itemId: 'additional-unit-add-button',
                     handler: function (b) {
                         var fieldSet = b.up('fieldset');
-                        this.addUnitField(fieldSet, null);
+                        this.addAdditionalUnitField(fieldSet, null);
                         this.checkAddUnitBlockAvailability(fieldSet);
-                        this.adjustUnitStores();
+                        this.adjustUnitStores(false);
                         this.adjustAdditionalUnitLabel();
                     }.bind(this)
                 }]
@@ -193,14 +193,14 @@ coreshop.product.storeValues.builder = Class.create({
 
         if (additionalUnitData !== null && Ext.isArray(additionalUnitData)) {
             Ext.Array.each(additionalUnitData, function (unit) {
-                this.addUnitField(fieldSet, unit);
+                this.addAdditionalUnitField(fieldSet, unit);
             }.bind(this));
         }
 
         return fieldSet;
     },
 
-    addUnitField: function (fieldSet, data) {
+    addAdditionalUnitField: function (fieldSet, data) {
 
         this.additionalUnitCounter++;
 
@@ -209,7 +209,7 @@ coreshop.product.storeValues.builder = Class.create({
             unitFieldForm = this.getUnitFormFields({
                 unitName: 'additionalUnit.' + this.additionalUnitCounter + '.unit',
                 unitLabel: 'coreshop_store_values_unit_type',
-                unitValue: data !== null && Ext.isObject(data) ? data.unit.id : this.getDefaultUnitStoreValue(),
+                unitValue: data !== null && Ext.isObject(data) ? data.unit.id : null,
                 precisionName: 'additionalUnit.' + this.additionalUnitCounter + '.precision',
                 precisionLabel: 'coreshop_store_values_unit_precision',
                 precisionValue: data !== null ? data.precision : 0,
@@ -240,7 +240,7 @@ coreshop.product.storeValues.builder = Class.create({
                     }
                     fieldSet.remove(compositeField);
                     this.checkAddUnitBlockAvailability(fieldSet);
-                    this.adjustUnitStores();
+                    this.adjustUnitStores(false);
                 }.bind(this));
 
             }.bind(this, compositeField)
@@ -260,13 +260,23 @@ coreshop.product.storeValues.builder = Class.create({
 
     adjustUnitStores: function (initializing) {
 
-        var combos = this.form.query('combo[itemCls~=unit-store]');
+        var recheck = false,
+            combos,
+            additionalUnitCombos = this.form.query('combo[itemCls~=unit-store][cls!=default-unit-store]'),
+            defaultUnitCombo = this.form.query('combo[cls~=default-unit-store]');
+
+        // default unit store needs to be last!
+        combos = Ext.Array.merge(additionalUnitCombos, defaultUnitCombo);
 
         Ext.Array.each(combos, function (combo) {
 
             var disallowed = [], clonedStore;
+
             Ext.Array.each(combos, function (subCombo) {
-                if (combo.getValue() !== subCombo.getValue()) {
+                if (combo.getName() !== subCombo.getName()) {
+                    if (subCombo.getValue() === null) {
+                        recheck = true;
+                    }
                     disallowed.push(subCombo.getValue());
                 }
             }.bind(this));
@@ -277,14 +287,20 @@ coreshop.product.storeValues.builder = Class.create({
                 clonedStore = this.cloneStore(this.unitStore, disallowed);
                 combo.setStore(clonedStore);
                 // current combo value is not allowed anymore
-                if (disallowed.indexOf(combo.getValue()) !== -1) {
+                if (disallowed.indexOf(combo.getValue()) !== -1 || combo.getValue() === null) {
+                    combo.suspendEvents();
                     combo.setValue(clonedStore.first());
+                    combo.resumeEvents(true);
                 }
             }
         }.bind(this));
 
         if (initializing === true) {
             this.unitStoresInitialized = true;
+        }
+
+        if (recheck === true) {
+            this.adjustUnitStores(false);
         }
     },
 
