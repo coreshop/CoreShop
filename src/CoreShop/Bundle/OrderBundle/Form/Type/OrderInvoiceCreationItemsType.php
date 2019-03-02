@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class OrderDocumentCreationItemsType extends AbstractType
+final class OrderInvoiceCreationItemsType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,13 +26,5 @@ final class OrderDocumentCreationItemsType extends AbstractType
         $builder
             ->add('orderItemId', NumberType::class)
             ->add('quantity', NumberType::class);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'coreshop_order_document_creation_items';
     }
 }

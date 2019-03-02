@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -24,6 +25,7 @@ use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -59,7 +61,7 @@ class OrderInvoiceController extends PimcoreController
         foreach ($items as $item) {
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
-                $itemsToReturn[] = [
+                $itemToReturn = [
                     'orderItemId' => $orderItem->getId(),
                     'price' => $orderItem->getItemPrice(),
                     'maxToInvoice' => $item['quantity'],
@@ -70,6 +72,12 @@ class OrderInvoiceController extends PimcoreController
                     'total' => $orderItem->getTotal(),
                     'name' => $orderItem->getName(),
                 ];
+
+                $event = new GenericEvent($orderItem, $itemToReturn);
+
+                $this->get('event_dispatcher')->dispatch('coreshop.order.invoice.prepare_invoice_able', $event);
+
+                $itemsToReturn[] = $event->getArguments();
             }
         }
 
@@ -83,31 +91,61 @@ class OrderInvoiceController extends PimcoreController
      */
     public function createInvoiceAction(Request $request)
     {
-        $items = $request->get('items');
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
 
-        if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
-        }
+        $form = $this->get('form.factory')->createNamed('', OrderInvoiceCreationType::class);
 
-        try {
-            // request invoice ready state from order, if it's our first invoice.
-            $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_invoice');
-            if ($workflow->can($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE)) {
-                $workflow->apply($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE);
+        $handledForm = $form->handleRequest($request);
+
+        if ($request->getMethod() === 'POST') {
+            if (!$handledForm->isValid()) {
+                return $this->viewHandler->handle(
+                    [
+                        'success' => false,
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                    ]
+                );
             }
 
-            $invoice = $this->getInvoiceFactory()->createNew();
-            $invoice->setState(InvoiceStates::STATE_NEW);
+            $resource = $handledForm->getData();
 
-            $items = $this->decodeJson($items);
-            $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
+            $order = $this->getOrderRepository()->find($orderId);
 
-            return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
-        } catch (\Exception $ex) {
-            return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+            if (!$order instanceof OrderInterface) {
+                return $this->viewHandler->handle([
+                    'success' => false,
+                    'message' => "Order with ID '$orderId' not found"
+                ]);
+            }
+
+            try {
+                // request invoice ready state from order, if it's our first invoice.
+                $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_invoice');
+                if ($workflow->can($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE)) {
+                    $workflow->apply($order, OrderInvoiceTransitions::TRANSITION_REQUEST_INVOICE);
+                }
+
+                $invoice = $this->getInvoiceFactory()->createNew();
+                $invoice->setState(InvoiceStates::STATE_NEW);
+
+                foreach ($resource as $key => $value) {
+                    if (in_array($key, ['items', 'id', 'state'])) {
+                        continue;
+                    }
+
+                    $invoice->setValue($key, $value);
+                }
+
+                $items = $resource['items'];
+                $invoice = $this->getOrderToInvoiceTransformer()->transform($order, $invoice, $items);
+
+                return $this->viewHandler->handle(['success' => true, 'invoiceId' => $invoice->getId()]);
+            } catch (\Exception $ex) {
+                return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+            }
         }
+
+        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
     /**
