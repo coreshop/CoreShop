@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
-use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class OrderState extends AbstractOperator
@@ -23,16 +23,16 @@ class OrderState extends AbstractOperator
     private $highlightLabel = false;
 
     /**
-     * @var WorkflowStateManagerInterface
+     * @var WorkflowStateInfoManagerInterface
      */
     private $workflowManager;
 
     /**
-     * @param WorkflowStateManagerInterface $workflowManager
+     * @param WorkflowStateInfoManagerInterface $workflowManager
      * @param \stdClass                     $config
      * @param null                          $context
      */
-    public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
+    public function __construct(WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
         parent::__construct($config, $context);
         $this->workflowManager = $workflowManager;

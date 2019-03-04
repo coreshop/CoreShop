@@ -145,7 +145,13 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
             $quantity = $item['quantity'];
 
             if ($orderItem instanceof OrderItemInterface) {
-                $items[] = $this->orderItemToShipmentItemTransformer->transform($shipment, $orderItem, $shipmentItem, $quantity);
+                $items[] = $this->orderItemToShipmentItemTransformer->transform(
+                    $shipment,
+                    $orderItem,
+                    $shipmentItem,
+                    $quantity,
+                    $item
+                );
             }
         }
 

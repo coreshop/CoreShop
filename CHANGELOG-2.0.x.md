@@ -1,5 +1,12 @@
 # Within V2
 
+## 2.0.5:
+ - Deprecations:
+   - [WorkflowBundle] refactor state change logging (https://github.com/coreshop/CoreShop/pull/835)
+     - `CoreShop\Bundle\OrderBundle\Workflow\OrderHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface` instead
+     - `CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface` instead
+     - `CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface` instead
+
 ## 2.0.4
  - Features:
    - [Reports] Reports Grid Sorting (https://github.com/coreshop/CoreShop/pull/828)

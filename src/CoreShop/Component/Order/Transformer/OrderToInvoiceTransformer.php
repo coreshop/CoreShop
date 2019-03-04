@@ -162,7 +162,13 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
             $quantity = $item['quantity'];
 
             if ($orderItem instanceof OrderItemInterface) {
-                $items[] = $this->orderItemToInvoiceItemTransformer->transform($invoice, $orderItem, $invoiceItem, $quantity);
+                $items[] = $this->orderItemToInvoiceItemTransformer->transform(
+                    $invoice,
+                    $orderItem,
+                    $invoiceItem,
+                    $quantity,
+                    $item
+                );
             }
         }
 

@@ -5,7 +5,7 @@ services:
     coreshop.data_object.grid_column_config.operator.factory.order_state:
         class: CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator\Factory\OrderStateFactory
         arguments:
-            - '@coreshop.workflow.state_manager'
+            - '@coreshop.workflow.state_info_manager'
         tags:
             - { name: pimcore.data_object.grid_column_config.operator_factory, id: coreshop_order_state }
 

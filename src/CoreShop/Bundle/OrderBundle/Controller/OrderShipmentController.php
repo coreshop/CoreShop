@@ -26,6 +26,7 @@ use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -61,7 +62,7 @@ class OrderShipmentController extends PimcoreController
         foreach ($items as $item) {
             $orderItem = $item['item'];
             if ($orderItem instanceof OrderItemInterface) {
-                $itemsToReturn[] = [
+                $itemToReturn = [
                     'orderItemId' => $orderItem->getId(),
                     'price' => $orderItem->getItemPrice(),
                     'maxToShip' => $item['quantity'],
@@ -72,6 +73,12 @@ class OrderShipmentController extends PimcoreController
                     'total' => $orderItem->getTotal(),
                     'name' => $orderItem->getName(),
                 ];
+
+                $event = new GenericEvent($orderItem, $itemToReturn);
+
+                $this->get('event_dispatcher')->dispatch('coreshop.order.shipment.prepare_ship_able', $event);
+
+                $itemsToReturn[] = $event->getArguments();
             }
         }
 
@@ -91,9 +98,14 @@ class OrderShipmentController extends PimcoreController
 
         $handledForm = $form->handleRequest($request);
 
-        if (in_array($request->getMethod(), ['POST'], true)) {
+        if ($request->getMethod() === 'POST') {
             if (!$handledForm->isValid()) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'Form is not valid.']);
+                return $this->viewHandler->handle(
+                    [
+                        'success' => false,
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                    ]
+                );
             }
 
             $resource = $handledForm->getData();

@@ -12,129 +12,62 @@
 
 namespace CoreShop\Bundle\OrderBundle\Workflow;
 
-use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
-use Pimcore\Model\Element\Note;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * @deprecated CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager is deprecated and will be removed with 2.1, please use \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface instead
+ */
 final class WorkflowStateManager implements WorkflowStateManagerInterface
 {
     /**
-     * @var EventDispatcherInterface
+     * @var \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface
      */
-    private $eventDispatcher;
+    private $stateManager;
 
     /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
-
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
-    /**
-     * @var string
-     */
-    private $noteIdentifier;
-
-    /**
-     * @var array
-     */
-    private $stateColors;
-
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param StateMachineManager      $stateMachineManager
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
-     * @param array                    $stateColors
+     * @param \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface $stateManager
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
-        StateMachineManager $stateMachineManager,
-        TranslatorInterface $translator,
-        $noteIdentifier,
-        $stateColors
+        \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface $stateManager
     ) {
-        $this->eventDispatcher = $eventDispatcher;
-        $this->stateMachineManager = $stateMachineManager;
-        $this->noteIdentifier = $noteIdentifier;
-        $this->translator = $translator;
-        $this->stateColors = $stateColors;
+        $this->stateManager = $stateManager;
     }
 
     /**
-     * @param string $workflowName
-     * @param mixed  $value
-     * @param bool   $forFrontend
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getStateInfo($workflowName, $value, $forFrontend = true)
     {
-        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
+        trigger_error(
+            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+                static::class,
+                __METHOD__,
+                \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
 
-        $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
-
-        $data = [
-            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
-            'state' => $value,
-            'color' => $color,
-        ];
-
-        return $data;
+        return $this->stateManager->getStateInfo($workflowName, $value, $forFrontend);
     }
 
     /**
-     * @param string $workflowName
-     * @param string $transition
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
-    public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
-    {
-        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
-        $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
-
-        $data = [
-            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
-            'transition' => $transition,
-            'color' => $color,
-        ];
-
-        return $data;
-    }
-
-    /**
-     * @param string $subject
-     * @param string $workflowName
-     * @param array  $transitions
-     * @param bool   $forFrontend
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
     {
-        $event = new WorkflowTransitionEvent($transitions, $workflowName);
-        $this->eventDispatcher->dispatch('coreshop.workflow.valid_transitions', $event);
+        trigger_error(
+            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+                static::class,
+                __METHOD__,
+                \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
 
-        $valid = [];
-        $workflow = $this->stateMachineManager->get($subject, $workflowName);
-        foreach ($event->getAllowedTransitions() as $transition) {
-            if ($workflow->can($subject, $transition)) {
-                $valid[] = $this->getTransitionInfo($workflowName, $transition, $forFrontend);
-            }
-        }
-
-        return $valid;
+        return $this->stateManager->parseTransitions($subject, $workflowName, $transitions, $forFrontend);
     }
 
     /**
@@ -142,13 +75,16 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
      */
     public function getStateHistory(ProposalInterface $proposal)
     {
-        /* @var \Pimcore\Model\Element\Note\Listing $noteList */
-        $noteList = new Note\Listing();
-        $noteList->addConditionParam('type = ?', $this->noteIdentifier);
-        $noteList->addConditionParam('cid = ?', $proposal->getId());
-        $noteList->setOrderKey('date');
-        $noteList->setOrder('desc');
+        trigger_error(
+            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+                static::class,
+                __METHOD__,
+                \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,
+                __METHOD__
+            ),
+            E_USER_DEPRECATED
+        );
 
-        return $noteList->load();
+        return $this->stateManager->getStateHistory($proposal);
     }
 }
