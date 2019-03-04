@@ -41,64 +41,89 @@ coreshop.order.order.shipment = Class.create({
         });
     },
 
-    show: function (shipAbleItems) {
+    getStoreFields: function() {
+        return [
+            'orderItemId',
+            'price',
+            'maxToShip',
+            'quantity',
+            'quantityShipped',
+            'toShip',
+            'tax',
+            'total',
+            'name'
+        ];
+    },
+
+    getGridColumns: function() {
+        return [
+            {
+                xtype: 'gridcolumn',
+                flex: 1,
+                dataIndex: 'name',
+                text: t('coreshop_product')
+            },
+            {
+                xtype: 'gridcolumn',
+                dataIndex: 'price',
+                text: t('coreshop_price'),
+                width: 100,
+                align: 'right',
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
+            },
+            {
+                xtype: 'gridcolumn',
+                dataIndex: 'quantity',
+                text: t('coreshop_quantity'),
+                width: 100,
+                align: 'right'
+            },
+            {
+                xtype: 'gridcolumn',
+                dataIndex: 'quantityShipped',
+                text: t('coreshop_shipped_quantity'),
+                width: 120,
+                align: 'right'
+            },
+            {
+                xtype: 'gridcolumn',
+                dataIndex: 'toShip',
+                text: t('coreshop_quantity_to_ship'),
+                width: 100,
+                align: 'right',
+                field: {
+                    xtype: 'numberfield',
+                    decimalPrecision: 0
+                }
+            }
+        ];
+    },
+
+    createWindow: function(shipAbleItems) {
+        var me = this;
+
         var positionStore = new Ext.data.JsonStore({
-            data: shipAbleItems
+            data: shipAbleItems,
+            fields: this.getStoreFields()
         });
 
-        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing');
+        var rowEditing = Ext.create('Ext.grid.plugin.RowEditing');
 
         var itemsGrid = {
             xtype: 'grid',
             cls: 'coreshop-order-detail-grid',
             store: positionStore,
-            plugins: [cellEditing],
+            plugins: [rowEditing],
             listeners: {
                 validateedit: function (editor, context) {
-                    return context.value <= context.record.data.maxToShip;
+                    if (context.field === 'toShip') {
+                        return context.value <= context.record.data.maxToShip;
+                    }
+
+                    return true;
                 }
             },
-            columns: [
-                {
-                    xtype: 'gridcolumn',
-                    flex: 1,
-                    dataIndex: 'name',
-                    text: t('coreshop_product')
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'price',
-                    text: t('coreshop_price'),
-                    width: 100,
-                    align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.order.currency.symbol)
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'quantity',
-                    text: t('coreshop_quantity'),
-                    width: 100,
-                    align: 'right'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'quantityShipped',
-                    text: t('coreshop_shipped_quantity'),
-                    width: 120,
-                    align: 'right'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'toShip',
-                    text: t('coreshop_quantity_to_ship'),
-                    width: 100,
-                    align: 'right',
-                    field: {
-                        xtype: 'numberfield',
-                        decimalPrecision: 0
-                    }
-                }
-            ]
+            columns: this.getGridColumns()
         };
 
         var trackingCode = Ext.create('Ext.form.TextField', {
@@ -131,10 +156,7 @@ coreshop.order.order.shipment = Class.create({
 
                         positionStore.getRange().forEach(function (item) {
                             if (item.get('toShip') > 0) {
-                                itemsToShip.push({
-                                    orderItemId: item.get('orderItemId'),
-                                    quantity: item.get('toShip')
-                                });
+                                itemsToShip.push(me.processItemsToShip(item));
                             }
                         });
 
@@ -170,7 +192,20 @@ coreshop.order.order.shipment = Class.create({
             ]
         });
 
-        window.show();
+        return window;
+    },
+
+    processItemsToShip: function(item) {
+        return {
+            orderItemId: item.get('orderItemId'),
+            quantity: item.get('toShip')
+        };
+    },
+
+    show: function (shipAbleItems) {
+        var grWindow = this.createWindow(shipAbleItems);
+
+        grWindow.show();
 
         return window;
     }
