@@ -152,13 +152,15 @@ coreshop.order.order.invoice = Class.create({
 
                         window.setLoading(t('loading'));
 
+                        var data = {
+                            id: this.order.o_id,
+                            items: itemsToInvoice
+                        };
+
                         Ext.Ajax.request({
                             url: '/admin/coreshop/order-invoice/create-invoice',
                             method: 'post',
-                            params: {
-                                'items': Ext.encode(itemsToInvoice),
-                                'id': this.order.o_id
-                            },
+                            jsonData: data,
                             success: function (response) {
                                 var res = Ext.decode(response.responseText);
 

@@ -37,12 +37,22 @@ services:
              - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
              - !php/const CoreShop\Component\Order\ShipmentTransitions::TRANSITION_CREATE
 
-    coreshop.form.type.order_document_items:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderDocumentCreationItemsType
+    coreshop.form.type.order_shipment_creation_items:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationItemsType
         tags:
             - { name: form.type }
 
-    coreshop.form.type.shipment_creation:
+    coreshop.form.type.order_shipment_creation:
         class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
         tags:
            - { name: form.type }
+
+    coreshop.form.type.order_invoice_creation_items:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationItemsType
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.order_invoice_creation:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType
+        tags:
+            - { name: form.type }

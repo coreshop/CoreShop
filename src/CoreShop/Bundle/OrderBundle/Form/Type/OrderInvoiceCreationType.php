@@ -19,7 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class OrderShipmentCreationType extends AbstractType
+final class OrderInvoiceCreationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -27,10 +27,9 @@ final class OrderShipmentCreationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('trackingCode', TextType::class)
             ->add('id', IntegerType::class)
             ->add('items', CollectionType::class, [
-                'entry_type' => OrderShipmentCreationItemsType::class,
+                'entry_type' => OrderInvoiceCreationItemsType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
