@@ -16,6 +16,7 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -61,8 +62,14 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             foreach ($attributes as $tag) {
-                if (!isset($tag['type'], $tag['form-type'], $tag['notification-type'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type`, `form-type` and `notification-type`` attributes.');
+                $definition = $container->findDefinition($id);
+
+                if (!isset($attributes[0]['type'])) {
+                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
+                }
+
+                if (!isset($tag['notification-type'])) {
+                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `notification-type`` attribute.');
                 }
 
                 $type = $tag['notification-type'];
@@ -88,10 +95,13 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                 $fqtn = sprintf('%s.%s', $type, $tag['type']);
 
                 $registries[$type]->addMethodCall('register', [$tag['type'], new Reference($id)]);
-                $formRegistries[$type]->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
-
                 $registry->addMethodCall('register', [$fqtn, new Reference($id)]);
-                $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
+
+                if (isset($attributes[0]['form-type'])) {
+                    $formRegistries[$type]->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
+                    $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
+                }
+
 
                 $registeredTypes[$fqtn] = $fqtn;
             }

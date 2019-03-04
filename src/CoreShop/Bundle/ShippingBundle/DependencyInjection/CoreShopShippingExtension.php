@@ -13,6 +13,14 @@
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippableValidatorPass;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
+use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Rule\Condition\ShippingConditionCheckerInterface;
+use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -40,5 +48,25 @@ final class CoreShopShippingExtension extends AbstractModelExtension
         $container->setAlias('coreshop.carrier.default_resolver', $alias);
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(ShippableCarrierValidatorInterface::class)
+            ->addTag(CompositeShippableValidatorPass::SHIPABLE_VALIDATOR_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(CarrierPriceCalculatorInterface::class)
+            ->addTag(ShippingPriceCalculatorsPass::SHIPPING_PRICE_CALCULATOR_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(ShippingRuleActionProcessorInterface::class)
+            ->addTag(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(ShippingConditionCheckerInterface::class)
+            ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG)
+        ;
     }
 }

@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeCustomerContextPass extends PrioritizedCompositeServicePass
 {
+    public const CUSTOMER_CONTEXT_SERVICE_TAG = 'coreshop.context.customer';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.customer',
             'coreshop.context.customer.composite',
-            'coreshop.context.customer',
+            self::CUSTOMER_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

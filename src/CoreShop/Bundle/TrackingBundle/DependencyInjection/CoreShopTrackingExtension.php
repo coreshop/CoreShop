@@ -13,6 +13,10 @@
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
+use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtractorPass;
+use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -30,6 +34,16 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
         $loader->load('services.yml');
 
         $this->configureTrackers($config, $container);
+
+        $container
+            ->registerForAutoconfiguration(TrackerInterface::class)
+            ->addTag(TrackerPass::TRACKER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(TrackingExtractorInterface::class)
+            ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG)
+        ;
     }
 
     /**
@@ -38,7 +52,7 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
      */
     protected function configureTrackers(array $config, ContainerBuilder $container)
     {
-        foreach ($container->findTaggedServiceIds('coreshop.tracking.tracker') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
             if (!isset($attributes[0]['type'])) {
                 continue;
             }

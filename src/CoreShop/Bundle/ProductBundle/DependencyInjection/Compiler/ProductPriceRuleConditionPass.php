@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 final class ProductPriceRuleConditionPass extends RegisterRegistryTypePass
 {
+    public const PRODUCT_PRICE_RULE_CONDITION_TAG = 'coreshop.product_price_rule.condition';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.product_price_rule.conditions',
             'coreshop.form_registry.product_price_rule.conditions',
             'coreshop.product_price_rule.conditions',
-            'coreshop.product_price_rule.condition'
+            self::PRODUCT_PRICE_RULE_CONDITION_TAG
         );
     }
 }

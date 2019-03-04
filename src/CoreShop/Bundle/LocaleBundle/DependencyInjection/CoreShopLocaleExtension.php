@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\LocaleBundle\DependencyInjection;
 
+use CoreShop\Bundle\LocaleBundle\DependencyInjection\Compiler\CompositeLocaleContextPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -26,5 +28,10 @@ final class CoreShopLocaleExtension extends AbstractModelExtension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(LocaleContextInterface::class)
+            ->addTag(CompositeLocaleContextPass::LOCALE_CONTEXT_SERVICE_TAG)
+        ;
     }
 }

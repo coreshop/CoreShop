@@ -14,12 +14,14 @@ namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
 class RegisterGridFilterPass extends RegisterSimpleRegistryTypePass
 {
+    public const GRID_FILTER_TAG = 'coreshop.grid.filter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.grid.filter',
             'coreshop.grid.filters',
-            'coreshop.grid.filter'
+            self::GRID_FILTER_TAG
         );
     }
 }

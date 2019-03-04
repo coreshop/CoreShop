@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {
+    public const LOCALE_CONTEXT_SERVICE_TAG = 'coreshop.context.locale';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.locale',
             'coreshop.context.locale.composite',
-            'coreshop.context.locale',
+            self::LOCALE_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 class RegisterIndexWorkerPass extends RegisterRegistryTypePass
 {
+    public const INDEX_WORKER_TAG = 'coreshop.index.worker';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.worker',
             'coreshop.form_registry.index.worker',
             'coreshop.index.workers',
-            'coreshop.index.worker'
+            self::INDEX_WORKER_TAG
         );
     }
 }

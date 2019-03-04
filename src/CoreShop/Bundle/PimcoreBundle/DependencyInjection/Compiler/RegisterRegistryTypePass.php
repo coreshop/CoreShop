@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -66,14 +67,19 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['form-type'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` and `form-type` attributes.');
+            $definition = $container->findDefinition($id);
+
+            if (!isset($attributes[0]['type'])) {
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];
 
             $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-            $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
+
+            if (isset($attributes[0]['form-type'])) {
+                $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
+            }
         }
 
         $container->setParameter($this->parameter, $map);

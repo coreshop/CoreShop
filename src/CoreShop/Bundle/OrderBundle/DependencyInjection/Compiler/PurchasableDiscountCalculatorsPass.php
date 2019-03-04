@@ -13,11 +13,14 @@
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class PurchasableDiscountCalculatorsPass implements CompilerPassInterface
 {
+    public const PURCHASABLE_DISCOUNT_CALCULATOR_TAG = 'coreshop.order.purchasable.discount_calculator';
+
     /**
      * {@inheritdoc}
      */
@@ -30,13 +33,15 @@ final class PurchasableDiscountCalculatorsPass implements CompilerPassInterface
         $registry = $container->getDefinition('coreshop.registry.order.purchasable.discount_calculators');
 
         $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.order.purchasable.discount_calculator') as $id => $attributes) {
-            if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
+        foreach ($container->findTaggedServiceIds(self::PURCHASABLE_DISCOUNT_CALCULATOR_TAG) as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+
+            if (!isset($attributes[0]['type'])) {
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
+            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'] ?? 1000, new Reference($id)]);
         }
 
         $container->setParameter('coreshop.order.purchasable.discount_calculators', $map);

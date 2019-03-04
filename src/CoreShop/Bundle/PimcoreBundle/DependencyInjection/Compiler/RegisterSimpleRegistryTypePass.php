@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -58,8 +59,10 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+
             if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` attribute.');
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];

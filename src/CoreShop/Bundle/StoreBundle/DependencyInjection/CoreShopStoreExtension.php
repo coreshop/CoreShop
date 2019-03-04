@@ -13,6 +13,10 @@
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
+use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
+use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -34,5 +38,14 @@ final class CoreShopStoreExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(StoreContextInterface::class)
+            ->addTag(CompositeStoreContextPass::STORE_CONTEXT_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(RequestResolverInterface::class)
+            ->addTag(CompositeRequestResolverPass::STORE_REQUEST_RESOLVER_TAG)
+        ;
     }
 }

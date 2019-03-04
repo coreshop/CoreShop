@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection;
 
+use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeCustomerContextPass;
+use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
+use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -39,5 +43,15 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+
+        $container
+            ->registerForAutoconfiguration(CustomerContextInterface::class)
+            ->addTag(CompositeCustomerContextPass::CUSTOMER_CONTEXT_SERVICE_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(RequestResolverInterface::class)
+            ->addTag(CompositeRequestResolverPass::CUSTOMER_REQUEST_RESOLVER_SERVICE_TAG)
+        ;
     }
 }

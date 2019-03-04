@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class RegisterCartContextsPass extends PrioritizedCompositeServicePass
 {
+    public const CART_CONTEXT_TAG = 'coreshop.context.cart';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.cart',
             'coreshop.context.cart.composite',
-            'coreshop.context.cart',
+            self::CART_CONTEXT_TAG,
             'addContext'
         );
     }

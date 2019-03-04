@@ -14,6 +14,8 @@ namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
 final class ProductDiscountPriceCalculatorsPass extends AbstractProductPriceCalculatorPass
 {
+    public const PRODUCT_DISCOUNT_PRICE_CALCULATOR_TAG = 'coreshop.product.discount_price_calculator';
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +29,7 @@ final class ProductDiscountPriceCalculatorsPass extends AbstractProductPriceCalc
      */
     protected function getTag()
     {
-        return 'coreshop.product.discount_price_calculator';
+        return self::PRODUCT_DISCOUNT_PRICE_CALCULATOR_TAG;
     }
 
     /**

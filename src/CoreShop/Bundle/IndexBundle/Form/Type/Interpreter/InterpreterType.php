@@ -49,7 +49,12 @@ final class InterpreterType extends AbstractType
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+
                 if (null === $type) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($type, 'default')) {
                     return;
                 }
 
@@ -67,6 +72,10 @@ final class InterpreterType extends AbstractType
                 $data = $event->getData();
 
                 if (!isset($data['type'])) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($data['type'], 'default')) {
                     return;
                 }
 

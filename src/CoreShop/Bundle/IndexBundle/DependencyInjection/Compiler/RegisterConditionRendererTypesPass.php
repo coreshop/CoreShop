@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 class RegisterConditionRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
+    public const INDEX_CONDITION_RENDERER_TAG = 'coreshop.index.condition.renderer';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.condition.renderers',
             'coreshop.index.condition.renderers',
-            'coreshop.index.condition.renderer'
+            self::INDEX_CONDITION_RENDERER_TAG
         );
     }
 }
