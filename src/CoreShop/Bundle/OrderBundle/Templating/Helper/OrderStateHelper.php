@@ -12,24 +12,24 @@
 
 namespace CoreShop\Bundle\OrderBundle\Templating\Helper;
 
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderShipmentStates;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class OrderStateHelper extends Helper implements OrderStateHelperInterface
 {
     /**
-     * @var WorkflowStateManagerInterface
+     * @var WorkflowStateInfoManagerInterface
      */
     private $workflowStateManager;
 
     /**
-     * @param WorkflowStateManagerInterface $workflowStateManager
+     * @param WorkflowStateInfoManagerInterface $workflowStateManager
      */
-    public function __construct(WorkflowStateManagerInterface $workflowStateManager)
+    public function __construct(WorkflowStateInfoManagerInterface $workflowStateManager)
     {
         $this->workflowStateManager = $workflowStateManager;
     }
