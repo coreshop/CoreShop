@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.menu.registry:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface'
+            - 'menu-builder'
+
+    coreshop.menu.renderer.json:
+        class: CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer
+        arguments:
+            - "@twig"
+            - "knp_menu.html.twig"
+            - "@knp_menu.matcher"
+            - {}
+        tags:
+            - { name: knp_menu.renderer, alias: json }
+
+    coreshop.menu.voter.pimcore:
+        class: CoreShop\Bundle\MenuBundle\Voter\PimcoreVoter
+        arguments:
+            - '@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver'
+        tags:
+            - { name: knp_menu.voter }

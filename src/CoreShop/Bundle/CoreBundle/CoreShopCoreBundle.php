@@ -26,6 +26,7 @@ use CoreShop\Bundle\FixtureBundle\CoreShopFixtureBundle;
 use CoreShop\Bundle\FrontendBundle\CoreShopFrontendBundle;
 use CoreShop\Bundle\IndexBundle\CoreShopIndexBundle;
 use CoreShop\Bundle\InventoryBundle\CoreShopInventoryBundle;
+use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\NotificationBundle\CoreShopNotificationBundle;
 use CoreShop\Bundle\OrderBundle\CoreShopOrderBundle;
@@ -79,6 +80,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     {
         parent::registerDependentBundles($collection);
 
+        $collection->addBundle(new CoreShopMenuBundle(), 4000);
         $collection->addBundle(new CoreShopSEOBundle(), 3800);
         $collection->addBundle(new CoreShopFixtureBundle(), 3700);
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);

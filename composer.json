@@ -70,7 +70,8 @@
     "coreshop/seo-bundle": "self.version",
     "coreshop/pimcore-bundle": "self.version",
     "coreshop/tracking": "self.version",
-    "coreshop/theme-bundle": "self.version"
+    "coreshop/theme-bundle": "self.version",
+    "coreshop/menu-bundle": "self.version"
   },
   "require": {
     "doctrine/orm": "~2.5",
@@ -90,7 +91,8 @@
     "dachcom-digital/emailizr": "^1.0.6",
     "symfony/twig-bundle": "~3.2",
     "doctrine/data-fixtures": "^1.0",
-    "pimcore/pimcore": "^5.4.0"
+    "pimcore/pimcore": "^5.4.0",
+    "knplabs/knp-menu-bundle": "^2.2.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",

@@ -1,0 +1,75 @@
+/*
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
+ */
+
+pimcore.registerNS('coreshop.menu.{{ type }}');
+coreshop.menu.{{ type }} = Class.create({
+    initialize: function () {
+        {{ knp_menu_render(type, {'template': '@CoreShopMenu/knp_menu.js.twig'}, 'json')|raw }}
+        var toolbar = pimcore.globalmanager.get('layout_toolbar');
+
+        if (menu.length > 0) {
+            var menuItems = [];
+
+            var loopMenu = function(item, menuItems) {
+                var menuItem = {
+                    text: t(item.name),
+                    iconCls: item.attributes.iconCls,
+                    handler: function() {
+                        if (item.attributes.resource) {
+                            coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
+                        }
+                    }
+                };
+
+                if (item.hasOwnProperty('children')) {
+                    var childrenItems = [];
+
+                    Ext.each(item.children, function(child) {
+                        loopMenu(child, childrenItems);
+                    });
+
+                    menuItem['menu'] = {
+                        cls: 'pimcore_navigation_flyout',
+                        shadow: false,
+                        items: childrenItems
+                    };
+                }
+                else if (item.attributes.hasOwnProperty('container') && item.attributes.container) {
+                    return;
+                }
+
+                menuItems.push(menuItem);
+            };
+
+            Ext.each(menu, function(item) {
+                loopMenu(item, menuItems);
+            });
+
+            var extMenu = new Ext.menu.Menu({
+                items: menuItems,
+                shadow: false,
+                cls: 'pimcore_navigation_flyout'
+            });
+
+            Ext.get('pimcore_navigation').down('ul').insertHtml('beforeEnd',
+                '<li id="pimcore_menu_{{ typeId }}" data-menu-tooltip="' + t(item.name) + '" class="pimcore_menu_item pimcore_menu_needs_children">' +
+                    item.attributes.content +
+                '</li>');
+
+            Ext.get('pimcore_menu_{{ typeId }}').on('mousedown', function (e, el) {
+                toolbar.showSubMenu.call(extMenu, e, el);
+            }.bind(this));
+
+            pimcore.helpers.initMenuTooltips();
+        }
+    }
+});

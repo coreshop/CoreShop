@@ -27,6 +27,7 @@ imports:
     - { resource: "services/product-quantity-price-rules.yml" }
     - { resource: "services/validators.yml" }
     - { resource: "services/product-store-values.yml" }
+    - { resource: "services/menu.yml" }
 
 services:
     _defaults:
