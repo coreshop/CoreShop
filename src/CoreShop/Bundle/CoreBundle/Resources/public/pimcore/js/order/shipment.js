@@ -14,7 +14,7 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
     order: null,
     cb: null,
 
-    show: function ($super, shipAbleItems) {
+    createWindow: function ($super, shipAbleItems) {
         pimcore.globalmanager.get('coreshop_carriers').load();
 
         var window = $super(shipAbleItems),
