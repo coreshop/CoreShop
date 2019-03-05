@@ -304,9 +304,5 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('iconCls', 'coreshop_icon_logo')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'about');
-
-
-        //$menuItem->addChild($factory->createItem('blub2'));
-        //$menuItem->addChild($factory->createItem('blub3'));
     }
 }

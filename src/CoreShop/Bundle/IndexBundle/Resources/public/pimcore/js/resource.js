@@ -17,8 +17,12 @@ coreshop.index.resource = Class.create(coreshop.resource, {
         coreshop.global.addStore('coreshop_filters', 'coreshop/filters');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.index', this);
+
+        if (coreshop.menu.coreshop.index) {
+            new coreshop.menu.coreshop.index();
+        }
     },
-    
+
     openResource: function(item) {
         if (item === 'index') {
             this.openIndex();
@@ -26,7 +30,7 @@ coreshop.index.resource = Class.create(coreshop.resource, {
             this.openFilter();
         }
     },
-    
+
     openIndex: function() {
         try {
             pimcore.globalmanager.get('coreshop_indexes_panel').activate();
@@ -35,7 +39,7 @@ coreshop.index.resource = Class.create(coreshop.resource, {
             pimcore.globalmanager.add('coreshop_indexes_panel', new coreshop.index.panel());
         }
     },
-    
+
     openFilter: function() {
         try {
             pimcore.globalmanager.get('coreshop_filters_panel').activate();

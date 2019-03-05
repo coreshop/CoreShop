@@ -5,4 +5,4 @@ services:
     coreshop.menu.main:
         class: CoreShop\Bundle\CoreBundle\Menu\MainMenuBuilder
         tags:
-            - { name: 'coreshop.menu', type: 'main', menu: 'main' }
+            - { name: 'coreshop.menu', type: main, menu: main }
