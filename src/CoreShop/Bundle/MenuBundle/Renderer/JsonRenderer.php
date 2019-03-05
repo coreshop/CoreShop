@@ -50,17 +50,9 @@ class JsonRenderer implements RendererInterface
         $this->defaultOptions = array_merge(array(
             'depth' => null,
             'matchingDepth' => null,
-            'currentAsLink' => true,
-            'currentClass' => 'current',
-            'ancestorClass' => 'current_ancestor',
-            'firstClass' => 'first',
-            'lastClass' => 'last',
             'template' => $template,
             'compressed' => false,
-            'allow_safe_labels' => false,
-            'clear_matcher' => true,
-            'leaf_class' => null,
-            'branch_class' => null,
+            'clear_matcher' => true
         ), $defaultOptions);
 
     }

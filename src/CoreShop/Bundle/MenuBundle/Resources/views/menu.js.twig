@@ -14,7 +14,7 @@ pimcore.registerNS('coreshop.menu.{{ type }}');
 coreshop.menu.{{ type }} = Class.create({
     initialize: function () {
         var type = '{{ type }}';
-        {{ knp_menu_render(type, {'template': '@CoreShopMenu/knp_menu.js.twig'}, 'json')|raw }}
+        {{ knp_menu_render(type, {}, 'json')|raw }}
         var toolbar = pimcore.globalmanager.get('layout_toolbar');
 
         if (menu.length > 0) {
