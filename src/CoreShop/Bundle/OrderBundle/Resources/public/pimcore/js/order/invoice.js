@@ -15,6 +15,9 @@ coreshop.order.order.invoice = Class.create({
     order: null,
     cb: null,
 
+    height: 400,
+    width: 800,
+
     initialize: function (order, cb) {
         this.order = order;
         this.cb = cb;
@@ -129,6 +132,7 @@ coreshop.order.order.invoice = Class.create({
         var itemsGrid = {
             xtype: 'grid',
             cls: 'coreshop-order-detail-grid',
+            minHeight: 400,
             store: positionStore,
             plugins: [rowEditing],
             listeners: {
@@ -152,8 +156,8 @@ coreshop.order.order.invoice = Class.create({
         });
 
         var window = new Ext.window.Window({
-            width: 800,
-            height: 400,
+            width: me.width,
+            height: me.height,
             resizeable: true,
             modal: true,
             layout: 'fit',
@@ -191,12 +195,13 @@ coreshop.order.order.invoice = Class.create({
                                     if (Ext.isFunction(this.cb)) {
                                         this.cb();
                                     }
+
+                                    window.close();
                                 } else {
                                     pimcore.helpers.showNotification(t('error'), t(res.message), 'error');
                                 }
 
                                 window.setLoading(false);
-                                window.close();
                             }.bind(this)
                         });
                     }.bind(this)
