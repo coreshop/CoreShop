@@ -13,6 +13,7 @@
 pimcore.registerNS('coreshop.menu.{{ type }}');
 coreshop.menu.{{ type }} = Class.create({
     initialize: function () {
+        var type = '{{ type }}';
         {{ knp_menu_render(type, {'template': '@CoreShopMenu/knp_menu.js.twig'}, 'json')|raw }}
         var toolbar = pimcore.globalmanager.get('layout_toolbar');
 
@@ -24,9 +25,7 @@ coreshop.menu.{{ type }} = Class.create({
                     text: t(item.name),
                     iconCls: item.attributes.iconCls,
                     handler: function() {
-                        if (item.attributes.resource) {
-                            coreshop.global.resource.open(item.attributes.resource, item.attributes.function);
-                        }
+                        pimcore.eventDispatcher.fireEvent('coreshopMenuOpen', type, item);
                     }
                 };
 
@@ -62,7 +61,7 @@ coreshop.menu.{{ type }} = Class.create({
 
             Ext.get('pimcore_navigation').down('ul').insertHtml('beforeEnd',
                 '<li id="pimcore_menu_{{ typeId }}" data-menu-tooltip="' + t(item.name) + '" class="pimcore_menu_item pimcore_menu_needs_children">' +
-                    item.attributes.content +
+                (item.attributes.hasOwnProperty('content') ? item.attributes.content : '') +
                 '</li>');
 
             Ext.get('pimcore_menu_{{ typeId }}').on('mousedown', function (e, el) {
