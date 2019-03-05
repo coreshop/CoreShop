@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\MenuBundle\Voter;
+namespace CoreShop\Bundle\MenuBundle\Guard;
 
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\Voter\VoterInterface;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Model\User;
 
-class PimcoreVoter implements VoterInterface
+class PimcoreGuard
 {
     /**
      * @var TokenStorageUserResolver

@@ -13,14 +13,12 @@ services:
         arguments:
             - "@twig"
             - "knp_menu.html.twig"
-            - "@knp_menu.matcher"
+            - "@coreshop.menu.guard.pimcore"
             - {}
         tags:
             - { name: knp_menu.renderer, alias: json }
 
-    coreshop.menu.voter.pimcore:
-        class: CoreShop\Bundle\MenuBundle\Voter\PimcoreVoter
+    coreshop.menu.guard.pimcore:
+        class: CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard
         arguments:
             - '@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver'
-        tags:
-            - { name: knp_menu.voter }

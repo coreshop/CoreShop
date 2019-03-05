@@ -12,8 +12,8 @@
 
 namespace CoreShop\Bundle\MenuBundle\Renderer;
 
+use CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard;
 use Knp\Menu\ItemInterface;
-use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\RendererInterface;
 
 class JsonRenderer implements RendererInterface
@@ -24,9 +24,9 @@ class JsonRenderer implements RendererInterface
     private $environment;
 
     /**
-     * @var MatcherInterface
+     * @var PimcoreGuard
      */
-    private $matcher;
+    private $guard;
 
     /**
      * @var array
@@ -36,17 +36,17 @@ class JsonRenderer implements RendererInterface
     /**
      * @param \Twig_Environment $environment
      * @param string            $template
-     * @param MatcherInterface  $matcher
+     * @param PimcoreGuard      $guard
      * @param array             $defaultOptions
      */
     public function __construct(
         \Twig_Environment $environment,
         $template,
-        MatcherInterface $matcher,
+        PimcoreGuard $guard,
         array $defaultOptions = array()
     ) {
         $this->environment = $environment;
-        $this->matcher = $matcher;
+        $this->guard = $guard;
         $this->defaultOptions = array_merge(array(
             'depth' => null,
             'matchingDepth' => null,
@@ -75,14 +75,9 @@ class JsonRenderer implements RendererInterface
             [
                 'item' => $this->renderItem($item),
                 'items' => $items,
-                'options' => $options,
-                'matcher' => $this->matcher
+                'options' => $options
             ]
         );
-
-        if ($options['clear_matcher']) {
-            $this->matcher->clear();
-        }
 
         return $html;
     }
@@ -101,7 +96,7 @@ class JsonRenderer implements RendererInterface
         $items = [];
 
         foreach ($item->getChildren() as $menuItem) {
-            if (!$this->matcher->isCurrent(($menuItem))) {
+            if (!$this->guard->matchItem($menuItem)) {
                 continue;
             }
 
