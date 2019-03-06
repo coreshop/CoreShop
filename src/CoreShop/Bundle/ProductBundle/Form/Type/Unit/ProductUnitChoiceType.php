@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,14 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ProductUnitChoiceType extends AbstractType
 {
     /**
-     * @var RepositoryInterface
+     * @var ProductUnitRepositoryInterface
      */
-    private $productUnitRepository;
+    protected $productUnitRepository;
 
     /**
-     * @param RepositoryInterface $productUnitRepository
+     * @param ProductUnitRepositoryInterface $productUnitRepository
      */
-    public function __construct(RepositoryInterface $productUnitRepository)
+    public function __construct(ProductUnitRepositoryInterface $productUnitRepository)
     {
         $this->productUnitRepository = $productUnitRepository;
     }

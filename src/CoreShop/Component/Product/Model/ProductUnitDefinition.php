@@ -22,29 +22,19 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     protected $id;
 
     /**
-     * @var ProductInterface
-     */
-    protected $product;
-
-    /**
-     * @var int
-     */
-    protected $price;
-
-    /**
      * @var ProductUnitInterface
      */
     protected $unit;
 
     /**
-     * @var integer
-     */
-    protected $precision;
-
-    /**
      * @var float
      */
     protected $conversionRate;
+
+    /**
+     * @var ProductUnitDefinitionsInterface
+     */
+    protected $productUnitDefinitions;
 
     /**
      * @param int $id
@@ -60,38 +50,6 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProduct()
-    {
-        return $this->product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProduct(ProductInterface $product)
-    {
-        $this->product = $product;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrice(int $price)
-    {
-        $this->price = $price;
     }
 
     /**
@@ -113,22 +71,6 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     /**
      * {@inheritdoc}
      */
-    public function getPrecision()
-    {
-        return $this->precision;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrecision(int $precision)
-    {
-        $this->precision = $precision;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConversionRate()
     {
         return $this->conversionRate;
@@ -140,6 +82,22 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductUnitDefinitions()
+    {
+        return $this->productUnitDefinitions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null)
+    {
+        $this->productUnitDefinitions = $productUnitDefinitions;
     }
 
     /**

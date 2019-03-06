@@ -19,3 +19,14 @@ coreshop_admin_product_unit:
           action: getConfig
           methods:
             - GET
+
+coreshop_admin_product_unit_definitions:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.product_unit_definitions
+      additional_routes:
+        config:
+          path: get-product-additional-unit-definitions
+          action: productAdditionalUnitDefinitionsList
+          methods:
+            - GET

@@ -16,7 +16,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class ProductUnitDefinitionCollectionType extends AbstractType
+class ProductUnitDefinitionPriceCollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,10 +26,10 @@ class ProductUnitDefinitionCollectionType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add'      => true,
-            'allow_delete'   => true,
+            'allow_add'    => true,
+            'allow_delete' => true,
             'by_reference' => false,
-            'entry_type'     => ProductUnitDefinitionType::class,
+            'entry_type'   => ProductUnitDefinitionPriceType::class,
         ]);
     }
 
@@ -46,6 +46,6 @@ class ProductUnitDefinitionCollectionType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_unit_definition_collection';
+        return 'coreshop_product_unit_definition_price_collection';
     }
 }

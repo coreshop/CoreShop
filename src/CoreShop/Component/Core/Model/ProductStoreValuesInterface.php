@@ -12,10 +12,9 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInterface
 {
@@ -30,38 +29,6 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
     public function setPrice(int $price);
 
     /**
-     * @return ProductUnitDefinitionInterface
-     */
-    public function getDefaultUnitDefinition();
-
-    /**
-     * @param ProductUnitDefinitionInterface $defaultUnitDefinition
-     */
-    public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition);
-
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
-    public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
-
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
-    public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
-
-    /**
-     * @return Collection|ProductUnitDefinitionInterface[]
-     */
-    public function getUnitDefinitions();
-
-    /**
-     * @param string $identifier
-     *
-     * @return ProductUnitDefinitionInterface|null
-     */
-    public function getUnitDefinition(string $identifier);
-
-    /**
      * @return ProductInterface
      */
     public function getProduct();
@@ -70,4 +37,19 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
      * @param ProductInterface $product
      */
     public function setProduct(ProductInterface $product);
+
+    /**
+     * @param ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
+     */
+    public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
+
+    /**
+     * @param ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
+     */
+    public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
+
+    /**
+     * @return ArrayCollection|ProductUnitDefinitionPriceInterface[]
+     */
+    public function getProductUnitDefinitionPrices();
 }

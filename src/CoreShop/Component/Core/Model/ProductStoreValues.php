@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -34,23 +32,18 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     protected $price;
 
     /**
-     * @var ProductUnitDefinitionInterface
-     */
-    protected $defaultUnitDefinition;
-
-    /**
-     * @var Collection|ProductUnitDefinitionInterface[]
-     */
-    protected $unitDefinitions;
-
-    /**
      * @var ProductInterface
      */
     protected $product;
 
+    /**
+     * @var Collection|ProductUnitDefinitionPriceInterface[]
+     */
+    protected $productUnitDefinitionPrices;
+
     public function __construct()
     {
-        $this->unitDefinitions = new ArrayCollection();
+        $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
     /**
@@ -88,78 +81,30 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     /**
      * {@inheritdoc}
      */
-    public function getDefaultUnitDefinition()
+    public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
-        return $this->defaultUnitDefinition;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultUnitDefinition(ProductUnitDefinitionInterface $defaultUnitDefinition)
-    {
-        if ($defaultUnitDefinition) {
-            $defaultUnitDefinition->setConversionRate(1.0);
-            $this->addUnitDefinition($defaultUnitDefinition);
-            $this->defaultUnitDefinition = $this->getUnitDefinition($defaultUnitDefinition->getUnitName());
-        } else {
-            $this->defaultUnitDefinition = $defaultUnitDefinition;
+        if (!$this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
+            $productUnitDefinitionPrice->setProductStoreValues($this);
+            $this->productUnitDefinitionPrices->add($productUnitDefinitionPrice);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
+    public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
-        $productUnit = $productUnitDefinition->getUnit();
-        if ($productUnit instanceof ProductUnitInterface &&
-            $existingUnitDefinition = $this->getUnitDefinition($productUnit->getName())
-        ) {
-            $existingUnitDefinition->setPrecision($productUnitDefinition->getPrecision());
-            $existingUnitDefinition->setConversionRate($productUnitDefinition->getConversionRate());
-            $existingUnitDefinition->setProduct($this->getProduct());
-        } else {
-            $productUnitDefinition->setProduct($this->getProduct());
-            $this->unitDefinitions->add($productUnitDefinition);
+        if ($this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
+            $this->productUnitDefinitionPrices->removeElement($productUnitDefinitionPrice);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
+    public function getProductUnitDefinitionPrices()
     {
-        if ($this->unitDefinitions->contains($productUnitDefinition)) {
-            $this->unitDefinitions->removeElement($productUnitDefinition);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUnitDefinitions()
-    {
-        return $this->unitDefinitions;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUnitDefinition(string $identifier)
-    {
-        $result = null;
-
-        foreach ($this->unitDefinitions as $unitDefinition) {
-            if ($unit = $unitDefinition->getUnit()) {
-                if ($unit->getName() === $identifier) {
-                    $result = $unitDefinition;
-                    break;
-                }
-            }
-        }
-
-        return $result;
+        return $this->productUnitDefinitionPrices;
     }
 
     /**
@@ -183,8 +128,6 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
      */
     public function __toString()
     {
-        $defaultUnit = $this->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getDefaultUnitDefinition()->getUnit()->getId() : '--';
-        $defaultUnitPrecision = $this->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getDefaultUnitDefinition()->getPrecision() : '--';
-        return sprintf('Price: %s, Default Unit: %s, Precision: %d', $this->getPrice(), $defaultUnit, $defaultUnitPrecision);
+        return sprintf('Price: %s', $this->getPrice());
     }
 }

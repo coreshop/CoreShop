@@ -14,7 +14,7 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
 
-class ProductUnit extends AbstractResource implements ProductUnitInterface
+class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnitDefinitionPriceInterface
 {
     /**
      * @var int
@@ -22,17 +22,14 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     protected $id;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $name;
+    protected $price;
 
     /**
-     * @param int $id
+     * @var ProductUnitDefinitionInterface
      */
-    public function setId(int $id)
-    {
-        $this->id = $id;
-    }
+    protected $unitDefinition;
 
     /**
      * {@inheritdoc}
@@ -45,16 +42,40 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function setId(int $id)
     {
-        return $this->name;
+        $this->id = $id;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setName(string $name)
+    public function getPrice()
     {
-        $this->name = $name;
+        return $this->price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPrice(int $price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinition()
+    {
+        return $this->unitDefinition;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
+    {
+        $this->unitDefinition = $unitDefinition;
     }
 }

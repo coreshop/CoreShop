@@ -12,8 +12,3 @@ CoreShop\Component\Product\Model\ProductUnit:
             column: name
             type: string
             unique: true
-        defaultPrecision:
-            column: default_precision
-            type: integer
-            options:
-                default: 0

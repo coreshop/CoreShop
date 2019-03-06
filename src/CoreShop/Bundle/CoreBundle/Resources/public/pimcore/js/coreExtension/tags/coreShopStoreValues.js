@@ -14,6 +14,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
     type: 'coreShopStoreValues',
     storeValuesBuilder: {},
+    productUnitDefinitionsStore: null,
 
     initialize: function (data, fieldConfig) {
 
@@ -28,6 +29,40 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         this.data = data;
         this.fieldConfig = fieldConfig;
         this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
+
+    },
+
+    setObject: function (object) {
+        this.object = object;
+        // we need to define the unit definition store on tag layer
+        // otherwise each store builder would refresh a single request
+        this.productUnitDefinitionsStore = new Ext.data.Store({
+            autoDestroy: true,
+            filterOnLoad: false,
+            proxy: {
+                type: 'ajax',
+                url: '/admin/coreshop/product_unit_definitions/get-product-additional-unit-definitions',
+                extraParams: {
+                    productId: this.object.id
+                },
+                actionMethods: {
+                    read: 'GET'
+                },
+                reader: {
+                    type: 'json'
+                }
+            },
+            fields: ['id', 'unit']
+        }).load();
+
+        this.productUnitDefinitionsStore.on('datachanged', function () {
+            Ext.Object.each(this.storeValuesBuilder, function (storeId, builder) {
+                builder.onUnitDefinitionsReadyOrChange();
+            });
+        }.bind(this));
+
+        coreshop.broker.addListener('pimcore.object.tags.coreShopProductUnitDefinitions.change', this.onUnitDefinitionsChange, this);
+
     },
 
     getGridColumnEditor: function (field) {
@@ -95,6 +130,18 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         });
     },
 
+    onUnitDefinitionsChange: function (data) {
+
+        if (data.objectId !== this.object.id) {
+            return;
+        }
+
+        Ext.Object.each(this.storeValuesBuilder, function (storeId, builder) {
+            builder.onUnitDefinitionsReadyOrChange(data);
+        });
+
+    },
+
     getLayoutEdit: function () {
 
         var tabPanel = new Ext.TabPanel({
@@ -156,7 +203,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             }
 
             data = this.data.hasOwnProperty(store.getId()) ? this.data[store.getId()] : null;
-            valuesBuilder = new coreshop.product.storeValues.builder(this.fieldConfig, store, data);
+            valuesBuilder = new coreshop.product.storeValues.builder(this.fieldConfig, store, data, this.productUnitDefinitionsStore, this.object.id);
 
             formPanel.add([valuesBuilder.getForm()]);
             tabPanel.add([formPanel]);
@@ -172,6 +219,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         this.component.add([this.tabPanel]);
         this.component.on('destroy', function () {
             pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+            coreshop.broker.removeListener('pimcore.object.tags.coreShopProductUnitDefinitions.change', this.onUnitDefinitionsChange);
         }.bind(this));
 
         return this.component;

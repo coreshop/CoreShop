@@ -12,13 +12,9 @@
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
-use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class ProductUnitDefinitionType extends AbstractResourceType
 {
@@ -27,28 +23,9 @@ final class ProductUnitDefinitionType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-
         $builder
             ->add('unit', ProductUnitChoiceType::class)
-            ->add('precision', IntegerType::class)
-            ->add('product', ProductSelectionType::class)
-            ->add('price', IntegerType::class)
             ->add('conversionRate', NumberType::class);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        $data = $event->getData();
-
-        if ($data['price'] !== null) {
-            $data['price'] = (int) round((round($data['price'], 2) * 100), 0);
-        }
-
-        $event->setData($data);
     }
 
     /**

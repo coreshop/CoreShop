@@ -19,12 +19,10 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ProductStoreValuesRepositoryInterface extends RepositoryInterface
 {
-        /**
+    /**
      * @param ProductInterface $product
      *
      * @return ProductStoreValuesInterface[]
-     *
-     *  Won't get you the direct price anymore, use findForProductAndKey
      */
     public function findForProduct(ProductInterface $product);
 

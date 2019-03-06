@@ -7,6 +7,7 @@ pimcore:
             data:
                 map:
                     coreShopProductSpecificPriceRules: CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules
+                    coreShopProductUnitDefinitions: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnitDefinitions
 
 jms_serializer:
     metadata:

@@ -13,12 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProductUnitController extends ResourceController
 {
-    public function getConfigAction(Request $request)
-    {
-        return $this->viewHandler->handle([]);
-    }
 }

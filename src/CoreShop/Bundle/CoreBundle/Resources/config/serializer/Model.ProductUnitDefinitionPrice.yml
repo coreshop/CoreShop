@@ -1,0 +1,8 @@
+CoreShop\Component\Core\Model\ProductUnitDefinitionPrice:
+    exclusion_policy: ALL
+    xml_root_name: product_unit_definition_price
+    properties:
+        productStoreValues:
+            expose: true
+            type: CoreShop\Component\Core\Model\ProductStoreValues
+            groups: [List, Detailed]

@@ -10,27 +10,28 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
-
-final class ProductUnitType extends AbstractResourceType
+class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\ProductUnitDefinitionPrice implements ProductUnitDefinitionPriceInterface
 {
+    /**
+     * @var ProductStoreValuesInterface
+     */
+    protected $productStoreValues;
+
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function getProductStoreValues()
     {
-        $builder->add('name', TextType::class);
+        return $this->productStoreValues;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues)
     {
-        return 'coreshop_product_unit';
+        $this->productStoreValues = $productStoreValues;
     }
 }

@@ -14,15 +14,25 @@ namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
-interface ProductUnitInterface extends ResourceInterface
+interface ProductUnitDefinitionPriceInterface extends ResourceInterface
 {
     /**
-     * @return string
+     * @return int
      */
-    public function getName();
+    public function getPrice();
 
     /**
-     * @param string $identifier
+     * @param int $price
      */
-    public function setName(string $identifier);
+    public function setPrice(int $price);
+
+    /**
+     * @return ProductUnitDefinitionInterface
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface $unitDefinition
+     */
+    public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
 }

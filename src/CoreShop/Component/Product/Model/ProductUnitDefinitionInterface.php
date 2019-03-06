@@ -17,26 +17,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface ProductUnitDefinitionInterface extends ResourceInterface
 {
     /**
-     * @return ProductInterface
-     */
-    public function getProduct();
-
-    /**
-     * @param ProductInterface $product
-     */
-    public function setProduct(ProductInterface $product);
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPrice();
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrice(int $price);
-
-    /**
      * @return ProductUnitInterface
      */
     public function getUnit();
@@ -47,16 +27,6 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
     public function setUnit(ProductUnitInterface $unit);
 
     /**
-     * @return int
-     */
-    public function getPrecision();
-
-    /**
-     * @param int $precision
-     */
-    public function setPrecision(int $precision);
-
-    /**
      * @return float|null
      */
     public function getConversionRate();
@@ -65,6 +35,16 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
      * @param float $conversionRate
      */
     public function setConversionRate(float $conversionRate = null);
+
+    /**
+     * @return ProductUnitDefinitionsInterface|null
+     */
+    public function getProductUnitDefinitions();
+
+    /**
+     * @param ProductUnitDefinitionsInterface|null $productUnitDefinitions
+     */
+    public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null);
 
     /**
      * @return string|null

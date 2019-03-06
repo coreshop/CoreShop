@@ -26,5 +26,8 @@ core_shop_product:
             product_specific_price_object_item: '/bundles/coreshopproduct/pimcore/js/specificprice/object/item.js'
             core_extension_data_specific_price: '/bundles/coreshopproduct/pimcore/js/coreExtension/data/coreShopProductSpecificPriceRules.js'
             core_extension_tag_specific_price: '/bundles/coreshopproduct/pimcore/js/coreExtension/tags/coreShopProductSpecificPriceRules.js'
+            core_extension_data_product_unit_definitions: '/bundles/coreshopproduct/pimcore/js/coreExtension/data/coreShopProductUnitDefinitions.js'
+            core_extension_tag_product_unit_definitions: '/bundles/coreshopproduct/pimcore/js/coreExtension/tags/coreShopProductUnitDefinitions.js'
+            core_extension_tag_product_unit_definitions_builder: '/bundles/coreshopproduct/pimcore/js/product/units/builder.js'
         css:
             product: '/bundles/coreshopproduct/pimcore/css/product.css'

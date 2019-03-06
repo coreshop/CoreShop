@@ -1,0 +1,13 @@
+CoreShop\Component\Product\Model\ProductUnit:
+    exclusion_policy: ALL
+    xml_root_name: product_unit
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]

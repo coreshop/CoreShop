@@ -8,16 +8,6 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             id: true
             generator:
                 strategy: AUTO
-        product:
-            column: product
-            type: pimcoreObject
-        price:
-            column: price
-            type: integer
-            nullable: true
-        precision:
-            column: '`precision`'
-            type: integer
         conversionRate:
             column: conversion_rate
             type: float
@@ -28,3 +18,10 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             joinColumn:
                 name: unit
                 referencedColumnName: id
+        productUnitDefinitions:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitions
+            inversedBy: unitDefinitions
+            joinColumn:
+                name: product_unit_definitions
+                referencedColumnName: id
+                onDelete: CASCADE

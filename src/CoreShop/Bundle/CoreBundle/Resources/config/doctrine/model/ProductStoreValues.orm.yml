@@ -21,35 +21,13 @@ CoreShop\Component\Core\Model\ProductStoreValues:
                 name: store
                 referencedColumnName: id
                 onDelete: 'SET NULL'
-    oneToOne:
-        defaultUnitDefinition:
-            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
-            cascade:
-                - 'persist'
+    oneToMany:
+        productUnitDefinitionPrices:
+            targetEntity: CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface
+            mappedBy: productStoreValues
             orphanRemoval: true
-            joinColumn:
-                name: default_unit_definition
-                referencedColumnName: id
-                nullable: true
-                onDelete: 'SET NULL'
-    manyToMany:
-        unitDefinitions:
-            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
             cascade:
                 - 'all'
-            orphanRemoval: true
-            joinTable:
-                name: coreshop_product_unit_definitions
-                joinColumns:
-                    product_store_values_id:
-                        referencedColumnName: id
-                        nullable: false
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    unit_definition_id:
-                        referencedColumnName: id
-                        nullable: false
-                        onDelete: CASCADE
     uniqueConstraints:
         product_store:
             columns: [product, store]

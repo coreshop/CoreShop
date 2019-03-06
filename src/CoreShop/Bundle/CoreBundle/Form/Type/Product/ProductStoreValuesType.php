@@ -13,8 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionCollectionType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionPriceCollectionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -27,15 +26,6 @@ use Symfony\Component\Form\FormEvents;
 final class ProductStoreValuesType extends AbstractResourceType
 {
     /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     */
-    public function __construct($dataClass, array $validationGroups)
-    {
-        parent::__construct($dataClass, $validationGroups);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -47,8 +37,7 @@ final class ProductStoreValuesType extends AbstractResourceType
             ->add('store', StoreChoiceType::class)
             ->add('product', ProductSelectionType::class)
             ->add('price', IntegerType::class)
-            ->add('defaultUnitDefinition', ProductUnitDefinitionType::class)
-            ->add('unitDefinitions', ProductUnitDefinitionCollectionType::class);
+            ->add('productUnitDefinitionPrices', ProductUnitDefinitionPriceCollectionType::class);
     }
 
     /**
@@ -73,42 +62,34 @@ final class ProductStoreValuesType extends AbstractResourceType
     }
 
     /**
-     * @param array $parsedData
+     * @param array $data
      *
      * @return array
      */
-    protected function parseStorePostData(array $parsedData)
+    protected function parseStorePostData(array $data)
     {
-        $storeId = $parsedData['storeId'];
-        $objectId = $parsedData['objectId'];
+        $storeId = $data['storeId'];
+        $objectId = $data['objectId'];
 
         $price = null;
         $defaultUnitDefinition = null;
 
-        if ($parsedData['price'] !== null) {
-            $price = (int) round((round($parsedData['price'], 2) * 100), 0);
+        if ($data['price'] !== null) {
+            $price = (int) round((round($data['price'], 2) * 100), 0);
         }
 
-        if (is_array($parsedData['defaultUnitDefinition'])) {
-            $defaultUnitDefinition = $parsedData['defaultUnitDefinition'];
-            $defaultUnitDefinition['product'] = $objectId;
-        }
-
-        $unitDefinitions = [];
-        if (is_array($parsedData['additionalUnit'])) {
-            foreach ($parsedData['additionalUnit'] as $additionalUnitDefinition) {
-                $productAwareAdditionalUnitDefinition = $additionalUnitDefinition;
-                $productAwareAdditionalUnitDefinition['product'] = $objectId;
-                $unitDefinitions[] = $productAwareAdditionalUnitDefinition;
+        $productUnitDefinitionPrices = [];
+        if (is_array($data['productUnitDefinitionPrices'])) {
+            foreach ($data['productUnitDefinitionPrices'] as $unitDefinitionPrice) {
+                $productUnitDefinitionPrices[] = $unitDefinitionPrice;
             }
         }
 
         return [
-            'store'                 => $storeId,
-            'product'               => $objectId,
-            'defaultUnitDefinition' => $defaultUnitDefinition,
-            'price'                 => $price,
-            'unitDefinitions'       => $unitDefinitions
+            'store'                       => $storeId,
+            'product'                     => $objectId,
+            'price'                       => $price,
+            'productUnitDefinitionPrices' => $productUnitDefinitionPrices
         ];
     }
 

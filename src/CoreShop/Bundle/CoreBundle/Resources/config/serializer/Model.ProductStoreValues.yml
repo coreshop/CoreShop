@@ -1,0 +1,25 @@
+CoreShop\Component\Core\Model\ProductStoreValues:
+    exclusion_policy: ALL
+    xml_root_name: product_store_values
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        price:
+            expose: true
+            type: integer
+            groups: [List, Detailed]
+        product:
+            expose: true
+            type: CoreShop\Component\Core\Model\Product
+            groups: [List, Detailed]
+        productUnitDefinitionPrices:
+            expose: true
+            type: array<CoreShop\Component\Core\Model\ProductUnitDefinitionPrice>
+            groups: [List, Detailed]
+        store:
+            expose: true
+            type: CoreShop\Component\Store\Model\Store
+            groups: [List, Detailed]

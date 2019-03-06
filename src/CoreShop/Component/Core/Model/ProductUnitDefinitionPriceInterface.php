@@ -10,19 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-
-interface ProductUnitInterface extends ResourceInterface
+interface ProductUnitDefinitionPriceInterface extends \CoreShop\Component\Product\Model\ProductUnitDefinitionPriceInterface
 {
     /**
-     * @return string
+     * @return ProductStoreValuesInterface
      */
-    public function getName();
+    public function getProductStoreValues();
 
     /**
-     * @param string $identifier
+     * @param ProductStoreValuesInterface $productStoreValues
      */
-    public function setName(string $identifier);
+    public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues);
 }

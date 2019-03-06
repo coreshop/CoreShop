@@ -62,12 +62,6 @@ coreshop.product.unit.object.item = Class.create(coreshop.resource.item, {
                         this.panel.setTitle(field.getValue());
                     }.bind(this)
                 }
-            }, {
-                xtype: 'numberfield',
-                name: 'defaultPrecision',
-                fieldLabel: t('coreshop_product_unit_default_precision'),
-                value: this.data.defaultPrecision ? this.data.defaultPrecision : 0,
-                width: 250
             }]
         });
 
