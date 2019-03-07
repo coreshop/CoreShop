@@ -4,6 +4,7 @@ imports:
     - { resource: "services/commands.yml" }
     - { resource: "services/pimcore.yml" }
     - { resource: "services/condition_renderer.yml" }
+    - { resource: "services/order_renderer.yml" }
 
 services:
     _defaults:
@@ -97,6 +98,7 @@ services:
             - '@coreshop.registry.index.interpreter'
             - '@coreshop.index.filter_group_helper'
             - '@coreshop.index.condition.renderer'
+            - '@coreshop.index.order.renderer'
             - '@doctrine.dbal.default_connection'
         shared: false
         calls:
