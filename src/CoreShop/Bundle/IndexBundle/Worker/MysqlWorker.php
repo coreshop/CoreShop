@@ -19,6 +19,7 @@ use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
@@ -41,6 +42,7 @@ class MysqlWorker extends AbstractWorker
      * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      * @param ConditionRendererInterface $conditionRenderer
+     * @param OrderRendererInterface     $orderRenderer
      * @param Connection                 $connection
      */
     public function __construct(
@@ -49,6 +51,7 @@ class MysqlWorker extends AbstractWorker
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
+        OrderRendererInterface $orderRenderer,
         Connection $connection
     ) {
         parent::__construct(
@@ -56,7 +59,8 @@ class MysqlWorker extends AbstractWorker
             $getterServiceRegistry,
             $interpreterServiceRegistry,
             $filterGroupHelper,
-            $conditionRenderer
+            $conditionRenderer,
+            $orderRenderer
         );
 
         $this->database = $connection;

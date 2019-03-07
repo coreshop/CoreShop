@@ -19,6 +19,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterCondi
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -49,6 +50,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
         $container->addCompilerPass(new RegisterExtensionsPass());
         $container->addCompilerPass(new RegisterConditionRendererTypesPass());
+        $container->addCompilerPass(new RegisterOrderRendererTypesPass());
     }
 
     /**
