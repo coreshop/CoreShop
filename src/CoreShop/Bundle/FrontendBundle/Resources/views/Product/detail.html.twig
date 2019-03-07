@@ -61,7 +61,7 @@
                     {% if product.getIsTracked %}
                         {% if coreshop_inventory_is_sufficient(product) %}
                             <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
-                        {% elseif product.getIsAvailableWhenOutOfStock %}
+                        {% else %}
                             {{ 'coreshop.ui.out_of_stock'|trans }}
                         {% endif %}
                     {% else %}
