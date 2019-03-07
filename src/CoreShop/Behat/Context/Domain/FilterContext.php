@@ -18,8 +18,11 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
 use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Order\SimpleOrder;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -224,6 +227,33 @@ final class FilterContext implements Context
         $listing = $this->getFilterListing($filter, $params);
 
         Assert::eq($listing->count(), $countOfValues);
+    }
+
+
+    /**
+     * @Then /^if I query the (filter) with a simple order for field "([^"]+)" and direction "([^"]+)" I should get two products "([^"]+)" and "([^"]+)"$/
+     */
+    public function ifIQueryWithASimpleOrder(FilterInterface $filter, $orderKey, $orderDir, $firstResult, $secondResult)
+    {
+        $filteredList = $this->filterListFactory->createList($filter, new ParameterBag());
+        $filteredList->setLocale('en');
+
+        if ($filteredList instanceof OrderAwareListingInterface) {
+            $filteredList->addOrder(new SimpleOrder($orderKey, $orderDir));
+        }
+
+        $filteredList->load();
+        $result = [];
+
+        foreach ($filteredList->getObjects() as $object) {
+            if (!$object instanceof IndexableInterface) {
+                continue;
+            }
+
+            $result[] = $object->getIndexableName('en');
+        }
+
+        Assert::eq([$firstResult, $secondResult], $result);
     }
 
     /**
