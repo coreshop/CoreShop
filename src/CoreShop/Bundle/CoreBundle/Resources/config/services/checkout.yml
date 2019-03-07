@@ -2,6 +2,7 @@ parameters:
     coreshop.form.type.checkout.address.validation_groups: [coreshop]
     coreshop.form.type.checkout.carrier.validation_groups: [coreshop]
     coreshop.form.type.checkout.payment.validation_groups: [coreshop]
+    coreshop.form.type.checkout.summary.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -84,7 +85,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType
         arguments:
             - '%coreshop.model.cart.class%'
-            - '%coreshop.form.type.checkout.payment.validation_groups%'
+            - '%coreshop.form.type.checkout.summary.validation_groups%'
         tags:
             - {name: form.type}
 

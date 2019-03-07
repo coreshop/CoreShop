@@ -1,18 +1,20 @@
 {% extends '@CoreShopFrontend/Checkout/layout.html.twig' %}
 
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
 {% block checkout_title %}
     {{ 'coreshop.ui.summary'|trans }}
 {% endblock %}
 
 {% block checkout %}
-
-    {% if cart.hasItems() %}
-        <div class="cart-summary">
-            {% include '@CoreShopFrontend/Checkout/steps/summary/_list.html.twig' %}
-        </div>
-    {% endif %}
-
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_errors(form) }}
+
+        {% if cart.hasItems() %}
+            <div class="cart-summary">
+                {% include '@CoreShopFrontend/Checkout/steps/summary/_list.html.twig' %}
+            </div>
+        {% endif %}
 
         {{ form_row(form.acceptTerms) }}
 
