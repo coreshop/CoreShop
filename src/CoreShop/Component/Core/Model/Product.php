@@ -231,9 +231,7 @@ class Product extends BaseProduct implements ProductInterface
      */
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
-        if ($this->getStoreValues($store) instanceof ProductStoreValuesInterface) {
-            return $this->getStoreValues($store)->getPrice();
-        } else {
+        if (!$store instanceof \CoreShop\Component\Store\Model\StoreInterface) {
             $allStorePrices = [];
             /** @var ProductStoreValuesInterface $storeValuesBlock */
             foreach ($this->getStoreValues() as $storeValuesBlock) {
@@ -241,6 +239,12 @@ class Product extends BaseProduct implements ProductInterface
             }
             return $allStorePrices;
         }
+
+        if ($this->getStoreValues($store) instanceof ProductStoreValuesInterface) {
+            return $this->getStoreValues($store)->getPrice();
+        }
+
+        return null;
     }
 
     /**

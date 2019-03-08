@@ -174,7 +174,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t\t\t\t" . 'return $storeValuesBlock;' . "\n";
         $code .= "\t\t\t" . '}' . "\n";
         $code .= "\t\t" . '}' . "\n";
-        $code .= "\t\t" . 'return $data[$store->getId()];' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\treturn null;" . "\n";
         $code .= "}\n\n";
