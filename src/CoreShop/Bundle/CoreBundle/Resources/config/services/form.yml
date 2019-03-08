@@ -12,6 +12,11 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
 
+    coreshop.form.extension.type.add_to_cart:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }
+
     coreshop.form.extension.type.carrier:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
         tags:

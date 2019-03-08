@@ -54,3 +54,19 @@ services:
             - '%coreshop.form.type.product_unit_definitions.validation_groups%'
         tags:
             - { name: form.type }
+
+    # Template Helper
+    coreshop.templating.helper.product_unit_definitions:
+        class: CoreShop\Bundle\ProductBundle\Templating\Helper\ProductUnitDefinitionsHelper
+        arguments:
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: templating.helper, alias: coreshop_product_unit_definitions }
+
+    coreshop.twig.extension.product_unit_definitions:
+        class: CoreShop\Bundle\ProductBundle\Twig\ProductUnitDefinitionsExtension
+        public: false
+        arguments:
+            - '@coreshop.templating.helper.product_unit_definitions'
+        tags:
+            - { name: twig.extension }

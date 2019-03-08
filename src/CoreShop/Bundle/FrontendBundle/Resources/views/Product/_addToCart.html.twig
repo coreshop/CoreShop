@@ -5,6 +5,11 @@
 
     <div class="input-group">
         {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control'}}) }}
+
+        {% if form.cartItem.unitDefinition is defined %}
+            {{ form_row(form.cartItem.unitDefinition, {label: false, attr: {class: 'form-control'}}) }}
+        {% endif %}
+
         <div class="input-group-append">
             <button type="submit" class="btn btn-cart" rel="nofollow">
                 {{ 'coreshop.ui.add_to_cart'|trans }}
