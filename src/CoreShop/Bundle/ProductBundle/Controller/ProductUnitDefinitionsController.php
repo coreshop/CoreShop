@@ -16,6 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ProductUnitDefinitionsController extends ResourceController
@@ -23,7 +24,30 @@ class ProductUnitDefinitionsController extends ResourceController
     /**
      * @param Request $request
      *
-     * @return mixed
+     * @return JsonResponse
+     */
+    public function productUnitDefinitionsListAction(Request $request)
+    {
+        $definitions = [];
+
+        /** @var StackRepository $repository */
+        $repository = $this->get('coreshop.repository.stack.product');
+
+        /** @var ProductInterface $product */
+        $product = $repository->find($request->get('productId'));
+
+        $productUnitDefinitions = $product->getUnitDefinitions();
+        if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
+            $definitions = $productUnitDefinitions->getUnitDefinitions();
+        }
+
+        return $this->viewHandler->handle($definitions);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function productAdditionalUnitDefinitionsListAction(Request $request)
     {
@@ -35,9 +59,7 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
-        /** @var ProductUnitDefinitionsInterface $productUnitDefinitions */
-        $productUnitDefinitions = $product->getUnits();
-
+        $productUnitDefinitions = $product->getUnitDefinitions();
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
             $definitions = $productUnitDefinitions->getAdditionalUnitDefinitions();
         }

@@ -22,17 +22,6 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
      * constructor
      */
     initialize: function () {
-        var me = this;
-
-        Ext.Ajax.request({
-            url: '/admin/coreshop/product_units/get-config',
-            method: 'GET',
-            success: function (result) {
-                var config = Ext.decode(result.responseText);
-                me.conditions = config.conditions;
-                me.actions = config.actions;
-            }
-        });
 
         this.url = {
             add: '/admin/coreshop/product_units/add',
@@ -62,7 +51,6 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
     },
 
     prepareAdd: function (object) {
-        object['defaultPrecision'] = 0;
         return object;
     },
 

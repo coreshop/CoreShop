@@ -19,6 +19,5 @@ CoreShop\Component\Core\Model\QuantityRange:
         unitDefinition:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
             joinColumn:
-                name: unit
+                name: unit_definition
                 referencedColumnName: id
-                nullable: true

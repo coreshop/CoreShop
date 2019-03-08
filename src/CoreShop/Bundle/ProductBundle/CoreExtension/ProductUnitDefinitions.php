@@ -16,6 +16,7 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
+use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
@@ -220,7 +221,6 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         $this->getEntityManager()->persist($productUnitDefinitions);
         $this->getEntityManager()->flush();
-
     }
 
     /**
@@ -233,6 +233,9 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         }
 
         $productUnitDefinitions = $this->load($object, ['force' => true]);
+        if ($productUnitDefinitions === null) {
+            return;
+        }
 
         $this->getEntityManager()->remove($productUnitDefinitions);
         $this->getEntityManager()->flush();

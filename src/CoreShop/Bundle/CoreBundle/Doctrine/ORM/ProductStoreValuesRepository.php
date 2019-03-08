@@ -41,7 +41,6 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')
             ->andWhere('o.store = :store')
-            ->andWhere('o.property = :property')
             ->setParameter('product', $product->getId())
             ->setParameter('store', $store)
             ->getQuery()

@@ -186,4 +186,14 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param PriceRuleInterface[] $specificPriceRules
      */
     public function setSpecificPriceRules($specificPriceRules);
+
+    /**
+     * @return null|ProductUnitDefinitionsInterface
+     */
+    public function getUnitDefinitions();
+
+    /**
+     * @param ProductUnitDefinitionsInterface $productUnitDefinitions
+     */
+    public function setUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions);
 }

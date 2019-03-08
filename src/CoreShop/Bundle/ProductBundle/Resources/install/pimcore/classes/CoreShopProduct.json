@@ -442,6 +442,26 @@
                                 "permissions": null,
                                 "childs": [
                                     {
+                                        "fieldtype": "coreShopProductUnitDefinitions",
+                                        "width": "",
+                                        "defaultValue": null,
+                                        "phpdocType": "array",
+                                        "name": "unitDefinitions",
+                                        "title": "Product Unit Definitions",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": false,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    },
+                                    {
                                         "fieldtype": "coreShopMoney",
                                         "width": "",
                                         "defaultValue": null,

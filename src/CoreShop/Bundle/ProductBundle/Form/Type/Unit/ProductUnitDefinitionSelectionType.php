@@ -49,6 +49,9 @@ final class ProductUnitDefinitionSelectionType extends AbstractType
                 return null;
             },
             function ($value) {
+                if ($value === null) {
+                    return null;
+                }
                 return $this->productUnitDefinitionRepository->find($value);
             }
         ));

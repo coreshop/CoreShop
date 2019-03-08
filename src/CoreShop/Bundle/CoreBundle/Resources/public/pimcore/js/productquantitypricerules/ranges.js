@@ -15,17 +15,49 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     internalTmpId: null,
     ruleId: null,
+    objectId: null,
     clipboardManager: null,
-    unitStore: null,
+    productUnitDefinitionsStore: null,
 
     amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
     percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
 
-    initialize: function (ruleId, clipboardManager) {
+    initialize: function (ruleId, objectId, clipboardManager) {
+
+        var unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
+
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
+        this.objectId = objectId;
         this.clipboardManager = clipboardManager;
-        this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
+
+        if (!Ext.ClassManager.get(unitDefinitionModelName)) {
+            Ext.define(unitDefinitionModelName, {
+                extend: 'Ext.data.Model',
+                proxy: {
+                    type: 'ajax',
+                    url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+                    extraParams: {
+                        productId: this.objectId
+                    },
+                    actionMethods: {
+                        read: 'GET'
+                    },
+                    reader: {
+                        type: 'json'
+                    }
+                },
+                fields: [
+                    {name: 'id'},
+                    {name: 'unit'},
+                    {name: 'unitName', mapping: 'unit.name'}
+                ]
+            });
+        }
+
+        this.productUnitDefinitionsStore = new Ext.data.Store({
+            model: unitDefinitionModelName
+        });
     },
 
     postSaveObject: function (object, refreshedData) {
@@ -91,7 +123,6 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
             ranges = [];
 
-
         grid.getStore().each(function (record) {
             var currencyId = null,
                 currencRecord = record.get('currency');
@@ -123,13 +154,13 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
             unitDefinitionColumn = grid.columnManager.getHeaderByDataIndex('unitDefinition');
 
-        if (this.unitStore.isLoaded()) {
-            if (this.unitStore.getRange().length > 0) {
+        if (this.productUnitDefinitionsStore.isLoaded()) {
+            if (this.productUnitDefinitionsStore.getRange().length > 0) {
                 unitDefinitionColumn.show();
             }
         } else {
-            this.unitStore.load(function (store) {
-                if (store.getRange().length > 0) {
+            this.productUnitDefinitionsStore.load(function (data) {
+                if (Ext.isArray(data) && data.length > 0) {
                     unitDefinitionColumn.show();
                 }
             }.bind(this));
@@ -243,12 +274,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 hideable: false,
                 getEditor: function () {
                     return new Ext.form.ComboBox({
-                        store: _.unitStore,
+                        store: _.productUnitDefinitionsStore,
                         valueField: 'id',
-                        displayField: 'name',
-                        queryMode: 'local',
+                        displayField: 'unitName',
                         allowBlank: false,
                         editable: false,
+                        queryMode: 'local',
                         triggerAction: 'all',
                         listeners: {
                             select: function (combo) {
@@ -263,12 +294,17 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                     });
                 },
                 renderer: function (value) {
-                    var unitRecord;
+                    var unitDefinitionRecord;
                     if (value === undefined || value === null) {
                         return '--';
                     }
-                    unitRecord = _.unitStore.getById(value);
-                    return unitRecord.get('name');
+
+                    if (isNaN(value)) {
+                        return value.unit.name;
+                    }
+
+                    unitDefinitionRecord = _.productUnitDefinitionsStore.getById(value);
+                    return unitDefinitionRecord.get('unitName');
                 }
             },
             {
@@ -621,14 +657,21 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         var grid = btn.up('grid'),
             modelClass = grid.getStore().getModel(),
             lastEntry = grid.getStore().last(),
-            newEntry;
+            newEntry, lastUnit = null;
+
+        if (lastEntry !== null) {
+            lastUnit = lastEntry.get('unitDefinition')
+        } else if (this.productUnitDefinitionsStore.getRange().length === 1) {
+            console.log(this.productUnitDefinitionsStore, this.productUnitDefinitionsStore.first(), this.productUnitDefinitionsStore.first().get('id'))
+            lastUnit = this.productUnitDefinitionsStore.first().get('id');
+        }
 
         newEntry = new modelClass({
             rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
             rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
             pricingBehaviour: 'fixed',
             amount: 0,
-            unitDefinition: lastEntry !== null ? lastEntry.get('unitDefinition') : null,
+            unitDefinition: lastUnit,
             currency: lastEntry !== null ? lastEntry.get('currency') : null,
             percentage: 0,
             pseudoPrice: 0,

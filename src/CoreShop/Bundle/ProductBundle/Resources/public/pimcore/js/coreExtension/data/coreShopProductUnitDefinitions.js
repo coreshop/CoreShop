@@ -53,11 +53,6 @@ pimcore.object.classes.data.coreShopProductUnitDefinitions = Class.create(pimcor
                 value: this.datax.width
             },
             {
-                xtype: 'numberfield',
-                fieldLabel: t('default_value'),
-                name: 'defaultValue',
-                value: this.datax.defaultValue
-            }, {
                 xtype: 'panel',
                 bodyStyle: 'padding-top: 3px',
                 style: 'margin-bottom: 10px',
@@ -75,8 +70,7 @@ pimcore.object.classes.data.coreShopProductUnitDefinitions = Class.create(pimcor
             }
 
             Ext.apply(this.datax, {
-                width: source.datax.width,
-                defaultValue: source.datax.defaultValue
+                width: source.datax.width
             });
         }
     }

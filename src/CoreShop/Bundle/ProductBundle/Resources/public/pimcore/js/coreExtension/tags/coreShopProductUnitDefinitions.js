@@ -14,18 +14,13 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
     type: 'coreShopProductUnitDefinitions',
     unitBuilder: {},
+    unitStore: null,
+    unitStoreLoaded: false,
 
     initialize: function (data, fieldConfig) {
-
-        this.defaultValue = null;
-        this.unitBuilder = {};
-
-        if ((typeof data === 'undefined' || data === null) && fieldConfig.defaultValue) {
-            data = fieldConfig.defaultValue;
-            this.defaultValue = data;
-        }
-
         this.data = data;
+        this.unitBuilder = {};
+        this.unitStore = pimcore.globalmanager.get('coreshop_product_units');
         this.fieldConfig = fieldConfig;
         this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
     },
@@ -38,9 +33,104 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
         return false;
     },
 
+    getLayoutShow: function () {
+        this.component = this.getLayoutEdit();
+        return this.component;
+    },
+
+    getLayoutEdit: function () {
+
+        var wrapperConfig = {
+            border: true,
+            layout: 'fit',
+            style: 'margin: 10px 0;',
+            collapsible: true,
+            collapsed: true
+        };
+
+        this.fieldConfig.datatype = 'layout';
+        this.fieldConfig.fieldtype = 'panel';
+
+        if (this.fieldConfig.width) {
+            wrapperConfig.width = this.fieldConfig.width;
+        }
+
+        if (this.fieldConfig.region) {
+            wrapperConfig.region = this.fieldConfig.region;
+        }
+
+        if (this.fieldConfig.title) {
+            wrapperConfig.title = this.fieldConfig.title;
+        }
+
+        if (this.context.containerType === 'fieldcollection') {
+            this.context.subContainerType = 'localizedfield';
+        } else {
+            this.context.containerType = 'localizedfield';
+        }
+
+        this.component = new Ext.Panel(wrapperConfig);
+        this.component.on('destroy', function () {
+            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
+        }.bind(this));
+
+        this.initiateUnitStoreField();
+
+        return this.component;
+    },
+
+    initiateUnitStoreField: function () {
+        if (this.unitStore.isLoaded()) {
+            this.setupUnitStoreField();
+        } else {
+            this.unitStore.load(function (store) {
+                this.setupUnitStoreField();
+            }.bind(this));
+        }
+    },
+
+    setupUnitStoreField: function () {
+
+        // do not show extra unit fields if no units are available.
+        if (this.unitStore.getRange().length === 0) {
+            this.component.add([{
+                'xtype': 'label',
+                'style': 'margin:5px; font-style:italic;',
+                'html': t('coreshop_product_unit_no_units_available')
+            }]);
+            return;
+        }
+
+        this.unitStoreLoaded = true;
+
+        this.component.expand();
+
+        this.unitBuilder = new coreshop.product.unit.builder(this.unitStore, this.fieldConfig, this.data, this.object.id);
+        this.component.add([this.unitBuilder.getForm()]);
+
+    },
+
+    getValue: function () {
+        var values = this.unitBuilder.getValues();
+
+        if (this.data !== null && is_numeric(this.data.id)) {
+            values['id'] = this.data.id;
+        }
+
+        return values;
+    },
+
+    getName: function () {
+        return this.fieldConfig.name;
+    },
+
     postSaveObject: function (object, task) {
 
         var fieldName = this.getName();
+
+        if (this.unitStoreLoaded === false) {
+            return;
+        }
 
         if (object.id !== this.object.id) {
             return;
@@ -76,6 +166,7 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
                 this.component.setLoading(false);
                 if (refreshedObjectData !== null) {
+                    this.data = refreshedObjectData;
                     this.dispatchPostSaveToBuilders(object, refreshedObjectData, task, fieldName);
                 }
             }.bind(this),
@@ -87,64 +178,6 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
     dispatchPostSaveToBuilders: function (object, refreshedData, task, fieldName) {
         this.unitBuilder.postSaveObject(object, refreshedData, task, fieldName);
-    },
-
-    getLayoutEdit: function () {
-
-        var unitBuilder,
-            wrapperConfig = {
-                border: true,
-                layout: 'fit',
-                style: 'margin: 10px 0;',
-                collapsible: true
-            };
-
-        this.fieldConfig.datatype = 'layout';
-        this.fieldConfig.fieldtype = 'panel';
-
-        if (this.fieldConfig.width) {
-            wrapperConfig.width = this.fieldConfig.width;
-        }
-
-        if (this.fieldConfig.region) {
-            wrapperConfig.region = this.fieldConfig.region;
-        }
-
-        if (this.fieldConfig.title) {
-            wrapperConfig.title = this.fieldConfig.title;
-        }
-
-        if (this.context.containerType === 'fieldcollection') {
-            this.context.subContainerType = 'localizedfield';
-        } else {
-            this.context.containerType = 'localizedfield';
-        }
-
-        unitBuilder = new coreshop.product.unit.builder(this.fieldConfig, this.data, this.object.id);
-
-        this.unitBuilder = unitBuilder;
-        this.component = new Ext.Panel(wrapperConfig);
-        this.component.add([unitBuilder.getForm()]);
-
-        this.component.on('destroy', function () {
-            pimcore.eventDispatcher.unregisterTarget(this.eventDispatcherKey);
-        }.bind(this));
-
-        return this.component;
-    },
-
-    getLayoutShow: function () {
-        this.component = this.getLayoutEdit(true);
-
-        return this.component;
-    },
-
-    getValue: function () {
-        return this.unitBuilder.getValues();
-    },
-
-    getName: function () {
-        return this.fieldConfig.name;
     },
 
     isInvalidMandatory: function () {
@@ -159,12 +192,16 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
 
     isDirty: function () {
 
-        if (this.defaultValue) {
-            return true;
+        if (this.unitStoreLoaded === false) {
+            return false;
         }
 
         if (!this.isRendered()) {
             return false;
+        }
+
+        if (this.data === null || !is_numeric(this.data.id)) {
+            return true;
         }
 
         return this.unitBuilder.isDirty();
