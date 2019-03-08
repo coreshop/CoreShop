@@ -151,6 +151,7 @@ coreshop.product.storeValues.builder = Class.create({
         this.storeUnitPriceFieldSet = this.getUnitDefinitionPricesField(unitDefinitions);
 
         this.form.add(this.storeUnitPriceFieldSet);
+        this.form.setLoading(false);
     },
 
     getUnitDefinitionPricesField: function (unitDefinitions) {

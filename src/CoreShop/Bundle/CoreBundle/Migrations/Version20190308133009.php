@@ -63,9 +63,9 @@ class Version20190308133009 extends AbstractPimcoreMigration implements Containe
         // remove storePrice tag from product class
         $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
         $classUpdater = new ClassUpdate($productClass);
-        if (!$classUpdater->hasField('storePrice')) {
-            $classUpdater->removeField('storePrice');
-            $classUpdater->save();
+
+        if ($classUpdater->hasField('storePrice')) {
+            $this->writeMessage(sprintf('You need to drop the StorePrice field manually from the class %s', $productClass));
         }
 
         $this->writeMessage('You need to drop the coreshop_product_store_price table manually, if you\'re not using the storePrice tag in other object definitions.');

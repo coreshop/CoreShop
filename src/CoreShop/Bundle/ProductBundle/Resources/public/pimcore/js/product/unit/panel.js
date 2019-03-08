@@ -18,49 +18,14 @@ coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_product_units',
     type: 'coreshop_product_units',
 
-    /**
-     * constructor
-     */
-    initialize: function () {
-
-        this.url = {
-            add: '/admin/coreshop/product_units/add',
-            delete: '/admin/coreshop/product_units/delete',
-            get: '/admin/coreshop/product_units/get',
-            list: '/admin/coreshop/product_units/list'
-        };
-
-        this.panels = [];
-        this.store = new Ext.data.Store({
-            idProperty: 'id',
-            fields: [
-                {name: 'id'},
-                {name: 'name'}
-            ],
-            proxy: {
-                type: 'ajax',
-                url: this.url.list,
-                reader: {
-                    type: 'json',
-                    rootProperty: 'data'
-                }
-            }
-        });
-
-        this.getLayout();
-    },
-
-    prepareAdd: function (object) {
-        return object;
-    },
-
-    getGridConfiguration: function () {
-        return {
-            store: this.store
-        };
+    url : {
+        add: '/admin/coreshop/product_units/add',
+        delete: '/admin/coreshop/product_units/delete',
+        get: '/admin/coreshop/product_units/get',
+        list: '/admin/coreshop/product_units/list'
     },
 
     getItemClass: function () {
-        return coreshop.product.unit.object.item;
+        return coreshop.product.unit.item;
     }
 });

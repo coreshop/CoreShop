@@ -10,9 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.product.unit.object');
-pimcore.registerNS('coreshop.product.unit.object.item');
-coreshop.product.unit.object.item = Class.create(coreshop.resource.item, {
+pimcore.registerNS('coreshop.product.unit.item');
+coreshop.product.unit.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_product_units',
 

@@ -12,3 +12,4 @@ CoreShop\Component\Product\Model\ProductUnit:
             column: name
             type: string
             unique: true
+            length: 190
