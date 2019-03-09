@@ -78,4 +78,13 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
     {
         $this->unitDefinition = $unitDefinition;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $definitionId = $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getUnitDefinition()->getUnitName() : '--';
+        return sprintf('Price for %s: %d', $definitionId, $this->getPrice());
+    }
 }

@@ -12,10 +12,14 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
+use CoreShop\Bundle\OrderBundle\DTO\AddToCart;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
+use CoreShop\Component\Core\Model\ProductInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
@@ -24,11 +28,31 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('unitDefinition', ChoiceType::class, [
-            'mapped'   => false,
-            'required' => false,
-            'label'    => null,
-        ]);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+
+            $data = $event->getData();
+
+            if (!$data instanceof AddToCart) {
+                return;
+            }
+
+            /** @var ProductInterface $product */
+            $product = $data->getPurchasable();
+            if (!$product instanceof ProductInterface) {
+                return;
+            }
+
+            if (!$product->hasUnitDefinitions()) {
+                return;
+            }
+
+            $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
+                'product'  => $product,
+                'mapped'   => false,
+                'required' => false,
+                'label'    => null,
+            ]);
+        });
     }
 
     /**

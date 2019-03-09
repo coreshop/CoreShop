@@ -338,4 +338,28 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnitDefinitions()
+    {
+        return $this->getUnitDefinitions() instanceof ProductUnitDefinitionsInterface && $this->getUnitDefinitions()->getUnitDefinitions()->count() > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasDefaultUnitDefinition()
+    {
+        return $this->hasUnitDefinitions() && $this->getUnitDefinitions()->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAdditionalUnitDefinitions()
+    {
+        return $this->hasUnitDefinitions() && $this->getUnitDefinitions()->getAdditionalUnitDefinitions()->count() > 0;
+    }
 }

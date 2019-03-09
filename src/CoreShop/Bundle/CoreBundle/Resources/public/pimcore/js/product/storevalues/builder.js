@@ -145,6 +145,7 @@ coreshop.product.storeValues.builder = Class.create({
 
         // do not show extra unit fields if no product unit definitions are available.
         if (unitDefinitions.length === 0) {
+            this.form.setLoading(false);
             return;
         }
 

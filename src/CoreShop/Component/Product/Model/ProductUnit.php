@@ -57,4 +57,12 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     {
         $this->name = $name;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s (%d)', $this->getName(), $this->getId());
+    }
 }

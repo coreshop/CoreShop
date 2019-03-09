@@ -416,7 +416,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return $data;
+        if (!is_array($data)) {
+            return $data;
+        }
+
+        $preview = [];
+        foreach ($data as $element) {
+            $preview[] = (string) $element;
+        }
+
+        return join(', ', $preview);
     }
 
     /**

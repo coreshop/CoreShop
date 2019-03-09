@@ -151,6 +151,25 @@
                                         "visibleSearch": false
                                     },
                                     {
+                                        "fieldtype": "coreShopProductUnitDefinition",
+                                        "phpdocType": "\\CoreShop\\Component\\Product\\Model\\ProductUnitDefinitionInterface",
+                                        "allowEmpty": false,
+                                        "name": "unitDefinition",
+                                        "title": "Unit Definition",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": true,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    },
+                                    {
                                         "fieldtype": "numeric",
                                         "width": "",
                                         "defaultValue": null,

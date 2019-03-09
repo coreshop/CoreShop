@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\ProductBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefinitionsHelperInterface
@@ -27,9 +26,8 @@ class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefiniti
     /**
      * @param ShopperContextInterface $shopperContext
      */
-    public function __construct(
-        ShopperContextInterface $shopperContext
-    ) {
+    public function __construct(ShopperContextInterface $shopperContext)
+    {
         $this->shopperContext = $shopperContext;
     }
 
@@ -38,8 +36,7 @@ class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefiniti
      */
     public function hasAvailableUnitDefinitions(ProductInterface $product)
     {
-        $productUnitDefinitions = $product->getUnitDefinitions();
-        return $productUnitDefinitions instanceof ProductUnitDefinitionsInterface;
+        return $product->hasUnitDefinitions();
     }
 
     /**

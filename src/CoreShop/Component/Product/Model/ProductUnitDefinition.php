@@ -112,4 +112,11 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         }
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
+    }
 }

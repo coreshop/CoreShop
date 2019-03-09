@@ -13,7 +13,17 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderItemInterface as BaseOrderItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 interface OrderItemInterface extends BaseOrderItemInterface, SaleItemInterface
 {
+    /**
+     * @return null|ProductUnitDefinitionInterface
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
+     */
+    public function setUnitDefinition($productUnitDefinition);
 }

@@ -13,9 +13,26 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderItem as BaseOrderItem;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class OrderItem extends BaseOrderItem implements OrderItemInterface
 {
     use ProposalItemTrait;
     use SaleItemTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinition()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinition($productUnitDefinition)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

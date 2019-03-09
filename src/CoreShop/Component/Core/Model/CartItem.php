@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartItem as BaseCartItem;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class CartItem extends BaseCartItem implements CartItemInterface
 {
@@ -48,5 +49,21 @@ class CartItem extends BaseCartItem implements CartItemInterface
     public function getWeight()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWeight() : 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinition()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinition($productUnitDefinition)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

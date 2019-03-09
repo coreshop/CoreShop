@@ -196,4 +196,19 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param ProductUnitDefinitionsInterface $productUnitDefinitions
      */
     public function setUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinitions();
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultUnitDefinition();
+
+    /**
+     * @return bool
+     */
+    public function hasAdditionalUnitDefinitions();
 }

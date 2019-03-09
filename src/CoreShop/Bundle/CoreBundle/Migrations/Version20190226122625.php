@@ -66,6 +66,40 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
             $classUpdater->insertFieldBefore('wholesalePrice', $unitDefinitionsField);
             $classUpdater->save();
         }
+
+        $unitDefinitionField = [
+             'fieldtype' => 'coreShopProductUnitDefinition',
+             'phpdocType' => '\\CoreShop\\Component\\Product\\Model\\ProductUnitDefinitionInterface',
+             'allowEmpty' => false,
+             'name' => 'unitDefinition',
+             'title' => 'Unit Definition',
+             'tooltip' => '',
+             'mandatory' => false,
+             'noteditable' => true,
+             'index' => false,
+             'locked' => false,
+             'style' => '',
+             'permissions' => NULL,
+             'datatype' => 'data',
+             'relationType' => false,
+             'invisible' => false,
+             'visibleGridView' => false,
+             'visibleSearch' => false,
+        ];
+
+        $cartItemClass = $this->container->getParameter('coreshop.model.cart_item.pimcore_class_name');
+        $classUpdater = new ClassUpdate($cartItemClass);
+        if (!$classUpdater->hasField('unitDefinition')) {
+            $classUpdater->insertFielAfter('digitalProduct', $unitDefinitionField);
+            $classUpdater->save();
+        }
+
+        $orderItemClass = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');
+        $classUpdater = new ClassUpdate($orderItemClass);
+        if (!$classUpdater->hasField('unitDefinition')) {
+            $classUpdater->insertFielAfter('digitalProduct', $unitDefinitionField);
+            $classUpdater->save();
+        }
     }
 
     /**

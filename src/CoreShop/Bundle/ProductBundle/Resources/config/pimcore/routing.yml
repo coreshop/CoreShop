@@ -25,7 +25,12 @@ coreshop_admin_product_unit_definitions:
     resource: |
       alias: coreshop.product_unit_definitions
       additional_routes:
-        config:
+        product_unit_definitions:
+          path: get-product-unit-definitions
+          action: productUnitDefinitionsList
+          methods:
+            - GET
+        product_additional_unit_definitions:
           path: get-product-additional-unit-definitions
           action: productAdditionalUnitDefinitionsList
           methods:
