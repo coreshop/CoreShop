@@ -24,25 +24,27 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     initialize: function (ruleId, objectId, clipboardManager) {
 
-        var unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions',
-            proxy = {
-                type: 'ajax',
-                url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
-                extraParams: {
-                    productId: this.objectId
-                },
-                actionMethods: {
-                    read: 'GET'
-                },
-                reader: {
-                    type: 'json'
-                }
-            };
+        var unitDefinitionModelName, proxy;
 
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
         this.objectId = objectId;
         this.clipboardManager = clipboardManager;
+
+        unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
+        proxy = {
+            type: 'ajax',
+            url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+            extraParams: {
+                productId: this.objectId
+            },
+            actionMethods: {
+                read: 'GET'
+            },
+            reader: {
+                type: 'json'
+            }
+        };
 
         if (!Ext.ClassManager.get(unitDefinitionModelName)) {
             Ext.define(unitDefinitionModelName, {
