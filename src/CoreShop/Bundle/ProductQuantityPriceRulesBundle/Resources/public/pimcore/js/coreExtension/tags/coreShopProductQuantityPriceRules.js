@@ -238,6 +238,8 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
         var panelItem = new coreshop.product_quantity_price_rules.object.item(this, data, id, 'productQuantityPriceRule'),
             eventId = Ext.id();
 
+        panelItem.setObjectId(this.object.id);
+
         this.clipboardManager.registerDispatcher(eventId, function (object) {
             panelItem.onClipboardUpdated(object);
         }.bind(this));

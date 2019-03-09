@@ -24,7 +24,20 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     initialize: function (ruleId, objectId, clipboardManager) {
 
-        var unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
+        var unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions',
+            proxy = {
+                type: 'ajax',
+                url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+                extraParams: {
+                    productId: this.objectId
+                },
+                actionMethods: {
+                    read: 'GET'
+                },
+                reader: {
+                    type: 'json'
+                }
+            };
 
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
@@ -34,19 +47,6 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         if (!Ext.ClassManager.get(unitDefinitionModelName)) {
             Ext.define(unitDefinitionModelName, {
                 extend: 'Ext.data.Model',
-                proxy: {
-                    type: 'ajax',
-                    url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
-                    extraParams: {
-                        productId: this.objectId
-                    },
-                    actionMethods: {
-                        read: 'GET'
-                    },
-                    reader: {
-                        type: 'json'
-                    }
-                },
                 fields: [
                     {name: 'id'},
                     {name: 'unit'},
@@ -56,7 +56,8 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         }
 
         this.productUnitDefinitionsStore = new Ext.data.Store({
-            model: unitDefinitionModelName
+            model: unitDefinitionModelName,
+            proxy: proxy
         });
     },
 

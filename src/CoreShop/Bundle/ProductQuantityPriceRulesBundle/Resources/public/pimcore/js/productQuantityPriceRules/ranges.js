@@ -15,14 +15,16 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     internalTmpId: null,
     ruleId: null,
+    objectId: null,
     clipboardManager: null,
 
     amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
     percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
 
-    initialize: function (ruleId, clipboardManager, pricingBehaviourTypes) {
+    initialize: function (ruleId, objectId, clipboardManager, pricingBehaviourTypes) {
         this.internalTmpId = Ext.id();
         this.ruleId = ruleId;
+        this.objectId = objectId;
         this.clipboardManager = clipboardManager;
         this.pricingBehaviourTypes = pricingBehaviourTypes;
     },
