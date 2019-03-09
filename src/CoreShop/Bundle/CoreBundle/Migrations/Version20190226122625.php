@@ -34,8 +34,7 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
                 ALTER TABLE coreshop_product_unit_definition_price ADD CONSTRAINT FK_13ECB5BD314F81B FOREIGN KEY (product_store_values) REFERENCES coreshop_product_store_values (id) ON DELETE CASCADE;
                 ALTER TABLE coreshop_product_quantity_price_rule_range ADD unit_definition INT DEFAULT NULL;
                 ALTER TABLE coreshop_product_quantity_price_rule_range ADD CONSTRAINT FK_C6BA05DA6B98B918 FOREIGN KEY (unit_definition) REFERENCES coreshop_product_unit_definition (id);
-                
-                CREATE UNIQUE INDEX UNIQ_C6BA05DA6B98B918 ON coreshop_product_quantity_price_rule_range (unit_definition);
+                CREATE INDEX IDX_C6BA05DA6B98B918 ON coreshop_product_quantity_price_rule_range (unit_definition);
             ');
         }
 
