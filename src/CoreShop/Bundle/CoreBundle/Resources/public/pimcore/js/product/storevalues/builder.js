@@ -114,14 +114,13 @@ coreshop.product.storeValues.builder = Class.create({
 
         var unitDefinitions = [];
 
-        this.form.setLoading(true);
-
         if (data === undefined) {
             // initial from store!
             if (this.productUnitDefinitionsStore.getRange().length > 0) {
                 Ext.Array.each(this.productUnitDefinitionsStore.getRange(), function (record) {
                     var unit = record.get('unit');
                     unitDefinitions.push({
+                        'available': true,
                         'unitDefinitionId': record.get('id'),
                         'name': unit['name'],
                     })
@@ -132,6 +131,7 @@ coreshop.product.storeValues.builder = Class.create({
             Ext.Array.each(data.availableUnits, function (unitBlock) {
                 if (unitBlock.isDefaultUnitDefinition === false) {
                     unitDefinitions.push({
+                        'available': unitBlock.hasId === true,
                         'unitDefinitionId': unitBlock.unit.get('id'),
                         'name': unitBlock.unit.get('name'),
                     })
@@ -145,14 +145,12 @@ coreshop.product.storeValues.builder = Class.create({
 
         // do not show extra unit fields if no product unit definitions are available.
         if (unitDefinitions.length === 0) {
-            this.form.setLoading(false);
             return;
         }
 
         this.storeUnitPriceFieldSet = this.getUnitDefinitionPricesField(unitDefinitions);
 
         this.form.add(this.storeUnitPriceFieldSet);
-        this.form.setLoading(false);
     },
 
     getUnitDefinitionPricesField: function (unitDefinitions) {
@@ -178,20 +176,33 @@ coreshop.product.storeValues.builder = Class.create({
         });
 
         Ext.Array.each(unitDefinitions, function (record, index) {
-            fieldSet.add({
-                xtype: 'hidden',
-                name: 'productUnitDefinitionPrices.' + index + '.unitDefinition',
-                value: record.unitDefinitionId
-            });
-            fieldSet.add({
-                xtype: 'numberfield',
-                fieldLabel: record.name,
-                name: 'productUnitDefinitionPrices.' + index + '.price',
-                labelWidth: labelWidth,
-                minValue: 0,
-                value: this.getUnitDefinitionStorePrice(productUnitDefinitionPrices, record.unitDefinitionId),
-                width: fieldWidth,
-            })
+
+            if (record.available === true) {
+
+                fieldSet.add({
+                    xtype: 'hidden',
+                    name: 'productUnitDefinitionPrices.' + index + '.unitDefinition',
+                    value: record.unitDefinitionId
+                });
+
+                fieldSet.add({
+                    xtype: 'numberfield',
+                    fieldLabel: record.name,
+                    name: 'productUnitDefinitionPrices.' + index + '.price',
+                    labelWidth: labelWidth,
+                    minValue: 0,
+                    value: this.getUnitDefinitionStorePrice(productUnitDefinitionPrices, record.unitDefinitionId),
+                    width: fieldWidth,
+                });
+
+            } else {
+                fieldSet.add({
+                    xtype: 'label',
+                    style: 'font-style: italic; display: block; clear: both; margin: 5px 0 10px 0;',
+                    html: record.name + ': ' + t('coreshop_product_unit_definition_price_not_available')
+                });
+            }
+
         }.bind(this));
 
         return fieldSet;

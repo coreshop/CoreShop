@@ -38,7 +38,6 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         // otherwise each store builder would refresh a single request
         this.productUnitDefinitionsStore = new Ext.data.Store({
             autoDestroy: true,
-            filterOnLoad: false,
             proxy: {
                 type: 'ajax',
                 url: '/admin/coreshop/product_unit_definitions/get-product-additional-unit-definitions',
