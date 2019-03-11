@@ -30,7 +30,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     },
 
     afterInitialization: function () {
-        // keep this for third parties.
+        // keep it for 3rd party modifiers.
     },
 
     postSaveObject: function (object, refreshedData) {
@@ -97,7 +97,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     },
 
     afterRangesAdded: function (columns, gridPanel) {
-        // keep this for third parties.
+        // keep it for 3rd party modifiers.
     },
 
     getRangesData: function () {
@@ -139,7 +139,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     generateGridColumns: function (data) {
 
-        var _ = this, columns;
+        var columns;
 
         columns = [
             {
@@ -305,16 +305,13 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     },
 
     generateCellEditing: function () {
-
-        var _ = this;
-
         return Ext.create('Ext.grid.plugin.CellEditing', {
             clicksToEdit: 1,
             listeners: {
                 beforeedit: function (editor, context) {
                     var record = context.record;
 
-                    if (_.cellEditingIsAllowed(record, context.column.name) === false) {
+                    if (this.cellEditingIsAllowed(record, context.column.name) === false) {
                         return false;
                     }
 
@@ -328,7 +325,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                     });
 
                     editor.editors.clear();
-                }
+                }.bind(this)
             }
         });
     },
@@ -338,7 +335,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     },
 
     onPriceBehaviourChange: function (field) {
-        // keep this for third parties.
+        // keep it for 3rd party modifiers.
     },
 
     onClipboardUpdated: function () {
