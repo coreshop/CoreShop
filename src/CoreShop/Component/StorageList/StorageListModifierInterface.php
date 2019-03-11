@@ -33,7 +33,7 @@ interface StorageListModifierInterface
      *
      * @return StorageListItemInterface
      */
-    public function addToStorageList(StorageListInterface $storageList, StorageListItemInterface $item);
+    public function addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item);
 
     /**
      * @param StorageListInterface     $storageList

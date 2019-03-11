@@ -186,7 +186,7 @@ class CartController extends FrontendController
                  */
                 $addToCart = $form->getData();
 
-                $this->getCartModifier()->addToStorageList($addToCart->getCart(), $addToCart->getCartItem());
+                $this->getCartModifier()->addStorageListItem($addToCart->getCart(), $addToCart->getCartItem());
                 $this->getCartManager()->persistCart($this->getCart());
 
                 $this->get('coreshop.tracking.manager')->trackCartAdd(

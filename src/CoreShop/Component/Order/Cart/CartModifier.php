@@ -49,7 +49,7 @@ class CartModifier implements StorageListModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function addToStorageList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item)
     {
         return $this->resolveItem($storageList, $item);
     }

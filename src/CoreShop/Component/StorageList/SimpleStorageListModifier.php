@@ -35,7 +35,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function addToStorageList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item)
     {
         return $this->resolveItem($storageList, $item);
     }
@@ -52,7 +52,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         $item->setProduct($product);
         $item->setQuantity($quantity);
 
-        return $this->addToStorageList($storageList, $item);
+        return $this->addStorageListItem($storageList, $item);
     }
 
     /**
