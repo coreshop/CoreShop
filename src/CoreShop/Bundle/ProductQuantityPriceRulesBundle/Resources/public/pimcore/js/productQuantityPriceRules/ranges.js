@@ -17,9 +17,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     ruleId: null,
     objectId: null,
     clipboardManager: null,
-
-    amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
-    percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
+    pricingBehaviourTypes: [],
 
     initialize: function (ruleId, objectId, clipboardManager, pricingBehaviourTypes) {
         this.internalTmpId = Ext.id();
@@ -27,6 +25,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         this.objectId = objectId;
         this.clipboardManager = clipboardManager;
         this.pricingBehaviourTypes = pricingBehaviourTypes;
+
+        this.afterInitialization();
+    },
+
+    afterInitialization: function () {
+        // keep this for third parties.
     },
 
     postSaveObject: function (object, refreshedData) {
@@ -81,35 +85,32 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     },
 
     addRanges: function (data) {
-        this.rangesContainer.add(this.generateGrid(data));
+
+        var columns = this.generateGridColumns(data),
+            gridPanel = this.generateGridPanel(columns, data);
+
+        this.rangesContainer.add(gridPanel);
         this.rangesContainer.updateLayout();
+
         this.checkClipboard();
+        this.afterRangesAdded(columns, gridPanel);
+    },
+
+    afterRangesAdded: function (columns, gridPanel) {
+        // keep this for third parties.
     },
 
     getRangesData: function () {
-        // get defined ranges
+
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
             ranges = [];
 
-
         grid.getStore().each(function (record) {
-            var currencyId = null,
-                currencRecord = record.get('currency');
-            if (!isNaN(currencRecord)) {
-                currencyId = currencRecord;
-            } else if (Ext.isObject(currencRecord) && currencRecord.hasOwnProperty('id')) {
-                currencyId = currencRecord.id;
-            }
-
             ranges.push({
                 'id': record.get('rangeId'),
                 'rangeFrom': record.get('rangeFrom'),
                 'rangeTo': record.get('rangeTo'),
                 'pricingBehaviour': record.get('pricingBehaviour'),
-                'amount': record.get('amount'),
-                'currency': currencyId,
-                'percentage': record.get('percentage'),
-                'pseudoPrice': record.get('pseudoPrice'),
                 'highlighted': record.get('highlighted'),
             });
         });
@@ -136,37 +137,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         return false;
     },
 
-    generateGrid: function (storeData, store) {
+    generateGridColumns: function (data) {
 
-        var _ = this, currencyBaseStore, rangeCurrencyStore, panel, columns, cellEditing,
-            cloneStore = function (store) {
-                var records = [];
-                store.each(function (r) {
-                    records.push(r.copy());
-                });
-
-                var store2 = new Ext.data.Store({
-                    recordType: store.recordType
-                });
-
-                store2.add(records);
-                store2.insert(0, {
-                    name: t('empty'),
-                    id: null
-                });
-
-                return store2;
-            };
-
-        currencyBaseStore = pimcore.globalmanager.get('coreshop_currencies');
-
-        if (currencyBaseStore.isLoaded()) {
-            rangeCurrencyStore = cloneStore(currencyBaseStore);
-        } else {
-            currencyBaseStore.load(function (store) {
-                rangeCurrencyStore = cloneStore(store);
-            }.bind(this));
-        }
+        var _ = this, columns;
 
         columns = [
             {
@@ -224,18 +197,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                     return new Ext.form.ComboBox({
                         store: this.pricingBehaviourTypes,
                         listeners: {
-                            change: function (field) {
-                                var grid = this.up('grid'),
-                                    selectedModel = grid.getSelectionModel().getSelected().getAt(0);
-
-                                if (_.isInArray(field.getValue(), _.percentBasedBehaviour)) {
-                                    selectedModel.set('amount', 0);
-                                    selectedModel.set('pseudoPrice', 0);
-                                    selectedModel.set('currency', null);
-                                } else if (_.isInArray(field.getValue(), _.amountBasedBehaviour)) {
-                                    selectedModel.set('percentage', 0);
-                                }
-                            },
+                            change: this.onPriceBehaviourChange.bind(this),
                             select: function (combo) {
                                 var grid = this.up('grid'),
                                     selectedModel = grid.getSelectionModel().getSelected().getAt(0);
@@ -249,132 +211,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         editable: false,
                         queryMode: 'local'
                     });
-                },
+                }.bind(this),
                 renderer: function (value) {
                     if (value === undefined || value === null) {
                         return t('coreshop_product_quantity_price_rules_behaviour_nothing_selected');
                     }
                     return t('coreshop_product_quantity_price_rules_behaviour_' + value);
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_amount'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'amount',
-                name: 'quantity_amount',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 0
-                    });
-                },
-                renderer: function (value, cell, record) {
-                    var prefix = '';
-                    if (record.get('pricingBehaviour') === 'amount_increase') {
-                        prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'amount_decrease') {
-                        prefix = '-';
-                    }
-
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
-                        _.setDisabledStyleForCell(cell);
-                    }
-
-                    if (value === undefined) {
-                        return coreshop.util.format.currency('', 0);
-                    } else {
-                        return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
-                    }
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_currency'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'currency',
-                name: 'currency',
-                getEditor: function () {
-                    return new Ext.form.ComboBox({
-                        store: rangeCurrencyStore,
-                        valueField: 'id',
-                        displayField: 'name',
-                        queryMode: 'local',
-                        allowBlank: true
-                    });
-                },
-                renderer: function (currency, cell, record) {
-                    var store, currencyObject;
-
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
-                        _.setDisabledStyleForCell(cell);
-                    }
-
-                    if (!isNaN(currency)) {
-                        store = pimcore.globalmanager.get('coreshop_currencies');
-                        currencyObject = store.getById(currency);
-                        if (currencyObject) {
-                            return currencyObject.get('name');
-                        }
-                    } else if (Ext.isObject(currency) && currency.hasOwnProperty('name')) {
-                        return currency.name;
-                    }
-
-                    return t('empty');
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_percentage'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'percentage',
-                name: 'quantity_percentage',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 0,
-                        maxValue: 100
-                    });
-                }.bind(this),
-                renderer: function (value, cell, record) {
-                    var prefix = '';
-                    if (record.get('pricingBehaviour') === 'percentage_increase') {
-                        prefix = '+';
-                    } else if (record.get('pricingBehaviour') === 'percentage_decrease') {
-                        prefix = '-';
-                    }
-
-                    if (_.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
-                        _.setDisabledStyleForCell(cell);
-                    }
-
-                    if (value !== undefined) {
-                        return prefix + value + '%';
-                    }
-                    return '--';
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_pseudo_price'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'pseudoPrice',
-                name: 'pseudo_price',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 0
-                    });
-                },
-                renderer: function (value, cell, record) {
-
-                    if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
-                        _.setDisabledStyleForCell(cell);
-                    }
-
-                    if (value === undefined) {
-                        return coreshop.util.format.currency('', 0);
-                    } else {
-
-                        return coreshop.util.format.currency('', parseFloat(value) * 100);
-                    }
                 }
             },
             {
@@ -409,35 +251,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             }
         ];
 
-        cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1,
-            listeners: {
-                beforeedit: function (editor, context) {
-                    var record = context.record;
+        return columns;
+    },
 
-                    if (_.isInArray(context.column.name, ['quantity_amount', 'currency', 'pseudo_price'])
-                        && _.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
-                        return false;
-                    } else if (context.column.name === 'quantity_percentage'
-                        && _.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
-                        return false;
-                    }
+    generateGridPanel: function (columns, storeData) {
 
-                    editor.editors.each(function (e) {
-                        try {
-                            e.completeEdit();
-                            Ext.destroy(e);
-                        } catch (exception) {
-                            // fail silently.
-                        }
-                    });
-
-                    editor.editors.clear();
-                }
-            }
-        });
-
-        panel = new Ext.Panel({
+        return new Ext.Panel({
             items: [
                 {
                     xtype: 'grid',
@@ -456,7 +275,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                     selModel: Ext.create('Ext.selection.CellModel', {}),
                     autoExpandColumn: 'value_col',
                     plugins: [
-                        cellEditing
+                        this.generateCellEditing()
                     ],
                     viewConfig: {
                         forceFit: true
@@ -483,9 +302,43 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 }
             ]
         });
+    },
 
-        return panel;
+    generateCellEditing: function () {
 
+        var _ = this;
+
+        return Ext.create('Ext.grid.plugin.CellEditing', {
+            clicksToEdit: 1,
+            listeners: {
+                beforeedit: function (editor, context) {
+                    var record = context.record;
+
+                    if (_.cellEditingIsAllowed(record, context.column.name) === false) {
+                        return false;
+                    }
+
+                    editor.editors.each(function (e) {
+                        try {
+                            e.completeEdit();
+                            Ext.destroy(e);
+                        } catch (exception) {
+                            // fail silently.
+                        }
+                    });
+
+                    editor.editors.clear();
+                }
+            }
+        });
+    },
+
+    cellEditingIsAllowed: function (record, currentColumnName) {
+        return true;
+    },
+
+    onPriceBehaviourChange: function (field) {
+        // keep this for third parties.
     },
 
     onClipboardUpdated: function () {
@@ -525,7 +378,11 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             return;
         }
 
-        this.clipboardManager.addData('quantityPriceRange', {id: this.internalTmpId, records: grid.getStore().getData().items});
+        this.clipboardManager.addData('quantityPriceRange', {
+            id: this.internalTmpId,
+            records: grid.getStore().getData().items
+        });
+
         this.checkClipboard();
 
         setTimeout(function () {
@@ -556,24 +413,28 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
     onAdd: function (btn) {
 
         var grid = btn.up('grid'),
-            modelClass = grid.getStore().getModel(),
-            lastEntry = grid.getStore().last(),
             newEntry;
 
-        newEntry = new modelClass({
-            rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
-            rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
-            pricingBehaviour: 'fixed',
-            amount: 0,
-            currency: lastEntry !== null ? lastEntry.get('currency') : null,
-            percentage: 0,
-            pseudoPrice: 0,
-            rangeId: null
-        });
+        newEntry = this.parseNewModelClass(grid);
 
         grid.getStore().add(newEntry);
         this.checkClipboard();
         grid.getView().refresh();
+
+    },
+
+    parseNewModelClass: function (grid) {
+
+        var modelClass = grid.getStore().getModel(),
+            lastEntry = grid.getStore().last();
+
+        return new modelClass({
+            rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
+            rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
+            pricingBehaviour: 'fixed',
+            highlight: false,
+            rangeId: null
+        });
 
     },
 
@@ -584,24 +445,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         }
 
         Ext.Array.each(data, function (range, key) {
-            var p;
             if (range.hasOwnProperty('id')) {
                 data[key]['rangeId'] = range['id'];
                 delete data[key]['id'];
-            }
-
-            if (range.hasOwnProperty('amount')) {
-                p = parseInt(range['amount']);
-                if (p > 0) {
-                    data[key]['amount'] = parseInt(range['amount']) / 100;
-                }
-            }
-
-            if (range.hasOwnProperty('pseudoPrice')) {
-                p = parseInt(range['pseudoPrice']);
-                if (p > 0) {
-                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / 100;
-                }
             }
         });
 

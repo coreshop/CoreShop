@@ -86,10 +86,10 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
     },
 
     getItems: function () {
-        var rangContainerClass = this.getRangeContainerClass();
+        var rangeContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.getId(), this.objectId, this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
+        this.ranges = new rangeContainerClass(this.getId(), this.objectId, this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [

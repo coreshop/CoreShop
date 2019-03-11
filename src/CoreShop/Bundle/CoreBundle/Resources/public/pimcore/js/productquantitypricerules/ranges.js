@@ -10,26 +10,15 @@
  *
  */
 
-pimcore.registerNS('coreshop.product_quantity_price_rules.ranges');
-coreshop.product_quantity_price_rules.ranges = Class.create({
+coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_quantity_price_rules.ranges, {
 
-    internalTmpId: null,
-    ruleId: null,
-    objectId: null,
-    clipboardManager: null,
     productUnitDefinitionsStore: null,
-
     amountBasedBehaviour: ['fixed', 'amount_decrease', 'amount_increase'],
     percentBasedBehaviour: ['percentage_decrease', 'percentage_increase'],
 
-    initialize: function (ruleId, objectId, clipboardManager) {
+    afterInitialization: function () {
 
         var unitDefinitionModelName, proxy;
-
-        this.internalTmpId = Ext.id();
-        this.ruleId = ruleId;
-        this.objectId = objectId;
-        this.clipboardManager = clipboardManager;
 
         unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
         proxy = {
@@ -61,98 +50,10 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             model: unitDefinitionModelName,
             proxy: proxy
         });
+
     },
 
-    postSaveObject: function (object, refreshedData) {
-        if (this.isDirty()) {
-            this.remapProductQuantityPriceRuleIds(refreshedData);
-        } else {
-            this.commitStoreChanges();
-        }
-    },
-
-    remapProductQuantityPriceRuleIds: function (refreshedData) {
-
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0];
-
-        if (this.ruleId === null || refreshedData === null) {
-            this.commitStoreChanges();
-            return;
-        }
-
-        this.rangesContainer.setLoading(true);
-        if (refreshedData.hasOwnProperty('ranges') && Ext.isArray(refreshedData.ranges)) {
-            grid.getStore().setData(this.adjustRangeStoreData(refreshedData.ranges));
-        }
-
-        this.rangesContainer.setLoading(false);
-        this.commitStoreChanges();
-    },
-
-    commitStoreChanges: function () {
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0];
-        grid.getStore().commitChanges();
-    },
-
-    getLayout: function () {
-
-        this.rangesContainer = new Ext.Panel({
-            iconCls: 'coreshop_icon_product_quantity_price_rules',
-            title: t('coreshop_product_quantity_price_rules_ranges'),
-            autoScroll: true,
-            forceLayout: true,
-            style: 'padding: 10px',
-            border: false
-        });
-
-        return this.rangesContainer;
-    },
-
-    destroy: function () {
-        if (this.rangesContainer) {
-            this.rangesContainer.destroy();
-        }
-    },
-
-    addRanges: function (data) {
-        this.rangesContainer.add(this.generateGrid(data));
-        this.rangesContainer.updateLayout();
-        this.checkClipboard();
-        this.checkUnitAvailability();
-    },
-
-    getRangesData: function () {
-        // get defined ranges
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
-            ranges = [];
-
-        grid.getStore().each(function (record) {
-            var currencyId = null,
-                currencRecord = record.get('currency');
-            if (!isNaN(currencRecord)) {
-                currencyId = currencRecord;
-            } else if (Ext.isObject(currencRecord) && currencRecord.hasOwnProperty('id')) {
-                currencyId = currencRecord.id;
-            }
-
-            ranges.push({
-                'id': record.get('rangeId'),
-                'rangeFrom': record.get('rangeFrom'),
-                'rangeTo': record.get('rangeTo'),
-                'pricingBehaviour': record.get('pricingBehaviour'),
-                'unitDefinition': record.get('unitDefinition'),
-                'amount': record.get('amount'),
-                'currency': currencyId,
-                'percentage': record.get('percentage'),
-                'pseudoPrice': record.get('pseudoPrice'),
-                'highlighted': record.get('highlighted'),
-            });
-        });
-
-        return ranges;
-    },
-
-    checkUnitAvailability: function () {
+    afterRangesAdded: function (columns, gridPanel) {
 
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
             unitDefinitionColumn = grid.columnManager.getHeaderByDataIndex('unitDefinition');
@@ -170,104 +71,66 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         }
     },
 
-    resetDeepId: function () {
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0];
-        grid.getStore().each(function (record) {
-            record.set('rangeId', null);
-        });
-    },
-
-    isDirty: function () {
+    getRangesData: function () {
 
         var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
-            store = grid.getStore();
+            ranges = [];
 
-        if (store.getModifiedRecords().length > 0 || store.getNewRecords().length > 0 || store.getRemovedRecords().length > 0) {
-            return true;
-        }
+        grid.getStore().each(function (record) {
+            ranges.push({
+                'id': record.get('rangeId'),
+                'rangeFrom': record.get('rangeFrom'),
+                'rangeTo': record.get('rangeTo'),
+                'pricingBehaviour': record.get('pricingBehaviour'),
+                'unitDefinition': record.get('unitDefinition'),
+                'amount': record.get('amount'),
+                'currency': record.get('currency'),
+                'percentage': record.get('percentage'),
+                'pseudoPrice': record.get('pseudoPrice'),
+                'highlighted': record.get('highlighted'),
+            });
+        });
 
-        return false;
+        return ranges;
     },
 
-    generateGrid: function (storeData, store) {
+    cloneStore: function (store) {
+        var records = [];
+        store.each(function (r) {
+            records.push(r.copy());
+        });
 
-        var _ = this, currencyBaseStore, rangeCurrencyStore, panel, columns, cellEditing,
-            cloneStore = function (store) {
-                var records = [];
-                store.each(function (r) {
-                    records.push(r.copy());
-                });
+        var store2 = new Ext.data.Store({
+            recordType: store.recordType
+        });
 
-                var store2 = new Ext.data.Store({
-                    recordType: store.recordType
-                });
+        store2.add(records);
+        store2.insert(0, {
+            name: t('empty'),
+            id: null
+        });
 
-                store2.add(records);
-                store2.insert(0, {
-                    name: t('empty'),
-                    id: null
-                });
+        return store2;
+    },
 
-                return store2;
-            };
+    generateGridColumns: function ($super, data) {
+
+        var _ = this, columns, additionalColumns, currencyBaseStore, rangeCurrencyStore;
+
+        columns = $super(data);
 
         currencyBaseStore = pimcore.globalmanager.get('coreshop_currencies');
 
         if (currencyBaseStore.isLoaded()) {
-            rangeCurrencyStore = cloneStore(currencyBaseStore);
+            rangeCurrencyStore = this.cloneStore(currencyBaseStore);
         } else {
             currencyBaseStore.load(function (store) {
-                rangeCurrencyStore = cloneStore(store);
+                rangeCurrencyStore = this.cloneStore(store);
             }.bind(this));
         }
 
-        columns = [
-            {
-                flex: 1,
-                sortable: false,
-                dataIndex: 'rangeId',
-                hideable: false,
-                hidden: true
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_range_from'),
-                flex: 1,
-                sortable: false,
-                readOnly: true,
-                dataIndex: 'rangeFrom',
-                name: 'quantity_range_from',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 0
-                    });
-                },
-                renderer: function (value) {
-                    if (value === undefined || value === null) {
-                        return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
-                    }
-                    return value + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_range_to'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'rangeTo',
-                name: 'quantity_range_to',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 1
-                    });
-                },
-                renderer: function (value, cell, record, rowIndex) {
-                    var lastElement = record.store.getRange().length === (rowIndex + 1);
-                    if (value === undefined || value === null) {
-                        return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
-                    }
-                    return value + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount') + (lastElement === true ? '+' : '');
-                }
-            },
-            {
+        var additionalColumns = {
+            'unitDefinition': [{
                 text: t('coreshop_product_quantity_price_rules_unit_definition'),
                 flex: 1,
                 sortable: false,
@@ -296,70 +159,17 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         }
                     });
                 },
-                renderer: function (value) {
+                renderer: function (unitDefinitionId) {
                     var unitDefinitionRecord;
-                    if (value === undefined || value === null) {
+                    if (unitDefinitionId === undefined || unitDefinitionId === null) {
                         return '--';
                     }
 
-                    if (isNaN(value)) {
-                        return value.unit.name;
-                    }
-
-                    unitDefinitionRecord = _.productUnitDefinitionsStore.getById(value);
+                    unitDefinitionRecord = _.productUnitDefinitionsStore.getById(unitDefinitionId);
                     return unitDefinitionRecord.get('unitName');
                 }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_behaviour'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'pricingBehaviour',
-                name: 'pricing_behaviour',
-                getEditor: function () {
-                    return new Ext.form.ComboBox({
-                        store: [
-                            ['fixed', t('coreshop_product_quantity_price_rules_behaviour_fixed')],
-                            ['amount_decrease', t('coreshop_product_quantity_price_rules_behaviour_amount_decrease')],
-                            ['amount_increase', t('coreshop_product_quantity_price_rules_behaviour_amount_increase')],
-                            ['percentage_decrease', t('coreshop_product_quantity_price_rules_behaviour_percentage_decrease')],
-                            ['percentage_increase', t('coreshop_product_quantity_price_rules_behaviour_percentage_increase')]
-                        ],
-                        listeners: {
-                            change: function (field) {
-                                var grid = this.up('grid'),
-                                    selectedModel = grid.getSelectionModel().getSelected().getAt(0);
-
-                                if (_.isInArray(field.getValue(), _.percentBasedBehaviour)) {
-                                    selectedModel.set('amount', 0);
-                                    selectedModel.set('pseudoPrice', 0);
-                                    selectedModel.set('currency', null);
-                                } else if (_.isInArray(field.getValue(), _.amountBasedBehaviour)) {
-                                    selectedModel.set('percentage', 0);
-                                }
-                            },
-                            select: function (combo) {
-                                var grid = this.up('grid'),
-                                    selectedModel = grid.getSelectionModel().getSelected().getAt(0);
-
-                                selectedModel.set('pricingBehaviour', combo.getValue());
-                                combo.up('editor').completeEdit(true);
-                                combo.up('grid').getView().refresh();
-                            }
-                        },
-                        triggerAction: 'all',
-                        editable: false,
-                        queryMode: 'local'
-                    });
-                },
-                renderer: function (value) {
-                    if (value === undefined || value === null) {
-                        return t('coreshop_product_quantity_price_rules_behaviour_nothing_selected');
-                    }
-                    return t('coreshop_product_quantity_price_rules_behaviour_' + value);
-                }
-            },
-            {
+            }],
+            'quantityAmount': [{
                 text: t('coreshop_product_quantity_price_rules_amount'),
                 flex: 1,
                 sortable: false,
@@ -388,8 +198,8 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
                     }
                 }
-            },
-            {
+            }],
+            'currency': [{
                 text: t('coreshop_product_quantity_price_rules_currency'),
                 flex: 1,
                 sortable: false,
@@ -404,27 +214,23 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         allowBlank: true
                     });
                 },
-                renderer: function (currency, cell, record) {
+                renderer: function (currencyId, cell, record) {
                     var store, currencyObject;
 
                     if (_.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
                         _.setDisabledStyleForCell(cell);
                     }
 
-                    if (!isNaN(currency)) {
-                        store = pimcore.globalmanager.get('coreshop_currencies');
-                        currencyObject = store.getById(currency);
-                        if (currencyObject) {
-                            return currencyObject.get('name');
-                        }
-                    } else if (Ext.isObject(currency) && currency.hasOwnProperty('name')) {
-                        return currency.name;
+                    store = pimcore.globalmanager.get('coreshop_currencies');
+                    currencyObject = store.getById(currencyId);
+                    if (currencyObject) {
+                        return currencyObject.get('name');
                     }
 
                     return t('empty');
                 }
-            },
-            {
+            }],
+            'quantityPercentage': [{
                 text: t('coreshop_product_quantity_price_rules_percentage'),
                 flex: 1,
                 sortable: false,
@@ -453,8 +259,8 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                     }
                     return '--';
                 }
-            },
-            {
+            }],
+            'pseudoPrice': [{
                 text: t('coreshop_product_quantity_price_rules_pseudo_price'),
                 flex: 1,
                 sortable: false,
@@ -478,216 +284,79 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         return coreshop.util.format.currency('', parseFloat(value) * 100);
                     }
                 }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_highlight'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'highlighted',
-                name: 'quantity_highlight',
-                getEditor: function () {
-                    return new Ext.form.Checkbox({});
-                },
-                renderer: function (value) {
-                    if (value !== undefined) {
-                        return value === true ? t('yes') : t('no');
-                    }
-                    return t('no');
-                }
-            },
-            {
-                xtype: 'actioncolumn',
-                menuText: t('delete'),
-                width: 40,
-                items: [{
-                    tooltip: t('delete'),
-                    icon: '/bundles/pimcoreadmin/img/flat-color-icons/delete.svg',
-                    handler: function (grid, rowIndex) {
-                        grid.getStore().removeAt(rowIndex);
-                        this.checkClipboard();
-                        grid.up('grid').getView().refresh();
-                    }.bind(this)
-                }]
-            }
-        ];
+            }]
+        };
 
-        cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            clicksToEdit: 1,
-            listeners: {
-                beforeedit: function (editor, context) {
-                    var record = context.record;
+        columns = Ext.Array.insert(columns, 3, additionalColumns['unitDefinition']);
+        columns = Ext.Array.insert(columns, 5, additionalColumns['quantityAmount']);
+        columns = Ext.Array.insert(columns, 6, additionalColumns['currency']);
+        columns = Ext.Array.insert(columns, 7, additionalColumns['quantityPercentage']);
+        columns = Ext.Array.insert(columns, 8, additionalColumns['pseudoPrice']);
 
-                    if (_.isInArray(context.column.name, ['quantity_amount', 'currency', 'pseudo_price'])
-                        && _.isInArray(record.get('pricingBehaviour'), _.percentBasedBehaviour)) {
-                        return false;
-                    } else if (context.column.name === 'quantity_percentage'
-                        && _.isInArray(record.get('pricingBehaviour'), _.amountBasedBehaviour)) {
-                        return false;
-                    }
-
-                    editor.editors.each(function (e) {
-                        try {
-                            e.completeEdit();
-                            Ext.destroy(e);
-                        } catch (exception) {
-                            // fail silently.
-                        }
-                    });
-
-                    editor.editors.clear();
-                }
-            }
-        });
-
-        panel = new Ext.Panel({
-            items: [
-                {
-                    xtype: 'grid',
-                    name: 'price-rule-ranges-grid',
-                    frame: false,
-                    autoScroll: true,
-                    store: new Ext.data.Store({
-                        data: this.adjustRangeStoreData(storeData)
-                    }),
-                    columnLines: true,
-                    stripeRows: true,
-                    bodyCls: 'pimcore_editable_grid',
-                    trackMouseOver: true,
-                    columns: columns,
-                    clicksToEdit: 1,
-                    selModel: Ext.create('Ext.selection.CellModel', {}),
-                    autoExpandColumn: 'value_col',
-                    plugins: [
-                        cellEditing
-                    ],
-                    viewConfig: {
-                        forceFit: true
-                    },
-                    tbar: [
-                        {
-                            text: t('add'),
-                            handler: this.onAdd.bind(this),
-                            iconCls: 'pimcore_icon_add'
-                        },
-                        {
-                            text: t('coreshop_product_quantity_price_rules_copy_ranges'),
-                            handler: this.onCopy.bind(this),
-                            iconCls: 'pimcore_icon_copy',
-                            name: 'clipboard-copy-btn'
-                        },
-                        {
-                            text: t('coreshop_product_quantity_price_rules_paste_ranges'),
-                            handler: this.onPaste.bind(this),
-                            iconCls: 'pimcore_icon_paste',
-                            name: 'clipboard-paste-btn'
-                        }
-                    ]
-                }
-            ]
-        });
-
-        return panel;
-
+        return columns;
     },
 
-    onClipboardUpdated: function () {
-        this.checkClipboard();
-    },
+    cellEditingIsAllowed: function ($super, record, currentColumnName) {
 
-    checkClipboard: function () {
+        var parentCellEditingIsAllowed = $super(record, currentColumnName);
 
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
-            copyBtn = this.rangesContainer.query('toolbar button[name=clipboard-copy-btn]')[0],
-            pasteBtn = this.rangesContainer.query('toolbar button[name=clipboard-paste-btn]')[0],
-            pasteBtnVisible = false, pasteBtnTooltipText, cbData;
-
-        copyBtn.setVisible(grid.getStore().getRange().length > 0);
-
-        if (this.clipboardManager.hasData('quantityPriceRange')) {
-            cbData = this.clipboardManager.getData('quantityPriceRange');
-            pasteBtnTooltipText = cbData.records.length + ' ' + t('coreshop_product_quantity_price_rules_paste_entry_amounts');
-            if (cbData.id !== this.internalTmpId) {
-                pasteBtnVisible = true;
-            }
-        } else {
-            pasteBtnTooltipText = '--';
+        if (parentCellEditingIsAllowed === false) {
+            return false;
         }
 
-        pasteBtn.setVisible(pasteBtnVisible);
-        pasteBtn.setTooltip(pasteBtnTooltipText);
-    },
-
-    onCopy: function (btn) {
-
-        this.rangesContainer.setLoading(true);
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0];
-
-        if (grid.getStore().getRange().length === 0) {
-            this.clipboardManager.removeData('quantityPriceRange');
-            return;
+        if (this.isInArray(currentColumnName, ['quantity_amount', 'currency', 'pseudo_price'])
+            && this.isInArray(record.get('pricingBehaviour'), this.percentBasedBehaviour)) {
+            return false;
+        } else if (currentColumnName === 'quantity_percentage'
+            && this.isInArray(record.get('pricingBehaviour'), this.amountBasedBehaviour)) {
+            return false;
         }
 
-        this.clipboardManager.addData('quantityPriceRange', {id: this.internalTmpId, records: grid.getStore().getData().items});
-        this.checkClipboard();
-
-        setTimeout(function () {
-            this.rangesContainer.setLoading(false);
-        }.bind(this), 200);
-
+        return true;
     },
 
-    onPaste: function (btn) {
+    onPriceBehaviourChange: function ($super, field) {
 
-        var grid = this.rangesContainer.query('[name=price-rule-ranges-grid]')[0],
-            cbData;
+        var grid = field.up('grid'),
+            selectedModel = grid.getSelectionModel().getSelected().getAt(0);
 
-        if (!this.clipboardManager.hasData('quantityPriceRange')) {
-            return;
+        $super();
+
+        if (this.isInArray(field.getValue(), this.percentBasedBehaviour)) {
+            selectedModel.set('amount', 0);
+            selectedModel.set('pseudoPrice', 0);
+            selectedModel.set('currency', null);
+        } else if (this.isInArray(field.getValue(), this.amountBasedBehaviour)) {
+            selectedModel.set('percentage', 0);
         }
-
-        cbData = this.clipboardManager.getData('quantityPriceRange');
-        Ext.Array.each(cbData.records, function (record) {
-            var copy = record.copy(null);
-            copy.set('rangeId', null);
-            grid.getStore().add(copy);
-        });
-
-        this.checkClipboard();
     },
 
-    onAdd: function (btn) {
+    parseNewModelClass: function ($super, grid) {
 
-        var grid = btn.up('grid'),
-            modelClass = grid.getStore().getModel(),
-            lastEntry = grid.getStore().last(),
-            newEntry, lastUnit = null;
+        var modelClass = $super(grid);
+
+        var lastEntry = grid.getStore().last(),
+            lastUnit = null;
 
         if (lastEntry !== null) {
             lastUnit = lastEntry.get('unitDefinition')
         } else if (this.productUnitDefinitionsStore.getRange().length === 1) {
-            console.log(this.productUnitDefinitionsStore, this.productUnitDefinitionsStore.first(), this.productUnitDefinitionsStore.first().get('id'))
             lastUnit = this.productUnitDefinitionsStore.first().get('id');
         }
 
-        newEntry = new modelClass({
-            rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
-            rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
-            pricingBehaviour: 'fixed',
-            amount: 0,
-            unitDefinition: lastUnit,
-            currency: lastEntry !== null ? lastEntry.get('currency') : null,
-            percentage: 0,
-            pseudoPrice: 0,
-            rangeId: null
-        });
+        modelClass.set('amount', 0);
+        modelClass.set('unitDefinition', lastUnit);
+        modelClass.set('currency', lastEntry !== null ? lastEntry.get('currency') : null);
+        modelClass.set('percentage', 0);
+        modelClass.set('pseudoPrice', 0);
 
-        grid.getStore().add(newEntry);
-        this.checkClipboard();
-        grid.getView().refresh();
+        return modelClass;
 
     },
 
-    adjustRangeStoreData: function (data) {
+    adjustRangeStoreData: function ($super, rawData) {
+
+        var data = $super(rawData);
 
         if (!Ext.isArray(data)) {
             return [];
@@ -695,9 +364,13 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
         Ext.Array.each(data, function (range, key) {
             var p;
-            if (range.hasOwnProperty('id')) {
-                data[key]['rangeId'] = range['id'];
-                delete data[key]['id'];
+
+            if (range.hasOwnProperty('unitDefinition') && Ext.isObject(range.unitDefinition)) {
+                data[key]['unitDefinition'] = range.unitDefinition.id;
+            }
+
+            if (range.hasOwnProperty('currency') && Ext.isObject(range.currency)) {
+                data[key]['currency'] = range.currency.id;
             }
 
             if (range.hasOwnProperty('amount')) {
@@ -716,19 +389,5 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         });
 
         return data;
-    },
-
-    setDisabledStyleForCell(cellMeta) {
-
-        if (!cellMeta.hasOwnProperty('tdStyle')) {
-            cellMeta.tdStyle = '';
-        }
-
-        cellMeta.tdStyle += ' color: #c1c1c1; font-style: italic;';
-        cellMeta.tdStyle += ' background: #eaeaea; cursor: default !important;';
-    },
-
-    isInArray(key, heyStack) {
-        return heyStack.indexOf(key) !== -1;
     }
 });

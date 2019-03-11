@@ -47,6 +47,11 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeType }
 
+    coreshop.form.extension.type.product_quantity_price_rule_range:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeCollectionTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeCollectionType }
+
     coreshop.form.type.address_choice:
         class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
         arguments:
