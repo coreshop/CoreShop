@@ -53,16 +53,7 @@ final class CurrencyChoiceType extends AbstractType
         $resolver
             ->setDefaults([
                 'choices' => function (Options $options) {
-                    $currencies = $this->currencyRepository->findAll();
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($currencies, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
-                    });
-
-                    return $currencies;
+                    return $this->currencyRepository->findAll();
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
+use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
@@ -59,12 +60,8 @@ final class CountryChoiceType extends AbstractType
                         $countries = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($countries, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($countries, function (CountryInterface $a, CountryInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $countries;

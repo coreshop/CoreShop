@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
+use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -47,12 +48,8 @@ final class ZoneChoiceType extends AbstractType
                         $zones = $this->zoneRepository->findBy(['active' => $options['active']]);
                     }
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($zones, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($zones, function (ZoneInterface $a, ZoneInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $zones;
