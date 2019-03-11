@@ -71,7 +71,8 @@ class CartModifier implements StorageListModifierInterface
         /**
          * @var StorageListItemInterface $item
          */
-        $item = $this->cartItemFactory->createWithCart($storageList, $product, $quantity);
+        $item = $this->cartItemFactory->createWithPurchasable($product);
+        $item->setQuantity($quantity);
         $item = $this->resolveItem($storageList, $item);
 
         $this->eventDispatcher->dispatch('coreshop.cart.item_add_post', new GenericEvent($storageList, ['product' => $product]));
