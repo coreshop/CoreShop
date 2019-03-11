@@ -23,7 +23,7 @@ interface StorageListModifierInterface
      * @param StorageListProductInterface $product
      * @param int                         $quantity
      *
-     * @return mixed
+     * @return StorageListItemInterface
      */
     public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1);
 
@@ -31,7 +31,15 @@ interface StorageListModifierInterface
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $item
      *
-     * @return mixed
+     * @return StorageListItemInterface
+     */
+    public function addToStorageList(StorageListInterface $storageList, StorageListItemInterface $item);
+
+    /**
+     * @param StorageListInterface     $storageList
+     * @param StorageListItemInterface $item
+     *
+     * @return StorageListItemInterface
      */
     public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item);
 
@@ -41,7 +49,7 @@ interface StorageListModifierInterface
      * @param int                         $quantity
      * @param bool                        $increaseAmount
      *
-     * @return mixed
+     * @return StorageListItemInterface
      */
     public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false);
 }

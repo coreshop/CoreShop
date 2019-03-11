@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 
 interface AddToCartInterface
 {
@@ -23,12 +23,7 @@ interface AddToCartInterface
     public function getCart();
 
     /**
-     * @return PurchasableInterface
+     * @return CartItemInterface
      */
-    public function getPurchasable();
-
-    /**
-     * @return int
-     */
-    public function getQuantity();
+    public function getCartItem();
 }

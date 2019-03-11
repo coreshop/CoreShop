@@ -56,4 +56,18 @@ class CartItemFactory implements CartItemFactoryInterface
 
         return $item;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1)
+    {
+        $item = $this->cartItemFactory->createNew();
+        $item->setKey(uniqid());
+        $item->setQuantity($quantity);
+        $item->setProduct($purchasable);
+        $item->setPublished(true);
+
+        return $item;
+    }
 }

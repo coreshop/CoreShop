@@ -35,9 +35,24 @@ class SimpleStorageListModifier implements StorageListModifierInterface
     /**
      * {@inheritdoc}
      */
+    public function addToStorageList(StorageListInterface $storageList, StorageListItemInterface $item)
+    {
+        return $this->resolveItem($storageList, $item);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
     {
-        return $this->updateItemQuantity($storageList, $product, $quantity);
+        /**
+         * @var StorageListItemInterface $item
+         */
+        $item = $this->storageListItemFactory->createNew();
+        $item->setProduct($product);
+        $item->setQuantity($quantity);
+
+        return $this->addToStorageList($storageList, $item);
     }
 
     /**
@@ -85,5 +100,21 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         }
 
         return $item;
+    }
+
+    /**
+     * @param StorageListInterface $storageList
+     * @param StorageListItemInterface $storageListItem
+     */
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
+    {
+        $item = $storageList->getItemForProduct($storageListItem->getProduct());
+
+        if (null !== $item) {
+            $item->setQuantity($item->getQuantity() + $storageListItem->getQuantity());
+        }
+        else {
+            $storageList->addItem($storageListItem);
+        }
     }
 }
