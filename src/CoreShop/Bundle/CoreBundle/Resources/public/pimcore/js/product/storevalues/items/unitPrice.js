@@ -13,6 +13,7 @@ pimcore.registerNS('coreshop.product.storeValues.items.unitPrice');
 coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.storeValues.items.abstract, {
 
     storeUnitPriceFieldSet: null,
+    form: null,
 
     getForm: function () {
 
@@ -27,10 +28,6 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
     },
 
     onUnitDefinitionsReadyOrChange: function (data) {
-
-        if(this.form.rendered !== true) {
-            return;
-        }
 
         var unitDefinitions = [];
 
@@ -128,7 +125,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
         return fieldSet;
     },
 
-    getUnitDefinitionStorePrice: function(productUnitDefinitionPrices, definitionId) {
+    getUnitDefinitionStorePrice: function (productUnitDefinitionPrices, definitionId) {
 
         var price = 0;
         if (productUnitDefinitionPrices === null || !Ext.isArray(productUnitDefinitionPrices)) {

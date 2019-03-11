@@ -31,6 +31,7 @@ coreshop.product.storeValues.builder = Class.create({
         this.productUnitDefinitionsStore = productUnitDefinitionsStore;
         this.objectId = objectId;
         this.dirty = false;
+        this.itemBlocks = [];
 
         this.setupForm();
 
