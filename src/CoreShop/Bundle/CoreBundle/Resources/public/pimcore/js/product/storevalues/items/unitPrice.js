@@ -29,31 +29,12 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
 
     onUnitDefinitionsReadyOrChange: function (data) {
 
-        var unitDefinitions = [];
+        var unitDefinitions;
 
-        if (data === undefined) {
-            // initial from store!
-            if (this.builder.productUnitDefinitionsStore.getRange().length > 0) {
-                Ext.Array.each(this.builder.productUnitDefinitionsStore.getRange(), function (record) {
-                    var unit = record.get('unit');
-                    unitDefinitions.push({
-                        'available': true,
-                        'unitDefinitionId': record.get('id'),
-                        'name': unit['name'],
-                    })
-                }.bind(this));
-            }
-        } else if (Ext.isObject(data) && Ext.isArray(data.availableUnits)) {
-            // after store tag has changed on-the-fly!
-            Ext.Array.each(data.availableUnits, function (unitBlock) {
-                if (unitBlock.isDefaultUnitDefinition === false) {
-                    unitDefinitions.push({
-                        'available': unitBlock.hasId === true,
-                        'unitDefinitionId': unitBlock.unit.get('id'),
-                        'name': unitBlock.unit.get('name'),
-                    })
-                }
-            });
+        if (data !== undefined) {
+            unitDefinitions = this.parseFromCurrentObject(data);
+        } else {
+            unitDefinitions = this.parseFromResource();
         }
 
         if (this.storeUnitPriceFieldSet !== null) {
@@ -70,12 +51,81 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
         this.form.add(this.storeUnitPriceFieldSet);
     },
 
+    /**
+     * Set unit price relations based on current object changed unit definitions.
+     *
+     * @return array
+     */
+    parseFromCurrentObject: function (data) {
+
+        var unitDefinitions = [],
+            unitStore = pimcore.globalmanager.get('coreshop_product_units');
+
+        if (!data.hasOwnProperty('availableUnitDefinitions')) {
+            return unitDefinitions;
+        }
+
+        if (!data.availableUnitDefinitions.hasOwnProperty('additionalUnitDefinitions')) {
+            return unitDefinitions;
+        }
+
+        if (!Ext.isObject(data.availableUnitDefinitions.additionalUnitDefinitions)) {
+            return unitDefinitions;
+        }
+
+        // after store tag has changed on-the-fly!
+        Ext.Object.each(data.availableUnitDefinitions.additionalUnitDefinitions, function (index, unitDefinition) {
+            var unitRecord = unitStore.getById(unitDefinition.unit),
+                existingRecord = this.getUnitDefinitionStoreData(unitDefinition.id);
+
+            unitDefinitions.push({
+                'available': is_numeric(unitDefinition.id),
+                'id': existingRecord !== null ? existingRecord.id : null,
+                'value': existingRecord !== null ? existingRecord.price : 0,
+                'unitDefinitionId': unitDefinition.id,
+                'name': Ext.isObject(unitRecord) ? unitRecord.get('name').toString() : '--'
+            });
+
+        }.bind(this));
+
+        return unitDefinitions;
+    },
+
+    /**
+     * Set unit price relations based on object resource data.
+     *
+     * @return array
+     */
+    parseFromResource: function () {
+
+        var unitDefinitions = [];
+
+        if (this.builder.productUnitDefinitionsStore.getRange().length === 0) {
+            return unitDefinitions;
+        }
+
+        Ext.Array.each(this.builder.productUnitDefinitionsStore.getRange(), function (record) {
+            var unit = record.get('unit'),
+                existingRecord = this.getUnitDefinitionStoreData(record.get('id'));
+
+            unitDefinitions.push({
+                'available': true,
+                'id': existingRecord !== null ? existingRecord.id : null,
+                'value': existingRecord !== null ? existingRecord.price : 0,
+                'unitDefinitionId': record.get('id'),
+                'name': unit['name'],
+            })
+
+        }.bind(this));
+
+        return unitDefinitions;
+    },
+
     getUnitDefinitionPricesField: function (unitDefinitions) {
 
         var fieldSet,
             labelWidth = 234,
-            fieldWidth = 0,
-            productUnitDefinitionPrices = this.getDataValue('productUnitDefinitionPrices');
+            fieldWidth = 0;
 
         if (this.builder.fieldConfig.width) {
             fieldWidth = this.builder.fieldConfig.width + labelWidth;
@@ -98,6 +148,12 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
 
                 fieldSet.add({
                     xtype: 'hidden',
+                    name: 'productUnitDefinitionPrices.' + index + '.id',
+                    value: record.id
+                });
+
+                fieldSet.add({
+                    xtype: 'hidden',
                     name: 'productUnitDefinitionPrices.' + index + '.unitDefinition',
                     value: record.unitDefinitionId
                 });
@@ -107,8 +163,9 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
                     fieldLabel: record.name,
                     name: 'productUnitDefinitionPrices.' + index + '.price',
                     labelWidth: labelWidth,
+                    allowBlank: false,
                     minValue: 0,
-                    value: this.getUnitDefinitionStorePrice(productUnitDefinitionPrices, record.unitDefinitionId),
+                    value: record.value,
                     width: fieldWidth,
                 });
 
@@ -116,7 +173,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
                 fieldSet.add({
                     xtype: 'label',
                     style: 'font-style: italic; display: block; clear: both; margin: 5px 0 10px 0;',
-                    html: record.name + ': ' + t('coreshop_product_unit_definition_price_not_available')
+                    html: (record.name) + ': ' + t('coreshop_product_unit_definition_price_not_available')
                 });
             }
 
@@ -125,20 +182,26 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
         return fieldSet;
     },
 
-    getUnitDefinitionStorePrice: function (productUnitDefinitionPrices, definitionId) {
+    getUnitDefinitionStoreData: function (unitDefinitionId) {
 
-        var price = 0;
-        if (productUnitDefinitionPrices === null || !Ext.isArray(productUnitDefinitionPrices)) {
-            return price;
+        var data = null,
+            productUnitDefinitionPrices = this.getDataValue('productUnitDefinitionPrices');
+
+        if (!is_numeric(unitDefinitionId)) {
+            return data;
+        }
+
+        if (!Ext.isArray(productUnitDefinitionPrices) || productUnitDefinitionPrices.length === 0) {
+            return data;
         }
 
         Ext.Array.each(productUnitDefinitionPrices, function (definitionPrice) {
-            if (definitionPrice.hasOwnProperty('unitDefinition') && parseInt(definitionPrice.unitDefinition.id) === parseInt(definitionId)) {
-                price = parseInt(definitionPrice.price) / 100;
+            if (definitionPrice.hasOwnProperty('unitDefinition') && parseInt(definitionPrice.unitDefinition.id) === parseInt(unitDefinitionId)) {
+                data = {'id': definitionPrice.id, 'price': (parseInt(definitionPrice.price) / 100)};
                 return false;
             }
         });
 
-        return price;
+        return data;
     }
 });

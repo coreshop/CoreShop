@@ -81,26 +81,19 @@ coreshop.product.unit.builder = Class.create({
         var defaultUnitDefinition = this.getDefaultUnitDefinition(),
             hasId = defaultUnitDefinition !== null && defaultUnitDefinition.hasOwnProperty('id') && defaultUnitDefinition.id !== null,
             unitFieldForm = this.getUnitFormFields({
+                idName: 'defaultUnitDefinition.id',
+                idValue: hasId ? defaultUnitDefinition.id : null,
                 unitName: 'defaultUnitDefinition.unit',
                 unitLabel: 'coreshop_product_unit_default_type',
                 unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue()
-            }, hasId, true);
-
-        // add id field if available
-        if (hasId === true) {
-            unitFieldForm.push({
-                xtype: 'hidden',
-                name: 'defaultUnitDefinition.id',
-                value: defaultUnitDefinition.id
-            });
-        }
+            }, true);
 
         return Ext.create('Ext.form.Panel', {
             width: 950,
             items: [
                 {
                     xtype: 'fieldset',
-                    title: t('coreshop_product_unit_default_unit_headline'),
+                    title: t('coreshop_product_unit_default_unit_definition_headline'),
                     layout: 'hbox',
                     itemCls: 'object_field',
                     items: unitFieldForm
@@ -114,7 +107,7 @@ coreshop.product.unit.builder = Class.create({
         var additionalUnitData = this.getAdditionalUnitDefinitions(), fieldSet;
 
         fieldSet = new Ext.form.FieldSet({
-            title: t('coreshop_product_unit_additional_units_headline'),
+            title: t('coreshop_product_unit_additional_unit_definitions_headline'),
             collapsible: false,
             autoHeight: true,
             width: 950,
@@ -141,6 +134,7 @@ coreshop.product.unit.builder = Class.create({
                         this.checkAddUnitBlockAvailability(fieldSet);
                         this.adjustUnitStores(false);
                         this.adjustAdditionalUnitLabel();
+                        this.dispatchUnitDefinitionChangeEvent();
                     }.bind(this)
                 }]
             }]
@@ -150,7 +144,7 @@ coreshop.product.unit.builder = Class.create({
             fieldSet.add([{
                 'xtype': 'label',
                 'style': 'margin:5px; font-style:italic;',
-                'html': t('coreshop_product_unit_no_additional_units_available')
+                'html': t('coreshop_product_unit_no_additional_unit_definitions_available')
             }]);
         } else {
             Ext.Array.each(additionalUnitData, function (unit) {
@@ -191,13 +185,15 @@ coreshop.product.unit.builder = Class.create({
         var hasId = data !== null && data.hasOwnProperty('id') && data.id !== null,
             compositeField,
             unitFieldForm = this.getUnitFormFields({
+                idName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.id',
+                idValue: hasId ? data.id : null,
                 unitName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.unit',
                 unitLabel: 'coreshop_product_unit_type',
                 unitValue: data !== null && Ext.isObject(data) ? data.unit.id : null,
                 conversionRateName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.conversionRate',
                 conversionRateLabel: 'coreshop_product_unit_conversion_rate',
                 conversionRateValue: data !== null ? data.conversionRate : 0
-            }, hasId, false);
+            }, false);
 
         compositeField = new Ext.form.FieldContainer({
             layout: 'hbox',
@@ -212,35 +208,29 @@ coreshop.product.unit.builder = Class.create({
             itemId: 'additional-unit-delete-button',
             iconCls: 'pimcore_icon_delete',
             handler: function (compositeField) {
-                Ext.MessageBox.confirm(t('info'), t('coreshop_product_unit_additional_unit_delete_confirm'), function (buttonValue) {
+                Ext.MessageBox.confirm(t('info'), t('coreshop_product_unit_additional_unit_definition_delete_confirm'), function (buttonValue) {
+
                     if (buttonValue !== 'yes') {
                         return;
                     }
+
                     fieldSet.remove(compositeField);
+
                     this.dirty = true;
                     this.checkAddUnitBlockAvailability(fieldSet);
                     this.adjustUnitStores(false);
+                    this.dispatchUnitDefinitionChangeEvent();
                 }.bind(this));
 
             }.bind(this, compositeField)
         });
-
-        // add id field if available
-        if (hasId === true) {
-            compositeField.add({
-                xtype: 'hidden',
-                name: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.id',
-                value: data.id
-            });
-        }
 
         fieldSet.add(compositeField);
     },
 
     adjustUnitStores: function (initializing) {
 
-        var usedUnits = [],
-            recheck = false,
+        var recheck = false,
             combos,
             additionalUnitCombos = this.form.query('combo[itemCls~=unit-store][cls!=default-unit-store]'),
             defaultUnitDefinitionCombo = this.form.query('combo[cls~=default-unit-store]');
@@ -274,29 +264,22 @@ coreshop.product.unit.builder = Class.create({
                 }
             }
 
-            usedUnits.push({
-                'hasId': combo.readOnly === true,
-                'isDefaultUnitDefinition': combo.hasCls('default-unit-store'),
-                'unit': this.unitStore.getById(combo.getValue())
-            });
-
         }.bind(this));
 
         if (initializing === true) {
             this.unitStoresInitialized = true;
-        } else {
-            // inform related object tags about unit changes:
-            if (recheck === false) {
-                coreshop.broker.fireEvent(
-                    'pimcore.object.tags.coreShopProductUnitDefinitions.change',
-                    {objectId: this.objectId, availableUnits: usedUnits}
-                );
-            }
         }
 
         if (recheck === true) {
             this.adjustUnitStores(false);
         }
+    },
+
+    dispatchUnitDefinitionChangeEvent: function () {
+        coreshop.broker.fireEvent(
+            'pimcore.object.tags.coreShopProductUnitDefinitions.change',
+            {objectId: this.objectId, availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())}
+        );
     },
 
     adjustAdditionalUnitLabel: function () {
@@ -357,9 +340,14 @@ coreshop.product.unit.builder = Class.create({
         return null;
     },
 
-    getUnitFormFields: function (data, hasId, isDefault) {
+    getUnitFormFields: function (data, isDefault) {
 
         var fields = [
+            {
+                xtype: 'hidden',
+                name: data.idName,
+                value: data.idValue
+            },
             {
                 xtype: 'combo',
                 fieldLabel: t(data.unitLabel),
@@ -368,7 +356,7 @@ coreshop.product.unit.builder = Class.create({
                 store: null,
                 triggerAction: 'all',
                 itemCls: 'unit-store',
-                cls: (data.unitName === 'defaultUnitDefinition.unit' ? 'default-unit-store' : ''),
+                cls: (isDefault ? 'default-unit-store' : ''),
                 typeAhead: false,
                 editable: false,
                 forceSelection: true,
@@ -376,8 +364,8 @@ coreshop.product.unit.builder = Class.create({
                 displayField: 'name',
                 valueField: 'id',
                 value: data.unitValue,
-                maxWidth: data.unitName === 'defaultUnitDefinition.unit' ? 250 : 200,
-                readOnly: hasId && isDefault === false,
+                maxWidth: isDefault ? 250 : 200,
+                readOnly: data.idValue !== null && isDefault === false,
                 listeners: {
                     change: function (comp, value) {
                         if (comp.getName() === 'defaultUnitDefinition.unit' && value) {
@@ -385,6 +373,7 @@ coreshop.product.unit.builder = Class.create({
                         }
                         if (this.unitStoresInitialized === true) {
                             this.adjustUnitStores();
+                            this.dispatchUnitDefinitionChangeEvent();
                         }
 
                     }.bind(this)
@@ -445,5 +434,24 @@ coreshop.product.unit.builder = Class.create({
 
     getValues: function () {
         return this.form.getForm().getFieldValues();
+    },
+
+    convertDotNotationToObject: function (data) {
+        var obj = {};
+
+        Object.keys(data).forEach(function (key) {
+            var val = data[key];
+            var step = obj
+            key.split(".").forEach(function (part, index, arr) {
+                if (index === arr.length - 1) {
+                    step[part] = val;
+                } else if (step[part] === undefined) {
+                    step[part] = {};
+                }
+                step = step[part];
+            });
+        });
+
+        return obj;
     }
 });

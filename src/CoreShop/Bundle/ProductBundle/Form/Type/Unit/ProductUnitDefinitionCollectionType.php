@@ -26,10 +26,10 @@ class ProductUnitDefinitionCollectionType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add'      => true,
-            'allow_delete'   => true,
+            'allow_add'    => true,
+            'allow_delete' => true,
             'by_reference' => false,
-            'entry_type'     => ProductUnitDefinitionType::class,
+            'entry_type'   => ProductUnitDefinitionType::class,
         ]);
     }
 

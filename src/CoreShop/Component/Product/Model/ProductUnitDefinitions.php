@@ -175,6 +175,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     {
         $productUnit = $unitDefinition->getUnit();
         $defaultDefinition = $this->getDefaultUnitDefinition();
+
         $defaultDefinitionUnit = $defaultDefinition ? $defaultDefinition->getUnit() : null;
         if ($productUnit == $defaultDefinitionUnit) {
             return;

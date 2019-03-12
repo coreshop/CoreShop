@@ -19,6 +19,7 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 final class ProductUnitDefinitionsType extends AbstractResourceType
 {
@@ -41,8 +42,12 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
 
         $builder
             ->add('product', ProductSelectionType::class)
-            ->add('defaultUnitDefinition', ProductUnitDefinitionType::class)
-            ->add('additionalUnitDefinitions', ProductUnitDefinitionCollectionType::class);
+            ->add('defaultUnitDefinition', ProductUnitDefinitionType::class, [
+                'mapped' => false
+            ])
+            ->add('additionalUnitDefinitions', ProductUnitDefinitionCollectionType::class, [
+                'mapped' => false
+            ]);
     }
 
     /**
@@ -74,8 +79,12 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
             $existingDefinition = $unitDefinitions->getUnitDefinition($unitDefinition->getUnitName());
             if ($existingDefinition) {
                 $unitDefinitions->addAdditionalUnitDefinition($unitDefinition);
+                $additionalUnitDefinitions[$key] = $existingDefinition;
             }
         }
+
+        // force collection to re-arrange unit definitions!
+        PropertyAccess::createPropertyAccessor()->setValue($unitDefinitions, 'additionalUnitDefinitions', $additionalUnitDefinitions);
     }
 
     /**

@@ -14,7 +14,7 @@ pimcore.registerNS('coreshop.product.unit.panel');
 coreshop.product.unit.panel = Class.create(coreshop.resource.panel, {
 
     layoutId: 'coreshop_product_unit_panel',
-    storeId: 'coreshop_product_unit',
+    storeId: 'coreshop_product_units',
     iconCls: 'coreshop_icon_product_units',
     type: 'coreshop_product_units',
 
