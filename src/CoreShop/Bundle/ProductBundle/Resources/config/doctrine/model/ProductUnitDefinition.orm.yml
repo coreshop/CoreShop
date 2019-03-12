@@ -18,6 +18,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             joinColumn:
                 name: unit
                 referencedColumnName: id
+            fetch: EAGER
         productUnitDefinitions:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitions
             inversedBy: unitDefinitions

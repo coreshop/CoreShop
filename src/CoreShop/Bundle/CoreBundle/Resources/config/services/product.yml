@@ -62,6 +62,21 @@ services:
         tags:
             - { name: twig.extension }
 
+    coreshop.templating.helper.product_unit_definitions:
+        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductUnitDefinitionsHelper
+        arguments:
+            - '@coreshop.context.shopper'
+        tags:
+            - { name: templating.helper, alias: coreshop_product_unit_definitions }
+
+    coreshop.twig.extension.product_unit_definitions:
+        class: CoreShop\Bundle\CoreBundle\Twig\ProductUnitDefinitionsExtension
+        public: false
+        arguments:
+            - '@coreshop.templating.helper.product_unit_definitions'
+        tags:
+            - { name: twig.extension }
+
     coreshop.product.price_calculator.property_price:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
         tags:

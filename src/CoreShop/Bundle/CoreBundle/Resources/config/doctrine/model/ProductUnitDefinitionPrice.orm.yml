@@ -9,6 +9,3 @@ CoreShop\Component\Core\Model\ProductUnitDefinitionPrice:
                 name: product_store_values
                 referencedColumnName: id
                 onDelete: CASCADE
-    uniqueConstraints:
-        store_values_unit_definition:
-            columns: [product_store_values, unit_definition]

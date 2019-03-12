@@ -10,9 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ProductBundle\Twig;
+namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\ProductBundle\Templating\Helper\ProductUnitDefinitionsHelper;
+use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductUnitDefinitionsHelper;
 
 final class ProductUnitDefinitionsExtension extends \Twig_Extension
 {
@@ -36,6 +36,7 @@ final class ProductUnitDefinitionsExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('coreshop_product_unit_definitions_available', [$this->helper, 'hasAvailableUnitDefinitions']),
+            new \Twig_SimpleFunction('coreshop_product_additional_unit_definitions_with_prices', [$this->helper, 'getAdditionalUnitDefinitionsWithPrices']),
         ];
     }
 }

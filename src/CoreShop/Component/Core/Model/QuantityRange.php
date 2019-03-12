@@ -88,6 +88,14 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
     /**
      * {@inheritdoc}
      */
+    public function hasUnitDefinition()
+    {
+        return $this->unitDefinition instanceof ProductUnitDefinitionInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPseudoPrice()
     {
         return $this->pseudoPrice;

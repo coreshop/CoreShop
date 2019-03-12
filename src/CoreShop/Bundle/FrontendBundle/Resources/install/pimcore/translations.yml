@@ -1187,6 +1187,12 @@ translations:
           en: 'Price per Item'
           de: 'Preis pro Stück'
 
+  coreshop.ui.product_quantity_price_rules.unit_price:
+      languages:
+          de_CH: 'Preis pro Einheit'
+          en: 'Unit Price'
+          de: 'Preis pro Einheit'
+
   coreshop.ui.product_quantity_price_rules.starting_from:
       languages:
           de_CH: 'ab'

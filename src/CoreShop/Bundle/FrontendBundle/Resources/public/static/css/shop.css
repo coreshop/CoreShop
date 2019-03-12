@@ -12387,6 +12387,13 @@ hr {
     text-decoration: line-through;
 }
 
+.product-info .product-details .unit-prices {
+}
+
+.product-info .product-details .unit-prices .default-unit-price {
+    margin:20px 0;
+}
+
 .product-info .product-details .options h3 {
     margin-bottom: 20px;
 }
