@@ -37,7 +37,7 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
             }
 
             /** @var ProductInterface $product */
-            $product = $data->getPurchasable();
+            $product = $data->getCartItem()->getProduct();
             if (!$product instanceof ProductInterface) {
                 return;
             }

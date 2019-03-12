@@ -12408,7 +12408,7 @@ hr {
     border-radius: 0;
 }
 
-.product-info .product-details .cart-button input#coreshop_add_to_cart_quantity {
+.product-info .product-details .cart-button input.cart-item-quantity {
     max-width:100px;
 }
 
