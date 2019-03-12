@@ -12408,6 +12408,10 @@ hr {
     border-radius: 0;
 }
 
+.product-info .product-details .cart-button input#coreshop_add_to_cart_quantity {
+    max-width:100px;
+}
+
 .product-info .product-details .btn-wishlist, .product-info .product-details .btn-compare {
     color: #fff;
     background: #303030;
