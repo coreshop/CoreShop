@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
@@ -45,12 +46,8 @@ final class CarrierChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     $carriers = $this->carrierRepository->findAll();
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($carriers, function ($a, $b) {
-                        return $a->getIdentifier() < $b->getIdentifier() ? -1 : 1;
+                    usort($carriers, function (CarrierInterface $a, CarrierInterface $b): int {
+                        return $a->getIdentifier() <=> $b->getIdentifier();
                     });
 
                     return $carriers;

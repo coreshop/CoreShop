@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -55,12 +56,8 @@ final class StoreChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     $stores = $this->storeRepository->findAll();
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($stores, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($stores, function (StoreInterface $a, StoreInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $stores;
