@@ -43,12 +43,8 @@ final class LocaleChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     $locales = Tool::getValidLanguages();
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($locales, function ($a, $b) {
-                        return $a < $b ? -1 : 1;
+                    usort($locales, function ($a, $b): int {
+                        return $a <=> $b;
                     });
 
                     return $locales;
