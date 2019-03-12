@@ -27,4 +27,11 @@ interface CartItemFactoryInterface extends FactoryInterface
      * @return CartItemInterface
      */
     public function createWithCart(CartInterface $cart, PurchasableInterface $purchasable, $quantity = 1);
+
+    /**
+     * @param PurchasableInterface $purchasable
+     * @param int                  $quantity
+     * @return CartItemInterface
+     */
+    public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1);
 }

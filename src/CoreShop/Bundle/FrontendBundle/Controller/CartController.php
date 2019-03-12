@@ -171,7 +171,9 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $addToCart = $this->createAddToCart($this->getCart(), $product, (int) $request->get('quantity', 1));
+        $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product);
+
+        $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
         $form = $this->createForm(AddToCartType::class, $addToCart);
 
@@ -184,10 +186,14 @@ class CartController extends FrontendController
                  */
                 $addToCart = $form->getData();
 
-                $this->getCartModifier()->addItem($addToCart->getCart(), $addToCart->getPurchasable(), $addToCart->getQuantity());
+                $this->getCartModifier()->addStorageListItem($addToCart->getCart(), $addToCart->getCartItem());
                 $this->getCartManager()->persistCart($this->getCart());
 
-                $this->get('coreshop.tracking.manager')->trackCartAdd($addToCart->getCart(), $addToCart->getPurchasable(), $addToCart->getQuantity());
+                $this->get('coreshop.tracking.manager')->trackCartAdd(
+                    $addToCart->getCart(),
+                    $addToCart->getCartItem()->getProduct(),
+                    $addToCart->getCartItem()->getQuantity()
+                );
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
@@ -297,13 +303,12 @@ class CartController extends FrontendController
 
     /**
      * @param CartInterface        $cart
-     * @param PurchasableInterface $purchasable
-     * @param int                  $quantity
+     * @param CartItemInterface    $cartItem
      * @return AddToCartInterface
      */
-    protected function createAddToCart(CartInterface $cart, PurchasableInterface $purchasable, int $quantity)
+    protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
     {
-        return $this->get('coreshop.factory.add_to_cart')->createWithCartAndPurchasableAndQuantity($cart, $purchasable, $quantity);
+        return $this->get('coreshop.factory.add_to_cart')->createWithCartAndCartItem($cart, $cartItem);
     }
 
     /**

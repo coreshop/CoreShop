@@ -13,10 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -48,13 +48,17 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
-         * @var StockableInterface $purchasable
+         * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addCartItemCommand->getPurchasable();
+        $purchasable = $addCartItemCommand->getCartItem()->getProduct();
+
+        if (!$purchasable instanceof StockableInterface) {
+            return;
+        }
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
-            $addCartItemCommand->getQuantity() + $this->getExistingCartItemQuantityFromCart($addCartItemCommand->getCart(), $purchasable)
+            $addCartItemCommand->getCartItem()->getQuantity() + $this->getExistingCartItemQuantityFromCart($addCartItemCommand->getCart(), $addCartItemCommand->getCartItem())
         );
 
         if (!$isStockSufficient) {
@@ -66,16 +70,16 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     }
 
     /**
-     * @param CartInterface        $cart
-     * @param PurchasableInterface $purchasable
+     * @param CartInterface     $cart
+     * @param CartItemInterface $cartItem
      * @return int
      */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, PurchasableInterface $purchasable)
+    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
     {
-        $cartItem = $cart->getItemForProduct($purchasable);
+        $item = $cart->getItemForProduct($cartItem->getProduct());
 
-        if ($cartItem instanceof CartItemInterface) {
-            return $cartItem->getQuantity();
+        if (null !== $item) {
+            return $item->getQuantity();
         }
 
         return 0;

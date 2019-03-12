@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class AddToCart implements AddToCartInterface
@@ -23,25 +24,18 @@ final class AddToCart implements AddToCartInterface
     private $cart;
 
     /**
-     * @var PurchasableInterface
+     * @var CartItemInterface
      */
-    private $purchasable;
+    private $cartItem;
 
     /**
-     * @var int
+     * @param CartInterface     $cart
+     * @param CartItemInterface $cartItem
      */
-    private $quantity;
-
-    /**
-     * @param CartInterface        $cart
-     * @param PurchasableInterface $purchasable
-     * @param int                  $quantity
-     */
-    public function __construct(CartInterface $cart, PurchasableInterface $purchasable, int $quantity)
+    public function __construct(CartInterface $cart, CartItemInterface $cartItem)
     {
         $this->cart = $cart;
-        $this->purchasable = $purchasable;
-        $this->quantity = $quantity;
+        $this->cartItem = $cartItem;
     }
 
     /**
@@ -61,34 +55,18 @@ final class AddToCart implements AddToCartInterface
     }
 
     /**
-     * @return PurchasableInterface
+     * @return CartItemInterface
      */
-    public function getPurchasable()
+    public function getCartItem()
     {
-        return $this->purchasable;
+        return $this->cartItem;
     }
 
     /**
-     * @param PurchasableInterface $purchasable
+     * @param CartItemInterface $cartItem
      */
-    public function setPurchasable(PurchasableInterface $purchasable)
+    public function setCartItem(CartItemInterface $cartItem)
     {
-        $this->purchasable = $purchasable;
-    }
-
-    /**
-     * @return int
-     */
-    public function getQuantity()
-    {
-        return $this->quantity;
-    }
-
-    /**
-     * @param int $quantity
-     */
-    public function setQuantity(int $quantity)
-    {
-        $this->quantity = $quantity;
+        $this->cartItem = $cartItem;
     }
 }

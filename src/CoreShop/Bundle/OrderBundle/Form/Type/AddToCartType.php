@@ -24,10 +24,7 @@ final class AddToCartType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('quantity', IntegerType::class, [
-            'required' => false,
-            'empty_data' => '1'
-        ]);
+        $builder->add('cartItem', CartItemType::class);
     }
 
     /**

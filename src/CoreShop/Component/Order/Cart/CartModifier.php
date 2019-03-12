@@ -49,6 +49,14 @@ class CartModifier implements StorageListModifierInterface
     /**
      * {@inheritdoc}
      */
+    public function addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item)
+    {
+        return $this->resolveItem($storageList, $item);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
     {
         /**
@@ -60,11 +68,16 @@ class CartModifier implements StorageListModifierInterface
 
         $this->eventDispatcher->dispatch('coreshop.cart.item_add_pre', new GenericEvent($storageList, ['product' => $product]));
 
-        $result = $this->updateItemQuantity($storageList, $product, $quantity, true);
+        /**
+         * @var StorageListItemInterface $item
+         */
+        $item = $this->cartItemFactory->createWithPurchasable($product);
+        $item->setQuantity($quantity);
+        $item = $this->resolveItem($storageList, $item);
 
         $this->eventDispatcher->dispatch('coreshop.cart.item_add_post', new GenericEvent($storageList, ['product' => $product]));
 
-        return $result;
+        return $item;
     }
 
     /**
@@ -124,5 +137,21 @@ class CartModifier implements StorageListModifierInterface
         }
 
         return $this->cartItemFactory->createWithCart($storageList, $product, $quantity);
+    }
+
+    /**
+     * @param StorageListInterface $storageList
+     * @param StorageListItemInterface $storageListItem
+     */
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
+    {
+        $item = $storageList->getItemForProduct($storageListItem->getProduct());
+
+        if (null !== $item) {
+            $item->setQuantity($item->getQuantity() + $storageListItem->getQuantity());
+        }
+        else {
+            $storageList->addItem($storageListItem);
+        }
     }
 }

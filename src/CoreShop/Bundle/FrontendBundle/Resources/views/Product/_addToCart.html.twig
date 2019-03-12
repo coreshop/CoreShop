@@ -4,7 +4,7 @@
     {{ form_errors(form) }}
 
     <div class="input-group">
-        {{ form_row(form.quantity, {label: false, attr: {class: 'form-control'}}) }}
+        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control'}}) }}
         <div class="input-group-append">
             <button type="submit" class="btn btn-cart" rel="nofollow">
                 {{ 'coreshop.ui.add_to_cart'|trans }}
