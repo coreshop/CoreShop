@@ -1,6 +1,9 @@
 # Within 2.1
 
 ## 2.1.0
+ - `CoreShop\Component\StorageList\StorageListModifierInterface` introduced a new function `addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item);`
+ - `CoreShop\Component\Order\Factory\CartItemFactoryInterface` introduced a new function `public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1);`
+
  - Introduced Theme-Bundle to handle Themes
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeHelper](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeHelper.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeHelper](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeHelper.php)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeHelperInterface.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeHelperInterface.php)
