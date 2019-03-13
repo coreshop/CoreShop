@@ -2,8 +2,12 @@
     {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
     {% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
 
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+
     {% set default_unit_definition = product.unitDefinitions.defaultUnitDefinition %}
-    {% set additional_unit_definitions = coreshop_product_additional_unit_definitions_with_prices(product) %}
+    {% set additional_unit_definitions = coreshop_product_additional_unit_definitions_with_prices(product, with_tax) %}
 
     <div class="price default-unit-price">
         <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ default_unit_definition.unit.name }}:</span> {{ product_price.display_product_price(product) }}

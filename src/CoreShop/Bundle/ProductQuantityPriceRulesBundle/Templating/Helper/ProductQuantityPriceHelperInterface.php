@@ -48,10 +48,17 @@ interface ProductQuantityPriceHelperInterface
     /**
      * @param QuantityRangeInterface           $range
      * @param QuantityRangePriceAwareInterface $product
+     * @param bool                             $withTax
+     * @param null|array                       $additionalContext
      *
      * @throws NoPriceFoundException
      *
      * @return int
      */
-    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
+    public function getQuantityPriceRuleRangePrice(
+        QuantityRangeInterface $range,
+        QuantityRangePriceAwareInterface $product,
+        bool $withTax = true,
+        array $additionalContext = null
+    );
 }

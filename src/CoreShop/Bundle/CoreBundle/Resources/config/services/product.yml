@@ -66,6 +66,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductUnitDefinitionsHelper
         arguments:
             - '@coreshop.context.shopper'
+            - '@coreshop.product.taxed_price_calculator'
         tags:
             - { name: templating.helper, alias: coreshop_product_unit_definitions }
 
@@ -81,6 +82,11 @@ services:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator
         tags:
             - { name: coreshop.product.retail_price_calculator, type: store_price, priority: 10 }
+
+    coreshop.product.price_calculator.property_unit_price:
+        class: CoreShop\Component\Core\Product\Calculator\StoreProductUnitDefinitionPriceCalculator
+        tags:
+            - { name: coreshop.product.retail_price_calculator, type: store_unit_price, priority: 11 }
 
     coreshop.order.purchasable.price_calculator.product:
         class: CoreShop\Component\Core\Order\Calculator\PurchasableProductPriceCalculator

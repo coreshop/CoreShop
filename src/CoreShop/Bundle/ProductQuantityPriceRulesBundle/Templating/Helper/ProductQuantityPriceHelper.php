@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -28,7 +28,7 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
     protected $shopperContext;
 
     /**
-     * @var ProductPriceCalculatorInterface
+     * @var TaxedProductPriceCalculatorInterface
      */
     protected $productPriceCalculator;
 
@@ -38,13 +38,13 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
     protected $quantityReferenceDetector;
 
     /**
-     * @param ShopperContextInterface            $shopperContext
-     * @param ProductPriceCalculatorInterface    $productPriceCalculator
+     * @param ShopperContextInterface $shopperContext
+     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
      * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
      */
     public function __construct(
         ShopperContextInterface $shopperContext,
-        ProductPriceCalculatorInterface $productPriceCalculator,
+        TaxedProductPriceCalculatorInterface $productPriceCalculator,
         QuantityReferenceDetectorInterface $quantityReferenceDetector
     ) {
         $this->shopperContext = $shopperContext;
@@ -87,9 +87,19 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
     /**
      * {@inheritdoc}
      */
-    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product)
-    {
-        $realItemPrice = $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), true);
+    public function getQuantityPriceRuleRangePrice(
+        QuantityRangeInterface $range,
+        QuantityRangePriceAwareInterface $product,
+        bool $withTax = true,
+        array $additionalContext = null
+    ) {
+        $context = $this->shopperContext->getContext();
+
+        if (is_array($additionalContext)) {
+            $context = array_merge($context, $additionalContext);
+        }
+
+        $realItemPrice = $this->productPriceCalculator->getPrice($product, $context, $withTax);
         $quantityPrice = $this->quantityReferenceDetector->detectRangePrice($product, $range, $realItemPrice, $this->shopperContext->getContext());
 
         return $quantityPrice;

@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefinitionsHelperInterface
@@ -25,11 +25,18 @@ class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefiniti
     protected $shopperContext;
 
     /**
-     * @param ShopperContextInterface $shopperContext
+     * @var TaxedProductPriceCalculatorInterface
      */
-    public function __construct(ShopperContextInterface $shopperContext)
+    protected $productPriceCalculator;
+
+    /**
+     * @param ShopperContextInterface         $shopperContext
+     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
+     */
+    public function __construct(ShopperContextInterface $shopperContext, TaxedProductPriceCalculatorInterface $productPriceCalculator)
     {
         $this->shopperContext = $shopperContext;
+        $this->productPriceCalculator = $productPriceCalculator;
     }
 
     /**
@@ -43,35 +50,23 @@ class ProductUnitDefinitionsHelper extends Helper implements ProductUnitDefiniti
     /**
      * {@inheritdoc}
      */
-    public function getAdditionalUnitDefinitionsWithPrices(ProductInterface $product)
+    public function getAdditionalUnitDefinitionsWithPrices(ProductInterface $product, $withTax = true)
     {
         if (!$product->hasUnitDefinitions()) {
             return [];
         }
 
         $data = [];
-
-        $unitDefinitionPrices = $product->getStoreValues($this->shopperContext->getStore())->getProductUnitDefinitionPrices();
-
-        if ($unitDefinitionPrices->count() === 0) {
-            return [];
-        }
+        $context = $this->shopperContext->getContext();
 
         foreach ($product->getUnitDefinitions()->getAdditionalUnitDefinitions() as $unitDefinition) {
 
-            $filteredDefinitionPrices = $unitDefinitionPrices->filter(function (ProductUnitDefinitionPriceInterface $unitDefinitionPrice) use ($unitDefinition) {
-                return $unitDefinition->getId() === $unitDefinitionPrice->getUnitDefinition()->getId();
-            });
-
-            if ($filteredDefinitionPrices->count() !== 1) {
-                continue;
-            }
+            $context['unitDefinition'] = $unitDefinition;
 
             $data[] = [
                 'definition' => $unitDefinition,
-                'price'      => $filteredDefinitionPrices->first()->getPrice()
+                'price'      => $this->productPriceCalculator->getPrice($product, $context, $withTax)
             ];
-
         }
 
         return $data;

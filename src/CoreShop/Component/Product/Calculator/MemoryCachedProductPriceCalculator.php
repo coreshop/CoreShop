@@ -66,7 +66,7 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
             return $this->inner->getPrice($subject, $context, $includingDiscounts);
         }
 
-        $identifier = sprintf('%s%s', $subject->getId(), $includingDiscounts);
+        $identifier = sprintf('%s%s%s', $subject->getId(), $includingDiscounts, join('-', array_keys($context)));
 
         if (!isset($this->cachedPrice[$identifier])) {
             $this->cachedPrice[$identifier] = $this->inner->getPrice($subject, $context, $includingDiscounts);

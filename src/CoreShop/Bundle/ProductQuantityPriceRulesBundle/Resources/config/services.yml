@@ -9,7 +9,7 @@ services:
         class: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceHelper
         arguments:
             - '@coreshop.context.shopper'
-            - '@coreshop.product.price_calculator'
+            - '@coreshop.product.taxed_price_calculator'
             - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
         tags:
             - { name: templating.helper, alias: coreshop_product_quanity_price }
