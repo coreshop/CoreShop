@@ -1,3 +1,6 @@
+parameters:
+    coreshop.dto.add_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddToCart'
+
 imports:
     - { resource: "services/order.yml" }
     - { resource: "services/order_invoice.yml" }
@@ -91,3 +94,5 @@ services:
 
     coreshop.factory.add_to_cart:
         class: CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory
+        arguments:
+            - '%coreshop.dto.add_to_cart.class%'
