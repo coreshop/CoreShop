@@ -12,18 +12,16 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
-use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-final class AddToCartTypeExtension extends AbstractTypeExtension
+final class CartItemTypeExtension extends AbstractTypeExtension
 {
     /**
      * {@inheritdoc}
@@ -34,12 +32,12 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
 
             $data = $event->getData();
 
-            if (!$data instanceof AddToCartInterface) {
+            if (!$data instanceof CartItemInterface) {
                 return;
             }
 
             /** @var ProductInterface $product */
-            $product = $data->getCartItem()->getProduct();
+            $product = $data->getProduct();
             if (!$product instanceof ProductInterface) {
                 return;
             }
@@ -50,36 +48,10 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
 
             $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
                 'product'  => $product,
-                'mapped'   => false,
+                'mapped'   => true,
                 'required' => false,
                 'label'    => null,
             ]);
-        });
-
-        $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-
-            if (!$event->getForm()->has('unitDefinition')) {
-                return;
-            }
-
-            if (!$event->getForm()->get('unitDefinition')->getData() instanceof ProductUnitDefinitionInterface) {
-                return;
-            }
-
-            $unitDefinition = $event->getForm()->get('unitDefinition')->getData();
-
-            /** @var CartItemInterface $cartItem */
-            $cartItem = $event->getData()->getCartItem();
-
-            $cartItem->setUnitDefinition($unitDefinition);
-
-            /** @var AddToCartInterface $data */
-            $data = $event->getData();
-
-            $data->setCartItem($cartItem);
-
-            $event->setData($data);
-
         });
     }
 
@@ -88,6 +60,6 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
      */
     public function getExtendedType()
     {
-        return AddToCartType::class;
+        return CartItemType::class;
     }
 }
