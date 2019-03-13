@@ -96,6 +96,10 @@ class CartItem extends BaseCartItem implements CartItemInterface
             return $coreEquals;
         }
 
+        if (!$storageListItem->hasUnitDefinition()) {
+            return $coreEquals;
+        }
+
         return $storageListItem->getUnitDefinition()->getId() === $this->getUnitDefinition()->getId();
     }
 }

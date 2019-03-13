@@ -29,6 +29,7 @@
             <div class="input-group">
                 {{ form_widget(form.quantity) }}
                 {% if item.hasUnitDefinition %}
+                    {{ form_widget(form.unitDefinition, {attr: {class : 'd-none'}}) }}
                     <div class="input-group-append">
                         <span class="input-group-text">{{ item.getUnitDefinition.getUnit.getName }}</span>
                     </div>

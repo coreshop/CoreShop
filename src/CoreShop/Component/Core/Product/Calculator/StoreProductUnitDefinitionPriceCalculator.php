@@ -40,24 +40,24 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
-        $unitDefinitionPrices = $subject->getStoreValues($context['store'])->getProductUnitDefinitionPrices();
+        $contextUnitDefinition = $context['unitDefinition'];
+        $contextStore = $context['store'];
+
+        $unitDefinitionPrices = $subject->getStoreValues($contextStore)->getProductUnitDefinitionPrices();
 
         if ($unitDefinitionPrices->count() === 0) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
 
-        foreach ($subject->getUnitDefinitions()->getAdditionalUnitDefinitions() as $unitDefinition) {
+        $filteredDefinitionPrices = $unitDefinitionPrices->filter(function (ProductUnitDefinitionPriceInterface $unitDefinitionPrice) use ($contextUnitDefinition) {
+            return $unitDefinitionPrice->getUnitDefinition()->getId() === $contextUnitDefinition->getId();
+        });
 
-            $filteredDefinitionPrices = $unitDefinitionPrices->filter(function (ProductUnitDefinitionPriceInterface $unitDefinitionPrice) use ($unitDefinition) {
-                return $unitDefinition->getId() === $unitDefinitionPrice->getUnitDefinition()->getId();
-            });
-
-            if ($filteredDefinitionPrices->count() === 0) {
-                throw new NoRetailPriceFoundException(__CLASS__);
-            }
-
-            $price = $filteredDefinitionPrices->first()->getPrice();
+        if ($filteredDefinitionPrices->count() === 0) {
+            throw new NoRetailPriceFoundException(__CLASS__);
         }
+
+        $price = $filteredDefinitionPrices->first()->getPrice();
 
         if (is_null($price)) {
             return false;
