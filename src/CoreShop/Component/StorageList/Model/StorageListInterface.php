@@ -17,13 +17,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface StorageListInterface extends ResourceInterface
 {
     /**
-     * @param StorageListProductInterface $product
-     *
-     * @return StorageListItemInterface|null
-     */
-    public function getItemForProduct(StorageListProductInterface $product);
-
-    /**
      * @return StorageListItemInterface[]
      */
     public function getItems();

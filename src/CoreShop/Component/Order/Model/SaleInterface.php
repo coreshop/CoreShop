@@ -19,12 +19,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     *
-     * @return CartItemInterface|null
-     */
-    public function getItemForProduct(PurchasableInterface $product);
 
     /**
      * @return CurrencyInterface

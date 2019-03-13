@@ -349,7 +349,9 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
-                $this->get('coreshop.cart.modifier')->addItem($cart, $product, $productObject['quantity']);
+                $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $productObject['quantity']);
+
+                $this->get('coreshop.cart.modifier')->addToList($cart, $cartItem);
             }
         }
 

@@ -14,6 +14,9 @@ namespace CoreShop\Component\StorageList\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
+/**
+ * @deprecated StorageListProductInterface has been deprecated in 2.1.0 and will be removed with 2.2.0.
+ */
 interface StorageListProductInterface extends ResourceInterface
 {
 }

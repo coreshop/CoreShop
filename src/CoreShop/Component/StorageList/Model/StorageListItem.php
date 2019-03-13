@@ -22,9 +22,17 @@ class StorageListItem extends AbstractPimcoreModel implements StorageListItemInt
     protected $quantity;
 
     /**
-     * @var StorageListProductInterface
+     * @var mixed
      */
     protected $product;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function equals(StorageListItemInterface $storageListItem)
+    {
+        return $this->getProduct() === $storageListItem->getProduct();
+    }
 
     /**
      * {@inheritdoc}

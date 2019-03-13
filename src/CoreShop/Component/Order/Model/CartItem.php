@@ -14,12 +14,28 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
     use AdjustableTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function equals(StorageListItemInterface $storageListItem)
+    {
+        if ($this->getIsGiftItem()) {
+            return false;
+        }
+
+        return $storageListItem->getProduct() instanceof PurchasableInterface &&
+            $this->getProduct() instanceof PurchasableInterface &&
+            $storageListItem->getProduct()->getId() === $this->getProduct()->getId();
+    }
+
 
     /**
      * {@inheritdoc}

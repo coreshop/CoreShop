@@ -17,12 +17,18 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface StorageListItemInterface extends ResourceInterface
 {
     /**
-     * @return StorageListProductInterface
+     * @param StorageListItemInterface $storageListItem
+     * @return bool
+     */
+    public function equals(StorageListItemInterface $storageListItem);
+
+    /**
+     * @return mixed
      */
     public function getProduct();
 
     /**
-     * @param StorageListProductInterface $product
+     * @param mixed $product
      */
     public function setProduct($product);
 
