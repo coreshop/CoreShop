@@ -1,7 +1,7 @@
 # Within 2.1
 
 ## 2.1.0
- - `CoreShop\Component\StorageList\StorageListModifierInterface` got completely refactored and works a bit different now. Since deciding what StorageListItem belongs to what product, can be a bit more complicated, we decided to decide to introduce a BC break here.
+ - `CoreShop\Component\StorageList\StorageListModifierInterface` got completely refactored and works a bit different now. Since deciding what StorageListItem belongs to what product, can be a bit more complicated, we decided to introduce a BC break.
    - `CoreShop\Component\StorageList\StorageListModifierInterface` added `addToList` function
    - `CoreShop\Component\StorageList\StorageListModifierInterface` removed `remove` to `removeFromList`
    - `CoreShop\Component\StorageList\Model\StorageListItemInterface` added `equals` function
