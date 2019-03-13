@@ -204,3 +204,4 @@ coreshop_product_quantity_price_rules_behaviour_amount_increase: 'Amount Increas
 coreshop_product_quantity_price_rules_unit_definition: 'Unit'
 coreshop_product_unit_definition_price_not_available: 'Unit Price Definition available after object save & reload.'
 coreshop_store_values_unit_price: 'Price'
+coreshop_unit: 'Unit'

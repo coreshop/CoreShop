@@ -3,6 +3,7 @@ core_shop_core:
         js:
             provider_item: '/bundles/coreshopcore/pimcore/js/payment/provider/item.js'
             order_detail_carriage: '/bundles/coreshopcore/pimcore/js/order/detail/blocks/carriage.js'
+            order_detail_detail: '/bundles/coreshopcore/pimcore/js/order/detail/blocks/detail.js'
             order_shipment: '/bundles/coreshopcore/pimcore/js/order/shipment.js'
             order_create_step_shipping: '/bundles/coreshopcore/pimcore/js/sale/create/step/shipping.js'
             quote_list: '/bundles/coreshopcore/pimcore/js/quote/list.js'
