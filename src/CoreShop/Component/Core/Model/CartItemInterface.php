@@ -37,4 +37,9 @@ interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterfac
      * @param ProductUnitDefinitionInterface $productUnitDefinition
      */
     public function setUnitDefinition($productUnitDefinition);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinition();
 }

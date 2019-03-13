@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartItem as BaseCartItem;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class CartItem extends BaseCartItem implements CartItemInterface
@@ -65,5 +66,13 @@ class CartItem extends BaseCartItem implements CartItemInterface
     public function setUnitDefinition($productUnitDefinition)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnitDefinition()
+    {
+        return $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface;
     }
 }

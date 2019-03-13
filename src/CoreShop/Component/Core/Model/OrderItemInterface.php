@@ -26,4 +26,9 @@ interface OrderItemInterface extends BaseOrderItemInterface, SaleItemInterface
      * @param ProductUnitDefinitionInterface $productUnitDefinition
      */
     public function setUnitDefinition($productUnitDefinition);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinition();
 }

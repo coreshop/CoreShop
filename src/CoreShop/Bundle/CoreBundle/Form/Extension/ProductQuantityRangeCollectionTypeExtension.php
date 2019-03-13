@@ -53,7 +53,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 $dataCheck[$unit][] = [
                     'row'  => $realRowIndex,
                     'from' => $quantityRange->getRangeFrom(),
-                    'to'   => $quantityRange->getRangeTO(),
+                    'to'   => $quantityRange->getRangeTo(),
                 ];
             }
 
