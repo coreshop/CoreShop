@@ -28,7 +28,7 @@ interface StorageListItemInterface extends ResourceInterface
     public function getProduct();
 
     /**
-     * @param mixed
+     * @param mixed $product
      */
     public function setProduct($product);
 
