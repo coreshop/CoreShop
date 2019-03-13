@@ -186,7 +186,7 @@ class CartController extends FrontendController
                  */
                 $addToCart = $form->getData();
 
-                $this->getCartModifier()->addStorageListItem($addToCart->getCart(), $addToCart->getCartItem());
+                $this->getCartModifier()->addToList($addToCart->getCart(), $addToCart->getCartItem());
                 $this->getCartManager()->persistCart($this->getCart());
 
                 $this->get('coreshop.tracking.manager')->trackCartAdd(
@@ -256,7 +256,7 @@ class CartController extends FrontendController
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
-        $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
+        $this->getCartModifier()->removeFromList($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
         $this->get('coreshop.tracking.manager')->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());

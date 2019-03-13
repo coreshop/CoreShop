@@ -80,8 +80,18 @@ final class CartContext implements Context
      */
     public function theProductShouldNotBeInMyCart(ProductInterface $product)
     {
+        $cart = $this->cartContext->getCart();
+        $foundItem = null;
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $product->getId()) {
+                $foundItem = $cartItem;
+                break;
+            }
+        }
+
         Assert::null(
-            $this->cartContext->getCart()->getItemForProduct($product),
+            $foundItem,
             sprintf(
                 'Product %s found in cart',
                 $product->getName()

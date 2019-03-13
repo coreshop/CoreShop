@@ -14,18 +14,16 @@ namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 
 interface StorageListModifierInterface
 {
     /**
-     * @param StorageListInterface        $storageList
-     * @param StorageListProductInterface $product
-     * @param int                         $quantity
+     * @param StorageListInterface     $storageList
+     * @param StorageListItemInterface $item
      *
      * @return StorageListItemInterface
      */
-    public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1);
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item);
 
     /**
      * @param StorageListInterface     $storageList
@@ -33,23 +31,5 @@ interface StorageListModifierInterface
      *
      * @return StorageListItemInterface
      */
-    public function addStorageListItem(StorageListInterface $storageList, StorageListItemInterface $item);
-
-    /**
-     * @param StorageListInterface     $storageList
-     * @param StorageListItemInterface $item
-     *
-     * @return StorageListItemInterface
-     */
-    public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item);
-
-    /**
-     * @param StorageListInterface        $storageList
-     * @param StorageListProductInterface $product
-     * @param int                         $quantity
-     * @param bool                        $increaseAmount
-     *
-     * @return StorageListItemInterface
-     */
-    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false);
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item);
 }

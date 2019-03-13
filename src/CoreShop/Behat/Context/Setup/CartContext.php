@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -48,6 +49,11 @@ final class CartContext implements Context
     private $cartManager;
 
     /**
+     * @var CartItemFactoryInterface
+     */
+    private $factory;
+
+    /**
      * @param SharedStorageInterface       $sharedStorage
      * @param CartContextInterface         $cartContext
      * @param StorageListModifierInterface $cartModifier
@@ -57,12 +63,14 @@ final class CartContext implements Context
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
         StorageListModifierInterface $cartModifier,
-        CartManagerInterface $cartManager
+        CartManagerInterface $cartManager,
+        CartItemFactoryInterface $factory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->cartContext = $cartContext;
         $this->cartModifier = $cartModifier;
         $this->cartManager = $cartManager;
+        $this->factory = $factory;
     }
 
     /**
@@ -73,7 +81,9 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        $this->cartModifier->addItem($cart, $product);
+        $cartItem = $this->factory->createWithPurchasable($product);
+
+        $this->cartModifier->addToList($cart, $cartItem);
 
         $this->cartManager->persistCart($cart);
     }
@@ -86,12 +96,12 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        $cartItem = $cart->getItemForProduct($product);
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $product->getId()) {
+                $this->cartModifier->removeFromList($cart, $cartItem);
 
-        if (null !== $cartItem) {
-            $this->cartModifier->removeItem($cart, $cartItem);
-
-            $this->cartManager->persistCart($cart);
+                $this->cartManager->persistCart($cart);
+            }
         }
     }
 

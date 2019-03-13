@@ -41,7 +41,7 @@ class StorageList extends Base
      */
     protected function getSimpleStorageListModifier()
     {
-        return new SimpleStorageListModifier($this->getStorageListItemFactory());
+        return new SimpleStorageListModifier();
     }
 
     /**
@@ -53,17 +53,30 @@ class StorageList extends Base
 
         $list = $this->getStorageList();
         $modifier = $this->getSimpleStorageListModifier();
+        $factory = $this->getStorageListItemFactory();
 
-        $modifier->addItem($list, Data::$product1);
+        $item = $factory->createNew();
+        $item->setProduct(Data::$product1);
+        $item->setQuantity(1);
+
+        $modifier->addToList($list, $item);
         $this->assertEquals(1, count($list->getItems()));
 
-        $modifier->addItem($list, Data::$product1);
+        $item = $factory->createNew();
+        $item->setProduct(Data::$product1);
+        $item->setQuantity(1);
+
+        $modifier->addToList($list, $item);
         $this->assertEquals(1, count($list->getItems()));
 
-        $modifier->addItem($list, Data::$product2);
+        $item = $factory->createNew();
+        $item->setProduct(Data::$product2);
+        $item->setQuantity(1);
+
+        $modifier->addToList($list, $item);
         $this->assertEquals(2, count($list->getItems()));
 
-        $modifier->updateItemQuantity($list, Data::$product2, 0);
+        $modifier->removeFromList($list, $list->getItems()[1]);
         $this->assertEquals(1, count($list->getItems()));
     }
 }

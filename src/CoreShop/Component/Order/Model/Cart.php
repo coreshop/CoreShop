@@ -29,29 +29,6 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getItemForProduct(StorageListProductInterface $product)
-    {
-        Assert::isInstanceOf($product, PurchasableInterface::class);
-
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof CartItemInterface) {
-                //Gift Items are not considered as products here
-                if ($item->getIsGiftItem()) {
-                    continue;
-                }
-
-                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
-                    return $item;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTotalTax()
     {
         if (!$this->getTaxes() instanceof Fieldcollection) {
