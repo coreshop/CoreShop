@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
@@ -101,7 +102,7 @@ class ProductUnitDefinition extends Data
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if ($data instanceof ProductUnitDefinitionInterface) {
             return $data->getId();
         }
 
@@ -125,7 +126,7 @@ class ProductUnitDefinition extends Data
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if ($data instanceof ProductUnitDefinitionInterface) {
             return $data->getId();
         }
 
@@ -179,18 +180,10 @@ class ProductUnitDefinition extends Data
     }
 
     /**
-     * {@inheritdoc}
+     * @return RepositoryInterface
      */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit_definition');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.product_unit_definition.class');
     }
 }
