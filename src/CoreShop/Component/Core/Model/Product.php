@@ -292,9 +292,11 @@ class Product extends BaseProduct implements ProductInterface
             if ($currentStoreValuesByStore instanceof ProductStoreValuesInterface) {
                 $currentStoreValuesByStore->setPrice($storePrice);
             } else {
+                /** @var StoreRepositoryInterface $storeRepository */
+                $storeRepository = \Pimcore::getContainer()->get('coreshop.repository.store');
                 /** @var ProductStoreValuesInterface $newProductStoreValues */
                 $newProductStoreValues = \Pimcore::getContainer()->get('coreshop.factory.product_store_values')->createNew();
-                $newProductStoreValues->setStore($store);
+                $newProductStoreValues->setStore($storeRepository->find($store->getId()));
                 $newProductStoreValues->setPrice($storePrice);
                 $newProductStoreValues->setProduct($this);
                 $currentStoreValuesByStore[] = $newProductStoreValues;

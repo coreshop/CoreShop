@@ -89,14 +89,14 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
         $cartItemClass = $this->container->getParameter('coreshop.model.cart_item.pimcore_class_name');
         $classUpdater = new ClassUpdate($cartItemClass);
         if (!$classUpdater->hasField('unitDefinition')) {
-            $classUpdater->insertFielAfter('digitalProduct', $unitDefinitionField);
+            $classUpdater->insertFieldAfter('digitalProduct', $unitDefinitionField);
             $classUpdater->save();
         }
 
         $orderItemClass = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');
         $classUpdater = new ClassUpdate($orderItemClass);
         if (!$classUpdater->hasField('unitDefinition')) {
-            $classUpdater->insertFielAfter('digitalProduct', $unitDefinitionField);
+            $classUpdater->insertFieldAfter('digitalProduct', $unitDefinitionField);
             $classUpdater->save();
         }
     }
