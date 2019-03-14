@@ -46,8 +46,9 @@ class VolumeCalculator implements CalculatorInterface
         array $context
     ) {
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity);
+
         if (!$locatedRange instanceof QuantityRangeInterface) {
-            return false;
+            throw new NoPriceFoundException(__CLASS__);
         }
 
         $price = $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
