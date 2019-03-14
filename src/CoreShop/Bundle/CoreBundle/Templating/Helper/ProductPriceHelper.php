@@ -44,33 +44,69 @@ class ProductPriceHelper extends Helper implements ProductPriceHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $product, $withTax = true)
+    public function getPrice(PurchasableInterface $product, $withTax = true, array $context = [])
     {
-        return $this->productPriceCalculator->getPrice($product, $this->shopperContext->getContext(), $withTax);
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getPrice without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $this->productPriceCalculator->getPrice($product, $context, $withTax);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $product, $withTax = true)
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true, array $context = [])
     {
-        return $this->productPriceCalculator->getDiscountPrice($product, $this->shopperContext->getContext(), $withTax);
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getDiscountPrice without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $this->productPriceCalculator->getDiscountPrice($product, $context, $withTax);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $product, $withTax = true)
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true, array $context = [])
     {
-        return $this->productPriceCalculator->getRetailPrice($product, $this->shopperContext->getContext(), $withTax);
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getRetailPrice without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $this->productPriceCalculator->getRetailPrice($product, $context, $withTax);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $product, $withTax = true)
+    public function getDiscount(PurchasableInterface $product, $withTax = true, array $context = [])
     {
-        return $this->productPriceCalculator->getDiscount($product, $this->shopperContext->getContext(), $withTax);
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getDiscount without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $this->productPriceCalculator->getDiscount($product, $context, $withTax);
     }
 
     /**

@@ -5,13 +5,13 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {% set priceUnformatted = product|coreshop_product_price(with_tax) %}
+    {% set priceUnformatted = product|coreshop_product_price(with_tax, coreshop.context) %}
     {% set price = currency.convertAndFormat(priceUnformatted) %}
-    {% set discountUnformatted = product|coreshop_product_discount(with_tax) %}
+    {% set discountUnformatted = product|coreshop_product_discount(with_tax, coreshop.context) %}
     {% set discount = currency.convertAndFormat(discountUnformatted) %}
-    {% set discountPriceUnformatted = product|coreshop_product_discount_price(with_tax) %}
+    {% set discountPriceUnformatted = product|coreshop_product_discount_price(with_tax, coreshop.context) %}
     {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
-    {% set retailPriceUnformatted = product|coreshop_product_retail_price(with_tax) %}
+    {% set retailPriceUnformatted = product|coreshop_product_retail_price(with_tax, coreshop.context) %}
     {% set retailPrice = currency.convertAndFormat(retailPriceUnformatted) %}
 
     <span class="price-new">{{ price }}</span>
@@ -33,29 +33,31 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {% set default_unit_definition = product.unitDefinitions.defaultUnitDefinition %}
-    {% set additional_unit_definitions = coreshop_product_additional_unit_definitions_with_prices(product, with_tax) %}
+    {% set defaultUnitDefinition = product.unitDefinitions.defaultUnitDefinition %}
+    {% set additionalUnitDefinitions = product.unitDefinitions.additionalUnitDefinitions %}
 
     <div class="price default-unit-price">
-        <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ default_unit_definition.unit.name }}:</span> {{ product_price.display_product_price(product) }}
+        <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ defaultUnitDefinition.unit.name }}:</span> {{ product_price.display_product_price(product) }}
         <div class="tax">
             {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
         </div>
     </div>
-    {% if additional_unit_definitions|length > 0 %}
+
+    {% if additionalUnitDefinitions|length > 0 %}
         <div class="additional-units-prices">
             <div class="card">
                 <div class="card-header">
-                    Additional Units
+                    {{ 'coreshop.ui.additional_units'|trans }}
                 </div>
                 <ul class="list-group list-group-flush">
-                    {% for additional_unit in additional_unit_definitions %}
+                    {% for additionalUnit in additionalUnitDefinitions %}
                         <li class="list-group-item">
-                            {% set unit_price = currency.convertAndFormat(additional_unit.price) %}
-                            <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ additional_unit.definition.unit.name }}:</span>
+                            {% set c = product|coreshop_product_price(with_tax, {coreshop.context|merge({unitDefinition: additionalUnit})}) %}
+                            {% set unit_price = currency.convertAndFormat(additional_unit) %}
+                            <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ additionalUnit.unit.name }}:</span>
                             <span class="price-new">{{ unit_price }}</span>
-                            {% if(additional_unit.definition.conversionRate > 1) %}
-                                <span class="badge badge-secondary">including {{ additional_unit.definition.conversionRate }} {{ default_unit_definition.unit.name }}</span>
+                            {% if additionalUnit.conversionRate > 1 %}
+                                <span class="badge badge-secondary">including {{ additionalUnit.conversionRate }} {{ defaultUnitDefinition.unit.name }}</span>
                             {% endif %}
                         </li>
                     {% endfor %}

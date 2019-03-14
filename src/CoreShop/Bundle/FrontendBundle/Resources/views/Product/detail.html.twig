@@ -105,8 +105,8 @@
 
             <hr/>
 
-            {% if coreshop_quantity_price_rule_ranges_available(product) %}
-                {% set rule = coreshop_quantity_price_rule(product) %}
+            {% if coreshop_quantity_price_rule_ranges_available(product, coreshop.context) %}
+                {% set rule = coreshop_quantity_price_rule(product, coreshop.context) %}
                 {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
                 <hr/>
             {% endif %}
