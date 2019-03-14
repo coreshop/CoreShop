@@ -83,7 +83,7 @@ services:
         tags:
             - { name: coreshop.product.retail_price_calculator, type: store_price, priority: 10 }
 
-    coreshop.product.price_calculator.property_unit_price:
+    coreshop.product.price_calculator.unit_price:
         class: CoreShop\Component\Core\Product\Calculator\StoreProductUnitDefinitionPriceCalculator
         tags:
             - { name: coreshop.product.retail_price_calculator, type: store_unit_price, priority: 11 }

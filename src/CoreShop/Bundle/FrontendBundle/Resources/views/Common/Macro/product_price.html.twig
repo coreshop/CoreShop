@@ -1,5 +1,5 @@
 {% macro display_product_price(product, with_tax) %}
-    {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
+    {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
     {% if with_tax is null %}
         {% set with_tax = true %}
@@ -22,5 +22,45 @@
     {% endif %}
     {% if discountUnformatted > 0 %}
         <span class="price-discount">(-{{ discount }})</span>
+    {% endif %}
+{% endmacro %}
+
+{% macro display_product_unit_prices(product, with_tax) %}
+    {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+    {% import _self as product_price %}
+
+    {% if with_tax is null %}
+        {% set with_tax = true %}
+    {% endif %}
+
+    {% set default_unit_definition = product.unitDefinitions.defaultUnitDefinition %}
+    {% set additional_unit_definitions = coreshop_product_additional_unit_definitions_with_prices(product, with_tax) %}
+
+    <div class="price default-unit-price">
+        <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ default_unit_definition.unit.name }}:</span> {{ product_price.display_product_price(product) }}
+        <div class="tax">
+            {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+        </div>
+    </div>
+    {% if additional_unit_definitions|length > 0 %}
+        <div class="additional-units-prices">
+            <div class="card">
+                <div class="card-header">
+                    Additional Units
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for additional_unit in additional_unit_definitions %}
+                        <li class="list-group-item">
+                            {% set unit_price = currency.convertAndFormat(additional_unit.price) %}
+                            <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ additional_unit.definition.unit.name }}:</span>
+                            <span class="price-new">{{ unit_price }}</span>
+                            {% if(additional_unit.definition.conversionRate > 1) %}
+                                <span class="badge badge-secondary">including {{ additional_unit.definition.conversionRate }} {{ default_unit_definition.unit.name }}</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 {% endmacro %}

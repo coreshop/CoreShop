@@ -1,6 +1,5 @@
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
-{% import "@CoreShopFrontend/Common/Macro/product_unit_prices.html.twig" as product_unit_prices %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+{% import '@CoreShopFrontend/Common/Macro/product_price.html.twig' as product_price %}
 
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
@@ -92,7 +91,7 @@
 
             {% if coreshop_product_unit_definitions_available(product) %}
                 <div class="unit-prices">
-                    {{ product_unit_prices.display_product_unit_prices(product) }}
+                    {{ product_price.display_product_unit_prices(product) }}
                 </div>
             {% else %}
                 <div class="price">
