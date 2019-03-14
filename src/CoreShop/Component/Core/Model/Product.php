@@ -263,31 +263,34 @@ class Product extends BaseProduct implements ProductInterface
             }
 
             foreach ($storePrice as $storeId => $singleStorePrice) {
+
+                /** @var StoreRepositoryInterface $storeRepository */
+                $storeRepository = \Pimcore::getContainer()->get('coreshop.repository.store');
+                $currentStore = $storeRepository->find($storeId);
+
                 $found = false;
                 /** @var ProductStoreValuesInterface $storeValuesBlock */
                 foreach ($currentStoreValues as $storeValuesBlock) {
                     if ($storeValuesBlock->getStore()->getId() === $storeId) {
                         $storeValuesBlock->setPrice($singleStorePrice);
+                        $this->setStoreValues($storeValuesBlock, $currentStore);
                         $found = true;
                         break;
                     }
                 }
 
                 if ($found === false) {
-                    /** @var StoreRepositoryInterface $storeRepository */
-                    $storeRepository = \Pimcore::getContainer()->get('coreshop.repository.store');
                     /** @var ProductStoreValuesInterface $newProductStoreValues */
                     $newProductStoreValues = \Pimcore::getContainer()->get('coreshop.factory.product_store_values')->createNew();
-                    $newProductStoreValues->setStore($storeRepository->find($storeId));
+                    $newProductStoreValues->setStore($currentStore);
                     $newProductStoreValues->setPrice($singleStorePrice);
                     $newProductStoreValues->setProduct($this);
-                    $currentStoreValues[] = $newProductStoreValues;
+                    $currentStoreValues = $newProductStoreValues;
+                    $this->setStoreValues($currentStoreValues, $currentStore);
                 }
             }
 
-            $this->setStoreValues($currentStoreValues);
-
-        } elseif (!is_null($store)) {
+        } elseif ($store instanceof \CoreShop\Component\Store\Model\StoreInterface) {
             $currentStoreValuesByStore = $this->getStoreValues($store);
             if ($currentStoreValuesByStore instanceof ProductStoreValuesInterface) {
                 $currentStoreValuesByStore->setPrice($storePrice);
@@ -299,10 +302,11 @@ class Product extends BaseProduct implements ProductInterface
                 $newProductStoreValues->setStore($storeRepository->find($store->getId()));
                 $newProductStoreValues->setPrice($storePrice);
                 $newProductStoreValues->setProduct($this);
-                $currentStoreValuesByStore[] = $newProductStoreValues;
+                $currentStoreValuesByStore = $newProductStoreValues;
             }
 
-            $this->setStoreValues($currentStoreValuesByStore);
+            $this->setStoreValues($currentStoreValuesByStore, $store);
+
         }
 
         return $this;
