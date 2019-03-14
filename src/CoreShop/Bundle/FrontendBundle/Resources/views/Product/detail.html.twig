@@ -89,7 +89,7 @@
                 <hr/>
             {% endif %}
 
-            {% if coreshop_product_unit_definitions_available(product) %}
+            {% if product.hasUnitDefinitions == true %}
                 <div class="unit-prices">
                     {{ product_price.display_product_unit_prices(product) }}
                 </div>
