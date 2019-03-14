@@ -52,10 +52,10 @@
                 <ul class="list-group list-group-flush">
                     {% for additionalUnit in additionalUnitDefinitions %}
                         <li class="list-group-item">
-                            {% set c = product|coreshop_product_price(with_tax, {coreshop.context|merge({unitDefinition: additionalUnit})}) %}
-                            {% set unit_price = currency.convertAndFormat(additional_unit) %}
+                            {% set additionalUnitPrice = product|coreshop_product_price(with_tax, {coreshop.context|merge({unitDefinition: additionalUnit})}) %}
+                            {% set additionalUnitPrice = currency.convertAndFormat(additionalUnitPrice) %}
                             <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ additionalUnit.unit.name }}:</span>
-                            <span class="price-new">{{ unit_price }}</span>
+                            <span class="price-new">{{ additionalUnitPrice }}</span>
                             {% if additionalUnit.conversionRate > 1 %}
                                 <span class="badge badge-secondary">including {{ additionalUnit.conversionRate }} {{ defaultUnitDefinition.unit.name }}</span>
                             {% endif %}
