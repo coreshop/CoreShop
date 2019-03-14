@@ -16,8 +16,10 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 
-class ProductUnitDefinition extends Data
+class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.

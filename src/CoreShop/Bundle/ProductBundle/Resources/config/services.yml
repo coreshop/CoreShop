@@ -111,13 +111,6 @@ services:
             - '@coreshop.product.discount_price_calculator'
             - '@coreshop.product.discount_calculator'
 
-    coreshop.product.price_calculator.cached:
-        class: CoreShop\Component\Product\Calculator\MemoryCachedProductPriceCalculator
-        decorates: 'coreshop.product.price_calculator'
-        arguments:
-            - '@coreshop.product.price_calculator.cached.inner'
-            - '@request_stack'
-
     coreshop.event_listener.clear_cached_rules:
         class: CoreShop\Bundle\ProductBundle\EventListener\ClearCachedPriceRulesListener
         tags:
