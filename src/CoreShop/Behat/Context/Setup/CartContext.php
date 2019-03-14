@@ -58,6 +58,7 @@ final class CartContext implements Context
      * @param CartContextInterface         $cartContext
      * @param StorageListModifierInterface $cartModifier
      * @param CartManagerInterface         $cartManager
+     * @param CartItemFactoryInterface     $factory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
