@@ -24,6 +24,17 @@ services:
         tags:
             - { name: templating.helper, alias: coreshop_product_price }
 
+    coreshop.templating.helper.product_quantity_price_rules:
+        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper
+        arguments:
+            - '@coreshop.product_quantity_price_rules.detector.quantity_reference'
+            - '@coreshop.order.purchasable.calculator'
+            - '@coreshop.provider.taxation.default_country'
+            - '@coreshop.product.tax_factory'
+            - '@coreshop.taxation.tax_applicator'
+        tags:
+            - { name: templating.helper, alias: coreshop_product_tax }
+
     coreshop.templating.helper.tax:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper
         arguments:
@@ -38,6 +49,13 @@ services:
         class: CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension
         arguments:
             - '@coreshop.templating.helper.price'
+        tags:
+            - { name: twig.extension }
+
+    coreshop.twig.extension.quantity_price_rule:
+        class: CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension
+        arguments:
+            - '@coreshop.templating.helper.product_quantity_price_rules'
         tags:
             - { name: twig.extension }
 

@@ -12,34 +12,23 @@
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
-class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceHelperInterface
+class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuantityPriceRuleRangesHelperInterface
 {
-    /**
-     * @var TaxedProductPriceCalculatorInterface
-     */
-    protected $productPriceCalculator;
-
     /**
      * @var QuantityReferenceDetectorInterface
      */
     protected $quantityReferenceDetector;
 
     /**
-     * @param TaxedProductPriceCalculatorInterface $productPriceCalculator
-     * @param QuantityReferenceDetectorInterface   $quantityReferenceDetector
+     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
      */
-    public function __construct(
-        TaxedProductPriceCalculatorInterface $productPriceCalculator,
-        QuantityReferenceDetectorInterface $quantityReferenceDetector
-    ) {
-        $this->productPriceCalculator = $productPriceCalculator;
+    public function __construct(QuantityReferenceDetectorInterface $quantityReferenceDetector)
+    {
         $this->quantityReferenceDetector = $quantityReferenceDetector;
     }
 
@@ -78,28 +67,8 @@ class ProductQuantityPriceHelper extends Helper implements ProductQuantityPriceH
     /**
      * {@inheritdoc}
      */
-    public function getQuantityPriceRuleRangePrice(
-        QuantityRangeInterface $range,
-        QuantityRangePriceAwareInterface $product,
-        array $context,
-        bool $withTax = true,
-        array $additionalContext = null
-    ) {
-        if (is_array($additionalContext)) {
-            $context = array_merge($context, $additionalContext);
-        }
-
-        $realItemPrice = $this->productPriceCalculator->getPrice($product, $context, $withTax);
-        $quantityPrice = $this->quantityReferenceDetector->detectRangePrice($product, $range, $realItemPrice, $context);
-
-        return $quantityPrice;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
-        return 'coreshop_product_quantity_price';
+        return 'coreshop_product_quantity_price_rule_ranges';
     }
 }

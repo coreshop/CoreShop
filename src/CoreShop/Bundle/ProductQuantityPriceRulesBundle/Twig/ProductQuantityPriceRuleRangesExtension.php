@@ -12,19 +12,19 @@
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig;
 
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceHelper;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface;
 
-final class ProductQuantityPriceExtension extends \Twig_Extension
+final class ProductQuantityPriceRuleRangesExtension extends \Twig_Extension
 {
     /**
-     * @var ProductQuantityPriceHelper
+     * @var ProductQuantityPriceRuleRangesHelperInterface
      */
     private $helper;
 
     /**
-     * @param ProductQuantityPriceHelper $helper
+     * @param ProductQuantityPriceRuleRangesHelperInterface $helper
      */
-    public function __construct(ProductQuantityPriceHelper $helper)
+    public function __construct(ProductQuantityPriceRuleRangesHelperInterface $helper)
     {
         $this->helper = $helper;
     }
@@ -38,7 +38,6 @@ final class ProductQuantityPriceExtension extends \Twig_Extension
             new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges_available', [$this->helper, 'hasActiveQuantityPriceRuleRanges']),
             new \Twig_SimpleFunction('coreshop_quantity_price_rule', [$this->helper, 'getQuantityPriceRule']),
             new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges', [$this->helper, 'getQuantityPriceRuleRanges']),
-            new \Twig_SimpleFunction('coreshop_quantity_price_rule_range_price_calculated', [$this->helper, 'getQuantityPriceRuleRangePrice']),
         ];
     }
 }

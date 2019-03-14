@@ -304,7 +304,7 @@ translations:
           de_CH: 'Abmelden'
           en: 'Logout'
           de: 'Abmelden'
-          
+
   coreshop.ui.order:
         languages:
           de_CH: 'Bestellung'
@@ -322,7 +322,7 @@ translations:
           de_CH: 'Bestellnummer'
           en: 'Order Number'
           de: 'Bestellnummer'
-          
+
   coreshop.ui.remove:
       languages:
           de_CH: 'Entfernen'
@@ -586,7 +586,7 @@ translations:
           de_CH: 'Bestätigt'
           en: 'Confirmed'
           de: 'Bestätigt'
-          
+
   coreshop.ui.workflow.state.coreshop_order.cancelled:
       languages:
           de_CH: 'Storniert'
@@ -1090,7 +1090,7 @@ translations:
           de_CH: 'Newsletter'
           en: 'Newsletter'
           de: 'Newsletter'
-          
+
   coreshop.form.customer.newsletter.subscribe:
       languages:
           de_CH: 'Ja, ich möchte den Newsletter abonnieren'
@@ -1162,7 +1162,7 @@ translations:
           de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
           en: 'Some Products are not available anymore. Please check your cart for completeness.'
           de: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
-          
+
   coreshop.product.tax.inc:
       languages:
           de_CH: 'inkl. %s%% Steuer'
@@ -1187,11 +1187,23 @@ translations:
           en: 'Price per Item'
           de: 'Preis pro Stück'
 
+  coreshop.ui.product_quantity_price_rules.price_per_item_excl:
+      languages:
+          de_CH: 'Preis pro Stück (Exkl.)'
+          en: 'Price per Item (Excl.)'
+          de: 'Preis pro Stück  (Exkl.)'
+
   coreshop.ui.product_quantity_price_rules.unit_price:
       languages:
           de_CH: 'Preis pro Einheit'
           en: 'Unit Price'
           de: 'Preis pro Einheit'
+
+  coreshop.ui.product_quantity_price_rules.unit_price_excl:
+      languages:
+          de_CH: 'Preis pro Einheit (Exkl.)'
+          en: 'Unit Price (Excl.)'
+          de: 'Preis pro Einheit (Exkl.)'
 
   coreshop.ui.product_quantity_price_rules.starting_from:
       languages:
@@ -1217,3 +1229,8 @@ translations:
           en: 'You Save'
           de: 'Sie sparen'
 
+  coreshop.ui.additional_units:
+      languages:
+          de_CH: 'Einheiten'
+          en: 'Additional Units'
+          de: 'Einheiten'
