@@ -25,6 +25,13 @@ use Pimcore\Tool;
 final class EmbeddedClass extends Multihref
 {
     /**
+     * Static type of this element
+     *
+     * @var string
+     */
+    public $fieldtype = 'coreShopEmbeddedClass';
+
+    /**
      * @var int
      */
     public $maxItems = 0;
@@ -199,10 +206,15 @@ final class EmbeddedClass extends Multihref
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-            $setter = 'set' . ucfirst($this->getName());
 
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+            //TODO: Remove once CoreShop requires min Pimcore 5.5
+            if (method_exists($object, 'setObjectVar')) {
+                $object->setObjectVar($this->getName(), $data);
+            } else {
+                $setter = 'set' . ucfirst($this->getName());
+                if (method_exists($object, $setter)) {
+                    $object->$setter($data);
+                }
             }
         }
 
