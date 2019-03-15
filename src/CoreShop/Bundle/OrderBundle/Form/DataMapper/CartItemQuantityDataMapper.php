@@ -56,11 +56,12 @@ class CartItemQuantityDataMapper implements DataMapperInterface
     public function mapFormsToData($forms, &$data): void
     {
         $formsOtherThanQuantity = [];
+        $quantityForm = null;
+
+        //First map all the other fields, then map quantity.
         foreach ($forms as $key => $form) {
             if ('quantity' === $form->getName()) {
-                $targetQuantity = $form->getData();
-                $this->cartItemQuantityModifier->modify($data, (int) $targetQuantity);
-
+                $quantityForm = $form;
                 continue;
             }
 
@@ -69,6 +70,11 @@ class CartItemQuantityDataMapper implements DataMapperInterface
 
         if (!empty($formsOtherThanQuantity)) {
             $this->propertyPathDataMapper->mapFormsToData($formsOtherThanQuantity, $data);
+        }
+
+        if (null !== $quantityForm) {
+            $targetQuantity = $quantityForm->getData();
+            $this->cartItemQuantityModifier->modify($data, (int) $targetQuantity);
         }
     }
 }

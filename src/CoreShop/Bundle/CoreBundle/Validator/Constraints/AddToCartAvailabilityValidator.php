@@ -63,16 +63,9 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         $cartItem = $addCartItemCommand->getCartItem();
         $cart = $addCartItemCommand->getCart();
 
-        //Since the new new cart-item has not been processed yet, we have convert the units here manually
-        $quantity = $cartItem->getQuantity();
-
-        if ($cartItem->hasUnitDefinition()) {
-            $quantity *= $cartItem->getUnitDefinition()->getConversionRate();
-        }
-
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
-            $quantity + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
         );
 
         if (!$isStockSufficient) {
