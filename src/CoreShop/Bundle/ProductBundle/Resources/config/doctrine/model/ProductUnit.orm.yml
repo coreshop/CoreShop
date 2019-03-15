@@ -13,3 +13,14 @@ CoreShop\Component\Product\Model\ProductUnit:
             type: string
             unique: true
             length: 190
+        creationDate:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update

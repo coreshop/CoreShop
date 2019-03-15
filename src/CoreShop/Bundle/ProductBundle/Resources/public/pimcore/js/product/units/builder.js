@@ -294,7 +294,7 @@ coreshop.product.unit.builder = Class.create({
             labelText = '--';
         } else {
             unitData = this.unitStore.getById(defaultUnitDefinitionStoreValue);
-            labelText = unitData.get('name');
+            labelText = unitData.get('fullLabel') ? unitData.get('fullLabel') : unitData.get('name');
         }
 
         Ext.Array.each(additionalUnitLabels, function (additionalUnitLabel) {

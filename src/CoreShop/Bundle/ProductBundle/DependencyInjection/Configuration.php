@@ -22,6 +22,7 @@ use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitTranslationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository;
@@ -41,8 +42,11 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitions;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use CoreShop\Component\Product\Model\ProductUnitTranslation;
+use CoreShop\Component\Product\Model\ProductUnitTranslationInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
+use CoreShop\Component\Resource\Factory\TranslatableFactory;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -141,9 +145,25 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(ProductUnit::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductUnitInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ProductUnitController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductUnitRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductUnitType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(ProductUnitTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(ProductUnitTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(ProductUnitTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

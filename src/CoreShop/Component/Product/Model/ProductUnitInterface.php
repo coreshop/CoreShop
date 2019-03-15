@@ -13,8 +13,10 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 
-interface ProductUnitInterface extends ResourceInterface
+interface ProductUnitInterface extends ResourceInterface, TranslatableInterface, TimestampableInterface
 {
     /**
      * @return string
@@ -25,4 +27,52 @@ interface ProductUnitInterface extends ResourceInterface
      * @param string $identifier
      */
     public function setName(string $identifier);
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getFullLabel($language = null);
+
+    /**
+     * @param string $fullLabel
+     * @param string $language
+     */
+    public function setFullLabel($fullLabel, $language = null);
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getFullPluralLabel($language = null);
+
+    /**
+     * @param string $fullPluralLabel
+     * @param string $language
+     */
+    public function setFullPluralLabel($fullPluralLabel, $language = null);
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getShortLabel($language = null);
+
+    /**
+     * @param string $shortLabel
+     * @param string $language
+     */
+    public function setShortLabel($shortLabel, $language = null);
+
+    /**
+     * @param string $language
+     * @return string
+     */
+    public function getShortPluralLabel($language = null);
+
+    /**
+     * @param string $shortPluralLabel
+     * @param string $language
+     */
+    public function setShortPluralLabel($shortPluralLabel, $language = null);
 }

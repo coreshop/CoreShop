@@ -32,3 +32,7 @@ coreshop_product_unit_additional_unit_definition_delete_confirm: 'Do you really 
 coreshop_product_unit_default_type: 'Unit of Quantity'
 coreshop_product_unit_type: 'Unit'
 coreshop_product_unit_conversion_rate: 'Conversion Rate'
+coreshop_product_unit_full_label: 'Full Label'
+coreshop_product_unit_full_plural_label: 'Full Label Plural'
+coreshop_product_unit_short_label: 'Short Label'
+coreshop_product_unit_short_plural_label: 'Short Label Plural'

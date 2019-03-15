@@ -13,11 +13,10 @@
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class ProductUnitType extends AbstractResourceType
+final class ProductUnitTranslationType extends AbstractResourceType
 {
     /**
      * {@inheritdoc}
@@ -25,10 +24,10 @@ final class ProductUnitType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('translations', ResourceTranslationsType::class, [
-                'entry_type' => ProductUnitTranslationType::class,
-            ])
+            ->add('fullLabel', TextType::class)
+            ->add('fullPluralLabel', TextType::class)
+            ->add('shortLabel', TextType::class)
+            ->add('shortPluralLabel', TextType::class)
         ;
     }
 
@@ -37,6 +36,6 @@ final class ProductUnitType extends AbstractResourceType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_product_unit';
+        return 'coreshop_product_unit_translation';
     }
 }

@@ -11,3 +11,11 @@ CoreShop\Component\Product\Model\ProductUnit:
             expose: true
             type: string
             groups: [List, Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]
+    virtual_properties:
+        getFullLabel:
+            serialized_name: fullLabel
+            groups: [List, Detailed]

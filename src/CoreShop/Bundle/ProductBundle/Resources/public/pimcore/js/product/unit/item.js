@@ -41,7 +41,43 @@ coreshop.product.unit.item = Class.create(coreshop.resource.item, {
     },
 
     getItems: function () {
-        var data = this.data;
+        var data = this.data,
+            langTabs = [];
+
+        Ext.each(pimcore.settings.websiteLanguages, function (lang) {
+            var tab = {
+                title: pimcore.available_languages[lang],
+                iconCls: 'pimcore_icon_language_' + lang.toLowerCase(),
+                layout: 'form',
+                items: [{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.fullLabel',
+                    fieldLabel: t('coreshop_product_unit_full_label'),
+                    width: 400,
+                    value: data.translations[lang] ? data.translations[lang].fullLabel : ''
+                },{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.fullPluralLabel',
+                    fieldLabel: t('coreshop_product_unit_full_plural_label'),
+                    width: 400,
+                    value: data.translations[lang] ? data.translations[lang].fullPluralLabel : ''
+                },{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.shortLabel',
+                    fieldLabel: t('coreshop_product_unit_short_label'),
+                    width: 400,
+                    value: data.translations[lang] ? data.translations[lang].shortLabel : ''
+                },{
+                    xtype: 'textfield',
+                    name: 'translations.' + lang + '.shortPluralLabel',
+                    fieldLabel: t('coreshop_product_unit_short_plural_label'),
+                    width: 400,
+                    value: data.translations[lang] ? data.translations[lang].shortPluralLabel : ''
+                }]
+            };
+
+            langTabs.push(tab);
+        });
 
         this.settingsForm = Ext.create('Ext.form.Panel', {
             iconCls: 'coreshop_icon_settings',
@@ -61,6 +97,15 @@ coreshop.product.unit.item = Class.create(coreshop.resource.item, {
                         this.panel.setTitle(field.getValue());
                     }.bind(this)
                 }
+            }, {
+                xtype: 'tabpanel',
+                activeTab: 0,
+                defaults: {
+                    autoHeight: true,
+                    bodyStyle: 'padding:10px;'
+                },
+                width: '100%',
+                items: langTabs
             }]
         });
 

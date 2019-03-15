@@ -13,9 +13,17 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use CoreShop\Component\Resource\Model\TimestampableTrait;
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 
 class ProductUnit extends AbstractResource implements ProductUnitInterface
 {
+    use TimestampableTrait;
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
+    }
+
     /**
      * @var int
      */
@@ -25,6 +33,11 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
      * @var string
      */
     protected $name;
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     /**
      * @param int $id
@@ -59,10 +72,96 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFullLabel($language = null)
+    {
+        return $this->getTranslation($language)->getFullLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFullLabel($fullLabel, $language = null)
+    {
+        $this->getTranslation($language, false)->setFullLabel($fullLabel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullPluralLabel($language = null)
+    {
+        return $this->getTranslation($language)->getFullPluralLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFullPluralLabel($fullPluralLabel, $language = null)
+    {
+        $this->getTranslation($language, false)->setFullPluralLabel($fullPluralLabel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShortLabel($language = null)
+    {
+        return $this->getTranslation($language)->getShortLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShortLabel($shortLabel, $language = null)
+    {
+        $this->getTranslation($language, false)->setShortLabel($shortLabel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getShortPluralLabel($language = null)
+    {
+        return $this->getTranslation($language)->getShortPluralLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setShortPluralLabel($shortPluralLabel, $language = null)
+    {
+        $this->getTranslation($language, false)->setShortPluralLabel($shortPluralLabel);
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     *
+     * @return ProductUnitTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var ProductUnitTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
+    }
+
+    /**
      * @return string
      */
     public function __toString()
     {
         return sprintf('%s (%d)', $this->getName(), $this->getId());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new ProductUnitTranslation();
     }
 }

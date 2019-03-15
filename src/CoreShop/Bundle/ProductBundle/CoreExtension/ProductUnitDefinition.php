@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 
 class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
 {
@@ -156,9 +156,13 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
 
         if ($data instanceof ProductUnitDefinitionInterface) {
             $parsedData = [
-                'id'               => $data->getId(),
+                'id' => $data->getId(),
                 'conversationRate' => $data->getConversionRate(),
-                'unitName'         => $data->getUnit()->getName()
+                'unitName' => $data->getUnit()->getName(),
+                'fullLabel' => $data->getUnit()->getFullLabel(),
+                'fullPluralLabel' => $data->getUnit()->getFullPluralLabel(),
+                'shortLabel' => $data->getUnit()->getShortLabel(),
+                'shortPluralLabel' => $data->getUnit()->getShortPluralLabel(),
             ];
         }
 
