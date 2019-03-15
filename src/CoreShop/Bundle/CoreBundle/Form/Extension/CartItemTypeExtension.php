@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
+use CoreShop\Bundle\OrderBundle\DTO\AddToCart;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
@@ -31,6 +32,10 @@ final class CartItemTypeExtension extends AbstractTypeExtension
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
 
             $data = $event->getData();
+
+            if (!$event->getForm()->getParent()->getData() instanceof AddToCart) {
+                return;
+            }
 
             if (!$data instanceof CartItemInterface) {
                 return;
