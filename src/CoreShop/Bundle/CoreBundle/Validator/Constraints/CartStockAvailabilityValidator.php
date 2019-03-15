@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartAvailabilityValidator extends ConstraintValidator
+final class CartStockAvailabilityValidator extends ConstraintValidator
 {
     /**
      * @var AvailabilityCheckerInterface
@@ -42,43 +42,50 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
      *
      * {@inheritdoc}
      */
-    public function validate($addCartItemCommand, Constraint $constraint): void
+    public function validate($cart, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addCartItemCommand, AddToCartInterface::class);
-        Assert::isInstanceOf($constraint, AddToCartAvailability::class);
-
         /**
-         * @var PurchasableInterface $purchasable
+         * @var CartInterface $cart
+         * @var CartStockAvailability $constraint
          */
-        $purchasable = $addCartItemCommand->getCartItem()->getProduct();
+        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($constraint, CartStockAvailability::class);
 
-        if (!$purchasable instanceof StockableInterface) {
-            return;
-        }
+        $isStockSufficient = true;
+        $productsChecked = [];
+        $insufficientProduct = null;
 
         /**
          * @var CartItemInterface $cartItem
-         * @var CartInterface $cart
          */
-        $cartItem = $addCartItemCommand->getCartItem();
-        $cart = $addCartItemCommand->getCart();
+        foreach ($cart->getItems() as $cartItem) {
+            $product = $cartItem->getProduct();
 
-        //Since the new new cart-item has not been processed yet, we have convert the units here manually
-        $quantity = $cartItem->getQuantity();
+            if (!$product instanceof StockableInterface) {
+                continue;
+            }
 
-        if ($cartItem->hasUnitDefinition()) {
-            $quantity *= $cartItem->getUnitDefinition()->getConversionRate();
+            if (in_array($product->getId(), $productsChecked, true)) {
+                continue;
+            }
+
+            $isStockSufficient = $this->availabilityChecker->isStockSufficient(
+                $product,
+                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            );
+
+            $productsChecked[] = $product->getId();
+
+            if (!$isStockSufficient) {
+                $insufficientProduct = $product;
+                break;
+            }
         }
 
-        $isStockSufficient = $this->availabilityChecker->isStockSufficient(
-            $purchasable,
-            $quantity + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
-        );
-
-        if (!$isStockSufficient) {
+        if (!$isStockSufficient && $insufficientProduct instanceof StockableInterface) {
             $this->context->addViolation(
                 $constraint->message,
-                ['%stockable%' => $purchasable->getInventoryName()]
+                ['%stockable%' => $insufficientProduct->getInventoryName()]
             );
         }
     }
@@ -92,8 +99,8 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if (!$product && $item->equals($cartItem)) {
-                return $item->getDefaultUnitQuantity();
+            if ($item->getId() === $cartItem->getId()) {
+                continue;
             }
 
             if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {

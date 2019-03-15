@@ -106,3 +106,7 @@ services:
            - '@coreshop.renderer.order.pdf'
            - '@coreshop.theme.helper'
            - '@coreshop.mail_processor'
+
+    coreshop.core.cart_item.quantity_modifier:
+        class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier
+        decorates: coreshop.cart_item.quantity_modifier

@@ -101,7 +101,8 @@ final class CartItemsProcessor implements CartProcessorInterface
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
 
             try {
-                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(), $itemPrice, $context);
+                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(),
+                    $itemPrice, $context);
             } catch (NoRuleFoundException $exception) {
             } catch (NoPriceFoundException $exception) {
             }

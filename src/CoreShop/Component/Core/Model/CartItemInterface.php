@@ -42,4 +42,14 @@ interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterfac
      * @return bool
      */
     public function hasUnitDefinition();
+
+    /**
+     * @return int
+     */
+    public function getDefaultUnitQuantity();
+
+    /**
+     * @param int $defaultUnitQuantity
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity);
 }

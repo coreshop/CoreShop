@@ -33,10 +33,13 @@ services:
             - '@coreshop.object_service'
             - '%coreshop.folder.cart%'
 
+    coreshop.cart_item.quantity_modifier:
+        class: CoreShop\Component\StorageList\StorageListItemQuantityModifier
+
     coreshop.cart.modifier:
         class: CoreShop\Component\Order\Cart\CartModifier
         arguments:
-            - '@coreshop.factory.cart_item'
+            - '@coreshop.cart_item.quantity_modifier'
             - '@event_dispatcher'
 
     coreshop.order.invoice.processable:

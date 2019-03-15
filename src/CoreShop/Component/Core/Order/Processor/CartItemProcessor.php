@@ -49,11 +49,20 @@ final class CartItemProcessor implements CartItemProcessorInterface
      */
     public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
+        /**
+         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+         */
         Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\CartItemInterface::class);
 
         $product = $cartItem->getProduct();
         $cart = $context['cart'];
         $store = $context['store'];
+
+        if ($cartItem->hasUnitDefinition()) {
+            $cartItem->setDefaultUnitQuantity($cartItem->getUnitDefinition()->getConversionRate() * $cartItem->getQuantity());
+        } else {
+            $cartItem->setDefaultUnitQuantity($cartItem->getQuantity());
+        }
 
         $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 

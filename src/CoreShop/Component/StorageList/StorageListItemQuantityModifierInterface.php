@@ -10,14 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\StorageList;
 
-use CoreShop\Component\Order\Model\OrderItem as BaseOrderItem;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
-class OrderItem extends BaseOrderItem implements OrderItemInterface
+interface StorageListItemQuantityModifierInterface
 {
-    use ProposalItemTrait;
-    use SaleItemTrait;
+    /**
+     * @param StorageListItemInterface $item
+     * @param int                      $targetQuantity
+     */
+    public function modify(StorageListItemInterface $item, int $targetQuantity);
 }

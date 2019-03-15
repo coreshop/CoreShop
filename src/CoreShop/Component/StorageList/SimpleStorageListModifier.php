@@ -18,6 +18,16 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 class SimpleStorageListModifier implements StorageListModifierInterface
 {
     /**
+     * @var StorageListItemQuantityModifierInterface
+     */
+    protected $storageListItemQuantityModifier;
+
+    public function __construct()
+    {
+        $this->storageListItemQuantityModifier = new StorageListItemQuantityModifier();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
@@ -41,7 +51,10 @@ class SimpleStorageListModifier implements StorageListModifierInterface
     {
         foreach ($storageList->getItems() as $item) {
             if ($storageListItem->equals($item)) {
-                $item->setQuantity($item->getQuantity() + $storageListItem->getQuantity());
+                $this->storageListItemQuantityModifier->modify(
+                    $item,
+                    $item->getQuantity() + $storageListItem->getQuantity()
+                );
 
                 return;
             }
