@@ -54,3 +54,10 @@ services:
             - '@coreshop.currency_converter'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: fixed }
+
+    coreshop.product_quantity_price_rules.calculator.unit_volume:
+        class: CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator
+        decorates: coreshop.product_quantity_price_rules.calculator.volume
+        arguments:
+            - '@coreshop.product_quantity_price_rules.calculator.unit_volume.inner'
+            - '@coreshop.registry.product_quantity_price_rules.actions'

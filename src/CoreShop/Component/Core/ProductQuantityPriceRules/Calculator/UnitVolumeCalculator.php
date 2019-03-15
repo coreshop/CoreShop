@@ -10,28 +10,38 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
+namespace CoreShop\Component\Core\ProductQuantityPriceRules\Calculator;
 
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
+use CoreShop\Component\Core\Model\QuantityRangeInterface as CoreQuantityRangeInterface;
 use Doctrine\Common\Collections\Collection;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface;
 
-class VolumeCalculator implements CalculatorInterface
+class UnitVolumeCalculator implements CalculatorInterface
 {
+    /**
+     * @var VolumeCalculator
+     */
+    protected $inner;
+
     /**
      * @var ServiceRegistryInterface
      */
     protected $actionRegistry;
 
     /**
+     * @param CalculatorInterface      $inner
      * @param ServiceRegistryInterface $actionRegistry
      */
-    public function __construct(ServiceRegistryInterface $actionRegistry)
+    public function __construct(CalculatorInterface $inner, ServiceRegistryInterface $actionRegistry)
     {
+        $this->inner = $inner;
         $this->actionRegistry = $actionRegistry;
     }
 
@@ -45,19 +55,19 @@ class VolumeCalculator implements CalculatorInterface
         int $originalPrice,
         array $context
     ) {
-        $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity);
-
-        if (!$locatedRange instanceof QuantityRangeInterface) {
-            throw new NoPriceFoundException(__CLASS__);
+        if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
+            return $this->inner->calculateForQuantity($quantityPriceRule, $subject, $quantity, $originalPrice, $context);
         }
 
-        $price = $this->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
+        $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity, $context['unitDefinition']);
+        $price = $this->inner->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
         if (!is_numeric($price) || $price === 0) {
             throw new NoPriceFoundException(__CLASS__);
         }
 
         return $price;
+
     }
 
     /**
@@ -69,53 +79,39 @@ class VolumeCalculator implements CalculatorInterface
         int $originalPrice,
         array $context
     ) {
-        $price = $this->calculateRangePrice($range, $subject, $originalPrice, $context);
-
-        if (!is_numeric($price) || $price === 0) {
-            throw new NoPriceFoundException(__CLASS__);
-        }
-
-        return $price;
+        return $this->inner->calculateForRange($range, $subject, $originalPrice, $context);
     }
 
     /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @return int
-     */
-    public function calculateRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $originalPrice, array $context)
-    {
-        $pricingBehaviour = $range->getPricingBehaviour();
-
-        /**
-         * @var ProductQuantityPriceRuleActionInterface $service
-         */
-        $service = $this->actionRegistry->get($pricingBehaviour);
-
-        return $service->calculate($range, $subject, $originalPrice, $context);
-    }
-
-    /**
-     * @param Collection $ranges
-     * @param int        $quantity
+     * @param Collection                     $ranges
+     * @param int                            $quantity
+     * @param ProductUnitDefinitionInterface $unitDefinition
      *
      * @return QuantityRangeInterface|null
      */
-    protected function locate(Collection $ranges, int $quantity)
+    protected function locate(Collection $ranges, int $quantity, ProductUnitDefinitionInterface $unitDefinition)
     {
         if ($ranges->isEmpty()) {
             return null;
         }
 
         $cheapestRangePrice = null;
-        /** @var QuantityRangeInterface $range */
+        /** @var CoreQuantityRangeInterface $range */
         foreach ($ranges as $range) {
+
+            // only allow ranges with defined unit definition
+            if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
+                continue;
+            }
+
+            if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
+                continue;
+            }
+
             if ($range->getRangeFrom() > $quantity) {
                 break;
             }
+
             $cheapestRangePrice = $range;
         }
 
