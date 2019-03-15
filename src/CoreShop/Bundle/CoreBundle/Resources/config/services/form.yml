@@ -73,3 +73,8 @@ services:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\CartItemTypeExtension
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType }
+
+    coreshop.form.extension.type.add_to_cart_type:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }

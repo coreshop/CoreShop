@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
-use CoreShop\Bundle\OrderBundle\DTO\AddToCart;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
@@ -21,6 +20,7 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartItemTypeExtension extends AbstractTypeExtension
 {
@@ -29,34 +29,39 @@ final class CartItemTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        if ($options['allow_units']) {
+            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                $data = $event->getData();
 
-            $data = $event->getData();
+                if (!$data instanceof CartItemInterface) {
+                    return;
+                }
 
-            if (!$event->getForm()->getParent()->getData() instanceof AddToCart) {
-                return;
-            }
+                /** @var ProductInterface $product */
+                $product = $data->getProduct();
+                if (!$product instanceof ProductInterface) {
+                    return;
+                }
 
-            if (!$data instanceof CartItemInterface) {
-                return;
-            }
+                if (!$product->hasUnitDefinitions()) {
+                    return;
+                }
 
-            /** @var ProductInterface $product */
-            $product = $data->getProduct();
-            if (!$product instanceof ProductInterface) {
-                return;
-            }
+                $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
+                    'product' => $product,
+                    'required' => false,
+                    'label' => null,
+                ]);
+            });
+        }
+    }
 
-            if (!$product->hasUnitDefinitions()) {
-                return;
-            }
-
-            $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
-                'product'  => $product,
-                'required' => false,
-                'label'    => null,
-            ]);
-        });
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('allow_units', false);
     }
 
     /**
