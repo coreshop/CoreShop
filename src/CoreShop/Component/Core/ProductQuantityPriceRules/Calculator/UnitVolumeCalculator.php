@@ -60,6 +60,11 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         $locatedRange = $this->locate($quantityPriceRule->getRanges(), $quantity, $context['unitDefinition']);
+
+        if (null === $locatedRange) {
+            throw new NoPriceFoundException(__CLASS__);
+        }
+
         $price = $this->inner->calculateRangePrice($locatedRange, $subject, $originalPrice, $context);
 
         if (!is_numeric($price) || $price === 0) {
