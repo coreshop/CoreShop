@@ -30,11 +30,11 @@ class AllTests extends SuiteBase
         $suite = new TestSuite('Models');
 
         $tests = [
-            /*'\\CoreShop\\Test\\PHPUnit\\Suites\\Carrier',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Carrier',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Cart',*/
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Cart',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\CartPriceRule',
-            /*'\\CoreShop\\Test\\PHPUnit\\Suites\\Category',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Category',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Country',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Currency',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\CustomerGroup',
@@ -53,7 +53,7 @@ class AllTests extends SuiteBase
             '\\CoreShop\\Test\\PHPUnit\\Suites\\ShippingRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\NotificationRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\StorageList',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',*/
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',
         ];
 
         shuffle($tests);
