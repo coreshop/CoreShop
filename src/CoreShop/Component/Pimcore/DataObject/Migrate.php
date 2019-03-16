@@ -207,15 +207,15 @@ final class Migrate
 
             $sql = "INSERT INTO $newSqlTable SELECT " . implode(',', $columns) . " FROM $oldSqlTable";
 
-            $db->query($sql);
+            $db->executeQuery($sql);
 
             if ($replaceClassNames) {
                 $sql = "UPDATE $newSqlTable SET oo_classId=?, oo_className=?";
 
-                $db->query($sql, [$newClassDefinition->getId(), $newClassDefinition->getName()]);
+                $db->executeQuery($sql, [$newClassDefinition->getId(), $newClassDefinition->getName()]);
             }
         }
 
-        $db->query('UPDATE objects SET o_classId=?, o_className=? WHERE o_classId=?', [$newClassDefinition->getId(), $newClassDefinition->getName(), $oldClassDefinition->getId()]);
+        $db->executeQuery('UPDATE objects SET o_classId=?, o_className=? WHERE o_classId=?', [$newClassDefinition->getId(), $newClassDefinition->getName(), $oldClassDefinition->getId()]);
     }
 }

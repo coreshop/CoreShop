@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -108,11 +109,11 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
             $data = $object->{$this->getName()};
         }
 
-        if (!method_exists($object, 'getO__loadedLazyFields')) {
+        /*if (!method_exists($object, 'getO__loadedLazyFields')) {
             return $data;
-        }
+        }*/
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -129,8 +130,8 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
+        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
+            LazyLoadedFields::addLazyKey($object, $this->getName());
         }
 
         return $data;

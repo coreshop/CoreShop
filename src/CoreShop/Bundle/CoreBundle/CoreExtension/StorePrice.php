@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
@@ -234,7 +235,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
         }
 
         if ($object instanceof Model\DataObject\Concrete) {
-            if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+            if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
                 $data = $this->load($object, ['force' => true]);
 
                 //TODO: Remove once CoreShop requires min Pimcore 5.5
@@ -581,13 +582,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
             return;
         }
 
-        if (method_exists($this, 'markLazyloadedFieldAsLoaded')) {
-            $this->markLazyloadedFieldAsLoaded($object);
-        } else {
-            if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-                $object->addO__loadedLazyField($this->getName());
-            }
-        }
+        LazyLoadedFields::addLazyKey($object, $this->getName());
     }
 
     /**
