@@ -97,9 +97,9 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)" and with calculation-behaviour "([^"]+)"$/
      */
-    public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
+    public function addingAProductQuantityPriceRuleToProduct(ProductInterface $product, $ruleName, $calculationBehaviourName)
     {
         /**
          * @var ProductQuantityPriceRuleInterface $rule
@@ -107,6 +107,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $rule = $this->productQuantityPriceRuleFactory->createNew();
         $rule->setName($ruleName);
         $rule->setProduct($product->getId());
+        $rule->setCalculationBehaviour($calculationBehaviourName);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
