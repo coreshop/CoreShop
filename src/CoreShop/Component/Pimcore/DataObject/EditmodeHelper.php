@@ -17,32 +17,29 @@ use Pimcore\Model\DataObject;
 
 class EditmodeHelper
 {
-    private $objectData = [];
-    private $metaData = [];
-
     public function getDataForObject(DataObject\Concrete $object, $objectFromVersion = false)
-    {
-        $this->objectData = [];
-
-        foreach ($object->getClass()->getFieldDefinitions(['object' => $object]) as $key => $def) {
-            $this->getDataForEditmode($object, $key, $def, $objectFromVersion);
-        }
-
-        return [
-            'objectData' => $this->objectData,
-            'metaData' => $this->metaData,
-        ];
-    }
-
-    private function getDataForEditmode($object, $key, $fielddefinition, $objectFromVersion, $level = 0)
     {
         $dataObjectController = new DataObjectController();
         $trackerReflector = new \ReflectionClass(DataObjectController::class);
-        $method = $trackerReflector->getMethod('getDataForField');
+        $method = $trackerReflector->getMethod('getDataForObject');
         $method->setAccessible(true);
-
-        $method->getClosure($dataObjectController)($object, $key, $fielddefinition, $objectFromVersion, $level);
-
+        $method->invoke($dataObjectController, $object, $objectFromVersion);
         $method->setAccessible(false);
+
+        $objectData = $trackerReflector->getProperty('objectData');
+        $metaData = $trackerReflector->getProperty('metaData');
+
+        $objectData->setAccessible(true);
+        $finalObjectData = $objectData->getValue($dataObjectController);
+        $objectData->setAccessible(false);
+
+        $metaData->setAccessible(true);
+        $finalMetaData = $metaData->getValue($dataObjectController);
+        $metaData->setAccessible(false);
+
+        return [
+            'objectData' => $finalObjectData,
+            'metaData' => $finalMetaData,
+        ];
     }
 }
