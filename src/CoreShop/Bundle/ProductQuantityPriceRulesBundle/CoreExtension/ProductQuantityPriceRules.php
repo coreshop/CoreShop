@@ -18,6 +18,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
 use JMS\Serializer\SerializationContext;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
@@ -109,7 +110,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        if (!$object instanceof Concrete) {
+        if (!$object instanceof AbstractModel) {
             return null;
         }
 
@@ -200,7 +201,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $prices = [];
         $errors = [];
 
-        if ($data && $object instanceof Concrete) {
+        if ($data && $object instanceof AbstractModel) {
             foreach ($data as $rule) {
                 $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
@@ -251,7 +252,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            if (!$object instanceof Concrete) {
+            if (!$object instanceof AbstractModel) {
                 return;
             }
 
@@ -353,7 +354,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     protected function markAsLoaded($object)
     {
-        if (!$object instanceof Concrete) {
+        if (!$object instanceof AbstractModel) {
             return;
         }
 

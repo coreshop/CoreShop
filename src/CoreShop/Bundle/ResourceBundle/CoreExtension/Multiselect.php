@@ -24,8 +24,8 @@ abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multise
      */
     public function preGetData($object, $params = [])
     {
-        if (!$object instanceof Model\DataObject\Concrete) {
-            return [];
+        if (!$object instanceof Model\AbstractModel) {
+            return null;
         }
 
         $data = $object->getObjectVar($this->getName());

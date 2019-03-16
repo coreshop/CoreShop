@@ -68,8 +68,8 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function preGetData($object, $params = [])
     {
-        if (!$object instanceof Model\DataObject\Concrete) {
-            return [];
+        if (!$object instanceof Model\AbstractModel) {
+            return null;
         }
 
         $data = $object->getObjectVar($this->getName());
