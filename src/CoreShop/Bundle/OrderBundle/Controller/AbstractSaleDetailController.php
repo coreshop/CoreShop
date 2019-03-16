@@ -49,8 +49,10 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $list->setOffset($request->get('page', 1) - 1);
 
         if ($request->get('filter', null)) {
+            $gridHelper = new GridHelperService();
+
             $conditionFilters = [];
-            $conditionFilters[] = GridHelperService::getFilterCondition($request->get('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
