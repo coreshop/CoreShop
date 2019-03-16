@@ -17,7 +17,6 @@ use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 use JMS\Serializer\SerializationContext;
-use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
@@ -101,7 +100,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        if (!$object instanceof AbstractModel) {
+        if (!$object instanceof Concrete) {
             return null;
         }
 
