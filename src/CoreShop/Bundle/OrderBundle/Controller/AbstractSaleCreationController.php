@@ -93,33 +93,7 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
             if ($product instanceof PurchasableInterface) {
                 $result[] = InheritanceHelper::useInheritedValues(function () use ($product, $productObject, $currentCurrency, $currency, $context) {
-                    $productFlat = $this->getDataForObject($product);
-
-                    $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
-
-                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, $context, true);
-                    $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
-
-                    $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
-                    $priceConvertedFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
-
-                    $productFlat['price'] = $price;
-                    $productFlat['priceFormatted'] = $priceFormatted;
-                    $productFlat['priceConverted'] = $priceConverted;
-                    $productFlat['priceConvertedFormatted'] = $priceConvertedFormatted;
-
-                    $total = $price * $productObject['quantity'];
-                    $totalFormatted = $this->get('coreshop.money_formatter')->format($total, $currentCurrency);
-
-                    $totalConverted = $this->get('coreshop.currency_converter')->convert($total, $currentCurrency, $currency->getIsoCode());
-                    $totalConvertedFormatted = $this->get('coreshop.money_formatter')->format($totalConverted, $currency->getIsoCode());
-
-                    $productFlat['total'] = $total;
-                    $productFlat['totalFormatted'] = $totalFormatted;
-                    $productFlat['totalConverted'] = $totalConverted;
-                    $productFlat['totalConvertedFormatted'] = $totalConvertedFormatted;
-
-                    return $productFlat;
+                    return $this->prepareProduct($product, $productObject, $currentCurrency, $currency, $context);
                 });
             }
         }
@@ -272,6 +246,37 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         return $this->viewHandler->handle($saleResponse);
     }
 
+    protected function prepareProduct(PurchasableInterface $product, $productObject, $currentCurrency, $currency, $context)
+    {
+        $productFlat = $this->getDataForObject($product);
+
+        $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
+
+        $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, $context, true);
+        $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
+
+        $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
+        $priceConvertedFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
+
+        $productFlat['price'] = $price;
+        $productFlat['priceFormatted'] = $priceFormatted;
+        $productFlat['priceConverted'] = $priceConverted;
+        $productFlat['priceConvertedFormatted'] = $priceConvertedFormatted;
+
+        $total = $price * $productObject['quantity'];
+        $totalFormatted = $this->get('coreshop.money_formatter')->format($total, $currentCurrency);
+
+        $totalConverted = $this->get('coreshop.currency_converter')->convert($total, $currentCurrency, $currency->getIsoCode());
+        $totalConvertedFormatted = $this->get('coreshop.money_formatter')->format($totalConverted, $currency->getIsoCode());
+
+        $productFlat['total'] = $total;
+        $productFlat['totalFormatted'] = $totalFormatted;
+        $productFlat['totalConverted'] = $totalConverted;
+        $productFlat['totalConvertedFormatted'] = $totalConvertedFormatted;
+
+        return $productFlat;
+    }
+
     protected function prepareCart(Request $request, CartInterface $cart)
     {
         return $cart;
@@ -349,13 +354,18 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
             if ($product instanceof PurchasableInterface) {
-                $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $productObject['quantity']);
+                $cartItem = $this->createCartItem($product, $productObject['quantity']);
 
                 $this->get('coreshop.cart.modifier')->addToList($cart, $cartItem);
             }
         }
 
         return $cart;
+    }
+
+    protected function createCartItem(PurchasableInterface $product, array $productObject)
+    {
+        return $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $productObject['quantity']);
     }
 
     /**

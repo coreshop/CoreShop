@@ -16,8 +16,10 @@ use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,6 +31,34 @@ trait CoreSaleCreationTrait
      * @var ViewHandlerInterface
      */
     protected $viewHandler;
+
+    protected function prepareProduct(PurchasableInterface $product, $productObject, $currentCurrency, $currency, $context)
+    {
+        $productFlat =  parent::prepareProduct($product, $productObject, $currentCurrency, $currency, $context);
+
+        $units = [];
+
+        if ($product instanceof ProductInterface) {
+            if ($product->hasUnitDefinitions()) {
+                foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
+                    $units[] = [
+                        'id' => $unitDefinition->getId(),
+                        'name' => $unitDefinition->getUnitName()
+                    ];
+                }
+            }
+        }
+
+        $productFlat['units'] = $units;
+
+        return $productFlat;
+    }
+
+
+    protected function createCartItem(PurchasableInterface $product, array $productObject)
+    {
+        return parent::createCartItem($product, $productObject);
+    }
 
     public function getCarrierDetailsAction(Request $request)
     {
