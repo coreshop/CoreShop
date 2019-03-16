@@ -13,8 +13,6 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
-use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
-use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -23,7 +21,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
-class ProductSpecificPriceRules extends Data implements CustomResourcePersistingInterface
+class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -102,18 +100,13 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Concrete) {
+            return null;
         }
 
-        /*if (!method_exists($object, 'getO__loadedLazyFields')) {
-            return $data;
-        }*/
+        $data = $object->getObjectVar($this->getName());
 
-        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
+        if (!$object->hasLazyKey($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -126,12 +119,15 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
     }
 
     /**
-     * {@inheritdoc}
+     * @param Concrete $object
+     * @param       $data
+     * @param array $params
+     * @return mixed
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
-            LazyLoadedFields::addLazyKey($object, $this->getName());
+        if (!$object->hasLazyKey($this->getName())) {
+            $object->addLazyKey($this->getName());
         }
 
         return $data;
@@ -223,12 +219,7 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            //TODO: Remove once CoreShop requires min Pimcore 5.5
-            if (method_exists($object, 'getObjectVar')) {
-                $existingPriceRules = $object->getObjectVar($this->getName());
-            } else {
-                $existingPriceRules = $object->{$this->getName()};
-            }
+            $existingPriceRules = $object->getObjectVar($this->getName());
 
             $all = $this->load($object, ['force' => true]);
             $founds = [];

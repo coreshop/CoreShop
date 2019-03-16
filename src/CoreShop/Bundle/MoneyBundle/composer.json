@@ -20,7 +20,7 @@
   "require": {
     "coreshop/currency": "^2.0",
     "coreshop/pimcore-bundle": "^2.0",
-    "pimcore/pimcore": "^5.4.0"
+    '"pimcore/pimcore": "^5.7.0"
   },
   "config": {
     "bin-dir": "bin"

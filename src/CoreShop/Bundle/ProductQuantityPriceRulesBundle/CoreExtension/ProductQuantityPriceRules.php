@@ -13,8 +13,6 @@
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
-use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
-use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -24,7 +22,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
-class ProductQuantityPriceRules extends Data implements CustomResourcePersistingInterface
+class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -111,18 +109,13 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
     {
         Assert::isInstanceOf($object, ProductInterface::class);
 
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Concrete) {
+            return;
         }
 
-        if (!method_exists($object, 'getO__loadedLazyFields')) {
-            return $data;
-        }
+        $data = $object->getObjectVar($this->getName());
 
-        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
+        if (!$object->hasLazyKey($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -258,13 +251,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
-            //TODO: Remove once CoreShop requires min Pimcore 5.5
-            if (method_exists($object, 'getObjectVar')) {
-                $existingQuantityPriceRules = $object->getObjectVar($this->getName());
-            } else {
-                $existingQuantityPriceRules = $object->{$this->getName()};
-            }
-
+            $existingQuantityPriceRules = $object->getObjectVar($this->getName());
             $all = $this->load($object, ['force' => true]);
             $founds = [];
 
@@ -366,7 +353,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
             return;
         }
 
-        LazyLoadedFields::addLazyKey($object, $this->getName());
+        $object->addLazyKey($this->getName());
     }
 
     /**
