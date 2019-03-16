@@ -200,16 +200,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-
-            //TODO: Remove once CoreShop requires min Pimcore 5.5
-            if (method_exists($object, 'setObjectVar')) {
-                $object->setObjectVar($this->getName(), $data);
-            } else {
-                $setter = 'set' . ucfirst($this->getName());
-                if (method_exists($object, $setter)) {
-                    $object->$setter($data);
-                }
-            }
+            $object->setObjectVar($this->getName(), $data);
         }
 
         return $data;
