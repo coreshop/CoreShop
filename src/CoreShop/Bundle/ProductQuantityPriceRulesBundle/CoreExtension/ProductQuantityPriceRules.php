@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -121,7 +122,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
             return $data;
         }
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -138,9 +139,7 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
-        }
+        $this->markAsLoaded($object);
 
         return $data;
     }
@@ -356,6 +355,18 @@ class ProductQuantityPriceRules extends Data implements CustomResourcePersisting
         }
 
         return $array;
+    }
+
+    /**
+     * @param Concrete $object
+     */
+    protected function markAsLoaded($object)
+    {
+        if (!$object instanceof Concrete) {
+            return;
+        }
+
+        LazyLoadedFields::addLazyKey($object, $this->getName());
     }
 
     /**

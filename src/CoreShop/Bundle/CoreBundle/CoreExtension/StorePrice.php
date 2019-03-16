@@ -252,9 +252,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
-        }
+        $this->markAsLoaded($object);
 
         return $data;
     }
@@ -578,7 +576,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     }
 
     /**
->>>>>>> 2.0
      * @param mixed $value
      *
      * @return float|int
