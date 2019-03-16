@@ -16,6 +16,7 @@ use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
@@ -222,12 +223,24 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
             $data = $object->{$this->getName()};
         }
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $data = $this->load($object, ['force' => true]);
 
-            $setter = 'set' . ucfirst($this->getName());
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+        if ($object instanceof Model\DataObject\Concrete) {
+            if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
+                $data = $this->load($object, ['force' => true]);
+
+                //TODO: Remove once CoreShop requires min Pimcore 5.5
+                if (method_exists($object, 'setObjectVar')) {
+                    $object->setObjectVar($this->getName(), $data);
+                } else {
+                    $object->{$this->getName()} = $data;
+                }
+
+                $this->markAsLoaded($object);
+
+                $setter = 'set'.ucfirst($this->getName());
+                if (method_exists($object, $setter)) {
+                    $object->$setter($data);
+                }
             }
         }
 
@@ -523,6 +536,49 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     }
 
     /**
+<<<<<<< HEAD
+=======
+     * {@inheritdoc}
+     */
+    public function getLazyLoading()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDirtyDetection()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual($oldValue, $newValue)
+    {
+        if (!is_array($oldValue) || !is_array($newValue)) {
+            return false;
+        }
+
+        return $oldValue === $newValue;
+    }
+
+    /**
+     * @param Model\DataObject\Concrete $object
+     */
+    protected function markAsLoaded($object)
+    {
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+
+        LazyLoadedFields::addLazyKey($object, $this->getName());
+    }
+
+    /**
+>>>>>>> 2.0
      * @param mixed $value
      *
      * @return float|int

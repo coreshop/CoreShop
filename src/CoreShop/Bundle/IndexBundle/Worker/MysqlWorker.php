@@ -295,12 +295,12 @@ QUERY;
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->query('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
+                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
             }
 
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
         } catch (\Exception $e) {
             $this->logger->error($e);
         }
@@ -377,7 +377,7 @@ QUERY;
         $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
             . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
-        $this->database->query($insert, array_merge($updateData, $insertData));
+        $this->database->executeQuery($insert, array_merge($updateData, $insertData));
     }
 
     /**
@@ -417,7 +417,7 @@ QUERY;
             $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
                 . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
-            $this->database->query($insert, array_merge($updateData, $insertData));
+            $this->database->executeQuery($insert, array_merge($updateData, $insertData));
         }
     }
 
