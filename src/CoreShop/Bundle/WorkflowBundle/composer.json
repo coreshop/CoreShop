@@ -29,7 +29,7 @@
     "symfony/config": "^3.3",
     "symfony/workflow": "~3.3|~4.0",
     "symfony/yaml": "^3.3",
-    '"pimcore/pimcore": "^5.7.0"
+    "pimcore/pimcore": "^5.7.0"
   },
   "config": {
     "bin-dir": "bin"

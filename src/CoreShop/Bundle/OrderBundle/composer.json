@@ -27,7 +27,7 @@
     "coreshop/store-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
-    '"pimcore/pimcore": "^5.7.0"
+    "pimcore/pimcore": "^5.7.0"
   },
   "config": {
     "bin-dir": "bin"

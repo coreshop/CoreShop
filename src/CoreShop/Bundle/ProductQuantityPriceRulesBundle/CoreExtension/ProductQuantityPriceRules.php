@@ -110,7 +110,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         Assert::isInstanceOf($object, ProductInterface::class);
 
         if (!$object instanceof Concrete) {
-            return;
+            return null;
         }
 
         $data = $object->getObjectVar($this->getName());
@@ -251,6 +251,10 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     public function save($object, $params = [])
     {
         if ($object instanceof ProductInterface) {
+            if (!$object instanceof Concrete) {
+                return;
+            }
+
             $existingQuantityPriceRules = $object->getObjectVar($this->getName());
             $all = $this->load($object, ['force' => true]);
             $founds = [];
