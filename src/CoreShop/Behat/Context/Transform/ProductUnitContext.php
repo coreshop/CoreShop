@@ -47,7 +47,11 @@ final class ProductUnitContext implements Context
      */
     public function getUnitByName($name)
     {
-        return $this->unitRepository->findByName($name);
+        $unit = $this->unitRepository->findByName($name);
+
+        Assert::notNull($unit, sprintf('No unit with name %s found', $name));
+
+        return $unit;
     }
 
     /**

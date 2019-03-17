@@ -86,7 +86,7 @@ class CartModifier implements StorageListModifierInterface
             if ($storageListItem->equals($item)) {
                 $this->cartItemQuantityModifier->modify(
                     $item,
-                    $item->getQuantity() + $item->getQuantity()
+                    $item->getQuantity() + $storageListItem->getQuantity()
                 );
 
                 return;

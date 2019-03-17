@@ -17,7 +17,6 @@ use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
-use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
@@ -206,13 +205,13 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function save($object, $params = [])
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
         if (!$object instanceof ProductInterface) {
             return;
         }
 
+        /**
+         * @var Model\DataObject\Concrete $object
+         */
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {

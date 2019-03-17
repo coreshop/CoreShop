@@ -16,12 +16,14 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Webmozart\Assert\Assert;
@@ -83,6 +85,25 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         $cartItem = $this->factory->createWithPurchasable($product);
+
+        $this->cartModifier->addToList($cart, $cartItem);
+
+        $this->cartManager->persistCart($cart);
+    }
+
+    /**
+     * @Given /^I add the (product "[^"]+" with unit "[^"]+") to my cart$/
+     * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
+     */
+    public function addProductInUnitToCart(array $productAndUnit)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->factory->createWithPurchasable($productAndUnit['product']);
+        $cartItem->setUnitDefinition($productAndUnit['unit']);
 
         $this->cartModifier->addToList($cart, $cartItem);
 

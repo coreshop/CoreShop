@@ -56,7 +56,6 @@ final class ProductUnitContext implements Context
 
         Assert::notNull(
             $unit,
-            1,
             sprintf('No unit has been found with name "%s".', $name)
         );
     }
