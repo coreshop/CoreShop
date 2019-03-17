@@ -16,6 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
@@ -148,5 +149,57 @@ final class ProductContext implements Context
     public function theProductShouldHaveTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
     {
         Assert::eq($product->getTaxRule()->getId(), $taxRuleGroup->getId());
+    }
+
+    /**
+     * @Then /^the (products) default unit should be (unit "[^"]+")$/
+     * @Then /^the (products "[^"]+") default unit should be (unit "[^"]+")$/
+     */
+    public function theProductsDefaultUnitShouldBe(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinitions = $product->getUnitDefinitions();
+
+        Assert::notNull($unitDefinitions, 'Expected the products UnitDefinitions not to be null');
+
+        $defaultUnitDefinition = $unitDefinitions->getDefaultUnitDefinition();
+
+        Assert::eq(
+            $defaultUnitDefinition->getUnit(),
+            $unit,
+            sprintf(
+                'Expected the products default unit to be %s, but got %s',
+                $unit->getName(),
+                $defaultUnitDefinition->getUnitName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Then /^the (product "[^"]+") should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     */
+    public function theProductsShouldHaveAnAdditionalUnitWithConversionRate(ProductInterface $product, ProductUnitInterface $unit, $conversionRate)
+    {
+        $unitDefinitions = $product->getUnitDefinitions();
+
+        Assert::notNull($unitDefinitions, 'Expected the products UnitDefinitions not to be null');
+
+        $additionalUnitDefinitions = $unitDefinitions->getAdditionalUnitDefinitions();
+        $found = false;
+
+        foreach ($additionalUnitDefinitions as $unitDefinition) {
+            if ($unitDefinition->getUnit() === $unit && (float)$conversionRate === $unitDefinition->getConversionRate()) {
+                $found = true;
+            }
+        }
+
+        Assert::true(
+            $found,
+            sprintf(
+                'Expected the product to have an additional unit %s with conversion-rate %s',
+                $unit->getName(),
+                $conversionRate
+            )
+        );
     }
 }

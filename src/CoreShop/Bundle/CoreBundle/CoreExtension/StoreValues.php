@@ -269,7 +269,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     public function save($object, $params = [])
     {
         /**
-         * @var $object Model\DataObject\Concrete
+         * @var Model\DataObject\Concrete $object
          */
         if (!$object instanceof ProductInterface) {
             return;

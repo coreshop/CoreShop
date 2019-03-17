@@ -235,3 +235,11 @@ services:
             - '@__symfony__.coreshop.product_quantity_price_rules.processor'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.product_unit:
+        class: CoreShop\Behat\Context\Domain\ProductUnitContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.product_unit'
+        tags:
+            - { name: fob.context_service }

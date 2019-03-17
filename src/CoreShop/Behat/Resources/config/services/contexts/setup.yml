@@ -4,7 +4,8 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@__symfony__.coreshop.factory.product'
-            - '@__symfony__.coreshop.repository.product'
+            - '@__symfony__.coreshop.factory.product_unit_definitions'
+            - '@__symfony__.coreshop.factory.product_unit_definition'
         tags:
             - { name: fob.context_service }
 
@@ -301,5 +302,14 @@ services:
             - '@__symfony__.form.factory'
             - '@__symfony__.coreshop.form_registry.product_quantity_price_rules.conditions'
             - '@__symfony__.coreshop.factory.product_quantity_price_rule'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.product_unit:
+        class: CoreShop\Behat\Context\Setup\ProductUnitContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.doctrine.orm.entity_manager'
+            - '@__symfony__.coreshop.factory.product_unit'
         tags:
             - { name: fob.context_service }

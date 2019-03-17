@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
 use Doctrine\ORM\ORMException;
 use JMS\Serializer\SerializationContext;
@@ -157,7 +158,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function preGetData($object, $params = [])
     {
         /**
-         * @var $object Model\DataObject\Concrete
+         * @var Model\DataObject\Concrete $object
          */
         $data = $object->getObjectVar($this->getName());
 
@@ -205,23 +206,21 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function save($object, $params = [])
     {
+        /**
+         * @var Model\DataObject\Concrete $object
+         */
         if (!$object instanceof ProductInterface) {
             return;
         }
 
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $productUnitDefinitions = $object->getObjectVar($this->getName());
-        } else {
-            $productUnitDefinitions = $object->{$this->getName()};
-        }
+        $productUnitDefinitions = $object->getObjectVar($this->getName());
 
-        if (is_null($productUnitDefinitions)) {
-            return;
-        }
+        if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
+            $productUnitDefinitions->setProduct($object);
 
-        $this->getEntityManager()->persist($productUnitDefinitions);
-        $this->getEntityManager()->flush();
+            $this->getEntityManager()->persist($productUnitDefinitions);
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**
