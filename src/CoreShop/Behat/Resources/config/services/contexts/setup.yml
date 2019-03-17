@@ -6,6 +6,7 @@ services:
             - '@__symfony__.coreshop.factory.product'
             - '@__symfony__.coreshop.factory.product_unit_definitions'
             - '@__symfony__.coreshop.factory.product_unit_definition'
+            - '@__symfony__.coreshop.factory.product_unit_definition_price'
         tags:
             - { name: fob.context_service }
 

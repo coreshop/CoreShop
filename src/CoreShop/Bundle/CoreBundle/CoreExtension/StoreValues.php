@@ -272,9 +272,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             return;
         }
 
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+        
         $productStoreValues = $object->getObjectVar($this->getName());
 
         if (!is_array($productStoreValues)) {

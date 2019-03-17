@@ -209,9 +209,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return;
         }
 
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {

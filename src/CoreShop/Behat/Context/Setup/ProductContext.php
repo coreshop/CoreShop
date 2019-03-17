@@ -16,6 +16,8 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -52,21 +54,29 @@ final class ProductContext implements Context
     private $productUnitDefinition;
 
     /**
+     * @var FactoryInterface
+     */
+    private $productUnitDefinitionPriceFactory;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface       $productFactory
      * @param FactoryInterface       $productUnitDefinitions
      * @param FactoryInterface       $productUnitDefinition
+     * @param FactoryInterface       $productUnitDefinitionPriceFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
-        FactoryInterface       $productUnitDefinitions,
-        FactoryInterface       $productUnitDefinition
+        FactoryInterface $productUnitDefinitions,
+        FactoryInterface $productUnitDefinition,
+        FactoryInterface $productUnitDefinitionPriceFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productUnitDefinitions = $productUnitDefinitions;
         $this->productUnitDefinition = $productUnitDefinition;
+        $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
     }
 
     /**
@@ -295,9 +305,15 @@ final class ProductContext implements Context
     /**
      * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
      * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
      */
-    public function theProductHasAnAdditionalUnit(ProductInterface $product, ProductUnitInterface $unit, $conversionRate)
-    {
+    public function theProductHasAnAdditionalUnit(
+        ProductInterface $product,
+        ProductUnitInterface $unit,
+        $conversionRate,
+        int $price = null
+    ) {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
         /**
@@ -310,6 +326,25 @@ final class ProductContext implements Context
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
 
         $product->setUnitDefinitions($definitions);
+
+        if (null !== $price) {
+            $store = $this->sharedStorage->get('store');
+
+            /**
+             * @var ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
+             */
+            $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
+            $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
+            $productUnitDefinitionPrice->setPrice((int)$price);
+
+            /**
+             * @var ProductStoreValuesInterface $storeValues
+             */
+            $storeValues = $product->getStoreValues($store);
+            $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
+
+            $product->setStoreValues($storeValues, $store);
+        }
 
         $this->saveProduct($product);
     }
