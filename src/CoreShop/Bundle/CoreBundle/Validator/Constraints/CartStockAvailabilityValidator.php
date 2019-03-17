@@ -38,8 +38,6 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
     }
 
     /**
-     * @param AddToCartInterface $addCartItemCommand
-     *
      * {@inheritdoc}
      */
     public function validate($cart, Constraint $constraint): void

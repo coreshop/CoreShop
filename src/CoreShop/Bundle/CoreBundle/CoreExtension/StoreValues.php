@@ -219,14 +219,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var Model\DataObject\Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        if (!$object->hasLazyKey($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -243,8 +241,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
+        /**
+         * @var Model\DataObject\Concrete $object
+         */
+        if (!$object->hasLazyKey($this->getName())) {
+            $object->addLazyKey($this->getName());
         }
 
         return $data;
@@ -267,16 +268,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function save($object, $params = [])
     {
+        /**
+         * @var $object Model\DataObject\Concrete
+         */
         if (!$object instanceof ProductInterface) {
             return;
         }
 
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $productStoreValues = $object->getObjectVar($this->getName());
-        } else {
-            $productStoreValues = $object->{$this->getName()};
-        }
+        $productStoreValues = $object->getObjectVar($this->getName());
 
         if (!is_array($productStoreValues)) {
             return;

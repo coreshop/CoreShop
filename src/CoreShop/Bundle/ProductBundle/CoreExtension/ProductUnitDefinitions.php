@@ -156,14 +156,12 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var $object Model\DataObject\Concrete
+         */
+        $data = $object->getObjectVar($this->getName());
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        if (!$object->hasLazyKey($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -180,8 +178,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
+        /**
+         * @var Model\DataObject\Concrete $object
+         */
+        if (!$object->hasLazyKey($this->getName())) {
+            $object->addLazyKey($this->getName());
         }
 
         return $data;
