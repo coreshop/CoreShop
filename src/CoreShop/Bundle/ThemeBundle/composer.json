@@ -20,7 +20,7 @@
   "require": {
     "coreshop/registry": "^2.0",
     "liip/theme-bundle": "^1.4",
-    "pimcore/pimcore": "^5.4.0"
+    "pimcore/pimcore": "^5.7.0"
   },
   "config": {
     "bin-dir": "bin"

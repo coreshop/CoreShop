@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Bundle\AdminBundle\Security\User\User as UserProxy;
@@ -22,7 +21,7 @@ use Pimcore\Model\Element;
 use Pimcore\Model\User;
 use Pimcore\Tool;
 
-final class EmbeddedClass extends Multihref
+final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRelation
 {
     /**
      * Static type of this element
@@ -197,25 +196,11 @@ final class EmbeddedClass extends Multihref
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        $data = $object->getObjectVar($this->getName());
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-
-            //TODO: Remove once CoreShop requires min Pimcore 5.5
-            if (method_exists($object, 'setObjectVar')) {
-                $object->setObjectVar($this->getName(), $data);
-            } else {
-                $setter = 'set' . ucfirst($this->getName());
-                if (method_exists($object, $setter)) {
-                    $object->$setter($data);
-                }
-            }
+            $object->setObjectVar($this->getName(), $data);
         }
 
         return $data;

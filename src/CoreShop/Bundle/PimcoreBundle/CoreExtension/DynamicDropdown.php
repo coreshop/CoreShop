@@ -12,12 +12,11 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\Href;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Model\Element;
 
-class DynamicDropdown extends Href
+class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
 {
     /**
      * Static type of this element.

@@ -13,10 +13,10 @@
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model\DataObject\AbstractObject;
-use CoreShop\Component\Pimcore\BCLayer\Multihref;
+use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyRelation;
 use Pimcore\Model\DataObject\Service;
 
-class SuperBoxSelect extends Multihref
+class SuperBoxSelect extends ManyToManyRelation
 {
     /**
      * Static type of this element.

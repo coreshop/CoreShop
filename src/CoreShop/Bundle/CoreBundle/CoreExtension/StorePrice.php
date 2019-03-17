@@ -15,12 +15,10 @@ namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
-use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
-class StorePrice extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
+class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -216,35 +214,26 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return null;
         }
 
+        $data = $object->getObjectVar($this->getName());
 
-        if ($object instanceof Model\DataObject\Concrete) {
-            if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
-                $data = $this->load($object, ['force' => true]);
+        if (!$object->hasLazyKey($this->getName())) {
+            $data = $this->load($object, ['force' => true]);
 
-                //TODO: Remove once CoreShop requires min Pimcore 5.5
-                if (method_exists($object, 'setObjectVar')) {
-                    $object->setObjectVar($this->getName(), $data);
-                } else {
-                    $object->{$this->getName()} = $data;
-                }
+            $object->setObjectVar($this->getName(), $data);
 
-                $this->markAsLoaded($object);
+            $this->markAsLoaded($object);
 
-                $setter = 'set'.ucfirst($this->getName());
-                if (method_exists($object, $setter)) {
-                    $object->$setter($data);
-                }
+            $setter = 'set'.ucfirst($this->getName());
+            if (method_exists($object, $setter)) {
+                $object->$setter($data);
             }
         }
 
-        return $data;
+    return $data;
     }
 
     /**
@@ -572,7 +561,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
             return;
         }
 
-        LazyLoadedFields::addLazyKey($object, $this->getName());
+        $object->addLazyKey($this->getName());
     }
 
     /**
