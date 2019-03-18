@@ -6,6 +6,22 @@
      - `CoreShop\Bundle\OrderBundle\Workflow\OrderHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface` instead
      - `CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface` instead
      - `CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface` instead
+ - Bugs
+   - [PimcoreBundle] Make embedded classes work for Pimcore 5.6 (https://github.com/coreshop/CoreShop/pull/867)
+   - [All] Make CoreShop 2.0.x compatible with Pimcore 5.7 (https://github.com/coreshop/CoreShop/pull/869)
+   - [All] fix PHP5 sort issues by removing them (https://github.com/coreshop/CoreShop/issues/840)
+   - [Shipping] if cart has no shippables, don't force carriage calculation (https://github.com/coreshop/CoreShop/pull/863)
+   - [Checkout] validate cart before submitting the order (https://github.com/coreshop/CoreShop/pull/858)
+   - [Frontend] remove unused property in templates (https://github.com/coreshop/CoreShop/pull/859)
+   - [Permissions] prefix permission labels (https://github.com/coreshop/CoreShop/pull/855)
+   - [Order] refactor creation of invoices/shipments (https://github.com/coreshop/CoreShop/pull/852 + https://github.com/coreshop/CoreShop/pull/849)
+   - [Order] introduce options for order-document-items (https://github.com/coreshop/CoreShop/pull/848)
+   - [Autoloading] fix paths (https://github.com/coreshop/CoreShop/pull/846)
+   - [ResourceBundle] Introduce more basic resource-types (https://github.com/coreshop/CoreShop/pull/838 + https://github.com/coreshop/CoreShop/pull/845)
+   - [AddressBundle] add missing translations (https://github.com/coreshop/CoreShop/pull/836)
+   
+- Features
+   - [Index] Introduce advanced sorting for indexes (https://github.com/coreshop/CoreShop/pull/856) 
 
 ## 2.0.4
  - Features:
