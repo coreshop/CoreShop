@@ -14,11 +14,9 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
-use Webmozart\Assert\Assert;
 
 class Cart extends AbstractProposal implements CartInterface
 {

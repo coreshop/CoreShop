@@ -64,7 +64,6 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         try {
             return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
         } catch (NoPurchasablePriceFoundException $ex) {
-
         }
 
         return 0;
@@ -86,7 +85,6 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         try {
             return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
         } catch (NoPurchasableRetailPriceFoundException $ex) {
-
         }
 
         return 0;
@@ -100,7 +98,6 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
         try {
             return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
         } catch (NoPurchasableRetailPriceFoundException $ex) {
-
         }
 
         return 0;

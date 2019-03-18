@@ -149,7 +149,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour("percentage_decrease");
+        $range->setPricingBehaviour('percentage_decrease');
         $range->setPercentage($percentage);
         $range->setRangeFrom($from);
         $range->setRangeTo($to);
@@ -167,7 +167,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour("percentage_increase");
+        $range->setPricingBehaviour('percentage_increase');
         $range->setPercentage($percentage);
         $range->setRangeFrom($from);
         $range->setRangeTo($to);
@@ -190,7 +190,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour("amount_decrease");
+        $range->setPricingBehaviour('amount_decrease');
         $range->setAmount($amount);
         $range->setRangeFrom($from);
         $range->setRangeTo($to);
@@ -214,7 +214,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour("amount_increase");
+        $range->setPricingBehaviour('amount_increase');
         $range->setAmount($amount);
         $range->setRangeFrom($from);
         $range->setRangeTo($to);
@@ -233,7 +233,7 @@ final class ProductQuantityPriceRuleContext implements Context
          * @var QuantityRangeInterface $range
          */
         $range = $this->rangeFactory->createNew();
-        $range->setPricingBehaviour("fixed");
+        $range->setPricingBehaviour('fixed');
         $range->setAmount($amount);
         $range->setRangeFrom($from);
         $range->setRangeTo($to);
@@ -285,7 +285,7 @@ final class ProductQuantityPriceRuleContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('timespan', [
             'dateFrom' => $from->getTimestamp() * 1000,
-            'dateTo'   => $to->getTimestamp() * 1000,
+            'dateTo' => $to->getTimestamp() * 1000,
         ]));
     }
 
@@ -362,10 +362,10 @@ final class ProductQuantityPriceRuleContext implements Context
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
         $this->addCondition($rule, $this->createConditionWithForm('nested', [
-            'operator'   => $operator,
+            'operator' => $operator,
             'conditions' => [
                 [
-                    'type'          => 'stores',
+                    'type' => 'stores',
                     'configuration' => [
                         'stores' => [
                             $store1->getId(),
@@ -373,7 +373,7 @@ final class ProductQuantityPriceRuleContext implements Context
                     ],
                 ],
                 [
-                    'type'          => 'stores',
+                    'type' => 'stores',
                     'configuration' => [
                         'stores' => [
                             $store2->getId(),
@@ -397,10 +397,10 @@ final class ProductQuantityPriceRuleContext implements Context
         $this->assertConditionForm(ProductSpecificPriceNestedConfigurationType::class, 'nested');
 
         $this->addCondition($rule, $this->createConditionWithForm('nested', [
-            'operator'   => $operator,
+            'operator' => $operator,
             'conditions' => [
                 [
-                    'type'          => 'stores',
+                    'type' => 'stores',
                     'configuration' => [
                         'stores' => [
                             $store->getId(),
@@ -408,7 +408,7 @@ final class ProductQuantityPriceRuleContext implements Context
                     ],
                 ],
                 [
-                    'type'          => 'countries',
+                    'type' => 'countries',
                     'configuration' => [
                         'countries' => [
                             $country->getId(),

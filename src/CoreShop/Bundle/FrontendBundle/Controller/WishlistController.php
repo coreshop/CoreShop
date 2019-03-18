@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
-use CoreShop\Component\StorageList\Model\StorageListItem;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
@@ -77,6 +76,7 @@ class WishlistController extends FrontendController
         foreach ($this->getWishlist()->getItems() as $item) {
             if ($item->getProduct() === $product) {
                 $this->getWishlistModifier()->removeFromList($this->getWishlist(), $item);
+
                 break;
             }
         }

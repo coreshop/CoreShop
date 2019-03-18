@@ -199,7 +199,7 @@ class CartController extends FrontendController
 
                 if ($request->isXmlHttpRequest()) {
                     return new JsonResponse([
-                        'success' => true
+                        'success' => true,
                     ]);
                 }
 
@@ -213,9 +213,9 @@ class CartController extends FrontendController
             if ($request->isXmlHttpRequest()) {
                 return new JsonResponse([
                     'success' => false,
-                    'errors' => array_map(function(FormError $error) {
+                    'errors' => array_map(function (FormError $error) {
                         return $error->getMessage();
-                    }, iterator_to_array($form->getErrors(true)))
+                    }, iterator_to_array($form->getErrors(true))),
                 ]);
             }
 
@@ -232,7 +232,7 @@ class CartController extends FrontendController
             $request->get('template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
             [
                 'form' => $form->createView(),
-                'product' => $product
+                'product' => $product,
             ]
         );
     }
@@ -302,8 +302,9 @@ class CartController extends FrontendController
     }
 
     /**
-     * @param CartInterface        $cart
-     * @param CartItemInterface    $cartItem
+     * @param CartInterface     $cart
+     * @param CartItemInterface $cartItem
+     *
      * @return AddToCartInterface
      */
     protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
@@ -389,7 +390,6 @@ class CartController extends FrontendController
     {
         return $this
             ->get('validator')
-            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'))
-        ;
+            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'));
     }
 }

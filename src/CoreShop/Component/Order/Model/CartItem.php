@@ -36,7 +36,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
             $storageListItem->getProduct()->getId() === $this->getProduct()->getId();
     }
 
-
     /**
      * {@inheritdoc}
      */

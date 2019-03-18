@@ -15,10 +15,8 @@ namespace CoreShop\Component\Order\Cart;
 use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -75,7 +73,7 @@ class CartModifier implements StorageListModifierInterface
     }
 
     /**
-     * @param StorageListInterface $storageList
+     * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $storageListItem
      */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)

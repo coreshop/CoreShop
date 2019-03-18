@@ -65,8 +65,8 @@ class HistoryLogger implements HistoryLoggerInterface
             sprintf(
                 '%s: %s',
                 $this->translator->trans('coreshop_workflow_history_logger_prefix', [], 'admin'),
-            $message
-                )
+                $message
+            )
         );
 
         if (null !== $description) {

@@ -42,6 +42,7 @@ class QuantityPriceFetcher
      * @param array                             $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function fetchQuantityPrice(
@@ -66,6 +67,7 @@ class QuantityPriceFetcher
      * @param array                            $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function fetchRangePrice(

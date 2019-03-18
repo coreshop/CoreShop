@@ -120,8 +120,9 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
 
     /**
      * @param Concrete $object
-     * @param mixed $data
-     * @param array $params
+     * @param mixed    $data
+     * @param array    $params
+     *
      * @return mixed
      */
     public function preSetData($object, $data, $params = [])

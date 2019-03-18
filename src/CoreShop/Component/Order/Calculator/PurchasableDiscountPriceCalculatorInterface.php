@@ -19,7 +19,7 @@ interface PurchasableDiscountPriceCalculatorInterface
 {
     /**
      * @param PurchasableInterface $purchasable
-     * @param array $context
+     * @param array                $context
      *
      * @throws NoPurchasableDiscountPriceFoundException
      *

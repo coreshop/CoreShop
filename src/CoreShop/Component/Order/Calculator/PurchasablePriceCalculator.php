@@ -58,9 +58,7 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
         try {
             $retailPrice = $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
             $price = $retailPrice;
-        }
-        catch (NoRetailPriceFoundException $ex) {
-
+        } catch (NoRetailPriceFoundException $ex) {
         }
 
         try {
@@ -70,7 +68,6 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
                 $price = $discountPrice;
             }
         } catch (NoPurchasableDiscountPriceFoundException $ex) {
-
         }
 
         if ($includingDiscounts) {

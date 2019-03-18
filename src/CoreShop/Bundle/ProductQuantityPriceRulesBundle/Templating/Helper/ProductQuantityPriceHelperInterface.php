@@ -31,6 +31,7 @@ interface ProductQuantityPriceHelperInterface
      * @param QuantityRangePriceAwareInterface $product
      *
      * @throws NoRuleFoundException
+     *
      * @return ProductQuantityPriceRuleInterface
      */
     public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product);
@@ -39,6 +40,7 @@ interface ProductQuantityPriceHelperInterface
      * @param QuantityRangePriceAwareInterface $product
      *
      * @throws NoRuleFoundException
+     *
      * @return array
      */
     public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product);
@@ -48,6 +50,7 @@ interface ProductQuantityPriceHelperInterface
      * @param QuantityRangePriceAwareInterface $product
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);

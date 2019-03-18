@@ -43,7 +43,6 @@ final class PurchasableProductDiscountPriceCalculator implements PurchasableDisc
             try {
                 return $this->productPriceCalculator->getDiscountPrice($purchasable, $context);
             } catch (NoDiscountPriceFoundException $ex) {
-
             }
         }
 

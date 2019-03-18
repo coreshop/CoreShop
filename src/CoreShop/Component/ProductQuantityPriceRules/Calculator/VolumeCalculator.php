@@ -57,7 +57,6 @@ class VolumeCalculator implements CalculatorInterface
         }
 
         return $price;
-
     }
 
     /**

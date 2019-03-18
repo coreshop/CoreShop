@@ -40,28 +40,32 @@ class ProductQuantityRangeCollectionType extends AbstractType
              * @var QuantityRangeInterface $quantityRange
              */
             foreach ($data as $rowIndex => $quantityRange) {
-
                 $realRowIndex = $rowIndex + 1;
                 if (!is_numeric($quantityRange->getRangeFrom())) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . ' needs to be numeric'));
+
                     break;
-                } elseif ((int)$quantityRange->getRangeFrom() < 0) {
+                } elseif ((int) $quantityRange->getRangeFrom() < 0) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
+
                     break;
-                } elseif ((int)$quantityRange->getRangeFrom() <= $lastEnd) {
+                } elseif ((int) $quantityRange->getRangeFrom() <= $lastEnd) {
                     $event->getForm()->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
+
                     break;
                 }
 
                 if (!is_numeric($quantityRange->getRangeTo())) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . ' needs to be numeric'));
+
                     break;
-                } elseif ((int)$quantityRange->getRangeTo() <= $quantityRange->getRangeFrom()) {
+                } elseif ((int) $quantityRange->getRangeTo() <= $quantityRange->getRangeFrom()) {
                     $event->getForm()->addError(new FormError('Field "to" in row ' . $realRowIndex . '  needs to be greater than ' . $quantityRange->getRangeFrom()));
+
                     break;
                 }
 
-                $lastEnd = (int)$quantityRange->getRangeTo();
+                $lastEnd = (int) $quantityRange->getRangeTo();
             }
         });
     }
@@ -74,11 +78,11 @@ class ProductQuantityRangeCollectionType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add'      => true,
-            'allow_delete'   => true,
-            'by_reference'   => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
             'error_bubbling' => false,
-            'entry_type'     => ProductQuantityRangeType::class,
+            'entry_type' => ProductQuantityRangeType::class,
         ]);
     }
 

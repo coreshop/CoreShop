@@ -18,9 +18,10 @@ interface StorageListItemInterface extends ResourceInterface
 {
     /**
      * @param StorageListItemInterface $storageListItem
+     *
      * @return bool
      */
-    public function equals(StorageListItemInterface $storageListItem);
+    public function equals(self $storageListItem);
 
     /**
      * @return mixed

@@ -27,6 +27,7 @@ interface CalculatorInterface
      * @param array                             $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function calculateForQuantity(
@@ -44,6 +45,7 @@ interface CalculatorInterface
      * @param array                            $context
      *
      * @throws NoPriceFoundException
+     *
      * @return int
      */
     public function calculateForRange(

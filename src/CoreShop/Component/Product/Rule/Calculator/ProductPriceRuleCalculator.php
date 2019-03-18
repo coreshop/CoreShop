@@ -15,9 +15,7 @@ namespace CoreShop\Component\Product\Rule\Calculator;
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
-use CoreShop\Component\Product\Exception\NoDiscountFoundException;
 use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
-use CoreShop\Component\Product\Exception\NoPriceFoundException;
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
@@ -80,10 +78,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                         $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
 
                         $price = $actionPrice;
-                    }
-                    catch (NoRetailPriceFoundException $ex)
-                    {
-
+                    } catch (NoRetailPriceFoundException $ex) {
                     }
                 }
             }
@@ -123,10 +118,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                     try {
                         $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
                         $price = $actionPrice;
-                    }
-                    catch (NoDiscountPriceFoundException $ex)
-                    {
-
+                    } catch (NoDiscountPriceFoundException $ex) {
                     }
                 }
             }

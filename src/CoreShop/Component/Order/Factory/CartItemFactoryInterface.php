@@ -31,6 +31,7 @@ interface CartItemFactoryInterface extends FactoryInterface
     /**
      * @param PurchasableInterface $purchasable
      * @param int                  $quantity
+     *
      * @return CartItemInterface
      */
     public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1);

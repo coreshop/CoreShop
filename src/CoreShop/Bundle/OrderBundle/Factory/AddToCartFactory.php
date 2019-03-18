@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\OrderBundle\Factory;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCart;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 
 class AddToCartFactory implements AddToCartFactoryInterface
 {

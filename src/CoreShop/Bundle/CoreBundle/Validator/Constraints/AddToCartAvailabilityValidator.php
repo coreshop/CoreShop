@@ -58,8 +58,10 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
-            $addCartItemCommand->getCartItem()->getQuantity() + $this->getExistingCartItemQuantityFromCart($addCartItemCommand->getCart(),
-                $addCartItemCommand->getCartItem())
+            $addCartItemCommand->getCartItem()->getQuantity() + $this->getExistingCartItemQuantityFromCart(
+                $addCartItemCommand->getCart(),
+            $addCartItemCommand->getCartItem()
+                )
         );
 
         if (!$isStockSufficient) {
@@ -73,6 +75,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     /**
      * @param CartInterface     $cart
      * @param CartItemInterface $cartItem
+     *
      * @return int
      */
     private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)

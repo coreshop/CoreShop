@@ -227,13 +227,13 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
 
             $this->markAsLoaded($object);
 
-            $setter = 'set'.ucfirst($this->getName());
+            $setter = 'set' . ucfirst($this->getName());
             if (method_exists($object, $setter)) {
                 $object->$setter($data);
             }
         }
 
-    return $data;
+        return $data;
     }
 
     /**

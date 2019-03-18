@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\OrderBundle\DTO;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class AddToCart implements AddToCartInterface
 {

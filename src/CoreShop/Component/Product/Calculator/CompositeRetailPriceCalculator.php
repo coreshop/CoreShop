@@ -46,7 +46,6 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
                 $actionPrice = $calculator->getRetailPrice($subject, $context);
                 $price = $actionPrice;
             } catch (NoRetailPriceFoundException $exception) {
-
             }
         }
 

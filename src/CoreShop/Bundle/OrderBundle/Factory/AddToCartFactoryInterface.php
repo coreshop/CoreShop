@@ -15,13 +15,13 @@ namespace CoreShop\Bundle\OrderBundle\Factory;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface AddToCartFactoryInterface
 {
     /**
      * @param CartInterface     $cart
      * @param CartItemInterface $cartItem
+     *
      * @return AddToCartInterface
      */
     public function createWithCartAndCartItem(CartInterface $cart, CartItemInterface $cartItem);

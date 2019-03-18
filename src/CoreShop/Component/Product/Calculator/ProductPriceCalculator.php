@@ -77,7 +77,6 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         try {
             return $this->retailPriceCalculator->getRetailPrice($subject, $context);
         } catch (NoRetailPriceFoundException $ex) {
-
         }
 
         return 0;
@@ -90,9 +89,7 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
     {
         try {
             return $this->discountPriceCalculator->getDiscountPrice($subject, $context);
-        }
-        catch (NoDiscountPriceFoundException $ex) {
-
+        } catch (NoDiscountPriceFoundException $ex) {
         }
 
         return 0;

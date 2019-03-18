@@ -42,9 +42,7 @@ final class PurchasableProductRetailPriceCalculator implements PurchasableRetail
         if ($purchasable instanceof ProductInterface) {
             try {
                 return $this->productPriceCalculator->getRetailPrice($purchasable, $context);
-            }
-            catch (NoRetailPriceFoundException $ex) {
-
+            } catch (NoRetailPriceFoundException $ex) {
             }
         }
 

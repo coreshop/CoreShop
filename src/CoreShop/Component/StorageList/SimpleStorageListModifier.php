@@ -34,7 +34,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
     }
 
     /**
-     * @param StorageListInterface $storageList
+     * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $storageListItem
      */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)

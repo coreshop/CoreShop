@@ -19,7 +19,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
-
     /**
      * @return CurrencyInterface
      */

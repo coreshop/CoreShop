@@ -86,6 +86,7 @@ final class CartContext implements Context
         foreach ($cart->getItems() as $cartItem) {
             if ($cartItem->getProduct()->getId() === $product->getId()) {
                 $foundItem = $cartItem;
+
                 break;
             }
         }
