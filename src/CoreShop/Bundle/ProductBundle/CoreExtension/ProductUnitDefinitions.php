@@ -216,6 +216,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
+            $productUnitDefinitions = $this->getEntityManager()->merge($productUnitDefinitions);
+
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);

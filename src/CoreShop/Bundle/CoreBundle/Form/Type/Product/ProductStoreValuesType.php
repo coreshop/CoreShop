@@ -35,7 +35,6 @@ final class ProductStoreValuesType extends AbstractResourceType
 
         $builder
             ->add('store', StoreChoiceType::class)
-            ->add('product', ProductSelectionType::class)
             ->add('price', IntegerType::class)
             ->add('productUnitDefinitionPrices', ProductUnitDefinitionPriceCollectionType::class);
     }

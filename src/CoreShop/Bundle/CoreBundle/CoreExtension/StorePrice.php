@@ -523,8 +523,6 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
     }
 
     /**
-<<<<<<< HEAD
-=======
      * {@inheritdoc}
      */
     public function getLazyLoading()

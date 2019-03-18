@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
@@ -285,7 +286,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $validStoreValues = [];
         $availableStoreValues = $this->load($object, ['force' => true]);
 
+        /**
+         * @var ProductStoreValuesInterface $storeData
+         */
         foreach ($productStoreValues as $storeId => $storeData) {
+            $storeData = $this->getEntityManager()->merge($storeData);
+
+            $storeData->setProduct($object);
             $this->getEntityManager()->persist($storeData);
             $validStoreValues[] = $storeData->getId();
         }
