@@ -19,7 +19,6 @@
    - [Autoloading] fix paths (https://github.com/coreshop/CoreShop/pull/846)
    - [ResourceBundle] Introduce more basic resource-types (https://github.com/coreshop/CoreShop/pull/838 + https://github.com/coreshop/CoreShop/pull/845)
    - [AddressBundle] add missing translations (https://github.com/coreshop/CoreShop/pull/836)
-   - []
    
 - Features
    - [Index] Introduce advanced sorting for indexes (https://github.com/coreshop/CoreShop/pull/856) 
