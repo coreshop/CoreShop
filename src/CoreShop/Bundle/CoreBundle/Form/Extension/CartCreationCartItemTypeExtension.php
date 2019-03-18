@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -54,7 +55,7 @@ final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
 
             $product = $this->productRepository->find($product);
 
-            if (null === $product) {
+            if (!$product instanceof ProductInterface) {
                 return;
             }
 

@@ -1,4 +1,4 @@
-@cart @cart_unit @cart_units_taxation @cart_units_taxation_gross
+@cart @cart_units_taxation @cart_units_taxation_gross
 Feature: Create a new cart where store uses gross values
   In Order to calculate taxes
   we create a cart and add items to it
