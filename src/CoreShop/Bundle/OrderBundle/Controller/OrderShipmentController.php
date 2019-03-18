@@ -103,7 +103,7 @@ class OrderShipmentController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
                     ]
                 );
             }

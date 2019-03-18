@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\WorkflowBundle\History;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Note;
 
-Class HistoryRepository implements HistoryRepositoryInterface
+class HistoryRepository implements HistoryRepositoryInterface
 {
     /**
      * @var string

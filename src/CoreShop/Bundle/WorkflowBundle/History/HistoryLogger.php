@@ -34,9 +34,9 @@ class HistoryLogger implements HistoryLoggerInterface
     private $noteIdentifier;
 
     /**
-     * @param NoteServiceInterface     $noteService
-     * @param TranslatorInterface      $translator
-     * @param string                   $noteIdentifier
+     * @param NoteServiceInterface $noteService
+     * @param TranslatorInterface  $translator
+     * @param string               $noteIdentifier
      */
     public function __construct(
         NoteServiceInterface $noteService,
@@ -62,9 +62,11 @@ class HistoryLogger implements HistoryLoggerInterface
         }
 
         $note->setTitle(
-            sprintf('%s: %s',
+            sprintf(
+                '%s: %s',
                 $this->translator->trans('coreshop_workflow_history_logger_prefix', [], 'admin'),
-                $message)
+            $message
+                )
         );
 
         if (null !== $description) {

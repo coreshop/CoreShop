@@ -52,7 +52,8 @@ final class OrderHistoryLogger
     public function log($orderId = null, $message = null, $description = null, $translate = false)
     {
         trigger_error(
-            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+            sprintf(
+                '%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
                 static::class,
                 __METHOD__,
                 HistoryLoggerInterface::class,

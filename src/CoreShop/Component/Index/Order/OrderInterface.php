@@ -14,5 +14,4 @@ namespace CoreShop\Component\Index\Order;
 
 interface OrderInterface
 {
-
 }

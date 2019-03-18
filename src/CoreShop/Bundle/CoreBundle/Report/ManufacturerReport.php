@@ -13,18 +13,14 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
-use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ManufacturerReport implements ReportInterface
@@ -153,19 +149,18 @@ class ManufacturerReport implements ReportInterface
         foreach ($results as $result) {
             $name = !empty($result['manufacturerName']) ? $result['manufacturerName'] : $result['manufacturerKey'];
             $data[] = [
-                'name'             => sprintf('%s (Id: %d)', $name, $result['manufacturerId']),
+                'name' => sprintf('%s (Id: %d)', $name, $result['manufacturerId']),
                 'manufacturerName' => $name,
-                'sales'            => $result['sales'],
-                'profit'           => $result['profit'],
-                'quantityCount'    => $result['quantityCount'],
-                'orderCount'       => $result['orderCount'],
-                'salesFormatted'   => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted'  => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
+                'sales' => $result['sales'],
+                'profit' => $result['profit'],
+                'quantityCount' => $result['quantityCount'],
+                'orderCount' => $result['orderCount'],
+                'salesFormatted' => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
             ];
         }
 
         return array_values($data);
-
     }
 
     /**

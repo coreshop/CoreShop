@@ -25,7 +25,7 @@ use Pimcore\Tool;
 final class EmbeddedClass extends Multihref
 {
     /**
-     * Static type of this element
+     * Static type of this element.
      *
      * @var string
      */

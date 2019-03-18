@@ -19,6 +19,7 @@ interface HistoryRepositoryInterface
 {
     /**
      * @param DataObject\Concrete $object
+     *
      * @return Note[]
      */
     public function getHistory(DataObject\Concrete $object);

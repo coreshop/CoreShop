@@ -32,7 +32,7 @@ if (class_exists(\Pimcore\Bundle\AdminBundle\Helper\GridHelperService::class)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Expected class %s to exist or method %s:getFilterCondition to exist',
-                    GridHelperService::class,
+                    self::class,
                     Service::class
                 )
             );

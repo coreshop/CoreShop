@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\LocaleBundle\Form\Type;
 
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Tool;
 use Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use Symfony\Component\Form\AbstractType;

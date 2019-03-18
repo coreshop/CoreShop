@@ -74,7 +74,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
                 'invoice' => $invoice,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
-                'options' => $options
+                'options' => $options,
             ]
         );
 
@@ -104,7 +104,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
                 'invoice' => $invoice,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
-                'options' => $options
+                'options' => $options,
             ]
         );
 

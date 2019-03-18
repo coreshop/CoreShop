@@ -55,5 +55,3 @@ class PimcoreResourceDataTransformer implements DataTransformerInterface
         return null;
     }
 }
-
-

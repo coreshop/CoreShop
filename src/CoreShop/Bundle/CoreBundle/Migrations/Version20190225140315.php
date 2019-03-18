@@ -13,7 +13,6 @@ class Version20190225140315 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         $this->addSql('UPDATE notes SET type="history_state_change" WHERE type="order_state_change"');
-
     }
 
     /**
@@ -22,6 +21,5 @@ class Version20190225140315 extends AbstractPimcoreMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

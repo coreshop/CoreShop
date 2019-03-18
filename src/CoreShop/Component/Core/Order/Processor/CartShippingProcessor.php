@@ -84,6 +84,7 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         if (!$cart->hasShippableItems()) {
             $cart->setCarrier(null);
+
             return;
         }
 
