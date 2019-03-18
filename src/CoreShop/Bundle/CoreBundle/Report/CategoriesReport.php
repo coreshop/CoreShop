@@ -13,17 +13,14 @@
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategoriesReport implements ReportInterface
@@ -73,8 +70,8 @@ class CategoriesReport implements ReportInterface
      * @param Connection                 $db
      * @param MoneyFormatterInterface    $moneyFormatter
      * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $orderRepository    ,
-     * @param PimcoreRepositoryInterface $categoryRepository ,
+     * @param PimcoreRepositoryInterface $orderRepository     ,
+     * @param PimcoreRepositoryInterface $categoryRepository  ,
      * @param PimcoreRepositoryInterface $orderItemRepository
      */
     public function __construct(
@@ -137,7 +134,7 @@ class CategoriesReport implements ReportInterface
               SUM(orderItems.quantity) AS `quantityCount`,
               COUNT(orderItems.product__id) AS `orderCount`
             FROM object_$categoryClassId AS categories
-            INNER JOIN object_localized_query_" . $categoryClassId . "_" . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
+            INNER JOIN object_localized_query_" . $categoryClassId . '_' . $locale . " AS localizedCategories ON localizedCategories.ooo_id = categories.oo_id 
             INNER JOIN dependencies AS catProductDependencies ON catProductDependencies.targetId = categories.oo_id AND catProductDependencies.targettype = \"object\" 
             INNER JOIN object_query_$orderItemClassId AS orderItems ON orderItems.product__id = catProductDependencies.sourceid
             INNER JOIN object_relations_$orderClassId AS orderRelations ON orderRelations.dest_id = orderItems.oo_id AND orderRelations.fieldname = \"items\"
@@ -155,14 +152,14 @@ class CategoriesReport implements ReportInterface
         foreach ($results as $result) {
             $name = !empty($result['categoryName']) ? $result['categoryName'] : $result['categoryKey'];
             $data[] = [
-                'name'            => sprintf('%s (Id: %d)', $name, $result['categoryId']),
-                'categoryName'    => $name,
-                'sales'           => $result['sales'],
-                'profit'          => $result['profit'],
-                'quantityCount'   => $result['quantityCount'],
-                'orderCount'      => $result['orderCount'],
-                'salesFormatted'  => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
-                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode())
+                'name' => sprintf('%s (Id: %d)', $name, $result['categoryId']),
+                'categoryName' => $name,
+                'sales' => $result['sales'],
+                'profit' => $result['profit'],
+                'quantityCount' => $result['quantityCount'],
+                'orderCount' => $result['orderCount'],
+                'salesFormatted' => $this->moneyFormatter->format($result['sales'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
+                'profitFormatted' => $this->moneyFormatter->format($result['profit'], $store->getCurrency()->getIsoCode(), $this->localeService->getLocaleCode()),
             ];
         }
 

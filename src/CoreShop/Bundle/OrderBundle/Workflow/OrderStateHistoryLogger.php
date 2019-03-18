@@ -41,7 +41,8 @@ final class OrderStateHistoryLogger
     public function log(OrderInterface $order, Event $event)
     {
         trigger_error(
-            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+            sprintf(
+                '%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
                 static::class,
                 __METHOD__,
                 StateHistoryLoggerInterface::class,

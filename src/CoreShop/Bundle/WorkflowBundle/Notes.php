@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\WorkflowBundle;
 final class Notes
 {
     /**
-     * Note Identifier for History State Log
+     * Note Identifier for History State Log.
      */
     const HISTORY_STATE_LOG = 'history_state_change';
 }

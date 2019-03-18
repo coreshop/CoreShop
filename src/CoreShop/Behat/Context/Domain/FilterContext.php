@@ -229,7 +229,6 @@ final class FilterContext implements Context
         Assert::eq($listing->count(), $countOfValues);
     }
 
-
     /**
      * @Then /^if I query the (filter) with a simple order for field "([^"]+)" and direction "([^"]+)" I should get two products "([^"]+)" and "([^"]+)"$/
      */

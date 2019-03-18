@@ -28,7 +28,7 @@ class LazyLoadedFields
 
         throw new \InvalidArgumentException(
             sprintf(
-            'Expected Object of Type "%s" to be either of interface LazyLoadedFieldsInterface or to have the method getO__loadedLazyFields',
+                'Expected Object of Type "%s" to be either of interface LazyLoadedFieldsInterface or to have the method getO__loadedLazyFields',
                 get_class($object)
             )
         );
@@ -38,17 +38,19 @@ class LazyLoadedFields
     {
         if (interface_exists(LazyLoadedFieldsInterface::class) && $object instanceof LazyLoadedFieldsInterface) {
             $object->addLazyKey($key);
+
             return;
         }
 
         if (method_exists($object, 'addO__loadedLazyField')) {
             $object->addO__loadedLazyField($key);
+
             return;
         }
 
         throw new \InvalidArgumentException(
             sprintf(
-            'Expected Object of Type "%s" to be either of interface LazyLoadedFieldsInterface or to have the method addO__loadedLazyField',
+                'Expected Object of Type "%s" to be either of interface LazyLoadedFieldsInterface or to have the method addO__loadedLazyField',
                 get_class($object)
             )
         );

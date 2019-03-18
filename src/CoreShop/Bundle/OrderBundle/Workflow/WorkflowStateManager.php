@@ -40,7 +40,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     public function getStateInfo($workflowName, $value, $forFrontend = true)
     {
         trigger_error(
-            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+            sprintf(
+                '%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
                 static::class,
                 __METHOD__,
                 \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,
@@ -58,7 +59,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true)
     {
         trigger_error(
-            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+            sprintf(
+                '%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
                 static::class,
                 __METHOD__,
                 \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,
@@ -76,7 +78,8 @@ final class WorkflowStateManager implements WorkflowStateManagerInterface
     public function getStateHistory(ProposalInterface $proposal)
     {
         trigger_error(
-            sprintf('%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
+            sprintf(
+                '%s::%s is deprecated and will be removed with 2.1, please use %s:%s instead.',
                 static::class,
                 __METHOD__,
                 \CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface::class,

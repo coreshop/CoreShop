@@ -102,7 +102,7 @@ class OrderInvoiceController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
                     ]
                 );
             }
@@ -114,7 +114,7 @@ class OrderInvoiceController extends PimcoreController
             if (!$order instanceof OrderInterface) {
                 return $this->viewHandler->handle([
                     'success' => false,
-                    'message' => "Order with ID '$orderId' not found"
+                    'message' => "Order with ID '$orderId' not found",
                 ]);
             }
 

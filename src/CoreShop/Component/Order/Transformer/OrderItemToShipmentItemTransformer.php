@@ -74,7 +74,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
                 'shipment' => $shipment,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
-                'options' => $options
+                'options' => $options,
             ]
         );
 
@@ -105,7 +105,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
                 'shipment' => $shipment,
                 'order' => $orderItem->getOrder(),
                 'order_item' => $orderItem,
-                'options' => $options
+                'options' => $options,
             ]
         );
 

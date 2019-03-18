@@ -21,7 +21,6 @@ use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
