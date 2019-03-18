@@ -10,7 +10,7 @@
  *
  */
 
-coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.detail.blocks.detail, {
+coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.sale.detail.blocks.detail, {
 
     generateItemGrid: function ($super) {
 

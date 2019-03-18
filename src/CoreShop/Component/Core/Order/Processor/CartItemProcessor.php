@@ -58,12 +58,6 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $cart = $context['cart'];
         $store = $context['store'];
 
-        if ($cartItem->hasUnitDefinition()) {
-            $cartItem->setDefaultUnitQuantity($cartItem->getUnitDefinition()->getConversionRate() * $cartItem->getQuantity());
-        } else {
-            $cartItem->setDefaultUnitQuantity($cartItem->getQuantity());
-        }
-
         $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {

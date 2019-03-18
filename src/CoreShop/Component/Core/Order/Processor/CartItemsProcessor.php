@@ -96,6 +96,8 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             if ($item->hasUnitDefinition()) {
                 $context['unitDefinition'] = $item->getUnitDefinition();
+            } else {
+                unset($context['unitDefinition']);
             }
 
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);

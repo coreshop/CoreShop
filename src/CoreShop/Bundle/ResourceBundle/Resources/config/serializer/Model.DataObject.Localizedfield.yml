@@ -1,0 +1,14 @@
+Pimcore\Model\DataObject\Localizedfield:
+    exclusion_policy: ALL
+    xml_root_name: localizedfields
+    properties:
+        items:
+            expose: true
+            type: array
+            groups: [List, Detailed]
+        object:
+            expose: false
+        class:
+            expose: false
+        getFallbackValues:
+            expose: false

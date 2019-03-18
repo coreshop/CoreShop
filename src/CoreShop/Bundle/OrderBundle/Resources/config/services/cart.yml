@@ -15,6 +15,14 @@ services:
         tags:
             - { name: form.type }
 
+    coreshop.form.type.cart_creation:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType
+        arguments:
+            - '%coreshop.model.cart.class%'
+            - '%coreshop.form.type.cart.validation_groups%'
+        tags:
+            - { name: form.type }
+
     coreshop.form.data_mapper.cart_item_quantity.property_mapper:
         class: Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper
         arguments:
@@ -28,6 +36,15 @@ services:
 
     coreshop.form.type.cart_item:
         class: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType
+        arguments:
+            - '%coreshop.model.cart_item.class%'
+            - '%coreshop.form.type.cart_item.validation_groups%'
+            - '@coreshop.form.data_mapper.cart_item_quantity'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.cart_creation_cart_item:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType
         arguments:
             - '%coreshop.model.cart_item.class%'
             - '%coreshop.form.type.cart_item.validation_groups%'

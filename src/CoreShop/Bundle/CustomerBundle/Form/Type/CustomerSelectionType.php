@@ -10,15 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Controller;
+namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
-use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Webmozart\Assert\Assert;
+use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 
-class OrderCreationController extends BaseOrderCreationController
+final class CustomerSelectionType extends PimcoreResourceSelectionType
 {
-    use CoreSaleCreationTrait;
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix()
+    {
+        return 'coreshop_customer';
+    }
 }

@@ -13,34 +13,24 @@
 pimcore.registerNS('coreshop.order.sale.create.step.products');
 coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.create.abstractStep, {
 
-    initStep: function () {
-        var me = this;
+    products: [],
 
-        me.eventManager.on('currency.changed', function () {
-            me.reloadProducts();
-        });
-        me.eventManager.on('store.changed', function () {
-            me.reloadProducts();
-        });
+    initStep: function () {
+        this.products = [];
     },
 
     isValid: function () {
         var values = this.getValues();
 
-        return values.products.length > 0;
+        return values.items.length > 0;
     },
 
     getPriority: function () {
         return 30;
     },
 
-    getValues: function () {
-        return {
-            products: this.getCartProducts()
-        };
-    },
-
     reset: function() {
+        this.products = [];
         this.cartPanelStore.setData([]);
     },
 
@@ -49,8 +39,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
         var modelName = 'CoreShopCreateOrderCart';
         if (!Ext.ClassManager.isCreated(modelName)) {
             Ext.define(modelName, {
-                extend: 'Ext.data.Model',
-                idProperty: 'o_id'
+                extend: 'Ext.data.Model'
             });
         }
 
@@ -59,47 +48,55 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
             model: modelName
         });
 
-        var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
-            listeners: {
-                edit: function (editor, context, eOpts) {
-                    if (context.originalValue !== context.value) {
-                        this.cartPanelGrid.getView().refresh();
-                    }
+        this.cartPanelGrid = Ext.create(this.generateItemGrid());
+        this.cartPanelGrid.on('edit', function (editor, context, eOpts) {
+            this.onRowEditingFinished(editor, context, eOpts);
+        }.bind(this));
 
-                    this.reloadProducts();
-                }.bind(this)
-            }
-        });
+        return this.cartPanelGrid;
+    },
 
-        this.cartPanelGrid = Ext.create('Ext.grid.Panel', {
+    onRowEditingFinished: function(editor, context, eOpts) {
+        var qty = editor.editor.form.findField('quantity');
+
+        context.record.set('quantity', qty.getValue());
+
+        this.products = this.getCartProducts();
+
+        this.reloadProducts();
+    },
+
+    generateItemGrid: function() {
+        var me = this;
+
+        return {
+            xtype: 'grid',
             margin: '0 0 15 0',
+            minHeight: 300,
             cls: 'coreshop-detail-grid',
             store: this.cartPanelStore,
-            plugins: [cellEditing],
+            plugins: [Ext.create('Ext.grid.plugin.RowEditing')],
             columns: [
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'o_id',
+                    dataIndex: 'product',
                     text: t('id'),
                     width: 100
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'name',
+                    dataIndex: 'productName',
                     flex: 1,
                     text: t('name'),
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'basePrice',
+                    width: 150,
+                    align: 'right',
+                    text: t('coreshop_base_price'),
                     renderer: function (value, metaData, record) {
-                        if (Object.keys(record.get("localizedfields").data).indexOf(pimcore.settings.language) > 0)
-                            return record.get("localizedfields").data[pimcore.settings.language].name;
-                        else {
-                            var keys = Object.keys(record.get("localizedfields").data);
-
-                            if (keys.length > 0) {
-                                return record.get("localizedfields").data[keys[0]].name;
-                            }
-                        }
-
-                        return "";
+                        return '<span style="font-weight:bold">' + record.get('basePriceFormatted') + '</span>';
                     }.bind(this)
                 },
                 {
@@ -107,28 +104,10 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     dataIndex: 'price',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_base_price'),
+                    text: t('coreshop_price'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + record.get('priceFormatted') + '</span>';
                     }.bind(this)
-                    /*field : { TODO: Make price editable
-                        xtype: 'numberfield',
-                        decimalPrecision : 2
-                    }*/
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'priceConverted',
-                    width: 150,
-                    align: 'right',
-                    text: t('coreshop_price'),
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('priceConvertedFormatted') + '</span>';
-                    }.bind(this)
-                    /*field : { TODO: Make price editable
-                        xtype: 'numberfield',
-                        decimalPrecision : 2
-                    }*/
                 },
                 {
                     xtype: 'gridcolumn',
@@ -142,22 +121,22 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'total',
+                    dataIndex: 'baseTotal',
                     width: 150,
                     align: 'right',
                     text: t('coreshop_base_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('totalFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + record.get('baseTotalFormatted') + '</span>';
                     }.bind(this)
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'totalConverted',
+                    dataIndex: 'total',
                     width: 150,
                     align: 'right',
                     text: t('coreshop_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('totalConvertedFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + record.get('totalFormatted') + '</span>';
                     }.bind(this)
                 },
                 {
@@ -172,7 +151,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                             handler: function (grid, rowIndex) {
                                 var record = grid.getStore().getAt(rowIndex);
 
-                                pimcore.helpers.openObject(record.get('o_id'));
+                                pimcore.helpers.openObject(record.get('product'));
                             }
                         },
                         {
@@ -187,9 +166,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     ]
                 }
             ]
-        });
-
-        return this.cartPanelGrid;
+        };
     },
 
     getTools: function () {
@@ -202,10 +179,10 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                         true,
                         function (products) {
                             products = products.map(function (pr) {
-                                return {id: pr.id, quantity: 1};
+                                return {product: pr.id, quantity: 1};
                             });
 
-                            this.addProductsToCart(products);
+                            this.addProducts(products);
                         }.bind(this),
                         {
                             type: ['object'],
@@ -222,67 +199,47 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
         ];
     },
 
+    getValues: function () {
+        return {
+            items: this.getCartProducts()
+        };
+    },
+
+    getPreviewValues: function () {
+        return {
+            items: this.products
+        };
+    },
+
+    setPreviewData: function(data) {
+        this.cartPanelStore.removeAll();
+
+        this.cartPanelStore.add(data.items);
+        this.products = data.items;
+    },
+
     removeProductFromCart: function(product) {
         this.cartPanelStore.remove(product);
 
-        this.eventManager.fireEvent('products.changed');
-        this.eventManager.fireEvent('validation');
+        this.eventManager.fireEvent('preview');
     },
 
-    addProductsToCart: function (products, reset) {
-        if (products.length <= 0) {
-            return;
-        }
+    addProducts: function(products) {
+        var merged = this.products;
 
-        this.layout.setLoading(t("loading"));
+        Array.prototype.push.apply(merged, products);
 
-        var values = this.creationPanel.getValues();
-        values['products'] = products;
-
-        Ext.Ajax.request({
-            url: '/admin/coreshop/' + this.creationPanel.type + '-creation/get-product-details',
-            method: 'post',
-            jsonData: values,
-            callback: function (request, success, response) {
-                try {
-                    response = Ext.decode(response.responseText);
-
-                    if (response.success) {
-                        if (reset) {
-                            this.cartPanelStore.removeAll();
-                        }
-
-                        this.cartPanelStore.add(response.products);
-
-                        this.eventManager.fireEvent('products.changed');
-                        this.eventManager.fireEvent('validation');
-                    } else {
-                        Ext.Msg.alert(t('error'), response.message);
-                    }
-                }
-                catch (e) {
-                    Ext.Msg.alert(t('error'), e);
-                }
-
-                this.layout.setLoading(false);
-            }.bind(this)
-        });
+        this.products = merged;
+        this.eventManager.fireEvent('preview');
     },
 
     reloadProducts: function () {
-        var baseStep = this.creationPanel.getStep('base');
-
-        if (baseStep.isValid()) {
-            this.addProductsToCart(this.getCartProducts(), true);
-        }
+        this.eventManager.fireEvent('preview');
     },
 
     getCartProducts: function () {
         return this.cartPanelStore.getRange().map(function (record) {
-            return {
-                id: record.get('o_id'),
-                quantity: record.get('quantity')
-            }
+            return record.data;
         });
     },
 

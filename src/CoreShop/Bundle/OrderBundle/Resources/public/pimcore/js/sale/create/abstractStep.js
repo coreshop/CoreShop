@@ -43,11 +43,19 @@ coreshop.order.sale.create.abstractStep = Class.create({
         Ext.Error.raise('implement me');
     },
 
+    getPreviewValues: function () {
+        return this.getValues();
+    },
+
     getName: function() {
         Ext.Error.raise('implement me');
     },
 
     getPanel: function() {
+        Ext.Error.raise('implement me');
+    },
+
+    setPreviewData: function(data) {
         Ext.Error.raise('implement me');
     },
 

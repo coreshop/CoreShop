@@ -78,3 +78,15 @@ services:
         class: CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }
+
+    coreshop.form.extension.type.cart_creation_type:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType }
+
+    coreshop.form.extension.type.cart_creation_cart_item_type:
+        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationCartItemTypeExtension
+        arguments:
+            - '@coreshop.repository.stack.product'
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType }

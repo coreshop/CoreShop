@@ -49,24 +49,17 @@ final class CarrierType extends AbstractResourceType
      */
     private $shopperContext;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-
     public function __construct(
         $dataClass,
         array $validationGroups,
         ShopperContextInterface $shopperContext,
         TaxedShippingCalculatorInterface $taxedShippingCalculator,
         MoneyFormatterInterface $moneyFormatter,
-        CurrencyConverterInterface $currencyConverter,
-        TranslatorInterface $translator
+        CurrencyConverterInterface $currencyConverter
     ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->taxedShippingCalculator = $taxedShippingCalculator;
-        $this->translator = $translator;
         $this->shopperContext = $shopperContext;
         $this->moneyFormatter = $moneyFormatter;
         $this->currencyConverter = $currencyConverter;
