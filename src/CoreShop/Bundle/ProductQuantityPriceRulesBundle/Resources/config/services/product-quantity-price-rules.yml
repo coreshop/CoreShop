@@ -78,8 +78,6 @@ services:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidProductQuantityPriceRuleFetcher
         arguments:
             - '@coreshop.product_quantity_price_rules.processor'
-        tags:
-            - { name: coreshop.product.rules.fetcher, type: product-quantity-price-rules }
 
     coreshop.product_quantity_price_rules.rules.valid_price_rules_fetcher.memory_cached:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\MemoryCachedValidRuleFetcher
