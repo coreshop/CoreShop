@@ -406,8 +406,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
 
             $parsedData = $this->expandDotNotationKeys($storeData);
-            $parsedData['storeId'] = $storeId;
-            $parsedData['objectId'] = $object->getId();
+            $parsedData['store'] = $storeId;
 
             $form->submit($parsedData);
 
