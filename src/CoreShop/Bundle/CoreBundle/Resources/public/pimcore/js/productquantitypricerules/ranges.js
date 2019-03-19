@@ -41,7 +41,8 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 fields: [
                     {name: 'id'},
                     {name: 'unit'},
-                    {name: 'unitName', mapping: 'unit.name'}
+                    {name: 'unitName', mapping: 'unit.name'},
+                    {name: 'unitLabel', mapping: 'unit.fullLabel'},
                 ]
             });
         }
@@ -142,7 +143,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     return new Ext.form.ComboBox({
                         store: _.productUnitDefinitionsStore,
                         valueField: 'id',
-                        displayField: 'unitName',
+                        displayField: 'unitLabel',
                         allowBlank: false,
                         editable: false,
                         queryMode: 'local',
@@ -166,7 +167,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     }
 
                     unitDefinitionRecord = _.productUnitDefinitionsStore.getById(unitDefinitionId);
-                    return unitDefinitionRecord.get('unitName');
+                    return unitDefinitionRecord.get('unitLabel');
                 }
             }],
             'quantityAmount': [{
