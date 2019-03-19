@@ -14,20 +14,24 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
-use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\Concrete;
 
 abstract class AbstractSaleController extends PimcoreController
 {
     /**
-     * @param DataObject\Concrete $data
-     * @param array               $loadedObjects
+     * @param mixed $data
+     * @param array $loadedObjects
      *
      * @return array
      */
-    protected function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
+    protected function getDataForObject($data, $loadedObjects = [])
     {
-        $dataLoader = new DataLoader();
+        if ($data instanceof Concrete) {
+            $dataLoader = new DataLoader();
 
-        return $dataLoader->getDataForObject($data, $loadedObjects);
+            return $dataLoader->getDataForObject($data, $loadedObjects);
+        }
+
+        return [];
     }
 }

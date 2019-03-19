@@ -22,8 +22,18 @@
     <td class="text-center">
         {% if item.getIsGiftItem %}
             <span>{{ item.getQuantity }}</span>
+            {% if item.hasUnitDefinition %}
+                <span class="unit-definition unit-name">{{ item.getUnitDefinition.getUnit.getName }}</span>
+            {% endif %}
         {% else %}
-            {{ form_widget(form.quantity) }}
+            <div class="input-group">
+                {{ form_widget(form.quantity) }}
+                {% if item.hasUnitDefinition %}
+                    <div class="input-group-append">
+                        <span class="input-group-text">{{ item.getUnitDefinition.getUnit.getName }}</span>
+                    </div>
+                {% endif %}
+            </div>
         {% endif %}
     </td>
     <td class="text-right cart-item-price">

@@ -15,7 +15,10 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class OrderController extends BaseOrderController
 {
@@ -43,11 +46,33 @@ class OrderController extends BaseOrderController
         if ($sale instanceof OrderInterface) {
             $order['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
-                'weight' => $sale->getWeight(),
-                'cost' => $sale->getShipping(),
+                'weight'  => $sale->getWeight(),
+                'cost'    => $sale->getShipping(),
             ];
         }
 
         return $order;
+    }
+
+    /**
+     * @param SaleItemInterface $item
+     *
+     * @return array
+     */
+    protected function prepareSaleItem(SaleItemInterface $item)
+    {
+        $itemData = parent::prepareSaleItem($item);
+
+        if (!$item instanceof OrderItemInterface) {
+            return $itemData;
+        }
+
+        if (!$item->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
+            return $itemData;
+        }
+
+        $itemData['unit'] = $item->getUnitDefinition()->getUnit()->getName();
+
+        return $itemData;
     }
 }

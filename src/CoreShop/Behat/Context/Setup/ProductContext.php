@@ -16,12 +16,16 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Product\Model\ManufacturerInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Model\ManufacturerInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
@@ -40,23 +44,39 @@ final class ProductContext implements Context
     private $productFactory;
 
     /**
-     * @var ProductRepositoryInterface
+     * @var FactoryInterface
      */
-    private $productRepository;
+    private $productUnitDefinitions;
 
     /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param FactoryInterface           $productFactory
-     * @param ProductRepositoryInterface $productRepository
+     * @var FactoryInterface
+     */
+    private $productUnitDefinition;
+
+    /**
+     * @var FactoryInterface
+     */
+    private $productUnitDefinitionPriceFactory;
+
+    /**
+     * @param SharedStorageInterface $sharedStorage
+     * @param FactoryInterface       $productFactory
+     * @param FactoryInterface       $productUnitDefinitions
+     * @param FactoryInterface       $productUnitDefinition
+     * @param FactoryInterface       $productUnitDefinitionPriceFactory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
-        ProductRepositoryInterface $productRepository
+        FactoryInterface $productUnitDefinitions,
+        FactoryInterface $productUnitDefinition,
+        FactoryInterface $productUnitDefinitionPriceFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
-        $this->productRepository = $productRepository;
+        $this->productUnitDefinitions = $productUnitDefinitions;
+        $this->productUnitDefinition = $productUnitDefinition;
+        $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
     }
 
     /**
@@ -104,8 +124,12 @@ final class ProductContext implements Context
     /**
      * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
      */
-    public function theProductHasAVariant(ProductInterface $product, string $productName, int $price = 100, StoreInterface $store = null)
-    {
+    public function theProductHasAVariant(
+        ProductInterface $product,
+        string $productName,
+        int $price = 100,
+        StoreInterface $store = null
+    ) {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
         $this->saveVariant($variant);
@@ -256,6 +280,84 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
+
+    /**
+     * @Given /^the (product) has the default (unit "[^"]+")$/
+     * @Given /^the (product "[^"]+") has the default (unit "[^"]+")"$/
+     */
+    public function theProductHasTheDefaultUnit(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
+
+        /**
+         * @var ProductUnitDefinitionInterface $defaultUnitDefinition
+         */
+        $defaultUnitDefinition = $this->productUnitDefinition->createNew();
+        $defaultUnitDefinition->setUnit($unit);
+
+        $definitions->setDefaultUnitDefinition($defaultUnitDefinition);
+
+        $product->setUnitDefinitions($definitions);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
+     */
+    public function theProductHasAnAdditionalUnit(
+        ProductInterface $product,
+        ProductUnitInterface $unit,
+        $conversionRate,
+        int $price = null
+    ) {
+        $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
+
+        /**
+         * @var ProductUnitDefinitionInterface $defaultUnitDefinition
+         */
+        $defaultUnitDefinition = $this->productUnitDefinition->createNew();
+        $defaultUnitDefinition->setUnit($unit);
+        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
+
+        $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
+
+        $product->setUnitDefinitions($definitions);
+
+        if (null !== $price) {
+            $store = $this->sharedStorage->get('store');
+
+            /**
+             * @var ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice
+             */
+            $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
+            $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
+            $productUnitDefinitionPrice->setPrice((int)$price);
+
+            /**
+             * @var ProductStoreValuesInterface $storeValues
+             */
+            $storeValues = $product->getStoreValues($store);
+            $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
+
+            $product->setStoreValues($storeValues, $store);
+        }
+
+        $this->saveProduct($product);
+    }
+
+    private function getOrCreateUnitDefinitions(ProductUnitDefinitionsInterface $definitions = null)
+    {
+        if (null === $definitions) {
+            $definitions = $this->productUnitDefinitions->createNew();
+        }
+
+        return $definitions;
+    }
+
     /**
      * @param string $productName
      *
@@ -308,8 +410,12 @@ final class ProductContext implements Context
      *
      * @return ProductInterface
      */
-    private function createVariant(ProductInterface $product, string $productName, int $price = 100, StoreInterface $store = null)
-    {
+    private function createVariant(
+        ProductInterface $product,
+        string $productName,
+        int $price = 100,
+        StoreInterface $store = null
+    ) {
         $variant = $this->createSimpleProduct($productName);
         $variant->setParent($product);
 

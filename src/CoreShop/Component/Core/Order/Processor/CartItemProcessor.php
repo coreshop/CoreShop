@@ -49,6 +49,9 @@ final class CartItemProcessor implements CartItemProcessorInterface
      */
     public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
+        /**
+         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+         */
         Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\CartItemInterface::class);
 
         $product = $cartItem->getProduct();

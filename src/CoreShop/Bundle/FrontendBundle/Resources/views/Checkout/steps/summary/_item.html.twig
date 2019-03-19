@@ -20,6 +20,9 @@
     </td>
     <td class="text-center">
         <span>{{ item.getQuantity }}</span>
+        {% if item.hasUnitDefinition %}
+            <span class="unit-definition unit-name">{{ item.getUnitDefinition.getUnit.getName }}</span>
+        {% endif %}
     </td>
     <td class="text-right cart-item-price">
         {% set price = item.getItemPrice %}

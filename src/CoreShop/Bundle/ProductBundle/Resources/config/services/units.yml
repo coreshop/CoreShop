@@ -1,0 +1,66 @@
+parameters:
+    coreshop.form.type.product_unit.validation_groups: [coreshop]
+    coreshop.form.type.product_unit_translation.validation_groups: [coreshop]
+    coreshop.form.type.product_unit_definition.validation_groups: [coreshop]
+    coreshop.form.type.product_unit_definition_price.validation_groups: [coreshop]
+    coreshop.form.type.product_unit_definitions.validation_groups: [coreshop]
+
+services:
+    _defaults:
+        public: true
+
+    # Forms
+    coreshop.form.type.product_unit:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType
+        arguments:
+            - '%coreshop.model.product_unit.class%'
+            - '%coreshop.form.type.product_unit.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.product_unit_translation:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitTranslationType
+        arguments:
+            - '%coreshop.model.product_unit_translation.class%'
+            - '%coreshop.form.type.product_unit_translation.validation_groups%'
+        tags:
+            - { name: form.type }
+
+
+    coreshop.form.type.product_unit_choice:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitChoiceType
+        arguments:
+            - '@coreshop.repository.product_unit'
+        tags:
+            -  { name: form.type }
+
+    coreshop.form.type.product.unit_definition:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionType
+        arguments:
+            - '%coreshop.model.product_unit_definition.class%'
+            - '%coreshop.form.type.product_unit_definition.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.product.unit_definition_selection:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionSelectionType
+        arguments:
+            - '@coreshop.repository.product_unit_definition'
+        tags:
+            -  { name: form.type }
+
+    coreshop.form.type.product.unit_definition_price:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionPriceType
+        arguments:
+            - '%coreshop.model.product_unit_definition_price.class%'
+            - '%coreshop.form.type.product_unit_definition_price.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.product.unit_definitions:
+        class: CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType
+        arguments:
+            - '%coreshop.model.product_unit_definitions.class%'
+            - '%coreshop.form.type.product_unit_definitions.validation_groups%'
+        tags:
+            - { name: form.type }

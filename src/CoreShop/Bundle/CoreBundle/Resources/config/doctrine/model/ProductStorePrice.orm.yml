@@ -20,6 +20,8 @@ CoreShop\Component\Core\Model\ProductStorePrice:
     manyToOne:
         store:
             targetEntity: CoreShop\Component\Store\Model\StoreInterface
+            cascade:
+                - 'merge'
             joinColumn:
                 name: storeId
                 referencedColumnName: id

@@ -4,8 +4,13 @@
     {{ form_errors(form) }}
 
     <div class="input-group">
-        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control'}}) }}
-        <div class="input-group-append">
+        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control cart-item-quantity'}}) }}
+
+        {% if form.cartItem.unitDefinition is defined %}
+            {{ form_row(form.cartItem.unitDefinition, {label: false, attr: {class: 'form-control ml-1'}}) }}
+        {% endif %}
+
+        <div class="input-group-append {{ form.cartItem.unitDefinition is defined ? 'ml-2' : '' }}">
             <button type="submit" class="btn btn-cart" rel="nofollow">
                 {{ 'coreshop.ui.add_to_cart'|trans }}
                 <i class="fa fa-shopping-cart"></i>

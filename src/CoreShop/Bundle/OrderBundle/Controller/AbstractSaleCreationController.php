@@ -12,16 +12,17 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,235 +50,185 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
 
     /**
      * @param Request $request
-     *
      * @return Response
      */
-    public function getProductDetailsAction(Request $request)
+    public function salePreviewAction(Request $request)
     {
-        $this->isGrantedOr403();
+        $cart = $this->get('coreshop.factory.cart')->createNew();
+        $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
+            'customer' => $request->get('customer')
+        ]);
 
-        $productIds = $request->get('products');
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
-        $store = $this->get('coreshop.repository.store')->find($request->get('store'));
-        $customer = $this->get('coreshop.repository.customer')->find($request->get('customer'));
+        if ($request->getMethod() === 'POST') {
+            $handledForm = $form->handleRequest($request);
 
-        if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '" . $request->get('customer') . "' not found"]);
+            $cart = $handledForm->getData();
+
+            $this->get('coreshop.cart_processor')->process($cart);
+            $json = $this->getCartDetails($cart);
+
+            return $this->viewHandler->handle(['success' => true, 'data' => $json]);
         }
 
-        if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '" . $request->get('store') . "' not found"]);
-        }
-
-        if (!$currency instanceof CurrencyInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Currency with ID '" . $request->get('currency') . "' not found"]);
-        }
-
-        $context = [
-            'store' => $store,
-            'customer' => $customer,
-            'currency' => $currency,
-        ];
-
-        $result = [];
-
-        $currentCurrency = $store->getCurrency()->getIsoCode();
-
-        foreach ($productIds as $productObject) {
-            $productId = $productObject['id'];
-
-            $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
-
-            if ($product instanceof PurchasableInterface) {
-                $result[] = InheritanceHelper::useInheritedValues(function () use ($product, $productObject, $currentCurrency, $currency, $context) {
-                    $productFlat = $this->getDataForObject($product);
-
-                    $productFlat['quantity'] = $productObject['quantity'] ? $productObject['quantity'] : 1;
-
-                    $price = $this->get('coreshop.product.taxed_price_calculator')->getPrice($product, $context, true);
-                    $priceFormatted = $this->get('coreshop.money_formatter')->format($price, $currentCurrency);
-
-                    $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
-                    $priceConvertedFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
-
-                    $productFlat['price'] = $price;
-                    $productFlat['priceFormatted'] = $priceFormatted;
-                    $productFlat['priceConverted'] = $priceConverted;
-                    $productFlat['priceConvertedFormatted'] = $priceConvertedFormatted;
-
-                    $total = $price * $productObject['quantity'];
-                    $totalFormatted = $this->get('coreshop.money_formatter')->format($total, $currentCurrency);
-
-                    $totalConverted = $this->get('coreshop.currency_converter')->convert($total, $currentCurrency, $currency->getIsoCode());
-                    $totalConvertedFormatted = $this->get('coreshop.money_formatter')->format($totalConverted, $currency->getIsoCode());
-
-                    $productFlat['total'] = $total;
-                    $productFlat['totalFormatted'] = $totalFormatted;
-                    $productFlat['totalConverted'] = $totalConverted;
-                    $productFlat['totalConvertedFormatted'] = $totalConvertedFormatted;
-
-                    return $productFlat;
-                });
-            }
-        }
-
-        return $this->viewHandler->handle(['success' => true, 'products' => $result]);
+        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
-    public function getTotalsAction(Request $request)
+    /**
+     * @param Request $request
+     * @return Response
+     */
+    public function saleCreationAction(Request $request)
     {
         $this->isGrantedOr403();
 
-        $language = $request->get('language');
-        $productIds = $request->get('products');
-        $customerId = $request->get('customer');
-        $shippingAddressId = $request->get('shippingAddress');
-        $invoiceAddressId = $request->get('invoiceAddress');
-        $storeId = $request->get('store');
+        $cart = $this->get('coreshop.factory.cart')->createNew();
+        $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
+            'customer' => $request->get('customer')
+        ]);
 
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
+        if ($request->getMethod() === 'POST') {
+            $handledForm = $form->handleRequest($request);
 
-        $customer = $this->get('coreshop.repository.customer')->find($customerId);
-        $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
-        $invoiceAddress = $this->get('coreshop.repository.address')->find($invoiceAddressId);
-        $store = $this->get('coreshop.repository.store')->find($storeId);
-
-        if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
-        }
-
-        if (!$shippingAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
-        }
-
-        if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
-        }
-
-        if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
-        }
-
-        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request) {
-            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
-
-            try {
-                $this->prepareCart($request, $cart);
-            } catch (\InvalidArgumentException $ex) {
-                return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+            if (!$handledForm->isValid()) {
+                return $this->viewHandler->handle(
+                    [
+                        'success' => false,
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                    ]
+                );
             }
+
+            $cart = $handledForm->getData();
 
             $this->get('coreshop.cart_processor')->process($cart);
 
-            return $cart;
-        });
+            /**
+             * @var SaleInterface $sale
+             */
+            $sale = $this->factory->createNew();
+            $sale->setBackendCreated(true);
+            $sale = $this->getTransformer()->transform($cart, $sale);
+            $saleResponse = [
+                'success' => true,
+                'id' => $sale->getId(),
+            ];
+            $additionalResponse = $this->afterSaleCreation($sale);
 
-        $totals = $this->getTotalArray($cart);
-        $currentCurrency = $store->getCurrency()->getIsoCode();
+            foreach ($additionalResponse as $key => $value) {
+                $saleResponse[$key] = $value;
+            }
+
+            return $this->viewHandler->handle($saleResponse);
+        }
+
+        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+    }
+
+    /**
+     * @param CartInterface $cart
+     * @return array
+     */
+    protected function getCartDetails(CartInterface $cart)
+    {
+        $jsonCart = $this->getDataForObject($cart);
+
+        $jsonCart['o_id'] = $cart->getId();
+        $jsonCart['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
+        $jsonCart['items'] = $this->getItemDetails($cart);
+        $jsonCart['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());
+        $jsonCart['store'] = $cart->getStore() instanceof StoreInterface ? $this->getStore($cart->getStore()) : null;
+
+        $jsonCart['address'] = [
+            'shipping' => $this->getDataForObject($cart->getShippingAddress()),
+            'billing' => $this->getDataForObject($cart->getInvoiceAddress()),
+        ];
+
+        if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getShippingAddress()->getCountry() instanceof CountryInterface
+        ) {
+            $jsonCart['address_shipping_formatted'] = $this->getAddressFormatter()->formatAddress($cart->getShippingAddress());
+        } else {
+            $jsonCart['address_shipping_formatted'] = '';
+        }
+
+        if ($cart->getInvoiceAddress() instanceof AddressInterface && $cart->getInvoiceAddress()->getCountry() instanceof CountryInterface) {
+            $jsonCart['address_billing_formatted'] = $this->getAddressFormatter()->formatAddress($cart->getInvoiceAddress());
+        } else {
+            $jsonCart['address_billing_formatted'] = '';
+        }
+
+        $totals = $this->getCartSummary($cart);
 
         foreach ($totals as &$totalEntry) {
             $price = $totalEntry['value'];
-
-            $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
-            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
-
+            $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $cart->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
+            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $cart->getCurrency()->getIsoCode());
             $totalEntry['valueFormatted'] = $priceFormatted;
         }
 
-        return $this->viewHandler->handle(['success' => true, 'summary' => $totals]);
+        unset ($totalEntry);
+
+        $jsonCart['summary'] = $totals;
+
+        return $jsonCart;
     }
 
-    public function createSaleAction(Request $request)
+    /**
+     * @param CartInterface $cart
+     *
+     * @return array
+     */
+    protected function getItemDetails(CartInterface $cart)
     {
-        $this->isGrantedOr403();
+        $items = [];
 
-        $language = $request->get('language');
-        $productIds = $request->get('products');
-        $customerId = $request->get('customer');
-        $shippingAddressId = $request->get('shippingAddress');
-        $invoiceAddressId = $request->get('invoiceAddress');
-        $paymentModuleName = $request->get('paymentProvider');
-        $storeId = $request->get('store');
-
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
-
-        $customer = $this->get('coreshop.repository.customer')->find($customerId);
-        $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
-        $invoiceAddress = $this->get('coreshop.repository.address')->find($invoiceAddressId);
-        $paymentModule = $this->get('coreshop.repository.payment_provider')->find($paymentModuleName);
-        $store = $this->get('coreshop.repository.store')->find($storeId);
-
-        if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
-        }
-
-        if (!$shippingAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
-        }
-
-        if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
-        }
-
-        if (!$paymentModule instanceof PaymentProviderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Payment Module with ID '$paymentModuleName' not found"]);
-        }
-
-        if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
-        }
-
-        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $request, $paymentModule) {
-            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
-
-            try {
-                $this->prepareCart($request, $cart);
-            } catch (\InvalidArgumentException $ex) {
-                return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+        foreach ($cart->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $items[] = $this->prepareCartItem($cart, $item);
             }
-
-            $cart->setPaymentProvider($paymentModule);
-            $this->get('coreshop.cart_processor')->process($cart);
-
-            return $cart;
-        });
-
-        /**
-         * @var SaleInterface $sale
-         */
-        $sale = $this->factory->createNew();
-        $sale->setBackendCreated(true);
-        $sale = $this->getTransformer()->transform($cart, $sale);
-
-        $saleResponse = [
-            'success' => true,
-            'id' => $sale->getId(),
-        ];
-
-        $additionalResponse = $this->afterSaleCreation($sale);
-
-        foreach ($additionalResponse as $key => $value) {
-            $saleResponse[$key] = $value;
         }
 
-        return $this->viewHandler->handle($saleResponse);
+        return $items;
     }
 
-    protected function prepareCart(Request $request, CartInterface $cart)
+    /**
+     * @param CartItemInterface $item
+     *
+     * @return array
+     */
+    protected function prepareCartItem(CartInterface $cart, CartItemInterface $item)
     {
-        return $cart;
+        $currentCurrency = $cart->getCurrency()->getIsoCode();
+        $currency = $cart->getStore()->getCurrency()->getIsoCode();
+
+        $moneyConverter = $this->get('coreshop.currency_converter');
+        $moneyFormatter = $this->get('coreshop.money_formatter');
+
+        $price = $item->getItemPrice();
+        $total = $item->getTotal();
+        $basePrice = $moneyConverter->convert($price, $currentCurrency, $currency);
+        $baseTotal = $moneyConverter->convert($total, $currentCurrency, $currency);
+
+        return [
+            'product' => $item->getProduct() ? $item->getProduct()->getId() : 0,
+            'productName' => $item->getProduct() ? $item->getProduct()->getName() : '',
+            'quantity' => $item->getQuantity(),
+            'baseTrice' => $price,
+            'basePriceFormatted' => $moneyFormatter->format($price, $currency),
+            'baseTotal' => $total,
+            'baseTotalFormatted' => $moneyFormatter->format($total, $currency),
+            'price' => $basePrice,
+            'priceFormatted' => $moneyFormatter->format($basePrice, $currentCurrency),
+            'total' => $baseTotal,
+            'totalFormatted' => $moneyFormatter->format($baseTotal, $currentCurrency),
+        ];
     }
 
-    protected function getTotalArray(CartInterface $cart)
+    /**
+     * @param CartInterface $cart
+     *
+     * @return array
+     */
+    protected function getCartSummary(CartInterface $cart)
     {
         return [
             [
@@ -319,43 +270,38 @@ abstract class AbstractSaleCreationController extends AbstractSaleController
         ];
     }
 
-    protected function createTempCart(
-        CustomerInterface $customer,
-        StoreInterface $store,
-        AddressInterface $shippingAddress,
-        AddressInterface $invoiceAddress,
-        CurrencyInterface $currency,
-        $localeCode,
-        array $productIds
-    ) {
-        /**
-         * @var CartInterface $cart
-         */
-        $cart = $this->get('coreshop.factory.cart')->createNew();
-        $cart->setParent(\Pimcore\Model\DataObject\Service::createFolderByPath('/coreshop/tmp'));
-        $cart->setKey(uniqid());
-        $cart->setStore($store);
-        $cart->setShippingAddress($shippingAddress);
-        $cart->setInvoiceAddress($invoiceAddress);
-        $cart->setCurrency($currency);
-        $cart->setCustomer($customer);
-        $cart->setCurrency($currency);
-        $cart->setLocaleCode($localeCode);
-        $cart->setStore($store);
+    /**
+     * @param CurrencyInterface $currency
+     *
+     * @return array
+     */
+    protected function getCurrency(CurrencyInterface $currency)
+    {
+        return [
+            'name' => $currency->getName(),
+            'symbol' => $currency->getSymbol(),
+        ];
+    }
 
-        foreach ($productIds as $productObject) {
-            $productId = $productObject['id'];
+    /**
+     * @param StoreInterface $store
+     *
+     * @return array
+     */
+    protected function getStore(StoreInterface $store)
+    {
+        return [
+            'id' => $store->getId(),
+            'name' => $store->getName(),
+        ];
+    }
 
-            $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
-
-            if ($product instanceof PurchasableInterface) {
-                $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $productObject['quantity']);
-
-                $this->get('coreshop.cart.modifier')->addToList($cart, $cartItem);
-            }
-        }
-
-        return $cart;
+    /**
+     * @return AddressFormatterInterface
+     */
+    private function getAddressFormatter()
+    {
+        return $this->get('coreshop.address.formatter');
     }
 
     /**

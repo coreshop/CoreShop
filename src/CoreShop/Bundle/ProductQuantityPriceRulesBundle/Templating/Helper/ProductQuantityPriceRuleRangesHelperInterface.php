@@ -18,40 +18,33 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
-interface ProductQuantityPriceHelperInterface
+interface ProductQuantityPriceRuleRangesHelperInterface
 {
     /**
      * @param QuantityRangePriceAwareInterface $product
+     * @param array                            $context
      *
      * @return bool
      */
-    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product);
+    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context);
 
     /**
      * @param QuantityRangePriceAwareInterface $product
+     * @param array                            $context
      *
      * @throws NoRuleFoundException
-     *
      * @return ProductQuantityPriceRuleInterface
      */
-    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product);
+    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product, array $context);
 
     /**
      * @param QuantityRangePriceAwareInterface $product
+     * @param array                            $context
      *
      * @throws NoRuleFoundException
-     *
      * @return array
      */
-    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product);
+    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context);
 
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $product
-     *
-     * @throws NoPriceFoundException
-     *
-     * @return int
-     */
-    public function getQuantityPriceRuleRangePrice(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $product);
+
 }

@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
+use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionSelectionType;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -30,7 +31,8 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
             ->add('amount', MoneyType::class, [])
             ->add('currency', CurrencyChoiceType::class, [])
             ->add('percentage', NumberType::class, [])
-            ->add('pseudoPrice', MoneyType::class, []);
+            ->add('pseudoPrice', MoneyType::class, [])
+            ->add('unitDefinition', ProductUnitDefinitionSelectionType::class, []);
     }
 
     /**

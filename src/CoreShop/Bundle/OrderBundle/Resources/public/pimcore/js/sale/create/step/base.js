@@ -26,6 +26,10 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
         this.panel.getForm().reset();
     },
 
+    setPreviewData: function(data) {
+
+    },
+
     getValues: function (parent) {
         return this.panel.getForm().getFieldValues();
     },
@@ -58,7 +62,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                 value: defaultStore.getId(),
                 listeners: {
                     select: function () {
-                        this.eventManager.fireEvent('store.changed');
+                        this.eventManager.fireEvent('preview');
                     }.bind(this)
                 }
             }),
@@ -70,8 +74,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                 },
                 listeners: {
                     select: function () {
-                        this.eventManager.fireEvent('currency.changed');
-                        this.eventManager.fireEvent('validation');
+                        this.eventManager.fireEvent('preview');
                     }.bind(this)
                 },
                 value: defaultStore.get('currency')
@@ -88,8 +91,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
                 value: languageStore[0],
                 listeners: {
                     select: function () {
-                        this.eventManager.fireEvent('language.changed');
-                        this.eventManager.fireEvent('validation');
+                        this.eventManager.fireEvent('preview');
                     }.bind(this)
                 }
             })

@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Product\Model\Product as BaseProduct;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 
 class Product extends BaseProduct implements ProductInterface
 {
@@ -188,7 +189,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null)
+    public function getStoreValues(\CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -196,7 +197,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setStorePrice($price, \CoreShop\Component\Store\Model\StoreInterface $store = null)
+    public function setStoreValues($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -223,6 +224,92 @@ class Product extends BaseProduct implements ProductInterface
     public function getQuantityPriceRules()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null)
+    {
+        if (!$store instanceof \CoreShop\Component\Store\Model\StoreInterface) {
+            $allStorePrices = [];
+            /** @var ProductStoreValuesInterface $storeValuesBlock */
+            foreach ($this->getStoreValues() as $storeValuesBlock) {
+                $allStorePrices[$storeValuesBlock->getStore()->getId()] = $storeValuesBlock instanceof ProductStoreValuesInterface ? $storeValuesBlock->getPrice() : null;
+            }
+            return $allStorePrices;
+        }
+
+        if ($this->getStoreValues($store) instanceof ProductStoreValuesInterface) {
+            return $this->getStoreValues($store)->getPrice();
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStorePrice($storePrice, \CoreShop\Component\Store\Model\StoreInterface $store = null)
+    {
+        if (!is_int($storePrice) && !is_array($storePrice)) {
+            throw new \InvalidArgumentException(sprintf('Expected value to either be an array or an int, "%s" given', gettype($storePrice)));
+        }
+
+        if (is_array($storePrice)) {
+            $currentStoreValues = $this->getStoreValues();
+            if (!is_array($currentStoreValues)) {
+                $currentStoreValues = [];
+            }
+
+            foreach ($storePrice as $storeId => $singleStorePrice) {
+
+                /** @var StoreRepositoryInterface $storeRepository */
+                $storeRepository = \Pimcore::getContainer()->get('coreshop.repository.store');
+                $currentStore = $storeRepository->find($storeId);
+
+                $found = false;
+                /** @var ProductStoreValuesInterface $storeValuesBlock */
+                foreach ($currentStoreValues as $storeValuesBlock) {
+                    if ($storeValuesBlock->getStore()->getId() === $storeId) {
+                        $storeValuesBlock->setPrice($singleStorePrice);
+                        $this->setStoreValues($storeValuesBlock, $currentStore);
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if ($found === false) {
+                    /** @var ProductStoreValuesInterface $newProductStoreValues */
+                    $newProductStoreValues = \Pimcore::getContainer()->get('coreshop.factory.product_store_values')->createNew();
+                    $newProductStoreValues->setStore($currentStore);
+                    $newProductStoreValues->setPrice($singleStorePrice);
+                    $newProductStoreValues->setProduct($this);
+                    $currentStoreValues = $newProductStoreValues;
+                    $this->setStoreValues($currentStoreValues, $currentStore);
+                }
+            }
+
+        } elseif ($store instanceof \CoreShop\Component\Store\Model\StoreInterface) {
+            $currentStoreValuesByStore = $this->getStoreValues($store);
+            if ($currentStoreValuesByStore instanceof ProductStoreValuesInterface) {
+                $currentStoreValuesByStore->setPrice($storePrice);
+            } else {
+                /** @var StoreRepositoryInterface $storeRepository */
+                $storeRepository = \Pimcore::getContainer()->get('coreshop.repository.store');
+                /** @var ProductStoreValuesInterface $newProductStoreValues */
+                $newProductStoreValues = \Pimcore::getContainer()->get('coreshop.factory.product_store_values')->createNew();
+                $newProductStoreValues->setStore($storeRepository->find($store->getId()));
+                $newProductStoreValues->setPrice($storePrice);
+                $newProductStoreValues->setProduct($this);
+                $currentStoreValuesByStore = $newProductStoreValues;
+            }
+
+            $this->setStoreValues($currentStoreValuesByStore, $store);
+
+        }
+
+        return $this;
     }
 
     /**

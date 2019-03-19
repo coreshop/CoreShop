@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\SaleItemInterface as BaseSaleItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 interface SaleItemInterface extends BaseSaleItemInterface
 {
@@ -45,4 +46,29 @@ interface SaleItemInterface extends BaseSaleItemInterface
      * @param int $mainObjectId
      */
     public function setMainObjectId($mainObjectId);
+
+    /**
+     * @return null|ProductUnitDefinitionInterface
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
+     */
+    public function setUnitDefinition($productUnitDefinition);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinition();
+
+    /**
+     * @return int
+     */
+    public function getDefaultUnitQuantity();
+
+    /**
+     * @param int $defaultUnitQuantity
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity);
 }

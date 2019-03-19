@@ -98,6 +98,5 @@ services:
             - '@coreshop.carrier.price_calculator.taxed'
             - '@coreshop.money_formatter'
             - '@coreshop.currency_converter'
-            - '@pimcore.translator'
         tags:
             - {name: form.type}

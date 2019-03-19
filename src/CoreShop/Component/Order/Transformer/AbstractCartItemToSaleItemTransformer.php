@@ -97,7 +97,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
-        $saleItem->setKey($cartItem->getKey());
+        $saleItem->setKey($cartItem->getKey() ?? uniqid());
         $saleItem->setParent($itemFolder);
         $saleItem->setPublished(true);
 

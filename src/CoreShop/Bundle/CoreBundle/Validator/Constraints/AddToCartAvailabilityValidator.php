@@ -13,10 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
+use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -56,12 +56,16 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
             return;
         }
 
+        /**
+         * @var CartItemInterface $cartItem
+         * @var CartInterface $cart
+         */
+        $cartItem = $addCartItemCommand->getCartItem();
+        $cart = $addCartItemCommand->getCart();
+
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
-            $addCartItemCommand->getCartItem()->getQuantity() + $this->getExistingCartItemQuantityFromCart(
-                $addCartItemCommand->getCart(),
-            $addCartItemCommand->getCartItem()
-                )
+            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
         );
 
         if (!$isStockSufficient) {
@@ -72,23 +76,24 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
     private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
     {
+        $product = $cartItem->getProduct();
+        $quantity = 0;
+
         /**
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if ($item->equals($cartItem)) {
-                return $item->getQuantity();
+            if (!$product && $item->equals($cartItem)) {
+                return $item->getDefaultUnitQuantity();
+            }
+
+            if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
+                $quantity += $item->getDefaultUnitQuantity();
             }
         }
 
-        return 0;
+        return $quantity;
     }
 }

@@ -57,3 +57,13 @@
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
 
+.coreshop_icon_product_units {
+    background: url(../img/product-units.svg) center center no-repeat !important;
+}
+.coreshop_icon_product_unit {
+    background: url(../img/product-unit.svg) center center no-repeat !important;
+}
+.pimcore_droptarget_unit_definition_input  {
+    background: url(../img/product-unit.svg) right 5px center/20px no-repeat transparent !important;
+    cursor: default;
+}

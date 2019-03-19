@@ -26,12 +26,6 @@ matrix:
             - CORESHOP_SUITE=stan
 
         - sudo: required
-          php: 7.2
-          env:
-            - CORESHOP_SUITE=stan
-            - PIMCORE_VERSION="^5.7.0"
-
-        - sudo: required
           php: 7.1
           env:
             - PIMCORE_VERSION="~5.7.0"

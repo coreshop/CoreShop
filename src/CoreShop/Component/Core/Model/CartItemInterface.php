@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartItemInterface as BaseCartItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
 interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterface
@@ -26,4 +27,29 @@ interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterfac
      * @param bool $digitalProduct
      */
     public function setDigitalProduct($digitalProduct);
+
+    /**
+     * @return null|ProductUnitDefinitionInterface
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
+     */
+    public function setUnitDefinition($productUnitDefinition);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinition();
+
+    /**
+     * @return int
+     */
+    public function getDefaultUnitQuantity();
+
+    /**
+     * @param int $defaultUnitQuantity
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity);
 }

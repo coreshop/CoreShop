@@ -21,24 +21,4 @@ use Webmozart\Assert\Assert;
 class OrderCreationController extends BaseOrderCreationController
 {
     use CoreSaleCreationTrait;
-
-    protected function prepareCart(Request $request, CartInterface $cart)
-    {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
-
-        /**
-         * @var \CoreShop\Component\Core\Model\CartInterface $cart
-         */
-        $carrierId = $request->get('carrier');
-
-        if ($carrierId) {
-            $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
-
-            if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException("Carrier with ID '$carrierId' not found");
-            }
-
-            $cart->setCarrier($carrier);
-        }
-    }
 }

@@ -1,0 +1,3 @@
+CoreShop\Component\Core\Model\Cart:
+    constraints:
+        - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailability: { groups: ['coreshop'] }

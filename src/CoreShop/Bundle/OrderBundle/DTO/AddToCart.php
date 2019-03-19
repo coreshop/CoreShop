@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\DTO;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 
-final class AddToCart implements AddToCartInterface
+class AddToCart implements AddToCartInterface
 {
     /**
      * @var CartInterface
@@ -38,7 +38,7 @@ final class AddToCart implements AddToCartInterface
     }
 
     /**
-     * @return CartInterface
+     * {@inheritdoc}
      */
     public function getCart()
     {
@@ -54,7 +54,7 @@ final class AddToCart implements AddToCartInterface
     }
 
     /**
-     * @return CartItemInterface
+     * {@inheritdoc}
      */
     public function getCartItem()
     {

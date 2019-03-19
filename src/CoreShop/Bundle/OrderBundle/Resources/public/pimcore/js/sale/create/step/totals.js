@@ -15,18 +15,6 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     totalStore: null,
 
     initStep: function () {
-        var me = this;
-
-        me.eventManager.on('products.changed', function () {
-            me.reloadTotalPanel();
-        });
-        me.eventManager.on('address.changed', function () {
-            me.reloadTotalPanel();
-        });
-        me.eventManager.on('totals.reload', function () {
-            me.reloadTotalPanel();
-        });
-
         this.totalStore = new Ext.data.JsonStore({
             data: []
         });
@@ -35,13 +23,24 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     reset: function() {
         this.layout.hide();
     },
-    
+
     isValid: function (parent) {
         return true;
     },
 
+    setPreviewData: function(data) {
+        this.totalStore.loadData(data.summary);
+
+        if (data.shippingAddress && data.invoiceAddress && data.items.length > 0) {
+            this.layout.show();
+        }
+        else {
+            this.layout.hide();
+        }
+    },
+
     getPriority: function () {
-        return 80;
+        return 100;
     },
 
     getValues: function () {
@@ -96,40 +95,5 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
         layout.hide();
 
         return layout;
-    },
-
-    reloadTotalPanel: function () {
-        var values = this.creationPanel.getValues();
-
-        if (values.shippingAddress && values.invoiceAddress && values.products.length > 0) {
-            this.layout.setLoading(t("loading"));
-
-            Ext.Ajax.request({
-                url: '/admin/coreshop/' + this.creationPanel.type + '-creation/get-totals',
-                method: 'post',
-                jsonData: values,
-                callback: function (request, success, response) {
-                    try {
-                        response = Ext.decode(response.responseText);
-
-                        if (response.success) {
-                            this.totalStore.loadData(response.summary);
-                        } else {
-                            Ext.Msg.alert(t('error'), response.message);
-                        }
-                    }
-                    catch (e) {
-                        Ext.Msg.alert(t('error'), e);
-                    }
-
-                    this.layout.setLoading(false);
-                }.bind(this)
-            });
-
-            this.layout.show();
-        }
-        else {
-            this.layout.hide();
-        }
     }
 });

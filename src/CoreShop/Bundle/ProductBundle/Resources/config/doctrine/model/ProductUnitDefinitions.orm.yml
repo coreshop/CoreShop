@@ -1,0 +1,31 @@
+CoreShop\Component\Product\Model\ProductUnitDefinitions:
+    type: mappedSuperclass
+    table: coreshop_product_unit_definitions
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        product:
+            column: product
+            type: pimcoreObject
+            unique: true
+    oneToOne:
+        defaultUnitDefinition:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            cascade:
+                - 'persist'
+                - 'merge'
+            joinColumn:
+                name: default_unit_definition
+                referencedColumnName: id
+                onDelete: 'SET NULL'
+    oneToMany:
+        unitDefinitions:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            mappedBy: productUnitDefinitions
+            orphanRemoval: true
+            cascade:
+                - 'all'

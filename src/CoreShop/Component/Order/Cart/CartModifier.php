@@ -12,11 +12,11 @@
 
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -25,9 +25,9 @@ use Webmozart\Assert\Assert;
 class CartModifier implements StorageListModifierInterface
 {
     /**
-     * @var CartItemFactoryInterface
+     * @var StorageListItemQuantityModifierInterface
      */
-    protected $cartItemFactory;
+    protected $cartItemQuantityModifier;
 
     /**
      * @var EventDispatcherInterface
@@ -35,12 +35,14 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param CartItemFactoryInterface $cartItemFactory
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
+     * @param EventDispatcherInterface                 $eventDispatcher
      */
-    public function __construct(CartItemFactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->cartItemFactory = $cartItemFactory;
+    public function __construct(
+        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -64,23 +66,28 @@ class CartModifier implements StorageListModifierInterface
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
 
-        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_pre', new GenericEvent($storageList, ['item' => $item]));
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_pre',
+            new GenericEvent($storageList, ['item' => $item]));
 
         $storageList->removeItem($item);
         $item->delete();
 
-        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_post', new GenericEvent($storageList, ['item' => $item]));
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_post',
+            new GenericEvent($storageList, ['item' => $item]));
     }
 
     /**
-     * @param StorageListInterface     $storageList
+     * @param StorageListInterface $storageList
      * @param StorageListItemInterface $storageListItem
      */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
     {
         foreach ($storageList->getItems() as $item) {
             if ($storageListItem->equals($item)) {
-                $item->setQuantity($item->getQuantity() + $storageListItem->getQuantity());
+                $this->cartItemQuantityModifier->modify(
+                    $item,
+                    $item->getQuantity() + $storageListItem->getQuantity()
+                );
 
                 return;
             }

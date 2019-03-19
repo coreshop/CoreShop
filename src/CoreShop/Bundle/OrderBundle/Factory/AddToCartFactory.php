@@ -12,17 +12,38 @@
 
 namespace CoreShop\Bundle\OrderBundle\Factory;
 
-use CoreShop\Bundle\OrderBundle\DTO\AddToCart;
+use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 
 class AddToCartFactory implements AddToCartFactoryInterface
 {
     /**
+     * @var string
+     */
+    protected $addToCartClass;
+
+    /**
+     * @param string $addToCartClass
+     */
+    public function __construct($addToCartClass)
+    {
+        $this->addToCartClass = $addToCartClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function createWithCartAndCartItem(CartInterface $cart, CartItemInterface $cartItem)
     {
-        return new AddToCart($cart, $cartItem);
+        $class = new $this->addToCartClass($cart, $cartItem);
+
+        if (!in_array(AddToCartInterface::class, class_implements($class), true)) {
+            throw new \InvalidArgumentException(
+                sprintf('%s needs to implement "%s".', get_class($class), AddToCartInterface::class)
+            );
+        }
+
+        return $class;
     }
 }

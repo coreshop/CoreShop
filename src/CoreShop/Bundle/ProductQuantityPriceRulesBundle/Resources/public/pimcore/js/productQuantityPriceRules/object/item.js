@@ -15,6 +15,7 @@ pimcore.registerNS('coreshop.product_quantity_price_rules.object.item');
 coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
+    objectId: null,
     clipBoardDispatcherId: null,
 
     ranges: null,
@@ -62,7 +63,16 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         return data.join(' ');
     },
 
+    setObjectId: function (objectId) {
+        this.objectId = objectId;
+        this.initPanelAfterObjectIdHasSet();
+    },
+
     initPanel: function () {
+        // dont use it, we need the object id first!
+    },
+
+    initPanelAfterObjectIdHasSet: function () {
         this.panel = this.getPanel();
         this.parentPanel.getTabPanel().add(this.panel);
     },
@@ -76,10 +86,10 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
     },
 
     getItems: function () {
-        var rangContainerClass = this.getRangeContainerClass();
+        var rangeContainerClass = this.getRangeContainerClass();
         var conditionContainerClass = this.getConditionContainerClass();
 
-        this.ranges = new rangContainerClass(this.getId(), this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
+        this.ranges = new rangeContainerClass(this.getId(), this.objectId, this.parentPanel.getClipboardManager(), this.parentPanel.getTranslatedStoreData('pricingBehaviourTypes'));
         this.conditions = new conditionContainerClass(this.parentPanel.getConditions());
 
         var items = [
@@ -176,7 +186,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         return this.data.id ? this.data.id : null;
     },
 
-    resetDeepId: function() {
+    resetDeepId: function () {
         this.setId(null);
         this.ranges.resetDeepId();
     },

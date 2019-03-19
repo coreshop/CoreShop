@@ -1,0 +1,31 @@
+CoreShop\Component\Product\Model\ProductUnitDefinition:
+    type: mappedSuperclass
+    table: coreshop_product_unit_definition
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        conversionRate:
+            column: conversion_rate
+            type: float
+            nullable: true
+    manyToOne:
+        unit:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface
+            joinColumn:
+                name: unit
+                referencedColumnName: id
+            cascade:
+                - 'merge'
+        productUnitDefinitions:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitions
+            inversedBy: unitDefinitions
+            cascade:
+                - 'merge'
+            joinColumn:
+                name: product_unit_definitions
+                referencedColumnName: id
+                onDelete: CASCADE

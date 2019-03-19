@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 trait SaleItemTrait
@@ -46,5 +47,29 @@ trait SaleItemTrait
     public function setMainObjectId($mainObjectId)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinition()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinition($productUnitDefinition)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnitDefinition()
+    {
+        return $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface;
     }
 }

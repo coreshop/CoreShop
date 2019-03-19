@@ -1,5 +1,5 @@
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+{% import '@CoreShopFrontend/Common/Macro/product_price.html.twig' as product_price %}
 
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
@@ -89,20 +89,27 @@
                 <hr/>
             {% endif %}
 
-            {% if coreshop_quantity_price_rule_ranges_available(product) %}
-                {% set rule = coreshop_quantity_price_rule(product) %}
-                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
+            {% if product.hasUnitDefinitions == true %}
+                <div class="unit-prices">
+                    {{ product_price.display_product_unit_prices(product) }}
+                </div>
+            {% else %}
+                <div class="price">
+                    <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
+                    {{ product_price.display_product_price(product) }}
+                </div>
+                <div class="tax">
+                    {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                </div>
             {% endif %}
 
-            <div class="price">
-                <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
-                {{ product_price.display_product_price(product) }}
-            </div>
-            <div class="tax">
-                {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
-            </div>
-
             <hr/>
+
+            {% if coreshop_quantity_price_rule_ranges_available(product, coreshop.context) %}
+                {% set rule = coreshop_quantity_price_rule(product, coreshop.context) %}
+                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
+                <hr/>
+            {% endif %}
 
             <div class="options">
                 <div class="cart-button btn-group">

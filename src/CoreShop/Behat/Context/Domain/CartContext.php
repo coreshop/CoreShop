@@ -16,9 +16,11 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartItem;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -393,6 +395,70 @@ final class CartContext implements Context
             sprintf(
                 'There should be no product in the cart, but found %d',
                 count($cart->getItems())
+            )
+        );
+    }
+
+    /**
+     * @Then /^the first item in (my cart) should have (unit "([^"]+)")$/
+     */
+    public function theFirstItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    {
+        Assert::minCount(
+            $cart->getItems(),
+            1,
+            'Expected to be at least 1 item in the cart, but found none'
+        );
+
+        /**
+         * @var CartItem $item
+         */
+        $item = $cart->getItems()[0];
+
+        Assert::notNull(
+            $item->getUnitDefinition(),
+            'Expected first cart item to have a unit-definition, but it did not'
+        );
+
+        Assert::eq(
+            $item->getUnitDefinition()->getUnit(),
+            $unit,
+            sprintf(
+                'Expected cart item to have unit %s, but found %s',
+                $item->getUnitDefinition()->getUnitName(),
+                $unit->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the second item in (my cart) should have (unit "([^"]+)")$/
+     */
+    public function theSecondItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    {
+        Assert::minCount(
+            $cart->getItems(),
+            2,
+            sprintf('Expected to be at least 2 items in the cart, but found %s', count($cart->getItems()))
+        );
+
+        /**
+         * @var CartItem $item
+         */
+        $item = $cart->getItems()[1];
+
+        Assert::notNull(
+            $item->getUnitDefinition(),
+            'Expected first cart item to have a unit-definition, but it did not'
+        );
+
+        Assert::eq(
+            $item->getUnitDefinition()->getUnit(),
+            $unit,
+            sprintf(
+                'Expected cart item to have unit %s, but found %s',
+                $item->getUnitDefinition()->getUnitName(),
+                $unit->getName()
             )
         );
     }

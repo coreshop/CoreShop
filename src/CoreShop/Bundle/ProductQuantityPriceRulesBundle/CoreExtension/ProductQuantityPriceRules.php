@@ -161,7 +161,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
         foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions') as $type) {
-            $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_fixed_' . strtolower($type)];
+            $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
         $data = [

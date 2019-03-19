@@ -27,6 +27,8 @@ class SessionStorageListModifier extends SimpleStorageListModifier
      */
     public function __construct(StorageListManagerInterface $manager)
     {
+        parent::__construct();
+
         $this->manager = $manager;
     }
 
