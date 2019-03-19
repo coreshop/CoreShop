@@ -24,6 +24,27 @@ use Symfony\Component\HttpKernel\KernelInterface;
 final class PimcoreDaoContext implements Context
 {
     /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function setKernel()
+    {
+        \Pimcore::setKernel($this->kernel);
+    }
+
+    /**
      * @BeforeScenario
      */
     public function purgeObjects()

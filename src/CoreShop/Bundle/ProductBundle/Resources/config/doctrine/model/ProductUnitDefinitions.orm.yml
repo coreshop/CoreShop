@@ -17,6 +17,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinitions:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
             cascade:
                 - 'persist'
+                - 'merge'
             joinColumn:
                 name: default_unit_definition
                 referencedColumnName: id

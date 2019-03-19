@@ -14,6 +14,8 @@ CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
     manyToOne:
         unitDefinition:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            cascade:
+                - 'merge'
             joinColumn:
                 name: unit_definition
                 referencedColumnName: id

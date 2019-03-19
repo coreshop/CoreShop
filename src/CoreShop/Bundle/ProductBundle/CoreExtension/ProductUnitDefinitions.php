@@ -170,6 +170,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             }
         }
 
+        if ($data instanceof ProductUnitDefinitionsInterface) {
+            $data = $this->getEntityManager()->merge($data);
+            $data->setProduct($object);
+        }
+
         return $data;
     }
 
@@ -216,8 +221,6 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
-            $productUnitDefinitions = $this->getEntityManager()->merge($productUnitDefinitions);
-
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);

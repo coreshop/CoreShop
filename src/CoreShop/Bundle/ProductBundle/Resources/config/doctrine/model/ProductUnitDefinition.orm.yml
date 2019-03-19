@@ -18,10 +18,13 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             joinColumn:
                 name: unit
                 referencedColumnName: id
-            fetch: EAGER
+            cascade:
+                - 'merge'
         productUnitDefinitions:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitions
             inversedBy: unitDefinitions
+            cascade:
+                - 'merge'
             joinColumn:
                 name: product_unit_definitions
                 referencedColumnName: id

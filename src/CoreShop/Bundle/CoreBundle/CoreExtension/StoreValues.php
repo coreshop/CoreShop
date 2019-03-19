@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
@@ -234,6 +235,17 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             }
         }
 
+        if (is_array($data)) {
+            foreach ($data as &$storeEntry) {
+                if ($storeEntry instanceof ProductStoreValuesInterface) {
+                    $storeEntry = $this->getEntityManager()->merge($storeEntry);
+                    $storeEntry->setProduct($object);
+                }
+            }
+
+            unset($storeEntry);
+        }
+
         return $data;
     }
 
@@ -276,7 +288,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         if (!$object instanceof Model\DataObject\Concrete) {
             return;
         }
-        
+
         $productStoreValues = $object->getObjectVar($this->getName());
 
         if (!is_array($productStoreValues)) {
@@ -290,11 +302,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          * @var ProductStoreValuesInterface $storeData
          */
         foreach ($productStoreValues as $storeId => $storeData) {
-            $storeData = $this->getEntityManager()->merge($storeData);
-
             $storeData->setProduct($object);
             $this->getEntityManager()->persist($storeData);
-            $validStoreValues[] = $storeData->getId();
+
+            if ($storeData->getId()) {
+                $validStoreValues[] = $storeData->getId();
+            }
         }
 
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
@@ -304,7 +317,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         }
 
         $this->getEntityManager()->flush();
-
     }
 
     /**
