@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Product\Repository\ProductUnitDefinitionRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -23,14 +23,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ProductUnitDefinitionSelectionType extends AbstractType
 {
     /**
-     * @var ProductUnitDefinitionRepositoryInterface
+     * @var RepositoryInterface
      */
     protected $productUnitDefinitionRepository;
 
     /**
-     * @param ProductUnitDefinitionRepositoryInterface $productUnitDefinitionRepository
+     * @param RepositoryInterface $productUnitDefinitionRepository
      */
-    public function __construct(ProductUnitDefinitionRepositoryInterface $productUnitDefinitionRepository)
+    public function __construct(RepositoryInterface $productUnitDefinitionRepository)
     {
         $this->productUnitDefinitionRepository = $productUnitDefinitionRepository;
     }

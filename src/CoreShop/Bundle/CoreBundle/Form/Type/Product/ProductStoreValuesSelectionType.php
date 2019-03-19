@@ -14,7 +14,6 @@ namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
-use CoreShop\Component\Product\Repository\ProductUnitDefinitionRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -24,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class ProductStoreValuesSelectionType extends AbstractType
 {
     /**
-     * @var ProductUnitDefinitionRepositoryInterface
+     * @var ProductStoreValuesRepositoryInterface
      */
     protected $productStoreValuesRepository;
 

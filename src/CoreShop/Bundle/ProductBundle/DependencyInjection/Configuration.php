@@ -13,9 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\Controller\ProductPriceRuleController;
-use CoreShop\Bundle\ProductBundle\Controller\ProductUnitController;
 use CoreShop\Bundle\ProductBundle\Controller\ProductUnitDefinitionsController;
-use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
@@ -144,7 +142,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(ProductUnit::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductUnitInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ProductUnitController::class)->cannotBeEmpty()->end()
+                                        //->scalarNode('admin_controller')->defaultValue(ProductUnitController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductUnitRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductUnitType::class)->cannotBeEmpty()->end()
@@ -194,7 +192,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(ProductUnitDefinition::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductUnitDefinitionInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ProductUnitDefinitionRepository::class)->end()
+                                        //->scalarNode('repository')->defaultValue(Repository::class)->end()
                                     ->end()
                                 ->end()
                             ->end()
