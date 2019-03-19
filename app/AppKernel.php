@@ -22,6 +22,13 @@ class AppKernel extends Kernel
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
     }
 
+    public function boot()
+    {
+        \Pimcore::setKernel($this);
+
+        parent::boot();
+    }
+
     /**
      * {@inheritdoc}
      */
