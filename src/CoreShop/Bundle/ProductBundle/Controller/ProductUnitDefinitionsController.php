@@ -16,6 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -81,7 +82,7 @@ class ProductUnitDefinitionsController extends ResourceController
                 ? $productUnitDefinitions->getAdditionalUnitDefinitions()
                 : $productUnitDefinitions->getUnitDefinitions();
         } else {
-            if ($product->getClass()->getAllowInherit() && $product->getParent() instanceof ProductInterface) {
+            if ($product instanceof Concrete && $product->getClass()->getAllowInherit() && $product->getParent() instanceof ProductInterface) {
                 $definitions = $this->getUnitDefinitionsForProduct($product->getParent(), $type);
             }
         }

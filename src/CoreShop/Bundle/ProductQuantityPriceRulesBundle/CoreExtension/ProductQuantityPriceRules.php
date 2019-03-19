@@ -174,7 +174,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             ],
         ];
 
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
@@ -250,7 +250,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function save($object, $params = [])
     {
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             if (!$object instanceof Concrete) {
                 return;
             }
@@ -298,7 +298,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function delete($object, $params = [])
     {
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             $all = $this->load($object, ['force' => true]);
 
             foreach ($all as $quantityPriceRule) {
