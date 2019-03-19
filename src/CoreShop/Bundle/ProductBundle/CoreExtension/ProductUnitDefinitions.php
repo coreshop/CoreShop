@@ -118,6 +118,9 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $code .= 'public function get' . ucfirst($key) . ' () {' . "\n";
         $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
+        $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {'  . "\n";
+		$code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '");'  . "\n";
+	    $code .= "\t" . '}'  . "\n";
         $code .= "\t" . 'return $data;' . "\n";
         $code .= "}\n\n";
 

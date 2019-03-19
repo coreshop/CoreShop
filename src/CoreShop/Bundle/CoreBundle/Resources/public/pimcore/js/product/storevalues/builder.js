@@ -19,8 +19,6 @@ coreshop.product.storeValues.builder = Class.create({
     form: null,
     dirty: false,
     itemBlocks: [],
-
-    // unit section
     productUnitDefinitionsStore: null,
 
     initialize: function (fieldConfig, store, data, productUnitDefinitionsStore, objectId) {
