@@ -25,6 +25,7 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository;
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinition;
@@ -142,7 +143,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(ProductUnit::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductUnitInterface::class)->cannotBeEmpty()->end()
-                                        //->scalarNode('admin_controller')->defaultValue(ProductUnitController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductUnitRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductUnitType::class)->cannotBeEmpty()->end()
