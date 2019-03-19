@@ -51,6 +51,9 @@ class Version20190315140800 extends AbstractPimcoreMigration implements Containe
                 $classUpdater->save();
             }
         }
+
+        //update translations
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
     /**
