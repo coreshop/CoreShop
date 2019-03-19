@@ -361,7 +361,7 @@ coreshop.product.unit.builder = Class.create({
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                displayField: 'name',
+                displayField: 'fullLabel',
                 valueField: 'id',
                 value: data.unitValue,
                 maxWidth: isDefault ? 250 : 200,

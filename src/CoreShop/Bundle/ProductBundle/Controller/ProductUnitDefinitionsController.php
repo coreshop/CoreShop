@@ -16,6 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -36,9 +37,8 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
-        $productUnitDefinitions = $product->getUnitDefinitions();
-        if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
-            $definitions = $productUnitDefinitions->getUnitDefinitions();
+        if ($product instanceof ProductInterface) {
+            $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
         }
 
         return $this->viewHandler->handle($definitions);
@@ -59,11 +59,34 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
-        $productUnitDefinitions = $product->getUnitDefinitions();
-        if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
-            $definitions = $productUnitDefinitions->getAdditionalUnitDefinitions();
+        if ($product instanceof ProductInterface) {
+            $definitions = $this->getUnitDefinitionsForProduct($product, 'additional');
         }
 
         return $this->viewHandler->handle($definitions);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $type
+     *
+     * @return array
+     */
+    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
+    {
+        $definitions = [];
+
+        if ($product->hasUnitDefinitions()) {
+            $productUnitDefinitions = $product->getUnitDefinitions();
+            $definitions = $type === 'additional'
+                ? $productUnitDefinitions->getAdditionalUnitDefinitions()
+                : $productUnitDefinitions->getUnitDefinitions();
+        } else {
+            if ($product instanceof Concrete && $product->getClass()->getAllowInherit() && $product->getParent() instanceof ProductInterface) {
+                $definitions = $this->getUnitDefinitionsForProduct($product->getParent(), $type);
+            }
+        }
+
+        return $definitions;
     }
 }

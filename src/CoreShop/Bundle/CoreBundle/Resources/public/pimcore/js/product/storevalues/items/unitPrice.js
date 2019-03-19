@@ -83,7 +83,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
                 'id': existingRecord !== null ? existingRecord.id : null,
                 'value': existingRecord !== null ? existingRecord.price : 0,
                 'unitDefinitionId': unitDefinition.id,
-                'name': Ext.isObject(unitRecord) ? unitRecord.get('name').toString() : '--'
+                'name': Ext.isObject(unitRecord) ? unitRecord.get('fullLabel').toString() : '--'
             });
 
         }.bind(this));
@@ -113,7 +113,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
                 'id': existingRecord !== null ? existingRecord.id : null,
                 'value': existingRecord !== null ? existingRecord.price : 0,
                 'unitDefinitionId': record.get('id'),
-                'name': unit['name'],
+                'name': unit['fullLabel'],
             })
 
         }.bind(this));

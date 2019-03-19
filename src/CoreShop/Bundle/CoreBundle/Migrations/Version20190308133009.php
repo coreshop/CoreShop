@@ -10,9 +10,6 @@ use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20190308133009 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
@@ -22,43 +19,7 @@ class Version20190308133009 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-        // migrate store price to store values
-        $storePriceRepository = $this->container->get('coreshop.repository.product_store_price');
-        $storeValuesRepository = $this->container->get('coreshop.repository.product_store_values');
-        $storeValuesFactory = $this->container->get('coreshop.factory.product_store_values');
-        $entityManager = $this->container->get('doctrine.orm.entity_manager');
-
-        foreach ($storePriceRepository->getAll() as $storePrice) {
-
-            if ($storePrice->getProperty() !== 'storePrice') {
-                continue;
-            }
-
-            $storePriceProduct = $storePrice->getProduct();
-            if (!$storePriceProduct instanceof ProductInterface) {
-                continue;
-            }
-
-            $storePriceStore = $storePrice->getStore();
-            if (!$storePriceStore instanceof StoreInterface) {
-                continue;
-            }
-
-            $storeValue = $storeValuesRepository->findForProductAndStore($storePriceProduct, $storePriceStore);
-
-            if (is_null($storeValue)) {
-                $storeValueEntity = $storeValuesFactory->createNew();
-                $storeValueEntity->setStore($storePriceStore);
-                $storeValueEntity->setProduct($storePriceProduct);
-                $storeValueEntity->setPrice($storePrice->getPrice());
-                $entityManager->persist($storeValueEntity);
-            } else {
-                $storeValue->setPrice($storePrice->getPrice());
-                $entityManager->persist($storeValue);
-            }
-        }
-
-        $entityManager->flush();
+        $this->addSql('INSERT INTO coreshop_product_store_values SELECT id, storeId as store, productId as product, price as price FROM coreshop_product_store_price WHERE property=\'storePrice\'');
 
         // remove storePrice tag from product class
         $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');

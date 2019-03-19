@@ -27,7 +27,7 @@ class ProductUnitDefinitionsRepository extends EntityRepository implements Produ
             ->andWhere('o.product = :product')
             ->setParameter('product', $product->getId())
             ->getQuery()
-            ->useResultCache(true)
+            ->useResultCache(false)
             ->useQueryCache(true)
             ->getOneOrNullResult();
     }
