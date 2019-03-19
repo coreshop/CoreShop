@@ -28,6 +28,7 @@ Feature: In order to allow better menu structures
     And the menu "coreshop.main" should have a child with ID "coreshop_product"
     And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_indexes"
     And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_filters"
+    And the menu "coreshop.main" child with id "coreshop_product" should have a child with ID "coreshop_product_units"
     And the menu "coreshop.main" should have a child with ID "coreshop_notification_rules"
     And the menu "coreshop.main" should have a child with ID "coreshop_payment_providers"
     And the menu "coreshop.main" should have a child with ID "coreshop_stores"
