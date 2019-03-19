@@ -36,7 +36,7 @@ coreshop.order.resource = Class.create(coreshop.resource, {
                             data: states
                         }));
                     });
-                    
+
                     Ext.Object.each(res.transitions, function(identifier, transitions) {
                         pimcore.globalmanager.add('coreshop_transitions' + identifier.replace('coreshop', ''), new Ext.data.Store({
                             restful: false,
@@ -70,6 +70,10 @@ coreshop.order.resource = Class.create(coreshop.resource, {
             this.openCreateQuote();
         } else if (item === 'cart_price_rule') {
             this.openCartPriceRules();
+        } else if (item === 'open_order_by_number') {
+            coreshop.order.helper.openSaleByNumberDialog('order');
+        } else if (item === 'coreshop_quote_by_number') {
+            coreshop.order.helper.openSaleByNumberDialog('quote');
         }
     },
 

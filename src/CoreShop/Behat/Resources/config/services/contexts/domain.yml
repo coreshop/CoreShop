@@ -243,3 +243,11 @@ services:
             - '@__symfony__.coreshop.repository.product_unit'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.menu:
+        class: CoreShop\Behat\Context\Domain\MenuContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.knp_menu.menu_provider'
+        tags:
+            - { name: fob.context_service }

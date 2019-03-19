@@ -112,6 +112,7 @@ core_shop_core:
             object_grid_column_store_price: '/bundles/coreshopcore/pimcore/js/object/gridcolumn/operator/storePrice.js'
             settings: '/bundles/coreshopcore/pimcore/js/settings.js'
             helpers: '/bundles/coreshopcore/pimcore/js/helpers.js'
+            menu: '/admin/coreshop/coreshop.main/menu.js'
             resource: '/bundles/coreshopcore/pimcore/js/resource.js'
         css:
             core: '/bundles/coreshopcore/pimcore/css/core.css'
