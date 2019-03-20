@@ -6,6 +6,11 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_availability' }
 
+    coreshop.validator.add_to_cart_quantity:
+        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_quantity' }
+
     coreshop.validator.cart_stock_availabilty:
         class: CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailabilityValidator
         arguments:

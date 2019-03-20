@@ -1,3 +1,4 @@
 coreshop:
     cart_item:
         not_sufficient_stock: '%stockable% hat keinen ausreichenden Vorrat.'
+        quantity_below_min_limit: 'Sie müssen mindestens %limit% Einheiten von %stockable% bestellen.'

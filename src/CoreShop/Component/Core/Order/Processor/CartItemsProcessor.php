@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
@@ -102,9 +103,13 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
 
+            // respect item quantity factor
+            if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor())) {
+                $itemPrice = $itemPrice / (int) $product->getItemQuantityFactor();
+            }
+
             try {
-                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(),
-                    $itemPrice, $context);
+                $itemPrice = $this->quantityReferenceDetector->detectQuantityPrice($product, $item->getQuantity(), $itemPrice, $context);
             } catch (NoRuleFoundException $exception) {
             } catch (NoPriceFoundException $exception) {
             }

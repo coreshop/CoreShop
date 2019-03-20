@@ -157,6 +157,22 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getMinimumQuantityToOrder()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMinimumQuantityToOrder($minimumQuantity)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getTaxRule()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

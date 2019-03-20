@@ -15,37 +15,24 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartAvailabilityValidator extends ConstraintValidator
+final class AddToCartQuantityValidator extends ConstraintValidator
 {
     /**
-     * @var AvailabilityCheckerInterface
-     */
-    private $availabilityChecker;
-
-    /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
-     */
-    public function __construct(AvailabilityCheckerInterface $availabilityChecker)
-    {
-        $this->availabilityChecker = $availabilityChecker;
-    }
-
-    /**
-     * @param AddToCartInterface $addCartDto
+     * @param AddToCartInterface $addCartItem
      *
      * {@inheritdoc}
      */
     public function validate($addCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addCartDto, AddToCartInterface::class);
-        Assert::isInstanceOf($constraint, AddToCartAvailability::class);
+        Assert::isInstanceOf($constraint, AddToCartQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
@@ -56,22 +43,27 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
             return;
         }
 
+        if (!$purchasable instanceof ProductInterface) {
+            return;
+        }
+
         /**
          * @var CartItemInterface $cartItem
-         * @var CartInterface $cart
+         * @var CartInterface     $cart
          */
         $cartItem = $addCartDto->getCartItem();
         $cart = $addCartDto->getCart();
 
-        $isStockSufficient = $this->availabilityChecker->isStockSufficient(
-            $purchasable,
-            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
-        );
+        $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
+        $minLimit = $purchasable->getMinimumQuantityToOrder();
 
-        if (!$isStockSufficient) {
+        if ($this->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
                 $constraint->message,
-                ['%stockable%' => $purchasable->getInventoryName()]
+                [
+                    '%stockable%' => $purchasable->getInventoryName(),
+                    '%limit%' => $minLimit
+                ]
             );
         }
     }
@@ -102,4 +94,20 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
 
         return $quantity;
     }
+
+    /**
+     * @param mixed $minimumLimit
+     * @param int   $quantity
+     *
+     * @return bool
+     */
+    public function isLowerThenMinLimit($minimumLimit, $quantity)
+    {
+        if (!is_numeric($minimumLimit)) {
+            return false;
+        }
+
+        return $quantity < $minimumLimit;
+    }
+
 }
