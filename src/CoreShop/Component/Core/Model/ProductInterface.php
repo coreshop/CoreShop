@@ -16,11 +16,11 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface as BaseProductInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
 interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface, PimcoreSEOAwareInterface, SEOImageAwareInterface, SEOOpenGraphAwareInterface, QuantityRangePriceAwareInterface
 {
@@ -59,6 +59,20 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      */
     public function setStoreValues($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null);
+
+    /**
+     * @param string                                         $type
+     * @param \CoreShop\Component\Store\Model\StoreInterface $store
+     * @return mixed
+     */
+    public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);
+
+    /**
+     * @param string                                         $type
+     * @param mixed                                          $value
+     * @param \CoreShop\Component\Store\Model\StoreInterface $store
+     */
+    public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store);
 
     /**
      * @param TaxRuleGroupInterface $taxRule
