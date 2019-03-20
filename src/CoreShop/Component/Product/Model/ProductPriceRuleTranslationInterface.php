@@ -12,20 +12,10 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Resource\Model\TranslatableInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\TimestampableInterface;
 
-interface PriceRuleInterface extends RuleInterface, TranslatableInterface
+interface ProductPriceRuleTranslationInterface extends PriceRuleTranslationInterface
 {
-    /**
-     * @param string|null $language
-     * @return string
-     */
-    public function getLabel($language = null);
 
-    /**
-     * @param string      $label
-     * @param string|null $language
-     */
-    public function setLabel($label, $language = null);
 }

@@ -23,3 +23,7 @@ CoreShop\Component\Product\Model\ProductPriceRule:
             expose: true
             type: array
             groups: [Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]

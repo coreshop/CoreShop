@@ -31,3 +31,7 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
             expose: true
             type: array
             groups: [Detailed]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]
