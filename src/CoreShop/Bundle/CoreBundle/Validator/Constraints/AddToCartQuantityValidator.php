@@ -31,7 +31,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
-        Assert::isInstanceOf($addToCartDto, AddToCartQuantity::class);
+        Assert::isInstanceOf($constraint, AddToCartQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
