@@ -12,11 +12,16 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
 class ProductPriceRule implements ProductPriceRuleInterface
 {
     use RuleTrait;
+    use TranslatableTrait {
+        __construct as private initializeTranslationsCollection;
+        getTranslation as private doGetTranslation;
+    }
 
     /**
      * @var int
@@ -27,6 +32,11 @@ class ProductPriceRule implements ProductPriceRuleInterface
      * @var string
      */
     protected $description;
+
+    public function __construct()
+    {
+        $this->initializeTranslationsCollection();
+    }
 
     /**
      * {@inheritdoc}
@@ -52,5 +62,43 @@ class ProductPriceRule implements ProductPriceRuleInterface
         $this->description = $description;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLabel($language = null)
+    {
+        return $this->getTranslation($language)->getLabel();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLabel($label, $language = null)
+    {
+        $this->getTranslation($language)->setLabel($label);
+    }
+
+    /**
+     * @param null $locale
+     * @param bool $useFallbackTranslation
+     *
+     * @return ProductPriceRuleTranslationInterface
+     */
+    public function getTranslation($locale = null, $useFallbackTranslation = true)
+    {
+        /** @var ProductPriceRuleTranslationInterface $translation */
+        $translation = $this->doGetTranslation($locale, $useFallbackTranslation);
+
+        return $translation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createTranslation()
+    {
+        return new ProductPriceRuleTranslation();
     }
 }

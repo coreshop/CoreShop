@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
+use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -26,6 +27,9 @@ final class ProductSpecificPriceRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('translations', ResourceTranslationsType::class, [
+                'entry_type' => ProductSpecificPriceRuleTranslationType::class,
+            ])
             ->add('name', TextareaType::class)
             ->add('inherit', CheckboxType::class)
             ->add('active', CheckboxType::class)

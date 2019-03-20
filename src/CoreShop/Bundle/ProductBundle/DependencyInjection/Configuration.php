@@ -18,7 +18,9 @@ use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductSpecificPriceRuleRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitRepository;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleTranslationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleType;
+use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleTranslationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitTranslationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitType;
@@ -28,6 +30,10 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
+use CoreShop\Component\Product\Model\ProductPriceRuleTranslation;
+use CoreShop\Component\Product\Model\ProductPriceRuleTranslationInterface;
+use CoreShop\Component\Product\Model\ProductSpecificPriceRuleTranslation;
+use CoreShop\Component\Product\Model\ProductSpecificPriceRuleTranslationInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinition;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -109,9 +115,25 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(ProductPriceRule::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductPriceRuleInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ProductPriceRuleController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductPriceRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(ProductPriceRuleTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(ProductPriceRuleTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(ProductPriceRuleTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -126,9 +148,25 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue(ProductSpecificPriceRule::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductSpecificPriceRuleInterface::class)->cannotBeEmpty()->end()
                                         //->scalarNode('admin_controller')->defaultValue(ProductSpecificPriceRuleController::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(TranslatableFactory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductSpecificPriceRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(ProductSpecificPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(ProductSpecificPriceRuleTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(ProductSpecificPriceRuleTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(ProductSpecificPriceRuleTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
