@@ -126,7 +126,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setLabel('coreshop_product_pricerules')
             ->setAttribute('permission', 'coreshop_permission_product_price_rule')
             ->setAttribute('iconCls', 'coreshop_icon_price_rule')
-            ->setAttribute('resource', 'coreshop.order')
+            ->setAttribute('resource', 'coreshop.product')
             ->setAttribute('function', 'product_price_rule')
             ->setExtra('order', 20);
 
