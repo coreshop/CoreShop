@@ -61,6 +61,20 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     public function setStoreValues($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null);
 
     /**
+     * @param string                                         $type
+     * @param \CoreShop\Component\Store\Model\StoreInterface $store
+     * @return mixed
+     */
+    public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);
+
+    /**
+     * @param string                                         $type
+     * @param                                                $value
+     * @param \CoreShop\Component\Store\Model\StoreInterface $store
+     */
+    public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store);
+
+    /**
      * @param TaxRuleGroupInterface $taxRule
      */
     public function setTaxRule($taxRule);
