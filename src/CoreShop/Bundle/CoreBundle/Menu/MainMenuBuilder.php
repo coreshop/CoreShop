@@ -86,27 +86,31 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_order_detail')
             ->setAttribute('iconCls', 'coreshop_icon_order')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'open_order_by_number');
+            ->setAttribute('function', 'open_order_by_number')
+            ->setExtra('order', 10);
 
         $menuItem->addChild('coreshop_quote_by_number')
             ->setLabel('coreshop_quote_by_number')
             ->setAttribute('permission', 'coreshop_permission_quote_detail')
             ->setAttribute('iconCls', 'coreshop_icon_quote')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'coreshop_quote_by_number');
+            ->setAttribute('function', 'coreshop_quote_by_number')
+            ->setExtra('order', 20);
 
         $menuItem->addChild('coreshop_settings')
             ->setLabel('coreshop_settings')
             ->setAttribute('permission', 'coreshop_permission_settings')
             ->setAttribute('iconCls', 'coreshop_icon_settings')
             ->setAttribute('resource', 'coreshop.core')
-            ->setAttribute('function', 'settings');
+            ->setAttribute('function', 'settings')
+            ->setExtra('order', 30);
 
         $priceRules = $menuItem
             ->addChild('coreshop_pricerules')
             ->setLabel('coreshop_pricerules')
             ->setAttribute('iconCls', 'coreshop_icon_price_rule')
-            ->setAttribute('container', true);
+            ->setAttribute('container', true)
+            ->setExtra('order', 40);
 
         $priceRules
             ->addChild('coreshop_cart_pricerules')
@@ -114,7 +118,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_cart_price_rule')
             ->setAttribute('iconCls', 'coreshop_icon_price_rule')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'cart_price_rule');
+            ->setAttribute('function', 'cart_price_rule')
+            ->setExtra('order', 10);
 
         $priceRules
             ->addChild('coreshop_product_pricerules')
@@ -122,13 +127,15 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_product_price_rule')
             ->setAttribute('iconCls', 'coreshop_icon_price_rule')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'product_price_rule');
+            ->setAttribute('function', 'product_price_rule')
+            ->setExtra('order', 20);
 
         $localization = $menuItem
             ->addChild('coreshop_localization')
             ->setLabel('coreshop_localization')
             ->setAttribute('iconCls', 'coreshop_icon_localization')
-            ->setAttribute('container', true);
+            ->setAttribute('container', true)
+            ->setExtra('order', 50);
 
         $localization
             ->addChild('coreshop_countries')
@@ -136,7 +143,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_country')
             ->setAttribute('iconCls', 'coreshop_icon_country')
             ->setAttribute('resource', 'coreshop.address')
-            ->setAttribute('function', 'country');
+            ->setAttribute('function', 'country')
+            ->setExtra('order', 10);
 
         $localization
             ->addChild('coreshop_states')
@@ -144,7 +152,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_state')
             ->setAttribute('iconCls', 'coreshop_icon_state')
             ->setAttribute('resource', 'coreshop.address')
-            ->setAttribute('function', 'state');
+            ->setAttribute('function', 'state')
+            ->setExtra('order', 20);
 
         $localization
             ->addChild('coreshop_currencies')
@@ -152,7 +161,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_currency')
             ->setAttribute('iconCls', 'coreshop_icon_currency')
             ->setAttribute('resource', 'coreshop.currency')
-            ->setAttribute('function', 'currency');
+            ->setAttribute('function', 'currency')
+            ->setExtra('order', 30);
 
         $localization
             ->addChild('coreshop_exchange_rates')
@@ -160,7 +170,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_exchange_rate')
             ->setAttribute('iconCls', 'coreshop_icon_exchange_rate')
             ->setAttribute('resource', 'coreshop.currency')
-            ->setAttribute('function', 'exchange_rate');
+            ->setAttribute('function', 'exchange_rate')
+            ->setExtra('order', 40);
 
         $localization
             ->addChild('coreshop_zones')
@@ -168,7 +179,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_zone')
             ->setAttribute('iconCls', 'coreshop_icon_zone')
             ->setAttribute('resource', 'coreshop.address')
-            ->setAttribute('function', 'zone');
+            ->setAttribute('function', 'zone')
+            ->setExtra('order', 50);
 
         $localization
             ->addChild('coreshop_taxes')
@@ -176,7 +188,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_tax_item')
             ->setAttribute('iconCls', 'coreshop_icon_taxes')
             ->setAttribute('resource', 'coreshop.taxation')
-            ->setAttribute('function', 'tax_item');
+            ->setAttribute('function', 'tax_item')
+            ->setExtra('order', 60);
 
         $localization
             ->addChild('coreshop_taxrulegroups')
@@ -184,13 +197,15 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_tax_rule_group')
             ->setAttribute('iconCls', 'coreshop_icon_tax_rule_groups')
             ->setAttribute('resource', 'coreshop.taxation')
-            ->setAttribute('function', 'tax_rule_group');
+            ->setAttribute('function', 'tax_rule_group')
+            ->setExtra('order', 70);
 
         $ordersMenu = $menuItem
             ->addChild('coreshop_order')
             ->setLabel('coreshop_order')
             ->setAttribute('iconCls', 'coreshop_icon_order')
-            ->setAttribute('container', true);
+            ->setAttribute('container', true)
+            ->setExtra('order', 60);
 
         $ordersMenu
             ->addChild('coreshop_orders')
@@ -198,7 +213,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_order_list')
             ->setAttribute('iconCls', 'coreshop_icon_orders')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'orders');
+            ->setAttribute('function', 'orders')
+            ->setExtra('order', 10);
 
         $ordersMenu
             ->addChild('coreshop_order_create')
@@ -206,7 +222,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_order_create')
             ->setAttribute('iconCls', 'coreshop_icon_order_create')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'create_order');
+            ->setAttribute('function', 'create_order')
+            ->setExtra('order', 20);
 
         $ordersMenu
             ->addChild('coreshop_quotes')
@@ -214,7 +231,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_quote_list')
             ->setAttribute('iconCls', 'coreshop_icon_quotes')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'quotes');
+            ->setAttribute('function', 'quotes')
+            ->setExtra('order', 30);
 
         $ordersMenu
             ->addChild('coreshop_quote_create')
@@ -222,13 +240,15 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_quote_create')
             ->setAttribute('iconCls', 'coreshop_icon_quote_create')
             ->setAttribute('resource', 'coreshop.order')
-            ->setAttribute('function', 'create_quote');
+            ->setAttribute('function', 'create_quote')
+            ->setExtra('order', 40);
 
         $carriersMenu = $menuItem
             ->addChild('coreshop_shipping')
             ->setLabel('coreshop_shipping')
             ->setAttribute('iconCls', 'coreshop_icon_shipping')
-            ->setAttribute('container', true);
+            ->setAttribute('container', true)
+            ->setExtra('order', 70);
 
         $carriersMenu
             ->addChild('coreshop_carriers')
@@ -236,7 +256,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_carrier')
             ->setAttribute('iconCls', 'coreshop_icon_carriers')
             ->setAttribute('resource', 'coreshop.shipping')
-            ->setAttribute('function', 'carrier');
+            ->setAttribute('function', 'carrier')
+            ->setExtra('order', 10);
 
         $carriersMenu
             ->addChild('coreshop_carriers_shipping_rules')
@@ -244,13 +265,15 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_shipping_rule')
             ->setAttribute('iconCls', 'coreshop_icon_carrier_shipping_rule')
             ->setAttribute('resource', 'coreshop.shipping')
-            ->setAttribute('function', 'shipping_rules');
+            ->setAttribute('function', 'shipping_rules')
+            ->setExtra('order', 20);
 
         $productsMenu = $menuItem
             ->addChild('coreshop_product')
             ->setLabel('coreshop_product')
             ->setAttribute('iconCls', 'coreshop_icon_product')
-            ->setAttribute('container', true);
+            ->setAttribute('container', true)
+            ->setExtra('order', 80);
 
         $productsMenu
             ->addChild('coreshop_indexes')
@@ -258,7 +281,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_index')
             ->setAttribute('iconCls', 'coreshop_icon_carriers')
             ->setAttribute('resource', 'coreshop.index')
-            ->setAttribute('function', 'index');
+            ->setAttribute('function', 'index')
+            ->setExtra('order', 10);
 
         $productsMenu
             ->addChild('coreshop_product_units')
@@ -266,7 +290,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_product_unit')
             ->setAttribute('iconCls', 'coreshop_icon_product_units')
             ->setAttribute('resource', 'coreshop.product')
-            ->setAttribute('function', 'product_unit');
+            ->setAttribute('function', 'product_unit')
+            ->setExtra('order', 30);
 
         $productsMenu
             ->addChild('coreshop_filters')
@@ -274,7 +299,8 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_filter')
             ->setAttribute('iconCls', 'coreshop_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
-            ->setAttribute('function', 'filter');
+            ->setAttribute('function', 'filter')
+            ->setExtra('order', 20);
 
 
         $menuItem->addChild('coreshop_notification_rules')
@@ -282,27 +308,31 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('permission', 'coreshop_permission_notification')
             ->setAttribute('iconCls', 'coreshop_icon_notification_rule')
             ->setAttribute('resource', 'coreshop.notification')
-            ->setAttribute('function', 'notification_rule');
+            ->setAttribute('function', 'notification_rule')
+            ->setExtra('order', 80);
 
         $menuItem->addChild('coreshop_payment_providers')
             ->setLabel('coreshop_payment_providers')
             ->setAttribute('permission', 'coreshop_permission_payment_provider')
             ->setAttribute('iconCls', 'coreshop_icon_payment_provider')
             ->setAttribute('resource', 'coreshop.payment')
-            ->setAttribute('function', 'payment_provider');
+            ->setAttribute('function', 'payment_provider')
+            ->setExtra('order', 90);
 
         $menuItem->addChild('coreshop_stores')
             ->setLabel('coreshop_stores')
             ->setAttribute('permission', 'coreshop_permission_store')
             ->setAttribute('iconCls', 'coreshop_icon_store')
             ->setAttribute('resource', 'coreshop.store')
-            ->setAttribute('function', 'store');
+            ->setAttribute('function', 'store')
+            ->setExtra('order', 100);
 
 
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')
             ->setAttribute('iconCls', 'coreshop_icon_logo')
             ->setAttribute('resource', 'coreshop.core')
-            ->setAttribute('function', 'about');
+            ->setAttribute('function', 'about')
+            ->setExtra('order', 1000);
     }
 }
