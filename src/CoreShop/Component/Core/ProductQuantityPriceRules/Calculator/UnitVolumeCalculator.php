@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\ProductQuantityPriceRules\Calculator;
 
+use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator;
@@ -69,6 +70,10 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         if (!is_numeric($price) || $price === 0) {
             throw new NoPriceFoundException(__CLASS__);
+        }
+
+        if ($subject instanceof ProductInterface && is_numeric($subject->getItemQuantityFactor()) && $subject->getItemQuantityFactor() > 1) {
+            $price = $price / (int) $subject->getItemQuantityFactor();
         }
 
         return $price;

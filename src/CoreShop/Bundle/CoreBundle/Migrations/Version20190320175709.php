@@ -37,7 +37,7 @@ class Version20190320175709 extends AbstractPimcoreMigration implements Containe
             'decimalPrecision' => 1,
             'name'             => 'itemQuantityFactor',
             'title'            => 'Item Quantity Factor',
-            'tooltip'          => 'If you\'re calculating with a different item quantity, you\'re able to define a different item quantity factor. For example, if you want to display a "Price per 1000 Items" label, you need to change the item quantity factor to "1000". Be aware that CoreShop will recalculate the item price by using the "quantity/item quantity factor" formula.',
+            'tooltip'          => 'If you\'re calculating with a different item quantity, you\'re able to define a different item quantity factor. For example, if you want to display a "Price per 1000 Items" label, you need to change the item quantity factor to "1000". Be aware that CoreShop will recalculate the item price by using the "(default item price) / (item quantity factor)" formula.',
             'mandatory'        => false,
             'noteditable'      => false,
             'index'            => false,
