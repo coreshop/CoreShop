@@ -220,6 +220,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
 
     removeProductFromCart: function(product) {
         this.cartPanelStore.remove(product);
+        this.products = this.getCartProducts();
 
         this.eventManager.fireEvent('preview');
     },
