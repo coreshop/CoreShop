@@ -15,14 +15,14 @@ namespace CoreShop\Component\Core\Tracking\Extractor;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Product\TaxedProductPriceCalculator;
+use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class ProductExtractor implements TrackingExtractorInterface
 {
     /**
-     * @var TaxedProductPriceCalculator
+     * @var TaxedProductPriceCalculatorInterface
      */
     private $taxedPurchasablePriceCalculator;
 
@@ -32,11 +32,11 @@ class ProductExtractor implements TrackingExtractorInterface
     private $shopperContext;
 
     /**
-     * @param TaxedProductPriceCalculator $taxedPurchasablePriceCalculator
-     * @param ShopperContextInterface     $shopperContext
+     * @param TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator
+     * @param ShopperContextInterface              $shopperContext
      */
     public function __construct(
-        TaxedProductPriceCalculator $taxedPurchasablePriceCalculator,
+        TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,
         ShopperContextInterface $shopperContext
     ) {
         $this->taxedPurchasablePriceCalculator = $taxedPurchasablePriceCalculator;
@@ -66,15 +66,15 @@ class ProductExtractor implements TrackingExtractorInterface
          * @var $object PurchasableInterface
          */
         return array_merge($data, [
-            'id' => $object->getId(),
-            'name' => $object->getName(),
-            'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
-            'sku' => $object instanceof ProductInterface ? $object->getSku() : '',
-            'price' => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
-            'currency' => $this->shopperContext->getCurrency()->getIsoCode(),
+            'id'         => $object->getId(),
+            'name'       => $object->getName(),
+            'category'   => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
+            'sku'        => $object instanceof ProductInterface ? $object->getSku() : '',
+            'price'      => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
+            'currency'   => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(function (CategoryInterface $category) {
                 return [
-                    'id' => $category->getId(),
+                    'id'   => $category->getId(),
                     'name' => $category->getName(),
                 ];
             }, is_array($categories) ? $categories : []),
