@@ -12,10 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class OrderMailConfigurationType extends StoreMailConfigurationType
+class OrderMailConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,9 +27,14 @@ class OrderMailConfigurationType extends StoreMailConfigurationType
         parent::buildForm($builder, $options);
 
         $builder
+            ->add('mails', CollectionType::class, [
+                'allow_add' => true,
+                'allow_delete' => true,
+            ])
             ->add('sendInvoices', CheckboxType::class)
             ->add('sendShipments', CheckboxType::class)
-            ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
+            ->add('doNotSendToDesignatedRecipient', CheckboxType::class)
+        ;
     }
 
     /**
