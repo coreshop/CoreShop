@@ -72,7 +72,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
 
         if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
-                $constraint->message,
+                $constraint->messageBelowMinimum,
                 [
                     '%stockable%' => $purchasable->getInventoryName(),
                     '%limit%' => $minLimit

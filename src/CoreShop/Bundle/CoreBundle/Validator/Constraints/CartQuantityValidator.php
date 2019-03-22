@@ -92,7 +92,7 @@ final class CartQuantityValidator extends ConstraintValidator
 
         if ($lowerThenMinimum === true && $invalidProduct instanceof StockableInterface) {
             $this->context->addViolation(
-                $constraint->message,
+                $constraint->messageBelowMinimum,
                 [
                     '%stockable%' => $invalidProduct->getInventoryName(),
                     '%limit%'     => $minLimit

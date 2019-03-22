@@ -19,7 +19,7 @@ final class CartQuantity extends Constraint
     /**
      * @var string
      */
-    public $message;
+    public $messageBelowMinimum;
 
     /**
      * {@inheritdoc}
