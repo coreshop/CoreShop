@@ -161,7 +161,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $defaultDefinition = $this->getDefaultUnitDefinition();
 
         $defaultDefinitionUnit = $defaultDefinition ? $defaultDefinition->getUnit() : null;
-        if ($productUnit == $defaultDefinitionUnit) {
+        if ($productUnit === $defaultDefinitionUnit) {
             return;
         }
 
@@ -177,7 +177,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $defaultDefinition = $this->getDefaultUnitDefinition();
 
         $defaultDefinitionUnit = $defaultDefinition ? $defaultDefinition->getUnit() : null;
-        if ($productUnit == $defaultDefinitionUnit) {
+        if ($productUnit === $defaultDefinitionUnit) {
             return;
         }
 
@@ -192,7 +192,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         $defaultDefinition = $this->getDefaultUnitDefinition();
         $additionalDefinitions = $this->getUnitDefinitions()
             ->filter(function ($precision) use ($defaultDefinition) {
-                return $precision != $defaultDefinition;
+                return $precision !== $defaultDefinition;
             });
 
         $additionalDefinitionsSorted = new ArrayCollection(array_values($additionalDefinitions->toArray()));
