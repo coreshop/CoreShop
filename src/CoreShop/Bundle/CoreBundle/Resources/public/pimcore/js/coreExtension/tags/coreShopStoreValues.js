@@ -93,6 +93,11 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             ignoreErrors: true,
             success: function (response) {
 
+                // maybe object is already gone due manual reload
+                if(this.component.destroyed === true) {
+                    return;
+                }
+
                 this.dirty = false;
 
                 var refreshedObject = null,

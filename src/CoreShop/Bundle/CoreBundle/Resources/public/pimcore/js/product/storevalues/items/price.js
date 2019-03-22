@@ -24,8 +24,12 @@ coreshop.product.storeValues.items.price = Class.create(coreshop.product.storeVa
                 value: 0
             });
 
+        // do not fire dirty flag on initial data setup
+        priceField.suspendEvents();
+
         if (price !== null) {
             priceField.setValue(price / 100);
+            priceField.resetOriginalValue();
             priceField.setFieldLabel(priceField.fieldLabel + ' (' + this.builder.data.currencySymbol + ')');
         }
 
@@ -42,6 +46,8 @@ coreshop.product.storeValues.items.price = Class.create(coreshop.product.storeVa
         if (is_numeric(this.builder.fieldConfig['maxValue'])) {
             priceField.setMaxValue(this.builder.fieldConfig.maxValue);
         }
+
+        priceField.resumeEvents(true);
 
         return priceField;
     }

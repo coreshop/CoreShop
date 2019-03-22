@@ -169,7 +169,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
-        $code .= "\t" . '$data = $this->' . $key . ";\n";
+        $code .= "\t" . '$data = $this->' . $key . ";\n\n";
+        $code .= "\t" . 'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
+        $code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);' . "\n";
+        $code .= "\t" . '}' . "\n\n";
         $code .= "\t" . 'if (is_array($data)) {' . "\n";
         $code .= "\t\t" . '/** @var \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValuesBlock */' . "\n";
         $code .= "\t\t" . 'foreach ($data as $storeValuesBlock) {' . "\n";
@@ -577,7 +580,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function isEmpty($data)
     {
-        return is_null($data);
+        return is_null($data) || (is_array($data) && count($data) === 0);
     }
 
     /**
