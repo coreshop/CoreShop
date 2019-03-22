@@ -1,3 +1,4 @@
 CoreShop\Component\Core\Model\Cart:
     constraints:
         - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailability: { groups: ['coreshop'] }
+        - \CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantity: { message: 'coreshop.cart_item.quantity_below_min_limit', groups: ['coreshop'] }

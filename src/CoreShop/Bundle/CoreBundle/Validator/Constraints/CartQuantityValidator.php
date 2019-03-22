@@ -13,17 +13,15 @@
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
-use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartQuantityValidator extends ConstraintValidator
+final class CartQuantityValidator extends ConstraintValidator
 {
     /**
      * @var QuantityValidatorService
@@ -39,43 +37,65 @@ final class AddToCartQuantityValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed      $addToCartDto
+     * @param mixed      $cart
      * @param Constraint $constraint
      */
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($cart, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
-        Assert::isInstanceOf($constraint, AddToCartQuantity::class);
-
         /**
-         * @var PurchasableInterface $purchasable
+         * @var CartInterface         $cart
+         * @var CartQuantityValidator $constraint
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($constraint, CartQuantity::class);
 
-        if (!$purchasable instanceof StockableInterface) {
-            return;
-        }
-
-        if (!$purchasable instanceof ProductInterface) {
-            return;
-        }
+        $lowerThenMinimum = false;
+        $productsChecked = [];
+        $invalidProduct = null;
+        $minLimit = 0;
 
         /**
          * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
          */
-        $cartItem = $addToCartDto->getCartItem();
-        $cart = $addToCartDto->getCart();
+        foreach ($cart->getItems() as $cartItem) {
+            $product = $cartItem->getProduct();
 
-        $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
-        $minLimit = $purchasable->getMinimumQuantityToOrder();
+            if (!$product instanceof StockableInterface) {
+                continue;
+            }
 
-        if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
+            if (!$product instanceof ProductInterface) {
+                continue;
+            }
+
+            if (in_array($product->getId(), $productsChecked, true)) {
+                continue;
+            }
+
+            if (!is_numeric($product->getMinimumQuantityToOrder())) {
+                continue;
+            }
+
+            $minLimit = (int) $product->getMinimumQuantityToOrder();
+            $lowerThenMinimum = $this->quantityValidatorService->isLowerThenMinLimit(
+                $minLimit,
+                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            );
+
+            $productsChecked[] = $product->getId();
+
+            if ($lowerThenMinimum === true) {
+                $invalidProduct = $product;
+                break;
+            }
+        }
+
+        if ($lowerThenMinimum === true && $invalidProduct instanceof StockableInterface) {
             $this->context->addViolation(
                 $constraint->message,
                 [
-                    '%stockable%' => $purchasable->getInventoryName(),
-                    '%limit%' => $minLimit
+                    '%stockable%' => $invalidProduct->getInventoryName(),
+                    '%limit%'     => $minLimit
                 ]
             );
         }
@@ -90,14 +110,14 @@ final class AddToCartQuantityValidator extends ConstraintValidator
     private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
     {
         $product = $cartItem->getProduct();
-        $quantity = 0;
+        $quantity = $cartItem->getDefaultUnitQuantity();
 
         /**
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if (!$product && $item->equals($cartItem)) {
-                return $item->getDefaultUnitQuantity();
+            if ($item->getId() === $cartItem->getId()) {
+                continue;
             }
 
             if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
