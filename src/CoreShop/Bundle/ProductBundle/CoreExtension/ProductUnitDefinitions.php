@@ -17,6 +17,7 @@ use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
@@ -174,8 +175,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         }
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
-            $data = $this->getEntityManager()->merge($data);
-            $data->setProduct($object);
+            if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
+                $data = $this->getEntityManager()->merge($data);
+                $data->setProduct($object);
+            }
         }
 
         return $data;
@@ -287,7 +290,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
 
         $parsedData = $this->expandDotNotationKeys($data);
-        $parsedData['objectId'] = $object->getId();
+        $parsedData['product'] = $object->getId();
 
         $form->submit($parsedData);
 

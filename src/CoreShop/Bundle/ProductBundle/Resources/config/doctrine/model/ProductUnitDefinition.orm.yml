@@ -18,6 +18,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             joinColumn:
                 name: unit
                 referencedColumnName: id
+            fetch: EAGER
             cascade:
                 - 'merge'
         productUnitDefinitions:
@@ -29,3 +30,6 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
                 name: product_unit_definitions
                 referencedColumnName: id
                 onDelete: CASCADE
+    uniqueConstraints:
+        definitions_and_unit:
+            columns: [product_unit_definitions, unit]

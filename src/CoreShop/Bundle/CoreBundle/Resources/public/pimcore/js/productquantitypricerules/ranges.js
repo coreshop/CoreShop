@@ -130,7 +130,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
             }.bind(this));
         }
 
-        var additionalColumns = {
+        additionalColumns = {
             'unitDefinition': [{
                 text: t('coreshop_product_quantity_price_rules_unit_definition'),
                 flex: 1,
@@ -167,7 +167,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     }
 
                     unitDefinitionRecord = _.productUnitDefinitionsStore.getById(unitDefinitionId);
-                    return unitDefinitionRecord.get('unitLabel');
+
+                    if(unitDefinitionRecord) {
+                        return unitDefinitionRecord.get('unitLabel');
+                    }
+
+                    return '-- (Id: ' + unitDefinitionId + ')';
                 }
             }],
             'quantityAmount': [{
