@@ -94,13 +94,6 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
             $classUpdater->save();
         }
 
-        $orderItemClass = $this->container->getParameter('coreshop.model.order_item.pimcore_class_name');
-        $classUpdater = new ClassUpdate($orderItemClass);
-        if (!$classUpdater->hasField('unitDefinition')) {
-            $classUpdater->insertFieldAfter('digitalProduct', $unitDefinitionField);
-            $classUpdater->save();
-        }
-
         $this->container->get('pimcore.cache.core.handler')->clearTag('doctrine_pimcore_cache');
     }
 
