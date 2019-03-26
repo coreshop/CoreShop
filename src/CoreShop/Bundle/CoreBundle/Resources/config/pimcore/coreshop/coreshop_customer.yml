@@ -7,5 +7,4 @@ core_shop_customer:
                 customer: coreshop/customers
                 guest: coreshop/guests
             classes:
-                interface: CoreShop\Component\Core\Model\CustomerInterface
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopCustomerBundle/CoreShopCustomer.json'

@@ -4,13 +4,11 @@ core_shop_product:
             path: coreshop/categories
             classes:
                 repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\CategoryRepository
-                interface: CoreShop\Component\Core\Model\CategoryInterface
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopCategory.json'
         product:
             path: coreshop/products
             classes:
                 repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository
-                interface: CoreShop\Component\Core\Model\ProductInterface
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json'
     resources:
         product_unit_definition_price:

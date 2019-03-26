@@ -4,11 +4,9 @@ core_shop_order:
             path: coreshop/carts
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
-                interface: CoreShop\Component\Core\Model\CartInterface
         cart_item:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'
-                interface: CoreShop\Component\Core\Model\CartItemInterface
         order:
             path: coreshop/orders
             classes:
@@ -16,23 +14,18 @@ core_shop_order:
                     default: CoreShop\Bundle\CoreBundle\Controller\OrderController
                     creation: CoreShop\Bundle\CoreBundle\Controller\OrderCreationController
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrder.json'
-                interface: CoreShop\Component\Core\Model\OrderInterface
         order_item:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderItem.json'
-                interface: CoreShop\Component\Core\Model\OrderItemInterface
         order_shipment:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'
-                interface: CoreShop\Component\Core\Model\OrderShipmentInterface
         quote:
             path: coreshop/quotes
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuote.json'
-                interface: CoreShop\Component\Core\Model\QuoteInterface
                 pimcore_controller:
                     creation: CoreShop\Bundle\CoreBundle\Controller\QuoteCreationController
         quote_item:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopQuoteItem.json'
-                interface: CoreShop\Component\Core\Model\QuoteItemInterface
