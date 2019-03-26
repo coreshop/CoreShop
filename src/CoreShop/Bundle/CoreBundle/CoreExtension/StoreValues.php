@@ -276,6 +276,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          * @var Model\DataObject\Concrete $object
          */
         $data = $object->getObjectVar($this->getName());
+        $returnData = [];
 
         if (!$object->hasLazyKey($this->getName())) {
             $data = $this->load($object, ['force' => true]);
@@ -297,7 +298,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             unset($storeEntry);
         }
 
-        return $data;
+        foreach ($data as $storeValue) {
+            $returnData[$storeValue->getStore()->getId()] = $storeValue;
+        }
+
+        return $returnData;
     }
 
     /**
