@@ -67,11 +67,11 @@ class OrderController extends BaseOrderController
             return $itemData;
         }
 
-        if (!$item->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
+        if (!is_string($item->getUnitIdentifier())) {
             return $itemData;
         }
 
-        $itemData['unit'] = $item->getUnitDefinition()->getUnit()->getName();
+        $itemData['unit'] = $item->hasUnit() ? $item->getUnit()->getFullLabel() : $item->getUnitIdentifier();
 
         return $itemData;
     }
