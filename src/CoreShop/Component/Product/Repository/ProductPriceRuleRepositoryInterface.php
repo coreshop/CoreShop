@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Product\Repository;
 
-use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
-
-interface ProductPriceRuleRepositoryInterface extends RuleRepositoryInterface
+interface ProductPriceRuleRepositoryInterface extends PriceRuleRepositoryInterface
 {
 }

@@ -10,18 +10,10 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Product\Model;
+namespace CoreShop\Component\Product\Repository;
 
-use CoreShop\Component\Resource\Model\TranslatableTrait;
-use CoreShop\Component\Rule\Model\RuleTrait;
+use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
-class ProductPriceRule extends AbstractPriceRule implements ProductPriceRuleInterface
+interface PriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function createTranslation()
-    {
-        return new ProductPriceRuleTranslation();
-    }
 }

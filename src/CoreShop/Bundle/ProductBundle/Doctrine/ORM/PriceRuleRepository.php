@@ -12,19 +12,18 @@
 
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
+use CoreShop\Component\Product\Repository\PriceRuleRepositoryInterface;
 
-class ProductSpecificPriceRuleRepository extends PriceRuleRepository implements ProductSpecificPriceRuleRepositoryInterface
+class PriceRuleRepository extends RuleRepository implements PriceRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function findForProduct(ProductInterface $product)
+    public function findActive()
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.product = :productId')
-            ->setParameter('productId', $product->getId())
+            ->andWhere('o.active = 1')
             ->addOrderBy('o.priority', 'ASC')
             ->getQuery()
             ->getResult();

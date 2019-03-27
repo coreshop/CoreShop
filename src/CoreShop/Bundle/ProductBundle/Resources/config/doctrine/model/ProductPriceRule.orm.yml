@@ -11,6 +11,9 @@ CoreShop\Component\Product\Model\ProductPriceRule:
         name:
             column: name
             type: string
+        priority:
+            column: priority
+            type: integer
         description:
             column: description
             type: string
