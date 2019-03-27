@@ -42,8 +42,11 @@ class CompositePurchasablePriceCalculator implements PurchasablePriceCalculatorI
          * @var PurchasablePriceCalculatorInterface $calculator
          */
         foreach ($this->calculators->all() as $calculator) {
+            $contextWithPrice = $context;
+            $contextWithPrice['price'] = $price;
+
             try {
-                $actionPrice = $calculator->getPrice($purchasable, $context, $includingDiscounts);
+                $actionPrice = $calculator->getPrice($purchasable, $contextWithPrice, $includingDiscounts);
                 $price = $actionPrice;
             } catch (NoPurchasablePriceFoundException $ex) {
             }

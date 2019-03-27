@@ -42,8 +42,11 @@ class CompositeDiscountPriceCalculator implements ProductDiscountPriceCalculator
          * @var ProductDiscountPriceCalculatorInterface $calculator
          */
         foreach ($this->discountPriceCalculator->all() as $calculator) {
+            $contextWithPrice = $context;
+            $contextWithPrice['price'] = $price;
+
             try {
-                $actionPrice = $calculator->getDiscountPrice($subject, $context);
+                $actionPrice = $calculator->getDiscountPrice($subject, $contextWithPrice);
                 $price = $actionPrice;
             } catch (NoDiscountPriceFoundException $ex) {
             }

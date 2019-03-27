@@ -41,7 +41,10 @@ class CompositePurchasableDiscountCalculator implements PurchasableDiscountCalcu
          * @var PurchasableDiscountCalculatorInterface $calculator
          */
         foreach ($this->discountCalculators->all() as $calculator) {
-            $discounts += $calculator->getDiscount($purchasable, $context, $basePrice);
+            $contextWithDiscount = $context;
+            $contextWithDiscount['discount'] = $discounts;
+
+            $discounts += $calculator->getDiscount($purchasable, $contextWithDiscount, $basePrice);
         }
 
         return $discounts;

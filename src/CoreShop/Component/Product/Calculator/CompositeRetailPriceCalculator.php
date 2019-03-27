@@ -42,8 +42,11 @@ class CompositeRetailPriceCalculator implements ProductRetailPriceCalculatorInte
          * @var ProductRetailPriceCalculatorInterface $calculator
          */
         foreach ($this->retailPriceCalculator->all() as $calculator) {
+            $contextWithPrice = $context;
+            $contextWithPrice['price'] = $price;
+
             try {
-                $actionPrice = $calculator->getRetailPrice($subject, $context);
+                $actionPrice = $calculator->getRetailPrice($subject, $contextWithPrice);
                 $price = $actionPrice;
             } catch (NoRetailPriceFoundException $exception) {
             }
