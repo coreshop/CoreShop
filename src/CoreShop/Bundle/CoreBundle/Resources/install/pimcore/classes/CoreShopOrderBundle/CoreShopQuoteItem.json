@@ -1005,7 +1005,7 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
-                                                "name": "basePdjustmentItems",
+                                                "name": "baseAdjustmentItems",
                                                 "title": "Adjustments",
                                                 "tooltip": "",
                                                 "mandatory": false,

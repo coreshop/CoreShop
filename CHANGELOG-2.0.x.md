@@ -1,5 +1,9 @@
 # Within V2
 
+## 2.0.6:
+ - Bug:
+   - [Adjustments] in the classes "CoreShopOrderItem", "CoreShopQuoteItem", was a typo `basePdjustmentItems` instead of `baseAdjustmentItems`. Please manually rename them to `baseAdjustmentItems`
+
 ## 2.0.5:
  - Deprecations:
    - [WorkflowBundle] refactor state change logging (https://github.com/coreshop/CoreShop/pull/835)
