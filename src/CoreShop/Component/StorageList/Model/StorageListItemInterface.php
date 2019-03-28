@@ -15,6 +15,11 @@ namespace CoreShop\Component\StorageList\Model;
 interface StorageListItemInterface
 {
     /**
+     * @return int
+     */
+    public function getId();
+
+    /**
      * @return StorageListProductInterface
      */
     public function getProduct();

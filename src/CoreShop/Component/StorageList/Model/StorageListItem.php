@@ -27,6 +27,14 @@ class StorageListItem implements StorageListItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getId()
+    {
+        return $this->product ? $this->product->getId() : 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getProduct()
     {
         return $this->product;
