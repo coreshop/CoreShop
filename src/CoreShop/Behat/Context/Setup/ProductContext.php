@@ -280,6 +280,15 @@ final class ProductContext implements Context
         $this->saveProduct($product);
     }
 
+    /**
+     * @Given /^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/
+     * @Given /^the (product) has a minimum order quantity of "([^"]+)"$/
+     */
+    public function theProductHasAMinimumOrderQuantity(ProductInterface $product, int $miminumQuantity)
+    {
+        $product->setMinimumQuantityToOrder($miminumQuantity);
+        $this->saveProduct($product);
+    }
 
     /**
      * @Given /^the (product) has the default (unit "[^"]+")$/

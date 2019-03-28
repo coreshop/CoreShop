@@ -88,4 +88,14 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
      * @param bool $digitalProduct
      */
     public function setDigitalProduct($digitalProduct);
+
+    /**
+     * @return null|int
+     */
+    public function getMinimumQuantityToOrder();
+
+    /**
+     * @param null|int $minimumQuantity
+     */
+    public function setMinimumQuantityToOrder($minimumQuantity);
 }

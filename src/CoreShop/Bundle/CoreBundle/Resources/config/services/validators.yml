@@ -12,3 +12,20 @@ services:
             - '@coreshop.inventory.availability_checker'
         tags:
             - { name: validator.constraint_validator, alias: 'coreshop_cart_stock_availability' }
+
+    coreshop.validator.quantity_validator:
+        class: CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService
+
+    coreshop.validator.add_to_cart_quantity:
+        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator
+        arguments:
+            - '@coreshop.validator.quantity_validator'
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_quantity' }
+
+    coreshop.validator.cart_quantity:
+        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator
+        arguments:
+            - '@coreshop.validator.quantity_validator'
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_cart_quantity' }
