@@ -54,6 +54,12 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
                 width: 250,
                 value: data.name
             }, {
+                xtype: 'numberfield',
+                name: 'priority',
+                fieldLabel: t('coreshop_priority'),
+                value: this.data.priority ? this.data.priority : 0,
+                width: 250
+            }, {
                 xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),

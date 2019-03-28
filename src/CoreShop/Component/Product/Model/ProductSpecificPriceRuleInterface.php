@@ -27,16 +27,6 @@ interface ProductSpecificPriceRuleInterface extends PriceRuleInterface
     /**
      * @return int
      */
-    public function getPriority();
-
-    /**
-     * @param int $priority
-     */
-    public function setPriority($priority);
-
-    /**
-     * @return int
-     */
     public function getProduct();
 
     /**

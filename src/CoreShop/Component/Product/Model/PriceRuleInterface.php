@@ -28,4 +28,14 @@ interface PriceRuleInterface extends RuleInterface, TranslatableInterface
      * @param string|null $language
      */
     public function setLabel($label, $language = null);
+
+    /**
+     * @return int
+     */
+    public function getPriority();
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority);
 }
