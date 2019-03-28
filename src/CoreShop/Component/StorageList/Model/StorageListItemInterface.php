@@ -12,9 +12,7 @@
 
 namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-
-interface StorageListItemInterface extends ResourceInterface
+interface StorageListItemInterface
 {
     /**
      * @return StorageListProductInterface
