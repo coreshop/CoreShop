@@ -1,7 +1,7 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/profiler.yml" }
-    - { resource: "services/pimcore.yml" }
+    - { resource: 'services/form.yml' }
+    - { resource: 'services/profiler.yml' }
+    - { resource: 'services/pimcore.yml' }
 
 services:
     _defaults:
@@ -57,3 +57,10 @@ services:
             - '@coreshop.templating.helper.format_address'
         tags:
             - { name: twig.extension }
+
+    coreshop.validator.address_valid_type:
+      class: CoreShop\Bundle\AddressBundle\Validator\Constraints\ValidAddressTypeValidator
+      arguments:
+          - '%coreshop.address.valid_types%'
+      tags:
+          - { name: validator.constraint_validator, alias: 'coreshop_address_valid_type' }

@@ -146,7 +146,11 @@ class CustomerController extends FrontendController
         $eventType = 'update';
         if (!$address instanceof AddressInterface) {
             $eventType = 'add';
+            /** @var AddressInterface $address */
             $address = $this->get('coreshop.factory.address')->createNew();
+            if ($request->query->has('address_type')) {
+                $address->setAddressType($request->query->get('address_type'));
+            }
         } else {
             if (!$customer->hasAddress($address)) {
                 return $this->redirectToRoute('coreshop_customer_addresses');

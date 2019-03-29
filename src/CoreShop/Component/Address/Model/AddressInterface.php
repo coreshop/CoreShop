@@ -126,4 +126,14 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
      * @param string $phoneNumber
      */
     public function setPhoneNumber($phoneNumber);
+
+    /**
+     * @return string|null
+     */
+    public function getAddressType();
+
+    /**
+     * @param string $addressType
+     */
+    public function setAddressType($addressType);
 }
