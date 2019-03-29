@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -52,6 +53,9 @@ class Version20190329100025 extends AbstractPimcoreMigration implements Containe
 
             $classUpdater->save();
         }
+
+        //update translations
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
     /**

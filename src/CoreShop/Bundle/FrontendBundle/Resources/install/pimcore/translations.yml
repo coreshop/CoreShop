@@ -17,6 +17,18 @@ translations:
           en: 'Add a new address'
           de: 'Neue Adresse hinzufügen'
 
+  coreshop.ui.add_new_shipping_address:
+      languages:
+          de_CH: 'Neue Lieferadresse hinzufügen'
+          en: 'Add a new shipping address'
+          de: 'Neue Lieferadresse hinzufügen'
+
+  coreshop.ui.add_new_invoice_address:
+      languages:
+          de_CH: 'Neue Rechnungsadresse hinzufügen'
+          en: 'Add a new billing address'
+          de: 'Neue Rechnungsadresse hinzufügen'
+
   coreshop.ui.add_to_cart:
       languages:
           de_CH: 'Zum Warenkorb'
