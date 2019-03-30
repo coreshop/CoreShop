@@ -14,19 +14,19 @@ namespace CoreShop\Bundle\AddressBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-final class ValidAddressType extends Constraint
+final class ValidAddressIdentifier extends Constraint
 {
     /**
      * @var string
      */
-    public $message = 'Address Type "%address_type%" is not valid.';
+    public $message = 'Address Identifier "%address_identifier%" is not valid.';
 
     /**
      * {@inheritdoc}
      */
     public function validatedBy()
     {
-        return 'coreshop_address_valid_type';
+        return 'coreshop_address_valid_identifier';
     }
 
     /**

@@ -56,12 +56,12 @@ final class AddressType extends AbstractResourceType
                 'constraints' => [new NotBlank()],
                 'customer'    => $options['customer']->getId(),
                 'label'       => 'coreshop.form.address.shipping',
-                'allowed_address_types' => [null, 'shipping'],
+                'allowed_address_identifier' => [null, 'shipping'],
                 'choice_attr' => function ($address) {
                     if ($address instanceof AddressInterface) {
                         return [
                             'data-address'      => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->getAddressType()
+                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : ''
                         ];
                     }
 
@@ -73,12 +73,12 @@ final class AddressType extends AbstractResourceType
                 'constraints' => [new NotBlank()],
                 'customer'    => $options['customer']->getId(),
                 'label'       => 'coreshop.form.address.invoice',
-                'allowed_address_types' => [null, 'invoice'],
+                'allowed_address_identifier' => [null, 'invoice'],
                 'choice_attr' => function ($address) {
                     if ($address instanceof AddressInterface) {
                         return [
                             'data-address'      => json_encode(['html' => $this->addressFormatHelper->formatAddress($address)]),
-                            'data-address-type' => $address->getAddressType()
+                            'data-address-type' => $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : ''
                         ];
                     }
 

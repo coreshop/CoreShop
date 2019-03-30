@@ -12,23 +12,25 @@
 
 namespace CoreShop\Bundle\AddressBundle\Validator\Constraints;
 
+use CoreShop\Component\Address\Model\AddressIdentifierInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-final class ValidAddressTypeValidator extends ConstraintValidator
+final class ValidAddressIdentifierValidator extends ConstraintValidator
 {
     /**
-     * @var array
+     * @var RepositoryInterface
      */
-    protected $validAddressTypes;
+    private $addressIdentifierRepository;
 
     /**
-     * @param array $validAddressTypes
+     * @param RepositoryInterface $addressIdentifierRepository
      */
-    public function __construct(array $validAddressTypes)
+    public function __construct(RepositoryInterface $addressIdentifierRepository)
     {
-        $this->validAddressTypes = $validAddressTypes;
+        $this->addressIdentifierRepository = $addressIdentifierRepository;
     }
 
     /**
@@ -36,21 +38,19 @@ final class ValidAddressTypeValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (!$constraint instanceof ValidAddressType) {
-            throw new UnexpectedTypeException($constraint, ValidAddressType::class);
+        if (!$constraint instanceof ValidAddressIdentifier) {
+            throw new UnexpectedTypeException($constraint, ValidAddressIdentifier::class);
         }
 
         if ($value === null || $value === '') {
             return;
         }
 
-        if (!is_string($value)) {
-            throw new UnexpectedTypeException($value, 'string');
-        }
+        $addressIdentifier = $this->addressIdentifierRepository->find($value);
 
-        if (!in_array($value, $this->validAddressTypes, true)) {
+        if (!$addressIdentifier instanceof AddressIdentifierInterface) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('%address_type%', $value)
+                ->setParameter('%address_identifier%', $value)
                 ->addViolation();
         }
     }

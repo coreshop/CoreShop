@@ -34,8 +34,6 @@ final class CoreShopAddressExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-        $container->setParameter('coreshop.address.valid_types', $config['address_types']);
-
         $loader->load('services.yml');
     }
 }

@@ -49,18 +49,19 @@ final class AddressChoiceType extends AbstractType
                          * @var CustomerInterface $customer
                          */
                         $customer = $this->customerRepository->find($options['customer']);
-                        $allowedAddressTypes = $options['allowed_address_types'];
+                        $allowedAddressIdentifier = $options['allowed_address_identifier'];
 
                         if (!$customer instanceof CustomerInterface) {
                             throw new \InvalidArgumentException('Customer needs to be set');
                         }
 
-                        if (empty($allowedAddressTypes)) {
+                        if (empty($allowedAddressIdentifier)) {
                             return $customer->getAddresses();
                         }
 
-                        return array_filter($customer->getAddresses(), function (AddressInterface $address) use ($allowedAddressTypes) {
-                            return in_array($address->getAddressType(), $allowedAddressTypes);
+                        return array_filter($customer->getAddresses(), function (AddressInterface $address) use ($allowedAddressIdentifier) {
+                            $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
+                            return in_array($addressIdentifierName, $allowedAddressIdentifier);
                         });
 
                     },
@@ -74,7 +75,7 @@ final class AddressChoiceType extends AbstractType
                     },
                     'choice_translation_domain' => false,
                     'active' => true,
-                    'allowed_address_types' => [],
+                    'allowed_address_identifier' => [],
                     'placeholder' => 'coreshop.form.address.choose_address',
                 ]
             );

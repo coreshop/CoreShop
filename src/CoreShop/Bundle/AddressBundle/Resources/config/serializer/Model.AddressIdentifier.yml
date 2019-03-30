@@ -1,0 +1,17 @@
+CoreShop\Component\Address\Model\AddressIdentifier:
+    exclusion_policy: ALL
+    xml_root_name: address_identifier
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed]

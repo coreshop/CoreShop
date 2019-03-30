@@ -128,12 +128,17 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function setPhoneNumber($phoneNumber);
 
     /**
-     * @return string|null
+     * @return AddressIdentifierInterface|null
      */
-    public function getAddressType();
+    public function getAddressIdentifier();
 
     /**
-     * @param string $addressType
+     * @param AddressIdentifierInterface $addressIdentifier
      */
-    public function setAddressType($addressType);
+    public function setAddressIdentifier($addressIdentifier);
+
+    /**
+     * @return bool
+     */
+    public function hasAddressIdentifier();
 }

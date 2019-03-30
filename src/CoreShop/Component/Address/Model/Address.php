@@ -196,7 +196,7 @@ class Address extends AbstractPimcoreModel implements AddressInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddressType()
+    public function getAddressIdentifier()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -204,8 +204,16 @@ class Address extends AbstractPimcoreModel implements AddressInterface
     /**
      * {@inheritdoc}
      */
-    public function setAddressType($addressType)
+    public function setAddressIdentifier($addressIdentifier)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAddressIdentifier()
+    {
+        return $this->getAddressIdentifier() instanceof AddressIdentifierInterface;
     }
 }
