@@ -24,10 +24,8 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
             forceLayout: true,
             iconCls: this.iconCls,
             items: this.getItems(),
-            listeners: {
-                added: function (panel) {
-                    panel.setTitle(this.generatePanelTitle(this.data.name, this.data.active));
-                }.bind(this)
+            tabConfig: {
+                html: this.generatePanelTitle(this.data.name, this.data.active)
             }
         });
 
