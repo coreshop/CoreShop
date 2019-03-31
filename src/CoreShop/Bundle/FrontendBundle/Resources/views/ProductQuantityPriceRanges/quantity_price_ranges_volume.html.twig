@@ -4,7 +4,7 @@
 {% set sorted_unit_ranges = [] %}
 
 {% for range in rule.getRanges() %}
-    {% set unit_identifier = range.hasUnitDefinition ? range.unitDefinition.unit.name : 'default' %}
+    {% set unit_identifier = range.hasUnitDefinition ? range.unitDefinition.unit.translation(app.request.locale).fullLabel : 'default' %}
     {% set unit_definition = range.hasUnitDefinition ? range.unitDefinition : null %}
     {% if sorted_unit_ranges[unit_identifier] is not defined %}
         {% set sorted_unit_ranges = sorted_unit_ranges|merge({ (unit_identifier): {'ranges' : [] } }) %}
@@ -20,10 +20,24 @@
         <thead class="">
         <tr class="">
             <th scope="col">{{ 'coreshop.ui.product_quantity_price_rules.quantity'|trans }}</th>
-            {% set unit_label = sorted_unit_ranges|length == 1 ? 'coreshop.ui.product_quantity_price_rules.price_per_item' : 'coreshop.ui.product_quantity_price_rules.unit_price' %}
-            {% set unit_label_excl = sorted_unit_ranges|length == 1 ? 'coreshop.ui.product_quantity_price_rules.price_per_item_excl' : 'coreshop.ui.product_quantity_price_rules.unit_price_excl' %}
-            <th scope="col">{{ unit_label|trans }}</th>
-            <th scope="col">{{ unit_label_excl|trans }}</th>
+            {% set unit_label = sorted_unit_ranges|length == 1 and sorted_unit_ranges|keys|first == 'default'
+                ? (product.itemQuantityFactor > 1
+                    ? 'coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor'|trans|format(product.itemQuantityFactor)
+                    : 'coreshop.ui.product_quantity_price_rules.price_per_item'|trans)
+                : (product.itemQuantityFactor > 1
+                    ? 'coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor'|trans|format(product.itemQuantityFactor)
+                    : 'coreshop.ui.product_quantity_price_rules.unit_price'|trans)
+            %}
+            {% set unit_label_excl = sorted_unit_ranges|length == 1 and sorted_unit_ranges|keys|first == 'default'
+                 ? (product.itemQuantityFactor > 1
+                     ? 'coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor_excl'|trans|format(product.itemQuantityFactor)
+                     : 'coreshop.ui.product_quantity_price_rules.price_per_item_excl'|trans)
+                 : (product.itemQuantityFactor > 1
+                     ? 'coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor_excl'|trans|format(product.itemQuantityFactor)
+                     : 'coreshop.ui.product_quantity_price_rules.unit_price_excl'|trans)
+            %}
+            <th scope="col">{{ unit_label }}</th>
+            <th scope="col">{{ unit_label_excl }}</th>
         </tr>
         </thead>
         <tbody class="">
@@ -32,7 +46,7 @@
 
             {% if sorted_unit_range.unit_definition is not null %}
                 <tr class="">
-                    <td colspan="3"><strong>{{ sorted_unit_range.unit_definition.unit.name }}</strong></td>
+                    <td colspan="3"><strong>{{ sorted_unit_range.unit_definition.unit.translation(app.request.locale).fullLabel }}</strong></td>
                 </tr>
             {% endif %}
 

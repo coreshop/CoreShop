@@ -1181,11 +1181,23 @@ translations:
           en: 'Quantity'
           de: 'Menge'
 
+  coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor:
+      languages:
+          de_CH: 'Preis pro %d Stück'
+          en: 'Price per %d Item(s)'
+          de: 'Preis pro %d Stück'
+
   coreshop.ui.product_quantity_price_rules.price_per_item:
       languages:
           de_CH: 'Preis pro Stück'
           en: 'Price per Item'
           de: 'Preis pro Stück'
+
+  coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor_excl:
+      languages:
+          de_CH: 'Preis pro %d Stück (Exkl.)'
+          en: 'Price per %d Item(s) (Excl.)'
+          de: 'Preis pro %d Stück (Exkl.)'
 
   coreshop.ui.product_quantity_price_rules.price_per_item_excl:
       languages:
@@ -1193,11 +1205,23 @@ translations:
           en: 'Price per Item (Excl.)'
           de: 'Preis pro Stück  (Exkl.)'
 
+  coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor:
+      languages:
+          de_CH: 'Preis pro %d Einheit(en)'
+          en: 'Price per %d Unit(s)'
+          de: 'Preis pro %d Einheit(en)'
+
   coreshop.ui.product_quantity_price_rules.unit_price:
       languages:
           de_CH: 'Preis pro Einheit'
           en: 'Unit Price'
           de: 'Preis pro Einheit'
+
+  coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor_excl:
+      languages:
+          de_CH: 'Preis pro %d Einheit(en) (Exkl.)'
+          en: 'Price per %d Unit(s) (Excl.)'
+          de: 'Preis pro %d Einheit(en) (Exkl.)'
 
   coreshop.ui.product_quantity_price_rules.unit_price_excl:
       languages:
@@ -1234,3 +1258,15 @@ translations:
           de_CH: 'Einheiten'
           en: 'Additional Units'
           de: 'Einheiten'
+
+  coreshop.ui.price.per_unit_name:
+      languages:
+          de_CH: 'per %s'
+          en: 'per %s'
+          de: 'per %s'
+
+  coreshop.ui.price.per_unit_name_and_quantity_factor:
+      languages:
+          de_CH: 'pro %d %s'
+          en: 'per %d %s'
+          de: 'pro %d %s'

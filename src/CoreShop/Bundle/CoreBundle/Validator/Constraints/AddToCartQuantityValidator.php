@@ -12,29 +12,30 @@
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
+use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartAvailabilityValidator extends ConstraintValidator
+final class AddToCartQuantityValidator extends ConstraintValidator
 {
     /**
-     * @var AvailabilityCheckerInterface
+     * @var QuantityValidatorService
      */
-    private $availabilityChecker;
+    private $quantityValidatorService;
 
     /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
+     * @param QuantityValidatorService $quantityValidatorService
      */
-    public function __construct(AvailabilityCheckerInterface $availabilityChecker)
+    public function __construct(QuantityValidatorService $quantityValidatorService)
     {
-        $this->availabilityChecker = $availabilityChecker;
+        $this->quantityValidatorService = $quantityValidatorService;
     }
 
     /**
@@ -44,7 +45,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
-        Assert::isInstanceOf($constraint, AddToCartAvailability::class);
+        Assert::isInstanceOf($constraint, AddToCartQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
@@ -55,22 +56,27 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
             return;
         }
 
+        if (!$purchasable instanceof ProductInterface) {
+            return;
+        }
+
         /**
          * @var CartItemInterface $cartItem
-         * @var CartInterface $cart
+         * @var CartInterface     $cart
          */
         $cartItem = $addToCartDto->getCartItem();
         $cart = $addToCartDto->getCart();
 
-        $isStockSufficient = $this->availabilityChecker->isStockSufficient(
-            $purchasable,
-            $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
-        );
+        $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
+        $minLimit = $purchasable->getMinimumQuantityToOrder();
 
-        if (!$isStockSufficient) {
+        if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
-                $constraint->message,
-                ['%stockable%' => $purchasable->getInventoryName()]
+                $constraint->messageBelowMinimum,
+                [
+                    '%stockable%' => $purchasable->getInventoryName(),
+                    '%limit%' => $minLimit
+                ]
             );
         }
     }
@@ -101,4 +107,5 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
 
         return $quantity;
     }
+
 }
