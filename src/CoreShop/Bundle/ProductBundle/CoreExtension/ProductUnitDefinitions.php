@@ -194,6 +194,14 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $object->markLazyKeyAsLoaded($this->getName());
         }
 
+        if ($data instanceof ProductUnitDefinitionsInterface) {
+            if ($object instanceof ProductInterface) {
+                $data->setProduct($object);
+            }
+
+            $this->getEntityManager()->persist($data);
+        }
+
         return $data;
     }
 
@@ -228,7 +236,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()->flush($productUnitDefinitions);
         }
     }
 
