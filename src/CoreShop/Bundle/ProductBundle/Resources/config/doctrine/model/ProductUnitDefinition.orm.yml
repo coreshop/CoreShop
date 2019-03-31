@@ -25,6 +25,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitions
             inversedBy: unitDefinitions
             cascade:
+                - 'persist'
                 - 'merge'
             joinColumn:
                 name: product_unit_definitions
