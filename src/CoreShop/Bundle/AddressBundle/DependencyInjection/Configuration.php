@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
 use CoreShop\Bundle\AddressBundle\Doctrine\ORM\CountryRepository;
+use CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierType;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryType;
 use CoreShop\Bundle\AddressBundle\Form\Type\StateTranslationType;
@@ -20,6 +21,8 @@ use CoreShop\Bundle\AddressBundle\Form\Type\StateType;
 use CoreShop\Bundle\AddressBundle\Form\Type\ZoneType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Component\Address\Model\AddressIdentifier;
+use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\Country;
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -52,6 +55,7 @@ final class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
             ->end();
+
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
@@ -150,6 +154,24 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('form')->defaultValue(StateTranslationType::class)->cannotBeEmpty()->end()
                                             ->end()
                                         ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('address_identifier')
+                            ->addDefaultsIfNotSet()
+                            ->children()
+                                ->variableNode('options')->end()
+                                ->scalarNode('path')->defaultValue('address_identifier')->end()
+                                ->arrayNode('classes')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('model')->defaultValue(AddressIdentifier::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('interface')->defaultValue(AddressIdentifierInterface::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('form')->defaultValue(AddressIdentifierType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
                             ->end()

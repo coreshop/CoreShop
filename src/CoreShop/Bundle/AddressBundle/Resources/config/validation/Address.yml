@@ -14,3 +14,5 @@ CoreShop\Component\Address\Model\Address:
             - NotBlank: { groups: [coreshop] }
         country:
             - NotBlank: { groups: [coreshop] }
+        addressIdentifier:
+            - CoreShop\Bundle\AddressBundle\Validator\Constraints\ValidAddressIdentifier: { groups: [coreshop] }
