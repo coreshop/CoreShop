@@ -63,8 +63,6 @@ class AddressIdentifierFixture extends AbstractFixture implements ContainerAware
             $addressIdentifier = $this->container->get('coreshop.factory.address_identifier')->createNew();
             $addressIdentifier->setName($entry['name']);
             $addressIdentifier->setActive(true);
-            $addressIdentifier->setCreationDate(new \DateTime());
-
             $manager->persist($addressIdentifier);
         }
 
