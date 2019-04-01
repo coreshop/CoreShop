@@ -14,7 +14,7 @@ CoreShop\Component\Product\Model\AbstractPriceRule:
         active:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [List, Detailed]
         priority:
             expose: true
             type: integer
