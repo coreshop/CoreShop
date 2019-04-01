@@ -80,9 +80,6 @@ final class AddressType extends AbstractResourceType
     }
 
     /**
-     *
-     */
-    /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
