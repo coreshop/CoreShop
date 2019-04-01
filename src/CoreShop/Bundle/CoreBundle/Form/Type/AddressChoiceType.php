@@ -49,23 +49,33 @@ final class AddressChoiceType extends AbstractType
                          * @var CustomerInterface $customer
                          */
                         $customer = $this->customerRepository->find($options['customer']);
+                        $allowedAddressIdentifier = $options['allowed_address_identifier'];
 
                         if (!$customer instanceof CustomerInterface) {
                             throw new \InvalidArgumentException('Customer needs to be set');
                         }
 
-                        return $customer->getAddresses();
+                        if (empty($allowedAddressIdentifier)) {
+                            return $customer->getAddresses();
+                        }
+
+                        return array_filter($customer->getAddresses(), function (AddressInterface $address) use ($allowedAddressIdentifier) {
+                            $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
+                            return in_array($addressIdentifierName, $allowedAddressIdentifier);
+                        });
+
                     },
                     'choice_value' => 'o_id',
-                    'choice_label' => function ($value, $key, $index) {
-                        if ($value instanceof AddressInterface) {
-                            return sprintf('%s %s', $value->getStreet(), $value->getNumber());
+                    'choice_label' => function ($address) {
+                        if ($address instanceof AddressInterface) {
+                            return sprintf('%s %s', $address->getStreet(), $address->getNumber());
                         }
 
                         return null;
                     },
                     'choice_translation_domain' => false,
                     'active' => true,
+                    'allowed_address_identifier' => [],
                     'placeholder' => 'coreshop.form.address.choose_address',
                 ]
             );

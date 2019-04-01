@@ -16,6 +16,7 @@ use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\ChangePasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
+use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -146,7 +147,14 @@ class CustomerController extends FrontendController
         $eventType = 'update';
         if (!$address instanceof AddressInterface) {
             $eventType = 'add';
+            /** @var AddressInterface $address */
             $address = $this->get('coreshop.factory.address')->createNew();
+            if ($request->query->has('address_identifier')) {
+                $addressIdentifier = $this->get('coreshop.repository.address_identifier')->findOneBy(['name' => $request->query->get('address_identifier')]);
+                if ($addressIdentifier instanceof AddressIdentifierInterface) {
+                    $address->setAddressIdentifier($addressIdentifier);
+                }
+            }
         } else {
             if (!$customer->hasAddress($address)) {
                 return $this->redirectToRoute('coreshop_customer_addresses');

@@ -5,6 +5,7 @@ parameters:
     coreshop.form.type.state.validation_groups: [coreshop]
     coreshop.form.type.state_translation.validation_groups: [coreshop]
     coreshop.form.type.address.validation_groups: [coreshop]
+    coreshop.form.type.address_identifier.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -83,5 +84,20 @@ services:
         arguments:
             - '%coreshop.model.address.class%'
             - '%coreshop.form.type.address.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.address_identifier_choice:
+        class: CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierChoiceType
+        arguments:
+            - '@coreshop.repository.address_identifier'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.address_identifier:
+        class: CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierType
+        arguments:
+            - '%coreshop.model.address_identifier.class%'
+            - '%coreshop.form.type.address_identifier.validation_groups%'
         tags:
             - { name: form.type }

@@ -52,6 +52,7 @@ $(document).ready(function () {
             $shippingAddress = $addressStep.find('select[name="shippingAddress"]'),
             $shippingPanel = $addressStep.find('.panel-shipping-address'),
             $shippingField = $addressStep.find('.shipping-address-selector'),
+            $shippingAddAddressButton = $shippingPanel.parent().find('.card-footer'),
             $useIasS = $addressStep.find('[name="useInvoiceAsShipping"]');
 
         if ($invoiceAddress.find('option:selected').length) {
@@ -97,6 +98,10 @@ $(document).ready(function () {
             }
         });
 
+        if ($useIasS.is(':not(:checked)') && $shippingAddAddressButton) {
+            $shippingAddAddressButton.removeClass('d-none');
+        }
+
         $useIasS.on('change', function () {
             if ($(this).is(':checked')) {
                 $shippingField.slideUp();
@@ -106,9 +111,15 @@ $(document).ready(function () {
                 if (address) {
                     $shippingAddress.val(value).trigger('change');
                 }
+                if($shippingAddAddressButton) {
+                    $shippingAddAddressButton.addClass('d-none');
+                }
             }
             else {
                 $shippingField.slideDown();
+                if($shippingAddAddressButton) {
+                    $shippingAddAddressButton.removeClass('d-none');
+                }
             }
         });
     };

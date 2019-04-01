@@ -274,6 +274,33 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "coreShopAddressIdentifier",
+                                "allowEmpty": true,
+                                "options": null,
+                                "width": "",
+                                "defaultValue": null,
+                                "optionsProviderClass": null,
+                                "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "name": "addressIdentifier",
+                                "title": "Address Identifier",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
                             }
                         ],
                         "locked": false
