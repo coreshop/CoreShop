@@ -63,11 +63,12 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
 
+        $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
+        $stores = $this->container->get('coreshop.repository.store')->findAll();
+
         /**
          * @var KernelInterface $kernel
          */
-        $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
-        $stores = $this->container->get('coreshop.repository.store')->findAll();
         $kernel = $this->container->get('kernel');
         $categories = $this->container->get('coreshop.repository.category')->findAll();
 
