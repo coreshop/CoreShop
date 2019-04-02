@@ -76,6 +76,8 @@ final class AddressType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefault('show_address_identifier_choice', false);
     }
 

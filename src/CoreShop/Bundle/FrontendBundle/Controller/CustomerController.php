@@ -150,7 +150,7 @@ class CustomerController extends FrontendController
             /** @var AddressInterface $address */
             $address = $this->get('coreshop.factory.address')->createNew();
             if ($request->query->has('address_identifier')) {
-                $addressIdentifier = $this->get('coreshop.repository.address_identifier')->findOneBy(['name' => $request->query->get('address_identifier')]);
+                $addressIdentifier = $this->get('coreshop.repository.address_identifier')->findByName($request->query->get('address_identifier'));
                 if ($addressIdentifier instanceof AddressIdentifierInterface) {
                     $address->setAddressIdentifier($addressIdentifier);
                 }
