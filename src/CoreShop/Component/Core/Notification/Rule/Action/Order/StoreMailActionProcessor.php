@@ -55,9 +55,10 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
         }
 
         if (array_key_exists($store->getId(), $mails)) {
-            $this->mailActionProcessor->apply($subject, $rule, [
-                'mails' => $mails[$store->getId()],
-            ], $params);
+            $subConfiguration          = $configuration;
+            $subConfiguration['mails'] = $mails[$store->getId()];
+
+            $this->mailActionProcessor->apply($subject, $rule, $subConfiguration, $params);
         }
     }
 }
