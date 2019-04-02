@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
+use CoreShop\Bundle\AddressBundle\Doctrine\ORM\AddressIdentifierRepository;
 use CoreShop\Bundle\AddressBundle\Doctrine\ORM\CountryRepository;
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressIdentifierType;
 use CoreShop\Bundle\AddressBundle\Form\Type\CountryTranslationType;
@@ -170,7 +171,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(AddressIdentifierInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(AddressIdentifierRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(AddressIdentifierType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()
