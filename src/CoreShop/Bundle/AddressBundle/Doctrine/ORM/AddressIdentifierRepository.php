@@ -28,6 +28,6 @@ class AddressIdentifierRepository extends EntityRepository implements AddressIde
             ->getQuery()
             ->useQueryCache(true)
             ->useResultCache(true)
-            ->getResult();
+            ->getOneOrNullResult();
     }
 }
