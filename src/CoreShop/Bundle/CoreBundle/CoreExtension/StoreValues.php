@@ -278,7 +278,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $data = $object->getObjectVar($this->getName());
         $returnData = [];
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -287,16 +287,18 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             }
         }
 
-        if (is_array($data)) {
-            foreach ($data as &$storeEntry) {
-                if ($storeEntry instanceof ProductStoreValuesInterface) {
-                    $storeEntry = $this->getEntityManager()->merge($storeEntry);
-                    $storeEntry->setProduct($object);
-                }
-            }
-
-            unset($storeEntry);
+        if (!is_array($data)) {
+            $data = [];
         }
+
+        foreach ($data as &$storeEntry) {
+            if ($storeEntry instanceof ProductStoreValuesInterface) {
+                $storeEntry = $this->getEntityManager()->merge($storeEntry);
+                $storeEntry->setProduct($object);
+            }
+        }
+
+        unset($storeEntry);
 
         foreach ($data as $storeValue) {
             $returnData[$storeValue->getStore()->getId()] = $storeValue;
@@ -310,11 +312,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function preSetData($object, $data, $params = [])
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        if (!$object->hasLazyKey($this->getName())) {
-            $object->addLazyKey($this->getName());
+        if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
+            $object->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;
