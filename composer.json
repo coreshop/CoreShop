@@ -108,6 +108,9 @@
     "phpstan/phpstan-symfony": "^0.10",
     "phpstan/phpstan-webmozart-assert": "^0.10"
   },
+  "conflict": {
+    "pimcore/pimcore": "5.7.0 || 5.7.1"
+  },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\": "src/CoreShop/Bundle/",

@@ -39,6 +39,6 @@ parameters:
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Multihref not found/'
         - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
         - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
-        - '/Call to method hasLazyKey\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
-        - '/Call to method addLazyKey\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
+        - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
+        - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
 
