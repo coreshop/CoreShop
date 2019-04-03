@@ -17,14 +17,15 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
     /**
-     * @var CartManagerInterface
+     * @var CartProcessorInterface
      */
-    private $cartManager;
+    private $cartProcessor;
 
     /**
      * @var CartContextInterface
@@ -32,12 +33,12 @@ final class CartBlamerListener
     private $cartContext;
 
     /**
-     * @param CartManagerInterface $cartManager
+     * @param CartProcessorInterface $cartProcessor
      * @param CartContextInterface $cartContext
      */
-    public function __construct(CartManagerInterface $cartManager, CartContextInterface $cartContext)
+    public function __construct(CartProcessorInterface $cartProcessor, CartContextInterface $cartContext)
     {
-        $this->cartManager = $cartManager;
+        $this->cartProcessor = $cartProcessor;
         $this->cartContext = $cartContext;
     }
 
@@ -89,7 +90,7 @@ final class CartBlamerListener
             $cart->setInvoiceAddress($user->getDefaultAddress());
         }
 
-        $this->cartManager->persistCart($cart);
+        $this->cartProcessor->process($cart);
     }
 
     /**
