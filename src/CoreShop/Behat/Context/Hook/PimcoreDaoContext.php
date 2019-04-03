@@ -53,6 +53,19 @@ final class PimcoreDaoContext implements Context
         Cache\Runtime::clear();
 
         /**
+         * Delete Orders first, otherwise the CustomerDeletionListener would trigger
+         *
+         * @var Listing $list
+         */
+        $list = new DataObject\CoreShopOrder\Listing();
+        $list->setUnpublished(true);
+        $list->load();
+
+        foreach ($list->getObjects() as $obj) {
+            $obj->delete();
+        }
+
+        /**
          * @var Listing $list
          */
         $list = new DataObject\Listing();
