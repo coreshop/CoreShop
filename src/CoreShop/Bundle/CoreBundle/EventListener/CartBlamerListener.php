@@ -126,6 +126,11 @@ final class CartBlamerListener
      */
     protected function getCart()
     {
+        $contextCart = $this->cartContext->getCart();
+        if ($contextCart instanceof CartInterface && !empty($contextCart->getId())) {
+            return $contextCart;
+        }
+
         $customerCart = $this->customerCartProvider->provide();
         if ($customerCart instanceof CartInterface) {
             $this->injectCustomerCartToSession($customerCart);
