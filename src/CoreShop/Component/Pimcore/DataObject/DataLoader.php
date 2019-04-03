@@ -41,7 +41,7 @@ class DataLoader implements DataLoaderInterface
             $fieldData = $data->$getter();
 
             if ($def instanceof DataObject\ClassDefinition\Data\ManyToOneRelation || $def instanceof DataObject\ClassDefinition\Data\Href) {
-                if ($fieldData instanceof DataObject\Concrete) {
+                if ($fieldData instanceof DataObject\Concrete && !$fieldData instanceof DataObject\CoreShopProduct) {
                     if (!in_array($fieldData->getId(), $loadedObjects)) {
                         $objectData[$key] = $this->getDataForObject($fieldData, $loadedObjects);
                     }
@@ -54,7 +54,7 @@ class DataLoader implements DataLoaderInterface
                 }
 
                 foreach ($fieldData as $object) {
-                    if ($object instanceof DataObject\Concrete) {
+                    if ($object instanceof DataObject\Concrete && !$object instanceof DataObject\CoreShopProduct) {
                         if (!in_array($object->getId(), $loadedObjects)) {
                             $objectData[$key][] = $this->getDataForObject($object, $loadedObjects);
                         }
