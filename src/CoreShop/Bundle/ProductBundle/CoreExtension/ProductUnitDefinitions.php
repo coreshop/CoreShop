@@ -20,6 +20,7 @@ use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterf
 use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 
 class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
 {
@@ -165,7 +166,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
          */
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -189,11 +190,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function preSetData($object, $data, $params = [])
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        if (!$object->hasLazyKey($this->getName())) {
-            $object->addLazyKey($this->getName());
+        if ($object instanceof LazyLoadedFieldsInterface) {
+            $object->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;

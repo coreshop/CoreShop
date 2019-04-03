@@ -237,7 +237,7 @@ final class IndexContext implements Context
                 }
             }
 
-            Assert::true($found, sprintf('Table column %s not found', $col));
+            Assert::true($found, sprintf('Table column %s not found, found columns %s', $col, implode(', ', $columns)));
         }
     }
 
