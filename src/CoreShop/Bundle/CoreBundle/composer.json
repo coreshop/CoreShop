@@ -42,6 +42,9 @@
     "rinvex/countries": "^5.0",
     "pimcore/pimcore": "^5.7.0"
   },
+  "conflict": {
+    "pimcore/pimcore": "5.7.0 || 5.7.1"
+  },
   "config": {
     "bin-dir": "bin"
   },

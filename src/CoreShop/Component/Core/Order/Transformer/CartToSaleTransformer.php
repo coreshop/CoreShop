@@ -20,6 +20,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
+use Pimcore\Model\DataObject\Objectbrick;
 use Webmozart\Assert\Assert;
 
 final class CartToSaleTransformer implements ProposalTransformerInterface
@@ -68,7 +69,23 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 $sale->setShippingTaxRate(0);
             }
 
-            $sale->setAdditionalData($cart->getAdditionalData());
+            $cartAdditionalData = $cart->getAdditionalData();
+            $saleAdditionalData = $sale->getAdditionalData();
+
+            // transfer cart additional data to sale additional data
+            if ($cartAdditionalData instanceof Objectbrick &&
+                $saleAdditionalData instanceof Objectbrick) {
+                foreach ($saleAdditionalData->getAllowedBrickTypes() as $brickType) {
+                    if (in_array($brickType, $cartAdditionalData->getAllowedBrickTypes())) {
+                        $brickSetter = 'set' . ucfirst($brickType);
+                        $brickGetter = 'get' . ucfirst($brickType);
+                        $saleAdditionalData->$brickSetter($cartAdditionalData->$brickGetter());
+                    }
+                }
+
+                $sale->setAdditionalData($saleAdditionalData);
+            }
+
             $sale->save();
         }
 
