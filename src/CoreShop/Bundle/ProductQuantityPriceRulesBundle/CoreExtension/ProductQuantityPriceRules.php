@@ -115,7 +115,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -357,7 +357,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             return;
         }
 
-        $object->addLazyKey($this->getName());
+        $object->markLazyKeyAsLoaded($this->getName());
     }
 
     /**

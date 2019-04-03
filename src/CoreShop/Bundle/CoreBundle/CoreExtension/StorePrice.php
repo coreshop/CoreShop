@@ -220,7 +220,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
 
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $object->setObjectVar($this->getName(), $data);
@@ -559,7 +559,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
             return;
         }
 
-        $object->addLazyKey($this->getName());
+        $object->markLazyKeyAsLoaded($this->getName());
     }
 
     /**
