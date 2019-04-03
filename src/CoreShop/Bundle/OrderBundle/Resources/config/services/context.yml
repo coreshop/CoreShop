@@ -7,16 +7,6 @@ services:
         tags:
             - { name: coreshop.context.cart, priority: -100 }
 
-    coreshop.context.cart.customer_and_store_based:
-        class: CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext
-        arguments:
-            - '@coreshop.context.customer'
-            - '@coreshop.context.store'
-            - '@coreshop.repository.cart'
-            - '@pimcore.http.request_helper'
-        tags:
-            - { name: coreshop.context.cart, priority: -777 }
-
     coreshop.context.cart.session_based:
         class: CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext
         arguments:

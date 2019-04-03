@@ -13,32 +13,61 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
+use CoreShop\Bundle\CoreBundle\Provider\CustomerCartProviderInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
     /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
      * @var CartManagerInterface
      */
-    private $cartManager;
+    protected $cartManager;
 
     /**
      * @var CartContextInterface
      */
-    private $cartContext;
+    protected $cartContext;
 
     /**
-     * @param CartManagerInterface $cartManager
-     * @param CartContextInterface $cartContext
+     * @var CustomerCartProviderInterface
      */
-    public function __construct(CartManagerInterface $cartManager, CartContextInterface $cartContext)
-    {
+    protected $customerCartProvider;
+
+    /**
+     * @var string
+     */
+    protected $sessionKeyName;
+
+    /**
+     * @param RequestStack                  $requestStack
+     * @param CartManagerInterface          $cartManager
+     * @param CartContextInterface          $cartContext
+     * @param CustomerCartProviderInterface $customerCartProvider
+     * @param string                        $sessionKeyName
+     */
+    public function __construct(
+        RequestStack $requestStack,
+        CartManagerInterface $cartManager,
+        CartContextInterface $cartContext,
+        CustomerCartProviderInterface $customerCartProvider,
+        string $sessionKeyName
+    ) {
+        $this->requestStack = $requestStack;
         $this->cartManager = $cartManager;
         $this->cartContext = $cartContext;
+        $this->customerCartProvider = $customerCartProvider;
+        $this->sessionKeyName = $sessionKeyName;
     }
 
     /**
@@ -71,7 +100,7 @@ final class CartBlamerListener
     /**
      * @param CustomerInterface $user
      */
-    private function blame(CustomerInterface $user)
+    protected function blame(CustomerInterface $user)
     {
         $cart = $this->getCart();
 
@@ -95,8 +124,33 @@ final class CartBlamerListener
     /**
      * @return CartInterface
      */
-    private function getCart()
+    protected function getCart()
     {
+        $customerCart = $this->customerCartProvider->provide();
+        if ($customerCart instanceof CartInterface) {
+            $this->injectCustomerCartToSession($customerCart);
+        }
+
         return $this->cartContext->getCart();
+    }
+
+    /**
+     * @param CartInterface $cart
+     */
+    protected function injectCustomerCartToSession(CartInterface $cart)
+    {
+        if (!$this->requestStack->getMasterRequest()) {
+            return;
+        }
+
+        $session = $this->requestStack->getMasterRequest()->getSession();
+        if (!$session instanceof SessionInterface) {
+            return;
+        }
+
+        $session->set(
+            sprintf('%s.%s', $this->sessionKeyName, $cart->getStore()->getId()),
+            $cart->getId()
+        );
     }
 }

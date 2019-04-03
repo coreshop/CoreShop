@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.provider.cart.customer_cart:
+        class: CoreShop\Bundle\CoreBundle\Provider\CustomerCartProvider
+        arguments:
+            - '@coreshop.context.customer'
+            - '@coreshop.context.store'
+            - '@coreshop.repository.cart'
