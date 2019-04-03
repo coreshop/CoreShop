@@ -73,6 +73,10 @@ final class RequestCartRecalculation
             return;
         }
 
+        if ($event->getRequest()->attributes->get('_route') === '_wdt') {
+            return;
+        }
+
         if (!$this->shopperContext->hasStore()) {
             return;
         }
