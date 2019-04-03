@@ -13,6 +13,7 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -29,11 +30,18 @@ final class PimcoreDaoContext implements Context
     private $kernel;
 
     /**
-     * @param KernelInterface $kernel
+     * @var OrderRepositoryInterface
      */
-    public function __construct(KernelInterface $kernel)
+    private $orderRepository;
+
+    /**
+     * @param KernelInterface          $kernel
+     * @param OrderRepositoryInterface $orderRepository
+     */
+    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
     {
         $this->kernel = $kernel;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -57,7 +65,7 @@ final class PimcoreDaoContext implements Context
          *
          * @var Listing $list
          */
-        $list = new DataObject\CoreShopOrder\Listing();
+        $list = $this->orderRepository->getList();
         $list->setUnpublished(true);
         $list->load();
 
