@@ -2,7 +2,7 @@
 
 You can setup your own example:
 
- - Install with composer ```composer require coreshop/core-shop dev-master```
+ - Install latest development version with composer ```composer require coreshop/core-shop dev-master```. If you prefer a stable version, install latest stable with composer, e.g. ```composer require coreshop/core-shop 2.0.5```
  - Run enable Bundle command
     ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
  - Run Install Command
