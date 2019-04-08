@@ -3,6 +3,21 @@
 ## 2.0.6:
  - Bug:
    - [Adjustments] in the classes "CoreShopOrderItem", "CoreShopQuoteItem", was a typo `basePdjustmentItems` instead of `baseAdjustmentItems`. Please manually rename them to `baseAdjustmentItems`
+   - [ProductBundle] Fix extjs layout crash price rule is inactive (https://github.com/coreshop/CoreShop/pull/908)
+   - [FrontendBundle] fix address creation redirect (https://github.com/coreshop/CoreShop/pull/910)
+   - [StorageList] Storage List and Storage List Item is not a Pimcore Object (https://github.com/coreshop/CoreShop/pull/907)
+   - [Order] fix typo in OrderItem and QuoteItem (https://github.com/coreshop/CoreShop/pull/906)
+   - [NotificationBundle] fix typo in serializer namespace declaration (https://github.com/coreshop/CoreShop/pull/901)
+   - [CoreBundle] fix notification rule setting for order mail action (https://github.com/coreshop/CoreShop/pull/886)
+   - [Core] use PriceCalculatorInterface in product tracking extractor (https://github.com/coreshop/CoreShop/pull/892)
+   - [Core] fix not passing full configuration in store based email (https://github.com/coreshop/CoreShop/pull/917)
+   - [Core] fix copying object brick data from cart to sale (https://github.com/coreshop/CoreShop/pull/918)
+   - [CoreBundle/OrderBundle] KernelResponse Event should ignore Profile Toolbar (https://github.com/coreshop/CoreShop/pull/919)
+   - [Pimcore] Make CoreShop compatible with Pimcore 5.7.2 (https://github.com/coreshop/CoreShop/pull/914)
+   
+ - Features:
+   - [FrontendBundle] make private method protected (https://github.com/coreshop/CoreShop/pull/890)
+   - [AddressBundle] introduce address-identifiers (https://github.com/coreshop/CoreShop/issues/830 & https://github.com/coreshop/CoreShop/pull/913)
 
 ## 2.0.5:
  - Deprecations:
