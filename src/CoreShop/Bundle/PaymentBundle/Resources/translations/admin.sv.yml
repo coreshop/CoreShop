@@ -1,1 +1,3 @@
 ---
+coreshop_payment_provider: 'Betalningsleverantör'
+coreshop_permission_payment_provider: 'CoreShop: Betalningsleverantör'
