@@ -1,1 +1,4 @@
 ---
+coreshop_action_discountAmount_amount: 'Belopp'
+coreshop_condition_amount: 'Belopp'
+coreshop_action_discountAmount: 'Rabattbelopp'
