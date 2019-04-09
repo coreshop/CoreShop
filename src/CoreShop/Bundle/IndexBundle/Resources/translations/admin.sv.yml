@@ -2,3 +2,4 @@
 coreshop_index_field_settings: 'Inställningar'
 coreshop_filters_category_select: 'Kategori'
 coreshop_filters_category_name: 'Kategori'
+coreshop_index_mysql_index_localized: 'MySQL Index Localized'
