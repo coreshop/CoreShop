@@ -34,6 +34,7 @@ CoreShop\Component\Address\Model\Country:
         getZoneName:
             serialized_name: zoneName
             groups: [List, Detailed]
-        getName:
+        name:
             serialized_name: name
+            exp: 'object.getName() ? object.getName() : object.getIsoCode()'
             groups: [List, Detailed]

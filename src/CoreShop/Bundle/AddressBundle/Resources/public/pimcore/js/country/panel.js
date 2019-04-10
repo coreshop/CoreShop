@@ -49,12 +49,6 @@ coreshop.country.panel = Class.create(coreshop.resource.panel, {
         $super();
     },
 
-    getGridDisplayColumnRenderer: function (value, metadata, record) {
-        metadata.tdAttr = 'data-qtip="ID: ' + record.get('id') + '"';
-
-        return value ? value : record.get('isoCode');
-    },
-
     getGridConfiguration: function () {
         return {
             store: this.store,
