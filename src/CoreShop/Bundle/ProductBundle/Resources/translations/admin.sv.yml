@@ -1,4 +1,8 @@
 ---
 coreshop_action_discountAmount_amount: 'Belopp'
+coreshop_product_list: 'Produktlista'
+coreshop_condition_products: 'Produkter'
 coreshop_condition_amount: 'Belopp'
 coreshop_action_discountAmount: 'Rabattbelopp'
+coreshop_product_units: 'Produktenheter'
+coreshop_product_unit: 'Produktenhet'
