@@ -1,1 +1,5 @@
 ---
+coreshop_condition_conditions_operator_and: 'Och'
+coreshop_condition_conditions_operator_or: 'Eller'
+coreshop_condition_conditions_operator_not: 'Icke'
+coreshop_condition_conditions_operator: 'Operator'
