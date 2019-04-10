@@ -9,7 +9,7 @@ CoreShop\Component\Address\Model\Country:
         isoCode:
             expose: true
             type: string
-            groups: [Detailed]
+            groups: [List, Detailed]
         active:
             expose: true
             type: boolean
