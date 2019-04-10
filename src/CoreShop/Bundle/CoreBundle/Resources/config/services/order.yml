@@ -38,6 +38,20 @@ services:
         arguments:
             - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
 
+    coreshop.core.order.transformer.order_to_shipment:
+        class: CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer
+        decorates: coreshop.order.transformer.order_to_shipment
+        decoration_priority: 10
+        arguments:
+            - '@coreshop.core.order.transformer.order_to_shipment.inner'
+
+    coreshop.core.order_shipment.transformer.order_item_to_shipment_item:
+        class: CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer
+        decorates: coreshop.order_shipment.transformer.order_item_to_shipment_item
+        decoration_priority: 10
+        arguments:
+            - '@coreshop.core.order_shipment.transformer.order_item_to_shipment_item.inner'
+
     coreshop.cart.expire.maintenance_listener:
         class: CoreShop\Bundle\CoreBundle\EventListener\Order\Expire\ProposalExpireMaintenanceManagerListener
         arguments:
