@@ -11,6 +11,7 @@ CoreShop\Component\Taxation\Model\TaxRateTranslation:
         name:
             type: string
             column: name
+            nullable: true
         creationDate:
             type: datetime
             gedmo:
