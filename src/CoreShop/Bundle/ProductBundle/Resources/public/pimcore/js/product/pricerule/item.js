@@ -61,6 +61,11 @@ coreshop.product.pricerule.item = Class.create(coreshop.rules.item, {
                 width: 250
             }, {
                 xtype: 'checkbox',
+                name: 'stopPropagation',
+                fieldLabel: t('coreshop_stop_propagation'),
+                checked: this.data.stopPropagation
+            }, {
+                xtype: 'checkbox',
                 name: 'active',
                 fieldLabel: t('active'),
                 checked: this.data.active

@@ -38,6 +38,11 @@ abstract class AbstractPriceRule implements PriceRuleInterface
      */
     protected $priority = 0;
 
+    /**
+     * @var bool
+     */
+    protected $stopPropagation = false;
+
     public function __construct()
     {
         $this->initializeTranslationsCollection();
@@ -101,6 +106,22 @@ abstract class AbstractPriceRule implements PriceRuleInterface
     public function setLabel($label, $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStopPropagation()
+    {
+        return $this->stopPropagation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStopPropagation($stopPropagation)
+    {
+        $this->stopPropagation = $stopPropagation;
     }
 
     /**

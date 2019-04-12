@@ -118,6 +118,11 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
                     }.bind(this)
                 }
             }, {
+                xtype: 'checkbox',
+                name: 'stopPropagation',
+                fieldLabel: t('coreshop_stop_propagation'),
+                checked: this.data.stopPropagation
+            }, {
                 xtype: 'tabpanel',
                 activeTab: 0,
                 defaults: {
