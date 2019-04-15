@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Component\Core\Cart\Rule\Applier\AdjustmentApplierInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
@@ -35,23 +35,23 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     protected $currencyRepository;
 
     /**
-     * @var AdjustmentApplierInterface
+     * @var CartRuleApplierInterface
      */
-    protected $adjustmentApplier;
+    protected $cartRuleApplier;
 
     /**
      * @param CurrencyConverterInterface  $moneyConverter
      * @param CurrencyRepositoryInterface $currencyRepository
-     * @param AdjustmentApplierInterface  $adjustmentApplier
+     * @param CartRuleApplierInterface    $cartRuleApplier
      */
     public function __construct(
         CurrencyConverterInterface $moneyConverter,
         CurrencyRepositoryInterface $currencyRepository,
-        AdjustmentApplierInterface $adjustmentApplier
+        CartRuleApplierInterface $cartRuleApplier
     ) {
         $this->moneyConverter = $moneyConverter;
         $this->currencyRepository = $currencyRepository;
-        $this->adjustmentApplier = $adjustmentApplier;
+        $this->cartRuleApplier = $cartRuleApplier;
     }
 
     /**
@@ -65,7 +65,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             return false;
         }
 
-        $this->adjustmentApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
+        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
 
         return true;
     }

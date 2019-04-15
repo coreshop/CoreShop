@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
-interface AdjustmentApplierInterface
+interface CartRuleApplierInterface
 {
     /**
      * @param CartInterface                      $cart
@@ -44,4 +44,4 @@ interface AdjustmentApplierInterface
     );
 }
 
-class_alias(AdjustmentApplierInterface::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface');
+class_alias(CartRuleApplierInterface::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface');

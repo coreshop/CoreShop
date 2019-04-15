@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
-class AdjustmentApplier implements AdjustmentApplierInterface
+class CartRuleApplier implements CartRuleApplierInterface
 {
     /**
      * @var ProportionalIntegerDistributor
@@ -189,4 +189,4 @@ class AdjustmentApplier implements AdjustmentApplierInterface
     }
 }
 
-class_alias(AdjustmentApplier::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier');
+class_alias(CartRuleApplier::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier');

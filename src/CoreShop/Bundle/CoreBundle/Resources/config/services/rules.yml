@@ -149,7 +149,7 @@ services:
             - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
     coreshop.cart_price_rule.discount.applier:
-        class: CoreShop\Component\Core\Cart\Rule\Applier\AdjustmentApplier
+        class: CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier
         arguments:
             - '@coreshop.proportional_integer_distributor'
             - '@coreshop.product.tax_factory'
