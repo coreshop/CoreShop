@@ -38,4 +38,14 @@ interface PriceRuleInterface extends RuleInterface, TranslatableInterface
      * @param int $priority
      */
     public function setPriority($priority);
+
+    /**
+     * @return bool
+     */
+    public function getStopPropagation();
+
+    /**
+     * @param bool $stopPropagation
+     */
+    public function setStopPropagation($stopPropagation);
 }

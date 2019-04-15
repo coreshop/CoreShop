@@ -24,6 +24,9 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
             column: product
             type: integer
             nullable: false
+        stopPropagation:
+            column: stopPropagation
+            type: boolean
         creationDate:
             type: datetime
             gedmo:

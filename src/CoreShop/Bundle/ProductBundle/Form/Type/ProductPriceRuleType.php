@@ -33,6 +33,7 @@ final class ProductPriceRuleType extends RuleType
             ->add('name', TextareaType::class)
             ->add('priority', IntegerType::class)
             ->add('active', CheckboxType::class)
+            ->add('stopPropagation', CheckboxType::class)
             ->add('conditions', ProductPriceRuleConditionCollectionType::class)
             ->add('actions', ProductPriceRuleActionCollectionType::class);
     }

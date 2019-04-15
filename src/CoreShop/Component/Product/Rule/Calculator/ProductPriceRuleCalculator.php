@@ -17,7 +17,9 @@ use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterfac
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
+use CoreShop\Component\Product\Model\PriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
@@ -58,29 +60,32 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         $price = null;
 
         /**
-         * @var RuleInterface[]
+         * @var PriceRuleInterface[] $rules
          */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);
 
-        if (is_array($rules)) {
-            foreach ($rules as $rule) {
-                /**
-                 * @var ActionInterface
-                 */
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
+        foreach ($rules as $rule) {
+            /**
+             * @var ActionInterface $action
+             */
+            foreach ($rule->getActions() as $action) {
+                $processor = $this->actionServiceRegistry->get($action->getType());
 
-                    if (!$processor instanceof ProductPriceActionProcessorInterface) {
-                        continue;
-                    }
-
-                    try {
-                        $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
-
-                        $price = $actionPrice;
-                    } catch (NoRetailPriceFoundException $ex) {
-                    }
+                if (!$processor instanceof ProductPriceActionProcessorInterface) {
+                    continue;
                 }
+
+                try {
+                    $actionPrice = $processor->getPrice($subject, $context, $action->getConfiguration());
+
+                    $price = $actionPrice;
+                } catch (NoRetailPriceFoundException $ex) {
+                    //Silently ignore the error
+                }
+            }
+
+            if ($rule->getStopPropagation()) {
+                break;
             }
         }
 
@@ -99,28 +104,31 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         $price = null;
 
         /**
-         * @var RuleInterface[]
+         * @var PriceRuleInterface[] $rules
          */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);
 
-        if (is_array($rules)) {
-            foreach ($rules as $rule) {
-                /**
-                 * @var ActionInterface
-                 */
-                foreach ($rule->getActions() as $action) {
-                    $processor = $this->actionServiceRegistry->get($action->getType());
+        foreach ($rules as $rule) {
+            /**
+             * @var ActionInterface
+             */
+            foreach ($rule->getActions() as $action) {
+                $processor = $this->actionServiceRegistry->get($action->getType());
 
-                    if (!$processor instanceof ProductDiscountPriceActionProcessorInterface) {
-                        continue;
-                    }
-
-                    try {
-                        $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
-                        $price = $actionPrice;
-                    } catch (NoDiscountPriceFoundException $ex) {
-                    }
+                if (!$processor instanceof ProductDiscountPriceActionProcessorInterface) {
+                    continue;
                 }
+
+                try {
+                    $actionPrice = $processor->getDiscountPrice($subject, $context, $action->getConfiguration());
+                    $price = $actionPrice;
+                } catch (NoDiscountPriceFoundException $ex) {
+                    //Silently ignore the error
+                }
+            }
+
+            if ($rule->getStopPropagation()) {
+                break;
             }
         }
 
@@ -139,11 +147,11 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
         $discount = 0;
 
         /**
-         * @var RuleInterface[]
+         * @var PriceRuleInterface[] $rules
          */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);
 
-        if (!is_array($rules)) {
+        if (empty($rules)) {
             return $discount;
         }
 
@@ -156,6 +164,10 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
                 }
 
                 $discount += $processor->getDiscount($subject, $price, $context, $action->getConfiguration());
+            }
+
+            if ($rule->getStopPropagation()) {
+                break;
             }
         }
 
