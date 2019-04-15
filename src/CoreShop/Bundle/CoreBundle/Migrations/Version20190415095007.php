@@ -8,6 +8,7 @@ use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 class Version20190415095007 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
@@ -18,17 +19,19 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-        $container = \Pimcore::getContainer();
         $collectionFieldName = 'priceRuleItems';
 
-        $cartClassName = $container->getParameter('coreshop.model.cart.class');
-        $orderClassName = $container->getParameter('coreshop.model.order.class');
-        $quoteClassname = $container->getParameter('coreshop.model.quote.class');
+        /** @var PimcoreRepositoryInterface $cartRepo */
+        $cartRepo = $this->container->get('coreshop.repository.cart');
+        /** @var PimcoreRepositoryInterface $orderRepo */
+        $orderRepo = $this->container->get('coreshop.repository.order');
+        /** @var PimcoreRepositoryInterface $quoteClassname */
+        $quoteRepo = $this->container->get('coreshop.repository.quote');
 
         $tables = [
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $cartClassName::classId()),
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $orderClassName::classId()),
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $quoteClassname::classId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $cartRepo->getClassId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $orderRepo->getClassId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $quoteRepo->getClassId()),
         ];
 
         foreach ($tables as $tableName) {
