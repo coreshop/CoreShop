@@ -250,13 +250,20 @@ final class CartContext implements Context
      */
     public function cartShouldWeigh($kg)
     {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $kg,
-            $this->cartContext->getCart()->getWeight(),
+            $cart->getWeight(),
             sprintf(
                 'Cart is expected to weigh %skg, but it weighs %skg',
                 $kg,
-                $this->cartContext->getCart()->getWeight()
+                $cart->getWeight()
             )
         );
     }

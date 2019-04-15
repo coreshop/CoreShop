@@ -12,14 +12,11 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\OrderShipment as BaseOrderShipment;
+use CoreShop\Component\Order\Model\OrderShipmentItem as BaseOrderShipmentItem;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
-use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
-class OrderShipment extends BaseOrderShipment implements OrderShipmentInterface
+class OrderShipmentItem extends BaseOrderShipmentItem implements OrderShipmentItemInterface
 {
-    use CarrierAwareTrait;
-
     /**
      * {@inheritdoc}
      */

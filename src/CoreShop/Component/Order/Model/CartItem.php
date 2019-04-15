@@ -39,22 +39,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalWeight()
-    {
-        return $this->getItemWeight() * $this->getQuantity();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemWeight()
-    {
-        return $this->getProduct()->getWeight();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal($withTax = true)
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();

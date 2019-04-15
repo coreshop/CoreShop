@@ -175,8 +175,6 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
             $sale->addBaseAdjustment($baseAdjustment);
         }
 
-        $sale->setWeight($cart->getWeight());
-
         if ($cart->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($cart->getPriceRuleItems() as $priceRule) {
                 if ($priceRule instanceof ProposalCartPriceRuleItemInterface) {

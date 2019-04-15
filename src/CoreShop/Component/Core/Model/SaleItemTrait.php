@@ -88,4 +88,37 @@ trait SaleItemTrait
     {
         return $this->getUnit() instanceof ProductUnitInterface;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemWeight()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemWeight($itemWeight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalWeight()
+
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalWeight($totalWeight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 }

@@ -1,5 +1,10 @@
 # Within V2
 
+## 2.0.7
+ - Bug:
+  - [Purchasable] When using custom purchasable, CoreShop always assumed that your class has a weight, even though it didn't had to. That's why we moved all weight related fields to the Core Component and CoreBundle.
+   
+
 ## 2.0.6:
  - Bug:
    - [Adjustments] in the classes "CoreShopOrderItem", "CoreShopQuoteItem", was a typo `basePdjustmentItems` instead of `baseAdjustmentItems`. Please manually rename them to `baseAdjustmentItems`

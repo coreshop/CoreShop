@@ -81,4 +81,24 @@ interface SaleItemInterface extends BaseSaleItemInterface
      * @param int $defaultUnitQuantity
      */
     public function setDefaultUnitQuantity($defaultUnitQuantity);
+
+    /**
+     * @return float
+     */
+    public function getItemWeight();
+
+    /**
+     * @param float $itemWeight
+     */
+    public function setItemWeight($itemWeight);
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
+
+    /**
+     * @param float $totalWeight
+     */
+    public function setTotalWeight($totalWeight);
 }

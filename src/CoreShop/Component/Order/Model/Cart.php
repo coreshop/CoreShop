@@ -91,20 +91,6 @@ class Cart extends AbstractProposal implements CartInterface
     /**
      * {@inheritdoc}
      */
-    public function getWeight()
-    {
-        $weight = 0;
-
-        foreach ($this->getItems() as $item) {
-            $weight += $item->getTotalWeight();
-        }
-
-        return $weight;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount($withTax = true)
     {
         return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, true) : $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, false);

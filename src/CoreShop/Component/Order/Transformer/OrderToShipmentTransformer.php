@@ -126,7 +126,6 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $shipment->setParent($shipmentFolder);
         $shipment->setPublished(true);
         $shipment->setShipmentDate(Carbon::now());
-        $shipment->setWeight($order->getWeight());
 
         /*
          * We need to save the order twice in order to create the object in the tree for pimcore

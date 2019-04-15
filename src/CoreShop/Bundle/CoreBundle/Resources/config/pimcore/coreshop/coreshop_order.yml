@@ -25,6 +25,10 @@ core_shop_order:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipment.json'
                 interface: CoreShop\Component\Core\Model\OrderShipmentInterface
+        order_shipment_item:
+            classes:
+                install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopOrderShipmentItem.json'
+                interface: CoreShop\Component\Core\Model\OrderShipmentItemInterface
         quote:
             path: coreshop/quotes
             classes:
