@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Pimcore\Model\DataObject\CoreShopCart;
@@ -33,7 +34,7 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
                 continue;
             }
 
-            $items = $this->connection->fetchAll(sprintf('SELECT * FROM %s WHERE fieldname = "%s"', $tableName, $collectionFieldName));
+            $items = $this->connection->fetchAll(sprintf('SELECT * FROM %s WHERE `fieldname` = "%s"', $tableName, $collectionFieldName));
             if (!is_array($items) || count($items) === 0) {
                 continue;
             }
@@ -77,6 +78,9 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
                 }
             }
         }
+
+        //update translations
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
     }
 
     /**
