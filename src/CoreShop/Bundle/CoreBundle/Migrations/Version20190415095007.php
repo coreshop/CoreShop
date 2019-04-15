@@ -3,13 +3,11 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
+use Pimcore\Cache;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Pimcore\Model\DataObject\CoreShopCart;
-use Pimcore\Model\DataObject\CoreShopOrder;
-use Pimcore\Model\DataObject\CoreShopQuote;
 
 class Version20190415095007 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
@@ -20,12 +18,17 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
+        $container = \Pimcore::getContainer();
         $collectionFieldName = 'priceRuleItems';
 
+        $cartClassName = $container->getParameter('coreshop.model.cart.class');
+        $orderClassName = $container->getParameter('coreshop.model.order.class');
+        $quoteClassname = $container->getParameter('coreshop.model.quote.class');
+
         $tables = [
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', CoreShopCart::classId()),
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', CoreShopOrder::classId()),
-            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', CoreShopQuote::classId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $cartClassName::classId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $orderClassName::classId()),
+            sprintf('object_collection_CoreShopProposalCartPriceRuleItem_%d', $quoteClassname::classId()),
         ];
 
         foreach ($tables as $tableName) {
@@ -79,8 +82,13 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
             }
         }
 
-        //update translations
+        // update translations
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
+
+        // clear cache
+        Cache::clearAll();
+        Cache\Runtime::clear();
+
     }
 
     /**

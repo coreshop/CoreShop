@@ -128,7 +128,7 @@ services:
         arguments:
             - '@coreshop.currency_converter'
             - '@coreshop.repository.currency'
-            - '@coreshop.cart_price_rule.discount.applier'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
@@ -137,25 +137,25 @@ services:
         arguments:
             - '@coreshop.currency_converter'
             - '@coreshop.repository.currency'
-            - '@coreshop.cart_price_rule.discount.applier'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: surchargeAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType }
 
     coreshop.cart_price_rule.action.discount_percent:
         class: CoreShop\Component\Core\Cart\Rule\Action\DiscountPercentActionProcessor
         arguments:
-            - '@coreshop.cart_price_rule.discount.applier'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
     coreshop.cart_price_rule.action.surcharge_percent:
         class: CoreShop\Component\Core\Cart\Rule\Action\SurchargePercentActionProcessor
         arguments:
-            - '@coreshop.cart_price_rule.discount.applier'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
         tags:
             - { name: coreshop.cart_price_rule.action, type: surchargePercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType }
 
-    coreshop.cart_price_rule.discount.applier:
+    coreshop.cart_price_rule.cart_rule_applier:
         class: CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier
         arguments:
             - '@coreshop.proportional_integer_distributor'
@@ -163,6 +163,10 @@ services:
             - '@coreshop.collector.taxes'
             - '@coreshop.provider.store_based_default_address_provider'
             - '@coreshop.factory.adjustment'
+
+    # Deprecated and will be removed in 3.0. Use coreshop.cart_price_rule.cart_rule_applier instead
+    coreshop.cart_price_rule.discount.applier:
+        alias: coreshop.cart_price_rule.cart_rule_applier
 
     # Rules Availability Check
     coreshop.rule_availability_assessor.maintenance_listener:
