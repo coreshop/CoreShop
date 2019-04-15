@@ -16,6 +16,7 @@ default:
                 - coreshop.behat.context.transform.currency
                 - coreshop.behat.context.transform.product
                 - coreshop.behat.context.transform.order
+                - coreshop.behat.context.transform.cart_price_rule
                 - coreshop.behat.context.transform.cart
                 - coreshop.behat.context.transform.customer
                 - coreshop.behat.context.transform.address
@@ -37,8 +38,10 @@ default:
                 - coreshop.behat.context.setup.order_shipment
                 - coreshop.behat.context.setup.order_invoice
                 - coreshop.behat.context.setup.shipping
+                - coreshop.behat.context.setup.cart_price_rule
 
                 - coreshop.behat.context.domain.order
+                - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.notification_rule
             filters:
                 tags: "@order"

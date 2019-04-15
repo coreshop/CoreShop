@@ -139,9 +139,6 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setBaseItemPrice($cartItem->getItemPrice(false), false);
         $saleItem->setBaseItemTax($cartItem->getItemTax());
 
-        $saleItem->setItemWeight($cartItem->getItemWeight());
-        $saleItem->setTotalWeight($cartItem->getTotalWeight());
-
         foreach ($cartItem->getAdjustments() as $adjustment) {
             $saleItem->addAdjustment($adjustment);
 

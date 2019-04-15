@@ -16,6 +16,6 @@ use CoreShop\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
-interface OrderInterface extends BaseOrderInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
+interface OrderInterface extends BaseOrderInterface, SaleInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
 {
 }

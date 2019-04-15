@@ -12,17 +12,11 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
-class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
+class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpecificPriceRuleInterface
 {
-    use RuleTrait;
-
-    /**
-     * @var int
-     */
-    protected $id;
-
     /**
      * @var int
      */
@@ -32,19 +26,6 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
      * @var bool
      */
     protected $inherit = false;
-
-    /**
-     * @var int
-     */
-    protected $priority = 0;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * {@inheritdoc}
@@ -85,18 +66,8 @@ class ProductSpecificPriceRule implements ProductSpecificPriceRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getPriority()
+    protected function createTranslation()
     {
-        return $this->priority;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriority($priority)
-    {
-        $this->priority = $priority;
-
-        return $this;
+        return new ProductSpecificPriceRuleTranslation();
     }
 }

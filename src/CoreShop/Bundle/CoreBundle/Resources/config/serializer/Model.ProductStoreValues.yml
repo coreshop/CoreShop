@@ -13,7 +13,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             groups: [List, Detailed]
         product:
             expose: true
-            type: CoreShop\Component\Core\Model\Product
+            type: pimcoreObject
             groups: [List, Detailed]
         productUnitDefinitionPrices:
             expose: true
@@ -21,5 +21,5 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             groups: [List, Detailed]
         store:
             expose: true
-            type: CoreShop\Component\Store\Model\Store
+            type: relation<CoreShop\Component\Store\Model\Store>
             groups: [List, Detailed]

@@ -38,19 +38,18 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     }
 
     /**
-     * @param AddToCartInterface $addCartItemCommand
-     *
-     * {@inheritdoc}
+     * @param mixed      $addToCartDto
+     * @param Constraint $constraint
      */
-    public function validate($addCartItemCommand, Constraint $constraint): void
+    public function validate($addToCartDto, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addCartItemCommand, AddToCartInterface::class);
+        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addCartItemCommand->getCartItem()->getProduct();
+        $purchasable = $addToCartDto->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -60,8 +59,8 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
          * @var CartItemInterface $cartItem
          * @var CartInterface $cart
          */
-        $cartItem = $addCartItemCommand->getCartItem();
-        $cart = $addCartItemCommand->getCart();
+        $cartItem = $addToCartDto->getCartItem();
+        $cart = $addToCartDto->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,
@@ -76,6 +75,12 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
     }
 
+    /**
+     * @param CartInterface     $cart
+     * @param CartItemInterface $cartItem
+     *
+     * @return int
+     */
     private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
     {
         $product = $cartItem->getProduct();

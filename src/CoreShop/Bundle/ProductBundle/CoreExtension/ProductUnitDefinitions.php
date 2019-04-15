@@ -17,8 +17,10 @@ use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 
 class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
 {
@@ -118,6 +120,9 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $code .= 'public function get' . ucfirst($key) . ' () {' . "\n";
         $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
+        $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {'  . "\n";
+		$code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '");'  . "\n";
+	    $code .= "\t" . '}'  . "\n";
         $code .= "\t" . 'return $data;' . "\n";
         $code .= "}\n\n";
 
@@ -161,7 +166,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
          */
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -171,8 +176,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         }
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
-            $data = $this->getEntityManager()->merge($data);
-            $data->setProduct($object);
+            if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
+                $data = $this->getEntityManager()->merge($data);
+                $data->setProduct($object);
+            }
         }
 
         return $data;
@@ -183,11 +190,16 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function preSetData($object, $data, $params = [])
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        if (!$object->hasLazyKey($this->getName())) {
-            $object->addLazyKey($this->getName());
+        if ($object instanceof LazyLoadedFieldsInterface) {
+            $object->markLazyKeyAsLoaded($this->getName());
+        }
+
+        if ($data instanceof ProductUnitDefinitionsInterface) {
+            if ($object instanceof ProductInterface) {
+                $data->setProduct($object);
+            }
+
+            $this->getEntityManager()->persist($data);
         }
 
         return $data;
@@ -224,7 +236,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $productUnitDefinitions->setProduct($object);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
-            $this->getEntityManager()->flush();
+            $this->getEntityManager()->flush($productUnitDefinitions);
         }
     }
 
@@ -284,7 +296,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
 
         $parsedData = $this->expandDotNotationKeys($data);
-        $parsedData['objectId'] = $object->getId();
+        $parsedData['product'] = $object->getId();
 
         $form->submit($parsedData);
 

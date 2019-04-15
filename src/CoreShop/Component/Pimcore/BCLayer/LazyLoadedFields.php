@@ -19,7 +19,7 @@ class LazyLoadedFields
     public static function hasLazyKey($object, $key)
     {
         if (interface_exists(LazyLoadedFieldsInterface::class) && $object instanceof LazyLoadedFieldsInterface) {
-            return $object->hasLazyKey($key);
+            return $object->isLazyKeyLoaded($key);
         }
 
         if (method_exists($object, 'getO__loadedLazyFields')) {
@@ -37,7 +37,7 @@ class LazyLoadedFields
     public static function addLazyKey($object, $key)
     {
         if (interface_exists(LazyLoadedFieldsInterface::class) && $object instanceof LazyLoadedFieldsInterface) {
-            $object->addLazyKey($key);
+            $object->markLazyKeyAsLoaded($key);
 
             return;
         }

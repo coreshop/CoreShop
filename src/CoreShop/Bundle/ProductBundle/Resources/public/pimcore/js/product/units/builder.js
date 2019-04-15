@@ -278,7 +278,10 @@ coreshop.product.unit.builder = Class.create({
     dispatchUnitDefinitionChangeEvent: function () {
         coreshop.broker.fireEvent(
             'pimcore.object.tags.coreShopProductUnitDefinitions.change',
-            {objectId: this.objectId, availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())}
+            {
+                objectId: this.objectId,
+                availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())
+            }
         );
     },
 
@@ -344,11 +347,6 @@ coreshop.product.unit.builder = Class.create({
 
         var fields = [
             {
-                xtype: 'hidden',
-                name: data.idName,
-                value: data.idValue
-            },
-            {
                 xtype: 'combo',
                 fieldLabel: t(data.unitLabel),
                 name: data.unitName,
@@ -361,7 +359,7 @@ coreshop.product.unit.builder = Class.create({
                 editable: false,
                 forceSelection: true,
                 queryMode: 'local',
-                displayField: 'name',
+                displayField: 'fullLabel',
                 valueField: 'id',
                 value: data.unitValue,
                 maxWidth: isDefault ? 250 : 200,
@@ -442,7 +440,7 @@ coreshop.product.unit.builder = Class.create({
         Object.keys(data).forEach(function (key) {
             var val = data[key];
             var step = obj
-            key.split(".").forEach(function (part, index, arr) {
+            key.split('.').forEach(function (part, index, arr) {
                 if (index === arr.length - 1) {
                     step[part] = val;
                 } else if (step[part] === undefined) {

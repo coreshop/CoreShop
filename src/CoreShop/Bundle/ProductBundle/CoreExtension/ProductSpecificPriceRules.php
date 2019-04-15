@@ -19,6 +19,7 @@ use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInte
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface
@@ -106,7 +107,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
 
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -127,8 +128,8 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!$object->hasLazyKey($this->getName())) {
-            $object->addLazyKey($this->getName());
+        if ($object instanceof LazyLoadedFieldsInterface) {
+            $object->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;

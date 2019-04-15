@@ -13,9 +13,9 @@
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -107,7 +107,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function preGetData($object)
     {
-        Assert::isInstanceOf($object, ProductInterface::class);
+        Assert::isInstanceOf($object, QuantityRangePriceAwareInterface::class);
 
         if (!$object instanceof Concrete) {
             return null;
@@ -115,7 +115,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
         $data = $object->getObjectVar($this->getName());
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -174,7 +174,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             ],
         ];
 
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
@@ -250,7 +250,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function save($object, $params = [])
     {
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             if (!$object instanceof Concrete) {
                 return;
             }
@@ -298,7 +298,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function delete($object, $params = [])
     {
-        if ($object instanceof ProductInterface) {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
             $all = $this->load($object, ['force' => true]);
 
             foreach ($all as $quantityPriceRule) {
@@ -357,7 +357,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             return;
         }
 
-        $object->addLazyKey($this->getName());
+        $object->markLazyKeyAsLoaded($this->getName());
     }
 
     /**

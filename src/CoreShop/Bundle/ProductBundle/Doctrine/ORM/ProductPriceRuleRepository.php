@@ -12,9 +12,9 @@
 
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 
-class ProductPriceRuleRepository extends RuleRepository implements ProductPriceRuleRepositoryInterface
+class ProductPriceRuleRepository extends PriceRuleRepository implements ProductPriceRuleRepositoryInterface
 {
+
 }

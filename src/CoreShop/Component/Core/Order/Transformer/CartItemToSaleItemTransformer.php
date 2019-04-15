@@ -55,6 +55,15 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
                     $toProposal->setMainObjectId($mainProduct->getId());
                 }
             }
+
+            if ($fromProposalItem->hasUnitDefinition()) {
+                $unit = $fromProposalItem->getUnitDefinition()->getUnit();
+                $toProposal->setUnitIdentifier($unit->getName());
+                $toProposal->setUnit($unit->getId());
+            }
+
+            $toProposal->setItemWeight($fromProposalItem->getItemWeight());
+            $toProposal->setTotalWeight($fromProposalItem->getTotalWeight());
         }
 
         return $this->innerCartItemToSaleItemTransformer->transform($proposal, $fromProposalItem, $toProposal);

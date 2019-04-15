@@ -24,6 +24,22 @@ class Cart extends BaseCart implements CartInterface
     /**
      * {@inheritdoc}
      */
+    public function getWeight()
+    {
+        $weight = 0;
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $weight += $item->getTotalWeight();
+            }
+        }
+
+        return $weight;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getShipping($withTax = true)
     {
         return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true) : $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);

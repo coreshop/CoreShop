@@ -12,11 +12,10 @@
 
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
-use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
 
-class ProductSpecificPriceRuleRepository extends RuleRepository implements ProductSpecificPriceRuleRepositoryInterface
+class ProductSpecificPriceRuleRepository extends PriceRuleRepository implements ProductSpecificPriceRuleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -26,6 +25,7 @@ class ProductSpecificPriceRuleRepository extends RuleRepository implements Produ
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :productId')
             ->setParameter('productId', $product->getId())
+            ->addOrderBy('o.priority', 'ASC')
             ->getQuery()
             ->getResult();
     }

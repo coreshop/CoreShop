@@ -13,3 +13,7 @@
 .coreshop_icon_address {
     background: url(../img/address.svg) center center no-repeat !important;
 }
+
+.coreshop_icon_address_identifier {
+    background: url(../img/address_identifier.svg) center center no-repeat !important;
+}

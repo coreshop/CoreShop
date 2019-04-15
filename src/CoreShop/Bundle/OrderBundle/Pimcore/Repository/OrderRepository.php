@@ -38,6 +38,17 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     /**
      * {@inheritdoc}
      */
+    public function hasCustomerOrders(CustomerInterface $customer)
+    {
+        $list = $this->getList();
+        $list->setCondition('customer__id = ?', [$customer->getId()]);
+
+        return $list->getTotalCount() > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findExpiredOrders($days)
     {
         $daysTimestamp = Carbon::now();

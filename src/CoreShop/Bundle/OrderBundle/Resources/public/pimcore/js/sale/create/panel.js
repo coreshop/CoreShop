@@ -131,10 +131,17 @@ coreshop.order.sale.create.panel = Class.create({
             });
 
             this.resetButton = new Ext.button.Button({
-                iconCls: 'pimcore_icon_refresh',
+                iconCls: 'pimcore_icon_delete',
                 text: t('reset'),
                 disabled: false,
                 handler: this.reset.bind(this)
+            });
+
+            this.refreshButton = new Ext.button.Button({
+                iconCls: 'pimcore_icon_refresh',
+                text: t('refresh'),
+                disabled: false,
+                handler: this.refresh.bind(this)
             });
 
             // create new panel
@@ -158,7 +165,8 @@ coreshop.order.sale.create.panel = Class.create({
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
-                        this.resetButton
+                        this.resetButton,
+                        this.refreshButton
                     ]
                 }]
             });
@@ -252,6 +260,10 @@ coreshop.order.sale.create.panel = Class.create({
         });
 
         this.eventManager.resumeEvents();
+    },
+
+    refresh: function() {
+        this.eventManager.fireEvent('preview');
     },
 
     prepareSuccessMessage: function(message, response) {

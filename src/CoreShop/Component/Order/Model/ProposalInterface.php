@@ -119,11 +119,6 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function setInvoiceAddress($invoiceAddress);
 
     /**
-     * @return float
-     */
-    public function getWeight();
-
-    /**
      * @return Fieldcollection
      */
     public function getTaxes();

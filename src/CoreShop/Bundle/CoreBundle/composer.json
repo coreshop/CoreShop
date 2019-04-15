@@ -36,10 +36,14 @@
     "coreshop/notification-bundle": "^2.0",
     "coreshop/fixture-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
+    "coreshop/menu-bundle": "^2.0",
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
     "rinvex/countries": "^5.0",
-    "pimcore/pimcore": "^5.7.0"
+    "pimcore/pimcore": "^5.7.2"
+  },
+  "conflict": {
+    "pimcore/pimcore": "5.7.0 || 5.7.1"
   },
   "config": {
     "bin-dir": "bin"

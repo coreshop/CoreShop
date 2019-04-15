@@ -21,6 +21,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Symfony\Component\Form\FormInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -249,13 +250,20 @@ final class CartContext implements Context
      */
     public function cartShouldWeigh($kg)
     {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $kg,
-            $this->cartContext->getCart()->getWeight(),
+            $cart->getWeight(),
             sprintf(
                 'Cart is expected to weigh %skg, but it weighs %skg',
                 $kg,
-                $this->cartContext->getCart()->getWeight()
+                $cart->getWeight()
             )
         );
     }
@@ -461,5 +469,20 @@ final class CartContext implements Context
                 $unit->getName()
             )
         );
+    }
+
+    /**
+     * @Then /^there should be a violation message in my (add-to-cart-form) with message "([^"]+)"$/
+     */
+    public function thereShouldBeCartFormViolation(FormInterface $addToCartForm, $message)
+    {
+        Assert::greaterThan($addToCartForm->getErrors()->count(), 0);
+
+        foreach ($addToCartForm->getErrors(true, true) as $error) {
+            Assert::eq(
+                $error->getMessage(),
+                $message
+            );
+        }
     }
 }

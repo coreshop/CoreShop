@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
@@ -168,7 +169,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . 'if (is_null($store)) {' . "\n";
         $code .= "\t\t" . 'return $this->' . $key . ";\n";
         $code .= "\t" . '}' . "\n";
-        $code .= "\t" . '$data = $this->' . $key . ";\n";
+        $code .= "\t" . '$data = $this->' . $key . ";\n\n";
+        $code .= "\t" . 'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
+        $code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);' . "\n";
+        $code .= "\t" . '}' . "\n\n";
         $code .= "\t" . 'if (is_array($data)) {' . "\n";
         $code .= "\t\t" . '/** @var \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValuesBlock */' . "\n";
         $code .= "\t\t" . 'foreach ($data as $storeValuesBlock) {' . "\n";
@@ -178,6 +182,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t\t" . '}' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\treturn null;" . "\n";
+        $code .= "}\n\n";
+
+        $code .= '/**' . "\n";
+        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '*' . "\n";
+        $code .= '* @param string $type' . "\n";
+        $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store' . "\n";
+        $code .= '*' . "\n";
+        $code .= '* @return mixed' . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function get' . ucfirst($key) . 'OfType (string $type, \CoreShop\Component\Store\Model\StoreInterface $store) {' . "\n";
+        $code .= "\t" . '$storeValue = $this->get'.ucfirst($key).'($store);' . "\n";
+        $code .= "\t" . 'if ($storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {' . "\n";
+        $code .= "\t\t" . '$getter = sprintf(\'get%s\', ucfirst($type));' . "\n";
+        $code .= "\t\t" . 'if (method_exists($storeValue, $getter)) {' . "\n";
+        $code .= "\t\t\t" . 'return $storeValue->$getter();' . "\n";
+        $code .= "\t\t" . '}' . "\n";
+        $code .= "\t" . '}' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . 'return null;' . "\n";
         $code .= "}\n\n";
 
         return $code;
@@ -205,6 +229,33 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . 'return $this;' . "\n";
         $code .= "}\n\n";
 
+        $code .= '/**' . "\n";
+        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $key) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '*' . "\n";
+        $code .= '* @param string $type' . "\n";
+        $code .= '* @param mixed $value' . "\n";
+        $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store' . "\n";
+        $code .= '*' . "\n";
+        $code .= '* @return static' . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function set' . ucfirst($key) . 'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store) {' . "\n";
+        $code .= "\t" . '$storeValue = $this->get'.ucfirst($key).'($store);' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . 'if (!$storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {' . "\n";
+        $code .= "\t\t" . '$storeValue = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->createNew($this, $store);' . "\n";
+        $code .= "\t" . '}' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . '$setter = sprintf(\'set%s\', ucfirst($type));' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . 'if (method_exists($storeValue, $setter)) {' . "\n";
+        $code .= "\t\t" . '$storeValue->$setter($value);' . "\n";
+        $code .= "\t" . '}' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . '$this->set'.ucfirst($key).'($storeValue, $store);' . "\n";
+        $code .= "\t" . "\n";
+        $code .= "\t" . 'return $this;' . "\n";
+        $code .= "}\n\n";
+
         return $code;
     }
 
@@ -225,8 +276,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          * @var Model\DataObject\Concrete $object
          */
         $data = $object->getObjectVar($this->getName());
+        $returnData = [];
 
-        if (!$object->hasLazyKey($this->getName())) {
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -235,18 +287,24 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             }
         }
 
-        if (is_array($data)) {
-            foreach ($data as &$storeEntry) {
-                if ($storeEntry instanceof ProductStoreValuesInterface) {
-                    $storeEntry = $this->getEntityManager()->merge($storeEntry);
-                    $storeEntry->setProduct($object);
-                }
-            }
-
-            unset($storeEntry);
+        if (!is_array($data)) {
+            $data = [];
         }
 
-        return $data;
+        foreach ($data as &$storeEntry) {
+            if ($storeEntry instanceof ProductStoreValuesInterface) {
+                $storeEntry = $this->getEntityManager()->merge($storeEntry);
+                $storeEntry->setProduct($object);
+            }
+        }
+
+        unset($storeEntry);
+
+        foreach ($data as $storeValue) {
+            $returnData[$storeValue->getStore()->getId()] = $storeValue;
+        }
+
+        return $returnData;
     }
 
     /**
@@ -254,11 +312,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function preSetData($object, $data, $params = [])
     {
-        /**
-         * @var Model\DataObject\Concrete $object
-         */
-        if (!$object->hasLazyKey($this->getName())) {
-            $object->addLazyKey($this->getName());
+        if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
+            $object->markLazyKeyAsLoaded($this->getName());
         }
 
         return $data;
@@ -406,8 +461,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
 
             $parsedData = $this->expandDotNotationKeys($storeData);
-            $parsedData['storeId'] = $storeId;
-            $parsedData['objectId'] = $object->getId();
+            $parsedData['store'] = $storeId;
 
             $form->submit($parsedData);
 
@@ -501,6 +555,23 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
+     * @param ProductInterface $object
+     * @param StoreInterface $store
+     * @return ProductStoreValuesInterface
+     */
+    public function createNew($object, StoreInterface $store)
+    {
+        /**
+         * @var ProductStoreValuesInterface $newObject
+         */
+        $newObject = $this->getFactory()->createNew();
+        $newObject->setStore($store);
+        $newObject->setProduct($object);
+
+        return $newObject;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isDiffChangeAllowed($object, $params = [])
@@ -513,7 +584,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function isEmpty($data)
     {
-        return is_null($data);
+        return is_null($data) || (is_array($data) && count($data) === 0);
     }
 
     /**
@@ -582,6 +653,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     protected function getStoreRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.store');
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    protected function getFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.factory.product_store_values');
     }
 
     /**

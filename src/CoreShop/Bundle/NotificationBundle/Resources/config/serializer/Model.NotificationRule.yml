@@ -1,4 +1,4 @@
-CoreShop\Component\Notification\Model\NotificationRUle:
+CoreShop\Component\Notification\Model\NotificationRule:
     exclusion_policy: ALL
     xml_root_name: product_price_rule
     properties:

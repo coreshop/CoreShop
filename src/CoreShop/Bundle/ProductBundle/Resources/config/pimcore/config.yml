@@ -9,6 +9,7 @@ pimcore:
                     coreShopProductSpecificPriceRules: CoreShop\Bundle\ProductBundle\CoreExtension\ProductSpecificPriceRules
                     coreShopProductUnitDefinitions: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnitDefinitions
                     coreShopProductUnitDefinition: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnitDefinition
+                    coreShopProductUnit: CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnit
 
 jms_serializer:
     metadata:

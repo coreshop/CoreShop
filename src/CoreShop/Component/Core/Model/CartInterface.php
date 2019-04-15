@@ -25,6 +25,11 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
     public function hasShippableItems();
 
     /**
+     * @return float
+     */
+    public function getWeight();
+
+    /**
      * @param bool $withTax
      *
      * @return float

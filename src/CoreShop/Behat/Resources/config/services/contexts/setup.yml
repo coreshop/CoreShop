@@ -147,7 +147,9 @@ services:
             - '@__symfony__.coreshop.context.cart'
             - '@__symfony__.coreshop.cart.modifier'
             - '@__symfony__.coreshop.cart.manager'
+            - '@__symfony__.coreshop.factory.add_to_cart'
             - '@__symfony__.coreshop.factory.cart_item'
+            - '@__symfony__.form.factory'
         tags:
             - { name: fob.context_service }
 

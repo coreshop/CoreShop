@@ -5,6 +5,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
@@ -14,6 +15,9 @@ class Version20190315140800 extends AbstractPimcoreMigration implements Containe
 
     /**
      * @param Schema $schema
+     *
+     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
+     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException
      */
     public function up(Schema $schema)
     {

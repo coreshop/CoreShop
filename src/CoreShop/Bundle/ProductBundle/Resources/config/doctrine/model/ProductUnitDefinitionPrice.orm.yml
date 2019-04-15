@@ -16,6 +16,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
             cascade:
                 - 'merge'
+                - 'persist'
             joinColumn:
                 name: unit_definition
                 referencedColumnName: id

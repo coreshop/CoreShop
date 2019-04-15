@@ -9,7 +9,7 @@ CoreShop\Component\Address\Model\Country:
         isoCode:
             expose: true
             type: string
-            groups: [Detailed]
+            groups: [List, Detailed]
         active:
             expose: true
             type: boolean
@@ -34,6 +34,7 @@ CoreShop\Component\Address\Model\Country:
         getZoneName:
             serialized_name: zoneName
             groups: [List, Detailed]
-        getName:
+        name:
             serialized_name: name
+            exp: 'object.getName() ? object.getName() : object.getIsoCode()'
             groups: [List, Detailed]

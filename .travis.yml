@@ -28,12 +28,12 @@ matrix:
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="~5.7.0"
+            - PIMCORE_VERSION="~5.7.2"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="~5.7.0"
+            - PIMCORE_VERSION="~5.7.2"
 
         - sudo: required
           php: 7.1

@@ -150,6 +150,22 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getItemQuantityFactor()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemQuantityFactor($itemQuantityFactor)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCategories()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

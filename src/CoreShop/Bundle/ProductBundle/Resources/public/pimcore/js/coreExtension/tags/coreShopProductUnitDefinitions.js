@@ -149,6 +149,11 @@ pimcore.object.tags.coreShopProductUnitDefinitions = Class.create(pimcore.object
             ignoreErrors: true,
             success: function (response) {
 
+                // maybe object is already gone due manual reload
+                if(this.component.destroyed === true) {
+                    return;
+                }
+
                 this.dirty = false;
 
                 var refreshedObject = null,

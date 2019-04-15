@@ -12,12 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
-use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionPriceCollectionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
@@ -30,22 +29,12 @@ final class ProductStoreValuesType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
         $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
 
         $builder
             ->add('store', StoreChoiceType::class)
-            ->add('price', IntegerType::class)
+            ->add('price', MoneyType::class)
             ->add('productUnitDefinitionPrices', ProductUnitDefinitionPriceCollectionType::class);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        $data = $event->getData();
-        $event->setData($this->parseStorePostData($data));
     }
 
     /**
@@ -58,38 +47,6 @@ final class ProductStoreValuesType extends AbstractResourceType
         if ($data->getPrice() >= PHP_INT_MAX) {
             $event->getForm()->addError(new FormError('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'));
         }
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function parseStorePostData(array $data)
-    {
-        $storeId = $data['storeId'];
-        $objectId = $data['objectId'];
-
-        $price = null;
-        $defaultUnitDefinition = null;
-
-        if ($data['price'] !== null) {
-            $price = (int) round((round($data['price'], 2) * 100), 0);
-        }
-
-        $productUnitDefinitionPrices = [];
-        if (is_array($data['productUnitDefinitionPrices'])) {
-            foreach ($data['productUnitDefinitionPrices'] as $unitDefinitionPrice) {
-                $productUnitDefinitionPrices[] = $unitDefinitionPrice;
-            }
-        }
-
-        return [
-            'store'                       => $storeId,
-            'product'                     => $objectId,
-            'price'                       => $price,
-            'productUnitDefinitionPrices' => $productUnitDefinitionPrices
-        ];
     }
 
     /**

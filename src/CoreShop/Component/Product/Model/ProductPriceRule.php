@@ -12,45 +12,16 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableTrait;
 use CoreShop\Component\Rule\Model\RuleTrait;
 
-class ProductPriceRule implements ProductPriceRuleInterface
+class ProductPriceRule extends AbstractPriceRule implements ProductPriceRuleInterface
 {
-    use RuleTrait;
-
-    /**
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
     /**
      * {@inheritdoc}
      */
-    public function getId()
+    protected function createTranslation()
     {
-        return $this->id;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
+        return new ProductPriceRuleTranslation();
     }
 }

@@ -12,8 +12,30 @@
 
 namespace CoreShop\Component\Product\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 
-interface PriceRuleInterface extends RuleInterface
+interface PriceRuleInterface extends RuleInterface, TranslatableInterface
 {
+    /**
+     * @param string|null $language
+     * @return string
+     */
+    public function getLabel($language = null);
+
+    /**
+     * @param string      $label
+     * @param string|null $language
+     */
+    public function setLabel($label, $language = null);
+
+    /**
+     * @return int
+     */
+    public function getPriority();
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority);
 }

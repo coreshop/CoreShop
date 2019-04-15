@@ -2,32 +2,7 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
     exclusion_policy: ALL
     xml_root_name: product_specific_price_rule
     properties:
-        id:
-            expose: true
-            type: integer
-            xml_attribute: true
-            groups: [List, Detailed]
-        name:
-            expose: true
-            type: string
-            groups: [List, Detailed]
         inherit:
             expose: true
             type: boolean
-            groups: [Detailed]
-        active:
-            expose: true
-            type: boolean
-            groups: [Detailed]
-        priority:
-            expose: true
-            type: integer
-            groups: [Detailed]
-        conditions:
-            expose: true
-            type: array
-            groups: [Detailed]
-        actions:
-            expose: true
-            type: array
             groups: [Detailed]

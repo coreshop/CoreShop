@@ -51,6 +51,16 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setWholesalePrice($wholesalePrice);
 
     /**
+     * @return null|int
+     */
+    public function getItemQuantityFactor();
+
+    /**
+     * @param null|int $itemQuantityFactor
+     */
+    public function setItemQuantityFactor($itemQuantityFactor);
+
+    /**
      * @return CategoryInterface[]
      */
     public function getCategories();

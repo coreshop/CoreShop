@@ -37,7 +37,6 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
         $builder->addEventListener(FormEvents::SUBMIT, [$this, 'onSubmit']);
 
         $builder
@@ -48,15 +47,6 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
             ->add('additionalUnitDefinitions', ProductUnitDefinitionCollectionType::class, [
                 'mapped' => false
             ]);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        $data = $event->getData();
-        $event->setData($this->parseStorePostData($data));
     }
 
     /**
@@ -85,35 +75,6 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
 
         // force collection to re-arrange unit definitions!
         PropertyAccess::createPropertyAccessor()->setValue($unitDefinitions, 'additionalUnitDefinitions', $additionalUnitDefinitions);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
-    protected function parseStorePostData(array $data)
-    {
-        $objectId = $data['objectId'];
-
-        $defaultUnitDefinition = null;
-
-        if (is_array($data['defaultUnitDefinition'])) {
-            $defaultUnitDefinition = $data['defaultUnitDefinition'];
-        }
-
-        $additionalUnitDefinitions = [];
-        if (is_array($data['additionalUnitDefinitions'])) {
-            foreach ($data['additionalUnitDefinitions'] as $additionalUnitDefinition) {
-                $additionalUnitDefinitions[] = $additionalUnitDefinition;
-            }
-        }
-
-        return [
-            'product'                   => $objectId,
-            'defaultUnitDefinition'     => $defaultUnitDefinition,
-            'additionalUnitDefinitions' => $additionalUnitDefinitions
-        ];
     }
 
     /**

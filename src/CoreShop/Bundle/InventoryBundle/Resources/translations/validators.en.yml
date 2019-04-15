@@ -1,3 +1,4 @@
 coreshop:
     cart_item:
         not_sufficient_stock: '%stockable% does not have sufficient stock.'
+        quantity_below_min_limit: 'You need to order at least %limit% units of %stockable%.'
