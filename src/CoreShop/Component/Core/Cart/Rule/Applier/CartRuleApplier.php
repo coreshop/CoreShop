@@ -181,8 +181,8 @@ class CartRuleApplier implements CartRuleApplierInterface
             $this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
-                $positive ? $cartPriceRuleItem->getDiscount(true) : (-1 * $cartPriceRuleItem->getDiscount(true)),
-                $positive ? $cartPriceRuleItem->getDiscount(false) : (-1 * $cartPriceRuleItem->getDiscount(false))
+                $cartPriceRuleItem->getDiscount(true),
+                $cartPriceRuleItem->getDiscount(false)
             )
         );
     }
