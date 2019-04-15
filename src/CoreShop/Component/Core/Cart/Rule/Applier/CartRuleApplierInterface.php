@@ -43,3 +43,5 @@ interface AdjustmentApplierInterface
         $withTax = false
     );
 }
+
+class_alias(AdjustmentApplierInterface::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface');
