@@ -1,2 +1,4 @@
 ---
 coreshop_notification_rule: 'Notifieringsregel'
+coreshop_notification_rule_type: 'Regeltyp'
+coreshop_mail_rule_do_not_send_to_designated_recipient: 'Skicka inte till utsedd mottagare'
