@@ -25,7 +25,7 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
         $cartRepo = $this->container->get('coreshop.repository.cart');
         /** @var PimcoreRepositoryInterface $orderRepo */
         $orderRepo = $this->container->get('coreshop.repository.order');
-        /** @var PimcoreRepositoryInterface $quoteClassname */
+        /** @var PimcoreRepositoryInterface $quoteRepo */
         $quoteRepo = $this->container->get('coreshop.repository.quote');
 
         $tables = [
