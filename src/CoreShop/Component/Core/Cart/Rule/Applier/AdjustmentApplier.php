@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
-class DiscountApplier implements DiscountApplierInterface
+class AdjustmentApplier implements AdjustmentApplierInterface
 {
     /**
      * @var ProportionalIntegerDistributor
@@ -75,8 +75,25 @@ class DiscountApplier implements DiscountApplierInterface
      */
     public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
     {
+        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySurcharge(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    {
+        $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
+    {
         $totalAmount = [];
 
+        //$positive = $cartPriceRuleItem instanceof Sur
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
         }
@@ -153,8 +170,8 @@ class DiscountApplier implements DiscountApplierInterface
             $item->addAdjustment($this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
-                -1 * $amountGross,
-                -1 * $amountNet
+                $positive ? $amountGross : (-1 * $amountGross),
+                $positive ? $amountNet : (-1 * $amountNet)
             ));
         }
 
@@ -165,8 +182,8 @@ class DiscountApplier implements DiscountApplierInterface
             $this->adjustmentFactory->createWithData(
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
-                -1 * $cartPriceRuleItem->getDiscount(true),
-                -1 * $cartPriceRuleItem->getDiscount(false)
+                $positive ? $cartPriceRuleItem->getDiscount(true) : (-1 * $cartPriceRuleItem->getDiscount(true)),
+                $positive ? $cartPriceRuleItem->getDiscount(false) : (-1 * $cartPriceRuleItem->getDiscount(false))
             )
         );
     }

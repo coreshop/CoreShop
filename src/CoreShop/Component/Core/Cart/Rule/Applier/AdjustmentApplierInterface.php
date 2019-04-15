@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
-interface DiscountApplierInterface
+interface AdjustmentApplierInterface
 {
     /**
      * @param CartInterface                      $cart
@@ -24,6 +24,19 @@ interface DiscountApplierInterface
      * @param bool                               $withTax
      */
     public function applyDiscount(
+        CartInterface $cart,
+        ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
+        int $discount,
+        $withTax = false
+    );
+
+    /**
+     * @param CartInterface                      $cart
+     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+     * @param int                                $discount
+     * @param bool                               $withTax
+     */
+    public function applySurcharge(
         CartInterface $cart,
         ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
