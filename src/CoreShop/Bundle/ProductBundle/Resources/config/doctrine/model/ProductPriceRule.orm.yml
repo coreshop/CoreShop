@@ -21,6 +21,9 @@ CoreShop\Component\Product\Model\ProductPriceRule:
         active:
             column: active
             type: boolean
+        stopPropagation:
+            column: stopPropagation
+            type: boolean
         creationDate:
             type: datetime
             gedmo:
