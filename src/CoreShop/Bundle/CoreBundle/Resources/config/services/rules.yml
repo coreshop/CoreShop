@@ -148,6 +148,13 @@ services:
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
+    coreshop.cart_price_rule.action.surcharge_percent:
+        class: CoreShop\Component\Core\Cart\Rule\Action\SurchargePercentActionProcessor
+        arguments:
+            - '@coreshop.cart_price_rule.discount.applier'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: surchargePercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType }
+
     coreshop.cart_price_rule.discount.applier:
         class: CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier
         arguments:
