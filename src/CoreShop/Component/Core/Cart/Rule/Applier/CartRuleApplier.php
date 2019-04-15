@@ -93,7 +93,6 @@ class CartRuleApplier implements CartRuleApplierInterface
     {
         $totalAmount = [];
 
-        //$positive = $cartPriceRuleItem instanceof Sur
         foreach ($cart->getItems() as $item) {
             $totalAmount[] = $item->getTotal(false);
         }
@@ -175,8 +174,8 @@ class CartRuleApplier implements CartRuleApplierInterface
             ));
         }
 
-        $cartPriceRuleItem->setDiscount($totalDiscountNet, false);
-        $cartPriceRuleItem->setDiscount($totalDiscountGross, true);
+        $cartPriceRuleItem->setDiscount($positive ? $totalDiscountNet : (-1 * $totalDiscountNet), false);
+        $cartPriceRuleItem->setDiscount($positive ? $totalDiscountGross : (-1 * $totalDiscountGross), true);
 
         $cart->addAdjustment(
             $this->adjustmentFactory->createWithData(
