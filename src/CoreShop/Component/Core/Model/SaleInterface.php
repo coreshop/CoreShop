@@ -12,18 +12,17 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Order\Model\OrderShipmentInterface as BaseOrderShipmentInterface;
-use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
+use CoreShop\Component\Order\Model\SaleInterface as BaseSaleInterface;
 
-interface OrderShipmentInterface extends BaseOrderShipmentInterface, CarrierAwareInterface
+interface SaleInterface extends BaseSaleInterface
 {
-    /**
-     * @return float
-     */
-    public function getWeight();
-
     /**
      * @param float $weight
      */
     public function setWeight($weight);
+
+    /**
+     * @return float
+     */
+    public function getWeight();
 }

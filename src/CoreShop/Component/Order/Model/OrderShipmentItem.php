@@ -69,22 +69,6 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setWeight($weight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal($withTax = true)
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();

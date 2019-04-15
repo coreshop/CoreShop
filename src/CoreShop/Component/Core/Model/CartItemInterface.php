@@ -26,4 +26,14 @@ interface CartItemInterface extends BaseCartItemInterface, ShippableItemInterfac
      * @param bool $digitalProduct
      */
     public function setDigitalProduct($digitalProduct);
+
+    /**
+     * @return float
+     */
+    public function getItemWeight();
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
 }

@@ -42,16 +42,6 @@ interface SaleItemInterface extends ProposalItemInterface, PimcoreModelInterface
     public function getSaleDocument();
 
     /**
-     * @param float $totalWeight
-     */
-    public function setTotalWeight($totalWeight);
-
-    /**
-     * @param float $itemWeight
-     */
-    public function setItemWeight($itemWeight);
-
-    /**
      * @param bool $withTax
      *
      * @return int

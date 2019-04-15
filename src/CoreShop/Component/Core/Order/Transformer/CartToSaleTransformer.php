@@ -86,6 +86,7 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 $sale->setAdditionalData($saleAdditionalData);
             }
 
+            $sale->setWeight($cart->getWeight());
             $sale->save();
         }
 

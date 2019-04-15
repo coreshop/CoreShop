@@ -18,6 +18,7 @@ use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 class Order extends BaseOrder implements OrderInterface
 {
+    use SaleTrait;
     use CarrierAwareTrait;
 
     /**

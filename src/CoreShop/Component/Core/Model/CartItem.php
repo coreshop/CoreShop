@@ -21,12 +21,28 @@ class CartItem extends BaseCartItem implements CartItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getTotalWeight()
+    {
+        return $this->getItemWeight() * $this->getQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemWeight()
+    {
+        return $this->getWeight();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getWidth()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWidth() : 0;
     }
 
-    /**
+    /** 
      * {@inheritdoc}
      */
     public function getHeight()
