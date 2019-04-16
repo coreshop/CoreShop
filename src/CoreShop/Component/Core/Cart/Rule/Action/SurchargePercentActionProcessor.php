@@ -13,44 +13,22 @@
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
-use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
-use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
+class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
-    protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    protected $currencyRepository;
-
     /**
      * @var CartRuleApplierInterface
      */
     protected $cartRuleApplier;
 
     /**
-     * @param CurrencyConverterInterface  $moneyConverter
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CartRuleApplierInterface    $cartRuleApplier
+     * @param CartRuleApplierInterface $cartRuleApplier
      */
-    public function __construct(
-        CurrencyConverterInterface $moneyConverter,
-        CurrencyRepositoryInterface $currencyRepository,
-        CartRuleApplierInterface $cartRuleApplier
-    ) {
-        $this->moneyConverter = $moneyConverter;
-        $this->currencyRepository = $currencyRepository;
+    public function __construct(CartRuleApplierInterface $cartRuleApplier)
+    {
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
@@ -65,7 +43,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             return false;
         }
 
-        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
+        $this->cartRuleApplier->applySurcharge($cart, $cartPriceRuleItem, $discount, false);
 
         return true;
     }
@@ -86,20 +64,14 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
-            $cartAmount = $cart->getTotal($configuration['gross']);
+            $total = $cart->getTotal(false);
         } else {
-            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
+            $total = $cart->getSubtotal(false);
         }
 
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $amount = $configuration['amount'];
-        $currency = $this->currencyRepository->find($configuration['currency']);
+        $amount = (int) round(($configuration['percent'] / 100) * $total);
 
-        Assert::isInstanceOf($currency, CurrencyInterface::class);
-
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
+        return $this->getApplicableAmount($amount, $amount);
     }
 
     /**

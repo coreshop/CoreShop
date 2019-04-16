@@ -839,6 +839,18 @@ translations:
           en: 'Discount (excl. VAT)'
           de: 'Rabatt (exkl. MwSt.)'
 
+  coreshop.ui.surcharge_incl:
+      languages:
+          de_CH: 'Zuschlag (inkl. MwSt.)'
+          en: 'Surcharge (incl. VAT)'
+          de: 'Zuschlag (inkl. MwSt.)'
+
+  coreshop.ui.surcharge_excl:
+      languages:
+          de_CH: 'Zuschlag (exkl. MwSt.)'
+          en: 'Surcharge (excl. VAT)'
+          de: 'Zuschlag (exkl. MwSt.)'
+
   coreshop.ui.gift_item:
       languages:
           de_CH: 'Geschenkartikel'

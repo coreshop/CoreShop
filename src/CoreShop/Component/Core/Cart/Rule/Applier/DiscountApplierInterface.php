@@ -12,21 +12,15 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 
-interface DiscountApplierInterface
-{
+if (interface_exists(CartRuleApplierInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param CartInterface                      $cart
-     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
-     * @param int                                $discount
-     * @param bool                               $withTax
+     * @deprecated Interface CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface class instead.
      */
-    public function applyDiscount(
-        CartInterface $cart,
-        ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
-        int $discount,
-        $withTax = false
-    );
+    interface DiscountApplierInterface
+    {
+    }
 }

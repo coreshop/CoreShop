@@ -22,7 +22,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInterface
+class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
      * @var CurrencyConverterInterface
@@ -65,7 +65,7 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             return false;
         }
 
-        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
+        $this->cartRuleApplier->applySurcharge($cart, $cartPriceRuleItem, $discount, $configuration['gross']);
 
         return true;
     }
