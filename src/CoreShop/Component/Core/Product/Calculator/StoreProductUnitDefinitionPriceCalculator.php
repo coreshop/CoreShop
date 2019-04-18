@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Product\Calculator;
 
+use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
@@ -43,7 +44,12 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         $contextUnitDefinition = $context['unitDefinition'];
         $contextStore = $context['store'];
 
-        $unitDefinitionPrices = $subject->getStoreValues($contextStore)->getProductUnitDefinitionPrices();
+        $storeValues = $subject->getStoreValues($contextStore);
+        if (!$storeValues instanceof ProductStoreValuesInterface) {
+            throw new NoRetailPriceFoundException(__CLASS__);
+        }
+
+        $unitDefinitionPrices = $storeValues->getProductUnitDefinitionPrices();
 
         if ($unitDefinitionPrices->count() === 0) {
             throw new NoRetailPriceFoundException(__CLASS__);
