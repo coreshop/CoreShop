@@ -261,6 +261,14 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
+    public function setQuantityPriceRules($quantityPriceRules)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getStorePrice(\CoreShop\Component\Store\Model\StoreInterface $store = null)
     {
         if (null !== $store) {
