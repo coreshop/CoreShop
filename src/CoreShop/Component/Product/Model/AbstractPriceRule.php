@@ -17,9 +17,11 @@ use CoreShop\Component\Rule\Model\RuleTrait;
 
 abstract class AbstractPriceRule implements PriceRuleInterface
 {
-    use RuleTrait;
+    use RuleTrait  {
+        initializeRuleCollections as private initializeRules;
+    }
     use TranslatableTrait {
-        __construct as private initializeTranslationsCollection;
+        initializeTranslationCollection as private initializeTranslationsCollection;
         getTranslation as private doGetTranslation;
     }
 
@@ -45,6 +47,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
 
     public function __construct()
     {
+        $this->initializeRules();
         $this->initializeTranslationsCollection();
     }
 

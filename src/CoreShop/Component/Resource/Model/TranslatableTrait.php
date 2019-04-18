@@ -46,6 +46,11 @@ trait TranslatableTrait
 
     public function __construct()
     {
+        $this->initializeTranslationCollection();
+    }
+
+    protected function initializeTranslationCollection()
+    {
         $this->translations = new ArrayCollection();
     }
 

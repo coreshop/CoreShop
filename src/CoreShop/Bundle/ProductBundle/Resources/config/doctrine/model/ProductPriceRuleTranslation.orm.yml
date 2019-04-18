@@ -9,6 +9,7 @@ CoreShop\Component\Product\Model\ProductPriceRuleTranslation:
               strategy: AUTO
         label:
             type: string
+            nullable: true
         creationDate:
             type: date
             gedmo:
