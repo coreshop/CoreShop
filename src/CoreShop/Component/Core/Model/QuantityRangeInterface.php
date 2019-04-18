@@ -53,6 +53,11 @@ interface QuantityRangeInterface extends BaseQuantityRangeInterface
     public function hasUnitDefinition();
 
     /**
+     * @param int $pseudoPrice
+     */
+    public function setPseudoPrice(int $pseudoPrice);
+
+    /**
      * @return int
      */
     public function getPseudoPrice();
