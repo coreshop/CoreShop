@@ -80,7 +80,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                     } elseif ((int) $from < 0) {
                         $form->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
                         break;
-                    } elseif ((int) $from <= $lastEnd) {
+                    } elseif ((int) $from < $lastEnd) {
                         $form->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
                         break;
                     }
@@ -88,7 +88,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                     if (!is_numeric($to)) {
                         $form->addError(new FormError('Field "to" in row ' . $realRowIndex . ' needs to be numeric'));
                         break;
-                    } elseif ((int) $to <= $from) {
+                    } elseif ((int) $to < $from) {
                         $form->addError(new FormError('Field "to" in row ' . $realRowIndex . '  needs to be greater than ' . $from));
                         break;
                     }

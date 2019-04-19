@@ -106,23 +106,32 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         $cheapestRangePrice = null;
-        /** @var CoreQuantityRangeInterface $range */
-        foreach ($ranges as $range) {
-
-            // only allow ranges with defined unit definition
+        $unitFilteredRanges = array_filter($ranges->toArray(), function (CoreQuantityRangeInterface $range) use ($unitDefinition) {
             if (!$range->getUnitDefinition() instanceof ProductUnitDefinitionInterface) {
-                continue;
+                return false;
             }
-
             if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
-                continue;
+                return false;
             }
+            return true;
+        });
 
-            if ($range->getRangeFrom() > $quantity) {
+        // reset array index
+        $unitFilteredRanges = array_values($unitFilteredRanges);
+
+        /** @var CoreQuantityRangeInterface $range */
+        foreach ($unitFilteredRanges as $index => $range) {
+
+            // if last range and quantity is greater: count!
+            if ($index+1 === count($unitFilteredRanges) && $quantity > $range->getRangeTo()) {
+                $cheapestRangePrice = $range;
                 break;
             }
 
-            $cheapestRangePrice = $range;
+            if ($range->getRangeFrom() <= $quantity && $quantity <= $range->getRangeTo()) {
+                $cheapestRangePrice = $range;
+                break;
+            }
         }
 
         return $cheapestRangePrice;
