@@ -112,11 +112,17 @@ class VolumeCalculator implements CalculatorInterface
 
         $cheapestRangePrice = null;
         /** @var QuantityRangeInterface $range */
-        foreach ($ranges as $range) {
-            if ($range->getRangeFrom() > $quantity) {
+        foreach ($ranges as $index => $range) {
+            // if last range and quantity is greater: count!
+            if ($index + 1 === count($ranges) && $quantity > $range->getRangeTo()) {
+                $cheapestRangePrice = $range;
                 break;
             }
-            $cheapestRangePrice = $range;
+
+            if ($range->getRangeFrom() <= $quantity && $quantity <= $range->getRangeTo()) {
+                $cheapestRangePrice = $range;
+                break;
+            }
         }
 
         return $cheapestRangePrice;
