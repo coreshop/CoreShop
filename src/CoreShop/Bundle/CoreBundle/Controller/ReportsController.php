@@ -68,7 +68,7 @@ class ReportsController extends AdminController
             $data = $report->getReportData($request->query);
         }
 
-        $csvData = $this->get('jms_serializer')->encode($data, 'csv');
+        $csvData = $this->get('jms_serializer')->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(
