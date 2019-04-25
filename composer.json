@@ -73,7 +73,7 @@
   },
   "require": {
     "doctrine/orm": "~2.5",
-    "jms/serializer-bundle": "^1.3",
+    "jms/serializer-bundle": "^2.0",
     "webmozart/assert": "^1.2",
     "doctrine/doctrine-cache-bundle": "^1.3",
     "payum/payum-bundle": "^2.2",

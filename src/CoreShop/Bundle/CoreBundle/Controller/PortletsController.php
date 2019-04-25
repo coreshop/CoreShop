@@ -67,7 +67,7 @@ class PortletsController extends AdminController
             $data = $portlet->getPortletData($request->query);
         }
 
-        $csvData = $this->get('serializer')->encode($data, 'csv');
+        $csvData = $this->get('serializer')->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(
