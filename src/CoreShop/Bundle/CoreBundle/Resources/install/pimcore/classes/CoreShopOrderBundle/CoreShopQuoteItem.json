@@ -464,27 +464,6 @@
                                         "invisible": false,
                                         "visibleGridView": false,
                                         "visibleSearch": false
-                                    },
-                                    {
-                                        "fieldtype": "coreShopMoney",
-                                        "width": "",
-                                        "defaultValue": null,
-                                        "minValue": null,
-                                        "maxValue": null,
-                                        "name": "itemWholesalePrice",
-                                        "title": "Item Wholesale Price",
-                                        "tooltip": "",
-                                        "mandatory": false,
-                                        "noteditable": true,
-                                        "index": false,
-                                        "locked": false,
-                                        "style": "",
-                                        "permissions": null,
-                                        "datatype": "data",
-                                        "relationType": false,
-                                        "invisible": false,
-                                        "visibleGridView": false,
-                                        "visibleSearch": false
                                     }
                                 ],
                                 "locked": false
@@ -519,6 +498,27 @@
                                         "datatype": "layout",
                                         "permissions": null,
                                         "childs": [
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "itemWholesalePrice",
+                                                "title": "Item Wholesale Price",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
@@ -779,6 +779,27 @@
                                         "datatype": "layout",
                                         "permissions": null,
                                         "childs": [
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "baseItemWholesalePrice",
+                                                "title": "Base Item Wholesale Price",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
                                             {
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",

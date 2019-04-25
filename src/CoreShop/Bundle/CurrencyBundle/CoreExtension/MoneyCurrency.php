@@ -22,7 +22,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $fieldtype = \CoreShop\Component\Currency\Model\Money::class;
+    public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
      * @var float
@@ -172,7 +172,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue(),
+                    'value' => $data->getValue() / 100,
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }

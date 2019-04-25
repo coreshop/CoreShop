@@ -12,10 +12,10 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\Currency\Model\Money;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface PurchasableInterface extends StorageListProductInterface
+interface PurchasableInterface
 {
     /**
      * @return int
@@ -31,8 +31,15 @@ interface PurchasableInterface extends StorageListProductInterface
 
     /**
      * @return int
+     *
+     * @deprecated getWholesalePrice is deprecated since 2.1.0 and will be removed with 2.2.0, use getWholesaleBuyingPrice instead
      */
     public function getWholesalePrice();
+
+    /**
+     * @return Money
+     */
+    public function getWholesaleBuyingPrice();
 
     /**
      * @return TaxRuleGroupInterface
