@@ -145,7 +145,9 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if (is_array($data)) {
+        $currencyIndex = $this->getName() . '__currency';
+
+        if (is_array($data) && isset($data[$currencyIndex]) && null !== $data[$currencyIndex]) {
             $currency = $this->getCurrencyById($data[$this->getName() . '__currency']);
 
             if (null !== $currency) {
