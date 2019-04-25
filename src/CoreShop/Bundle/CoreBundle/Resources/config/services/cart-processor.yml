@@ -22,6 +22,13 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 600 }
 
+    coreshop.cart_processor.items_wholesale:
+        class: CoreShop\Component\Core\Order\Processor\CartItemsWholesaleProcessor
+        arguments:
+            - '@coreshop.order.purchasable.wholesale_price_calculator'
+        tags:
+            - { name: coreshop.cart_processor, priority: 575 }
+
     coreshop.cart_processor.shipping:
         class: CoreShop\Component\Core\Order\Processor\CartShippingProcessor
         arguments:

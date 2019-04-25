@@ -811,6 +811,27 @@
                                         "visibleSearch": false
                                     },
                                     {
+                                        "fieldtype": "coreShopMoneyCurrency",
+                                        "width": "",
+                                        "phpdocType": "CoreShop\\Component\\Currency\\Model\\Money",
+                                        "minValue": null,
+                                        "maxValue": null,
+                                        "name": "wholesaleBuyingPrice",
+                                        "title": "Wholesale Buying Price",
+                                        "tooltip": "",
+                                        "mandatory": false,
+                                        "noteditable": false,
+                                        "index": false,
+                                        "locked": false,
+                                        "style": "",
+                                        "permissions": null,
+                                        "datatype": "data",
+                                        "relationType": false,
+                                        "invisible": false,
+                                        "visibleGridView": false,
+                                        "visibleSearch": false
+                                    },
+                                    {
                                         "fieldtype": "coreShopTaxRuleGroup",
                                         "allowEmpty": true,
                                         "options": null,

@@ -266,6 +266,22 @@ class Product extends BaseProduct implements ProductInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+        /**
+     * {@inheritdoc}
+     */
+    public function getWholesaleBuyingPrice()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWholesaleBuyingPrice($wholesaleBuyingPrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     /**
      * {@inheritdoc}
      */

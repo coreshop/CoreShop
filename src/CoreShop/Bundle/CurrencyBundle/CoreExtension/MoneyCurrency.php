@@ -22,7 +22,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $fieldtype = \CoreShop\Component\Currency\Model\Money::class;
+    public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
      * @var float
@@ -145,7 +145,9 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if (is_array($data)) {
+        $currencyIndex = $this->getName() . '__currency';
+
+        if (is_array($data) && isset($data[$currencyIndex]) && null !== $data[$currencyIndex]) {
             $currency = $this->getCurrencyById($data[$this->getName() . '__currency']);
 
             if (null !== $currency) {
@@ -172,7 +174,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue(),
+                    'value' => $data->getValue() / 100,
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }

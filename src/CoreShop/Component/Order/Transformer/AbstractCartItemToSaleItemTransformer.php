@@ -117,7 +117,8 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setBaseTaxes($baseTaxesFieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
-        $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
+        $saleItem->setItemWholesalePrice($cartItem->getItemWholesalePrice());
+        $saleItem->setBaseItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
 
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
