@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
 
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
@@ -120,6 +121,26 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         ];
     }
 
+    public function preGetData($object, $params = [])
+    {
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
+
+        if ($data instanceof Money) {
+            if ($data->getCurrency()) {
+                $currency = $data->getCurrency();
+                $currency = $this->getEntityManager()->merge($currency);
+
+                return new Money($data->getValue(), $currency);
+            }
+        }
+
+        return $data;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -128,7 +149,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    $this->getName() . '__value' => $data->getValue() / 100,
+                    $this->getName() . '__value' => $data->getValue(),
                     $this->getName() . '__currency' => $data->getCurrency()->getId(),
                 ];
             }
@@ -174,7 +195,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue(),
+                    'value' => $data->getValue() / 100,
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }
@@ -277,6 +298,10 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function isEmpty($data)
     {
+        if ($data instanceof Money) {
+            return false;
+        }
+
         if (!is_array($data)) {
             return true;
         }
@@ -300,6 +325,14 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     protected function getCurrencyById($currencyId)
     {
         return \Pimcore::getContainer()->get('coreshop.repository.currency')->find($currencyId);
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return \Pimcore::getContainer()->get('coreshop.manager.currency');
     }
 
     /**
