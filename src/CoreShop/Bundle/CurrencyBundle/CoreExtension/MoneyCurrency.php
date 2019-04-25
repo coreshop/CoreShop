@@ -128,7 +128,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    $this->getName() . '__value' => $data->getValue(),
+                    $this->getName() . '__value' => $data->getValue() / 100,
                     $this->getName() . '__currency' => $data->getCurrency()->getId(),
                 ];
             }
