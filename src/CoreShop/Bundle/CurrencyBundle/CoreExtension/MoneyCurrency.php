@@ -22,7 +22,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $fieldtype = \CoreShop\Component\Currency\Model\Money::class;
+    public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
      * @var float
