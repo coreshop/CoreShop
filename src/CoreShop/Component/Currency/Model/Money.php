@@ -65,4 +65,12 @@ class Money
     {
         $this->currency = $currency;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('%s%s', $this->value, $this->currency instanceof CurrencyInterface ? $this->currency->getIsoCode() : 'unknown currency');
+    }
 }
