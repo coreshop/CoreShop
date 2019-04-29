@@ -240,26 +240,24 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
-        if (!$this->isEmpty($data) && !is_numeric($data)) {
+        if ($this->isEmpty($data)) {
             throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
-            $data = $this->toNumeric($data);
-
-            if ($data >= PHP_INT_MAX) {
+            if ($data->getValue() >= PHP_INT_MAX) {
                 throw new Model\Element\ValidationException(
                     'Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'
                 );
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
+            if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
-            if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
+            if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );
