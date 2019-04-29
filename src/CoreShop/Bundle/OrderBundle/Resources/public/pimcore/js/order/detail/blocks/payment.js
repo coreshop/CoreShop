@@ -54,6 +54,12 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.sale.de
                     columns: [
                         {
                             xtype: 'gridcolumn',
+                            dataIndex: 'paymentNumber',
+                            text: t('coreshop_payment_number'),
+                            width: 200
+                        },
+                        {
+                            xtype: 'gridcolumn',
                             dataIndex: 'datePayment',
                             text: t('date'),
                             flex: 1,
