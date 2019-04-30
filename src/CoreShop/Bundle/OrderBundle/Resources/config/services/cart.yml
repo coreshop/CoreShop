@@ -48,6 +48,12 @@ services:
         tags:
             - { name: form.type }
 
+
     CoreShop\Bundle\OrderBundle\Form\Type\QuantityType:
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\EventListener\Grid\CartFilterListener:
+        tags:
+            - { name: kernel.event_listener, event: pimcore.admin.object.list.beforeListLoad, method: checkObjectList }
+

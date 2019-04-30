@@ -846,3 +846,203 @@ grid_config:
                         width: 224
             onlyDirectChildren: false
             pageSize: 25
+
+    cart_en:
+        name: 'Cart Overview'
+        class: coreshop.cart
+        data:
+            language: en
+            sortinfo:
+                field: id
+                direction: DESC
+            classId: null
+            columns:
+                id:
+                    name: id
+                    position: 1
+                    hidden: false
+                    width: 80
+                    fieldConfig:
+                        key: id
+                        label: ID
+                        type: system
+                        layout:
+                            title: id
+                            name: id
+                            datatype: data
+                            fieldtype: system
+                '#5a65a6bced85d':
+                    name: '#5a65a6bced85d'
+                    position: 3
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Email
+                            type: operator
+                            class: AnyGetter
+                            attribute: email
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                            childs:
+                                -   label: 'Customer (customer)'
+                                    type: value
+                                    class: Href
+                                    attribute: customer
+                                    dataType: href
+                                    childs: {  }
+                        key: '#5a65a6bced85d'
+                    isOperator: true
+                '#5a65a6bced8d0':
+                    name: '#5a65a6bced8d0'
+                    position: 4
+                    hidden: false
+                    width: 180
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Name
+                            type: operator
+                            class: Concatenator
+                            glue: ' '
+                            childs:
+                                -   label: 'First Name'
+                                    type: operator
+                                    class: AnyGetter
+                                    attribute: firstname
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                                    childs:
+                                        -   label: 'Invoice Address (invoiceAddress)'
+                                            type: value
+                                            class: Href
+                                            attribute: invoiceAddress
+                                            dataType: href
+                                            childs: {  }
+                                -   label: 'Last Name'
+                                    type: operator
+                                    class: AnyGetter
+                                    attribute: lastname
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                                    childs:
+                                        -   label: 'Invoice Address (invoiceAddress)'
+                                            type: value
+                                            class: Href
+                                            attribute: invoiceAddress
+                                            dataType: href
+                                            childs: {  }
+                        key: '#5a65a6bced8d0'
+                    isOperator: true
+            onlyDirectChildren: false
+            pageSize: 25
+
+        order_de:
+            name: 'Warenkorb Übersicht'
+            class: coreshop.cart
+            data:
+                language: de
+                sortinfo:
+                    field: id
+                    direction: DESC
+                classId: null
+                columns:
+                    id:
+                        name: id
+                        position: 1
+                        hidden: false
+                        width: 80
+                        fieldConfig:
+                            key: id
+                            label: ID
+                            type: system
+                            layout:
+                                title: id
+                                name: id
+                                datatype: data
+                                fieldtype: system
+                    '#5a65a6bced85d':
+                        name: '#5a65a6bced85d'
+                        position: 3
+                        hidden: false
+                        width: 200
+                        fieldConfig:
+                            isOperator: true
+                            attributes:
+                                label: Email
+                                type: operator
+                                class: AnyGetter
+                                attribute: email
+                                param1: ''
+                                isArrayType: false
+                                forwardAttribute: ''
+                                forwardParam1: ''
+                                returnLastResult: false
+                                childs:
+                                    -   label: 'Kunde (customer)'
+                                        type: value
+                                        class: Href
+                                        attribute: customer
+                                        dataType: href
+                                        childs: {  }
+                            key: '#5a65a6bced85d'
+                        isOperator: true
+                    '#5a65a6bced8d0':
+                        name: '#5a65a6bced8d0'
+                        position: 4
+                        hidden: false
+                        width: 180
+                        fieldConfig:
+                            isOperator: true
+                            attributes:
+                                label: Name
+                                type: operator
+                                class: Concatenator
+                                glue: ' '
+                                childs:
+                                    -   label: 'First Name'
+                                        type: operator
+                                        class: AnyGetter
+                                        attribute: firstname
+                                        param1: ''
+                                        isArrayType: false
+                                        forwardAttribute: ''
+                                        forwardParam1: ''
+                                        returnLastResult: false
+                                        childs:
+                                            -   label: 'Rechnungsadresse (invoiceAddress)'
+                                                type: value
+                                                class: Href
+                                                attribute: invoiceAddress
+                                                dataType: href
+                                                childs: {  }
+                                    -   label: 'Last Name'
+                                        type: operator
+                                        class: AnyGetter
+                                        attribute: lastname
+                                        param1: ''
+                                        isArrayType: false
+                                        forwardAttribute: ''
+                                        forwardParam1: ''
+                                        returnLastResult: false
+                                        childs:
+                                            -   label: 'Rechnungsadresse (invoiceAddress)'
+                                                type: value
+                                                class: Href
+                                                attribute: invoiceAddress
+                                                dataType: href
+                                                childs: {  }
+                            key: '#5a65a6bced8d0'
+                        isOperator: true
+                onlyDirectChildren: false
+                pageSize: 25

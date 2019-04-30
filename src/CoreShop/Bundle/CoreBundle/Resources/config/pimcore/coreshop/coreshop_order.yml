@@ -5,6 +5,9 @@ core_shop_order:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCart.json'
                 interface: CoreShop\Component\Core\Model\CartInterface
+                pimcore_controller:
+                    default: CoreShop\Bundle\CoreBundle\Controller\CartController
+                    creation: CoreShop\Bundle\CoreBundle\Controller\CartCreationController
         cart_item:
             classes:
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopOrderBundle/CoreShopCartItem.json'

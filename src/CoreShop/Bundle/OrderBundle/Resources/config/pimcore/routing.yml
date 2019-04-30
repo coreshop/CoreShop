@@ -164,3 +164,38 @@ coreshop_qutoe_preview:
 coreshop_quote_create:
     path: /%coreshop.admin.route.base%/quote-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:saleCreationAction'}
+
+
+##### CARTS
+coreshop_cart_get_folder_configuration:
+    path: /%coreshop.admin.route.base%/cart/get-folder-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.cart:getFolderConfigurationAction'}
+
+coreshop_cart_get_grid_configuration:
+    path: /%coreshop.admin.route.base%/cart/get-grid-configuration
+    defaults: { _controller: 'coreshop.pimcore_controller.cart:getGridConfigurationAction'}
+
+coreshop_cart_get_quotes:
+    path: /%coreshop.admin.route.base%/cart/list
+    defaults: { _controller: 'coreshop.pimcore_controller.cart:listAction'}
+
+coreshop_cart_get_quote:
+    path: /%coreshop.admin.route.base%/cart/detail
+    defaults: { _controller: 'coreshop.pimcore_controller.cart:detailAction'}
+
+coreshop_cart_find:
+    path: /%coreshop.admin.route.base%/cart/find
+    defaults: { _controller: 'coreshop.pimcore_controller.cart:findSaleAction'}
+
+##### CART CREATION
+coreshop_cart_get_customer_details:
+    path: /%coreshop.admin.route.base%/cart-creation/get-customer-details
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_creation:getCustomerDetailsAction'}
+
+coreshop_cart_preview:
+    path: /%coreshop.admin.route.base%/cart-creation/preview
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_creation:salePreviewAction'}
+
+coreshop_cart_create:
+    path: /%coreshop.admin.route.base%/cart-creation/create
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_creation:saleCreationAction'}

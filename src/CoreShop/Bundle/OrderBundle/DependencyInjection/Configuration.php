@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
+use CoreShop\Bundle\OrderBundle\Controller\CartController;
+use CoreShop\Bundle\OrderBundle\Controller\CartCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
@@ -203,6 +205,13 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('repository')->defaultValue(CartRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopCart.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
+                                        ->arrayNode('pimcore_controller')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('default')->defaultValue(CartController::class)->end()
+                                                ->scalarNode('creation')->defaultValue(CartCreationController::class)->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -453,7 +462,18 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['cart_price_rule', 'order_list', 'order_detail', 'order_create', 'quote_list', 'quote_detail', 'quote_create'])
+                        ->defaultValue([
+                            'cart_price_rule',
+                            'order_list',
+                            'order_detail',
+                            'order_create',
+                            'quote_list',
+                            'quote_detail',
+                            'quote_create',
+                            'cart_list',
+                            'cart_detail',
+                            'cart_create'
+                        ])
                     ->end()
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
