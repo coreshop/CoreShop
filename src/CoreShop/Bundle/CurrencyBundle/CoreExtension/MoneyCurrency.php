@@ -241,7 +241,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         }
 
         if ($this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+            return;
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
