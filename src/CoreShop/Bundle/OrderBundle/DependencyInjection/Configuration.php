@@ -32,6 +32,7 @@ use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
+use CoreShop\Bundle\OrderBundle\Controller\CartEditController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -210,6 +211,7 @@ final class Configuration implements ConfigurationInterface
                                             ->children()
                                                 ->scalarNode('default')->defaultValue(CartController::class)->end()
                                                 ->scalarNode('creation')->defaultValue(CartCreationController::class)->end()
+                                                ->scalarNode('edit')->defaultValue(CartEditController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()

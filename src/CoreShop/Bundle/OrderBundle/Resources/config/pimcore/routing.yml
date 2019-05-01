@@ -199,3 +199,16 @@ coreshop_cart_preview:
 coreshop_cart_create:
     path: /%coreshop.admin.route.base%/cart-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.cart_creation:saleCreationAction'}
+
+##### CART EDIT
+coreshop_cart_edit:
+    path: /%coreshop.admin.route.base%/cart-edit/edit-items
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_edit:editItemsAction'}
+
+coreshop_cart_add:
+    path: /%coreshop.admin.route.base%/cart-edit/add-items
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_edit:addItemsAction'}
+
+coreshop_cart_remove:
+    path: /%coreshop.admin.route.base%/cart-edit/remove-item
+    defaults: { _controller: 'coreshop.pimcore_controller.cart_edit:removeItemAction'}

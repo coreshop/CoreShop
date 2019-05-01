@@ -248,10 +248,10 @@ class CartController extends AbstractSaleController
         $jsonSale['saleDate'] = $cart->getCreationDate();
         $jsonSale['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
         $jsonSale['details'] = $this->getItemDetails($cart);
-        $jsonSale['summary'] = $this->getSummary($cart);
         $jsonSale['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());
         $jsonSale['store'] = $cart->getStore() instanceof StoreInterface ? $this->getStore($cart->getStore()) : null;
         $jsonSale['totalGross'] = $cart->getTotal();
+        $jsonSale['edit'] = true;
 
         $jsonSale['address'] = [
             'shipping' => $this->getDataForObject($cart->getShippingAddress()),
@@ -293,6 +293,21 @@ class CartController extends AbstractSaleController
             $jsonSale['priceRule'] = $rules;
         }
 
+        $totals = $this->getSummary($cart);
+
+        foreach ($totals as &$totalEntry) {
+            $priceFormatted = $this->get('coreshop.money_formatter')->format(
+                $totalEntry['value'],
+                $cart->getCurrency()->getIsoCode()
+            );
+
+            $totalEntry['valueFormatted'] = $priceFormatted;
+        }
+
+        unset ($totalEntry);
+
+        $jsonSale['summary'] = $totals;
+
         return $jsonSale;
     }
 
@@ -309,18 +324,6 @@ class CartController extends AbstractSaleController
             $summary[] = [
                 'key' => 'discount',
                 'value' => $cart->getDiscount(),
-            ];
-        }
-
-        if ($cart->getShipping() > 0) {
-            $summary[] = [
-                'key' => 'shipping',
-                'value' => $cart->getShipping(),
-            ];
-
-            $summary[] = [
-                'key' => 'shipping_tax',
-                'value' => $cart->getShippingTax(),
             ];
         }
 
@@ -379,12 +382,11 @@ class CartController extends AbstractSaleController
         return [
             'o_id' => $item->getId(),
             'product_name' => $item->getProduct() ? $item->getProduct()->getName() : '',
-            'wholesale_price' => $item->getItemWholesalePrice(),
-            'price_without_tax' => $item->getItemPrice(false),
-            'price' => $item->getItemPrice(true),
             'quantity' => $item->getQuantity(),
-            'total' => $item->getTotal(),
-            'total_tax' => $item->getTotalTax(),
+            'totalGrossFormatted' => $this->get('coreshop.money_formatter')->format($item->getTotal(true), $item->getCart()->getCurrency()->getIsoCode()),
+            'totalNetFormatted' => $this->get('coreshop.money_formatter')->format($item->getTotal(false), $item->getCart()->getCurrency()->getIsoCode()),
+            'itemPriceGrossFormatted' => $this->get('coreshop.money_formatter')->format($item->getItemPrice(true), $item->getCart()->getCurrency()->getIsoCode()),
+            'itemPriceNetFormatted' => $this->get('coreshop.money_formatter')->format($item->getItemPrice(false), $item->getCart()->getCurrency()->getIsoCode()),
         ];
     }
 

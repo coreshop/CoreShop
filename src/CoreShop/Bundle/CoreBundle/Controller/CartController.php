@@ -46,9 +46,36 @@ class CartController extends BaseCartController
                 'weight'  => $sale->getWeight(),
                 'cost'    => $sale->getShipping(),
             ];
+
+            if ($sale->getCarrier() instanceof CarrierInterface) {
+                $order['carrierInfo'] = [
+                    'name' => $sale->getCarrier()->getTitle()
+                ];
+            }
         }
 
         return $order;
+    }
+
+    protected function getSummary(CartInterface $cart)
+    {
+        $summary = parent::getSummary($cart);
+
+        if ($cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+            if ($cart->getShipping() > 0) {
+                $summary[] = [
+                    'key' => 'shipping',
+                    'value' => $cart->getShipping(),
+                ];
+
+                $summary[] = [
+                    'key' => 'shipping_tax',
+                    'value' => $cart->getShippingTax(),
+                ];
+            }
+        }
+
+        return $summary;
     }
 
     /**
