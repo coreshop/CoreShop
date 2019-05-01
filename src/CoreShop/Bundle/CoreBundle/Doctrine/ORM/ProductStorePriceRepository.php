@@ -28,7 +28,6 @@ class ProductStorePriceRepository extends EntityRepository implements ProductSto
             ->andWhere('o.product = :product')
             ->setParameter('product', $product->getId())
             ->getQuery()
-            ->useResultCache(true)
             ->useQueryCache(true)
             ->getResult();
     }
@@ -44,7 +43,6 @@ class ProductStorePriceRepository extends EntityRepository implements ProductSto
             ->setParameter('product', $product->getId())
             ->setParameter('property', $property)
             ->getQuery()
-            ->useResultCache(true)
             ->useQueryCache(true)
             ->getResult();
     }
@@ -62,7 +60,6 @@ class ProductStorePriceRepository extends EntityRepository implements ProductSto
             ->setParameter('store', $store)
             ->setParameter('property', $property)
             ->getQuery()
-            ->useResultCache(true)
             ->useQueryCache(true)
             ->getOneOrNullResult();
     }
