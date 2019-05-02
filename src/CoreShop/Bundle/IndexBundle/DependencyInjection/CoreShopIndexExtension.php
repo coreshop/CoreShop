@@ -42,8 +42,6 @@ final class CoreShopIndexExtension extends AbstractModelExtension
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
             $loader->load('services/menu.yml');
             $loader->load('services/installer.yml');
-
-            $config['pimcore_admin']['js']['menu'] = '/admin/coreshop/coreshop.index/menu.js';
         }
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

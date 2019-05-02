@@ -123,6 +123,14 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
      */
     public function getJsPaths()
     {
+        $bundles = $this->container->getParameter('kernel.bundles');
+
+        if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
+            return [
+                '/admin/coreshop/coreshop.index/menu.js'
+            ];
+        }
+
         return [];
     }
 
