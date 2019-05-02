@@ -20,12 +20,25 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
+use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopIndexBundle extends AbstractResourceBundle
+final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
+    use PackageVersionTrait;
+
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopMenuBundle(), 4000);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -59,5 +72,81 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Index\Model';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Core';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Pimcore eCommerce';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getComposerPackageName(): string
+    {
+        return 'coreshop/index-bundle';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        if ($this->container->has(Installer::class)) {
+            return $this->container->get(Installer::class);
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminIframePath()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        return [];
     }
 }

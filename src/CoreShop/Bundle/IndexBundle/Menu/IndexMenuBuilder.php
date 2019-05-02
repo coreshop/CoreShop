@@ -84,7 +84,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->addChild('coreshop_indexes')
             ->setLabel('coreshop_indexes')
             ->setAttribute('permission', 'coreshop_permission_index')
-            ->setAttribute('iconCls', 'coreshop_icon_carriers')
+            ->setAttribute('iconCls', 'coreshop_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index');
 
