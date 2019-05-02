@@ -21,6 +21,7 @@
     "coreshop/index": "^2.0",
     "coreshop/registry": "^2.0",
     "coreshop/resource-bundle": "^2.0",
+    "coreshop/menu-bundle": "^2.1",
     "pimcore/pimcore": "^5.7.2"
   },
   "conflict": {
@@ -42,6 +43,11 @@
   "extra": {
     "branch-alias": {
       "dev-master": "2.1-dev"
+    },
+    "pimcore": {
+      "bundles": [
+        "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
+      ]
     }
   }
 }
