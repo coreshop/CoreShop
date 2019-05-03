@@ -12,11 +12,24 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\Collection;
 
-interface CartPriceRuleInterface extends RuleInterface
+interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
+     /**
+     * @param string|null $language
+     * @return string
+     */
+    public function getLabel($language = null);
+
+    /**
+     * @param string      $label
+     * @param string|null $language
+     */
+    public function setLabel($label, $language = null);
+
     /**
      * @return string
      */
