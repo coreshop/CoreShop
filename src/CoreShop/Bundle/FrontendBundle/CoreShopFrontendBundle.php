@@ -14,12 +14,17 @@ namespace CoreShop\Bundle\FrontendBundle;
 
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use EmailizrBundle\EmailizrBundle;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
+    use PackageVersionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -43,5 +48,17 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     public function getDescription()
     {
         return 'CoreShop - Frontend Bundle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (isset(Versions::VERSIONS['coreshop/frontend-bundle'])) {
+            return 'coreshop/frontend-bundle';
+        }
+
+        return 'coreshop/core-shop';
     }
 }

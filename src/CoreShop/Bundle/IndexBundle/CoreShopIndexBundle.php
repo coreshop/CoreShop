@@ -23,6 +23,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRender
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -79,7 +80,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
      */
     public function getNiceName()
     {
-        return 'CoreShop - Core';
+        return 'CoreShop - Index';
     }
 
     /**
@@ -87,15 +88,19 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
      */
     public function getDescription()
     {
-        return 'CoreShop - Pimcore eCommerce';
+        return 'CoreShop - Index Bundle';
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    protected function getComposerPackageName(): string
+    public function getComposerPackageName()
     {
-        return 'coreshop/index-bundle';
+        if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
+            return 'coreshop/index-bundle';
+        }
+
+        return 'coreshop/core-shop';
     }
 
     /**

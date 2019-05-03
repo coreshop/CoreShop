@@ -14,13 +14,18 @@ namespace CoreShop\Bundle\MenuBundle;
 
 use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopMenuBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
+    use PackageVersionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -37,5 +42,33 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
         parent::build($container);
 
         $container->addCompilerPass(new MenuBuilderPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Menu';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Menu Bundle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (isset(Versions::VERSIONS['coreshop/menu-bundle'])) {
+            return 'coreshop/menu-bundle';
+        }
+
+        return 'coreshop/core-shop';
     }
 }
