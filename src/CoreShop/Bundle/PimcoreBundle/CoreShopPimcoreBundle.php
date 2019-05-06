@@ -19,11 +19,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDo
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\Placeholder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 {
+    use PackageVersionTrait;
+
     /**
      * @return string
      */
