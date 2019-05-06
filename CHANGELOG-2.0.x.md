@@ -2,8 +2,19 @@
 
 ## 2.0.7
  - Bug:
-  - [Purchasable] When using custom purchasable, CoreShop always assumed that your class has a weight, even though it didn't had to. That's why we moved all weight related fields to the Core Component and CoreBundle.
+   - [Taxation] Wrong Tax Calculation when using Store Gross Values (https://github.com/coreshop/CoreShop/issues/971)
+   - [Core] remove unused Helper Classes (https://github.com/coreshop/CoreShop/pull/966)
+   - [Core] add index to StorePrice Table for better performance (https://github.com/coreshop/CoreShop/pull/962)
+   - [Core] remove result cache for Store Price due to issues with inheritance (https://github.com/coreshop/CoreShop/pull/961)
+   - [Core] strip_tags for meta description in Category (https://github.com/coreshop/CoreShop/pull/959)
+   - [Currency] MoneyCurrency fixes and improvements (https://github.com/coreshop/CoreShop/pull/958)
+   - [Purchasable] When using custom purchasable, CoreShop always assumed that your class has a weight, even though it didn't had to. That's why we moved all weight related fields to the Core Component and CoreBundle.
+   - [Core] prevent empty carts from being persisted (https://github.com/coreshop/CoreShop/issues/920)
+   - [Core] move weight/total weight to Core Component (https://github.com/coreshop/CoreShop/pull/938)
+   - [Address] use isoCode as fallback if no language value is set (https://github.com/coreshop/CoreShop/pull/939)
    
+ - Features
+   - [JMS Serializer] Updated JMS Serializer to 2.0 (https://github.com/coreshop/CoreShop/pull/955)
 
 ## 2.0.6:
  - Bug:
