@@ -124,14 +124,17 @@ class CartRuleApplier implements CartRuleApplierInterface
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $taxItems = $item->getTaxes();
+
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
+
+                    $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
                 } else {
                     $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
-                }
 
-                $taxItems = $item->getTaxes();
-                $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
+                    $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, -1 * $itemDiscountGross, $taxItems->getItems()));
+                }
             } else {
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount;

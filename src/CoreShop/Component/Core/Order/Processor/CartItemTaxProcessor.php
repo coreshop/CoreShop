@@ -76,11 +76,13 @@ final class CartItemTaxProcessor implements CartProcessorInterface
             $fieldCollection = new Fieldcollection();
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $item->getTotal(false)));
-
                 if ($store->getUseGrossPrice()) {
+                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, $item->getTotal(true)));
+
                     $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
                 } else {
+                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $item->getTotal(false)));
+
                     $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
                 }
             }
