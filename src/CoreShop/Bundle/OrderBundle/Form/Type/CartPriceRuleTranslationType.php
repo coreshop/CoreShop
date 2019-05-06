@@ -12,14 +12,11 @@
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-final class CartPriceRuleType extends RuleType
+final class CartPriceRuleTranslationType extends RuleType
 {
     /**
      * {@inheritdoc}
@@ -27,15 +24,7 @@ final class CartPriceRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('translations', ResourceTranslationsType::class, [
-                'entry_type' => CartPriceRuleTranslationType::class,
-            ])
-            ->add('name', TextType::class)
-            ->add('isVoucherRule', CheckboxType::class)
-            ->add('active', CheckboxType::class)
-            ->add('description', TextareaType::class)
-            ->add('conditions', CartPriceRuleConditionCollectionType::class)
-            ->add('actions', CartPriceRuleActionCollectionType::class);
+            ->add('label', TextType::class);
     }
 
     /**
@@ -43,6 +32,6 @@ final class CartPriceRuleType extends RuleType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_cart_price_rule';
+        return 'coreshop_cart_price_rule_translation';
     }
 }

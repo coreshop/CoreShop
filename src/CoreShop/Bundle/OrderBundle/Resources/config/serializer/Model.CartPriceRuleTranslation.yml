@@ -1,0 +1,8 @@
+CoreShop\Component\Order\Model\CartPriceRuleTranslation:
+    exclusion_policy: ALL
+    xml_root_name: cart_price_rule
+    properties:
+        label:
+            expose: true
+            type: string
+            groups: [Detailed]
