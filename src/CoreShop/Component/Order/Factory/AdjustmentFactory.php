@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Factory;
 
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class AdjustmentFactory implements AdjustmentFactoryInterface
@@ -33,7 +32,7 @@ class AdjustmentFactory implements AdjustmentFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNew(): AdjustmentInterface
+    public function createNew()
     {
         return $this->adjustmentFactory->createNew();
     }

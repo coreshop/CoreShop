@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Order\Factory;
 
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -35,7 +34,7 @@ class CartItemFactory implements CartItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createNew(): AdjustmentInterface
+    public function createNew()
     {
         return $this->cartItemFactory->createNew();
     }
