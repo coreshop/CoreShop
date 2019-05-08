@@ -45,6 +45,9 @@ class ProductPreviewController extends AdminController
             }
         }
 
+        /**
+         * @var DataObject $object
+         */
         $object = $this->get('coreshop.repository.product')->find($request->get('id'));
 
         if (!$object instanceof ProductInterface) {
