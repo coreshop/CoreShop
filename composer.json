@@ -113,8 +113,7 @@
     "symplify/easy-coding-standard": "^4.3.0"
   },
   "conflict": {
-    "dpfaffenbauer/process-manager": "<2.4",
-    "pimcore/pimcore": "5.7.0 || 5.7.1"
+    "dpfaffenbauer/process-manager": "<2.4"
   },
   "suggest": {
     "dpfaffenbauer/process-manager": "Allows to start Processes from within Pimcore UI and also tracks the status."
