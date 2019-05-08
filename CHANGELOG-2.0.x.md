@@ -1,5 +1,11 @@
 # Within V2
 
+## 2.0.8
+ - Bug:
+   - [Pimcore] Make CoreShop compatible with Pimcore 5.8.0 (https://github.com/coreshop/CoreShop/pull/977)
+   - [Order] remove wrong type hints (https://github.com/coreshop/CoreShop/pull/978)
+   - [Core] fix setting customer and persisting cart on user login (https://github.com/coreshop/CoreShop/pull/980)
+   
 ## 2.0.7
  - Bug:
    - [Taxation] Wrong Tax Calculation when using Store Gross Values (https://github.com/coreshop/CoreShop/issues/971)
