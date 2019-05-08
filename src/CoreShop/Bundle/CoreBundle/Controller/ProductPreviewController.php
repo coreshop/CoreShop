@@ -18,7 +18,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Pimcore\Tool;
 use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
@@ -46,7 +45,7 @@ class ProductPreviewController extends AdminController
         }
 
         /**
-         * @var DataObject $object
+         * @var DataObject\Concrete $object
          */
         $object = $this->get('coreshop.repository.product')->find($request->get('id'));
 
