@@ -24,6 +24,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/resource": "^2.0",
     "coreshop/rule": "^2.0"
   },

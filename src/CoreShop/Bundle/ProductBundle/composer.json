@@ -18,15 +18,13 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/product": "^2.0",
     "coreshop/registry": "^2.0",
     "coreshop/rule-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
-    "pimcore/pimcore": "^5.7.2"
-  },
-  "conflict": {
-    "pimcore/pimcore": "5.7.0 || 5.7.1"
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"

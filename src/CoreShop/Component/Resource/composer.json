@@ -18,8 +18,9 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "doctrine/common": "^2.6",
-    "pimcore/pimcore": "^5.7.2",
+    "pimcore/pimcore": "^5.8.0",
     "webmozart/assert": "^1.2"
   },
   "config": {
