@@ -33,13 +33,24 @@ final class CartBlamerListener
     private $cartContext;
 
     /**
+     * @var CartManagerInterface
+     */
+    private $cartManager;
+
+    /**
      * @param CartProcessorInterface $cartProcessor
      * @param CartContextInterface $cartContext
+     * @param CartManagerInterface $cartManager
      */
-    public function __construct(CartProcessorInterface $cartProcessor, CartContextInterface $cartContext)
+    public function __construct(
+        CartProcessorInterface $cartProcessor,
+        CartContextInterface $cartContext,
+        CartManagerInterface $cartManager
+    )
     {
         $this->cartProcessor = $cartProcessor;
         $this->cartContext = $cartContext;
+        $this->cartManager = $cartManager;
     }
 
     /**
@@ -88,6 +99,13 @@ final class CartBlamerListener
 
         if (null === $cart->getInvoiceAddress()) {
             $cart->setInvoiceAddress($user->getDefaultAddress());
+        }
+
+        $this->cartProcessor->process($cart);
+
+        if ($cart->getId()) {
+            $this->cartManager->persistCart($cart);
+            return;
         }
 
         $this->cartProcessor->process($cart);
