@@ -135,6 +135,8 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
                 renderTab.reload();
             };
+        } else if (tab.data.general.o_className === coreshop.class_map.coreshop.product) {
+            tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
         }
 
         pimcore.layout.refresh();

@@ -110,6 +110,7 @@ core_shop_core:
             notification_rule_condition_user_user_type: '/bundles/coreshopcore/pimcore/js/notification/conditions/user/userType.js'
             notification_rule_condition_all_stores: '/bundles/coreshopcore/pimcore/js/notification/conditions/all/stores.js'
             object_grid_column_store_price: '/bundles/coreshopcore/pimcore/js/object/gridcolumn/operator/storePrice.js'
+            product_store_preview: '/bundles/coreshopcore/pimcore/js/product/preview.js'
             settings: '/bundles/coreshopcore/pimcore/js/settings.js'
             helpers: '/bundles/coreshopcore/pimcore/js/helpers.js'
             resource: '/bundles/coreshopcore/pimcore/js/resource.js'
