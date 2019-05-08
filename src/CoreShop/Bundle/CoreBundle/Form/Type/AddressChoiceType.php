@@ -65,7 +65,7 @@ final class AddressChoiceType extends AbstractType
                         });
 
                     },
-                    'choice_value' => 'o_id',
+                    'choice_value' => 'id',
                     'choice_label' => function ($address) {
                         if ($address instanceof AddressInterface) {
                             return sprintf('%s %s', $address->getStreet(), $address->getNumber());
