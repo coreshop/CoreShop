@@ -47,3 +47,8 @@ coreshop_admin_settings_set:
     path: /%coreshop.admin.route.base%/settings/set
     methods: [POST]
     defaults:  { _controller: coreshop.admin_controller.settings:setAction }
+
+coreshop_admin_purchasable_store_preview:
+    path: /%coreshop.admin.route.base%/preview
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.product_preview:previewAction}
