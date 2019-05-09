@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/order-bundle": "^2.0",
     "coreshop/customer-bundle": "^2.0",
     "coreshop/inventory-bundle": "^2.0",
@@ -40,10 +41,7 @@
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
     "rinvex/countries": "^5.0",
-    "pimcore/pimcore": "^5.7.2"
-  },
-  "conflict": {
-    "pimcore/pimcore": "5.7.0 || 5.7.1"
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"

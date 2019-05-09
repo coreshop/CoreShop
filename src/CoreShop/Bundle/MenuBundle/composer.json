@@ -18,7 +18,8 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^5.4.0",
+    "php": "^7.2",
+    "pimcore/pimcore": "^5.8.0",
     "knplabs/knp-menu-bundle": "^2.2.0"
   },
   "config": {

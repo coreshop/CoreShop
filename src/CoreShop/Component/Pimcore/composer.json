@@ -18,7 +18,8 @@
     }
   ],
   "require": {
-    "pimcore/pimcore": "^5.7.2"
+    "php": "^7.2",
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"

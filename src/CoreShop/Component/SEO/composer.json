@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/registry": "^2.0",
     "webmozart/assert": "^1.2"
   },

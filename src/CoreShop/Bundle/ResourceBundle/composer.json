@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^1.6",
     "jms/serializer-bundle": "^2.0",
@@ -35,7 +36,7 @@
     "symfony/validator": "^3.3",
     "symfony/yaml": "^3.3",
     "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/pimcore": "^5.7.2"
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"

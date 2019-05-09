@@ -18,9 +18,10 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/registry": "^2.0",
     "liip/theme-bundle": "^1.4",
-    "pimcore/pimcore": "^5.7.2"
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"
