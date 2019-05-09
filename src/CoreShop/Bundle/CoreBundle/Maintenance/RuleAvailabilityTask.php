@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\EventListener\Rule;
+namespace CoreShop\Bundle\CoreBundle\Maintenance;
 
 use CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
-use Pimcore\Event\System\MaintenanceEvent;
-use Pimcore\Model\Schedule\Maintenance\Job;
+use Pimcore\Maintenance\TaskInterface;
 
-final class AvailabilityCheckMaintenanceListener
+final class RuleAvailabilityTask implements TaskInterface
 {
     /**
      * @var ConfigurationServiceInterface
@@ -41,14 +40,11 @@ final class AvailabilityCheckMaintenanceListener
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
     }
 
-    /**
-     * @param MaintenanceEvent $maintenanceEvent
-     */
-    public function registerAvailabilityCheck(MaintenanceEvent $maintenanceEvent)
+    public function execute()
     {
         $lastMaintenance = $this->configurationService->get('system.rule.availability_check.last_run');
 
-        if (is_null($lastMaintenance)) {
+        if (null === $lastMaintenance) {
             $lastMaintenance = time() - 90000; //t-25h
         }
 
@@ -56,8 +52,7 @@ final class AvailabilityCheckMaintenanceListener
 
         //since maintenance runs every 5 minutes, we need to check if the last update was 24 hours ago
         if ($timeDiff > 24 * 60 * 60) {
-            $manager = $maintenanceEvent->getManager();
-            $manager->registerJob(new Job('coreshop.rule.availability_check', [$this->ruleAvailabilityProcessor, 'process']));
+            $this->ruleAvailabilityProcessor->process();
             $this->configurationService->set('system.rule.availability_check.last_run', time());
         }
     }

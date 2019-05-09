@@ -169,13 +169,13 @@ services:
         alias: coreshop.cart_price_rule.cart_rule_applier
 
     # Rules Availability Check
-    coreshop.rule_availability_assessor.maintenance_listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Rule\AvailabilityCheckMaintenanceListener
+    coreshop.maintenance.rule_availability_task:
+        class: CoreShop\Bundle\CoreBundle\Maintenance\RuleAvailabilityTask
         arguments:
             - '@coreshop.configuration.service'
             - '@coreshop.rule_availability_processor'
         tags:
-            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerAvailabilityCheck }
+            - { name: pimcore.maintenance.task, type: coreshop_rule_availability }
 
     coreshop.templating.helper.product_valid_rules:
         class: CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper
