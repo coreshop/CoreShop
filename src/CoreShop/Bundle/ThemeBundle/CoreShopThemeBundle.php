@@ -65,7 +65,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
     public function getComposerPackageName()
     {
         if (isset(Versions::VERSIONS['coreshop/theme-bundle'])) {
-            return 'coreshop/frontend-bundle';
+            return 'coreshop/theme-bundle';
         }
 
         return 'coreshop/core-shop';
