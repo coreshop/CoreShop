@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass;
 use CoreShop\Bundle\MenuBundle\Builder;
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
+use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -31,6 +32,11 @@ final class MenuBuilderPass implements CompilerPassInterface
             return;
         }
 
+        if (!$container->has('coreshop.menu_provider.lazy_provider')) {
+            return;
+        }
+
+        $menuBuilders = [];
         $registries = [];
         $types = [];
         $registeredTypes = [];
@@ -57,13 +63,11 @@ final class MenuBuilderPass implements CompilerPassInterface
                         Builder::class,
                         [new Reference('knp_menu.factory'), $type, new Reference('coreshop.menu.registry.'.$type)]
                     );
-                    $builderService->addTag('knp_menu.menu_builder', [
-                        'method' => 'createMenu',
-                        'alias' => sprintf('coreshop.%s', $type)
-                    ]);
 
                     $container->setDefinition('coreshop.menu.builder.'.$type, $builderService);
                     $container->setDefinition('coreshop.menu.registry.'.$type, $registries[$type]);
+
+                    $menuBuilders[sprintf('coreshop.%s', $type)] = [new ServiceClosureArgument(new Reference('coreshop.menu.builder.'.$type)), 'createMenu'];
 
                     $types[] = $type;
                 }
@@ -85,5 +89,7 @@ final class MenuBuilderPass implements CompilerPassInterface
 
         $container->setParameter('coreshop.menus.types', $types);
         $container->setParameter('coreshop.menus', $registeredTypes);
+
+        $container->getDefinition('coreshop.menu_provider.lazy_provider')->replaceArgument(0, $menuBuilders);
     }
 }

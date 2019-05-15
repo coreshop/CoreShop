@@ -25,3 +25,11 @@ services:
         class: CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard
         arguments:
             - '@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver'
+
+    coreshop.menu_provider.lazy_provider:
+        class: Knp\Menu\Provider\LazyProvider
+        arguments:
+            - []
+        tags:
+            - { name: knp_menu.provider }
+
