@@ -4,6 +4,7 @@ imports:
     - { resource: "services/price-rules.yml" }
     - { resource: "services/specific-price-rules.yml" }
     - { resource: "services/units.yml" }
+    - { resource: "services/core_extension.yml" }
 
 services:
     _defaults:

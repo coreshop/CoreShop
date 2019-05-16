@@ -12,14 +12,6 @@
 
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceMultiselect;
 
-class CountryMultiselect extends Multiselect
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCountryMultiselect';
-}
+class_alias(ResourceMultiselect::class, 'CoreShop\Bundle\AddressBundle\CoreExtension\CountryMultiselect');

@@ -2,6 +2,7 @@ imports:
     - { resource: 'services/form.yml' }
     - { resource: 'services/profiler.yml' }
     - { resource: 'services/pimcore.yml' }
+    - { resource: 'services/core_extension.yml' }
 
 services:
     _defaults:

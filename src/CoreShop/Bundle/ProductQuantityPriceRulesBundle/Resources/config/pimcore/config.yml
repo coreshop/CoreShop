@@ -1,13 +1,6 @@
 imports:
     - { resource: "admin.yml" }
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopProductQuantityPriceRules: CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension\ProductQuantityPriceRules
-
 jms_serializer:
     metadata:
         directories:

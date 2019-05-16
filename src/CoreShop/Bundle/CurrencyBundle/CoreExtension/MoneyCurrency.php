@@ -12,12 +12,18 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\DISetStateTrait;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
+use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model;
 
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
 {
+    use DISetStateTrait;
+
     /**
      * Static type of this element.
      *
@@ -46,6 +52,38 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      * @var float
      */
     public $maxValue;
+
+    /**
+     * @param EntityManagerInterface      $entityManager
+     * @param CurrencyRepositoryInterface $repository
+     */
+    public function __construct(EntityManagerInterface $entityManager, CurrencyRepositoryInterface $repository)
+    {
+        $this->entityManager($entityManager);
+        $this->repository($repository);
+    }
+
+    private function entityManager(EntityManagerInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function repository(RepositoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
 
     /**
      * @return int
@@ -132,7 +170,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof Money) {
             if ($data->getCurrency()) {
                 $currency = $data->getCurrency();
-                $currency = $this->getEntityManager()->merge($currency);
+                $currency = $this->entityManager()->merge($currency);
 
                 return new Money($data->getValue(), $currency);
             }
@@ -149,15 +187,15 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    $this->getName() . '__value' => $data->getValue(),
-                    $this->getName() . '__currency' => $data->getCurrency()->getId(),
+                    $this->getName().'__value' => $data->getValue(),
+                    $this->getName().'__currency' => $data->getCurrency()->getId(),
                 ];
             }
         }
 
         return [
-            $this->getName() . '__value' => null,
-            $this->getName() . '__currency' => null,
+            $this->getName().'__value' => null,
+            $this->getName().'__currency' => null,
         ];
     }
 
@@ -166,13 +204,14 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        $currencyIndex = $this->getName() . '__currency';
+        $currencyIndex = $this->getName().'__currency';
 
         if (is_array($data) && isset($data[$currencyIndex]) && null !== $data[$currencyIndex]) {
-            $currency = $this->getCurrencyById($data[$this->getName() . '__currency']);
+            $currency = $this->getCurrencyById($data[$this->getName().'__currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data[$this->getName() . '__value']), $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data[$this->getName().'__value']),
+                    $currency);
             }
         }
 
@@ -237,7 +276,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
+            throw new Model\Element\ValidationException('Empty mandatory field [ '.$this->getName().' ]');
         }
 
         if ($this->isEmpty($data)) {
@@ -253,13 +292,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
 
             if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
-                    'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
+                    'Value in field [ '.$this->getName().' ] is not at least '.$this->getMinValue()
                 );
             }
 
             if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
-                    'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
+                    'Value in field [ '.$this->getName().' ] is bigger than '.$this->getMaxValue()
                 );
             }
         }
@@ -322,15 +361,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     protected function getCurrencyById($currencyId)
     {
-        return \Pimcore::getContainer()->get('coreshop.repository.currency')->find($currencyId);
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return \Pimcore::getContainer()->get('coreshop.manager.currency');
+        return $this->repository()->find($currencyId);
     }
 
     /**
@@ -340,10 +371,10 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     protected function toNumeric($value): int
     {
-        if (strpos((string) $value, '.') === false) {
-            return (int) $value;
+        if (strpos((string)$value, '.') === false) {
+            return (int)$value;
         }
 
-        return (int) round($value * 100, 0);
+        return (int)round($value * 100, 0);
     }
 }

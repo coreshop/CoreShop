@@ -1,0 +1,9 @@
+services:
+    coreshop.core_extension.index-filter:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.filter.class%'
+            - '@coreshop.repository.filter'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopFilter }
+

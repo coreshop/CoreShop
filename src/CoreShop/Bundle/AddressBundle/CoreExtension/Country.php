@@ -12,30 +12,6 @@
 
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceSelect;
 
-class Country extends Select
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCountry';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.country');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.country.class');
-    }
-}
+class_alias(ResourceSelect::class, 'CoreShop\Bundle\AddressBundle\CoreExtension\Country');

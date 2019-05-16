@@ -13,17 +13,23 @@
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\DISetStateTrait;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPriceRuleRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface
 {
+    use DISetStateTrait;
+
     /**
      * Static type of this element.
      *
@@ -37,67 +43,107 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     public $height;
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     * @param EntityManagerInterface $entityManager
+     * @param FormFactoryInterface $formFactory
+     * @param ProductQuantityPriceRuleRepositoryInterface $repository
+     * @param SerializerInterface $serializer
+     * @param array $configActions
+     * @param array $configConditions
+     * @param array $configCalculators
      */
-    private function getContainer()
-    {
-        return \Pimcore::getContainer();
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        FormFactoryInterface $formFactory,
+        ProductQuantityPriceRuleRepositoryInterface $repository,
+        SerializerInterface $serializer,
+        array $configActions,
+        array $configConditions,
+        array $configCalculators
+    ) {
+        $this->entityManager($entityManager);
+        $this->formFactory($formFactory);
+        $this->repository($repository);
+        $this->serializer($serializer);
+        $this->configActions($configActions);
+        $this->configConditions($configConditions);
+        $this->configCalculators($configCalculators);
     }
 
-    /**
-     * @return ProductQuantityPriceRuleRepositoryInterface
-     */
-    private function getProductQuantityPriceRuleRepository()
+    private function entityManager(EntityManagerInterface $newValue = null)
     {
-        return $this->getContainer()->get('coreshop.repository.product_quantity_price_rule');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
+    private function formFactory(FormFactoryInterface $newValue = null)
     {
-        return $this->getContainer()->get('form.factory');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
+    private function repository(ProductQuantityPriceRuleRepositoryInterface $newValue = null)
     {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getRangeEntityManager()
+    private function serializer(SerializerInterface $newValue = null)
     {
-        return $this->getContainer()->get('coreshop.manager.product_quantity_price_rule_range');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return \JMS\Serializer\SerializerInterface
-     */
-    private function getSerializer()
+    private function configActions(array $newValue = null)
     {
-        return $this->getContainer()->get('jms_serializer');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return array
-     */
-    private function getConfigConditions()
+    private function configConditions(array $newValue = null)
     {
-        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.conditions');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
-    /**
-     * @return array
-     */
-    private function getConfigActions()
+    private function configCalculators(array $newValue = null)
     {
-        return $this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions');
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
     }
 
     /**
@@ -157,16 +203,16 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $calculationBehaviourTypes = [];
         $pricingBehaviourTypes = [];
 
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.calculators') as $type) {
+        foreach ($this->configCalculators() as $type) {
             $calculationBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_calculator_' . strtolower($type)];
         }
-        foreach ($this->getContainer()->getParameter('coreshop.product_quantity_price_rules.actions') as $type) {
+        foreach ($this->configActions() as $type) {
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
         $data = [
-            'conditions' => array_keys($this->getConfigConditions()),
-            'actions' => array_keys($this->getConfigActions()),
+            'conditions' => array_keys($this->configConditions()),
+            'actions' => array_keys($this->configActions()),
             'rules' => [],
             'stores' => [
                 'calculationBehaviourTypes' => $calculationBehaviourTypes,
@@ -179,7 +225,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
             $quantityPriceRules = $this->load($object, ['force' => true]);
-            $serializedData = $this->getSerializer()->serialize($quantityPriceRules, 'json', $context);
+            $serializedData = $this->serializer()->serialize($quantityPriceRules, 'json', $context);
             $data['rules'] = json_decode($serializedData, true);
         }
 
@@ -208,14 +254,14 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
                 $ruleData = null;
 
                 if ($ruleId !== null) {
-                    $storedRule = $this->getProductQuantityPriceRuleRepository()->find($ruleId);
+                    $storedRule = $this->repository()->find($ruleId);
                 }
 
                 if ($storedRule instanceof ProductQuantityPriceRuleInterface) {
                     $ruleData = $this->checkForRangeOrphans($storedRule, $rule);
                 }
 
-                $form = $this->getFormFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
+                $form = $this->formFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
 
                 $form->submit($rule);
 
@@ -264,7 +310,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
                     if ($quantityPriceRule instanceof ProductQuantityPriceRuleInterface) {
                         $quantityPriceRule->setProduct($object->getId());
 
-                        $this->getEntityManager()->persist($quantityPriceRule);
+                        $this->entityManager()->persist($quantityPriceRule);
 
                         $founds[] = $quantityPriceRule->getId();
                     }
@@ -273,11 +319,11 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
 
             foreach ($all as $quantityPriceRule) {
                 if (!in_array($quantityPriceRule->getId(), $founds)) {
-                    $this->getEntityManager()->remove($quantityPriceRule);
+                    $this->entityManager()->remove($quantityPriceRule);
                 }
             }
 
-            $this->getEntityManager()->flush();
+            $this->entityManager()->flush();
         }
     }
 
@@ -287,7 +333,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
-            return $this->getProductQuantityPriceRuleRepository()->findForProduct($object);
+            return $this->repository()->findForProduct($object);
         }
 
         return null;
@@ -302,10 +348,10 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $all = $this->load($object, ['force' => true]);
 
             foreach ($all as $quantityPriceRule) {
-                $this->getEntityManager()->remove($quantityPriceRule);
+                $this->entityManager()->remove($quantityPriceRule);
             }
 
-            $this->getEntityManager()->flush();
+            $this->entityManager()->flush();
         }
     }
 
@@ -392,12 +438,12 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         foreach ($invalidatedRanges as $invalidatedRange) {
-            $this->getRangeEntityManager()->remove($invalidatedRange);
+            $this->entityManager()->remove($invalidatedRange);
             $storedRule->removeRange($invalidatedRange);
         }
 
-        $this->getRangeEntityManager()->flush();
-        $this->getEntityManager()->refresh($storedRule);
+        $this->entityManager()->flush();
+        $this->entityManager()->refresh($storedRule);
 
         return $storedRule;
     }

@@ -3,19 +3,17 @@ services:
         public: true
 
     coreshop.pimcore.document.tag.filter:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.filter'
+            - '@coreshop.repository.filter'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_filter }
 
     coreshop.pimcore.document.tag.index:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.index'
+            - '@coreshop.repository.index'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_index }

@@ -12,30 +12,6 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceSelect;
 
-class ProductUnit extends Select
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopProductUnit';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.product_unit');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.product_unit.class');
-    }
-}
+class_alias(ResourceSelect::class, 'CoreShop\Bundle\ProductBundle\CoreExtension\ProductUnit');

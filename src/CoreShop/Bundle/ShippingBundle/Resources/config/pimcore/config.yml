@@ -1,14 +1,6 @@
 imports:
     - { resource: "admin.yml" }
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopCarrier: CoreShop\Bundle\ShippingBundle\CoreExtension\Carrier
-                    coreShopCarrierMultiselect: CoreShop\Bundle\ShippingBundle\CoreExtension\CarrierMultiselect
-
 jms_serializer:
     metadata:
         directories:

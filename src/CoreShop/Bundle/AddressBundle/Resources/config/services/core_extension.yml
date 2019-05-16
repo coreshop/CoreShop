@@ -1,0 +1,34 @@
+services:
+    coreshop.core_extension.address.address_identifier:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.address_identifier.class%'
+            - '@coreshop.repository.address_identifier'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopAddressIdentifier }
+
+
+    coreshop.core_extension.address.country:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.country.class%'
+            - '@coreshop.repository.country'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCountry }
+
+    coreshop.core_extension.address.country_multiselect:
+        class: CoreShop\Component\Resource\Pimcore\ResourceMultiselectObjectTagFactory
+        arguments:
+            - '%coreshop.model.country.class%'
+            - '@coreshop.repository.country'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCountryMultiselect }
+
+
+    coreshop.core_extension.address.state:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.state.class%'
+            - '@coreshop.repository.state'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopState }

@@ -3,6 +3,7 @@ imports:
     - { resource: "services/profiler.yml" }
     - { resource: "services/theme.yml" }
     - { resource: "services/pimcore.yml" }
+    - { resource: "services/core_extension.yml" }
 
 services:
     _defaults:

@@ -3,10 +3,9 @@ services:
         public: true
 
     coreshop.pimcore.document.tag.store:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.store'
+            - '@coreshop.repository.store'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_store }

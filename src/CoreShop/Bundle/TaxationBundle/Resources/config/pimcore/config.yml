@@ -1,13 +1,6 @@
 imports:
     - { resource: "admin.yml" }
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopTaxRuleGroup: CoreShop\Bundle\TaxationBundle\CoreExtension\TaxRuleGroup
-
 jms_serializer:
     metadata:
         directories:

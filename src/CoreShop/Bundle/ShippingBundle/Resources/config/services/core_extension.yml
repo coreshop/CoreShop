@@ -1,0 +1,16 @@
+services:
+    coreshop.core_extension.shipping.carrier:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.carrier.class%'
+            - '@coreshop.repository.carrier'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCarrier }
+
+    coreshop.core_extension.shipping.carrier_multiselect:
+        class: CoreShop\Component\Resource\Pimcore\ResourceMultiselectObjectTagFactory
+        arguments:
+            - '%coreshop.model.carrier.class%'
+            - '@coreshop.repository.carrier'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCarrierMultiselect }

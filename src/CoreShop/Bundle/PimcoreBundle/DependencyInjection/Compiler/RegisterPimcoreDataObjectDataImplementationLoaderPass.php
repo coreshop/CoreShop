@@ -10,16 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\ShippingBundle\CoreExtension;
+namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
-
-class CarrierMultiselect extends Multiselect
+final class RegisterPimcoreDataObjectDataImplementationLoaderPass extends RegisterImplementationLoaderPass
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCarrierMultiselect';
+    public function __construct()
+    {
+        parent::__construct(
+            'pimcore.implementation_loader.object.data',
+            'coreshop.pimcore.implementation_loader.data_object.data'
+        );
+    }
 }

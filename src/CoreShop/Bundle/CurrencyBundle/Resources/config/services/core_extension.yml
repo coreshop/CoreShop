@@ -1,0 +1,24 @@
+services:
+    coreshop.core_extension.currency.currency:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.currency.class%'
+            - '@coreshop.repository.currency'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCurrency }
+
+    coreshop.core_extension.currency.currency_multiselect:
+        class: CoreShop\Component\Resource\Pimcore\ResourceMultiselectObjectTagFactory
+        arguments:
+            - '%coreshop.model.currency.class%'
+            - '@coreshop.repository.currency'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCurrencyMultiselect }
+
+    coreshop.core_extension.currency.money_currency:
+        class: CoreShop\Bundle\CurrencyBundle\CoreExtension\Factory\MoneyCurrencyFactory
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.repository.currency'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopMoneyCurrency }

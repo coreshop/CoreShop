@@ -1,0 +1,13 @@
+services:
+    coreshop.core_extension.product_quantity_price_rules:
+        class: CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension\Factory\ProductQuantityPriceRulesFactory
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.repository.product_quantity_price_rule'
+            - '@jms_serializer'
+            - '%coreshop.product_quantity_price_rules.conditions%'
+            - '%coreshop.product_quantity_price_rules.actions%'
+            - '%coreshop.product_quantity_price_rules.calculators%'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopProductQuantityPriceRules }

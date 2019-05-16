@@ -1,13 +1,6 @@
 imports:
     - { resource: "admin.yml" }
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopFilter: CoreShop\Bundle\IndexBundle\CoreExtension\Filter
-
 core_shop_index:
     mapping_types:
         INTEGER: ~

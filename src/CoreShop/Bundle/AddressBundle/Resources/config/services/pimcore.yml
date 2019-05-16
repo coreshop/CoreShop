@@ -3,28 +3,25 @@ services:
         public: true
 
     coreshop.pimcore.document.tag.country:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.country'
+            - '@coreshop.repository.country'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_country }
 
     coreshop.pimcore.document.tag.state:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.state'
+            - '@coreshop.repository.state'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_state }
 
     coreshop.pimcore.document.tag.zone:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.zone'
+            - '@coreshop.repository.zone'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_zone }

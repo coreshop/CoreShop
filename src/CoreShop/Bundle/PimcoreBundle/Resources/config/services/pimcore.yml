@@ -14,3 +14,16 @@ services:
             - '@coreshop.registry.pimcore.document.tag'
         tags:
             - { name: coreshop.pimcore.implementation_loader.document.tag }
+
+    coreshop.registry.pimcore.data_object.data:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Pimcore\DataObject\ObjectDataFactoryInterface
+            - data-object-tag-factories
+
+    coreshop.pimcore.implementation_loader.object.tag.di:
+        class: CoreShop\Bundle\PimcoreBundle\Loader\DependencyInjectionImplementationLoader
+        arguments:
+            - '@coreshop.registry.pimcore.data_object.data'
+        tags:
+            - { name: coreshop.pimcore.implementation_loader.data_object.data }

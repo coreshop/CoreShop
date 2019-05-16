@@ -12,14 +12,19 @@
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\DISetStateTrait;
 use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Pimcore\Model;
 
 class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface
 {
+    use DISetStateTrait;
+
     /**
      * Static type of this element.
      *
@@ -53,6 +58,68 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
      * @var float
      */
     public $maxValue;
+
+    /**
+     * @param EntityManagerInterface               $entityManager
+     * @param FactoryInterface                     $factory
+     * @param StoreRepositoryInterface             $storeRepository
+     * @param ProductStorePriceRepositoryInterface $productStorePriceRepository
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        FactoryInterface $factory,
+        StoreRepositoryInterface $storeRepository,
+        ProductStorePriceRepositoryInterface $productStorePriceRepository
+    ) {
+        $this->entityManager($entityManager);
+        $this->factory($factory);
+        $this->storeRepository($storeRepository);
+        $this->productStorePriceRepository($productStorePriceRepository);
+    }
+
+    private function entityManager(EntityManagerInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function factory(FactoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function storeRepository(StoreRepositoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function productStorePriceRepository(ProductStorePriceRepositoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
 
     /**
      * @return int
@@ -252,7 +319,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
-            $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
+            $prices = $this->productStorePriceRepository()->findForProductAndProperty($object, $this->getName());
             $data = [];
 
             /**
@@ -273,10 +340,10 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
      */
     public function save($object, $params = [])
     {
-        $em = \Pimcore::getContainer()->get('coreshop.manager.product_store_price');
-        $factory = \Pimcore::getContainer()->get('coreshop.factory.product_store_price');
-        $repo = $this->getProductStorePriceRepository();
-        $storeRepo = $this->getStoreRepository();
+        $em = $this->entityManager();
+        $factory = $this->factory();
+        $repo = $this->productStorePriceRepository();
+        $storeRepo = $this->storeRepository();
 
         $data = $this->getDataFromObjectParam($object, $params);
 
@@ -327,8 +394,8 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
      */
     public function delete($object, $params = [])
     {
-        $em = \Pimcore::getContainer()->get('coreshop.manager.product_store_price');
-        $repo = $this->getProductStorePriceRepository();
+        $em = $this->entityManager();
+        $repo = $this->productStorePriceRepository();
 
         $storePrices = $repo->findForProductAndProperty($object, $this->getName());
 
@@ -346,8 +413,8 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        $stores = $this->getStoreRepository()->findAll();
-        $prices = $this->getProductStorePriceRepository()->findForProductAndProperty($object, $this->getName());
+        $stores = $this->storeRepository()->findAll();
+        $prices = $this->productStorePriceRepository()->findForProductAndProperty($object, $this->getName());
         $storeData = [];
 
         /**
@@ -470,8 +537,8 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
         if (!$object) {
             throw new \Exception('This version of Pimcore is not supported for storePrice import.');
         }
-        $repo = $this->getProductStorePriceRepository();
-        $storeRepo = $this->getStoreRepository();
+        $repo = $this->productStorePriceRepository();
+        $storeRepo = $this->storeRepository();
 
         $data = $importValue == '' ? [] : json_decode($importValue, true);
 
@@ -574,21 +641,5 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
         }
 
         return (float) $value;
-    }
-
-    /**
-     * @return StoreRepositoryInterface
-     */
-    protected function getStoreRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.store');
-    }
-
-    /**
-     * @return ProductStorePriceRepositoryInterface
-     */
-    protected function getProductStorePriceRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.product_store_price');
     }
 }

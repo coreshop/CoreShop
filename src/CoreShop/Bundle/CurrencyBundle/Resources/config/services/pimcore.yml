@@ -3,10 +3,9 @@ services:
         public: true
 
     coreshop.pimcore.document.tag.currency:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.currency'
+            - '@coreshop.repository.currency'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_currency }

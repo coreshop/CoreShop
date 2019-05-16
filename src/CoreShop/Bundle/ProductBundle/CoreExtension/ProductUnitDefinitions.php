@@ -13,17 +13,23 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\DISetStateTrait;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
+use JMS\Serializer\SerializerInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
 {
+    use DISetStateTrait;
+
     /**
      * @var string
      */
@@ -43,6 +49,68 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      * @var string
      */
     public $phpdocType = 'array';
+
+    /**
+     * @param EntityManagerInterface                      $entityManager
+     * @param FormFactoryInterface                        $formFactory
+     * @param ProductUnitDefinitionsRepositoryInterface $repository
+     * @param SerializerInterface                         $serializer
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        FormFactoryInterface $formFactory,
+        ProductUnitDefinitionsRepositoryInterface $repository,
+        SerializerInterface $serializer
+    ) {
+        $this->entityManager($entityManager);
+        $this->formFactory($formFactory);
+        $this->repository($repository);
+        $this->serializer($serializer);
+    }
+
+    private function entityManager(EntityManagerInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function formFactory(FormFactoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function repository(ProductUnitDefinitionsRepositoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
+
+    private function serializer(SerializerInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
 
     /**
      * @return int
@@ -176,8 +244,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         }
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
-            if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
-                $data = $this->getEntityManager()->merge($data);
+            if ($this->entityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
+                $data = $this->entityManager()->merge($data);
                 $data->setProduct($object);
             }
         }
@@ -199,7 +267,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
                 $data->setProduct($object);
             }
 
-            $this->getEntityManager()->persist($data);
+            $this->entityManager()->persist($data);
         }
 
         return $data;
@@ -211,7 +279,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
-            return $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+            return $this->repository()->findOneForProduct($object);
         }
 
         return null;
@@ -235,8 +303,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
             $productUnitDefinitions->setProduct($object);
 
-            $this->getEntityManager()->persist($productUnitDefinitions);
-            $this->getEntityManager()->flush($productUnitDefinitions);
+            $this->entityManager()->persist($productUnitDefinitions);
+            $this->entityManager()->flush($productUnitDefinitions);
         }
     }
 
@@ -254,8 +322,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return;
         }
 
-        $this->getEntityManager()->remove($productUnitDefinitions);
-        $this->getEntityManager()->flush();
+        $this->entityManager()->remove($productUnitDefinitions);
+        $this->entityManager()->flush();
     }
 
     /**
@@ -267,12 +335,12 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return [];
         }
 
-        $productUnitDefinition = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+        $productUnitDefinition = $this->repository()->findOneForProduct($object);
 
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->setGroups(['Default', 'Detailed']);
-        $serializedData = $this->getSerializer()->serialize($productUnitDefinition, 'json', $context);
+        $serializedData = $this->serializer()->serialize($productUnitDefinition, 'json', $context);
         $values = json_decode($serializedData, true);
 
         return $values;
@@ -290,10 +358,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $unitDefinitionsId = isset($data['id']) && is_numeric($data['id']) ? $data['id'] : null;
 
         if ($unitDefinitionsId !== null) {
-            $unitDefinitionsEntity = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+            $unitDefinitionsEntity = $this->repository()->findOneForProduct($object);
         }
 
-        $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
+        $form = $this->formFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
 
         $parsedData = $this->expandDotNotationKeys($data);
         $parsedData['product'] = $object->getId();
@@ -417,37 +485,4 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         return $result;
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return \Pimcore::getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
-    {
-        return \Pimcore::getContainer()->get('form.factory');
-    }
-
-    /**
-     * @return ProductUnitDefinitionsRepositoryInterface
-     */
-    protected function getProductUnitDefinitionsRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.product_unit_definitions');
-    }
-
-    /**
-     * @return \JMS\Serializer\SerializerInterface
-     */
-    private function getSerializer()
-    {
-        return \Pimcore::getContainer()->get('jms_serializer');
-    }
-
 }

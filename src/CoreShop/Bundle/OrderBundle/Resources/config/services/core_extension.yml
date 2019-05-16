@@ -1,0 +1,8 @@
+services:
+    coreshop.core_extension.order.cart_price_rule:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.cart_price_rule.class%'
+            - '@coreshop.repository.cart_price_rule'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopCartPriceRule }

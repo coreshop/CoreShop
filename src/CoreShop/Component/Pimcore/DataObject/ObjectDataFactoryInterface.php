@@ -10,16 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
+namespace CoreShop\Component\Pimcore\DataObject;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class CurrencyMultiselect extends Multiselect
+interface ObjectDataFactoryInterface
 {
     /**
-     * Static type of this element.
+     * @param string $type
+     * @param array  $params
      *
-     * @var string
+     * @return Data
      */
-    public $fieldtype = 'coreShopCurrencyMultiselect';
+    public function create($type, $params);
 }

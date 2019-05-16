@@ -16,11 +16,3 @@ jms_serializer:
 twig:
     globals:
         coreshop: "@coreshop.context.shopper"
-
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopStorePrice: CoreShop\Bundle\CoreBundle\CoreExtension\StorePrice
-                    coreShopStoreValues: CoreShop\Bundle\CoreBundle\CoreExtension\StoreValues

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\DISetStateTrait;
 use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
 use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -21,6 +22,8 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
 {
+    use DISetStateTrait;
+
     /**
      * Static type of this element.
      *
@@ -39,6 +42,25 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
      * @var bool
      */
     public $allowEmpty = false;
+
+    /**
+     * @param RepositoryInterface $repository
+     */
+    public function __construct(RepositoryInterface $repository)
+    {
+        $this->repository($repository);
+    }
+
+    private function repository(RepositoryInterface $newValue = null)
+    {
+        static $value;
+
+        if ($newValue !== null) {
+            $value = $newValue;
+        }
+
+        return $value;
+    }
 
     /**
      * @return string | array
@@ -84,7 +106,7 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
-            $tmpData = $this->getRepository()->find($data->getId());
+            $tmpData = $this->repository()->find($data->getId());
 
             if ($tmpData instanceof ResourceInterface) {
                 //Dirty Fix, Pimcore sometimes calls properties without getter
@@ -117,7 +139,7 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     public function getDataFromResource($data, $object = null, $params = [])
     {
         if ((int) $data > 0) {
-            return $this->getRepository()->find($data);
+            return $this->repository()->find($data);
         }
 
         return null;
@@ -183,13 +205,5 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
-    }
-
-    /**
-     * @return RepositoryInterface
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.product_unit_definition');
     }
 }

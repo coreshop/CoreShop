@@ -3,19 +3,17 @@ services:
         public: true
 
     coreshop.pimcore.document.tag.tax_rate:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.tax_rate'
+            - '@coreshop.repository.tax_rate'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rate }
 
     coreshop.pimcore.document.tag.tax_rule_group:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.tax_rule_group'
+            - '@coreshop.repository.tax_rule_group'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_tax_rule_group }

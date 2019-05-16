@@ -1,14 +1,6 @@
 imports:
     - { resource: "admin.yml" }
 
-pimcore:
-    objects:
-        class_definitions:
-            data:
-                map:
-                    coreShopStore: CoreShop\Bundle\StoreBundle\CoreExtension\Store
-                    coreShopStoreMultiselect: CoreShop\Bundle\StoreBundle\CoreExtension\StoreMultiselect
-
 jms_serializer:
     metadata:
         directories:

@@ -12,30 +12,6 @@
 
 namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceSelect;
 
-class Store extends Select
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopStore';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.store');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.store.class');
-    }
-}
+class_alias(ResourceSelect::class, 'CoreShop\Bundle\StoreBundle\CoreExtension\Store');

@@ -3,3 +3,4 @@ imports:
     - { resource: "services/workflow.yml" }
     - { resource: "services/resolver.yml" }
     - { resource: "services/pimcore.yml" }
+    - { resource: "services/core_extension.yml" }

@@ -1,9 +1,8 @@
 services:
     coreshop.pimcore.document.tag.payment_provider:
-        class: CoreShop\Component\Resource\Pimcore\ResourceDocumentTagFactory
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectDocumentTagFactory
         arguments:
-            - 'CoreShop\Bundle\ResourceBundle\CoreExtension\Document\Select'
-            - 'coreshop.repository.payment_provider'
+            - '@coreshop.repository.payment_provider'
             - 'name'
         tags:
             - { name: coreshop.pimcore.document.tag, type: coreshop_payment_provider }

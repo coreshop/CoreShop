@@ -3,6 +3,7 @@ imports:
     - { resource: 'services/product-quantity-price-rules.yml' }
     - { resource: 'services/actions.yml' }
     - { resource: 'services/calculator.yml' }
+    - { resource: 'services/core_extension.yml' }
 
 services:
     coreshop.templating.helper.product_quantity_price:

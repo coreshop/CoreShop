@@ -12,30 +12,6 @@
 
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceSelect;
 
-class State extends Select
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopState';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.state');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.state.class');
-    }
-}
+class_alias(ResourceSelect::class, 'CoreShop\Bundle\AddressBundle\CoreExtension\State');

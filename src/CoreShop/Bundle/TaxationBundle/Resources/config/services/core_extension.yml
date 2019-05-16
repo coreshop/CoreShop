@@ -1,0 +1,8 @@
+services:
+    coreshop.core_extension.taxation.tax_rule_group:
+        class: CoreShop\Component\Resource\Pimcore\ResourceSelectObjectTagFactory
+        arguments:
+            - '%coreshop.model.tax_rule_group.class%'
+            - '@coreshop.repository.tax_rule_group'
+        tags:
+            - { name: coreshop.pimcore.data_object.data, type: coreShopTaxRuleGroup }

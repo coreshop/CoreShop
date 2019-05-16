@@ -12,30 +12,6 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceSelect;
 
-class Currency extends Select
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopCurrency';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.repository.currency');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
-    {
-        return \Pimcore::getContainer()->getParameter('coreshop.model.currency.class');
-    }
-}
+class_alias(ResourceSelect::class, 'CoreShop\Bundle\CurrencyBundle\CoreExtension\Currency');

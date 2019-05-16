@@ -12,14 +12,6 @@
 
 namespace CoreShop\Bundle\StoreBundle\CoreExtension;
 
-use CoreShop\Bundle\ResourceBundle\CoreExtension\Multiselect;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\DataObject\ResourceMultiselect;
 
-class StoreMultiselect extends Multiselect
-{
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
-    public $fieldtype = 'coreShopStoreMultiselect';
-}
+class_alias(ResourceMultiselect::class, 'CoreShop\Bundle\StoreBundle\CoreExtension\StoreMultiselect');
