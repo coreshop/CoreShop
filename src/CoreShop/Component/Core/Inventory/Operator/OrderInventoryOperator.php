@@ -69,7 +69,7 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
                 continue;
             }
 
-            $product->setOnHold($product->getOnHold() + $orderItem->getQuantity());
+            $product->setOnHold($product->getOnHold() + $orderItem->getDefaultUnitQuantity());
             $this->productEntityManager->persist($product);
         }
 
