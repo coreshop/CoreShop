@@ -13,7 +13,7 @@ services:
         class: CoreShop\Bundle\CoreBundle\CoreExtension\Factory\StoreValuesFactory
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@coreshop.factory.product_store_price'
+            - '@coreshop.factory.product_store_values'
             - '@coreshop.repository.store'
             - '@coreshop.repository.product_store_values'
             - '@form.factory'
