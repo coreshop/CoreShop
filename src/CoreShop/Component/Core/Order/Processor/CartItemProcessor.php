@@ -12,23 +12,16 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Webmozart\Assert\Assert;
 
-final class CartItemProcessor implements CartProcessorInterface
+final class CartItemProcessor implements CartItemProcessorInterface
 {
-    /**
-     * @var PurchasableCalculatorInterface
-     */
-    private $productPriceCalculator;
-
     /**
      * @var ProductTaxCalculatorFactoryInterface
      */
@@ -40,16 +33,13 @@ final class CartItemProcessor implements CartProcessorInterface
     private $defaultAddressProvider;
 
     /**
-     * @param PurchasableCalculatorInterface       $productPriceCalculator
      * @param ProductTaxCalculatorFactoryInterface $taxCalculator
      * @param AddressProviderInterface             $defaultAddressProvider
      */
     public function __construct(
-        PurchasableCalculatorInterface $productPriceCalculator,
         ProductTaxCalculatorFactoryInterface $taxCalculator,
         AddressProviderInterface $defaultAddressProvider
     ) {
-        $this->productPriceCalculator = $productPriceCalculator;
         $this->taxCalculator = $taxCalculator;
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
@@ -57,94 +47,82 @@ final class CartItemProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
     {
-        $store = $cart->getStore();
-
         /**
-         * @var StoreInterface $store
+         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
          */
-        Assert::isInstanceOf($store, StoreInterface::class);
+        Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\CartItemInterface::class);
 
-        $context = [
-            'store' => $store,
-            'customer' => $cart->getCustomer() ?: null,
-            'currency' => $cart->getCurrency(),
-            'country' => $store->getBaseCountry(),
-            'cart' => $cart,
-        ];
+        $product = $cartItem->getProduct();
+        $cart = $context['cart'];
+        $store = $context['store'];
 
-        /**
-         * @var CartItemInterface $item
-         */
-        foreach ($cart->getItems() as $item) {
-            $product = $item->getProduct();
+        $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
-            $taxCalculator = $this->taxCalculator->getTaxCalculator($product, $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
+            if ($store->getUseGrossPrice()) {
+                $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemPrice * $cartItem->getQuantity());
+                $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
+                $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
+                $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
+                $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
 
-            $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
-            $itemPriceWithoutDiscount = $this->productPriceCalculator->getPrice($product, $context);
-            $itemRetailPrice = $this->productPriceCalculator->getRetailPrice($product, $context);
-            $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
-            $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
+                $cartItem->setTotal($itemPrice * $cartItem->getQuantity(), true);
+                $cartItem->setTotal($cartItem->getTotal(true) - $totalTaxAmount, false);
 
-            if ($taxCalculator instanceof TaxCalculatorInterface) {
-                if ($store->getUseGrossPrice()) {
-                    $totalTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemPrice * $item->getQuantity());
-                    $itemPriceTax = $taxCalculator->getTaxesAmountFromGross($itemPrice);
-                    $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmountFromGross($itemRetailPrice);
-                    $itemDiscountTax = $taxCalculator->getTaxesAmountFromGross($itemDiscount);
-                    $itemDiscountPriceTax = $taxCalculator->getTaxesAmountFromGross($itemDiscountPrice);
+                $cartItem->setItemPrice($itemPrice, true);
+                $cartItem->setItemPrice($itemPrice - $itemPriceTax, false);
 
-                    $item->setTotal($itemPrice * $item->getQuantity(), true);
-                    $item->setTotal($item->getTotal(true) - $totalTaxAmount, false);
+                $cartItem->setItemRetailPrice($itemRetailPrice, true);
+                $cartItem->setItemRetailPrice($itemRetailPrice - $itemRetailPriceTaxAmount, false);
 
-                    $item->setItemPrice($itemPrice, true);
-                    $item->setItemPrice($itemPrice - $itemPriceTax, false);
+                $cartItem->setItemDiscountPrice($itemDiscountPrice, true);
+                $cartItem->setItemDiscountPrice($itemDiscountPrice - $itemDiscountTax, false);
 
-                    $item->setItemRetailPrice($itemRetailPrice, true);
-                    $item->setItemRetailPrice($itemRetailPrice - $itemRetailPriceTaxAmount, false);
-
-                    $item->setItemDiscountPrice($itemDiscountPrice, true);
-                    $item->setItemDiscountPrice($itemDiscountPrice - $itemDiscountTax, false);
-
-                    $item->setItemDiscount($itemDiscount, true);
-                    $item->setItemDiscount($itemDiscount - $itemDiscountPriceTax, false);
-                } else {
-                    $totalTaxAmount = $taxCalculator->getTaxesAmount($itemPrice * $item->getQuantity());
-                    $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
-                    $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
-                    $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
-                    $itemDiscountPriceTax = $taxCalculator->getTaxesAmount($itemDiscountPrice);
-
-                    $item->setTotal($itemPrice * $item->getQuantity(), false);
-                    $item->setTotal($itemPrice * $item->getQuantity() + $totalTaxAmount, true);
-
-                    $item->setItemPrice($itemPrice, false);
-                    $item->setItemPrice($itemPrice + $itemPriceTax, true);
-
-                    $item->setItemRetailPrice($itemRetailPrice, false);
-                    $item->setItemRetailPrice($itemRetailPrice + $itemRetailPriceTaxAmount, true);
-
-                    $item->setItemDiscountPrice($itemDiscountPrice, false);
-                    $item->setItemDiscountPrice($itemDiscountPrice + $itemDiscountTax, true);
-
-                    $item->setItemDiscount($itemDiscount, false);
-                    $item->setItemDiscount($itemDiscount + $itemDiscountPriceTax, true);
-                }
+                $cartItem->setItemDiscount($itemDiscount, true);
+                $cartItem->setItemDiscount($itemDiscount - $itemDiscountPriceTax, false);
             } else {
-                $item->setTotal($itemPrice * $item->getQuantity(), false);
-                $item->setTotal($itemPrice * $item->getQuantity(), true);
+                $totalTaxAmount = $taxCalculator->getTaxesAmount($itemPrice * $cartItem->getQuantity());
+                $itemPriceTax = $taxCalculator->getTaxesAmount($itemPrice);
+                $itemRetailPriceTaxAmount = $taxCalculator->getTaxesAmount($itemRetailPrice);
+                $itemDiscountTax = $taxCalculator->getTaxesAmount($itemDiscount);
+                $itemDiscountPriceTax = $taxCalculator->getTaxesAmount($itemDiscountPrice);
 
-                $item->setItemRetailPrice($itemRetailPrice, false);
-                $item->setItemRetailPrice($itemRetailPrice, true);
+                $cartItem->setTotal($itemPrice * $cartItem->getQuantity(), false);
+                $cartItem->setTotal($itemPrice * $cartItem->getQuantity() + $totalTaxAmount, true);
 
-                $item->setItemDiscountPrice($itemDiscountPrice, false);
-                $item->setItemDiscountPrice($itemDiscountPrice, true);
+                $cartItem->setItemPrice($itemPrice, false);
+                $cartItem->setItemPrice($itemPrice + $itemPriceTax, true);
 
-                $item->setItemDiscount($itemDiscount, false);
-                $item->setItemDiscount($itemDiscount, true);
+                $cartItem->setItemRetailPrice($itemRetailPrice, false);
+                $cartItem->setItemRetailPrice($itemRetailPrice + $itemRetailPriceTaxAmount, true);
+
+                $cartItem->setItemDiscountPrice($itemDiscountPrice, false);
+                $cartItem->setItemDiscountPrice($itemDiscountPrice + $itemDiscountTax, true);
+
+                $cartItem->setItemDiscount($itemDiscount, false);
+                $cartItem->setItemDiscount($itemDiscount + $itemDiscountPriceTax, true);
             }
+        } else {
+            $cartItem->setTotal($itemPrice * $cartItem->getQuantity(), false);
+            $cartItem->setTotal($itemPrice * $cartItem->getQuantity(), true);
+
+            $cartItem->setItemRetailPrice($itemRetailPrice, false);
+            $cartItem->setItemRetailPrice($itemRetailPrice, true);
+
+            $cartItem->setItemDiscountPrice($itemDiscountPrice, false);
+            $cartItem->setItemDiscountPrice($itemDiscountPrice, true);
+
+            $cartItem->setItemDiscount($itemDiscount, false);
+            $cartItem->setItemDiscount($itemDiscount, true);
+        }
+
+        if ($product instanceof ProductInterface) {
+            /**
+             * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+             */
+            $cartItem->setDigitalProduct($product->getDigitalProduct());
         }
     }
 }

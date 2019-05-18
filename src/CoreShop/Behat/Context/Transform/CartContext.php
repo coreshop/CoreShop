@@ -59,6 +59,15 @@ final class CartContext implements Context
     }
 
     /**
+     * @Transform /^my add-to-cart-form/
+     * @Transform /^add-to-cart-form(?:|s)/
+     */
+    public function addToCartForm()
+    {
+        return $this->sharedStorage->get('add_to_cart_form');
+    }
+
+    /**
      * @Transform /^loaded cart(?:|s)/
      */
     public function loadedCart()

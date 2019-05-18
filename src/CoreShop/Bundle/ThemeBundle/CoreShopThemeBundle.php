@@ -14,13 +14,17 @@ namespace CoreShop\Bundle\ThemeBundle;
 
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
 use Liip\ThemeBundle\LiipThemeBundle;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
+    use PackageVersionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -37,5 +41,33 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
         parent::build($container);
 
         $container->addCompilerPass(new CompositeThemeResolverPass());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Theme';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Theme Bundle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (isset(Versions::VERSIONS['coreshop/theme-bundle'])) {
+            return 'coreshop/theme-bundle';
+        }
+
+        return 'coreshop/core-shop';
     }
 }

@@ -75,7 +75,9 @@
 }
 
 .coreshop_rule_icon_action_discountAmount,
+.coreshop_rule_icon_action_surchargeAmount,
 .coreshop_rule_icon_action_discountPercent,
+.coreshop_rule_icon_action_surchargePercent,
 .coreshop_rule_icon_action_price {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }

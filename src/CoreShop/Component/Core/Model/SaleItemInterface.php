@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\SaleItemInterface as BaseSaleItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 
 interface SaleItemInterface extends BaseSaleItemInterface
 {
@@ -45,4 +46,59 @@ interface SaleItemInterface extends BaseSaleItemInterface
      * @param int $mainObjectId
      */
     public function setMainObjectId($mainObjectId);
+
+    /**
+     * @return null|string
+     */
+    public function getUnitIdentifier();
+
+    /**
+     * @param string $unitIdentifier
+     */
+    public function setUnitIdentifier($unitIdentifier);
+
+    /**
+     * @return null|ProductUnitInterface
+     */
+    public function getUnit();
+
+    /**
+     * @param int $unitId
+     */
+    public function setUnit($unitId);
+
+    /**
+     * @return bool
+     */
+    public function hasUnit();
+
+    /**
+     * @return int
+     */
+    public function getDefaultUnitQuantity();
+
+    /**
+     * @param int $defaultUnitQuantity
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity);
+
+    /**
+     * @return float
+     */
+    public function getItemWeight();
+
+    /**
+     * @param float $itemWeight
+     */
+    public function setItemWeight($itemWeight);
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
+
+    /**
+     * @param float $totalWeight
+     */
+    public function setTotalWeight($totalWeight);
 }

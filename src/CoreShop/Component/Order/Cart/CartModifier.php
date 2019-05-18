@@ -14,11 +14,9 @@ namespace CoreShop\Component\Order\Cart;
 
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,9 +25,9 @@ use Webmozart\Assert\Assert;
 class CartModifier implements StorageListModifierInterface
 {
     /**
-     * @var FactoryInterface
+     * @var StorageListItemQuantityModifierInterface
      */
-    protected $cartItemFactory;
+    protected $cartItemQuantityModifier;
 
     /**
      * @var EventDispatcherInterface
@@ -37,40 +35,29 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
-     * @param FactoryInterface         $cartItemFactory
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
+     * @param EventDispatcherInterface                 $eventDispatcher
      */
-    public function __construct(FactoryInterface $cartItemFactory, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->cartItemFactory = $cartItemFactory;
+    public function __construct(
+        StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
     {
-        /**
-         * @var $storageList CartInterface
-         * @var $product     PurchasableInterface
-         */
-        Assert::isInstanceOf($storageList, CartInterface::class);
-        Assert::isInstanceOf($product, PurchasableInterface::class);
-
-        $this->eventDispatcher->dispatch('coreshop.cart.item_add_pre', new GenericEvent($storageList, ['product' => $product]));
-
-        $result = $this->updateItemQuantity($storageList, $product, $quantity, true);
-
-        $this->eventDispatcher->dispatch('coreshop.cart.item_add_post', new GenericEvent($storageList, ['product' => $product]));
-
-        return $result;
+        return $this->resolveItem($storageList, $item);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item)
     {
         /**
          * @var $storageList CartInterface
@@ -79,60 +66,33 @@ class CartModifier implements StorageListModifierInterface
         Assert::isInstanceOf($storageList, CartInterface::class);
         Assert::isInstanceOf($item, CartItemInterface::class);
 
-        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_pre', new GenericEvent($storageList, ['item' => $item]));
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_pre',
+            new GenericEvent($storageList, ['item' => $item]));
 
         $storageList->removeItem($item);
         $item->delete();
 
-        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_post', new GenericEvent($storageList, ['item' => $item]));
+        $this->eventDispatcher->dispatch('coreshop.cart.remove_add_post',
+            new GenericEvent($storageList, ['item' => $item]));
     }
 
     /**
-     * {@inheritdoc}
+     * @param StorageListInterface $storageList
+     * @param StorageListItemInterface $storageListItem
      */
-    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false)
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
     {
-        /**
-         * @var $storageList CartInterface
-         * @var $product     PurchasableInterface
-         */
-        Assert::isInstanceOf($storageList, CartInterface::class);
-        Assert::isInstanceOf($product, PurchasableInterface::class);
+        foreach ($storageList->getItems() as $item) {
+            if ($storageListItem->equals($item)) {
+                $this->cartItemQuantityModifier->modify(
+                    $item,
+                    $item->getQuantity() + $storageListItem->getQuantity()
+                );
 
-        $item = $storageList->getItemForProduct($product);
-
-        if ($item instanceof CartItemInterface) {
-            if ($quantity <= 0) {
-                $this->removeItem($storageList, $item);
-
-                return false;
+                return;
             }
-
-            $newQuantity = $quantity;
-
-            if ($increaseAmount) {
-                $currentQuantity = $item->getQuantity();
-
-                if (is_int($currentQuantity)) {
-                    $newQuantity = $currentQuantity + $quantity;
-                }
-            }
-
-            $item->setQuantity($newQuantity);
-        } else {
-            /**
-             * @var CartItemInterface
-             */
-            $item = $this->cartItemFactory->createNew();
-            $item->setKey(uniqid());
-            $item->setParent($storageList);
-            $item->setQuantity($quantity);
-            $item->setProduct($product);
-            $item->setPublished(true);
-
-            $storageList->addItem($item);
         }
 
-        return $item;
+        $storageList->addItem($storageListItem);
     }
 }

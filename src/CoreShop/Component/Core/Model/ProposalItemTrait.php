@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 trait ProposalItemTrait
 {
@@ -28,6 +28,22 @@ trait ProposalItemTrait
      * {@inheritdoc}
      */
     public function setDigitalProduct($digitalProduct)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultUnitQuantity()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

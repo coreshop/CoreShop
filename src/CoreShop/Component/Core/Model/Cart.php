@@ -14,12 +14,28 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\Cart as BaseCart;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 class Cart extends BaseCart implements CartInterface
 {
     use CarrierAwareTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWeight()
+    {
+        $weight = 0;
+
+        foreach ($this->getItems() as $item) {
+            if ($item instanceof CartItemInterface) {
+                $weight += $item->getTotalWeight();
+            }
+        }
+
+        return $weight;
+    }
 
     /**
      * {@inheritdoc}

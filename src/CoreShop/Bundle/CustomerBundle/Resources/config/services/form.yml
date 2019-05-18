@@ -29,3 +29,10 @@ services:
         class: CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType
         tags:
             - { name: form.type }
+
+    coreshop.form.type.customer_selection:
+        class: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType
+        arguments:
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: form.type }

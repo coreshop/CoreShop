@@ -42,6 +42,10 @@ coreshop.order.sale.create.step.address = Class.create(coreshop.order.sale.creat
         return 40;
     },
 
+    setPreviewData: function(data) {
+
+    },
+
     getValues: function (parent) {
         return this.panel.getForm().getFieldValues();
     },
@@ -107,8 +111,7 @@ coreshop.order.sale.create.step.address = Class.create(coreshop.order.sale.creat
                                     this[addressKey] = address.data;
                                 }
 
-                                this.eventManager.fireEvent('address.changed');
-                                this.eventManager.fireEvent('validation');
+                                this.eventManager.fireEvent('preview');
                             }.bind(this)
                         }
                     },

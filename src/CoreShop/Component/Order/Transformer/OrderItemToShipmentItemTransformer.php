@@ -56,7 +56,7 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
     /**
      * {@inheritdoc}
      */
-    public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity)
+    public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity, $options = [])
     {
         /**
          * @var OrderInvoiceInterface      $shipment
@@ -67,7 +67,16 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         Assert::isInstanceOf($shipment, OrderDocumentInterface::class);
         Assert::isInstanceOf($shipmentItem, OrderShipmentItemInterface::class);
 
-        $this->eventDispatcher->dispatchPreEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+        $this->eventDispatcher->dispatchPreEvent(
+            'shipment_item',
+            $shipmentItem,
+            [
+                'shipment' => $shipment,
+                'order' => $orderItem->getOrder(),
+                'order_item' => $orderItem,
+                'options' => $options,
+            ]
+        );
 
         $itemFolder = $this->objectService->createFolderByPath($shipment->getFullPath() . '/' . $this->pathForItems);
 
@@ -83,13 +92,20 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(true) * $quantity, true);
         $shipmentItem->setBaseTotal($orderItem->getBaseItemPrice(false) * $quantity, false);
 
-        $shipmentItem->setWeight($orderItem->getTotalWeight());
-
         VersionHelper::useVersioning(function () use ($shipmentItem) {
             $shipmentItem->save();
         }, false);
 
-        $this->eventDispatcher->dispatchPostEvent('shipment_item', $shipmentItem, ['shipment' => $shipment, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+        $this->eventDispatcher->dispatchPostEvent(
+            'shipment_item',
+            $shipmentItem,
+            [
+                'shipment' => $shipment,
+                'order' => $orderItem->getOrder(),
+                'order_item' => $orderItem,
+                'options' => $options,
+            ]
+        );
 
         return $shipmentItem;
     }

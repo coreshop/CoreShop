@@ -226,3 +226,28 @@ services:
             - '@__symfony__.coreshop.theme.active_theme'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.product_quantity_price_rule:
+        class: CoreShop\Behat\Context\Domain\ProductQuantityPriceRuleContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.context.shopper'
+            - '@__symfony__.coreshop.product_quantity_price_rules.processor'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.product_unit:
+        class: CoreShop\Behat\Context\Domain\ProductUnitContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.coreshop.repository.product_unit'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.domain.menu:
+        class: CoreShop\Behat\Context\Domain\MenuContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@__symfony__.knp_menu.menu_provider'
+        tags:
+            - { name: fob.context_service }

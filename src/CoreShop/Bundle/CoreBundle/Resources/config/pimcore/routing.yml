@@ -48,12 +48,7 @@ coreshop_admin_settings_set:
     methods: [POST]
     defaults:  { _controller: coreshop.admin_controller.settings:setAction }
 
-##### ORDER CREATION
-coreshop_order_get_carrier_details:
-    path: /%coreshop.admin.route.base%/order-creation/get-carrier-details
-    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCarrierDetailsAction'}
-
-##### QUOTE CREATION
-coreshop_quote_get_carrier_details:
-    path: /%coreshop.admin.route.base%/quote-creation/get-carrier-details
-    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getCarrierDetailsAction'}
+coreshop_admin_purchasable_store_preview:
+    path: /%coreshop.admin.route.base%/preview
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.product_preview:previewAction}

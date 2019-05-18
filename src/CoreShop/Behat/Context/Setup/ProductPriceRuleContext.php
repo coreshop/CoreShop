@@ -19,6 +19,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationTy
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomerGroupsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CustomersConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\StoresConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleActionType;
@@ -26,7 +27,6 @@ use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType;
-use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
@@ -148,6 +148,42 @@ final class ProductPriceRuleContext implements Context
     public function theProductPriceRuleIsInActive(ProductPriceRuleInterface $rule)
     {
         $rule->setActive(false);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") is stop propagation$/
+     * @Given /^the (price rule) is stop propagation$/
+     */
+    public function theProductPriceRuleIsStopPropagation(ProductPriceRuleInterface $rule)
+    {
+        $rule->setStopPropagation(true);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") is not stop propagation$/
+     * @Given /^the (price rule) is not stop propagation$/
+     */
+    public function theProductPriceRuleIsNotStopPropagation(ProductPriceRuleInterface $rule)
+    {
+        $rule->setStopPropagation(false);
+
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has priority "([\d]+)"$/
+     * @Given /^the (price rule) has priority "([\d]+)"$/
+     */
+    public function theProductPriceRuleHasPriority(ProductPriceRuleInterface $rule, int $priority)
+    {
+        $rule->setPriority($priority);
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
@@ -315,6 +351,33 @@ final class ProductPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
+            'include_variants' => false,
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (price rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
+     */
+    public function theProductPriceRuleHasAProductConditionWhichIncludesVariants(
+        ProductPriceRuleInterface $rule,
+        ProductInterface $product,
+        ProductInterface $product2 = null
+    ) {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $configuration = [
+            'products' => [
+                $product->getId(),
+            ],
+            'include_variants' => true,
         ];
 
         if (null !== $product2) {
@@ -333,7 +396,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($discount),
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -349,7 +412,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => intval($amount),
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -366,7 +429,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'discountPrice');
 
         $this->addAction($rule, $this->createActionWithForm('discountPrice', [
-            'price' => intval($price),
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -380,7 +443,7 @@ final class ProductPriceRuleContext implements Context
         $this->assertActionForm(PriceConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => intval($price),
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }

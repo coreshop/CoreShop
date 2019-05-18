@@ -32,8 +32,12 @@ final class CoreShopWorkflowExtension extends Extension
         $callbackConfig = [];
         $colorConfig = [];
 
+        $coreShopStateMachines = [];
+
         if (is_array($config['state_machine'])) {
             foreach ($config['state_machine'] as $stateMachineName => $stateMachineConfig) {
+                $coreShopStateMachines[] = $stateMachineName;
+
                 $data = [];
                 if (isset($stateMachineConfig['places'])) {
                     $data['places'] = $stateMachineConfig['places'];
@@ -61,6 +65,7 @@ final class CoreShopWorkflowExtension extends Extension
             }
         }
 
+        $container->setParameter('coreshop.state_machines', $coreShopStateMachines);
         $container->setParameter('coreshop.state_machine.callbacks', $callbackConfig);
         $container->setParameter('coreshop.state_machine.colors', $colorConfig);
     }

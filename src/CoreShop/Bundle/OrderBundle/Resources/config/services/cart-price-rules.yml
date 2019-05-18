@@ -1,5 +1,6 @@
 parameters:
     coreshop.form.type.cart_price_rule.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule_translation.validation_groups: [coreshop]
     coreshop.form.type.voucher.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.rule.validation_groups: [coreshop]
     coreshop.form.type.cart_price_rule.rule_action.validation_groups: [coreshop]
@@ -41,6 +42,14 @@ services:
           - '%coreshop.form.type.cart_price_rule.validation_groups%'
       tags:
           - { name: form.type }
+
+    coreshop.form.type.cart_price_rule_translation:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType
+        arguments:
+            - '%coreshop.model.cart_price_rule_translation.class%'
+            - '%coreshop.form.type.cart_price_rule_translation.validation_groups%'
+        tags:
+            - { name: form.type }
 
     coreshop.form.type.cart_price_rule.rule_action:
       class: CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType

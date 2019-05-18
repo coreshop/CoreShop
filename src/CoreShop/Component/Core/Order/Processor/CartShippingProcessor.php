@@ -82,6 +82,12 @@ final class CartShippingProcessor implements CartProcessorInterface
             return;
         }
 
+        if (!$cart->hasShippableItems()) {
+            $cart->setCarrier(null);
+
+            return;
+        }
+
         $address = $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart);
 
         if (null === $address) {

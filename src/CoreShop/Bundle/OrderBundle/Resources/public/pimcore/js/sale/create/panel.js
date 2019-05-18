@@ -24,6 +24,27 @@ coreshop.order.sale.create.panel = Class.create({
         var me = this;
 
         me.eventManager = new CoreShop.resource.EventManager();
+        me.eventManager.on('preview', function () {
+            me.layout.setLoading(true);
+
+            Ext.Ajax.request({
+                url: '/admin/coreshop/' + me.type + '-creation/preview',
+                method: 'post',
+                jsonData: me.getPreviewValues(),
+                callback: function (request, success, response) {
+                    response = Ext.decode(response.responseText);
+
+                    if (response.success) {
+                        Ext.Object.each(me.steps, function (key, value) {
+                            value.setPreviewData(response.data);
+                        });
+                    }
+                    me.layout.setLoading(false);
+
+                    me.eventManager.fireEvent('validation');
+                }.bind(this)
+            });
+        });
         me.eventManager.on('validation', function () {
             var valid = true;
 
@@ -110,10 +131,17 @@ coreshop.order.sale.create.panel = Class.create({
             });
 
             this.resetButton = new Ext.button.Button({
-                iconCls: 'pimcore_icon_refresh',
+                iconCls: 'pimcore_icon_delete',
                 text: t('reset'),
                 disabled: false,
                 handler: this.reset.bind(this)
+            });
+
+            this.refreshButton = new Ext.button.Button({
+                iconCls: 'pimcore_icon_refresh',
+                text: t('refresh'),
+                disabled: false,
+                handler: this.refresh.bind(this)
             });
 
             // create new panel
@@ -137,7 +165,8 @@ coreshop.order.sale.create.panel = Class.create({
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [
-                        this.resetButton
+                        this.resetButton,
+                        this.refreshButton
                     ]
                 }]
             });
@@ -173,8 +202,15 @@ coreshop.order.sale.create.panel = Class.create({
             me.steps[stepName] = step;
         });
 
-        steps = steps.sort(function (stepA, stepB) {
-            return stepA.getPriority() > stepB.getPriority();
+        Ext.Array.sort(steps, function (stepA, stepB) {
+            var stepAPriority = stepA.getPriority();
+            var stepBPriority = stepB.getPriority();
+
+            if (stepAPriority === stepBPriority) {
+                return 0;
+            }
+
+            return stepAPriority > stepBPriority ? 1 : -1;
         });
 
         stepLayouts = steps.map(function (step) {
@@ -204,6 +240,18 @@ coreshop.order.sale.create.panel = Class.create({
         return values;
     },
 
+    getPreviewValues: function () {
+        var values = {
+            customer: this.customerId
+        };
+
+        Ext.Object.each(this.steps, function (key, value) {
+            values = Ext.apply(values, value.getPreviewValues());
+        });
+
+        return values;
+    },
+
     reset: function() {
         this.eventManager.suspendEvents();
 
@@ -212,6 +260,10 @@ coreshop.order.sale.create.panel = Class.create({
         });
 
         this.eventManager.resumeEvents();
+    },
+
+    refresh: function() {
+        this.eventManager.fireEvent('preview');
     },
 
     prepareSuccessMessage: function(message, response) {

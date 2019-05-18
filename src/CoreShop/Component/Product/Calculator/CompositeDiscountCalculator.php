@@ -37,6 +37,9 @@ class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
     {
         $discount = 0;
 
+        /**
+         * @var ProductDiscountCalculatorInterface $calculator
+         */
         foreach ($this->discountCalculator->all() as $calculator) {
             $discount += $calculator->getDiscount($subject, $context, $price);
         }

@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
+use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class PurchasableCalculator implements PurchasableCalculatorInterface
@@ -59,7 +61,12 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
      */
     public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
     {
-        return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
+        try {
+            return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
+        } catch (NoPurchasablePriceFoundException $ex) {
+        }
+
+        return 0;
     }
 
     /**
@@ -75,7 +82,12 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
      */
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
     {
-        return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
+        try {
+            return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
+        } catch (NoPurchasableRetailPriceFoundException $ex) {
+        }
+
+        return 0;
     }
 
     /**
@@ -83,6 +95,11 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
      */
     public function getRetailPrice(PurchasableInterface $purchasable, array $context)
     {
-        return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
+        try {
+            return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);
+        } catch (NoPurchasableRetailPriceFoundException $ex) {
+        }
+
+        return 0;
     }
 }

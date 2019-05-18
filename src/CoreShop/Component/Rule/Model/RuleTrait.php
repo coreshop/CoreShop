@@ -41,6 +41,11 @@ trait RuleTrait
 
     public function __construct()
     {
+        $this->initializeRuleCollections();
+    }
+
+    protected function initializeRuleCollections()
+    {
         $this->conditions = new ArrayCollection();
         $this->actions = new ArrayCollection();
     }

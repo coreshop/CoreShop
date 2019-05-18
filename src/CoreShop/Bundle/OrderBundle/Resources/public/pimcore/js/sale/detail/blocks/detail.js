@@ -14,17 +14,16 @@ pimcore.registerNS('coreshop.order.sale.detail.blocks.detail');
 coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.detail.abstractBlock, {
 
     initBlock: function () {
-        var me = this;
 
-        me.detailsStore = new Ext.data.JsonStore({
+        this.detailsStore = new Ext.data.JsonStore({
             data: []
         });
 
-        me.summaryStore = new Ext.data.JsonStore({
+        this.summaryStore = new Ext.data.JsonStore({
             data: []
         });
 
-        me.detailsInfo = Ext.create('Ext.panel.Panel', {
+        this.detailsInfo = Ext.create('Ext.panel.Panel', {
             title: t('coreshop_products'),
             border: true,
             margin: '0 0 20 0',
@@ -45,30 +44,30 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
     },
 
     updateSale: function () {
-        var me = this;
 
-        me.detailsStore.loadRawData(me.sale.details);
-        me.summaryStore.loadRawData(me.sale.summary);
+        var detailItems;
 
-        me.detailsInfo.removeAll();
+        this.detailsStore.loadRawData(this.sale.details);
+        this.summaryStore.loadRawData(this.sale.summary);
 
-        var actions = [
-            {
-                iconCls: 'pimcore_icon_open',
-                tooltip: t('open'),
-                handler: function (grid, rowIndex) {
-                    var record = grid.getStore().getAt(rowIndex);
+        this.detailsInfo.removeAll();
 
-                    pimcore.helpers.openObject(record.get('o_id'));
-                }
-            }
-        ];
+        detailItems = [this.generateItemGrid(), this.generateSummaryGrid()];
 
-        var itemsGrid = {
+        if (this.sale.priceRule) {
+            detailItems.splice(1, 0, this.generatePriceRuleItem(this.sale.priceRule));
+        }
+
+        this.detailsInfo.add(detailItems);
+    },
+
+    generateItemGrid: function () {
+
+        return {
             xtype: 'grid',
             margin: '0 0 15 0',
             cls: 'coreshop-detail-grid',
-            store: me.detailsStore,
+            store: this.detailsStore,
             columns: [
                 {
                     xtype: 'gridcolumn',
@@ -82,7 +81,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_wholesale_price'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(me, me.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -90,7 +89,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_price_without_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(me, me.sale.currency.symbol),
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol),
                     field: {
                         xtype: 'numberfield',
                         decimalPrecision: 4
@@ -102,7 +101,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_price_with_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(me, me.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -121,23 +120,26 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_total'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(me, me.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     menuDisabled: true,
                     sortable: false,
                     xtype: 'actioncolumn',
                     width: 50,
-                    items: actions
+                    items: this.generateActions()
                 }
             ]
         };
+    },
 
-        var summaryGrid = {
+    generateSummaryGrid: function () {
+
+        return {
             xtype: 'grid',
             margin: '0 0 15 0',
             cls: 'coreshop-detail-grid',
-            store: me.summaryStore,
+            store: this.summaryStore,
             hideHeaders: true,
             columns: [
                 {
@@ -146,8 +148,8 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     align: 'right',
                     dataIndex: 'key',
                     renderer: function (value, metaData, record) {
-                        if (record.get("text")) {
-                            return '<span style="font-weight:bold">' + record.get("text") + '</span>';
+                        if (record.get('text')) {
+                            return '<span style="font-weight:bold">' + record.get('text') + '</span>';
                         }
 
                         return '<span style="font-weight:bold">' + t('coreshop_' + value) + '</span>';
@@ -158,49 +160,57 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     dataIndex: 'value',
                     width: 150,
                     align: 'right',
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
-                    }
+                    renderer: function (value) {
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
+                    }.bind(this)
+                }
+            ]
+        }
+    },
+
+    generatePriceRuleItem: function (priceRuleStoreData) {
+
+        return {
+            xtype: 'grid',
+            margin: '0 0 15 0',
+            cls: 'coreshop-detail-grid',
+            store: new Ext.data.JsonStore({
+                data: priceRuleStoreData
+            }),
+            hideHeaders: true,
+            title: t('coreshop_pricerules'),
+            columns: [
+                {
+                    xtype: 'gridcolumn',
+                    flex: 1,
+                    align: 'right',
+                    dataIndex: 'name'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'discount',
+                    width: 150,
+                    align: 'right',
+                    renderer: function (value) {
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
+                    }.bind(this)
                 }
             ]
         };
+    },
 
-        var detailItems = [itemsGrid, summaryGrid];
+    generateActions: function () {
 
-        if (me.sale.priceRule) {
-            var priceRuleStore = new Ext.data.JsonStore({
-                data: me.sale.priceRule
-            });
+        return [
+            {
+                iconCls: 'pimcore_icon_open',
+                tooltip: t('open'),
+                handler: function (grid, rowIndex) {
+                    var record = grid.getStore().getAt(rowIndex);
 
-            var priceRuleItem = {
-                xtype: 'grid',
-                margin: '0 0 15 0',
-                cls: 'coreshop-detail-grid',
-                store: priceRuleStore,
-                hideHeaders: true,
-                title: t('coreshop_pricerules'),
-                columns: [
-                    {
-                        xtype: 'gridcolumn',
-                        flex: 1,
-                        align: 'right',
-                        dataIndex: 'name'
-                    },
-                    {
-                        xtype: 'gridcolumn',
-                        dataIndex: 'discount',
-                        width: 150,
-                        align: 'right',
-                        renderer: function (value, metaData, record) {
-                            return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
-                        }
-                    }
-                ]
-            };
-
-            detailItems.splice(1, 0, priceRuleItem);
-        }
-
-        me.detailsInfo.add(detailItems);
+                    pimcore.helpers.openObject(record.get('o_id'));
+                }
+            }
+        ];
     }
 });

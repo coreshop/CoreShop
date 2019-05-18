@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Address\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Address extends AbstractPimcoreModel implements AddressInterface
@@ -191,5 +191,29 @@ class Address extends AbstractPimcoreModel implements AddressInterface
     public function setPhoneNumber($phoneNumber)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAddressIdentifier()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAddressIdentifier($addressIdentifier)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAddressIdentifier()
+    {
+        return $this->getAddressIdentifier() instanceof AddressIdentifierInterface;
     }
 }

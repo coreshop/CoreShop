@@ -12,17 +12,27 @@
 
 namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-
-interface StorageListItemInterface extends ResourceInterface
+interface StorageListItemInterface
 {
+    /**
+     * @param StorageListItemInterface $storageListItem
+     *
+     * @return bool
+     */
+    public function equals(self $storageListItem);
+
+    /**
+     * @return int
+     */
+    public function getId();
+
     /**
      * @return StorageListProductInterface
      */
     public function getProduct();
 
     /**
-     * @param StorageListProductInterface $product
+     * @param mixed $product
      */
     public function setProduct($product);
 

@@ -97,7 +97,7 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
 
         $this->objectService->copyObject($cartItem, $saleItem);
 
-        $saleItem->setKey($cartItem->getKey());
+        $saleItem->setKey($cartItem->getKey() ?? uniqid());
         $saleItem->setParent($itemFolder);
         $saleItem->setPublished(true);
 
@@ -117,7 +117,8 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setBaseTaxes($baseTaxesFieldCollection);
 
         $saleItem->setProduct($cartItem->getProduct());
-        $saleItem->setItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
+        $saleItem->setItemWholesalePrice($cartItem->getItemWholesalePrice());
+        $saleItem->setBaseItemWholesalePrice($this->currencyConverter->convert($cartItem->getItemWholesalePrice(), $fromCurrency, $toCurrency));
 
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(true), $fromCurrency, $toCurrency), true);
         $saleItem->setItemRetailPrice($this->currencyConverter->convert($cartItem->getItemRetailPrice(false), $fromCurrency, $toCurrency), false);
@@ -138,9 +139,6 @@ abstract class AbstractCartItemToSaleItemTransformer implements ProposalItemTran
         $saleItem->setBaseItemPrice($cartItem->getItemPrice(true), true);
         $saleItem->setBaseItemPrice($cartItem->getItemPrice(false), false);
         $saleItem->setBaseItemTax($cartItem->getItemTax());
-
-        $saleItem->setItemWeight($cartItem->getItemWeight());
-        $saleItem->setTotalWeight($cartItem->getTotalWeight());
 
         foreach ($cartItem->getAdjustments() as $adjustment) {
             $saleItem->addAdjustment($adjustment);

@@ -1,3 +1,0 @@
-CoreShop\Component\Core\Model\CartItem:
-    constraints:
-        - \CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStock: { stockablePath: product, groups: ['coreshop'] }

@@ -19,6 +19,7 @@ use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
@@ -41,6 +42,7 @@ class MysqlWorker extends AbstractWorker
      * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      * @param ConditionRendererInterface $conditionRenderer
+     * @param OrderRendererInterface     $orderRenderer
      * @param Connection                 $connection
      */
     public function __construct(
@@ -49,6 +51,7 @@ class MysqlWorker extends AbstractWorker
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper,
         ConditionRendererInterface $conditionRenderer,
+        OrderRendererInterface $orderRenderer,
         Connection $connection
     ) {
         parent::__construct(
@@ -56,7 +59,8 @@ class MysqlWorker extends AbstractWorker
             $getterServiceRegistry,
             $interpreterServiceRegistry,
             $filterGroupHelper,
-            $conditionRenderer
+            $conditionRenderer,
+            $orderRenderer
         );
 
         $this->database = $connection;
@@ -277,18 +281,26 @@ QUERY;
     /**
      * {@inheritdoc}
      */
+    protected function handleArrayValues(IndexInterface $index, array $value)
+    {
+        return ',' . implode($value, ',') . ',';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
             $languages = Tool::getValidLanguages();
 
             foreach ($languages as $language) {
-                $this->database->query('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
+                $this->database->executeQuery('DROP VIEW IF EXISTS `' . $this->getLocalizedViewName($index, $language) . '`');
             }
 
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
-            $this->database->query('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getLocalizedTablename($index) . '`');
+            $this->database->executeQuery('DROP TABLE IF EXISTS `' . $this->getRelationTablename($index) . '`');
         } catch (\Exception $e) {
             $this->logger->error($e);
         }
@@ -365,7 +377,7 @@ QUERY;
         $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
             . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
-        $this->database->query($insert, array_merge($updateData, $insertData));
+        $this->database->executeQuery($insert, array_merge($updateData, $insertData));
     }
 
     /**
@@ -405,7 +417,7 @@ QUERY;
             $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
                 . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
-            $this->database->query($insert, array_merge($updateData, $insertData));
+            $this->database->executeQuery($insert, array_merge($updateData, $insertData));
         }
     }
 

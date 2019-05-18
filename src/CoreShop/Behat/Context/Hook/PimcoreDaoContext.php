@@ -13,15 +13,45 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
+    /**
+     * @var KernelInterface
+     */
+    private $kernel;
+
+    /**
+     * @var OrderRepositoryInterface
+     */
+    private $orderRepository;
+
+    /**
+     * @param KernelInterface          $kernel
+     * @param OrderRepositoryInterface $orderRepository
+     */
+    public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
+    {
+        $this->kernel = $kernel;
+        $this->orderRepository = $orderRepository;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function setKernel()
+    {
+        \Pimcore::setKernel($this->kernel);
+    }
+
     /**
      * @BeforeScenario
      */
@@ -29,6 +59,19 @@ final class PimcoreDaoContext implements Context
     {
         Cache::clearAll();
         Cache\Runtime::clear();
+
+        /**
+         * Delete Orders first, otherwise the CustomerDeletionListener would trigger
+         *
+         * @var Listing $list
+         */
+        $list = $this->orderRepository->getList();
+        $list->setUnpublished(true);
+        $list->load();
+
+        foreach ($list->getObjects() as $obj) {
+            $obj->delete();
+        }
 
         /**
          * @var Listing $list

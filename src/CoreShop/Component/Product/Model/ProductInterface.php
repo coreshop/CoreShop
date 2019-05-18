@@ -51,6 +51,16 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setWholesalePrice($wholesalePrice);
 
     /**
+     * @return null|int
+     */
+    public function getItemQuantityFactor();
+
+    /**
+     * @param null|int $itemQuantityFactor
+     */
+    public function setItemQuantityFactor($itemQuantityFactor);
+
+    /**
      * @return CategoryInterface[]
      */
     public function getCategories();
@@ -186,4 +196,29 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param PriceRuleInterface[] $specificPriceRules
      */
     public function setSpecificPriceRules($specificPriceRules);
+
+    /**
+     * @return null|ProductUnitDefinitionsInterface
+     */
+    public function getUnitDefinitions();
+
+    /**
+     * @param ProductUnitDefinitionsInterface $productUnitDefinitions
+     */
+    public function setUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinitions();
+
+    /**
+     * @return bool
+     */
+    public function hasDefaultUnitDefinition();
+
+    /**
+     * @return bool
+     */
+    public function hasAdditionalUnitDefinitions();
 }

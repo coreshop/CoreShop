@@ -46,19 +46,21 @@ $wishlistManager = new SessionStorageManager($session, 'wishlist', $wishlistFact
 $wishlistModifier = new SessionStorageListModifier($wishlistItemFactory, $wishlistManager);
 
 //Now we can start putting data into our List
-$list $wishlistManager->getStorageList();
+$list = $wishlistManager->getStorageList();
 
 //Fetch our Product which implements CoreShop\Component\StorageList\Model\StorageListProductInterface
 $product = $productRepository->find(1);
 
+
+$listItem = $wishlistItemFactory->createNew();
+$listItem->setProduct($product);
+$listItem->setQuantity($quantity);
+
 //Lets add our Product
-$listItem = $wishlistModifier->addItem($list, $product, 1);
+$listItem = $wishlistModifier->addToList($list, $listItem);
 
 //If we now want to remove it, we can either use the $listItem, or the Product
 //To do that with our item, we simply call
-$wishlistModifier->removeItem($list, $listItem);
-
-//or we use our $product
-$wishlistModifier->updateItemQuantity($list, $produt, 0);
+$wishlistModifier->removeFromList($list, $listItem);
 
 ```

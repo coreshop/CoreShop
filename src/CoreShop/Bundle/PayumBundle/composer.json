@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/order-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
     "coreshop/core": "^2.0",
@@ -26,7 +27,7 @@
     "payum/sofort": "^1.4",
     "payum/paypal-express-checkout-nvp": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/pimcore": "^5.4.0"
+    "pimcore/pimcore": "^5.8.0"
   },
   "config": {
     "bin-dir": "bin"

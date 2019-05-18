@@ -12387,6 +12387,13 @@ hr {
     text-decoration: line-through;
 }
 
+.product-info .product-details .unit-prices {
+}
+
+.product-info .product-details .unit-prices .default-unit-price {
+    margin:20px 0;
+}
+
 .product-info .product-details .options h3 {
     margin-bottom: 20px;
 }
@@ -12399,6 +12406,10 @@ hr {
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
+}
+
+.product-info .product-details .cart-button input.cart-item-quantity {
+    max-width:100px;
 }
 
 .product-info .product-details .btn-wishlist, .product-info .product-details .btn-compare {

@@ -1,0 +1,11 @@
+---
+coreshop_action_discountAmount_amount: 'Belopp'
+coreshop_product_list: 'Produktlista'
+coreshop_condition_products: 'Produkter'
+coreshop_condition_amount: 'Belopp'
+coreshop_action_discountAmount: 'Rabattbelopp'
+coreshop_product_units: 'Produktenheter'
+coreshop_product_unit: 'Produktenhet'
+coreshop_product_unit_no_additional_unit_definitions_available: 'Inga ytterligare Enhetsdefinitioner tillgängliga.'
+coreshop_product_unit_additional_unit_definitions_headline: 'Ytterligare Enhetsdefinitioner'
+coreshop_product_unit_additional_unit_definition_delete_confirm: 'Vill du verkligen ta bort denna extra enhetsdefinition?'

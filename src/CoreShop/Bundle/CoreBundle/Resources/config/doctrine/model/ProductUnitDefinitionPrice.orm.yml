@@ -1,0 +1,13 @@
+CoreShop\Component\Core\Model\ProductUnitDefinitionPrice:
+    type: mappedSuperclass
+    table: coreshop_product_unit_definition_price
+    manyToOne:
+        productStoreValues:
+            targetEntity: CoreShop\Component\Core\Model\ProductStoreValuesInterface
+            inversedBy: productUnitDefinitionPrices
+            cascade:
+                - 'merge'
+            joinColumn:
+                name: product_store_values
+                referencedColumnName: id
+                onDelete: CASCADE

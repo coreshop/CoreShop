@@ -8,6 +8,9 @@ services:
 
     coreshop.behat.context.hook.pimcore_dao:
         class: CoreShop\Behat\Context\Hook\PimcoreDaoContext
+        arguments:
+            - '@__symfony__.kernel'
+            - '@__symfony__.coreshop.repository.order'
         tags:
             - { name: fob.context_service }
 

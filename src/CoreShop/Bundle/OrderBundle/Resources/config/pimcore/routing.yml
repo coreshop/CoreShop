@@ -117,21 +117,17 @@ coreshop_order_shipment_render:
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
 
 ##### ORDER CREATION
-coreshop_order_get_product_details:
-    path: /%coreshop.admin.route.base%/order-creation/get-product-details
-    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getProductDetailsAction'}
-
 coreshop_order_get_customer_details:
     path: /%coreshop.admin.route.base%/order-creation/get-customer-details
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCustomerDetailsAction'}
 
-coreshop_order_get_totals:
-    path: /%coreshop.admin.route.base%/order-creation/get-totals
-    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getTotalsAction'}
+coreshop_order_preview:
+    path: /%coreshop.admin.route.base%/order-creation/preview
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:salePreviewAction'}
 
 coreshop_order_create:
     path: /%coreshop.admin.route.base%/order-creation/create
-    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:createSaleAction'}
+    defaults: { _controller: 'coreshop.pimcore_controller.order_creation:saleCreationAction'}
 
 ##### QUOTES
 
@@ -157,18 +153,14 @@ coreshop_quote_find:
     defaults: { _controller: 'coreshop.pimcore_controller.quote:findSaleAction'}
 
 ##### QUOTE CREATION
-coreshop_quote_get_product_details:
-    path: /%coreshop.admin.route.base%/quote-creation/get-product-details
-    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getProductDetailsAction'}
-
 coreshop_quote_get_customer_details:
     path: /%coreshop.admin.route.base%/quote-creation/get-customer-details
     defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getCustomerDetailsAction'}
 
-coreshop_quote_get_totals:
-    path: /%coreshop.admin.route.base%/quote-creation/get-totals
-    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:getTotalsAction'}
+coreshop_qutoe_preview:
+    path: /%coreshop.admin.route.base%/quote-creation/preview
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:salePreviewAction'}
 
 coreshop_quote_create:
     path: /%coreshop.admin.route.base%/quote-creation/create
-    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:createSaleAction'}
+    defaults: { _controller: 'coreshop.pimcore_controller.quote_creation:saleCreationAction'}

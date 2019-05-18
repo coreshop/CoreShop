@@ -12,3 +12,8 @@ core_shop_product:
                 repository: CoreShop\Bundle\CoreBundle\Pimcore\Repository\ProductRepository
                 interface: CoreShop\Component\Core\Model\ProductInterface
                 install_file: '@CoreShopCoreBundle/Resources/install/pimcore/classes/CoreShopProductBundle/CoreShopProduct.json'
+    resources:
+        product_unit_definition_price:
+            classes:
+                model: CoreShop\Component\Core\Model\ProductUnitDefinitionPrice
+                interface: CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface

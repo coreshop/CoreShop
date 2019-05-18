@@ -42,9 +42,18 @@ class ValidPriceRulesHelper extends Helper implements ValidPriceRulesHelperInter
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product)
+    public function getValidRules(ProductInterface $product, array $context = [])
     {
-        return $this->validPriceRulesFetcher->getValidRules($product, $this->shopperContext->getContext());
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getValidRules without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        return $this->validPriceRulesFetcher->getValidRules($product, $context);
     }
 
     /**

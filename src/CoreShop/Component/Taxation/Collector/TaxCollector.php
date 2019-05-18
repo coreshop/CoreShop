@@ -63,6 +63,24 @@ class TaxCollector implements TaxCollectorInterface
     /**
      * {@inheritdoc}
      */
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    {
+        if ($taxCalculator instanceof TaxCalculatorInterface) {
+            $taxesAmount = $taxCalculator->getTaxesAmountFromGross($price, true);
+
+            if (is_array($taxesAmount)) {
+                foreach ($taxesAmount as $id => $amount) {
+                    $this->addTaxToArray($id, $amount, $usedTaxes);
+                }
+            }
+        }
+
+        return $usedTaxes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function mergeTaxes(array $taxes1, array $taxes2)
     {
         foreach ($taxes1 as $id => $tax) {

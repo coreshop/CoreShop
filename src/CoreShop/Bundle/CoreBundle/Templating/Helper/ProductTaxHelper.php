@@ -60,26 +60,42 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     }
 
     /**
-     * @param PurchasableInterface $product
-     *
-     * @return array|int
+     * {@inheritdoc}
      */
-    public function getTaxAmount(PurchasableInterface $product)
+    public function getTaxAmount(PurchasableInterface $product, array $context = [])
     {
-        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($this->shopperContext->getContext()));
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getTaxAmount without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
+
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            return $taxCalculator->getTaxesAmount($this->priceHelper->getPrice($product, false));
+            return $taxCalculator->getTaxesAmount($this->priceHelper->getPrice($product, false, $context));
         }
     }
 
     /**
-     * @param PurchasableInterface $product
-     *
-     * @return float
+     * {@inheritdoc}
      */
-    public function getTaxRate(PurchasableInterface $product)
+    public function getTaxRate(PurchasableInterface $product, array $context = [])
     {
-        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($this->shopperContext->getContext()));
+        if (empty($context)) {
+            $context = $this->shopperContext->getContext();
+
+            @trigger_error(
+                'Calling getTaxRate without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
+                E_USER_DEPRECATED
+            );
+        }
+
+        $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
+
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTotalRate();
         }

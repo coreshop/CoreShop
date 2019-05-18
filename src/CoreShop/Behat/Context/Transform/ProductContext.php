@@ -14,7 +14,10 @@ namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Pimcore\Model\DataObject\AbstractObject;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -52,6 +55,7 @@ final class ProductContext implements Context
          */
         $list = $this->productRepository->getList();
         $list->setLocale('en');
+        $list->setObjectTypes([AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT]);
         $list->setCondition('name = ?', [$productName]);
         $list->load();
 
@@ -65,6 +69,28 @@ final class ProductContext implements Context
 
         //This is to not run into cache issues
         return $this->productRepository->forceFind($product->getId());
+    }
+
+    /**
+     * @Transform /^product(?:|s) "([^"]+)" with unit "([^"]+)"$/
+     */
+    public function getProductWithUnitName($productName, $productUnit)
+    {
+        /**
+         * @var ProductInterface $product
+         */
+        $product = $this->getProductByName($productName);
+
+        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unit) {
+            if ($unit->getUnit()->getName() === $productUnit) {
+                return [
+                    'product' => $product,
+                    'unit' => $unit
+                ];
+            }
+        }
+
+        throw new \Exception(sprintf('Unit %s in product %s not found', $productUnit, $productName));
     }
 
     /**

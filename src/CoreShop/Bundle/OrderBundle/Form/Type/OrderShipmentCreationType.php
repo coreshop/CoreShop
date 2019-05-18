@@ -30,7 +30,7 @@ final class OrderShipmentCreationType extends AbstractType
             ->add('trackingCode', TextType::class)
             ->add('id', IntegerType::class)
             ->add('items', CollectionType::class, [
-                'entry_type' => OrderDocumentCreationItemsType::class,
+                'entry_type' => OrderShipmentCreationItemsType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => false,
@@ -46,13 +46,5 @@ final class OrderShipmentCreationType extends AbstractType
         $resolver->setDefaults([
             'csrf_protection' => false,
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBlockPrefix()
-    {
-        return 'coreshop_shipment_creation';
     }
 }

@@ -15,15 +15,6 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
     carriersStore: null,
 
     initStep: function () {
-        var me = this;
-
-        me.eventManager.on('products.changed', function () {
-            me.reloadCarriers();
-        });
-        me.eventManager.on('address.changed', function () {
-            me.reloadCarriers();
-        });
-
         this.carriersStore = new Ext.data.JsonStore({
             data: []
         });
@@ -36,7 +27,23 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
     },
 
     getPriority: function () {
-        return 60;
+        return 50;
+    },
+
+    setPreviewData: function(data) {
+        if (data.shippingAddress && data.invoiceAddress && data.items.length > 0) {
+            this.layout.show();
+
+            if (data.carriers) {
+                this.carriersStore.loadData(data.carriers);
+
+                this.panel.down('[name=carrier]').setValue(data.carrier);
+            }
+        }
+        else {
+            this.panel.down('[name=carrier]').setValue(null);
+            this.layout.hide();
+        }
     },
 
     reset: function() {
@@ -62,30 +69,14 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
             valueField: 'id',
             listeners: {
                 change: function (combo, value) {
-                    var carrier = this.carriersStore.getById(value);
-
-                    if (carrier) {
-                        deliveryPriceField.setValue(carrier.get('priceFormatted'));
-                    }
-
-                    this.eventManager.fireEvent('carrier.changed');
-                    this.eventManager.fireEvent('totals.reload');
-                    this.eventManager.fireEvent('validation');
+                    this.eventManager.fireEvent('preview');
                 }.bind(this)
             }
         });
 
-        var deliveryPriceField = Ext.create({
-            xtype: 'textfield',
-            value: 0,
-            disabled: true,
-            fieldLabel: t('coreshop_price')
-        });
-
         this.panel = Ext.create('Ext.form.Panel', {
             items: [
-                deliveryCarrierChoose,
-                deliveryPriceField
+                deliveryCarrierChoose
             ]
         });
 
@@ -106,38 +97,5 @@ coreshop.order.sale.create.step.shipping = Class.create(coreshop.order.sale.crea
         layout.hide();
 
         return layout;
-    },
-
-    reloadCarriers: function () {
-        var values = this.creationPanel.getValues();
-
-        if (values.shippingAddress && values.invoiceAddress && values.products.length > 0) {
-            this.layout.show();
-            this.layout.setLoading(t("loading"));
-
-            Ext.Ajax.request({
-                url: '/admin/coreshop/' + this.creationPanel.type + '-creation/get-carrier-details',
-                method: 'post',
-                jsonData: values,
-                callback: function (request, success, response) {
-                    try {
-                        response = Ext.decode(response.responseText);
-
-                        if (response.success) {
-                            this.carriersStore.loadData(response.carriers);
-                        } else {
-                            Ext.Msg.alert(t('error'), response.message);
-                        }
-                    }
-                    catch (e) {
-                        Ext.Msg.alert(t('error'), e);
-                    }
-
-                    this.layout.setLoading(false);
-                }.bind(this)
-            });
-        } else {
-            this.layout.hide();
-        }
     }
 });

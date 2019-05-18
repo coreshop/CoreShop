@@ -24,6 +24,8 @@ use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderInterface;
+use CoreShop\Component\Index\Order\OrderRendererInterface;
 use CoreShop\Component\Index\Worker\FilterGroupHelperInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -63,24 +65,32 @@ abstract class AbstractWorker implements WorkerInterface
     protected $conditionRenderer;
 
     /**
+     * @var OrderRendererInterface
+     */
+    protected $orderRenderer;
+
+    /**
      * @param ServiceRegistryInterface   $extensions
      * @param ServiceRegistryInterface   $getterServiceRegistry
      * @param ServiceRegistryInterface   $interpreterServiceRegistry
      * @param FilterGroupHelperInterface $filterGroupHelper
      * @param ConditionRendererInterface $conditionRenderer
+     * @param OrderRendererInterface     $orderRenderer
      */
     public function __construct(
         ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
         ServiceRegistryInterface $interpreterServiceRegistry,
         FilterGroupHelperInterface $filterGroupHelper,
-        ConditionRendererInterface $conditionRenderer
+        ConditionRendererInterface $conditionRenderer,
+        OrderRendererInterface $orderRenderer
     ) {
         $this->extensions = $extensions;
         $this->getterServiceRegistry = $getterServiceRegistry;
         $this->interpreterServiceRegistry = $interpreterServiceRegistry;
         $this->filterGroupHelper = $filterGroupHelper;
         $this->conditionRenderer = $conditionRenderer;
+        $this->orderRenderer = $orderRenderer;
     }
 
     /**
@@ -106,6 +116,14 @@ abstract class AbstractWorker implements WorkerInterface
     public function renderCondition(ConditionInterface $condition, $prefix = null)
     {
         return $this->conditionRenderer->render($this, $condition, $prefix);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function renderOrder(OrderInterface $condition, $prefix = null)
+    {
+        return $this->orderRenderer->render($this, $condition, $prefix);
     }
 
     /**
@@ -192,7 +210,7 @@ abstract class AbstractWorker implements WorkerInterface
 
                 if (!$isLocalizedValue) {
                     if (is_array($value)) {
-                        $value = ',' . implode($value, ',') . ',';
+                        $value = $this->handleArrayValues($index, $value);
                     }
 
                     $value = $this->typeCastValues($column, $value);
@@ -228,6 +246,14 @@ abstract class AbstractWorker implements WorkerInterface
      * @return mixed
      */
     abstract protected function typeCastValues(IndexColumnInterface $column, $value);
+
+    /**
+     * @param IndexInterface $index
+     * @param array          $value
+     *
+     * @return mixed
+     */
+    abstract protected function handleArrayValues(IndexInterface $index, array $value);
 
     /**
      * @param IndexColumnInterface $column

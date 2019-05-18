@@ -21,6 +21,7 @@ default:
                 - coreshop.behat.context.transform.store
                 - coreshop.behat.context.transform.tax_rate
                 - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.product_unit
 
                 - coreshop.behat.context.setup.product
                 - coreshop.behat.context.setup.product_price_rule
@@ -34,6 +35,7 @@ default:
                 - coreshop.behat.context.setup.zone
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.product_unit
 
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.product_price_rule
@@ -42,5 +44,6 @@ default:
                 - coreshop.behat.context.domain.currency
                 - coreshop.behat.context.domain.category
                 - coreshop.behat.context.domain.link_generator
+                - coreshop.behat.context.domain.product_unit
             filters:
                 tags: "@product"

@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterface
@@ -446,38 +446,6 @@ abstract class SaleItem extends AbstractPimcoreModel implements SaleItemInterfac
      * {@inheritdoc}
      */
     public function setQuantity($quantity)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItemWeight($itemWeight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalWeight($totalWeight)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

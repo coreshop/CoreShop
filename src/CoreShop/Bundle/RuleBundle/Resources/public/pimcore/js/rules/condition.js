@@ -126,7 +126,7 @@ coreshop.rules.condition = Class.create({
             }
 
             if (conditionClass.data.id) {
-                action['id'] = conditionClass.data.id;
+                condition['id'] = conditionClass.data.id;
             }
 
             condition['configuration'] = configuration;

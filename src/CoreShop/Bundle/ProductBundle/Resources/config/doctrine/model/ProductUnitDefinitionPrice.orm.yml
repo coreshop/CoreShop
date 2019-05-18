@@ -1,0 +1,23 @@
+CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
+    type: mappedSuperclass
+    table: coreshop_product_unit_definition_price
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        price:
+            column: price
+            type: integer
+    manyToOne:
+        unitDefinition:
+            targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
+            cascade:
+                - 'merge'
+                - 'persist'
+            joinColumn:
+                name: unit_definition
+                referencedColumnName: id
+                onDelete: CASCADE

@@ -13,14 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
-use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CustomerInterface;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 trait CoreSaleCreationTrait
@@ -30,63 +26,61 @@ trait CoreSaleCreationTrait
      */
     protected $viewHandler;
 
-    public function getCarrierDetailsAction(Request $request)
+    protected function prepareCartItem(CartInterface $cart, CartItemInterface $item)
     {
-        $productIds = $request->get('products');
-        $customerId = $request->get('customer');
-        $shippingAddressId = $request->get('shippingAddress');
-        $invoiceAddressId = $request->get('invoiceAddress');
-        $storeId = $request->get('store');
-        $language = $request->get('language');
+        $itemFlat = parent::prepareCartItem($cart, $item);
 
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $currency = $this->get('coreshop.repository.currency')->find($request->get('currency'));
+        $units = [];
 
-        $customer = $this->get('coreshop.repository.customer')->find($customerId);
-        $shippingAddress = $this->get('coreshop.repository.address')->find($shippingAddressId);
-        $invoiceAddress = $this->get('coreshop.repository.address')->find($invoiceAddressId);
-        $store = $this->get('coreshop.repository.store')->find($storeId);
-
-        $result = [];
-
-        if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Customer with ID '$customerId' not found"]);
+        if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->hasUnitDefinitions()) {
+            foreach ($item->getProduct()->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
+                $units[] = [
+                    'id' => $unitDefinition->getId(),
+                    'name' => $unitDefinition->getUnitName(),
+                ];
+            }
         }
 
-        if (!$shippingAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$shippingAddressId' not found"]);
+        $itemFlat['unitDefinition'] = $item->getUnitDefinition() ? $item->getUnitDefinition()->getId() : null;
+        $itemFlat['unitDefinitionRecord'] = $item->getUnitDefinition() ? [
+            'id' => $item->getUnitDefinition()->getId(),
+            'name' => $item->getUnitDefinition()->getUnitName(),
+        ] : null;
+        $itemFlat['units'] = $units;
+
+        return $itemFlat;
+    }
+
+    protected function getCartDetails(CartInterface $cart)
+    {
+        $cartDetails = parent::getCartDetails($cart);
+
+        $cartDetails['carriers'] = $this->getCarrierDetails($cart);
+
+        return $cartDetails;
+    }
+
+    public function getCarrierDetails(CartInterface $cart)
+    {
+        if (null === $cart->getShippingAddress()) {
+            return [];
         }
 
-        if (!$invoiceAddress instanceof AddressInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Address with ID '$invoiceAddressId' not found"]);
-        }
-
-        if (!$store instanceof StoreInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Store with ID '$storeId' not found"]);
-        }
-
-        /**
-         * @var \CoreShop\Component\Core\Model\CartInterface $cart
-         */
-        $cart = InheritanceHelper::useInheritedValues(function () use ($customer, $shippingAddress, $invoiceAddress, $currency, $language, $productIds, $store) {
-            $cart = $this->createTempCart($customer, $store, $shippingAddress, $invoiceAddress, $currency, $language, $productIds);
-            $this->get('coreshop.cart_processor')->process($cart);
-
-            return $cart;
-        });
         $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
 
-        $currentCurrency = $this->get('coreshop.context.currency')->getCurrency()->getIsoCode();
+        $currentCurrency = $cart->getStore()->getCurrency()->getIsoCode();
+        $result = [];
 
         /**
          * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
-            $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart, $cart->getShippingAddress());
-            $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency, $currency->getIsoCode());
-            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $currency->getIsoCode());
+            $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart,
+                $cart->getShippingAddress());
+            $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency,
+                $cart->getCurrency()->getIsoCode());
+            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted,
+                $cart->getCurrency()->getIsoCode());
 
             $result[] = [
                 'id' => $carrier->getId(),
@@ -96,17 +90,17 @@ trait CoreSaleCreationTrait
             ];
         }
 
-        return $this->viewHandler->handle(['success' => true, 'carriers' => $result]);
+        return $result;
     }
 
-    protected function getTotalArray(CartInterface $cart)
+    protected function getCartSummary(CartInterface $cart)
     {
         /**
          * @var \CoreShop\Component\Core\Model\CartInterface $cart
          */
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
-        $result = parent::getTotalArray($cart);
+        $result = parent::getCartSummary($cart);
 
         array_splice($result, 3, 0, [
             [
@@ -124,27 +118,5 @@ trait CoreSaleCreationTrait
         ]);
 
         return $result;
-    }
-
-    protected function prepareCart(Request $request, CartInterface $cart)
-    {
-        /**
-         * @var \CoreShop\Component\Core\Model\CartInterface $cart
-         */
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
-
-        $carrierId = $request->get('carrier');
-
-        if ($carrierId) {
-            $carrier = $this->get('coreshop.repository.carrier')->find($carrierId);
-
-            if (!$carrier instanceof CarrierInterface) {
-                throw new \InvalidArgumentException('Carrier with ID ' . $carrierId . ' not found');
-            }
-
-            $cart->setCarrier($carrier);
-        }
-
-        return $cart;
     }
 }

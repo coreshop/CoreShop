@@ -15,6 +15,7 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\FreeShippingConfigurationType;
+use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Action\GiftProductConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -410,6 +411,30 @@ final class CartPriceRuleContext implements Context
             'products' => [
                 $product->getId(),
             ],
+            'include_variants' => false,
+        ];
+
+        if (null !== $product2) {
+            $configuration['products'][] = $product2->getId();
+        }
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', $configuration));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (cart rule) has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (cart rule) has a condition products with (product "[^"]+") and (product "[^"]+") which includes variants$/
+     */
+    public function theCartPriceRuleHasAProductWithVariantsCondition(CartPriceRuleInterface $rule, ProductInterface $product, ProductInterface $product2 = null)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $configuration = [
+            'products' => [
+                $product->getId(),
+            ],
+            'include_variants' => true,
         ];
 
         if (null !== $product2) {
@@ -428,7 +453,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountPercentConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($discount),
+            'percent' => (int) $discount,
         ]));
     }
 
@@ -441,7 +466,7 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => intval($amount),
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -455,6 +480,19 @@ final class CartPriceRuleContext implements Context
         $this->assertActionForm(FreeShippingConfigurationType::class, 'freeShipping');
 
         $this->addAction($rule, $this->createActionWithForm('freeShipping'));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action gift-product with (product "[^"]+")$/
+     * @Given /^the (cart rule) has a action gift-product with (product "[^"]+")$/
+     */
+    public function theCartPriceRuleHasAGiftProductAction(CartPriceRuleInterface $rule, ProductInterface $product)
+    {
+        $this->assertActionForm(GiftProductConfigurationType::class, 'giftProduct');
+
+        $this->addAction($rule, $this->createActionWithForm('giftProduct', [
+            'product' => $product->getId(),
+        ]));
     }
 
     /**

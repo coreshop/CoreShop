@@ -38,8 +38,22 @@ services:
         arguments:
             - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
 
-    coreshop.cart.expire.maintenance_listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Order\Expire\ProposalExpireMaintenanceManagerListener
+    coreshop.core.order.transformer.order_to_shipment:
+        class: CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer
+        decorates: coreshop.order.transformer.order_to_shipment
+        decoration_priority: 10
+        arguments:
+            - '@coreshop.core.order.transformer.order_to_shipment.inner'
+
+    coreshop.core.order_shipment.transformer.order_item_to_shipment_item:
+        class: CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer
+        decorates: coreshop.order_shipment.transformer.order_item_to_shipment_item
+        decoration_priority: 10
+        arguments:
+            - '@coreshop.core.order_shipment.transformer.order_item_to_shipment_item.inner'
+
+    coreshop.maintenance.cart.expire_task:
+        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
         arguments:
             - '@coreshop.configuration.service'
             - '@coreshop.cart.expire'
@@ -47,10 +61,10 @@ services:
             - '%coreshop.cart.expiration.days%'
             - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
         tags:
-            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerExpire }
+            - { name: pimcore.maintenance.task, type: coreshop_expire_carts }
 
-    coreshop.order.expire.maintenance_listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Order\Expire\ProposalExpireMaintenanceManagerListener
+    coreshop.maintenance.order.expire_task:
+        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
         arguments:
             - '@coreshop.configuration.service'
             - '@coreshop.order.expire'
@@ -58,7 +72,7 @@ services:
             - '%coreshop.order.expiration.days%'
             - []
         tags:
-            - { name: kernel.event_listener, event: pimcore.system.maintenance, method: registerExpire }
+            - { name: pimcore.maintenance.task, type: coreshop_expire_orders }
 
     coreshop.order.number_generator.prefix_suffix:
         class: CoreShop\Component\Core\Order\NumberGenerator\SaleNumberGenerator
@@ -106,3 +120,7 @@ services:
            - '@coreshop.renderer.order.pdf'
            - '@coreshop.theme.helper'
            - '@coreshop.mail_processor'
+
+    coreshop.core.cart_item.quantity_modifier:
+        class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier
+        decorates: coreshop.cart_item.quantity_modifier

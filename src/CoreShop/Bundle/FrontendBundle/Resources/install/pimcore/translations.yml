@@ -17,6 +17,18 @@ translations:
           en: 'Add a new address'
           de: 'Neue Adresse hinzufügen'
 
+  coreshop.ui.add_new_shipping_address:
+      languages:
+          de_CH: 'Neue Lieferadresse hinzufügen'
+          en: 'Add a new shipping address'
+          de: 'Neue Lieferadresse hinzufügen'
+
+  coreshop.ui.add_new_invoice_address:
+      languages:
+          de_CH: 'Neue Rechnungsadresse hinzufügen'
+          en: 'Add a new billing address'
+          de: 'Neue Rechnungsadresse hinzufügen'
+
   coreshop.ui.add_to_cart:
       languages:
           de_CH: 'Zum Warenkorb'
@@ -304,7 +316,7 @@ translations:
           de_CH: 'Abmelden'
           en: 'Logout'
           de: 'Abmelden'
-          
+
   coreshop.ui.order:
         languages:
           de_CH: 'Bestellung'
@@ -322,7 +334,7 @@ translations:
           de_CH: 'Bestellnummer'
           en: 'Order Number'
           de: 'Bestellnummer'
-          
+
   coreshop.ui.remove:
       languages:
           de_CH: 'Entfernen'
@@ -586,7 +598,7 @@ translations:
           de_CH: 'Bestätigt'
           en: 'Confirmed'
           de: 'Bestätigt'
-          
+
   coreshop.ui.workflow.state.coreshop_order.cancelled:
       languages:
           de_CH: 'Storniert'
@@ -826,6 +838,18 @@ translations:
           de_CH: 'Rabatt (exkl. MwSt.)'
           en: 'Discount (excl. VAT)'
           de: 'Rabatt (exkl. MwSt.)'
+
+  coreshop.ui.surcharge_incl:
+      languages:
+          de_CH: 'Zuschlag (inkl. MwSt.)'
+          en: 'Surcharge (incl. VAT)'
+          de: 'Zuschlag (inkl. MwSt.)'
+
+  coreshop.ui.surcharge_excl:
+      languages:
+          de_CH: 'Zuschlag (exkl. MwSt.)'
+          en: 'Surcharge (excl. VAT)'
+          de: 'Zuschlag (exkl. MwSt.)'
 
   coreshop.ui.gift_item:
       languages:
@@ -1090,7 +1114,7 @@ translations:
           de_CH: 'Newsletter'
           en: 'Newsletter'
           de: 'Newsletter'
-          
+
   coreshop.form.customer.newsletter.subscribe:
       languages:
           de_CH: 'Ja, ich möchte den Newsletter abonnieren'
@@ -1162,10 +1186,111 @@ translations:
           de_CH: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
           en: 'Some Products are not available anymore. Please check your cart for completeness.'
           de: 'Produkte sind nicht mehr verfügbar. Bitte überprüfen Sie den Warenkorb auf Vollständigkeit.'
-          
+
   coreshop.product.tax.inc:
-        languages:
+      languages:
           de_CH: 'inkl. %s%% Steuer'
           en: 'incl. %s%% Tax'
           de: 'inkl. %s%% Steuer'
 
+  coreshop.ui.product_quantity_price_rules.ranges_available:
+      languages:
+          de_CH: 'Sonderkonditionen verfügbar'
+          en: 'Special conditions available'
+          de: 'Sonderkonditionen verfügbar'
+
+  coreshop.ui.product_quantity_price_rules.quantity:
+      languages:
+          de_CH: 'Menge'
+          en: 'Quantity'
+          de: 'Menge'
+
+  coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor:
+      languages:
+          de_CH: 'Preis pro %d Stück'
+          en: 'Price per %d Item(s)'
+          de: 'Preis pro %d Stück'
+
+  coreshop.ui.product_quantity_price_rules.price_per_item:
+      languages:
+          de_CH: 'Preis pro Stück'
+          en: 'Price per Item'
+          de: 'Preis pro Stück'
+
+  coreshop.ui.product_quantity_price_rules.price_per_item_quantity_factor_excl:
+      languages:
+          de_CH: 'Preis pro %d Stück (Exkl.)'
+          en: 'Price per %d Item(s) (Excl.)'
+          de: 'Preis pro %d Stück (Exkl.)'
+
+  coreshop.ui.product_quantity_price_rules.price_per_item_excl:
+      languages:
+          de_CH: 'Preis pro Stück (Exkl.)'
+          en: 'Price per Item (Excl.)'
+          de: 'Preis pro Stück  (Exkl.)'
+
+  coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor:
+      languages:
+          de_CH: 'Preis pro %d Einheit(en)'
+          en: 'Price per %d Unit(s)'
+          de: 'Preis pro %d Einheit(en)'
+
+  coreshop.ui.product_quantity_price_rules.unit_price:
+      languages:
+          de_CH: 'Preis pro Einheit'
+          en: 'Unit Price'
+          de: 'Preis pro Einheit'
+
+  coreshop.ui.product_quantity_price_rules.unit_price_quantity_factor_excl:
+      languages:
+          de_CH: 'Preis pro %d Einheit(en) (Exkl.)'
+          en: 'Price per %d Unit(s) (Excl.)'
+          de: 'Preis pro %d Einheit(en) (Exkl.)'
+
+  coreshop.ui.product_quantity_price_rules.unit_price_excl:
+      languages:
+          de_CH: 'Preis pro Einheit (Exkl.)'
+          en: 'Unit Price (Excl.)'
+          de: 'Preis pro Einheit (Exkl.)'
+
+  coreshop.ui.product_quantity_price_rules.starting_from:
+      languages:
+          de_CH: 'ab'
+          en: 'starting from'
+          de: 'ab'
+
+  coreshop.ui.product_quantity_price_rules.best_offer:
+      languages:
+          de_CH: 'Bestpreis'
+          en: 'Best Offer'
+          de: 'Bestpreis'
+
+  coreshop.ui.product_quantity_price_rules.list_price:
+      languages:
+          de_CH: 'Unverb. Preisempf.'
+          en: 'List Price'
+          de: 'Unverb. Preisempf.'
+
+  coreshop.ui.product_quantity_price_rules.you_save:
+      languages:
+          de_CH: 'Sie sparen'
+          en: 'You Save'
+          de: 'Sie sparen'
+
+  coreshop.ui.additional_units:
+      languages:
+          de_CH: 'Einheiten'
+          en: 'Additional Units'
+          de: 'Einheiten'
+
+  coreshop.ui.price.per_unit_name:
+      languages:
+          de_CH: 'per %s'
+          en: 'per %s'
+          de: 'per %s'
+
+  coreshop.ui.price.per_unit_name_and_quantity_factor:
+      languages:
+          de_CH: 'pro %d %s'
+          en: 'per %d %s'
+          de: 'pro %d %s'

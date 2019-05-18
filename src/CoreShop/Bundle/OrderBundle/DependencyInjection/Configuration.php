@@ -23,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\Controller\QuoteController;
 use CoreShop\Bundle\OrderBundle\Controller\QuoteCreationController;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleRepository;
 use CoreShop\Bundle\OrderBundle\Doctrine\ORM\CartPriceRuleVoucherRepository;
+use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleTranslationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartItemRepository;
@@ -35,6 +36,8 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRule;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleTranslation;
+use CoreShop\Component\Order\Model\CartPriceRuleTranslationInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -143,6 +146,22 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CartPriceRuleRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(CartPriceRuleType::class)->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('translation')
+                                    ->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->variableNode('options')->end()
+                                        ->arrayNode('classes')
+                                            ->addDefaultsIfNotSet()
+                                            ->children()
+                                                ->scalarNode('model')->defaultValue(CartPriceRuleTranslation::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('interface')->defaultValue(CartPriceRuleTranslationInterface::class)->cannotBeEmpty()->end()
+                                                ->scalarNode('repository')->cannotBeEmpty()->end()
+                                                ->scalarNode('factory')->defaultValue(Factory::class)->end()
+                                                ->scalarNode('form')->defaultValue(CartPriceRuleTranslationType::class)->cannotBeEmpty()->end()
+                                            ->end()
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()

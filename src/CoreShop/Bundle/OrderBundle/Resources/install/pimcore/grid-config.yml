@@ -133,7 +133,7 @@ grid_config:
                         attributes:
                             label: 'Order State'
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             orderState: orderState
                             childs:
                                 -
@@ -156,7 +156,7 @@ grid_config:
                         attributes:
                             label: 'Payment State'
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             highlightLabel: true
                             childs:
                                 -
@@ -178,7 +178,7 @@ grid_config:
                         attributes:
                             label: 'Shipping State'
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             highlightLabel: true
                             childs:
                                 -
@@ -200,7 +200,7 @@ grid_config:
                         attributes:
                             label: 'Total Amount'
                             type: operator
-                            class: PriceFormatter
+                            class: coreshop_price_formatter
                             childs:
                                 -
                                     label: 'Total gross (totalGross)'
@@ -379,7 +379,7 @@ grid_config:
                         attributes:
                             label: Bestellstatus
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             orderState: orderState
                             childs:
                                 -
@@ -402,7 +402,7 @@ grid_config:
                         attributes:
                             label: Zahlungsstatus
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             highlightLabel: true
                             childs:
                                 -
@@ -424,7 +424,7 @@ grid_config:
                         attributes:
                             label: Lieferstatus
                             type: operator
-                            class: OrderState
+                            class: coreshop_order_state
                             highlightLabel: true
                             childs:
                                 -
@@ -446,7 +446,7 @@ grid_config:
                         attributes:
                             label: Gesamtpreis
                             type: operator
-                            class: PriceFormatter
+                            class: coreshop_price_formatter
                             childs:
                                 -
                                     label: 'Total Brutto (totalGross)'
@@ -625,7 +625,7 @@ grid_config:
                         attributes:
                             label: 'Total Gross'
                             type: operator
-                            class: PriceFormatter
+                            class: coreshop_price_formatter
                             childs:
                                 -
                                     label: 'Total Gross (totalGross)'
@@ -802,7 +802,7 @@ grid_config:
                         attributes:
                             label: Gesamtpreis
                             type: operator
-                            class: PriceFormatter
+                            class: coreshop_price_formatter
                             childs:
                                 -
                                     label: 'Total Brutto (totalGross)'

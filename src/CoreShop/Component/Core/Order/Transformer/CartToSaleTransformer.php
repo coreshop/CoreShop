@@ -1,4 +1,14 @@
 <?php
+/**
+ * CoreShop.
+ *
+ * This source file is subject to the GNU General Public License version 3 (GPLv3)
+ * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+ * files that are distributed with this source code.
+ *
+ * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ */
 
 namespace CoreShop\Component\Core\Order\Transformer;
 
@@ -10,6 +20,7 @@ use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
+use Pimcore\Model\DataObject\Objectbrick;
 use Webmozart\Assert\Assert;
 
 final class CartToSaleTransformer implements ProposalTransformerInterface
@@ -58,7 +69,24 @@ final class CartToSaleTransformer implements ProposalTransformerInterface
                 $sale->setShippingTaxRate(0);
             }
 
-            $sale->setAdditionalData($cart->getAdditionalData());
+            $cartAdditionalData = $cart->getAdditionalData();
+            $saleAdditionalData = $sale->getAdditionalData();
+
+            // transfer cart additional data to sale additional data
+            if ($cartAdditionalData instanceof Objectbrick &&
+                $saleAdditionalData instanceof Objectbrick) {
+                foreach ($saleAdditionalData->getAllowedBrickTypes() as $brickType) {
+                    if (in_array($brickType, $cartAdditionalData->getAllowedBrickTypes())) {
+                        $brickSetter = 'set' . ucfirst($brickType);
+                        $brickGetter = 'get' . ucfirst($brickType);
+                        $saleAdditionalData->$brickSetter($cartAdditionalData->$brickGetter());
+                    }
+                }
+
+                $sale->setAdditionalData($saleAdditionalData);
+            }
+
+            $sale->setWeight($cart->getWeight());
             $sale->save();
         }
 

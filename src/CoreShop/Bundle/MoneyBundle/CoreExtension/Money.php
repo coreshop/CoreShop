@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CoreShop.
  *
@@ -13,11 +12,10 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
+class Money extends Model\DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.

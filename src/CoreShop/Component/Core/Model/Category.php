@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Product\Model\Category as BaseCategory;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class Category extends BaseCategory implements CategoryInterface
 {
@@ -30,7 +30,7 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getMetaDescription($language = null)
     {
-        return $this->getPimcoreMetaDescription($language) ?: $this->getDescription($language);
+        return $this->getPimcoreMetaDescription($language) ?: strip_tags($this->getDescription($language));
     }
 
     /**

@@ -12,78 +12,54 @@
 
 namespace CoreShop\Component\StorageList;
 
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 
 class SimpleStorageListModifier implements StorageListModifierInterface
 {
     /**
-     * @var FactoryInterface
+     * @var StorageListItemQuantityModifierInterface
      */
-    private $storageListItemFactory;
+    protected $storageListItemQuantityModifier;
 
-    /**
-     * @param FactoryInterface $storageListItemFactory
-     */
-    public function __construct(FactoryInterface $storageListItemFactory)
+    public function __construct()
     {
-        $this->storageListItemFactory = $storageListItemFactory;
+        $this->storageListItemQuantityModifier = new StorageListItemQuantityModifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addItem(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 1)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
     {
-        return $this->updateItemQuantity($storageList, $product, $quantity);
+        return $this->resolveItem($storageList, $item);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeItem(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item)
     {
-        return $this->updateItemQuantity($storageList, $item->getProduct(), 0);
+        $storageList->removeItem($item);
     }
 
     /**
-     * {@inheritdoc}
+     * @param StorageListInterface     $storageList
+     * @param StorageListItemInterface $storageListItem
      */
-    public function updateItemQuantity(StorageListInterface $storageList, StorageListProductInterface $product, $quantity = 0, $increaseAmount = false)
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
     {
-        $item = $storageList->getItemForProduct($product);
+        foreach ($storageList->getItems() as $item) {
+            if ($storageListItem->equals($item)) {
+                $this->storageListItemQuantityModifier->modify(
+                    $item,
+                    $item->getQuantity() + $storageListItem->getQuantity()
+                );
 
-        if ($item instanceof StorageListItemInterface) {
-            if ($quantity <= 0) {
-                $storageList->removeItem($item);
-
-                return false;
+                return;
             }
-
-            $newQuantity = $quantity;
-
-            if ($increaseAmount) {
-                $currentQuantity = $item->getQuantity();
-
-                if (is_int($currentQuantity)) {
-                    $newQuantity = $currentQuantity + $quantity;
-                }
-            }
-
-            $item->setQuantity($newQuantity);
-        } else {
-            /**
-             * @var StorageListItemInterface $item
-             */
-            $item = $this->storageListItemFactory->createNew();
-            $item->setProduct($product);
-            $item->setQuantity(1);
-
-            $storageList->addItem($item);
         }
 
-        return $item;
+        $storageList->addItem($storageListItem);
     }
 }

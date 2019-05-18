@@ -1,0 +1,26 @@
+CoreShop\Component\Product\Model\ProductUnit:
+    type: mappedSuperclass
+    table: coreshop_product_unit
+    fields:
+        id:
+            type: integer
+            column: id
+            id: true
+            generator:
+                strategy: AUTO
+        name:
+            column: name
+            type: string
+            unique: true
+            length: 190
+        creationDate:
+            type: date
+            gedmo:
+                timestampable:
+                    on: create
+        modificationDate:
+            type: datetime
+            nullable: true
+            gedmo:
+                timestampable:
+                    on: update

@@ -16,7 +16,7 @@ env:
 matrix:
     include:
         - sudo: required
-          php: 7.1
+          php: 7.2
           env:
             - CORESHOP_SUITE=codestyle
 
@@ -24,50 +24,29 @@ matrix:
           php: 7.2
           env:
             - CORESHOP_SUITE=stan
-            - PIMCORE_VERSION="^5.5"
 
         - sudo: required
-          php: 7.2
+          php: 7.3
           env:
             - CORESHOP_SUITE=stan
 
         - sudo: required
-          php: 7.1
+          php: 7.2
           env:
-            - PIMCORE_VERSION="~5.4.0"
+            - PIMCORE_VERSION="~5.8"
+
+        - sudo: required
+          php: 7.3
+          env:
+            - PIMCORE_VERSION="~5.8"
 
         - sudo: required
           php: 7.2
-          env:
-            - PIMCORE_VERSION="~5.4.0"
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.5.0"
-
-        - sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_VERSION="~5.5.0"
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.6.0"
-
-        - sudo: required
-          php: 7.2
-          env:
-            - PIMCORE_VERSION="~5.6.0"
-
-        - sudo: required
-          php: 7.1
           env:
             - PIMCORE_VERSION="dev-master"
 
         - sudo: required
-          php: 7.2
+          php: 7.3
           env:
             - PIMCORE_VERSION="dev-master"
     allow_failures:

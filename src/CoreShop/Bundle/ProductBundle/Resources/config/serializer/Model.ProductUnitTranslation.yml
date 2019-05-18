@@ -1,0 +1,20 @@
+CoreShop\Component\Product\Model\ProductUnitTranslation:
+    exclusion_policy: ALL
+    xml_root_name: product_unit_translation
+    properties:
+        fullLabel:
+            expose: true
+            type: string
+            groups: [Detailed]
+        fullPluralLabel:
+            expose: true
+            type: string
+            groups: [Detailed]
+        shortLabel:
+            expose: true
+            type: string
+            groups: [Detailed]
+        shortPluralLabel:
+            expose: true
+            type: string
+            groups: [Detailed]

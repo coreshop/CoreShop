@@ -19,12 +19,27 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterCondi
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
+use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use PackageVersions\Versions;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
+use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CoreShopIndexBundle extends AbstractResourceBundle
+final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
+    use PackageVersionTrait;
+
+    public static function registerDependentBundles(BundleCollection $collection)
+    {
+        parent::registerDependentBundles($collection);
+
+        $collection->addBundle(new CoreShopMenuBundle(), 4000);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -49,6 +64,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
         $container->addCompilerPass(new RegisterFilterConditionTypesPass());
         $container->addCompilerPass(new RegisterExtensionsPass());
         $container->addCompilerPass(new RegisterConditionRendererTypesPass());
+        $container->addCompilerPass(new RegisterOrderRendererTypesPass());
     }
 
     /**
@@ -57,5 +73,93 @@ final class CoreShopIndexBundle extends AbstractResourceBundle
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Index\Model';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNiceName()
+    {
+        return 'CoreShop - Index';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDescription()
+    {
+        return 'CoreShop - Index Bundle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
+            return 'coreshop/index-bundle';
+        }
+
+        return 'coreshop/core-shop';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getInstaller()
+    {
+        if ($this->container->has(Installer::class)) {
+            return $this->container->get(Installer::class);
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdminIframePath()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getJsPaths()
+    {
+        $bundles = $this->container->getParameter('kernel.bundles');
+
+        if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
+            return [
+                '/admin/coreshop/coreshop.index/menu.js'
+            ];
+        }
+
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCssPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeJsPaths()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEditmodeCssPaths()
+    {
+        return [];
     }
 }

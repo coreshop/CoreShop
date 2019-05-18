@@ -25,9 +25,17 @@ coreshop.report.reports.categories = Class.create(coreshop.report.abstractStore,
 
     getStoreFields: function () {
         return [
+            {name: 'name', type: 'string'},
+            {name: 'categoryName', type: 'string'},
+            {name: 'orderCount', type: 'integer'},
+            {name: 'quantityCount', type: 'integer'},
             {name: 'sales', type: 'number'},
             {name: 'profit', type: 'number'}
         ];
+    },
+
+    showPaginator: function () {
+        return true;
     },
 
     getGrid: function () {
@@ -40,8 +48,11 @@ coreshop.report.reports.categories = Class.create(coreshop.report.abstractStore,
                 columns: [
                     {
                         text: t('name'),
-                        dataIndex: 'name',
-                        flex: 3
+                        dataIndex: 'categoryName',
+                        flex: 3,
+                        renderer: function (value, metadata, record) {
+                            return record.get('name');
+                        }
                     },
                     {
                         text: t('coreshop_report_products_order_count'),

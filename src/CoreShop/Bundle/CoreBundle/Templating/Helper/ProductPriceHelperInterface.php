@@ -20,32 +20,36 @@ interface ProductPriceHelperInterface extends HelperInterface
     /**
      * @param PurchasableInterface $product
      * @param bool                 $withTax
+     * @param array                $context
      *
-     * @return mixed
+     * @return int
      */
-    public function getPrice(PurchasableInterface $product, $withTax = true);
+    public function getPrice(PurchasableInterface $product, $withTax = true, array $context = []);
 
     /**
      * @param PurchasableInterface $product
      * @param bool                 $withTax
+     * @param array                $context
      *
-     * @return mixed
+     * @return int
      */
-    public function getRetailPrice(PurchasableInterface $product, $withTax = true);
+    public function getRetailPrice(PurchasableInterface $product, $withTax = true, array $context = []);
 
     /**
      * @param PurchasableInterface $product
      * @param bool                 $withTax
+     * @param array                $context
      *
-     * @return mixed
+     * @return int
      */
-    public function getDiscountPrice(PurchasableInterface $product, $withTax = true);
+    public function getDiscountPrice(PurchasableInterface $product, $withTax = true, array $context = []);
 
     /**
      * @param PurchasableInterface $product
      * @param bool                 $withTax
+     * @param array                $context
      *
-     * @return mixed
+     * @return int
      */
-    public function getDiscount(PurchasableInterface $product, $withTax = true);
+    public function getDiscount(PurchasableInterface $product, $withTax = true, array $context = []);
 }

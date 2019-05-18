@@ -25,6 +25,7 @@ use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,8 +49,10 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         $list->setOffset($request->get('page', 1) - 1);
 
         if ($request->get('filter', null)) {
+            $gridHelper = new GridHelperService();
+
             $conditionFilters = [];
-            $conditionFilters[] = DataObject\Service::getFilterCondition($request->get('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
+            $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'), DataObject\ClassDefinition::getByName($this->getParameter($this->getSaleClassName())));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -135,7 +138,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function prepareSale(SaleInterface $sale)
     {
-        $date = intval($sale->getSaleDate()->getTimestamp());
+        $date = (int) $sale->getSaleDate()->getTimestamp();
 
         $element = [
             'o_id' => $sale->getId(),

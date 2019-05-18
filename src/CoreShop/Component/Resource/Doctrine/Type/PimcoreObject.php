@@ -12,13 +12,14 @@
 
 namespace CoreShop\Component\Resource\Doctrine\Type;
 
+use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\Type;
 use Pimcore\Model\DataObject\AbstractObject;
 
 class PimcoreObject extends Type
 {
-    const PIMCORE_OBJECT = 'pimcoreObject';
+    public const PIMCORE_OBJECT = 'pimcoreObject';
 
     /**
      * {@inheritdoc}
@@ -53,7 +54,7 @@ class PimcoreObject extends Type
      */
     public function getBindingType()
     {
-        return \PDO::PARAM_INT;
+        return ParameterType::INTEGER;
     }
 
     /**

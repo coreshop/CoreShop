@@ -41,5 +41,5 @@ core_shop_workflow:
                         args: ['object.getOrder()']
                     add_to_history:
                         on: ['ship', 'cancel']
-                        do: ['@coreshop.workflow.order_state_history_logger', 'log']
+                        do: ['@coreshop.workflow.state_history_logger', 'log']
                         args: ['object.getOrder()', 'event']

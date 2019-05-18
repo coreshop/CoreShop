@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
+use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -26,6 +27,9 @@ final class CartPriceRuleType extends RuleType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('translations', ResourceTranslationsType::class, [
+                'entry_type' => CartPriceRuleTranslationType::class,
+            ])
             ->add('name', TextType::class)
             ->add('isVoucherRule', CheckboxType::class)
             ->add('active', CheckboxType::class)

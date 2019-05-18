@@ -20,13 +20,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAdjustableInterface
 {
     /**
-     * @param PurchasableInterface $product
-     *
-     * @return CartItemInterface|null
-     */
-    public function getItemForProduct(PurchasableInterface $product);
-
-    /**
      * @return CurrencyInterface
      */
     public function getBaseCurrency();
@@ -119,11 +112,6 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      * @return bool
      */
     public function hasCartPriceRule(CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
-
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
 
     /**
      * @param bool $withTax

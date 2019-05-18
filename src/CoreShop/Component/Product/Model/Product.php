@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Product\Helper\VariantHelper;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
@@ -143,6 +143,22 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      * {@inheritdoc}
      */
     public function setWholesalePrice($wholesalePrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemQuantityFactor()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemQuantityFactor($itemQuantityFactor)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -321,5 +337,45 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     public function setDepth($depth)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinitions()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnitDefinitions()
+    {
+        return $this->getUnitDefinitions() instanceof ProductUnitDefinitionsInterface && $this->getUnitDefinitions()->getUnitDefinitions()->count() > 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasDefaultUnitDefinition()
+    {
+        return $this->hasUnitDefinitions() && $this->getUnitDefinitions()->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAdditionalUnitDefinitions()
+    {
+        return $this->hasUnitDefinitions() && $this->getUnitDefinitions()->getAdditionalUnitDefinitions()->count() > 0;
     }
 }

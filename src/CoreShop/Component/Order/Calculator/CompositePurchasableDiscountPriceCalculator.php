@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
+use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
@@ -35,17 +37,21 @@ class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscount
      */
     public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
     {
-        $price = 0;
+        $price = null;
 
         /**
          * @var PurchasableDiscountPriceCalculatorInterface $calculator
          */
         foreach ($this->discountPriceCalculators->all() as $calculator) {
-            $actionPrice = $calculator->getDiscountPrice($purchasable, $context);
-
-            if (false !== $actionPrice && null !== $actionPrice) {
+            try {
+                $actionPrice = $calculator->getDiscountPrice($purchasable, $context);
                 $price = $actionPrice;
+            } catch (NoPurchasableDiscountPriceFoundException $ex) {
             }
+        }
+
+        if (null === $price) {
+            throw new NoPurchasableRetailPriceFoundException(__CLASS__);
         }
 
         return $price;

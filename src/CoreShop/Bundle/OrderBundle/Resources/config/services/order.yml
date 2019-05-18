@@ -69,7 +69,7 @@ services:
 
     coreshop.templating.helper.order_state:
         class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
-        arguments: ['@coreshop.workflow.state_manager']
+        arguments: ['@coreshop.workflow.state_info_manager']
         tags:
             - { name: templating.helper, alias: coreshop_order_state }
 

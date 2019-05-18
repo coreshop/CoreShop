@@ -24,6 +24,10 @@ imports:
     - { resource: "services/payment.yml" }
     - { resource: "services/grid_config.yml" }
     - { resource: "services/routing.yml" }
+    - { resource: "services/product-quantity-price-rules.yml" }
+    - { resource: "services/validators.yml" }
+    - { resource: "services/product-store-values.yml" }
+    - { resource: "services/menu.yml" }
 
 services:
     _defaults:

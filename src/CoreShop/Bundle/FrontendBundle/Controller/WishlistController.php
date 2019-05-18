@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,13 +36,20 @@ class WishlistController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $quantity = intval($request->get('quantity', 1));
+        $quantity = (int) $request->get('quantity', 1);
 
         if (!is_int($quantity)) {
             $quantity = 1;
         }
 
-        $this->getWishlistModifier()->addItem($this->getWishlist(), $product, $quantity);
+        /**
+         * @var StorageListItemInterface $wishlistItem
+         */
+        $wishlistItem = $this->get('coreshop.factory.wishlist_item')->createNew();
+        $wishlistItem->setProduct($product);
+        $wishlistItem->setQuantity($quantity);
+
+        $this->getWishlistModifier()->addToList($this->getWishlist(), $wishlistItem);
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
 
@@ -65,7 +73,13 @@ class WishlistController extends FrontendController
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
-        $this->getWishlistModifier()->updateItemQuantity($this->getWishlist(), $product, 0);
+        foreach ($this->getWishlist()->getItems() as $item) {
+            if ($item->getProduct() === $product) {
+                $this->getWishlistModifier()->removeFromList($this->getWishlist(), $item);
+
+                break;
+            }
+        }
 
         return $this->redirectToRoute('coreshop_wishlist_summary');
     }

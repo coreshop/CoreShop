@@ -18,10 +18,12 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/index": "^2.0",
     "coreshop/registry": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "pimcore/pimcore": "^5.4.0"
+    "coreshop/resource-bundle": "^2.1",
+    "coreshop/menu-bundle": "^2.1",
+    "pimcore/pimcore": "^5.8.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4"
@@ -42,6 +44,11 @@
   "extra": {
     "branch-alias": {
       "dev-master": "2.1-dev"
+    },
+    "pimcore": {
+      "bundles": [
+        "CoreShop\\Bundle\\IndexBundle\\CoreShopIndexBundle"
+      ]
     }
   }
 }

@@ -13,7 +13,7 @@
 namespace CoreShop\Behat\Model\Index;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface

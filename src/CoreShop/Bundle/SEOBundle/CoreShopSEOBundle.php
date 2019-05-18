@@ -13,11 +13,16 @@
 namespace CoreShop\Bundle\SEOBundle;
 
 use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
+use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
+use Pimcore\Extension\Bundle\PimcoreBundleInterface;
+use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSEOBundle extends AbstractPimcoreBundle
 {
+    use PackageVersionTrait;
+
     /**
      * {@inheritdoc}
      */
@@ -42,5 +47,17 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     public function getDescription()
     {
         return 'CoreShop - SEO Bundle';
+    }
+
+    /**
+     * @return string
+     */
+    public function getComposerPackageName()
+    {
+        if (isset(Versions::VERSIONS['coreshop/seo-bundle'])) {
+            return 'coreshop/seo-bundle';
+        }
+
+        return 'coreshop/core-shop';
     }
 }

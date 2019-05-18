@@ -13,10 +13,29 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartItem as BaseCartItem;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class CartItem extends BaseCartItem implements CartItemInterface
 {
     use ProposalItemTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalWeight()
+    {
+        return $this->getItemWeight() * $this->getQuantity();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemWeight()
+    {
+        return $this->getWeight();
+    }
 
     /**
      * {@inheritdoc}
@@ -26,7 +45,7 @@ class CartItem extends BaseCartItem implements CartItemInterface
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWidth() : 0;
     }
 
-    /**
+    /** 
      * {@inheritdoc}
      */
     public function getHeight()
@@ -48,5 +67,55 @@ class CartItem extends BaseCartItem implements CartItemInterface
     public function getWeight()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWeight() : 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitDefinition()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitDefinition($productUnitDefinition)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnitDefinition()
+    {
+        return $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function equals(StorageListItemInterface $storageListItem)
+    {
+        $coreEquals = parent::equals($storageListItem);
+
+        if ($coreEquals === false) {
+            return false;
+        }
+
+        if (!$this->hasUnitDefinition()) {
+            return $coreEquals;
+        }
+
+        if (!$storageListItem instanceof CartItemInterface) {
+            return $coreEquals;
+        }
+
+        if (!$storageListItem->hasUnitDefinition()) {
+            return $coreEquals;
+        }
+
+        return $storageListItem->getUnitDefinition()->getId() === $this->getUnitDefinition()->getId();
     }
 }

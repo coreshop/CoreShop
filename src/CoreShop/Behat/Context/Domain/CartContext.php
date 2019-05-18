@@ -16,7 +16,12 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\CartItem;
+use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
+use Symfony\Component\Form\FormInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -69,6 +74,93 @@ final class CartContext implements Context
             sprintf(
                 'There should be only two products in the cart, but found %d',
                 count($this->cartContext->getCart()->getItems())
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should not be in my cart$/
+     */
+    public function theProductShouldNotBeInMyCart(ProductInterface $product)
+    {
+        $cart = $this->cartContext->getCart();
+        $foundItem = null;
+
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $product->getId()) {
+                $foundItem = $cartItem;
+
+                break;
+            }
+        }
+
+        Assert::null(
+            $foundItem,
+            sprintf(
+                'Product %s found in cart',
+                $product->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should be in my cart$/
+     */
+    public function theProductShouldBeInMyCart(ProductInterface $product)
+    {
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($this->cartContext->getCart()->getItems() as $item) {
+            if ($item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::notNull(
+            $cartItem,
+            sprintf(
+                'Product %s not found in cart',
+                $product->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the (product "[^"]+") should be in my cart as gift$/
+     */
+    public function theProductShouldBeInMyCartAsGift(ProductInterface $product)
+    {
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = null;
+
+        foreach ($this->cartContext->getCart()->getItems() as $item) {
+            if (!$item->getIsGiftItem()) {
+                continue;
+            }
+
+            if ($item->getProduct()->getId() === $product->getId()) {
+                $cartItem = $item;
+
+                break;
+            }
+        }
+
+        Assert::true(
+            $cartItem ? $cartItem->getIsGiftItem() : false,
+            sprintf(
+                'Product %s is not in the Cart or is not a gift',
+                $product->getName()
             )
         );
     }
@@ -158,13 +250,20 @@ final class CartContext implements Context
      */
     public function cartShouldWeigh($kg)
     {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, CartInterface::class);
+
         Assert::eq(
             $kg,
-            $this->cartContext->getCart()->getWeight(),
+            $cart->getWeight(),
             sprintf(
                 'Cart is expected to weigh %skg, but it weighs %skg',
                 $kg,
-                $this->cartContext->getCart()->getWeight()
+                $cart->getWeight()
             )
         );
     }
@@ -299,12 +398,91 @@ final class CartContext implements Context
     public function thereShouldBeNoProductInMyCart(CartInterface $cart)
     {
         Assert::eq(
-            $cart->getItems(),
+            count($cart->getItems()),
             0,
             sprintf(
-                'There should be noe product in the cart, but found %d',
+                'There should be no product in the cart, but found %d',
                 count($cart->getItems())
             )
         );
+    }
+
+    /**
+     * @Then /^the first item in (my cart) should have (unit "([^"]+)")$/
+     */
+    public function theFirstItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    {
+        Assert::minCount(
+            $cart->getItems(),
+            1,
+            'Expected to be at least 1 item in the cart, but found none'
+        );
+
+        /**
+         * @var CartItem $item
+         */
+        $item = $cart->getItems()[0];
+
+        Assert::notNull(
+            $item->getUnitDefinition(),
+            'Expected first cart item to have a unit-definition, but it did not'
+        );
+
+        Assert::eq(
+            $item->getUnitDefinition()->getUnit(),
+            $unit,
+            sprintf(
+                'Expected cart item to have unit %s, but found %s',
+                $item->getUnitDefinition()->getUnitName(),
+                $unit->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the second item in (my cart) should have (unit "([^"]+)")$/
+     */
+    public function theSecondItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    {
+        Assert::minCount(
+            $cart->getItems(),
+            2,
+            sprintf('Expected to be at least 2 items in the cart, but found %s', count($cart->getItems()))
+        );
+
+        /**
+         * @var CartItem $item
+         */
+        $item = $cart->getItems()[1];
+
+        Assert::notNull(
+            $item->getUnitDefinition(),
+            'Expected first cart item to have a unit-definition, but it did not'
+        );
+
+        Assert::eq(
+            $item->getUnitDefinition()->getUnit(),
+            $unit,
+            sprintf(
+                'Expected cart item to have unit %s, but found %s',
+                $item->getUnitDefinition()->getUnitName(),
+                $unit->getName()
+            )
+        );
+    }
+
+    /**
+     * @Then /^there should be a violation message in my (add-to-cart-form) with message "([^"]+)"$/
+     */
+    public function thereShouldBeCartFormViolation(FormInterface $addToCartForm, $message)
+    {
+        Assert::greaterThan($addToCartForm->getErrors()->count(), 0);
+
+        foreach ($addToCartForm->getErrors(true, true) as $error) {
+            Assert::eq(
+                $error->getMessage(),
+                $message
+            );
+        }
     }
 }

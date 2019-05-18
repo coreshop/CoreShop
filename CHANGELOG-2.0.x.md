@@ -1,5 +1,126 @@
 # Within V2
 
+## 2.0.8
+ - Bug:
+   - [Pimcore] Make CoreShop compatible with Pimcore 5.8.0 (https://github.com/coreshop/CoreShop/pull/977)
+   - [Order] remove wrong type hints (https://github.com/coreshop/CoreShop/pull/978)
+   - [Core] fix setting customer and persisting cart on user login (https://github.com/coreshop/CoreShop/pull/980)
+   
+## 2.0.7
+ - Bug:
+   - [Taxation] Wrong Tax Calculation when using Store Gross Values (https://github.com/coreshop/CoreShop/issues/971)
+   - [Core] remove unused Helper Classes (https://github.com/coreshop/CoreShop/pull/966)
+   - [Core] add index to StorePrice Table for better performance (https://github.com/coreshop/CoreShop/pull/962)
+   - [Core] remove result cache for Store Price due to issues with inheritance (https://github.com/coreshop/CoreShop/pull/961)
+   - [Core] strip_tags for meta description in Category (https://github.com/coreshop/CoreShop/pull/959)
+   - [Currency] MoneyCurrency fixes and improvements (https://github.com/coreshop/CoreShop/pull/958)
+   - [Purchasable] When using custom purchasable, CoreShop always assumed that your class has a weight, even though it didn't had to. That's why we moved all weight related fields to the Core Component and CoreBundle.
+   - [Core] prevent empty carts from being persisted (https://github.com/coreshop/CoreShop/issues/920)
+   - [Core] move weight/total weight to Core Component (https://github.com/coreshop/CoreShop/pull/938)
+   - [Address] use isoCode as fallback if no language value is set (https://github.com/coreshop/CoreShop/pull/939)
+   
+ - Features
+   - [JMS Serializer] Updated JMS Serializer to 2.0 (https://github.com/coreshop/CoreShop/pull/955)
+
+## 2.0.6:
+ - Bug:
+   - [Adjustments] in the classes "CoreShopOrderItem", "CoreShopQuoteItem", was a typo `basePdjustmentItems` instead of `baseAdjustmentItems`. Please manually rename them to `baseAdjustmentItems`
+   - [ProductBundle] Fix extjs layout crash price rule is inactive (https://github.com/coreshop/CoreShop/pull/908)
+   - [FrontendBundle] fix address creation redirect (https://github.com/coreshop/CoreShop/pull/910)
+   - [StorageList] Storage List and Storage List Item is not a Pimcore Object (https://github.com/coreshop/CoreShop/pull/907)
+   - [Order] fix typo in OrderItem and QuoteItem (https://github.com/coreshop/CoreShop/pull/906)
+   - [NotificationBundle] fix typo in serializer namespace declaration (https://github.com/coreshop/CoreShop/pull/901)
+   - [CoreBundle] fix notification rule setting for order mail action (https://github.com/coreshop/CoreShop/pull/886)
+   - [Core] use PriceCalculatorInterface in product tracking extractor (https://github.com/coreshop/CoreShop/pull/892)
+   - [Core] fix not passing full configuration in store based email (https://github.com/coreshop/CoreShop/pull/917)
+   - [Core] fix copying object brick data from cart to sale (https://github.com/coreshop/CoreShop/pull/918)
+   - [CoreBundle/OrderBundle] KernelResponse Event should ignore Profile Toolbar (https://github.com/coreshop/CoreShop/pull/919)
+   - [Pimcore] Make CoreShop compatible with Pimcore 5.7.2 (https://github.com/coreshop/CoreShop/pull/914)
+   
+ - Features:
+   - [FrontendBundle] make private method protected (https://github.com/coreshop/CoreShop/pull/890)
+   - [AddressBundle] introduce address-identifiers (https://github.com/coreshop/CoreShop/issues/830 & https://github.com/coreshop/CoreShop/pull/913)
+
+## 2.0.5:
+ - Deprecations:
+   - [WorkflowBundle] refactor state change logging (https://github.com/coreshop/CoreShop/pull/835)
+     - `CoreShop\Bundle\OrderBundle\Workflow\OrderHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface` instead
+     - `CoreShop\Bundle\OrderBundle\Workflow\OrderStateHistoryLogger` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface` instead
+     - `CoreShop\Bundle\OrderBundle\Workflow\WorkflowStateManager` has been deprecated, use `CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface` instead
+ - Bugs
+   - [PimcoreBundle] Make embedded classes work for Pimcore 5.6 (https://github.com/coreshop/CoreShop/pull/867)
+   - [All] Make CoreShop 2.0.x compatible with Pimcore 5.7 (https://github.com/coreshop/CoreShop/pull/869)
+   - [All] fix PHP5 sort issues by removing them (https://github.com/coreshop/CoreShop/issues/840)
+   - [Shipping] if cart has no shippables, don't force carriage calculation (https://github.com/coreshop/CoreShop/pull/863)
+   - [Checkout] validate cart before submitting the order (https://github.com/coreshop/CoreShop/pull/858)
+   - [Frontend] remove unused property in templates (https://github.com/coreshop/CoreShop/pull/859)
+   - [Permissions] prefix permission labels (https://github.com/coreshop/CoreShop/pull/855)
+   - [Order] refactor creation of invoices/shipments (https://github.com/coreshop/CoreShop/pull/852 + https://github.com/coreshop/CoreShop/pull/849)
+   - [Order] introduce options for order-document-items (https://github.com/coreshop/CoreShop/pull/848)
+   - [Autoloading] fix paths (https://github.com/coreshop/CoreShop/pull/846)
+   - [ResourceBundle] Introduce more basic resource-types (https://github.com/coreshop/CoreShop/pull/838 + https://github.com/coreshop/CoreShop/pull/845)
+   - [AddressBundle] add missing translations (https://github.com/coreshop/CoreShop/pull/836)
+   
+- Features
+   - [Index] Introduce advanced sorting for indexes (https://github.com/coreshop/CoreShop/pull/856) 
+
+## 2.0.4
+ - Features:
+   - [Reports] Reports Grid Sorting (https://github.com/coreshop/CoreShop/pull/828)
+   - [Reports] Add Paginator To All Reports (https://github.com/coreshop/CoreShop/pull/826)
+   - [Pimcore] introduce twig placeholder (https://github.com/coreshop/CoreShop/pull/827)
+   - [Resource] add serialization for pimcore types (https://github.com/coreshop/CoreShop/pull/818)
+   - [Resource] add more doctrine-pimcore-types (https://github.com/coreshop/CoreShop/pull/816)
+
+ - Bugs:
+   - [Order] fix code-generator length (https://github.com/coreshop/CoreShop/pull/833)
+   - [JS] Split JS Helpers into several regions of usability (https://github.com/coreshop/CoreShop/pull/829)
+   - [Core] fix for cart-item digital product never set (https://github.com/coreshop/CoreShop/pull/821)
+   - [Docs] Fix dead link (https://github.com/coreshop/CoreShop/pull/822)
+   - [Resource] move settings icon to resource-bundle (https://github.com/coreshop/CoreShop/pull/815)
+   - [Tracker] Update CompositeTracker::trackCheckoutStep (https://github.com/coreshop/CoreShop/pull/810)
+
+## 2.0.3
+ - Features:
+   - [All] Replace intval with int cast (https://github.com/coreshop/CoreShop/pull/805)
+   - [Core] Store Price Dirty Detection if installed Pimcore Version >= 5.5 (https://github.com/coreshop/CoreShop/pull/807)
+   - [Core] Allow Variants in Product Rule Conditions (https://github.com/coreshop/CoreShop/pull/794)
+   - [Core] Add Event for Settings (https://github.com/coreshop/CoreShop/pull/785)
+   - [Core] Extract CartItem Processor (https://github.com/coreshop/CoreShop/pull/784)
+   - [Core] Decouple Shipping Calculator from Cart (https://github.com/coreshop/CoreShop/pull/783)
+   - [Order] extract DataLoader into Pimcore Component (https://github.com/coreshop/CoreShop/pull/782)
+   - [Order] rename Pimcore Grid Operators to be more CoreShop specific (https://github.com/coreshop/CoreShop/pull/787)
+   - [Order] Check also for CurrencyAwareInterface in PriceFormatter Gird Operator (https://github.com/coreshop/CoreShop/pull/788) 
+   - [Index] Introduce Iterator Interpreter (https://github.com/coreshop/CoreShop/pull/802)
+   - [Index] Introduce new Abstract function in AbstractWorker to allow handling of array data (https://github.com/coreshop/CoreShop/pull/803)
+   - [Pimcore] add object_method twig function (https://github.com/coreshop/CoreShop/pull/809)
+ - Bugs:
+   - [Core] Fix Gift Cart Price Rule Action (https://github.com/coreshop/CoreShop/pull/796)
+   - [Core] Fix Invoice WKHTML Settings (https://github.com/coreshop/CoreShop/pull/786)
+   - [Core] Rule Conditions: Check on type (https://github.com/coreshop/CoreShop/pull/779)
+   - [Core] Add Translation for Adjustments (https://github.com/coreshop/CoreShop/pull/774)
+   - [Pimcore] allow spaces in DynamicDropdown (https://github.com/coreshop/CoreShop/pull/781)
+   
+# 2.0.2
+ - Pimcore:
+   - This release makes CoreShop compatible with Pimcore 5.6.0 (https://github.com/coreshop/CoreShop/pull/762)
+ - Features:
+   - [Core] Adds a new CoreShop JS Event to add custom Menu Items to the CoreShop Menu (https://github.com/coreshop/CoreShop/pull/765)
+   - [Resource] [ResourceBundle] add JMS Serializer Handler for Pimcore Objects (https://github.com/coreshop/CoreShop/pull/766)
+ - Bugs:
+  - [Tracking] Fixes a Bug in the Tracking Manager when a Product does not have any categories applied (https://github.com/coreshop/CoreShop/pull/767)
+ 
+# 2.0.1
+ - Features:
+    - [Core] Remove login customer after successfully registration (https://github.com/coreshop/CoreShop/pull/735)
+ - Bugs:
+    - [Core] Countries are removed when removing Store (https://github.com/coreshop/CoreShop/pull/746)
+    - [Core] order Document State Resolver when a Document is cancelled (https://github.com/coreshop/CoreShop/pull/738)
+    - [Core] safe path for folders (https://github.com/coreshop/CoreShop/pull/742)
+    - [Core] Fix for StoreMailActionProcessor exception in Notification Rule (https://github.com/coreshop/CoreShop/pull/740)
+    - [Shipping] is invalid when no Shipping Rules are given (https://github.com/coreshop/CoreShop/pull/741)
+    - [Frontend] Inaccurate Store Filter Query in Category Controller (https://github.com/coreshop/CoreShop/pull/744)
+
 ## 2.0.0
  - CoreShop\Component\Index\Condition\RendererInterface has been deprecated in favor of CoreShop\Component\Index\Condition\DynamicRendererInterface to allow dynamic registration of condition renderers
 

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CoreShop.
  *
@@ -16,11 +15,10 @@ namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStorePriceRepositoryInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model;
 
-class StorePrice extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
+class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -216,15 +214,18 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return null;
         }
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        $data = $object->getObjectVar($this->getName());
+
+        if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
+
+            $object->setObjectVar($this->getName(), $data);
+
+            $this->markAsLoaded($object);
 
             $setter = 'set' . ucfirst($this->getName());
             if (method_exists($object, $setter)) {
@@ -240,9 +241,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
-        }
+        $this->markAsLoaded($object);
 
         return $data;
     }
@@ -521,6 +520,46 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
     public function isEmpty($data)
     {
         return is_null($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLazyLoading()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsDirtyDetection()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEqual($oldValue, $newValue)
+    {
+        if (!is_array($oldValue) || !is_array($newValue)) {
+            return false;
+        }
+
+        return $oldValue === $newValue;
+    }
+
+    /**
+     * @param Model\DataObject\Concrete $object
+     */
+    protected function markAsLoaded($object)
+    {
+        if (!$object instanceof Model\DataObject\Concrete) {
+            return;
+        }
+
+        $object->markLazyKeyAsLoaded($this->getName());
     }
 
     /**

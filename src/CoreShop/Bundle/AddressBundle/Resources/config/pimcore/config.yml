@@ -9,6 +9,7 @@ pimcore:
                     coreShopCountry: CoreShop\Bundle\AddressBundle\CoreExtension\Country
                     coreShopState: CoreShop\Bundle\AddressBundle\CoreExtension\State
                     coreShopCountryMultiselect: CoreShop\Bundle\AddressBundle\CoreExtension\CountryMultiselect
+                    coreShopAddressIdentifier: CoreShop\Bundle\AddressBundle\CoreExtension\AddressIdentifier
 
 jms_serializer:
     metadata:

@@ -12,21 +12,26 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
+use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 class CartController extends FrontendController
 {
@@ -148,51 +153,88 @@ class CartController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addItemAction(Request $request)
     {
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                ]);
+            }
+
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
 
             return $this->redirect($redirect);
         }
 
-        $quantity = intval($request->get('quantity', 1));
+        $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product);
 
-        if (!is_int($quantity)) {
-            $quantity = 1;
-        }
+        $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
-        $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
+        $form = $this->createForm(AddToCartType::class, $addToCart);
 
-        if ($product instanceof StockableInterface) {
-            $item = $this->getCart()->getItemForProduct($product);
-            $quantityToCheckStock = $quantity;
+        if ($request->isMethod('POST')) {
+            $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
 
-            if ($item instanceof CartItemInterface) {
-                $quantityToCheckStock += $item->getQuantity();
-            }
+            if ($form->handleRequest($request)->isValid()) {
+                /**
+                 * @var AddToCartInterface $addToCart
+                 */
+                $addToCart = $form->getData();
 
-            $hasStock = $this->get('coreshop.inventory.availability_checker.default')->isStockSufficient($product, $quantityToCheckStock);
+                $this->getCartModifier()->addToList($addToCart->getCart(), $addToCart->getCartItem());
+                $this->getCartManager()->persistCart($this->getCart());
 
-            if (!$hasStock) {
-                $this->addFlash('error', $this->get('translator')->trans('coreshop.cart_item.not_sufficient_stock', ['%stockable%' => $product->getName()], 'validators'));
+                $this->get('coreshop.tracking.manager')->trackCartAdd(
+                    $addToCart->getCart(),
+                    $addToCart->getCartItem()->getProduct(),
+                    $addToCart->getCartItem()->getQuantity()
+                );
+
+                $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
+
+                if ($request->isXmlHttpRequest()) {
+                    return new JsonResponse([
+                        'success' => true,
+                    ]);
+                }
 
                 return $this->redirect($redirect);
             }
+
+            foreach ($form->getErrors(true, true) as $error) {
+                $this->addFlash('error', $error->getMessage());
+            }
+
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                    'errors' => array_map(function (FormError $error) {
+                        return $error->getMessage();
+                    }, iterator_to_array($form->getErrors(true))),
+                ]);
+            }
+
+            return $this->redirect($redirect);
         }
 
-        $this->getCartModifier()->addItem($this->getCart(), $product, $quantity);
-        $this->getCartManager()->persistCart($this->getCart());
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse([
+                'success' => false,
+            ]);
+        }
 
-        $this->get('coreshop.tracking.manager')->trackCartAdd($this->getCart(), $product, $quantity);
-
-        $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_added'));
-
-        return $this->redirect($redirect);
+        return $this->renderTemplate(
+            $request->get('template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
+            [
+                'form' => $form->createView(),
+                'product' => $product,
+            ]
+        );
     }
 
     /**
@@ -214,7 +256,7 @@ class CartController extends FrontendController
 
         $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.item_removed'));
 
-        $this->getCartModifier()->removeItem($this->getCart(), $cartItem);
+        $this->getCartModifier()->removeFromList($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
         $this->get('coreshop.tracking.manager')->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
@@ -257,6 +299,17 @@ class CartController extends FrontendController
         $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
 
         return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $quote->getId()]);
+    }
+
+    /**
+     * @param CartInterface     $cart
+     * @param CartItemInterface $cartItem
+     *
+     * @return AddToCartInterface
+     */
+    protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
+    {
+        return $this->get('coreshop.factory.add_to_cart')->createWithCartAndCartItem($cart, $cartItem);
     }
 
     /**
@@ -326,5 +379,17 @@ class CartController extends FrontendController
     protected function getCartManager()
     {
         return $this->get('coreshop.cart.manager');
+    }
+
+    /**
+     * @param CartItemInterface $cartItem
+     *
+     * @return ConstraintViolationListInterface
+     */
+    private function getCartItemErrors(CartItemInterface $cartItem)
+    {
+        return $this
+            ->get('validator')
+            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'));
     }
 }

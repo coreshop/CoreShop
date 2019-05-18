@@ -21,7 +21,7 @@ interface ProductDiscountCalculatorInterface
      * @param array            $context
      * @param int              $price
      *
-     * @return mixed
+     * @return int
      */
     public function getDiscount(ProductInterface $subject, array $context, $price);
 }

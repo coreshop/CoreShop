@@ -1,0 +1,32 @@
+CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
+    type: mappedSuperclass
+    table: coreshop_product_quantity_price_rule_range
+    fields:
+        id:
+            column: id
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        rangeFrom:
+            column: range_from
+            type: integer
+        rangeTo:
+            column: range_to
+            type: integer
+        pricingBehaviour:
+            column: pricing_behaviour
+            type: string
+        percentage:
+            column: percentage
+            type: float
+        highlighted:
+            column: highlighted
+            type: boolean
+    manyToOne:
+        rule:
+            targetEntity: CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface
+            inversedBy: ranges
+            joinColumn:
+                name: rule_id
+                referencedColumnName: id

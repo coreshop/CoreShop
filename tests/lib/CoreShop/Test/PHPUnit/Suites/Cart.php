@@ -12,7 +12,8 @@
 
 namespace CoreShop\Test\PHPUnit\Suites;
 
-use CoreShop\Component\Order\Cart\CartModifierInterface;
+use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
+use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Test\Base;
 use CoreShop\Test\Data;
 
@@ -101,17 +102,19 @@ class Cart extends Base
         $cart = Data::createCart();
 
         /**
-         * @var CartModifierInterface
+         * @var StorageListModifierInterface $modifier
+         * @var CartItemFactoryInterface $factory
          */
         $modifier = $this->get('coreshop.cart.modifier');
+        $factory = $this->get('coreshop.factory.cart_item');
 
-        $modifier->addItem($cart, Data::$product1);
+        $modifier->addToList($cart, $factory->createWithPurchasable(Data::$product1));
         $this->assertEquals(1, count($cart->getItems()));
 
-        $modifier->addItem($cart, Data::$product1);
+        $modifier->addToList($cart, $factory->createWithPurchasable(Data::$product1));
         $this->assertEquals(1, count($cart->getItems()));
 
-        $modifier->addItem($cart, Data::$product2);
+        $modifier->addToList($cart, $factory->createWithPurchasable(Data::$product2));
         $this->assertEquals(2, count($cart->getItems()));
     }
 }

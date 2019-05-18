@@ -15,13 +15,13 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
 use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface
+interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, StoreAwareInterface, LocaleAwareInterface, AdjustableInterface, CustomerAwareInterface
 {
     /**
      * @return CurrencyInterface
@@ -99,16 +99,6 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
     public function hasItem($item);
 
     /**
-     * @return CustomerInterface|null
-     */
-    public function getCustomer();
-
-    /**
-     * @param CustomerInterface $customer
-     */
-    public function setCustomer($customer);
-
-    /**
      * @return AddressInterface|null
      */
     public function getShippingAddress();
@@ -127,11 +117,6 @@ interface ProposalInterface extends ResourceInterface, CurrencyAwareInterface, S
      * @param AddressInterface $invoiceAddress
      */
     public function setInvoiceAddress($invoiceAddress);
-
-    /**
-     * @return float
-     */
-    public function getWeight();
 
     /**
      * @return Fieldcollection

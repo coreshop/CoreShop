@@ -56,7 +56,7 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
     /**
      * {@inheritdoc}
      */
-    public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity)
+    public function transform(OrderDocumentInterface $invoice, OrderItemInterface $orderItem, OrderDocumentItemInterface $invoiceItem, $quantity, $options = [])
     {
         /**
          * @var OrderInvoiceInterface     $invoice
@@ -67,7 +67,16 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         Assert::isInstanceOf($invoice, OrderDocumentInterface::class);
         Assert::isInstanceOf($invoiceItem, OrderInvoiceItemInterface::class);
 
-        $this->eventDispatcher->dispatchPreEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+        $this->eventDispatcher->dispatchPreEvent(
+            'invoice_item',
+            $invoiceItem,
+            [
+                'invoice' => $invoice,
+                'order' => $orderItem->getOrder(),
+                'order_item' => $orderItem,
+                'options' => $options,
+            ]
+        );
 
         $itemFolder = $this->objectService->createFolderByPath($invoice->getFullPath() . '/' . $this->pathForItems);
 
@@ -88,7 +97,16 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
             $invoiceItem->save();
         }, false);
 
-        $this->eventDispatcher->dispatchPostEvent('invoice_item', $invoiceItem, ['invoice' => $invoice, 'order' => $orderItem->getOrder(), 'order_item' => $orderItem]);
+        $this->eventDispatcher->dispatchPostEvent(
+            'invoice_item',
+            $invoiceItem,
+            [
+                'invoice' => $invoice,
+                'order' => $orderItem->getOrder(),
+                'order_item' => $orderItem,
+                'options' => $options,
+            ]
+        );
 
         return $invoiceItem;
     }

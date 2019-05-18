@@ -10,7 +10,7 @@
     background-image: url(../img/logo-fill.svg)
 }
 
-#pimcore_menu_coreshop svg {
+#pimcore_menu_coreshop_main svg {
     width: 30px!important;
     height: 30px!important;
     left: 13px!important;
@@ -30,9 +30,6 @@
     background-size: 20px;
 }
 
-.coreshop_icon_settings {
-    background:url(../img/services.svg) center center no-repeat !important;
-}
 .coreshop_icon_localization {
     background: url(../img//collaboration.svg) center center no-repeat !important;
 }
@@ -113,6 +110,11 @@
 
 .pimcore_icon_coreShopStorePrice {
     background: url(../img/money.svg) center center no-repeat !important;
+}
+
+.pimcore_icon_coreShopStoreValues,
+.coreshop_icon_store_values {
+    background: url(../img/store-values.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_orderState,

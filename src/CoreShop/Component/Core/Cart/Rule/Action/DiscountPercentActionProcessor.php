@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
-use CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplierInterface;
+use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -20,16 +20,16 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
-     * @var DiscountApplierInterface
+     * @var CartRuleApplierInterface
      */
-    protected $discountApplier;
+    protected $cartRuleApplier;
 
     /**
-     * @param DiscountApplierInterface $discountApplier
+     * @param CartRuleApplierInterface $cartRuleApplier
      */
-    public function __construct(DiscountApplierInterface $discountApplier)
+    public function __construct(CartRuleApplierInterface $cartRuleApplier)
     {
-        $this->discountApplier = $discountApplier;
+        $this->cartRuleApplier = $cartRuleApplier;
     }
 
     /**
@@ -43,7 +43,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
             return false;
         }
 
-        $this->discountApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, false);
+        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, false);
 
         return true;
     }

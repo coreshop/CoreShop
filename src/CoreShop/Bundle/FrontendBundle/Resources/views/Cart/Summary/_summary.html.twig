@@ -39,7 +39,7 @@
 {% if discount != 0 %}
     <tr>
         <td class="text-right">
-            <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+            <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_incl'|trans : 'coreshop.ui.discount_incl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
             {{ currency.convertAndFormat(discountIt) }}
@@ -47,7 +47,7 @@
     </tr>
     <tr>
         <td class="text-right">
-            <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+            <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_excl'|trans : 'coreshop.ui.discount_excl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
             {{ currency.convertAndFormat(discount) }}

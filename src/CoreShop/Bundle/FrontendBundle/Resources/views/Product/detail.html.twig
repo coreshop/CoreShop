@@ -1,5 +1,5 @@
-{% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
-{% import "@CoreShopFrontend/Common/Macro/product_price.html.twig" as product_price %}
+{% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
+{% import '@CoreShopFrontend/Common/Macro/product_price.html.twig' as product_price %}
 
 {% extends '@CoreShopFrontend/layout-column.html.twig' %}
 
@@ -19,8 +19,8 @@
     <div class="row product-info">
 
         <div class="col-sm-5 images-block">
-             {% if product.getImage %}
-                 {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-responsive thumbnail"})|raw }}
+            {% if product.getImage %}
+                {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-responsive thumbnail"})|raw }}
             {% endif %}
 
             {% if product.getImages|length > 0 %}
@@ -37,13 +37,13 @@
         <div class="col-sm-7 product-details">
 
             <h2>{{ product.getName }}</h2>
-            <hr />
+            <hr/>
 
             {% if product.getShortDescription|length > 0 %}
                 <div class="description">
                     {{ product.getShortDescription }}
                 </div>
-                <hr />
+                <hr/>
             {% endif %}
 
             <ul class="list-unstyled manufacturer">
@@ -54,14 +54,14 @@
                 {% endif %}
 
                 {% if product.getEan %}
-                    <li><span>{{ 'coreshop.ui.ean'|trans }}:</span> {{ product.getEan }}
-                {% endif %}
+                <li><span>{{ 'coreshop.ui.ean'|trans }}:</span> {{ product.getEan }}
+                    {% endif %}
                 <li>
                     <span>{{ 'coreshop.ui.availability'|trans }}:</span>
-                    {%  if product.getIsTracked %}
-                        {%  if coreshop_inventory_is_sufficient(product) %}
-                        <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
-                        {% elseif product.getIsAvailableWhenOutOfStock %}
+                    {% if product.getIsTracked %}
+                        {% if coreshop_inventory_is_sufficient(product) %}
+                            <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
+                        {% else %}
                             {{ 'coreshop.ui.out_of_stock'|trans }}
                         {% endif %}
                     {% else %}
@@ -80,7 +80,8 @@
                     <div class="form-group">
                         <select name="variant" class="form-control selectpicker btn-white">
                             {% for variantValue in variant['variantValues'] %}
-                                <option data-href="{{ coreshop_path(variant, 'coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}" value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
+                                <option data-href="{{ coreshop_path(variant, 'coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}"
+                                        value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -88,16 +89,27 @@
                 <hr/>
             {% endif %}
 
-
-            <div class="price">
-                <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
-                {{ product_price.display_product_price(product) }}
-            </div>
-            <div class="tax">
-                {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
-            </div>
+            {% if product.hasUnitDefinitions == true %}
+                <div class="unit-prices">
+                    {{ product_price.display_product_unit_prices(product) }}
+                </div>
+            {% else %}
+                <div class="price">
+                    <span class="price-head">{{ 'coreshop.ui.price'|trans }}:</span>
+                    {{ product_price.display_product_price(product) }}
+                </div>
+                <div class="tax">
+                    {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                </div>
+            {% endif %}
 
             <hr/>
+
+            {% if coreshop_quantity_price_rule_ranges_available(product, coreshop.context) %}
+                {% set rule = coreshop_quantity_price_rule(product, coreshop.context) %}
+                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
+                <hr/>
+            {% endif %}
 
             <div class="options">
                 <div class="cart-button btn-group">
@@ -105,18 +117,13 @@
                         <i class="fa fa-heart"></i>
                     </a>
                     {% if coreshop_inventory_is_available(product) %}
-                        <form action="{{ coreshop_path(coreshop.cart, 'coreshop_cart_add', {product: product.id}) }}" method="post">
-                            <button type="submit" class="btn btn-cart"
-                               rel="nofollow">
-                                {{ 'coreshop.ui.add_to_cart'|trans }}
-                                <i class="fa fa-shopping-cart"></i>
-                            </button>
-                        </form>
+                        {{ render(url('coreshop_cart_add', {'product': product.id})) }}
                     {% endif %}
                 </div>
             </div>
 
-            <hr />
+            <hr/>
+
         </div>
     </div>
 
@@ -129,7 +136,7 @@
 
         <div class="tab-content clearfix">
             <div class="tab-pane active" id="tab-description">
-                {% if product.getDescription|length > 0  %}
+                {% if product.getDescription|length > 0 %}
                     {{ product.getDescription|raw }}
                 {% else %}
                     {{ 'coreshop.ui.no_description_available'|trans }}

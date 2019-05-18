@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/configuration": "^2.0",
     "coreshop/store": "^2.0",
     "coreshop/resource": "^2.0",
@@ -33,7 +34,8 @@
     "coreshop/payment": "^2.0",
     "coreshop/taxation": "^2.0",
     "coreshop/notification": "^2.0",
-    "coreshop/payum-bundle": "^2.0"
+    "coreshop/payum-bundle": "^2.0",
+    "coreshop/product-quantity-price-rules": "^2.1"
   },
   "config": {
     "bin-dir": "bin"

@@ -12,10 +12,9 @@
 
 namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Webmozart\Assert\Assert;
 
-class StorageList extends AbstractPimcoreModel implements StorageListInterface
+class StorageList implements StorageListInterface
 {
     /**
      * @var array
@@ -24,25 +23,7 @@ class StorageList extends AbstractPimcoreModel implements StorageListInterface
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->items = [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemForProduct(StorageListProductInterface $product)
-    {
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof StorageListItemInterface) {
-                if ($item->getProduct() instanceof StorageListProductInterface && $item->getProduct()->getId() === $product->getId()) {
-                    return $item;
-                }
-            }
-        }
-
-        return null;
     }
 
     /**

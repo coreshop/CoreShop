@@ -18,6 +18,7 @@
     }
   ],
   "require": {
+    "php": "^7.2",
     "coreshop/address": "^2.0",
     "coreshop/rule": "^2.0",
     "coreshop/registry": "^2.0",

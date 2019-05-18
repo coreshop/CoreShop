@@ -12,7 +12,8 @@
 
 namespace CoreShop\Component\Core\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 trait SaleItemTrait
 {
@@ -44,6 +45,79 @@ trait SaleItemTrait
      * {@inheritdoc}
      */
     public function setMainObjectId($mainObjectId)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnitIdentifier()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnitIdentifier($unitIdentifier)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUnit()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUnit($unitId)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasUnit()
+    {
+        return $this->getUnit() instanceof ProductUnitInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemWeight()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemWeight($itemWeight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalWeight()
+
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalWeight($totalWeight)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

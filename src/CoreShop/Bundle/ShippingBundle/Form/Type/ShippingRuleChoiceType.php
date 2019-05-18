@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
@@ -43,12 +44,8 @@ final class ShippingRuleChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     $shippingRules = $this->shippingRuleRepository->findAll();
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($shippingRules, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($shippingRules, function (ShippingRuleInterface $a, ShippingRuleInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $shippingRules;

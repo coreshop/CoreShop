@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\StoreBundle\Controller\StoreController;
+use CoreShop\Bundle\StoreBundle\Doctrine\ORM\StoreRepository;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreType;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Store\Model\Store;
@@ -64,7 +65,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('interface')->defaultValue(StoreInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('admin_controller')->defaultValue(StoreController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(StoreRepository::class)->end()
                                         ->scalarNode('form')->defaultValue(StoreType::class)->cannotBeEmpty()->end()
                                     ->end()
                                 ->end()

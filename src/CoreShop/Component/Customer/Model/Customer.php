@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Pimcore\Model\DataObject\ClassDefinition\Data\Password;
 use Symfony\Component\Security\Core\User\UserInterface;

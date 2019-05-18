@@ -1,3 +1,6 @@
+parameters:
+    coreshop.dto.add_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddToCart'
+
 imports:
     - { resource: "services/order.yml" }
     - { resource: "services/order_invoice.yml" }
@@ -12,6 +15,7 @@ imports:
     - { resource: "services/cart.yml" }
     - { resource: "services/grid_config.yml" }
     - { resource: "services/payment.yml" }
+    - { resource: "services/forms.yml" }
 
 services:
     _defaults:
@@ -29,10 +33,13 @@ services:
             - '@coreshop.object_service'
             - '%coreshop.folder.cart%'
 
+    coreshop.cart_item.quantity_modifier:
+        class: CoreShop\Component\StorageList\StorageListItemQuantityModifier
+
     coreshop.cart.modifier:
         class: CoreShop\Component\Order\Cart\CartModifier
         arguments:
-            - '@coreshop.factory.cart_item'
+            - '@coreshop.cart_item.quantity_modifier'
             - '@event_dispatcher'
 
     coreshop.order.invoice.processable:
@@ -79,3 +86,16 @@ services:
         public: false
         arguments:
             - '@coreshop.custom_factory.adjustment.inner'
+
+    coreshop.custom_factory.cart_item:
+        class: CoreShop\Component\Order\Factory\CartItemFactory
+        decorates: coreshop.factory.cart_item
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@coreshop.custom_factory.cart_item.inner'
+
+    coreshop.factory.add_to_cart:
+        class: CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory
+        arguments:
+            - '%coreshop.dto.add_to_cart.class%'

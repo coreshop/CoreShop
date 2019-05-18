@@ -57,4 +57,22 @@ final class CustomerContext implements Context
             )
         );
     }
+
+    /**
+     * @Then /^It should throw an error deleting the (customer "[^"]+")$/
+     */
+    public function itShouldThrowAnErrorDeletingCustomer(CustomerInterface $customer)
+    {
+        Assert::throws(function() use ($customer) {
+            $customer->delete();
+        });
+    }
+
+    /**
+     * @Then /^It should not throw an error deleting the (customer "[^"]+")$/
+     */
+    public function itShouldNotThrowAnErrorDeletingTheCustomer(CustomerInterface $customer)
+    {
+        $customer->delete();
+    }
 }

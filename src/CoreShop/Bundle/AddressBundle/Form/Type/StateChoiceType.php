@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\Form\Type;
 
+use CoreShop\Component\Address\Model\StateInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -47,12 +48,8 @@ final class StateChoiceType extends AbstractType
                         $states = $this->countryRepository->findBy(['active' => $options['active']]);
                     }
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($states, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($states, function (StateInterface $a, StateInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $states;

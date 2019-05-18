@@ -12,10 +12,9 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
 
-class SerializedData extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface
+class SerializedData extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.

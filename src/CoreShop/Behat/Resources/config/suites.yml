@@ -16,3 +16,5 @@ imports:
     - suites/domain/filter.yml
     - suites/domain/tracking.yml
     - suites/domain/theme.yml
+    - suites/domain/product_quantity_price_rules.yml
+    - suites/domain/menu.yml

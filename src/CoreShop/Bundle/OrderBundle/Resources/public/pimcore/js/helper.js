@@ -53,10 +53,6 @@ coreshop.order.helper.openSale = function (id, type, callback) {
 
 
 coreshop.order.helper.openSaleByNumberDialog = function(type, keyCode, e) {
-    if (e['stopEvent']) {
-        e.stopEvent();
-    }
-
     Ext.MessageBox.prompt(t('coreshop_'+type+'_by_number'), t('coreshop_please_enter_the_number_of_the_' + type),
         function (button, value) {
             if (button === 'ok' && !Ext.isEmpty(value)) {

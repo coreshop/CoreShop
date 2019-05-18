@@ -27,6 +27,15 @@ interface TaxCollectorInterface
     public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
 
     /**
+     * @param TaxCalculatorInterface $taxCalculator
+     * @param int                    $price
+     * @param array                  $usedTaxes
+     *
+     * @return TaxItemInterface[]
+     */
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
+
+    /**
      * Merges to Tax arrays from TaxCollector into one.
      *
      * @param TaxItemInterface[] $taxes1

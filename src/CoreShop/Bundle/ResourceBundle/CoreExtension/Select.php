@@ -55,7 +55,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
-            if (intval($data)) {
+            if ((int) $data) {
                 return $this->getDataFromResource($data, $object, $params);
             }
         }
@@ -68,12 +68,11 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
+        if (!$object instanceof Model\AbstractModel) {
+            return null;
         }
+
+        $data = $object->getObjectVar($this->getName());
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
@@ -109,7 +108,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if (intval($data) > 0) {
+        if ((int) $data > 0) {
             return $this->getRepository()->find($data);
         }
 

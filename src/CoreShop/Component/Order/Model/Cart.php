@@ -13,37 +13,16 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
-use CoreShop\Component\StorageList\Model\StorageListProductInterface;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
-use Webmozart\Assert\Assert;
 
 class Cart extends AbstractProposal implements CartInterface
 {
     use ProposalPriceRuleTrait;
     use StoreAwareTrait;
     use CurrencyAwareTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemForProduct(StorageListProductInterface $product)
-    {
-        Assert::isInstanceOf($product, PurchasableInterface::class);
-
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof CartItemInterface) {
-                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId(
-                ) === $product->getId()) {
-                    return $item;
-                }
-            }
-        }
-
-        return null;
-    }
 
     /**
      * {@inheritdoc}
@@ -107,20 +86,6 @@ class Cart extends AbstractProposal implements CartInterface
         }
 
         return $subtotalTax;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        $weight = 0;
-
-        foreach ($this->getItems() as $item) {
-            $weight += $item->getTotalWeight();
-        }
-
-        return $weight;
     }
 
     /**

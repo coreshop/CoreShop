@@ -383,7 +383,7 @@ class Data
         $cart->setCustomer(self::get('coreshop.context.customer')->getCustomer());
         $cart->setStore(self::get('coreshop.context.store')->getStore());
         $cart->setCurrency(Data::$store->getCurrency());
-        
+
         self::get('coreshop.cart.manager')->persistCart($cart);
 
         return $cart;
@@ -395,10 +395,11 @@ class Data
     public static function createCartWithProducts()
     {
         $cart = self::createCart();
+        $factory = self::get('coreshop.factory.cart_item');
 
-        self::get('coreshop.cart.modifier')->addItem($cart, self::$product1);
-        self::get('coreshop.cart.modifier')->addItem($cart, self::$product2);
-        self::get('coreshop.cart.modifier')->addItem($cart, self::$product3);
+        self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product1));
+        self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product2));
+        self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product3));
 
         $cart->setShippingAddress(self::$address);
         $cart->setInvoiceAddress(self::$address);

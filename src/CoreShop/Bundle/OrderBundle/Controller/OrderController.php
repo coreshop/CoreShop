@@ -14,22 +14,16 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
-use CoreShop\Component\Order\InvoiceTransitions;
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\OrderInvoiceTransitions;
-use CoreShop\Component\Order\OrderPaymentTransitions;
-use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
-use CoreShop\Component\Order\ShipmentTransitions;
-use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
-use CoreShop\Component\Payment\PaymentTransitions;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Workflow\StateMachine;
 
@@ -73,15 +67,7 @@ class OrderController extends AbstractSaleDetailController
      */
     public function getStatesAction(Request $request)
     {
-        $identifiers = [
-            OrderTransitions::IDENTIFIER,
-            OrderShipmentTransitions::IDENTIFIER,
-            OrderPaymentTransitions::IDENTIFIER,
-            OrderInvoiceTransitions::IDENTIFIER,
-            PaymentTransitions::IDENTIFIER,
-            InvoiceTransitions::IDENTIFIER,
-            ShipmentTransitions::IDENTIFIER,
-        ];
+        $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
         $workflowStateManager = $this->getWorkflowStateManager();
@@ -269,7 +255,11 @@ class OrderController extends AbstractSaleDetailController
             $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
         }
 
-        return $order;
+        $event = new GenericEvent($sale, $order);
+
+        $this->get('event_dispatcher')->dispatch('coreshop.order.prepare_details', $event);
+
+        return $event->getArguments();
     }
 
     /**
@@ -409,11 +399,11 @@ class OrderController extends AbstractSaleDetailController
     }
 
     /**
-     * @return WorkflowStateManagerInterface
+     * @return WorkflowStateInfoManagerInterface
      */
     private function getWorkflowStateManager()
     {
-        return $this->get('coreshop.workflow.state_manager');
+        return $this->get('coreshop.workflow.state_info_manager');
     }
 
     /**
