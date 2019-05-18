@@ -18,6 +18,8 @@ use Pimcore\Model;
 
 class ResourceSelect extends Model\DataObject\ClassDefinition\Data\Select
 {
+    private static $hiddenVarMap = [];
+
     use DISetStateTrait;
 
     /**
@@ -53,10 +55,11 @@ class ResourceSelect extends Model\DataObject\ClassDefinition\Data\Select
 
     private function repository(RepositoryInterface $newValue = null)
     {
-        static $value;
+        $value = static::$hiddenVarMap[$this->fieldtype];
 
         if ($newValue !== null) {
             $value = $newValue;
+            static::$hiddenVarMap[$this->fieldtype] = $value;
         }
 
         return $value;
