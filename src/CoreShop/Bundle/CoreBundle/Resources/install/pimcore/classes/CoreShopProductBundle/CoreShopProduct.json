@@ -769,7 +769,7 @@
                                         "phpdocType": "float",
                                         "integer": true,
                                         "unsigned": false,
-                                        "minValue": 1,
+                                        "minValue": null,
                                         "maxValue": null,
                                         "unique": false,
                                         "decimalSize": 1,
