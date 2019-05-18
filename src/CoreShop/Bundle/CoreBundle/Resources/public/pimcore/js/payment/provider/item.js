@@ -15,6 +15,19 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
         var panel = $super(),
             data = this.data;
 
+
+        var logoId = data.logoId;
+        var logoSelect = new coreshop.object.elementHref({
+            id: logoId,
+            type: 'asset',
+        }, {
+            documentsAllowed: false,
+            objectsAllowed: false,
+            assetsAllowed: true,
+            name: 'logo',
+            title: 'Logo'
+        });
+
         panel.down("fieldset").add([
             {
                 xtype: 'coreshop.store',
@@ -22,7 +35,8 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
                 multiSelect: true,
                 typeAhead: false,
                 value: data.stores
-            }
+            },
+            logoSelect.getLayoutEdit()
         ]);
 
         this.formPanel = panel;

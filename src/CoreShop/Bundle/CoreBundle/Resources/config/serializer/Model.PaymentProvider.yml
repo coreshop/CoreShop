@@ -1,6 +1,6 @@
 CoreShop\Component\Core\Model\PaymentProvider:
     exclusion_policy: ALL
-    xml_root_name: country
+    xml_root_name: payment_provider
     properties:
         stores:
             expose: true
@@ -8,3 +8,7 @@ CoreShop\Component\Core\Model\PaymentProvider:
             groups: [Detailed]
         gatewayConfig:
             groups: [Detailed]
+        logo:
+            expose: true
+            type: pimcoreAsset
+            groups: [List,Detailed]
