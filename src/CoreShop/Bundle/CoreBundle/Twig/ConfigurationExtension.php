@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class ConfigurationExtension extends \Twig_Extension
+final class ConfigurationExtension extends AbstractExtension
 {
     /**
      * @var ConfigurationHelperInterface
@@ -35,7 +37,7 @@ final class ConfigurationExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('coreshop_configuration', [$this->helper, 'getConfiguration']),
+            new TwigFunction('coreshop_configuration', [$this->helper, 'getConfiguration']),
         ];
     }
 }

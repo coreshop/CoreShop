@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class ProductTaxExtension extends \Twig_Extension
+final class ProductTaxExtension extends AbstractExtension
 {
     /**
      * @var ProductTaxHelperInterface
@@ -35,8 +37,8 @@ final class ProductTaxExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_product_tax_amount', [$this->productTaxHelper, 'getTaxAmount']),
-            new \Twig_Filter('coreshop_product_tax_rate', [$this->productTaxHelper, 'getTaxRate']),
+            new TwigFilter('coreshop_product_tax_amount', [$this->productTaxHelper, 'getTaxAmount']),
+            new TwigFilter('coreshop_product_tax_rate', [$this->productTaxHelper, 'getTaxRate']),
         ];
     }
 }

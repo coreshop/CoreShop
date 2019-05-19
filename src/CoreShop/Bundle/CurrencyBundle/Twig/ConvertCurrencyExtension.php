@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
 use CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class ConvertCurrencyExtension extends \Twig_Extension
+final class ConvertCurrencyExtension extends AbstractExtension
 {
     /**
      * @var ConvertCurrencyHelperInterface
@@ -35,7 +37,7 @@ final class ConvertCurrencyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_convert_currency', [$this->helper, 'convertAmount']),
+            new TwigFilter('coreshop_convert_currency', [$this->helper, 'convertAmount']),
         ];
     }
 }

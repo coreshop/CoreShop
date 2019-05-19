@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class CheckoutIdentifierExtension extends \Twig_Extension
+final class CheckoutIdentifierExtension extends AbstractExtension
 {
     /**
      * @var CheckoutIdentifierHelperInterface
@@ -35,8 +37,8 @@ final class CheckoutIdentifierExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('coreshop_checkout_steps', [$this->helper, 'getSteps']),
-            new \Twig_Function('coreshop_checkout_steps_*', [$this->helper, 'getStep']),
+            new TwigFunction('coreshop_checkout_steps', [$this->helper, 'getSteps']),
+            new TwigFunction('coreshop_checkout_steps_*', [$this->helper, 'getStep']),
         ];
     }
 }

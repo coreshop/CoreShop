@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class ProductQuantityPriceRuleRangesExtension extends \Twig_Extension
+final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
 {
     /**
      * @var ProductQuantityPriceRuleRangesHelperInterface
@@ -35,9 +37,9 @@ final class ProductQuantityPriceRuleRangesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges_available', [$this->helper, 'hasActiveQuantityPriceRuleRanges']),
-            new \Twig_SimpleFunction('coreshop_quantity_price_rule', [$this->helper, 'getQuantityPriceRule']),
-            new \Twig_SimpleFunction('coreshop_quantity_price_rule_ranges', [$this->helper, 'getQuantityPriceRuleRanges']),
+            new TwigFunction('coreshop_quantity_price_rule_ranges_available', [$this->helper, 'hasActiveQuantityPriceRuleRanges']),
+            new TwigFunction('coreshop_quantity_price_rule', [$this->helper, 'getQuantityPriceRule']),
+            new TwigFunction('coreshop_quantity_price_rule_ranges', [$this->helper, 'getQuantityPriceRuleRanges']),
         ];
     }
 }

@@ -13,46 +13,48 @@
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\Document;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigTest;
 
-final class DocumentHelperExtensions extends \Twig_Extension
+final class DocumentHelperExtensions extends AbstractExtension
 {
     public function getTests()
     {
         return [
-            new \Twig_Test('document', function ($object) {
+            new TwigTest('document', function ($object) {
                 return is_object($object) && $object instanceof Document;
             }),
-            new \Twig_Test('document_email', function ($object) {
+            new TwigTest('document_email', function ($object) {
                 return is_object($object) && $object instanceof Document\Email;
             }),
-            new \Twig_Test('document_folder', function ($object) {
+            new TwigTest('document_folder', function ($object) {
                 return is_object($object) && $object instanceof Document\Folder;
             }),
-            new \Twig_Test('document_hardlink', function ($object) {
+            new TwigTest('document_hardlink', function ($object) {
                 return is_object($object) && $object instanceof Document\Hardlink;
             }),
-            new \Twig_Test('document_newsletter', function ($object) {
+            new TwigTest('document_newsletter', function ($object) {
                 return is_object($object) && $object instanceof Document\Newsletter;
             }),
-            new \Twig_Test('document_page', function ($object) {
+            new TwigTest('document_page', function ($object) {
                 return is_object($object) && $object instanceof Document\Page;
             }),
-            new \Twig_Test('document_link', function ($object) {
+            new TwigTest('document_link', function ($object) {
                 return is_object($object) && $object instanceof Document\Link;
             }),
-            new \Twig_Test('document_page_snippet', function ($object) {
+            new TwigTest('document_page_snippet', function ($object) {
                 return is_object($object) && $object instanceof Document\PageSnippet;
             }),
-            new \Twig_Test('document_print', function ($object) {
+            new TwigTest('document_print', function ($object) {
                 return is_object($object) && $object instanceof Document\PrintAbstract;
             }),
-            new \Twig_Test('document_print_container', function ($object) {
+            new TwigTest('document_print_container', function ($object) {
                 return is_object($object) && $object instanceof Document\Printcontainer;
             }),
-            new \Twig_Test('document_print_page', function ($object) {
+            new TwigTest('document_print_page', function ($object) {
                 return is_object($object) && $object instanceof Document\Printpage;
             }),
-            new \Twig_Test('document_snippet', function ($object) {
+            new TwigTest('document_snippet', function ($object) {
                 return is_object($object) && $object instanceof Document\Snippet;
             }),
         ];
