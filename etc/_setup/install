@@ -28,5 +28,5 @@ cp app/config/parameters.example.yml app/config/parameters.yml
 #########
 ##########################################################################################
 COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:$PIMCORE_VERSION --no-interaction --no-scripts
+COMPOSER_MEMORY_LIMIT=-1 composer require symfony/symfony:$SYMFONY_VERSION --update-with-all-dependencies
 COMPOSER_MEMORY_LIMIT=-1 composer install -o
-COMPOSER_MEMORY_LIMIT=-1 composer require symfony/symfony:$SYMFONY_VERSION
