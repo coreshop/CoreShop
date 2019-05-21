@@ -38,4 +38,12 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
     {
         return AddToCartType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtendedTypes()
+    {
+        return [AddToCartType::class];
+    }
 }

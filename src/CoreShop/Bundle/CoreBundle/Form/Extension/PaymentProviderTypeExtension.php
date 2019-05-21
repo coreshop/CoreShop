@@ -55,4 +55,12 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
     {
         return PaymentProviderType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtendedTypes()
+    {
+        return [PaymentProviderType::class];
+    }
 }

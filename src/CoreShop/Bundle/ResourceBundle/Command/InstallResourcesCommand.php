@@ -13,14 +13,14 @@
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Sami\Console\Command\Command;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class InstallResourcesCommand extends ContainerAwareCommand
+final class InstallResourcesCommand extends Command
 {
     /**
      * @var ResourceInstallerInterface
