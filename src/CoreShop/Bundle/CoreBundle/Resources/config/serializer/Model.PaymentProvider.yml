@@ -11,4 +11,4 @@ CoreShop\Component\Core\Model\PaymentProvider:
         logo:
             expose: true
             type: pimcoreAsset
-            groups: [List,Detailed]
+            groups: [List, Detailed]
