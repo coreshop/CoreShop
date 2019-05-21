@@ -27,7 +27,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
      */
     public function getImage()
     {
-        if (count($this->getImages()) > 0) {
+        if (is_array($this->getImages()) && count($this->getImages()) > 0) {
             return $this->getImages()[0];
         }
 
