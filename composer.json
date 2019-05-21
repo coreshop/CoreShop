@@ -88,11 +88,10 @@
     "payum/paypal-express-checkout-nvp": "^1.4",
     "payum/payum-bundle": "^2.2",
     "payum/sofort": "^1.4",
-    "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/pimcore": "^5.8.0",
-    "rinvex/countries": "^5.0",
+    "php-http/guzzle6-adapter": "^2.0",
+    "pimcore/pimcore": "dev-master",
+    "rinvex/countries": "^6.0",
     "stof/doctrine-extensions-bundle": "^1.2",
-    "symfony/twig-bundle": "^3.2",
     "webmozart/assert": "^1.2"
   },
   "require-dev": {
