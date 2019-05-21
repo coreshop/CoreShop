@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
-use Sami\Console\Command\Command;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
