@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
 
 class StackRepository extends PimcoreRepository
@@ -38,9 +39,9 @@ class StackRepository extends PimcoreRepository
      * @param string            $interface
      * @param array             $stackClasses
      */
-    public function __construct(MetadataInterface $metadata, $interface, array $stackClasses)
+    public function __construct(MetadataInterface $metadata, Connection $connection, $interface, array $stackClasses)
     {
-        parent::__construct($metadata);
+        parent::__construct($metadata, $connection);
 
         $this->interface = $interface;
         $this->fqnStackClasses = $stackClasses;

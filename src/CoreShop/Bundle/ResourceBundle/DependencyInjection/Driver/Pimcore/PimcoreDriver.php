@@ -151,6 +151,7 @@ final class PimcoreDriver extends AbstractDriver
         $definition->setPublic(true);
         $definition->setArguments([
             $this->getMetadataDefinition($metadata),
+            new Reference('doctrine.dbal.default_connection')
         ]);
         $definition->addTag('coreshop.pimcore.repository', ['alias' => $metadata->getAlias()]);
 

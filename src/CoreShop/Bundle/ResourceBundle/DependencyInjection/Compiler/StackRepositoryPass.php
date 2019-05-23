@@ -17,6 +17,7 @@ use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 final class StackRepositoryPass implements CompilerPassInterface
 {
@@ -43,6 +44,7 @@ final class StackRepositoryPass implements CompilerPassInterface
             $repositoryDefinition = new Definition(StackRepository::class);
             $repositoryDefinition->setArguments([
                 $definition,
+                new Reference('doctrine.dbal.default_connection'),
                 $stackConfig[$alias],
                 $classes,
             ]);
