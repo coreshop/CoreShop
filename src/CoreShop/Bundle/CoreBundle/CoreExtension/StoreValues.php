@@ -171,7 +171,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n\n";
         $code .= "\t" . 'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
-        $code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);' . "\n";
+        $code .= "\t\t" . 'try {' . "\n";
+        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '");'  . "\n";
+        $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
+        $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
+        $code .= "\t\t" . '}' . "\n";
         $code .= "\t" . '}' . "\n\n";
         $code .= "\t" . 'if (is_array($data)) {' . "\n";
         $code .= "\t\t" . '/** @var \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValuesBlock */' . "\n";
