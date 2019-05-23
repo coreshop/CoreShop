@@ -112,10 +112,7 @@ final class Migrate
             if ($fd instanceof ClassDefinition\Data\Fieldcollections) {
                 foreach ($fd->getAllowedTypes() as $type) {
                     $definition = Fieldcollection\Definition::getByKey($type);
-
-                    if (method_exists('createUpdateTable', $definition)) {
-                        $definition->createUpdateTable($class);
-                    }
+                    $definition->getDao()->createUpdateTable($class);
                 }
             }
         }
