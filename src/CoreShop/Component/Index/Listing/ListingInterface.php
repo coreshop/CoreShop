@@ -183,9 +183,11 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * loads search results from index and returns them.
      *
+     * @param array $options
+     *
      * @return PimcoreModelInterface[]
      */
-    public function load();
+    public function load(array $options = []);
 
     /**
      * loads group by values based on fieldname either from local variable if prepared or directly from product index.
