@@ -129,11 +129,11 @@ class CartRuleApplier implements CartRuleApplierInterface
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
 
-                    $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, -1 * $itemDiscountNet, $taxItems->getItems()));
+                    $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, ($positive ? $itemDiscountNet : -1 * $itemDiscountNet), $taxItems->getItems()));
                 } else {
                     $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
 
-                    $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, -1 * $itemDiscountGross, $taxItems->getItems()));
+                    $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, ($positive ? $itemDiscountGross : -1 * $itemDiscountGross), $taxItems->getItems()));
                 }
             } else {
                 if ($withTax) {
