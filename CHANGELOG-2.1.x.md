@@ -1,6 +1,8 @@
 # Within 2.1
 
 ## 2.1.0
+ - BC-Break: Introduced `array $options` parameter into `CoreShop\Component\Index\Listing\ListingInterface` to allow certain variations for loading data
+  
  - Introduced WholesalePrice Calculators, this deprecates the "wholesalePrice" property in the Product Class and adds the "wholesaleBuyingPrice" Property with a currency attached. We've added a migration for that, but since we need a currency now, we just assume the buying currency as the defaults store currency. If you have a different one, create a custom migration that changes it.
 
  - `CoreShop\Component\StorageList\StorageListModifierInterface` got completely refactored and works a bit different now. Since deciding what StorageListItem belongs to what product, can be a bit more complicated, we decided to introduce a BC break.

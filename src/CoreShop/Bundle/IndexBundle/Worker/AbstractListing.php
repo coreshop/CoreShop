@@ -143,7 +143,7 @@ abstract class AbstractListing implements ListingInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function load();
+    abstract public function load(array $options = []);
 
     /**
      * {@inheritdoc}
