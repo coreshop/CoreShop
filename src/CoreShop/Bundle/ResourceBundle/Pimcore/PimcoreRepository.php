@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Doctrine\DBAL\Connection;
+use Pimcore\Model\FactoryInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -25,11 +27,17 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     protected $metadata;
 
     /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
      * @param MetadataInterface $metadata
      */
-    public function __construct(MetadataInterface $metadata)
+    public function __construct(MetadataInterface $metadata, Connection $connection)
     {
         $this->metadata = $metadata;
+        $this->connection = $connection;
     }
 
     /**
@@ -82,11 +90,11 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     {
         $className = $this->metadata->getClass('model');
 
-        //Refactor as soon as Pimcore introduces changes to $className::getList()
-        $listClass = $className . '\\Listing';
-        $list = \Pimcore::getContainer()->get('pimcore.model.factory')->build($listClass);
+        if (method_exists($className, 'getList')) {
+            return $className::getList();
+        }
 
-        return $list;
+        throw new \InvalidArgumentException(sprintf('Class %s has no getList function and thus is not supported here', $className));
     }
 
     /**
