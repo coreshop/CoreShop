@@ -16,7 +16,7 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
             data = this.data;
 
 
-        var logoId = data.logoId;
+        var logoId = data.logo;
         var logoSelect = new coreshop.object.elementHref({
             id: logoId,
             type: 'asset',
