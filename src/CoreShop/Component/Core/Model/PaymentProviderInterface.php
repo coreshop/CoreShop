@@ -29,12 +29,12 @@ interface PaymentProviderInterface extends BasePaymentProviderInterface, StoresA
     public function getGatewayConfig();
 
     /**
-     * @return Pimcore\Model\Asset|null
+     * @return \Pimcore\Model\Asset|null
      */
     public function getLogo();
 
     /**
-     * @return Pimcore\Model\Asset|null
+     * @return \Pimcore\Model\Asset|null
      */
     public function setLogo($logo);
 }
