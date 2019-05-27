@@ -62,7 +62,7 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getLogo()
     {
@@ -70,7 +70,7 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setLogo($logo)
     {
