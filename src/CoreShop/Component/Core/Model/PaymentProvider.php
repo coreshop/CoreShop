@@ -22,6 +22,9 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         __construct as storesAwareConstructor;
     }
 
+
+    private $logo;
+
     /**
      * @var GatewayConfig
      */
@@ -56,5 +59,21 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     public function __toString()
     {
         return sprintf('%s', $this->getIdentifier());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
     }
 }
