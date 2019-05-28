@@ -108,8 +108,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
         grid.getStore().each(function (record) {
             ranges.push({
                 'id': record.get('rangeId'),
-                'rangeFrom': record.get('rangeFrom'),
-                'rangeTo': record.get('rangeTo'),
+                'rangeStartingFrom': record.get('rangeStartingFrom'),
                 'pricingBehaviour': record.get('pricingBehaviour'),
                 'highlighted': record.get('highlighted'),
             });
@@ -150,12 +149,12 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 hidden: true
             },
             {
-                text: t('coreshop_product_quantity_price_rules_range_from'),
+                text: t('coreshop_product_quantity_price_rules_range_starting_from'),
                 flex: 1,
                 sortable: false,
                 readOnly: true,
-                dataIndex: 'rangeFrom',
-                name: 'quantity_range_from',
+                dataIndex: 'rangeStartingFrom',
+                name: 'quantity_range_starting_from',
                 getEditor: function () {
                     return new Ext.form.NumberField({
                         minValue: 0
@@ -166,25 +165,6 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                         return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
                     }
                     return value + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
-                }
-            },
-            {
-                text: t('coreshop_product_quantity_price_rules_range_to'),
-                flex: 1,
-                sortable: false,
-                dataIndex: 'rangeTo',
-                name: 'quantity_range_to',
-                getEditor: function () {
-                    return new Ext.form.NumberField({
-                        minValue: 1
-                    });
-                },
-                renderer: function (value, cell, record, rowIndex) {
-                    var lastElement = record.store.getRange().length === (rowIndex + 1);
-                    if (value === undefined || value === null) {
-                        return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
-                    }
-                    return value + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount') + (lastElement === true ? '+' : '');
                 }
             },
             {
@@ -426,8 +406,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             lastEntry = grid.getStore().last();
 
         return new modelClass({
-            rangeFrom: lastEntry !== null ? lastEntry.get('rangeTo') + 1 : 0,
-            rangeTo: lastEntry !== null ? lastEntry.get('rangeTo') + 10 : 10,
+            rangeStartingFrom: lastEntry !== null ? lastEntry.get('rangeStartingFrom') + 10 : 0,
             pricingBehaviour: 'fixed',
             highlight: false,
             rangeId: null

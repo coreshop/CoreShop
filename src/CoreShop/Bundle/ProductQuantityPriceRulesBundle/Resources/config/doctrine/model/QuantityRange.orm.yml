@@ -8,11 +8,8 @@ CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
             id: true
             generator:
                 strategy: AUTO
-        rangeFrom:
-            column: range_from
-            type: integer
-        rangeTo:
-            column: range_to
+        rangeStartingFrom:
+            column: range_starting_from
             type: integer
         pricingBehaviour:
             column: pricing_behaviour
