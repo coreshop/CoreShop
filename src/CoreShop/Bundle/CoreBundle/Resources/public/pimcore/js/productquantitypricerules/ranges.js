@@ -80,8 +80,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         grid.getStore().each(function (record) {
             ranges.push({
                 'id': record.get('rangeId'),
-                'rangeFrom': record.get('rangeFrom'),
-                'rangeTo': record.get('rangeTo'),
+                'rangeStartingFrom': record.get('rangeStartingFrom'),
                 'pricingBehaviour': record.get('pricingBehaviour'),
                 'unitDefinition': record.get('unitDefinition'),
                 'amount': record.get('amount'),

@@ -19,22 +19,12 @@ interface QuantityRangeInterface extends ResourceInterface
     /**
      * @return int
      */
-    public function getRangeFrom();
+    public function getRangeStartingFrom();
 
     /**
-     * @param int $rangeFrom
+     * @param int $rangeStartingFrom
      */
-    public function setRangeFrom(int $rangeFrom);
-
-    /**
-     * @return int
-     */
-    public function getRangeTo();
-
-    /**
-     * @param int $rangeTo
-     */
-    public function setRangeTo(int $rangeTo);
+    public function setRangeStartingFrom(int $rangeStartingFrom);
 
     /**
      * @return string

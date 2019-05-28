@@ -11,7 +11,7 @@ Feature: Adding a new product with a simple quantity price rule
   Scenario: Add a quantity price rule with no conditions
     Given adding a quantity price rule to product "Shoe" named "default-product-quantity-price-rule" and with calculation-behaviour "volume"
     And the quantity price rule is active
-    And the quantity price rule has a range from 0 to 10 with behaviour percentage-decrease of 10%
+    And the quantity price rule has a range starting from 0 with behaviour percentage-decrease of 10%
     Then the quantity price rule should be valid for product "Shoe"
     And the product "Shoe" should be priced at "10000"
     Given I add the product "Shoe" to my cart

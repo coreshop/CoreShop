@@ -53,7 +53,7 @@
             {% for range in sorted_unit_range.ranges %}
                 <tr class="">
                     <td class="">
-                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.getRangeFrom() }}</span>
+                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.getRangeStartingFrom() }}</span>
                         {% if range.isHighlighted() %}
                             <span class="badge badge-info">{{ 'coreshop.ui.product_quantity_price_rules.best_offer'|trans }}</span>
                         {% endif %}

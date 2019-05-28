@@ -51,9 +51,8 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 }
 
                 $dataCheck[$unit][] = [
-                    'row'  => $realRowIndex,
-                    'from' => $quantityRange->getRangeFrom(),
-                    'to'   => $quantityRange->getRangeTo(),
+                    'row'          => $realRowIndex,
+                    'startingFrom' => $quantityRange->getRangeStartingFrom()
                 ];
             }
 
@@ -71,29 +70,20 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 foreach ($quantityRangesToCheck as $quantityRange) {
 
                     $realRowIndex = $quantityRange['row'];
-                    $from = $quantityRange['from'];
-                    $to = $quantityRange['to'];
+                    $startingFrom = $quantityRange['startingFrom'];
 
-                    if (!is_numeric($from)) {
-                        $form->addError(new FormError('Field "from" in row ' . $realRowIndex . ' needs to be numeric'));
+                    if (!is_numeric($startingFrom)) {
+                        $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . ' needs to be numeric'));
                         break;
-                    } elseif ((int) $from < 0) {
-                        $form->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
+                    } elseif ((int) $startingFrom < 0) {
+                        $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
                         break;
-                    } elseif ((int) $from < $lastEnd) {
-                        $form->addError(new FormError('Field "from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
+                    } elseif ((int) $startingFrom <= $lastEnd) {
+                        $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
                         break;
                     }
 
-                    if (!is_numeric($to)) {
-                        $form->addError(new FormError('Field "to" in row ' . $realRowIndex . ' needs to be numeric'));
-                        break;
-                    } elseif ((int) $to < $from) {
-                        $form->addError(new FormError('Field "to" in row ' . $realRowIndex . '  needs to be greater than ' . $from));
-                        break;
-                    }
-
-                    $lastEnd = (int) $to;
+                    $lastEnd = (int) $startingFrom;
                 }
             }
         });

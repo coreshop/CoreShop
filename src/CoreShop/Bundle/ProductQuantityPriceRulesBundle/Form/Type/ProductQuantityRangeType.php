@@ -55,8 +55,7 @@ final class ProductQuantityRangeType extends AbstractResourceType
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('rangeFrom', IntegerType::class, [])
-            ->add('rangeTo', IntegerType::class, [])
+            ->add('rangeStartingFrom', IntegerType::class, [])
             ->add('pricingBehaviour', ChoiceType::class, [
                 'choices' => $this->actionTypes,
             ])
