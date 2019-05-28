@@ -406,7 +406,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
             lastEntry = grid.getStore().last();
 
         return new modelClass({
-            rangeStartingFrom: lastEntry !== null ? lastEntry.get('rangeStartingFrom') + 1 : 0,
+            rangeStartingFrom: lastEntry !== null ? lastEntry.get('rangeStartingFrom') + 10 : 0,
             pricingBehaviour: 'fixed',
             highlight: false,
             rangeId: null
