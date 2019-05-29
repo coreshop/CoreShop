@@ -94,7 +94,13 @@ class PimcoreRepository implements PimcoreRepositoryInterface
             return $className::getList();
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s has no getList function and thus is not supported here', $className));
+        $listClass = $className . '\\Listing';
+
+        if (class_exists($className)) {
+            return new $listClass();
+        }
+
+        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here', $className));
     }
 
     /**
