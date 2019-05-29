@@ -253,14 +253,21 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                 if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
                     $rule = $ruleItem->getCartPriceRule();
 
+                    $ruleData = [
+                        'id'       => -1,
+                        'name'     => '--',
+                        'code' => empty($ruleItem->getVoucherCode()) ? null : $ruleItem->getVoucherCode(),
+                        'discount' => $ruleItem->getDiscount(),
+                    ];
+
                     if ($rule instanceof CartPriceRuleInterface) {
-                        $rules[] = [
-                            'id' => $rule->getId(),
-                            'name' => $rule->getName(),
-                            'code' => $ruleItem->getVoucherCode(),
-                            'discount' => $ruleItem->getDiscount(),
-                        ];
+                        $ruleData = array_merge($ruleData, [
+                            'id'   => $rule->getId(),
+                            'name' => $rule->getName()
+                        ]);
                     }
+
+                    $rules[] = $ruleData;
                 }
             }
 
