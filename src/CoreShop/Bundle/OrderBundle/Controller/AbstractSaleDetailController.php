@@ -306,9 +306,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     {
         $summary = [];
 
-        if ($sale->getDiscount() > 0) {
+        if ($sale->getDiscount() != 0) {
             $summary[] = [
-                'key' => 'discount',
+                'key' => $sale->getDiscount() < 0 ? 'discount' : 'surcharge',
                 'value' => $sale->getDiscount(),
             ];
         }
