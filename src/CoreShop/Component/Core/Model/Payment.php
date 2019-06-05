@@ -23,6 +23,11 @@ class Payment extends BasePayment implements PaymentInterface
     protected $order;
 
     /**
+     * @var CurrencyInterface
+     */
+    protected $currency;
+
+    /**
      * {@inheritdoc}
      */
     public function getOrder()
@@ -39,5 +44,22 @@ class Payment extends BasePayment implements PaymentInterface
 
         $this->order = $order;
         $this->orderId = $order->getId();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrency($currency)
+    {
+        $this->currencyCode = $currency->getIsoCode();
+        $this->currency = $currency;
     }
 }
