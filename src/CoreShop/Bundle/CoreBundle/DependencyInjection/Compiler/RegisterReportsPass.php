@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 class RegisterReportsPass extends RegisterSimpleRegistryTypePass
 {
+    public const REPORT_TAG = 'coreshop.report';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.reports',
             'coreshop.reports',
-            'coreshop.report'
+            self::REPORT_TAG
         );
     }
 }

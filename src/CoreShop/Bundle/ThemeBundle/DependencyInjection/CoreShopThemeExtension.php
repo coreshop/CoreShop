@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection;
 
+use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -36,5 +38,10 @@ class CoreShopThemeExtension extends Extension
         if (!$config['default_resolvers']['pimcore_document_property']) {
             $container->removeDefinition('coreshop.theme.resolver.pimcore_document_property');
         }
+
+        $container
+            ->registerForAutoconfiguration(ThemeResolverInterface::class)
+            ->addTag(CompositeThemeResolverPass::THEME_RESOLVER_TAG)
+        ;
     }
 }

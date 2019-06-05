@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
+use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Core\Portlet\PortletInterface;
+use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -75,6 +79,15 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
         }
+
+        $container
+            ->registerForAutoconfiguration(PortletInterface::class)
+            ->addTag(RegisterPortletsPass::PORTLET_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(ReportInterface::class)
+            ->addTag(RegisterReportsPass::REPORT_TAG)
+        ;
     }
 
     /**

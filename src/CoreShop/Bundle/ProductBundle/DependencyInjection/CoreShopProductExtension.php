@@ -14,12 +14,20 @@ namespace CoreShop\Bundle\ProductBundle\DependencyInjection;
 
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductDiscountPriceCalculatorsPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleActionPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleConditionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductRetailPriceCalculatorsPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleActionPass;
+use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
+use CoreShop\Component\Product\Rule\Action\ProductActionProcessorInterface;
+use CoreShop\Component\Product\Rule\Action\ProductSpecificActionProcessorInterface;
+use CoreShop\Component\Product\Rule\Condition\ProductConditionCheckerInterface;
+use CoreShop\Component\Product\Rule\Condition\ProductSpecificConditionCheckerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -63,6 +71,20 @@ final class CoreShopProductExtension extends AbstractModelExtension
             ->registerForAutoconfiguration(ProductRetailPriceCalculatorInterface::class)
             ->addTag(ProductRetailPriceCalculatorsPass::PRODUCT_RETAIL_PRICE_CALCULATOR_TAG);
 
+        $container
+            ->registerForAutoconfiguration(ProductActionProcessorInterface::class)
+            ->addTag(ProductPriceRuleActionPass::PRODUCT_PRICE_RULE_ACTION_TAG);
 
+        $container
+            ->registerForAutoconfiguration(ProductConditionCheckerInterface::class)
+            ->addTag(ProductPriceRuleConditionPass::PRODUCT_PRICE_RULE_CONDITION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(ProductSpecificActionProcessorInterface::class)
+            ->addTag(ProductSpecificPriceRuleActionPass::PRODUCT_SPECIFIC_PRICE_RULE_ACTION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(ProductSpecificConditionCheckerInterface::class)
+            ->addTag(ProductSpecificPriceRuleConditionPass::PRODUCT_SPECIFIC_PRICE_RULE_CONDITION_TAG);
     }
 }

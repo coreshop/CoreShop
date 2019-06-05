@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\MenuBundle\DependencyInjection;
 
+use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
+use CoreShop\Bundle\MenuBundle\DependencyInjection\CompilerPass\MenuBuilderPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,5 +31,11 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
         //$this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
         $loader->load('services.yml');
+
+
+        $container
+            ->registerForAutoconfiguration(MenuBuilderInterface::class)
+            ->addTag(MenuBuilderPass::MENU_BUILDER_TAG)
+        ;
     }
 }

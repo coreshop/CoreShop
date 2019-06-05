@@ -18,6 +18,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscount
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableDiscountPriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasablePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPriceCalculatorsPass;
+use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
@@ -25,6 +26,7 @@ use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface;
+use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\Condition\CartRuleConditionCheckerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
@@ -90,6 +92,11 @@ final class CoreShopOrderExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(PurchasableRetailPriceCalculatorInterface::class)
             ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(PurchasableWholesalePriceCalculatorInterface::class)
+            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG)
         ;
 
         $container

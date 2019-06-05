@@ -18,12 +18,14 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterCondi
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Index\Condition\DynamicRendererInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
+use CoreShop\Component\Index\Order\DynamicOrderRendererInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -61,6 +63,11 @@ final class CoreShopIndexExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(DynamicRendererInterface::class)
             ->addTag(RegisterConditionRendererTypesPass::INDEX_CONDITION_RENDERER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(DynamicOrderRendererInterface::class)
+            ->addTag(RegisterOrderRendererTypesPass::INDEX_ORDER_RENDERER_TAG)
         ;
 
         $container

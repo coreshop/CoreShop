@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
 {
+    public const THEME_RESOLVER_TAG = 'coreshop.theme.resolver';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.theme.resolver',
             'coreshop.theme.resolver.composite',
-            'coreshop.theme.resolver',
+            self::THEME_RESOLVER_TAG,
             'register'
         );
     }
