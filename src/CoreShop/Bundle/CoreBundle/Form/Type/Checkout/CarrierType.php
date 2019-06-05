@@ -85,16 +85,20 @@ final class CarrierType extends AbstractResourceType
 
                     return null;
                 },
-                'choice_label' => function ($carrier) use ($cart) {
-                    if ($carrier instanceof CarrierInterface) {
-                        $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress());
-                        $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
-                        $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
-
-                        return sprintf('%s %s', $carrier->getTitle(), $formattedAmount);
+                'choice_label' => function ($carrier) use ($cart, $options) {
+                    if (!$carrier instanceof CarrierInterface) {
+                        return '';
                     }
 
-                    return '';
+                    if ($options['show_carrier_price'] === false) {
+                        return $carrier->getTitle();
+                    }
+
+                    $carrierPrice = $this->taxedShippingCalculator->getPrice($carrier, $cart, $cart->getShippingAddress(), $options['show_carrier_price_with_tax']);
+                    $amount = $this->currencyConverter->convert($carrierPrice, $this->shopperContext->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
+                    $formattedAmount = $this->moneyFormatter->format($amount, $this->shopperContext->getCurrency()->getIsoCode(), $this->shopperContext->getLocaleCode());
+
+                    return sprintf('%s %s', $carrier->getTitle(), $formattedAmount);
                 },
             ])
             ->add('comment', TextareaType::class, [
@@ -112,6 +116,8 @@ final class CarrierType extends AbstractResourceType
 
         $resolver->setDefault('carriers', null);
         $resolver->setDefault('cart', null);
+        $resolver->setDefault('show_carrier_price', true);
+        $resolver->setDefault('show_carrier_price_with_tax', true);
         $resolver->setAllowedTypes('cart', [CartInterface::class]);
         $resolver->setAllowedTypes('carriers', 'array')
             ->setAllowedValues('carriers', function (array $carriers) {
