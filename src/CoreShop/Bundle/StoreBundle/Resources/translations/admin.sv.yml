@@ -1,3 +1,5 @@
 ---
+coreshop_store: 'Butik'
 coreshop_store_site: 'Sajt'
 coreshop_store_template: 'Mall'
+coreshop_stores: 'Butiker'
