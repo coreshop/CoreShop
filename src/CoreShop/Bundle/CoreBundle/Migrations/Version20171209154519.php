@@ -142,7 +142,11 @@ class Version20171209154519 extends AbstractPimcoreMigration implements Containe
             }
 
             $product->setOnHand($product->getQuantity());
-            $product->setIsTracked($product->getIsAvailableWhenOutOfStock());
+
+            if (method_exists($product, 'getIsAvailableWhenOutOfStock')) {
+                $product->setIsTracked($product->getIsAvailableWhenOutOfStock());
+            }
+
             $product->save();
         }
     }
