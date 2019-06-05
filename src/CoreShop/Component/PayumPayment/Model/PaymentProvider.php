@@ -10,24 +10,36 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\PayumPayment\Model;
 
-use CoreShop\Component\PayumPayment\Model\PaymentProvider as BasePaymentProvider;
-use CoreShop\Component\Store\Model\StoresAwareTrait;
+use CoreShop\Component\Payment\Model\PaymentProvider as BasePaymentProvider;
 
 class PaymentProvider extends BasePaymentProvider implements PaymentProviderInterface
 {
-    use StoresAwareTrait {
-        __construct as storesAwareConstructor;
-    }
-
-    private $logo;
+    /**
+     * @var GatewayConfig
+     */
+    protected $gatewayConfig;
 
     public function __construct()
     {
         parent::__construct();
+    }
 
-        $this->storesAwareConstructor();
+    /**
+     * {@inheritdoc}
+     */
+    public function setGatewayConfig(GatewayConfig $gatewayConfig)
+    {
+        $this->gatewayConfig = $gatewayConfig;
+    }
+
+    /**
+     * @return GatewayConfig
+     */
+    public function getGatewayConfig()
+    {
+        return $this->gatewayConfig;
     }
 
     /**
@@ -36,21 +48,5 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     public function __toString()
     {
         return sprintf('%s', $this->getIdentifier());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
     }
 }

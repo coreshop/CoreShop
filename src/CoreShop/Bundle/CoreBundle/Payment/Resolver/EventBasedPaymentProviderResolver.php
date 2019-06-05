@@ -12,51 +12,13 @@
 
 namespace CoreShop\Bundle\CoreBundle\Payment\Resolver;
 
-use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
-use CoreShop\Component\Core\Events;
-use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
-class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
-{
+if (class_exists(\CoreShop\Bundle\PayumPaymentBundle\Resolver\EventBasedPaymentProviderResolver::class)) {
+    @trigger_error('Class CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\PayumPaymentBundle\Resolver\EventBasedPaymentProviderResolver class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var PaymentProviderResolverInterface
+     * @deprecated Class CoreShop\Bundle\CoreBundle\Payment\Resolver\EventBasedPaymentProviderResolver is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\PayumPaymentBundle\Resolver\EventBasedPaymentProviderResolver class instead.
      */
-    private $inner;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param PaymentProviderResolverInterface $inner
-     * @param EventDispatcherInterface         $eventDispatcher
-     */
-    public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
+    class EventBasedPaymentProviderResolver
     {
-        $this->inner = $inner;
-        $this->eventDispatcher = $eventDispatcher;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolvePaymentProviders(ResourceInterface $subject = null)
-    {
-        $allowedPaymentProviders = [];
-
-        foreach ($this->inner->resolvePaymentProviders($subject) as $paymentProvider) {
-            $event = new PaymentProviderSupportsEvent($paymentProvider, $subject);
-
-            $this->eventDispatcher->dispatch(Events::SUPPORTS_PAYMENT_PROVIDER, $event);
-
-            if ($event->isSupported()) {
-                $allowedPaymentProviders[] = $paymentProvider;
-            }
-        }
-
-        return $allowedPaymentProviders;
     }
 }

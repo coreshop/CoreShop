@@ -1,4 +1,4 @@
-CoreShop\Bundle\PayumBundle\Model\GatewayConfig:
+CoreShop\Component\PayumPayment\Model\GatewayConfig:
     type: mappedSuperclass
     table: coreshop_payment_gateway_config
     fields:

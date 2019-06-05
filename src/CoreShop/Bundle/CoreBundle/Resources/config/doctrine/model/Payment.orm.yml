@@ -5,6 +5,9 @@ CoreShop\Component\Core\Model\Payment:
         order:
             column: '`order`'
             type: pimcoreObject
+        orderId:
+            column: orderId
+            type: integer
     manyToOne:
         currency:
             targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface

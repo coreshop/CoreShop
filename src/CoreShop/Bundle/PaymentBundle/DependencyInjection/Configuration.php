@@ -43,10 +43,6 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-                ->arrayNode('gateways')
-                    ->useAttributeAsKey('name')
-                    ->prototype('scalar')
-                ->end()
             ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);

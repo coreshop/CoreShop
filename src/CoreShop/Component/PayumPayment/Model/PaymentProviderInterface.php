@@ -10,26 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\PayumBundle\Model;
+namespace CoreShop\Component\PayumPayment\Model;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Model\SetValuesTrait;
-use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
+use CoreShop\Component\Payment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
 
-class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
+interface PaymentProviderInterface extends BasePaymentProviderInterface
 {
-    use SetValuesTrait;
+    /**
+     * @param GatewayConfig $gatewayConfig
+     */
+    public function setGatewayConfig(GatewayConfig $gatewayConfig);
 
     /**
-     * @var int
+     * @return GatewayConfig
      */
-    protected $id;
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+    public function getGatewayConfig();
 }

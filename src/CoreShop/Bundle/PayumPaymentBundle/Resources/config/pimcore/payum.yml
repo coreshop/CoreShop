@@ -1,0 +1,15 @@
+payum:
+    storages:
+        "%coreshop.model.payment.class%": { doctrine: orm }
+
+    security:
+        token_storage:
+            CoreShop\Component\PayumPayment\Model\PaymentSecurityToken: { doctrine: orm }
+
+    dynamic_gateways:
+        config_storage:
+            CoreShop\Component\PayumPayment\Model\GatewayConfig: { doctrine: orm }
+
+    gateways:
+        offline:
+            factory: offline

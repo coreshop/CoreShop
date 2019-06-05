@@ -71,7 +71,9 @@
     "coreshop/pimcore-bundle": "self.version",
     "coreshop/tracking": "self.version",
     "coreshop/theme-bundle": "self.version",
-    "coreshop/menu-bundle": "self.version"
+    "coreshop/menu-bundle": "self.version",
+    "coreshop/payum-payment": "self.version",
+    "coreshop/payum-payment-bundle": "self.version"
   },
   "require": {
     "php": "^7.2",

@@ -1,0 +1,12 @@
+CoreShop\Component\PayumPayment\Model\PaymentProvider:
+    type: mappedSuperclass
+    table: coreshop_payment_provider
+    manyToOne:
+        gatewayConfig:
+            targetEntity: CoreShop\Component\PayumPayment\Model\GatewayConfig
+            joinColumn:
+                name: gateway_config_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: "SET NULL"
+            cascade: [ all ]

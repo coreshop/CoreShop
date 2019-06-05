@@ -1,4 +1,4 @@
-CoreShop\Bundle\PayumBundle\Model\PaymentSecurityToken:
+CoreShop\Component\PayumPayment\Model\PaymentSecurityToken:
     type: mappedSuperclass
     table: coreshop_payment_security_token
     fields:

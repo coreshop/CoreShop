@@ -10,21 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Core\Model;
+namespace CoreShop\Component\PayumPayment\Model;
 
-use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
-use CoreShop\Component\Payment\Model\PaymentProviderInterface as BasePaymentProviderInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Model\SetValuesTrait;
+use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
 
-interface PaymentProviderInterface extends BasePaymentProviderInterface, StoresAwareInterface
+class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
 {
-    /**
-     * @return \Pimcore\Model\Asset|null
-     */
-    public function getLogo();
+    use SetValuesTrait;
 
     /**
-     * @return \Pimcore\Model\Asset|null
+     * @var int
      */
-    public function setLogo($logo);
+    protected $id;
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }

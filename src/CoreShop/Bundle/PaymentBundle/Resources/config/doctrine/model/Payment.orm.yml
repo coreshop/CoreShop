@@ -30,9 +30,6 @@ CoreShop\Component\Payment\Model\Payment:
         details:
             column: details
             type: json_array
-        orderId:
-            column: orderId
-            type: integer
         datePayment:
             column: datePayment
             type: datetime

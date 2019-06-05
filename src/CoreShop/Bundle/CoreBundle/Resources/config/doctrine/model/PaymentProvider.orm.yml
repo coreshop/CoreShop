@@ -21,12 +21,3 @@ CoreShop\Component\Core\Model\PaymentProvider:
                         referencedColumnName: id
                         nullable: false
                         onDelete: CASCADE
-    manyToOne:
-        gatewayConfig:
-            targetEntity: CoreShop\Bundle\PayumBundle\Model\GatewayConfig
-            joinColumn:
-                name: gateway_config_id
-                referencedColumnName: id
-                nullable: true
-                onDelete: "SET NULL"
-            cascade: [ all ]

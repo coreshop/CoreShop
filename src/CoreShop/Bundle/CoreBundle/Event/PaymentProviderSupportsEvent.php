@@ -12,66 +12,13 @@
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
-use CoreShop\Component\Payment\Model\PaymentProviderInterface;
-use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\Event;
-
-class PaymentProviderSupportsEvent extends Event
-{
+if (class_exists(\CoreShop\Bundle\PayumPaymentBundle\Event\PaymentProviderSupportsEvent::class)) {
+    @trigger_error('Class CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\PayumPaymentBundle\Event\PaymentProviderSupportsEvent class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var PaymentProviderInterface
+     * @deprecated Class CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Bundle\PayumPaymentBundle\Event\PaymentProviderSupportsEvent class instead.
      */
-    private $paymentProvider;
-
-    /**
-     * @var ResourceInterface
-     */
-    private $subject;
-
-    /**
-     * @var bool
-     */
-    private $supported = true;
-
-    /**
-     * @param PaymentProviderInterface $paymentProvider
-     * @param ResourceInterface        $subject
-     */
-    public function __construct(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null)
+    class PaymentProviderSupportsEvent
     {
-        $this->paymentProvider = $paymentProvider;
-        $this->subject = $subject;
-    }
-
-    /**
-     * @return PaymentProviderInterface
-     */
-    public function getPaymentProvider()
-    {
-        return $this->paymentProvider;
-    }
-
-    /**
-     * @return ResourceInterface
-     */
-    public function getSubject()
-    {
-        return $this->subject;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSupported()
-    {
-        return $this->supported;
-    }
-
-    /**
-     * @param bool $supported
-     */
-    public function setSupported(bool $supported)
-    {
-        $this->supported = $supported;
     }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "coreshop/payum-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Payment Bundle",
+  "name": "coreshop/payum-payment",
+  "type": "library",
+  "description": "CoreShop Payment Component.",
   "keywords": [
     "coreshop",
     "pimcore",
@@ -19,23 +19,15 @@
   ],
   "require": {
     "php": "^7.2",
-    "coreshop/order-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/payum-payment-bundle": "^2.1",
-    "coreshop/core": "^2.0",
-    "payum/payum-bundle": "^2.2",
-    "payum/offline": "^1.4",
-    "payum/sofort": "^1.4",
-    "payum/paypal-express-checkout-nvp": "^1.4",
-    "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "coreshop/payment": "2.1",
+    "payum/payum": "^1.5"
   },
   "config": {
     "bin-dir": "bin"
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Bundle\\PaymentBundle\\": ""
+      "CoreShop\\Component\\PayumPayment\\": ""
     }
   },
   "minimum-stability": "dev",

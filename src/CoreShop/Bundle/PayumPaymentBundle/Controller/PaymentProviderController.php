@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Controller;
+namespace CoreShop\Bundle\PayumPaymentBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 
