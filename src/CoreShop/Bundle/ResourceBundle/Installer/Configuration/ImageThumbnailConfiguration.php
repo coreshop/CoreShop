@@ -46,6 +46,7 @@ final class ImageThumbnailConfiguration implements ConfigurationInterface
             ->end()
             ->end()
             ->scalarNode('description')->end()
+            ->scalarNode('group')->defaultValue('CoreShop')->end()
             ->scalarNode('format')->cannotBeEmpty()->defaultValue('SOURCE')->end()
             ->integerNode('quality')->defaultValue(90)->end()
             ->floatNode('highResolution')->defaultValue(0.0)->end()
