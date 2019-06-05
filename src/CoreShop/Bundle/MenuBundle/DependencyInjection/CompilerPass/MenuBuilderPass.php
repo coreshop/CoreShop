@@ -52,11 +52,11 @@ final class MenuBuilderPass implements CompilerPassInterface
                 $definition = $container->findDefinition($id);
 
                 if (!isset($attributes[0]['type'])) {
-                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
+                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 if (!isset($attributes[0]['menu'])) {
-                    $attributes[0]['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
+                    $attributes[0]['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 $type = $tag['menu'];

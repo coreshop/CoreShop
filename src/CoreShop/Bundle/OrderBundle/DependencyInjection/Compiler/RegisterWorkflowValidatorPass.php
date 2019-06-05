@@ -31,7 +31,7 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
             $definition = $container->findDefinition($id);
 
             if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1, -9));
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
             if (!isset($attributes[0]['manager'])) {
