@@ -16,4 +16,5 @@ use CoreShop\Component\Order\Model\OrderPaymentInterface;
 
 interface PaymentInterface extends OrderPaymentInterface
 {
+
 }

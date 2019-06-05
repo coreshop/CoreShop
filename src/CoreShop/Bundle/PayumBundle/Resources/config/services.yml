@@ -19,6 +19,21 @@ services:
         tags:
             - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
 
+    coreshop.payum_action.authorize_payment:
+        class: CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction
+        tags:
+            - { name: payum.action, all: true, alias: coreshop.authorize_payment }
+
+    coreshop.payum_action.capture_payment:
+        class: CoreShop\Bundle\PayumBundle\Action\CapturePaymentAction
+        tags:
+            - { name: payum.action, all: true, alias: coreshop.capture_payment }
+
+    coreshop.payum_action.execute_same_request_with_payment_details:
+        class: CoreShop\Bundle\PayumBundle\Action\ExecuteSameRequestWithPaymentDetailsAction
+        tags:
+            - { name: payum.action, all: true }
+
     coreshop.payum_action.confirm_order:
         class: CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction
         arguments:
