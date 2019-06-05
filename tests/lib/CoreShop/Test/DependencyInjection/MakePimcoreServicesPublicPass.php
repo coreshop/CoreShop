@@ -19,10 +19,10 @@ class MakePimcoreServicesPublicPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $loggerPrefixes = ['pimcore.', 'Pimcore\\'];
+        $loggerPrefixes = ['Pimcore\\Templating\\'];
 
         foreach ($loggerPrefixes as $loggerPrefix) {
-            $serviceIds = array_filter($container->getServiceIds(), function (string $id) use ($loggerPrefix) {
+            $serviceIds = array_filter($container->getServiceIds(), static function (string $id) use ($loggerPrefix) {
                 return 0 === strpos($id, $loggerPrefix);
             });
 
@@ -31,9 +31,11 @@ class MakePimcoreServicesPublicPass implements CompilerPassInterface
                     $container->getAlias($serviceId)->setPublic(true);
                 }
 
-                $container
-                    ->findDefinition($serviceId)
-                    ->setPublic(true);
+                if ($container->hasDefinition($serviceId)) {
+                    $container
+                        ->getDefinition($serviceId)
+                        ->setPublic(true);
+                }
             }
         }
     }
