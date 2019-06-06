@@ -1,0 +1,3 @@
+imports:
+    - src/CoreShop/Behat/Resources/config/profiles/local.yml
+    - src/CoreShop/Behat/Resources/config/suites.yml

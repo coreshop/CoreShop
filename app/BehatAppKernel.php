@@ -12,7 +12,7 @@
 
 use Pimcore\Kernel;
 
-class AppKernel extends Kernel
+class BehatAppKernel extends Kernel
 {
     /**
      * {@inheritdoc}
@@ -23,11 +23,14 @@ class AppKernel extends Kernel
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
     }
 
+     /**
+     * {@inheritdoc}
+     */
     public function boot()
     {
-        \Pimcore::setKernel($this);
-
         parent::boot();
+
+        \Pimcore::setKernel($this);
     }
 
     /**
@@ -38,8 +41,6 @@ class AppKernel extends Kernel
         parent::registerContainerConfiguration($loader);
 
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakePimcoreServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MonologChannelLoggerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
         });
     }

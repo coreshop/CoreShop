@@ -55,4 +55,5 @@ docs/generate-docs.sh
 output/
 tmp/
 phpda.html
+parameters.yml
 var
