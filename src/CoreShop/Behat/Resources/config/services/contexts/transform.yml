@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.transform.shared_storage:
         class: CoreShop\Behat\Context\Transform\SharedStorageContext
         arguments:

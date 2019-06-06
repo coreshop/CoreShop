@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.cli.installer:
         class: CoreShop\Behat\Context\Cli\InstallerContext
         arguments:

@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.hook.doctrine_orm:
         class: CoreShop\Behat\Context\Hook\DoctrineORMContext
         arguments:

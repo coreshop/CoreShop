@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.setup.product:
         class: CoreShop\Behat\Context\Setup\ProductContext
         arguments:
