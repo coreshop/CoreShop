@@ -12,6 +12,12 @@
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection;
 
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesActionPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesCalculatorPass;
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesConditionPass;
+use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Rule\Condition\QuantityRuleConditionCheckerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -33,5 +39,20 @@ class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
         $container->setParameter('coreshop.product_quantity_price_rules.ranges.action_constraints', $config['action_constraints']);
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(ProductQuantityPriceRuleActionInterface::class)
+            ->addTag(ProductQuantityPriceRulesActionPass::PRODUCT_QUANTITY_PRICE_RULE_ACTION_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(CalculatorInterface::class)
+            ->addTag(ProductQuantityPriceRulesCalculatorPass::PRODUCT_QUANTITY_PRICE_RULE_CALCULATOR_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(QuantityRuleConditionCheckerInterface::class)
+            ->addTag(ProductQuantityPriceRulesConditionPass::PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG)
+        ;
     }
 }

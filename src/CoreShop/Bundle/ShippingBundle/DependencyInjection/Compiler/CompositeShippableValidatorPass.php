@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeShippableValidatorPass extends PrioritizedCompositeServicePass
 {
+    public const SHIPABLE_VALIDATOR_TAG = 'coreshop.shipping.carrier.validator';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.shipping.carrier.validator',
             'coreshop.shipping.carrier.validator.composite',
-            'coreshop.shipping.carrier.validator',
+            self::SHIPABLE_VALIDATOR_TAG,
             'addValidator'
         );
     }

@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 class RegisterPortletsPass extends RegisterSimpleRegistryTypePass
 {
+    public const PORTLET_TAG = 'coreshop.portlet';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.portlets',
             'coreshop.portlets',
-            'coreshop.portlet'
+            self::PORTLET_TAG
         );
     }
 }

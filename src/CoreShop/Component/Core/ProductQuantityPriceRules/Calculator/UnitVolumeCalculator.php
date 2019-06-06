@@ -122,16 +122,11 @@ class UnitVolumeCalculator implements CalculatorInterface
         /** @var CoreQuantityRangeInterface $range */
         foreach ($unitFilteredRanges as $index => $range) {
 
-            // if last range and quantity is greater: count!
-            if ($index+1 === count($unitFilteredRanges) && $quantity > $range->getRangeTo()) {
-                $cheapestRangePrice = $range;
+            if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }
 
-            if ($range->getRangeFrom() <= $quantity && $quantity <= $range->getRangeTo()) {
-                $cheapestRangePrice = $range;
-                break;
-            }
+            $cheapestRangePrice = $range;
         }
 
         return $cheapestRangePrice;

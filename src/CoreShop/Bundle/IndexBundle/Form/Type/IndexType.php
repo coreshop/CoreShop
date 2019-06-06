@@ -52,7 +52,12 @@ class IndexType extends AbstractResourceType
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $type = $this->getRegistryIdentifier($event->getForm(), $event->getData());
+
                 if (null === $type) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($type, 'default')) {
                     return;
                 }
 
@@ -70,6 +75,10 @@ class IndexType extends AbstractResourceType
                 $data = $event->getData();
 
                 if (!isset($data['worker'])) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($data['worker'], 'default')) {
                     return;
                 }
 

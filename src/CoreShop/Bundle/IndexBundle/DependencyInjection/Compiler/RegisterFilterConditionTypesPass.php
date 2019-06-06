@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 class RegisterFilterConditionTypesPass extends RegisterRegistryTypePass
 {
+    public const INDEX_FILTER_CONDITION_TAG = 'coreshop.filter.condition_type';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.filter.condition_types',
             'coreshop.form_registry.filter.condition_types',
             'coreshop.filter.condition_types',
-            'coreshop.filter.condition_type'
+            self::INDEX_FILTER_CONDITION_TAG
         );
     }
 }

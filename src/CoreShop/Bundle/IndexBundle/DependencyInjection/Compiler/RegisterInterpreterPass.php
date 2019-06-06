@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 class RegisterInterpreterPass extends RegisterRegistryTypePass
 {
+    public const INDEX_INTERPRETER_TAG = 'coreshop.index.interpreter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.interpreter',
             'coreshop.form_registry.index.interpreter',
             'coreshop.index.interpreters',
-            'coreshop.index.interpreter'
+            self::INDEX_INTERPRETER_TAG
         );
     }
 }

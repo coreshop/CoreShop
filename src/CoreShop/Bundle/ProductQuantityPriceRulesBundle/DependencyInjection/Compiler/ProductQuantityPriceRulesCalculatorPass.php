@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 final class ProductQuantityPriceRulesCalculatorPass extends RegisterSimpleRegistryTypePass
 {
+    public const PRODUCT_QUANTITY_PRICE_RULE_CALCULATOR_TAG = 'coreshop.product_quantity_price_rules.calculator';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.product_quantity_price_rules.calculators',
             'coreshop.product_quantity_price_rules.calculators',
-            'coreshop.product_quantity_price_rules.calculator'
+            self::PRODUCT_QUANTITY_PRICE_RULE_CALCULATOR_TAG
         );
     }
 }

@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class ShippingPriceCalculatorsPass implements CompilerPassInterface
 {
+    public const SHIPPING_PRICE_CALCULATOR_TAG = 'coreshop.shipping.price_calculator';
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +32,7 @@ final class ShippingPriceCalculatorsPass implements CompilerPassInterface
         $registry = $container->getDefinition('coreshop.registry.shipping.price_calculators');
 
         $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.shipping.price_calculator') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::SHIPPING_PRICE_CALCULATOR_TAG) as $id => $attributes) {
             if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
                 throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
             }

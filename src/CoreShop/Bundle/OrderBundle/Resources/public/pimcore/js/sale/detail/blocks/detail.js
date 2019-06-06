@@ -184,7 +184,10 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     xtype: 'gridcolumn',
                     flex: 1,
                     align: 'right',
-                    dataIndex: 'name'
+                    dataIndex: 'name',
+                    renderer: function (value, metaData, record) {
+                        return record.get('code') !== null ? value + ' (<em>' + (record.get('code')) + '</em>)' : value;
+                    }.bind(this)
                 },
                 {
                     xtype: 'gridcolumn',

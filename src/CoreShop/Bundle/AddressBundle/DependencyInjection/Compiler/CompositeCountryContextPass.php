@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
 {
+    public const COUNTRY_CONTEXT_SERVICE_TAG = 'coreshop.context.country';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.country',
             'coreshop.context.country.composite',
-            'coreshop.context.country',
+            self::COUNTRY_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

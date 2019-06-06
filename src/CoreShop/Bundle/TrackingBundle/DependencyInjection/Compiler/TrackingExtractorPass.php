@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 final class TrackingExtractorPass extends RegisterSimpleRegistryTypePass
 {
+    public const TRACKING_EXTRACTOR_TAG = 'coreshop.tracking.extractor';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.tracking.extractor',
             'coreshop.tracking.extractors',
-            'coreshop.tracking.extractor'
+            self::TRACKING_EXTRACTOR_TAG
         );
     }
 }

@@ -346,7 +346,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface
     /**
      * {@inheritdoc}
      */
-    public function load()
+    public function load(array $options = [])
     {
         $queryBuilder = $this->dao->createQueryBuilder();
         $this->addQueryFromConditions($queryBuilder);

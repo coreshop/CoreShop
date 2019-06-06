@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
@@ -46,12 +47,14 @@ abstract class AbstractProductPriceCalculatorPass implements CompilerPassInterfa
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->getTag()) as $id => $attributes) {
-            if (!isset($attributes[0]['priority']) || !isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged PriceCalculator `' . $id . '` needs to have `priority`, `type` attributes.');
+            $definition = $container->findDefinition($id);
+
+            if (!isset($attributes[0]['type'])) {
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
+            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'] ?? 1000, new Reference($id)]);
         }
 
         $container->setParameter($this->getParameter(), $map);

@@ -29,7 +29,9 @@ class StorageListItem implements StorageListItemInterface
      */
     public function equals(StorageListItemInterface $storageListItem)
     {
-        return $this->getProduct() === $storageListItem->getProduct();
+        $product = $storageListItem->getProduct();
+
+        return $this->getProduct() instanceof $product && $this->getProduct()->getId() === $product->getId();
     }
 
     /**

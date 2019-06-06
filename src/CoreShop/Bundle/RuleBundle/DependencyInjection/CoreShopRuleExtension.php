@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler\RuleAvailabilityAssessorPass;
+use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -34,5 +36,10 @@ final class CoreShopRuleExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(RuleAvailabilityAssessorInterface::class)
+            ->addTag(RuleAvailabilityAssessorPass::RULE_AVAILABILITY_ASSESSOR_TAG)
+        ;
     }
 }

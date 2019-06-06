@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class RegisterGatewayConfigTypePass implements CompilerPassInterface
@@ -32,8 +33,10 @@ final class RegisterGatewayConfigTypePass implements CompilerPassInterface
         $gatewayConfigurationTypes = $container->findTaggedServiceIds('coreshop.gateway_configuration_type');
 
         foreach ($gatewayConfigurationTypes as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+
             if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged gateway configuration type needs to have `type` attribute.');
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
             $gatewayFactories[$attributes[0]['type']] = $attributes[0]['type'];

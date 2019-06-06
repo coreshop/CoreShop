@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleReg
 
 class RegisterOrderRendererTypesPass extends RegisterSimpleRegistryTypePass
 {
+    public const INDEX_ORDER_RENDERER_TAG = 'coreshop.index.order.renderer';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.order.renderers',
             'coreshop.index.order.renderers',
-            'coreshop.index.order.renderer'
+            self::INDEX_ORDER_RENDERER_TAG
         );
     }
 }

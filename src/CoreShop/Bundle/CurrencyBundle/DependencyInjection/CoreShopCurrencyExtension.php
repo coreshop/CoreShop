@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\CurrencyBundle\DependencyInjection;
 
+use CoreShop\Bundle\CurrencyBundle\DependencyInjection\Compiler\CompositeCurrencyContextPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -34,5 +36,11 @@ final class CoreShopCurrencyExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+
+        $container
+            ->registerForAutoconfiguration(CurrencyContextInterface::class)
+            ->addTag(CompositeCurrencyContextPass::CURRENCY_CONTEXT_SERVICE_TAG)
+        ;
     }
 }

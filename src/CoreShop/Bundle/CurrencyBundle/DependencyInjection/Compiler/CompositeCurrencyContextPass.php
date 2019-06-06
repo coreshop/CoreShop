@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeCurrencyContextPass extends PrioritizedCompositeServicePass
 {
+    public const CURRENCY_CONTEXT_SERVICE_TAG = 'coreshop.context.currency';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.currency',
             'coreshop.context.currency.composite',
-            'coreshop.context.currency',
+            self::CURRENCY_CONTEXT_SERVICE_TAG,
             'addContext'
         );
     }

@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 final class ShippingRuleActionPass extends RegisterRegistryTypePass
 {
+    public const SHIPPING_RULE_ACTION_TAG = 'coreshop.shipping_rule.action';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.shipping_rule.actions',
             'coreshop.form_registry.shipping_rule.actions',
             'coreshop.shipping_rule.actions',
-            'coreshop.shipping_rule.action'
+            self::SHIPPING_RULE_ACTION_TAG
         );
     }
 }

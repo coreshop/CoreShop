@@ -21,6 +21,8 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 use Symfony\Component\Form\FormInterface;
 use Webmozart\Assert\Assert;
 
@@ -241,6 +243,39 @@ final class CartContext implements Context
                 'Cart total is expected to be %s, but it is %s',
                 $totalTax,
                 $this->cartContext->getCart()->getTotalTax()
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart item taxes should be "([^"]+)"$/
+     */
+    public function cartItemTaxesShouldBe($totalTax)
+    {
+        $cart = $this->cartContext->getCart();
+        $itemTaxesTotal = 0;
+
+        foreach ($cart->getItems() as $item) {
+            $taxesFc = $item->getTaxes();
+
+            if (!$taxesFc instanceof Fieldcollection) {
+                continue;
+            }
+            /**
+             * @var TaxItemInterface $tax
+             */
+            foreach ($taxesFc->getItems() as $tax) {
+                $itemTaxesTotal += $tax->getAmount();
+            }
+        }
+
+        Assert::eq(
+            $totalTax,
+            $itemTaxesTotal,
+            sprintf(
+                'Cart item taxes is expected to be %s, but it is %s',
+                $totalTax,
+                $itemTaxesTotal
             )
         );
     }

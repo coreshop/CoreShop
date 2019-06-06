@@ -28,6 +28,8 @@ use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleActionType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType;
+use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
@@ -494,6 +496,35 @@ final class CartPriceRuleContext implements Context
             'product' => $product->getId(),
         ]));
     }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action surcharge-percent with ([^"]+)% discount$/
+     * @Given /^the (cart rule) has a action surcharge-percent with ([^"]+)% discount$/
+     */
+    public function theCartPriceRuleHasASurchargePercentAction(CartPriceRuleInterface $rule, $surcharge)
+    {
+        $this->assertActionForm(SurchargePercentConfigurationType::class, 'surchargePercent');
+
+        $this->addAction($rule, $this->createActionWithForm('surchargePercent', [
+            'percent' => (int) $surcharge,
+        ]));
+    }
+
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (cart rule) has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
+     */
+    public function theCartPriceRuleHasASurchargeAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    {
+        $this->assertActionForm(SurchargeAmountConfigurationType::class, 'surchargeAmount');
+
+        $this->addAction($rule, $this->createActionWithForm('surchargeAmount', [
+            'amount' => (int) $amount,
+            'currency' => $currency->getId(),
+        ]));
+    }
+
 
     /**
      * @param CartPriceRuleInterface $rule

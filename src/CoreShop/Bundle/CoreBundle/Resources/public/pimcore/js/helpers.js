@@ -42,7 +42,7 @@ coreshop.util.format.currency = function (currency, v) {
 
     v = whole + sub;
     if (v.charAt(0) == '-') {
-        return '-' + currency + v.substr(1);
+        return '-' + currency + ' ' + v.substr(1);
     }
 
     return currency + ' ' + v;

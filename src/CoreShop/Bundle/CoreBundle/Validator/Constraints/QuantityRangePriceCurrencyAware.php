@@ -16,5 +16,5 @@ use Symfony\Component\Validator\Constraint;
 
 class QuantityRangePriceCurrencyAware extends Constraint
 {
-    public $message = '{{ range }} needs a valid currency to work.';
+    public $message = '{{ rangeStartingFrom }} needs a valid currency to work.';
 }

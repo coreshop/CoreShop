@@ -51,6 +51,10 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
                     return;
                 }
 
+                if (!$this->formTypeRegistry->has($type, 'default')) {
+                    return;
+                }
+
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($type, 'default'));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
@@ -65,6 +69,10 @@ abstract class AbstractConfigurableRuleElementType extends AbstractResourceType
                 $data = $event->getData();
 
                 if (!isset($data['type'])) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($data['type'], 'default')) {
                     return;
                 }
 

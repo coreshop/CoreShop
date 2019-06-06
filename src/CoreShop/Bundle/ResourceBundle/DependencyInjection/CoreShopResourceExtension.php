@@ -12,8 +12,10 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection;
 
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ResourceBundle\EventListener\BodyListener;
+use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -65,6 +67,11 @@ final class CoreShopResourceExtension extends AbstractModelExtension
         }
 
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
+
+        $container
+            ->registerForAutoconfiguration(ResourceInstallerInterface::class)
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG)
+        ;
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

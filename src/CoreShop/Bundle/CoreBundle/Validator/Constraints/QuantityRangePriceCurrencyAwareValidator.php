@@ -35,7 +35,7 @@ class QuantityRangePriceCurrencyAwareValidator extends ConstraintValidator
 
         if (!$value->getCurrency() instanceof CurrencyInterface) {
             $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ range }}', sprintf('Range from %d to %d', $value->getRangeFrom(), $value->getRangeTo()))
+                ->setParameter('{{ rangeStartingFrom }}', sprintf('Range starting from %d', $value->getRangeStartingFrom()))
                 ->addViolation();
         }
     }

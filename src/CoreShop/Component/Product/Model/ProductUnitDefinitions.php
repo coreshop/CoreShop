@@ -205,7 +205,9 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
      */
     public function __toString()
     {
-        $defaultUnit = $this->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface ? $this->getDefaultUnitDefinition()->getUnit()->getName() : '--';
+        $defaultUnit = $this->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface
+        && $this->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $this->getDefaultUnitDefinition()->getUnit()->getName() : '--';
+
         return sprintf('Default Unit: %s, additional units: %d', $defaultUnit, $this->getAdditionalUnitDefinitions()->count());
     }
 }

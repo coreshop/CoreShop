@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection;
 
+use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
+use CoreShop\Component\SEO\Extractor\ExtractorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -32,5 +34,10 @@ final class CoreShopSEOExtension extends Extension
         if (array_key_exists('LuceneSearchBundle', $bundles)) {
             $loader->load('services/lucene_search.yml');
         }
+
+        $container
+            ->registerForAutoconfiguration(ExtractorInterface::class)
+            ->addTag(ExtractorRegistryServicePass::EXTRACTOR_TAG)
+        ;
     }
 }

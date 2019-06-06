@@ -13,11 +13,14 @@
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class ExtractorRegistryServicePass implements CompilerPassInterface
 {
+    public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
+
     /**
      * {@inheritdoc}
      */
@@ -31,8 +34,10 @@ final class ExtractorRegistryServicePass implements CompilerPassInterface
 
         $map = [];
         foreach ($container->findTaggedServiceIds('coreshop.seo.extractor') as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+
             if (!isset($attributes[0]['type'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` attribute.');
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];

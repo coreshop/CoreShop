@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -53,6 +55,32 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         ]);
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            foreach (class_implements($repositoryClass) as $typehintClass) {
+                $container->registerAliasForArgument(
+                    $metadata->getServiceId('repository'),
+                    $typehintClass,
+                    $metadata->getHumanizedName() . ' repository'
+                );
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void
+    {
+        parent::addManager($container, $metadata);
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('manager'),
+                EntityManagerInterface::class,
+                $metadata->getHumanizedName() . ' manager'
+            );
+        }
     }
 
     /**
@@ -72,6 +100,6 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
      */
     protected function getClassMetadataClassname()
     {
-        return 'Doctrine\\ORM\\Mapping\\ClassMetadata';
+        return ClassMetadata::class;
     }
 }

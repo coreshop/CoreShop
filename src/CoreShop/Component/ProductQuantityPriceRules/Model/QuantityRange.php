@@ -24,12 +24,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     /**
      * @var int
      */
-    protected $rangeFrom;
-
-    /**
-     * @var int
-     */
-    protected $rangeTo;
+    protected $rangeStartingFrom;
 
     /**
      * @var string
@@ -70,33 +65,17 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     /**
      * {@inheritdoc}
      */
-    public function getRangeFrom()
+    public function getRangeStartingFrom()
     {
-        return $this->rangeFrom;
+        return $this->rangeStartingFrom;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRangeFrom(int $rangeFrom)
+    public function setRangeStartingFrom(int $rangeStartingFrom)
     {
-        $this->rangeFrom = $rangeFrom;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRangeTo()
-    {
-        return $this->rangeTo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setRangeTo(int $rangeTo)
-    {
-        $this->rangeTo = $rangeTo;
+        $this->rangeStartingFrom = $rangeStartingFrom;
     }
 
     /**
