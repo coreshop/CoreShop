@@ -42,7 +42,7 @@ final class CarrierTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedTypes()
+    public static function getExtendedTypes()
     {
         return [CarrierType::class];
     }
