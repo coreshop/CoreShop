@@ -12,7 +12,21 @@
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRendererTypesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Index\Condition\DynamicRendererInterface;
+use CoreShop\Component\Index\Extension\IndexExtensionInterface;
+use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
+use CoreShop\Component\Index\Getter\GetterInterface;
+use CoreShop\Component\Index\Interpreter\InterpreterInterface;
+use CoreShop\Component\Index\Order\DynamicOrderRendererInterface;
+use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -45,5 +59,40 @@ final class CoreShopIndexExtension extends AbstractModelExtension
         }
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
+
+        $container
+            ->registerForAutoconfiguration(DynamicRendererInterface::class)
+            ->addTag(RegisterConditionRendererTypesPass::INDEX_CONDITION_RENDERER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(DynamicOrderRendererInterface::class)
+            ->addTag(RegisterOrderRendererTypesPass::INDEX_ORDER_RENDERER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(IndexExtensionInterface::class)
+            ->addTag(RegisterExtensionsPass::INDEX_EXTENSION_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(FilterConditionProcessorInterface::class)
+            ->addTag(RegisterFilterConditionTypesPass::INDEX_FILTER_CONDITION_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(GetterInterface::class)
+            ->addTag(RegisterGetterPass::INDEX_GETTER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(WorkerInterface::class)
+            ->addTag(RegisterIndexWorkerPass::INDEX_WORKER_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(InterpreterInterface::class)
+            ->addTag(RegisterInterpreterPass::INDEX_INTERPRETER_TAG)
+        ;
     }
 }

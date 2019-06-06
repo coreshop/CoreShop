@@ -10,18 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
+namespace CoreShop\Component\ProductQuantityPriceRules\Rule\Condition;
 
-class RegisterGridActionPass extends RegisterSimpleRegistryTypePass
+use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
+
+interface QuantityRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
-    public const GRID_ACTION_TAG = 'coreshop.grid.action';
 
-    public function __construct()
-    {
-        parent::__construct(
-            'coreshop.registry.grid.action',
-            'coreshop.grid.actions',
-            self::GRID_ACTION_TAG
-        );
-    }
 }

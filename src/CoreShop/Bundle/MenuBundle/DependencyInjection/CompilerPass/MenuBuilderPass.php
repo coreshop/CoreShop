@@ -17,12 +17,15 @@ use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use Symfony\Component\DependencyInjection\Argument\ServiceClosureArgument;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class MenuBuilderPass implements CompilerPassInterface
 {
+    public const MENU_BUILDER_TAG = 'coreshop.menu';
+
     /**
      * {@inheritdoc}
      */
@@ -44,10 +47,16 @@ final class MenuBuilderPass implements CompilerPassInterface
         $registry = $container->getDefinition('coreshop.menu.registry');
 
         $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.menu') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::MENU_BUILDER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
-                if (!isset($tag['type'], $tag['menu'])) {
-                    throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `type` and `menu`` attributes.');
+                $definition = $container->findDefinition($id);
+
+                if (!isset($attributes[0]['type'])) {
+                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                }
+
+                if (!isset($attributes[0]['menu'])) {
+                    $attributes[0]['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 $type = $tag['menu'];

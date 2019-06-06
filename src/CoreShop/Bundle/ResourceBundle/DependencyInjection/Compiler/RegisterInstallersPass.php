@@ -13,11 +13,14 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterInstallersPass implements CompilerPassInterface
 {
+    public const INSTALLER_TAG = 'coreshop.resource.installer';
+
     /**
      * {@inheritdoc}
      */
@@ -30,14 +33,16 @@ final class RegisterInstallersPass implements CompilerPassInterface
         $registry = $container->getDefinition('coreshop.registry.resource.installers');
         $map = [];
 
-        foreach ($container->findTaggedServiceIds('coreshop.resource.installer') as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['priority'])) {
-                throw new \InvalidArgumentException('Tagged Service `' . $id . '` needs to have `type` and `priority` attributes.');
+        foreach ($container->findTaggedServiceIds(self::INSTALLER_TAG) as $id => $attributes) {
+            $definition = $container->findDefinition($id);
+
+            if (!isset($attributes[0]['type'])) {
+                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
             $map[$attributes[0]['type']] = $attributes[0]['type'];
 
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
+            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'] ?? 1000, new Reference($id)]);
         }
 
         $container->setParameter('coreshop.resource.installers', $map);

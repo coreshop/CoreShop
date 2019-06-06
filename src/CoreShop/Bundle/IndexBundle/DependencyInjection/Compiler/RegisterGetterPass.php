@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 class RegisterGetterPass extends RegisterRegistryTypePass
 {
+    public const INDEX_GETTER_TAG = 'coreshop.index.getter';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.index.getter',
             'coreshop.form_registry.index.getter',
             'coreshop.index.getters',
-            'coreshop.index.getter'
+            self::INDEX_GETTER_TAG
         );
     }
 }

@@ -51,6 +51,10 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
                     return;
                 }
 
+                if (!$this->formTypeRegistry->has($objectType, 'default')) {
+                    return;
+                }
+
                 $this->addConfigurationFields($event->getForm(), $this->formTypeRegistry->get($objectType, 'default'));
             })
             ->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) {
@@ -65,6 +69,10 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
                 $data = $event->getData();
 
                 if (!isset($data['objectType'])) {
+                    return;
+                }
+
+                if (!$this->formTypeRegistry->has($data['objectType'], 'default')) {
                     return;
                 }
 

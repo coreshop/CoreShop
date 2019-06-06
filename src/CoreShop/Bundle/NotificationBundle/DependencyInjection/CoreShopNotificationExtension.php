@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection;
 
+use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleActionPass;
+use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleConditionPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
+use CoreShop\Component\Notification\Rule\Condition\NotificationConditionCheckerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -34,5 +38,15 @@ final class CoreShopNotificationExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(NotificationRuleProcessorInterface::class)
+            ->addTag(NotificationRuleActionPass::NOTIFICATION_ACTION_TAG)
+        ;
+
+        $container
+            ->registerForAutoconfiguration(NotificationConditionCheckerInterface::class)
+            ->addTag(NotificationRuleConditionPass::NOTIFICATION_CONDITION_TAG)
+        ;
     }
 }

@@ -16,13 +16,15 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryT
 
 final class ProductSpecificPriceRuleActionPass extends RegisterRegistryTypePass
 {
+    public const PRODUCT_SPECIFIC_PRICE_RULE_ACTION_TAG = 'coreshop.product_specific_price_rule.action';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.registry.product_specific_price_rule.actions',
             'coreshop.form_registry.product_specific_price_rule.actions',
             'coreshop.product_specific_price_rule.actions',
-            'coreshop.product_specific_price_rule.action'
+            self::PRODUCT_SPECIFIC_PRICE_RULE_ACTION_TAG
         );
     }
 }

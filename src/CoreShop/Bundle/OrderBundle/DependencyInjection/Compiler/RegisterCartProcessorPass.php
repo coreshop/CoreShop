@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
+    public const CART_PROCESSOR_TAG = 'coreshop.cart_processor';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.cart_processor',
             'coreshop.cart_processor.composite',
-            'coreshop.cart_processor',
+            self::CART_PROCESSOR_TAG,
             'addProcessor'
         );
     }

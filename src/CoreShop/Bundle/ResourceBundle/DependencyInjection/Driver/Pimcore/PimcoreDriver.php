@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
@@ -156,6 +157,16 @@ final class PimcoreDriver extends AbstractDriver
         $definition->addTag('coreshop.pimcore.repository', ['alias' => $metadata->getAlias()]);
 
         $container->setDefinition($metadata->getServiceId('repository'), $definition);
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            foreach (class_implements($repositoryClass) as $typehintClass) {
+                $container->registerAliasForArgument(
+                    $metadata->getServiceId('repository'),
+                    $typehintClass,
+                    $metadata->getHumanizedName() . ' repository'
+                );
+            }
+        }
     }
 
     /**
@@ -170,5 +181,13 @@ final class PimcoreDriver extends AbstractDriver
             $metadata->getServiceId('manager'),
             $alias
         );
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('manager'),
+                ObjectManager::class,
+                $metadata->getHumanizedName() . ' manager'
+            );
+        }
     }
 }

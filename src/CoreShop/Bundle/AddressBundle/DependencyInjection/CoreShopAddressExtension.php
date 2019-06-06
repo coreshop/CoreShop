@@ -12,7 +12,11 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
+use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeCountryContextPass;
+use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -35,5 +39,14 @@ final class CoreShopAddressExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        $container
+            ->registerForAutoconfiguration(CountryContextInterface::class)
+            ->addTag(CompositeCountryContextPass::COUNTRY_CONTEXT_SERVICE_TAG)
+        ;
+        $container
+            ->registerForAutoconfiguration(RequestResolverInterface::class)
+            ->addTag(CompositeRequestResolverPass::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG)
+        ;
     }
 }

@@ -16,12 +16,14 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompos
 
 final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
 {
+    public const STORE_CONTEXT_TAG = 'coreshop.context.store';
+
     public function __construct()
     {
         parent::__construct(
             'coreshop.context.store',
             'coreshop.context.store.composite',
-            'coreshop.context.store',
+            self::STORE_CONTEXT_TAG,
             'addContext'
         );
     }

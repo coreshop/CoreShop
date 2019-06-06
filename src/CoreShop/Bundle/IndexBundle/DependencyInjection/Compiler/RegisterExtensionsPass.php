@@ -18,6 +18,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterExtensionsPass implements CompilerPassInterface
 {
+    public const INDEX_EXTENSION_TAG = 'coreshop.index.extension';
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +31,7 @@ final class RegisterExtensionsPass implements CompilerPassInterface
 
         $registry = $container->getDefinition('coreshop.registry.index.extensions');
 
-        foreach ($container->findTaggedServiceIds('coreshop.index.extension') as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(self::INDEX_EXTENSION_TAG) as $id => $attributes) {
             $registry->addMethodCall('register', [$id, new Reference($id)]);
         }
     }
