@@ -28,6 +28,10 @@ class ClassInstaller implements ClassInstallerInterface
             $objectBrick->setKey($brickName);
         }
 
+        if (null === $objectBrick) {
+            $objectBrick = new DataObject\Objectbrick\Definition();
+        }
+
         $json = file_get_contents($jsonFile);
 
         DataObject\ClassDefinition\Service::importObjectBrickFromJson($objectBrick, $json, true);
@@ -97,6 +101,10 @@ class ClassInstaller implements ClassInstallerInterface
         } catch (\Exception $e) {
             $fieldCollection = new DataObject\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
+        }
+
+        if (null === $fieldCollection) {
+            $fieldCollection = new DataObject\Fieldcollection\Definition();
         }
 
         $json = file_get_contents($jsonFile);

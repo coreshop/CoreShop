@@ -69,7 +69,10 @@ final class LocaleSwitcherExtension extends AbstractExtension
         if ($store->getSiteId()) {
             try {
                 $site = Site::getById($store->getSiteId());
-                $basePath = $site->getRootDocument()->getRealFullPath() . '/';
+
+                if ($site instanceof Site) {
+                    $basePath = $site->getRootDocument()->getRealFullPath().'/';
+                }
             } catch (\Exception $ex) {
                 $basePath = '/';
             }
