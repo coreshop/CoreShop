@@ -38,4 +38,4 @@ COMPOSER_MEMORY_LIMIT=-1 composer install -o --no-interaction
 #########
 ##########################################################################################
 bin/console cache:clear
-bin/console assets:install --symlink
+bin/console assets:install --symlink web
