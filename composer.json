@@ -135,26 +135,6 @@
       "app/AppKernel.php"
     ]
   },
-  "scripts": {
-    "post-create-project-cmd": "Pimcore\\Composer::postCreateProject",
-    "post-install-cmd": [
-      "Pimcore\\Composer::postInstall",
-      "@symfony-scripts"
-    ],
-    "post-update-cmd": [
-      "Pimcore\\Composer::postUpdate",
-      "@symfony-scripts"
-    ],
-    "pre-package-update": [
-      "Pimcore\\Composer::prePackageUpdate"
-    ],
-    "symfony-scripts": [
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
-    ]
-  },
   "extra": {
     "symfony-app-dir": "app",
     "symfony-bin-dir": "bin",
