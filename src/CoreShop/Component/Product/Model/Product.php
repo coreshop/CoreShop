@@ -230,22 +230,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getIsAvailableWhenOutOfStock()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setIsAvailableWhenOutOfStock($isAvailableWhenOutOfStock)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getShortDescription($language = null)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
