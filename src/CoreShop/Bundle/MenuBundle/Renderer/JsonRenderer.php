@@ -15,11 +15,12 @@ namespace CoreShop\Bundle\MenuBundle\Renderer;
 use CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Renderer\RendererInterface;
+use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $environment;
 
@@ -34,13 +35,13 @@ class JsonRenderer implements RendererInterface
     private $defaultOptions;
 
     /**
-     * @param \Twig_Environment $environment
+     * @param Environment $environment
      * @param string            $template
      * @param PimcoreGuard      $guard
      * @param array             $defaultOptions
      */
     public function __construct(
-        \Twig_Environment $environment,
+        Environment $environment,
         $template,
         PimcoreGuard $guard,
         array $defaultOptions = array()

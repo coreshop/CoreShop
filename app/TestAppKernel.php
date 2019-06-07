@@ -31,6 +31,7 @@ class TestAppKernel extends Kernel
 
         $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
+            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakePimcoreServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
             $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MonologChannelLoggerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
         });
     }

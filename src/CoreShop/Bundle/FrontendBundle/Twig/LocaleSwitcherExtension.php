@@ -16,8 +16,10 @@ use CoreShop\Component\Core\Context\ShopperContextInterface;
 use Pimcore\Model\Document;
 use Pimcore\Model\Site;
 use Pimcore\Tool;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class LocaleSwitcherExtension extends \Twig_Extension
+final class LocaleSwitcherExtension extends AbstractExtension
 {
     /**
      * @var Document\Service
@@ -47,7 +49,7 @@ final class LocaleSwitcherExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
+            new TwigFunction('coreshop_locale_switcher', [$this, 'getLocalizedLinks']),
         ];
     }
 
@@ -67,7 +69,10 @@ final class LocaleSwitcherExtension extends \Twig_Extension
         if ($store->getSiteId()) {
             try {
                 $site = Site::getById($store->getSiteId());
-                $basePath = $site->getRootDocument()->getRealFullPath() . '/';
+
+                if ($site instanceof Site) {
+                    $basePath = $site->getRootDocument()->getRealFullPath().'/';
+                }
             } catch (\Exception $ex) {
                 $basePath = '/';
             }

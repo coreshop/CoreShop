@@ -23,7 +23,7 @@
     "coreshop/registry": "^2.0",
     "coreshop/resource-bundle": "^2.1",
     "coreshop/menu-bundle": "^2.1",
-    "pimcore/pimcore": "^5.8.0"
+    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4"

@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\AddressBundle\Twig;
 
 use CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class FormatAddressExtension extends \Twig_Extension
+final class FormatAddressExtension extends AbstractExtension
 {
     /**
      * @var FormatAddressHelperInterface
@@ -35,7 +37,7 @@ final class FormatAddressExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
+            new TwigFilter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
         ];
     }
 }

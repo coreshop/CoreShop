@@ -64,4 +64,12 @@ class PimcoreDocument extends Type
     {
         return self::PIMCORE_DOCUMENT;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }

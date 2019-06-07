@@ -19,6 +19,7 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreR
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterResourcesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackClassesPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\StackRepositoryPass;
+use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMappingFixPass;
 use JMS\SerializerBundle\JMSSerializerBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -52,6 +53,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new StackClassesPass());
         $container->addCompilerPass(new StackRepositoryPass());
         $container->addCompilerPass(new RegisterPimcoreRepositoriesPass());
+        $container->addCompilerPass(new ValidatorAutoMappingFixPass());
     }
 
     /**

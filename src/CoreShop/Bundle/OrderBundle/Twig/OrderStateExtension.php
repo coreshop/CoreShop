@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\OrderBundle\Twig;
 
 use CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class OrderStateExtension extends \Twig_Extension
+final class OrderStateExtension extends AbstractExtension
 {
     /**
      * @var OrderStateHelperInterface
@@ -35,7 +37,7 @@ final class OrderStateExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_order_state', [$this->helper, 'getOrderState']),
+            new TwigFilter('coreshop_order_state', [$this->helper, 'getOrderState']),
         ];
     }
 }
