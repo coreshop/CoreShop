@@ -24,7 +24,9 @@ coreshop.notification.rule.conditions.paymentState = Class.create(coreshop.rules
                     name: 'paymentState',
                     value: this.data ? this.data.paymentState : [],
                     width: 250,
-                    store: pimcore.globalmanager.get('coreshop_states_payment'),
+                    store: {
+                        type: 'coreshop_states_payment'
+                    },
                     triggerAction: 'all',
                     typeAhead: false,
                     editable: false,

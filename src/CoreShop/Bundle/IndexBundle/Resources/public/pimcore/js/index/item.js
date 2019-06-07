@@ -98,7 +98,9 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                     value: this.data.worker,
                                     mode: 'local',
                                     listWidth: 100,
-                                    store: this.parentPanel.typesStore,
+                                    store: {
+                                        type: 'coreshop_index_types'
+                                    },
                                     displayField: 'name',
                                     valueField: 'name',
                                     forceSelection: true,

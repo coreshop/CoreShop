@@ -16,14 +16,15 @@ coreshop.shippingrule.conditions.currencies = Class.create(coreshop.rules.condit
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_currencies');
 
         var currencies = {
             fieldLabel: t('coreshop_condition_currencies'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_currencies'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -32,15 +33,7 @@ coreshop.shippingrule.conditions.currencies = Class.create(coreshop.rules.condit
             name: 'currencies',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.currencies)
-                        this.setValue(me.data.currencies);
-                }
-            }
+            value: me.data.currencies
         };
 
         if (this.data && this.data.currencies) {

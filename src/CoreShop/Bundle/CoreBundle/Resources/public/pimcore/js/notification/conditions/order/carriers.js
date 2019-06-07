@@ -17,14 +17,15 @@ coreshop.notification.rule.conditions.carriers = Class.create(coreshop.rules.con
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_carriers');
 
         var carriers = {
             fieldLabel: t('coreshop_carrier'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_carriers'
+            },
             displayField: 'identifier',
             valueField: 'id',
             forceSelection: true,
@@ -33,15 +34,7 @@ coreshop.notification.rule.conditions.carriers = Class.create(coreshop.rules.con
             name: 'carriers',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.carriers)
-                        this.setValue(me.data.carriers);
-                }
-            }
+            value: me.data.carriers
         };
 
         if (this.data && this.data.carriers) {

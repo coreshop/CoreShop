@@ -14,7 +14,6 @@ coreshop.store.item = Class.create(coreshop.store.item, {
 
     getFormPanel: function ($super) {
         var me = this,
-            store = pimcore.globalmanager.get('coreshop_countries'),
             panel = $super();
 
         panel.down('fieldset').add(
@@ -26,7 +25,9 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     value: this.data.baseCountry,
                     mode: 'local',
                     listWidth: 100,
-                    store: pimcore.globalmanager.get('coreshop_countries_active'),
+                    store: {
+                        type: 'coreshop_countries_active'
+                    },
                     displayField: 'name',
                     valueField: 'id',
                     forceSelection: true,
@@ -45,7 +46,9 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     typeAhead: true,
                     listWidth: 100,
                     width: 500,
-                    store: store,
+                    store: {
+                        type: 'coreshop_countries'
+                    },
                     displayField: 'name',
                     valueField: 'id',
                     forceSelection: true,
@@ -54,15 +57,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     name: 'countries',
                     height: 400,
                     delimiter: false,
-                    listeners: {
-                        beforerender: function () {
-                            if (!store.isLoaded() && !store.isLoading())
-                                store.load();
-
-                            if (me.data && me.data.countries)
-                                this.setValue(me.data.countries);
-                        }
-                    }
+                    value: me.data.countries
                 }
             ]
         );

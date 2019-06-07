@@ -21,9 +21,6 @@ coreshop.shipping.resource = Class.create(coreshop.resource, {
         ]);
         coreshop.global.addStore('coreshop_carrier_shipping_rules', 'coreshop/shipping_rules');
 
-        pimcore.globalmanager.get('coreshop_carriers').load();
-        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load();
-
         coreshop.broker.fireEvent('resource.register', 'coreshop.shipping', this);
     },
 

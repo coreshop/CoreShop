@@ -36,6 +36,9 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
     getExchangeRatesGrid: function () {
         pimcore.globalmanager.get(this.storeId).load();
 
+        var currencyStore = Ext.create('store.coreshop_currencies');
+        currencyStore.load();
+
         this.grid = Ext.create('Ext.grid.Panel', {
             store: pimcore.globalmanager.get(this.storeId),
             region: 'center',
@@ -45,15 +48,14 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     flex: 1,
                     dataIndex: 'fromCurrency',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_currencies'),
+                        store: currencyStore,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
-                    renderer: function (currencyId) {
-                        var store = pimcore.globalmanager.get('coreshop_currencies');
-                        var currency = store.getById(currencyId);
+                    renderer: function (currencyId) {;
+                        var currency = currencyStore.getById(currencyId);
                         if (currency) {
                             return currency.get('name');
                         }
@@ -66,15 +68,14 @@ coreshop.exchange_rate.panel = Class.create(coreshop.resource.panel, {
                     flex: 1,
                     dataIndex: 'toCurrency',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_currencies'),
+                        store: currencyStore,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
                     renderer: function (currencyId) {
-                        var store = pimcore.globalmanager.get('coreshop_currencies');
-                        var currency = store.getById(currencyId);
+                        var currency = currencyStore.getById(currencyId);
                         if (currency) {
                             return currency.get('name');
                         }

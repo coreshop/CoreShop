@@ -21,8 +21,6 @@ coreshop.currency.resource = Class.create(coreshop.resource, {
             {name: 'exchangeRate'}
         ]);
 
-        pimcore.globalmanager.get('coreshop_currencies').load();
-
         coreshop.broker.fireEvent('resource.register', 'coreshop.currency', this);
     },
 
