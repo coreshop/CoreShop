@@ -218,7 +218,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
             $currency = $this->getCurrencyById($data['currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']), $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * 100, $currency);
             }
         }
 
@@ -346,6 +346,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
             return (int) $value;
         }
 
-        return (int) round($value * 100, 0);
+        return (int) round($value, 0);
     }
 }
