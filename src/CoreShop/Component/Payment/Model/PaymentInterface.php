@@ -102,7 +102,7 @@ interface PaymentInterface extends ResourceInterface, TimestampableInterface
     public function getCurrencyCode();
 
     /**
-     * @param $currencyCode
+     * @param string $currencyCode
      */
     public function setCurrencyCode($currencyCode);
 }
