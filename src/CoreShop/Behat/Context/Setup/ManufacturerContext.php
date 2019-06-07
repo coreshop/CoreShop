@@ -62,7 +62,7 @@ final class ManufacturerContext implements Context
          */
         $manufacturer = $this->manufacturerFactory->createNew();
 
-        $manufacturer->setName($name, 'en');
+        $manufacturer->setName($name);
         $manufacturer->setParent(Service::createFolderByPath('/manufacturer'));
         $manufacturer->setKey(File::getValidFilename($name));
         $manufacturer->save();
