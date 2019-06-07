@@ -1,7 +1,7 @@
 default:
     suites:
         domain_cart:
-            contexts_services:
+            contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
 
