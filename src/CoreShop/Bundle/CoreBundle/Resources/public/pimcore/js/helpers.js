@@ -29,7 +29,9 @@ coreshop.helpers.createOrder = function () {
 };
 
 coreshop.util.format.currency = function (currency, v) {
-    v = (Math.round(((v / 100) - 0) * 100)) / 100;
+    var factor = pimcore.globalmanager.get('coreshop.currency.decimal_factor');
+
+    v = (Math.round(((v / factor) - 0) * factor)) / factor;
     v = (v == Math.floor(v)) ? v + '.00' : ((v * 10 == Math.floor(v * 10)) ? v + '0' : v);
     v = String(v);
     var ps = v.split('.'),

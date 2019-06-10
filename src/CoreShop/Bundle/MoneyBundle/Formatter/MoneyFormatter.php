@@ -18,13 +18,26 @@ use Webmozart\Assert\Assert;
 final class MoneyFormatter implements MoneyFormatterInterface
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
+     * @param int $decimalFactor
+     */
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function format($amount, $currency, $locale = 'en')
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        $result = $formatter->formatCurrency(abs($amount / 100), $currency);
+        $result = $formatter->formatCurrency(abs($amount / $this->decimalFactor), $currency);
         Assert::notSame(
             false,
             $result,

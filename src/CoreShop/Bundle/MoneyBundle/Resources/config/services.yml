@@ -7,6 +7,8 @@ services:
 
     coreshop.money_formatter:
         class: CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
 
     coreshop.twig.extension.money:
         class: CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension

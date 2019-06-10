@@ -197,7 +197,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue() / 100,
+                    'value' => $data->getValue() / $this->getDecimalFactor(),
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }
@@ -218,7 +218,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
             $currency = $this->getCurrencyById($data['currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * 100, $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * $this->getDecimalFactor(), $currency);
             }
         }
 
@@ -333,6 +333,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
     protected function getEntityManager()
     {
         return \Pimcore::getContainer()->get('coreshop.manager.currency');
+    }
+
+    protected function getDecimalFactor()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
     }
 
     /**

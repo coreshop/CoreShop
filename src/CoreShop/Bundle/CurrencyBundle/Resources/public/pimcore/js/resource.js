@@ -21,6 +21,21 @@ coreshop.currency.resource = Class.create(coreshop.resource, {
             {name: 'exchangeRate'}
         ]);
 
+        Ext.Ajax.request({
+            url: 'coreshop/currencies/get-config',
+            method: 'get',
+            success: function (response) {
+                try {
+                    var res = Ext.decode(response.responseText);
+
+                    pimcore.globalmanager.add('coreshop.currency.decimal_precision', res.decimal_precision);
+                    pimcore.globalmanager.add('coreshop.currency.decimal_factor', res.decimal_factor);
+                } catch (e) {
+
+                }
+            }.bind(this)
+        });
+
         pimcore.globalmanager.get('coreshop_currencies').load();
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.currency', this);

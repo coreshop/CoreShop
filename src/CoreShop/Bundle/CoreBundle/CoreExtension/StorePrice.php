@@ -355,7 +355,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
          */
         foreach ($prices as $price) {
             $priceValue = $price->getPrice();
-            $priceValue = round($priceValue / 100, 2);
+            $priceValue = round($priceValue / $this->getDecimalFactor(), $this->getDecimalPrecision());
 
             $storeData[$price->getStore()->getId()] = [
                 'name' => $price->getStore()->getName(),
@@ -398,7 +398,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
                 continue;
             }
 
-            $validData[$storeId] = (int) round((round($price, 2) * 100), 0);
+            $validData[$storeId] = (int) round((round($price, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $validData;
@@ -574,6 +574,22 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
         }
 
         return (float) $value;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getDecimalFactor()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
+    }
+
+    /**
+     * @return int
+     */
+    protected function getDecimalPrecision()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_precision');
     }
 
     /**
