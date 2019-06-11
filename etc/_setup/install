@@ -22,6 +22,16 @@ mkdir -p $CS_HOME/var/config
 cp $CS_HOME/etc/_config/system.template.php var/config/system.php
 cp app/config/parameters.example.yml app/config/parameters.yml
 
+if [[ "$PIMCORE_VERSION" == "^5" ]];
+then
+    cp $CS_HOME/etc/_config/config_5.yml app/config/config.yml
+fi
+
+if [[ "$PIMCORE_VERSION" == "~5.8" ]];
+then
+    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
+fi
+
 ##########################################################################################
 #########
 #########  Install composer dependencies

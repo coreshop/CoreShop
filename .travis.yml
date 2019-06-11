@@ -9,7 +9,7 @@ env:
     global:
         - PIMCORE_ENVIRONMENT=test
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - PIMCORE_VERSION="^5"
+        - PIMCORE_VERSION="~5.8"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
         - SYMFONY_VERSION="^3.4"
