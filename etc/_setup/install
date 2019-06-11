@@ -27,7 +27,7 @@ then
     cp $CS_HOME/etc/_config/config_5.yml app/config/config.yml
 fi
 
-if [[ "$PIMCORE_VERSION" == "^6.0" ]];
+if [[ "$PIMCORE_VERSION" == "~6.0" ]];
 then
     cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
 fi
