@@ -32,6 +32,11 @@ then
     cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
 fi
 
+if [[ "$PIMCORE_VERSION" == "dev-master" ]];
+then
+    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
+fi
+
 ##########################################################################################
 #########
 #########  Install composer dependencies
