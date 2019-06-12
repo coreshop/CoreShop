@@ -65,7 +65,16 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
+
+        // always send desired decimal precision rounded amount to gateway!
+        if ($this->decimalFactor === 100) {
+            $totalAmount = $order->getTotal();
+        } else {
+            $totalAmount = (int) round((round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision) * $this->decimalFactor), 0);
+        }
+
+        $payment->setTotalAmount($totalAmount);
+
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
