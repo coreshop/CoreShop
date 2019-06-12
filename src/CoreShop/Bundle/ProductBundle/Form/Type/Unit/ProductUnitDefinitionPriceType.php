@@ -32,10 +32,10 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
     protected $decimalPrecision;
 
     /**
-     * @param       $dataClass
-     * @param array $validationGroups
-     * @param int   $decimalFactor
-     * @param int   $decimalPrecision
+     * @param string $dataClass
+     * @param array  $validationGroups
+     * @param int    $decimalFactor
+     * @param int    $decimalPrecision
      */
     public function __construct($dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
     {

@@ -29,25 +29,14 @@ coreshop.helpers.createOrder = function () {
 };
 
 coreshop.util.format.currency = function (currency, v) {
-    var factor = pimcore.globalmanager.get('coreshop.currency.decimal_factor');
 
-    v = (Math.round(((v / factor) - 0) * factor)) / factor;
-    v = (v == Math.floor(v)) ? v + '.00' : ((v * 10 == Math.floor(v * 10)) ? v + '0' : v);
-    v = String(v);
-    var ps = v.split('.'),
-        whole = ps[0],
-        sub = ps[1] ? '.' + ps[1] : '.00',
-        r = /(\d+)(\d{3})/;
-    while (r.test(whole)) {
-        whole = whole.replace(r, '$1' + ',' + '$2');
-    }
+    var factor = pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+        decimalPrecision = pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
+        value = (Math.round(((v / factor) - 0) * factor)) / factor;
 
-    v = whole + sub;
-    if (v.charAt(0) == '-') {
-        return '-' + currency + ' ' + v.substr(1);
-    }
+    currency = currency + ' ';
 
-    return currency + ' ' + v;
+    return Ext.util.Format.currency(value, currency, decimalPrecision, false);
 };
 
 coreshop.helpers.showAbout = function () {
