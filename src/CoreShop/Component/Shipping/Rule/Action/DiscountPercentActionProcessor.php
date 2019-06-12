@@ -19,19 +19,6 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 class DiscountPercentActionProcessor implements CarrierPriceActionProcessorInterface
 {
     /**
-     * @var int
-     */
-    protected $decimalFactor;
-
-    /**
-     * @param int $decimalFactor
-     */
-    public function __construct(int $decimalFactor)
-    {
-        $this->decimalFactor = $decimalFactor;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
@@ -44,6 +31,6 @@ class DiscountPercentActionProcessor implements CarrierPriceActionProcessorInter
      */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
     {
-        return (int) round(-1 * ($price * ($configuration['percent'] / $this->decimalFactor)));
+        return (int) round(-1 * ($price * ($configuration['percent'] / 100)));
     }
 }

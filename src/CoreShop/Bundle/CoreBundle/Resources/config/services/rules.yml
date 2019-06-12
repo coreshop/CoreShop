@@ -145,7 +145,6 @@ services:
         class: CoreShop\Component\Core\Cart\Rule\Action\DiscountPercentActionProcessor
         arguments:
             - '@coreshop.cart_price_rule.cart_rule_applier'
-            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
 
@@ -153,7 +152,6 @@ services:
         class: CoreShop\Component\Core\Cart\Rule\Action\SurchargePercentActionProcessor
         arguments:
             - '@coreshop.cart_price_rule.cart_rule_applier'
-            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.cart_price_rule.action, type: surchargePercent, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType }
 
@@ -165,7 +163,6 @@ services:
             - '@coreshop.collector.taxes'
             - '@coreshop.provider.store_based_default_address_provider'
             - '@coreshop.factory.adjustment'
-            - '%coreshop.currency.decimal_factor%'
 
     # Deprecated and will be removed in 3.0. Use coreshop.cart_price_rule.cart_rule_applier instead
     coreshop.cart_price_rule.discount.applier:

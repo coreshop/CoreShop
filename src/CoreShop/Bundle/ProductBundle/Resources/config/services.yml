@@ -93,8 +93,6 @@ services:
 
     coreshop.product_price_rule.action.discount_percent:
         class: CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor
-        arguments:
-            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.product_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }

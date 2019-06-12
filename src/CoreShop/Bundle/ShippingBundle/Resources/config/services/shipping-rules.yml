@@ -73,15 +73,11 @@ services:
     # Shipping Rule ACTIONS
     coreshop.shipping_rule.action.addition_percent:
         class: CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor
-        arguments:
-            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.shipping_rule.action, type: additionPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType }
 
     coreshop.shipping_rule.action.discount_percent:
         class: CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor
-        arguments:
-            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.shipping_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
 

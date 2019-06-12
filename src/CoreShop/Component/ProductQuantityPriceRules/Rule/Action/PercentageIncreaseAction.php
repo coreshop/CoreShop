@@ -18,23 +18,10 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 class PercentageIncreaseAction implements ProductQuantityPriceRuleActionInterface
 {
     /**
-     * @var int
-     */
-    protected $decimalFactor;
-
-    /**
-     * @param int $decimalFactor
-     */
-    public function __construct(int $decimalFactor)
-    {
-         $this->decimalFactor = $decimalFactor;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context)
     {
-        return $realItemPrice + ((int) round(($range->getPercentage() / $this->decimalFactor) * $realItemPrice));
+        return $realItemPrice + ((int) round(($range->getPercentage() / 100) * $realItemPrice));
     }
 }
