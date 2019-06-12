@@ -7,11 +7,15 @@ services:
 
     coreshop.product_quantity_price_rules.action.percentage_decrease:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Action\PercentageDecreaseAction
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: percentage_decrease }
 
     coreshop.product_quantity_price_rules.action.percentage_increase:
         class: CoreShop\Component\ProductQuantityPriceRules\Rule\Action\PercentageIncreaseAction
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: percentage_increase }
 

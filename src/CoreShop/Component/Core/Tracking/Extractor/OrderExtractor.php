@@ -24,11 +24,18 @@ class OrderExtractor implements TrackingExtractorInterface
     private $extractor;
 
     /**
-     * @param TrackingExtractorInterface $extractor
+     * @var int
      */
-    public function __construct(TrackingExtractorInterface $extractor)
+    protected $decimalFactor;
+
+    /**
+     * @param TrackingExtractorInterface $extractor
+     * @param int                        $decimalFactor
+     */
+    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor)
     {
         $this->extractor = $extractor;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -57,12 +64,12 @@ class OrderExtractor implements TrackingExtractorInterface
             $data,
             [
                 'id' => $object->getId(),
-                'affiliation' => $object->getTotal() / 100,
-                'total' => $object->getTotal() / 100,
-                'subtotal' => $object->getSubtotal() / 100,
-                'tax' => $object->getTotalTax() / 100,
-                'shipping' => $object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING) / 100,
-                'discount' => $object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE) / 100,
+                'affiliation' => $object->getTotal() / $this->decimalFactor,
+                'total' => $object->getTotal() / $this->decimalFactor,
+                'subtotal' => $object->getSubtotal() / $this->decimalFactor,
+                'tax' => $object->getTotalTax() / $this->decimalFactor,
+                'shipping' => $object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING) / $this->decimalFactor,
+                'discount' => $object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE) / $this->decimalFactor,
                 'currency' => $object->getCurrency()->getIsoCode(),
                 'items' => $items,
             ]

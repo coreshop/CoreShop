@@ -28,11 +28,25 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     private $paymentFactory;
 
     /**
-     * @param FactoryInterface $paymentFactory
+     * @var int
      */
-    public function __construct(FactoryInterface $paymentFactory)
+    private $decimalFactor;
+
+    /**
+     * @var int
+     */
+    private $decimalPrecision;
+
+    /**
+     * @param FactoryInterface $paymentFactory
+     * @param int              $decimalFactor
+     * @param int              $decimalPrecision
+     */
+    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
     {
         $this->paymentFactory = $paymentFactory;
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -67,7 +81,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $description = sprintf(
             'Payment contains %s item(s) for a total of %s.',
             count($order->getItems()),
-            round($order->getTotal() / 100, 2)
+            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
         );
 
         //payum setters

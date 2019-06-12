@@ -26,12 +26,20 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
     private $taxRuleRepository;
 
     /**
+     * @var int
+     */
+    private $decimalFactor;
+
+    /**
      * @param TaxRuleRepositoryInterface $taxRuleRepository
+     * @param int                        $decimalFactor
      */
     public function __construct(
-        TaxRuleRepositoryInterface $taxRuleRepository
+        TaxRuleRepositoryInterface $taxRuleRepository,
+        int $decimalFactor
     ) {
         $this->taxRuleRepository = $taxRuleRepository;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -60,6 +68,6 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
             }
         }
 
-        return new TaxRulesTaxCalculator($taxRates, $behavior);
+        return new TaxRulesTaxCalculator($taxRates, $behavior, $this->decimalFactor);
     }
 }

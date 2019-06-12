@@ -40,7 +40,7 @@ services:
         class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
         arguments:
             - '@coreshop.repository.tax_rule'
-            - '@coreshop.context.store'
+            - '%coreshop.currency.decimal_factor%'
 
     coreshop.taxation.tax_applicator:
         class: CoreShop\Component\Core\Taxation\TaxApplicator

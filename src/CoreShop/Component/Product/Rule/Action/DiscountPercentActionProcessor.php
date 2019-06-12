@@ -18,12 +18,25 @@ use Webmozart\Assert\Assert;
 class DiscountPercentActionProcessor implements ProductDiscountActionProcessorInterface
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
+     * @param int $decimalFactor
+     */
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDiscount($subject, $price, array $context, array $configuration)
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 
-        return (int) round(($configuration['percent'] / 100) * $price);
+        return (int) round(($configuration['percent'] / $this->decimalFactor) * $price);
     }
 }

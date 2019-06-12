@@ -50,24 +50,32 @@ class CartRuleApplier implements CartRuleApplierInterface
     private $adjustmentFactory;
 
     /**
+     * @var int
+     */
+    private $decimalFactor;
+
+    /**
      * @param ProportionalIntegerDistributor       $distributor
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param TaxCollectorInterface                $taxCollector
      * @param AddressProviderInterface             $defaultAddressProvider
      * @param AdjustmentFactoryInterface           $adjustmentFactory
+     * @param int                                  $decimalFactor
      */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
-        AdjustmentFactoryInterface $adjustmentFactory
+        AdjustmentFactoryInterface $adjustmentFactory,
+        int $decimalFactor
     ) {
         $this->distributor = $distributor;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
         $this->adjustmentFactory = $adjustmentFactory;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -127,11 +135,11 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $taxItems = $item->getTaxes();
 
                 if ($withTax) {
-                    $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
+                    $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / $this->decimalFactor);
 
                     $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, ($positive ? $itemDiscountNet : -1 * $itemDiscountNet), $taxItems->getItems()));
                 } else {
-                    $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
+                    $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / $this->decimalFactor));
 
                     $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, ($positive ? $itemDiscountGross : -1 * $itemDiscountGross), $taxItems->getItems()));
                 }

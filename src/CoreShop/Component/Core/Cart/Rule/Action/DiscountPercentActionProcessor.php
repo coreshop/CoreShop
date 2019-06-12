@@ -20,16 +20,23 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
      * @var CartRuleApplierInterface
      */
     protected $cartRuleApplier;
 
     /**
      * @param CartRuleApplierInterface $cartRuleApplier
+     * @param int                      $decimalFactor
      */
-    public function __construct(CartRuleApplierInterface $cartRuleApplier)
+    public function __construct(CartRuleApplierInterface $cartRuleApplier, int $decimalFactor)
     {
         $this->cartRuleApplier = $cartRuleApplier;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -69,7 +76,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
             $total = $cart->getSubtotal(false);
         }
 
-        $amount = (int) round(($configuration['percent'] / 100) * $total);
+        $amount = (int) round(($configuration['percent'] / $this->decimalFactor) * $total);
 
         return $this->getApplicableAmount($amount, $amount);
     }

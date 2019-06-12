@@ -25,11 +25,18 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
     protected $cartRuleApplier;
 
     /**
-     * @param CartRuleApplierInterface $cartRuleApplier
+     * @var int
      */
-    public function __construct(CartRuleApplierInterface $cartRuleApplier)
+    protected $decimalFactor;
+
+    /**
+     * @param CartRuleApplierInterface $cartRuleApplier
+     * @param int                      $decimalFactor
+     */
+    public function __construct(CartRuleApplierInterface $cartRuleApplier, int $decimalFactor)
     {
         $this->cartRuleApplier = $cartRuleApplier;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -69,7 +76,7 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
             $total = $cart->getSubtotal(false);
         }
 
-        $amount = (int) round(($configuration['percent'] / 100) * $total);
+        $amount = (int) round(($configuration['percent'] / $this->decimalFactor) * $total);
 
         return $this->getApplicableAmount($amount, $amount);
     }
