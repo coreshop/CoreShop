@@ -68,6 +68,6 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
             }
         }
 
-        return new TaxRulesTaxCalculator($taxRates, $behavior, $this->decimalFactor);
+        return new TaxRulesTaxCalculator($taxRates, $behavior);
     }
 }
