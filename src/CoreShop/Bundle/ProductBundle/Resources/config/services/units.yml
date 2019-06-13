@@ -54,6 +54,8 @@ services:
         arguments:
             - '%coreshop.model.product_unit_definition_price.class%'
             - '%coreshop.form.type.product_unit_definition_price.validation_groups%'
+            - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'
         tags:
             - { name: form.type }
 

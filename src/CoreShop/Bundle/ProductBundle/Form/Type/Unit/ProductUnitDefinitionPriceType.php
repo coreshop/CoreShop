@@ -22,6 +22,30 @@ use Symfony\Component\Form\FormEvents;
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
+     * @var int
+     */
+    protected $decimalPrecision;
+
+    /**
+     * @param string $dataClass
+     * @param array  $validationGroups
+     * @param int    $decimalFactor
+     * @param int    $decimalPrecision
+     */
+    public function __construct($dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
+    {
+        parent::__construct($dataClass, $validationGroups);
+
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -44,7 +68,7 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
         if (!is_numeric($data['price'])) {
             $data['price'] = 0;
         } else {
-            $data['price'] = (int) round((round($data['price'], 2) * 100), 0);
+            $data['price'] = (int) round((round($data['price'], $this->decimalPrecision) * $this->decimalFactor), 0);
         }
 
         $event->setData($data);

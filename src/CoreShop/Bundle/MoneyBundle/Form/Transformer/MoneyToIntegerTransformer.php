@@ -17,6 +17,19 @@ use Symfony\Component\Form\DataTransformerInterface;
 class MoneyToIntegerTransformer implements DataTransformerInterface
 {
     /**
+     * @var int
+     */
+    private $decimalFactor;
+
+    /**
+     * @param int $decimalFactor
+     */
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function transform($value)
@@ -25,7 +38,7 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $value / 100;
+        return $value / $this->decimalFactor;
     }
 
     /**
@@ -37,6 +50,6 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
             return null;
         }
 
-        return (int) round($value * 100);
+        return (int) round($value * $this->decimalFactor);
     }
 }

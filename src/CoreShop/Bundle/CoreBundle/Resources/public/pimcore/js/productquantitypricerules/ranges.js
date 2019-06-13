@@ -200,7 +200,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     if (value === undefined) {
                         return coreshop.util.format.currency('', 0);
                     } else {
-                        return prefix + coreshop.util.format.currency('', parseFloat(value) * 100);
+                        return prefix + coreshop.util.format.currency('', parseFloat(value) * pimcore.globalmanager.get('coreshop.currency.decimal_factor'));
                     }
                 }
             }],
@@ -286,7 +286,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                         return coreshop.util.format.currency('', 0);
                     } else {
 
-                        return coreshop.util.format.currency('', parseFloat(value) * 100);
+                        return coreshop.util.format.currency('', parseFloat(value) * pimcore.globalmanager.get('coreshop.currency.decimal_factor'));
                     }
                 }
             }]
@@ -381,14 +381,14 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
             if (range.hasOwnProperty('amount')) {
                 p = parseInt(range['amount']);
                 if (p > 0) {
-                    data[key]['amount'] = parseInt(range['amount']) / 100;
+                    data[key]['amount'] = parseInt(range['amount']) / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
                 }
             }
 
             if (range.hasOwnProperty('pseudoPrice')) {
                 p = parseInt(range['pseudoPrice']);
                 if (p > 0) {
-                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / 100;
+                    data[key]['pseudoPrice'] = parseInt(range['pseudoPrice']) / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
                 }
             }
         });

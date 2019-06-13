@@ -19,7 +19,7 @@ coreshop.shippingrule.actions.additionAmount = Class.create(coreshop.rules.actio
         var currency = null;
 
         if (this.data) {
-            amountValue = this.data.amount / 100;
+            amountValue = this.data.amount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
         }
 

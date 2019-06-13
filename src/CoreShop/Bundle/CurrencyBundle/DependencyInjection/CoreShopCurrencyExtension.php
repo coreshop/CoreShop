@@ -37,6 +37,8 @@ final class CoreShopCurrencyExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
+        $container->setParameter('coreshop.currency.decimal_factor', $config['money_decimal_factor']);
+        $container->setParameter('coreshop.currency.decimal_precision', $config['money_decimal_precision']);
 
         $container
             ->registerForAutoconfiguration(CurrencyContextInterface::class)

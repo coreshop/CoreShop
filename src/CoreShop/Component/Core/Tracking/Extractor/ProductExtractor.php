@@ -32,15 +32,23 @@ class ProductExtractor implements TrackingExtractorInterface
     private $shopperContext;
 
     /**
+     * @var int
+     */
+    private $decimalFactor;
+
+    /**
      * @param TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator
      * @param ShopperContextInterface              $shopperContext
+     * @param int                                  $decimalFactor
      */
     public function __construct(
         TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,
-        ShopperContextInterface $shopperContext
+        ShopperContextInterface $shopperContext,
+        int $decimalFactor
     ) {
         $this->taxedPurchasablePriceCalculator = $taxedPurchasablePriceCalculator;
         $this->shopperContext = $shopperContext;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**
@@ -70,7 +78,7 @@ class ProductExtractor implements TrackingExtractorInterface
             'name'       => $object->getName(),
             'category'   => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
             'sku'        => $object instanceof ProductInterface ? $object->getSku() : '',
-            'price'      => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / 100,
+            'price'      => $this->taxedPurchasablePriceCalculator->getPrice($object, $this->shopperContext->getContext()) / $this->decimalFactor,
             'currency'   => $this->shopperContext->getCurrency()->getIsoCode(),
             'categories' => array_map(function (CategoryInterface $category) {
                 return [
