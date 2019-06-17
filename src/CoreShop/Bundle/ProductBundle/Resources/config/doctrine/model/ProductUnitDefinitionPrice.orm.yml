@@ -10,7 +10,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
                 strategy: AUTO
         price:
             column: price
-            type: integer
+            type: bigint
     manyToOne:
         unitDefinition:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitDefinitionInterface
