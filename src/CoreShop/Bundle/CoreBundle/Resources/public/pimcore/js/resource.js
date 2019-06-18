@@ -28,8 +28,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
     },
 
     pimcoreReady: function (params, broker) {
-        Ext.get('pimcore_status').insertHtml('beforeEnd', '<div id="coreshop_status" class="loading" data-menu-tooltip="' + t('coreshop_loading') + '"></div>');
-
         Ext.Ajax.request({
             url: '/admin/coreshop/settings/get-settings',
             success: function (response) {
@@ -45,13 +43,6 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
     initializeCoreShop: function () {
         new coreshop.menu.coreshop.main();
-
-        Ext.get('coreshop_status').set(
-            {
-                'data-menu-tooltip': t('coreshop_loaded').format(coreshop.settings.bundle.version),
-                class: ''
-            }
-        );
 
         //Add Report Definition
         pimcore.report.broker.addGroup('coreshop', 'coreshop_reports', 'coreshop_icon_report');

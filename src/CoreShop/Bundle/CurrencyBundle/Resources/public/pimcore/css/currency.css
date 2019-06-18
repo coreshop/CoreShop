@@ -2,6 +2,22 @@
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_currency {
+    background: url(../img/currencies.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_currency {
+    background: url(../img/currencies_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_exchange_rate {
     background: url(../img/exchange_rate.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_exchange_rate {
+    background: url(../img/exchange_rate.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_exchange_rate {
+    background: url(../img/exchange_rate_white.svg) center center no-repeat !important;
 }

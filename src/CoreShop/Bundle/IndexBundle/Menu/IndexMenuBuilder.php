@@ -22,8 +22,9 @@ class IndexMenuBuilder implements MenuBuilderInterface
     {
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([
+            'class' => 'coreshop_logo_menu',
             'content' =>
-                '<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"'.
+                '<svg class="coreshop_logo_menu" version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg"  x="0px" y="0px"'.
                 'width="61.3" height="84.6" viewBox="0 0 61.3 84.6" enable-background="new 0 0 61.3 84.6" xml:space="preserve">'.
                 '<style type="text/css">'.
                 '.st0{display:none;}'.
@@ -84,7 +85,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->addChild('coreshop_indexes')
             ->setLabel('coreshop_indexes')
             ->setAttribute('permission', 'coreshop_permission_index')
-            ->setAttribute('iconCls', 'coreshop_icon_indexes')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_indexes')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'index');
 
@@ -92,7 +93,7 @@ class IndexMenuBuilder implements MenuBuilderInterface
             ->addChild('coreshop_filters')
             ->setLabel('coreshop_filters')
             ->setAttribute('permission', 'coreshop_permission_filter')
-            ->setAttribute('iconCls', 'coreshop_icon_filters')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_filters')
             ->setAttribute('resource', 'coreshop.index')
             ->setAttribute('function', 'filter');
     }
