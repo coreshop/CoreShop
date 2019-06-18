@@ -10,16 +10,11 @@
     background-image: url(../img/logo-fill.svg)
 }
 
-#pimcore_menu_coreshop_main svg {
-    width: 30px!important;
-    height: 30px!important;
-    left: 13px!important;
-    top: 8px!important;
+#pimcore_navigation li.coreshop_logo_menu:hover svg path {
+    fill: #5CB672;
 }
 
-#pimcore_navigation li#pimcore_menu_coreshop:hover:after {
-    background-color: #5CB672;
-}
+
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
 
@@ -30,8 +25,30 @@
     background-size: 20px;
 }
 
+.coreshop_nav_icon_logo {
+    background-image: url(../img/logo-fill.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_logo {
+    background-image: url(../img/logo-fill_white.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 20px;
+}
+
 .coreshop_icon_localization {
     background: url(../img//collaboration.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_localization {
+    background: url(../img//collaboration.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_localization {
+    background: url(../img//collaboration_white.svg) center center no-repeat !important;
 }
 
 .coreshop_settings_inherited {

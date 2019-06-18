@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ CoreShop.
+  ~
+  ~ This source file is subject to the GNU General Public License version 3 (GPLv3)
+  ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
+  ~ files that are distributed with this source code.
+  ~
+  ~ @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+  ~
+  -->
+
+<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg xmlns="http://www.w3.org/2000/svg"  version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve"  >
+<path fill="white" d="M39,42H9c-1.1,0-2-0.9-2-2V14h34v26C41,41.1,40.1,42,39,42z"/>
+<g>
+	<rect x="28" y="37" fill="black" width="9" height="1"/>
+	<rect x="34" y="32" fill="black" width="2" height="4"/>
+	<polygon fill="black" points="35,30 33,33 37,33  "/>
+	<rect x="29" y="32" fill="black" width="2" height="4"/>
+	<polygon fill="black" points="30,30 28,33 32,33  "/>
+</g>
+<path fill="white" d="M43,14H5V8c0-1.1,0.9-2,2-2h34c1.1,0,2,0.9,2,2V14z"/>
+</svg>

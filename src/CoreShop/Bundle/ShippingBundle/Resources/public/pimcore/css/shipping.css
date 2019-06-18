@@ -2,8 +2,24 @@
     background: url(../img/carriers.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_shipping {
+    background: url(../img/carriers.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_shipping {
+    background: url(../img/carriers_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_carrier_shipping_rule, .coreshop_rule_icon_condition_shippingRule, .coreshop_rule_icon_action_shippingRule, .coreshop_rule_icon_condition_shipping {
     background: url(../img/shippingrules.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_carrier_shipping_rule {
+    background: url(../img/shippingrules.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_carrier_shipping_rule {
+    background: url(../img/shippingrules_white.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_nested {
@@ -12,6 +28,14 @@
 
 .coreshop_icon_carriers, .coreshop_icon_carrier, .pimcore_icon_coreShopCarrier, .coreshop_icon_report_carriers, .coreshop_rule_icon_condition_carriers, .pimcore_icon_coreShopCarrierMultiselect {
     background: url(../img/carriers.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_carriers {
+    background: url(../img/carriers.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_carriers {
+    background: url(../img/carriers_white.svg) center center no-repeat !important;
 }
 
 .coreshop_rule_icon_condition_amount {

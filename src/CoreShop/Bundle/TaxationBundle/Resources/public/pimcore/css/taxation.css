@@ -2,6 +2,22 @@
     background: url(../img/taxes.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_taxes {
+    background: url(../img/taxes.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_taxes {
+    background: url(../img/taxes_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_tax_rule_groups, .pimcore_icon_coreShopTaxRuleGroup {
     background: url(../img/taxes.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_tax_rule_groups {
+    background: url(../img/taxes.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_tax_rule_groups {
+    background: url(../img/taxes_white.svg) center center no-repeat !important;
 }

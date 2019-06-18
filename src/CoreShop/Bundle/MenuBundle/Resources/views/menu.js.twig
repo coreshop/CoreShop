@@ -59,8 +59,14 @@ coreshop.menu.{{ type }} = Class.create({
                 cls: 'pimcore_navigation_flyout'
             });
 
+            var classes = ['pimcore_menu_item', 'pimcore_menu_needs_children'];
+
+            if (item.attributes.hasOwnProperty('class')) {
+                classes.push(item.attributes.class);
+            }
+
             Ext.get('pimcore_navigation').down('ul').insertHtml('beforeEnd',
-                '<li id="pimcore_menu_{{ typeId }}" data-menu-tooltip="' + t(item.name) + '" class="pimcore_menu_item pimcore_menu_needs_children">' +
+                '<li id="pimcore_menu_{{ typeId }}" data-menu-tooltip="' + t(item.name) + '" class="'+classes.join(' ')+'">' +
                 (item.attributes.hasOwnProperty('content') ? item.attributes.content : '') +
                 '</li>');
 
