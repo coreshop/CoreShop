@@ -12,40 +12,31 @@ env:
         - PIMCORE_VERSION="^5"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
+        - SYMFONY_VERSION="^3.4"
 
 matrix:
     include:
         - sudo: required
-          php: 7.1
+          php: 7.2
           env:
             - CORESHOP_SUITE=codestyle
 
         - sudo: required
-          php: 7.2
+          php: 7.3
           env:
             - CORESHOP_SUITE=stan
             - PIMCORE_VERSION="~5.6.0"
 
         - sudo: required
-          php: 7.2
+          php: 7.3
           env:
             - CORESHOP_SUITE=stan
             - PIMCORE_VERSION="^5.7.2"
 
         - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.4.0"
-
-        - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="~5.4.0"
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.5.0"
 
         - sudo: required
           php: 7.2
@@ -53,19 +44,9 @@ matrix:
             - PIMCORE_VERSION="~5.5.0"
 
         - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.6.0"
-
-        - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="~5.6.0"
-
-        - sudo: required
-          php: 7.1
-          env:
-            - PIMCORE_VERSION="~5.7.2"
 
         - sudo: required
           php: 7.2
@@ -73,19 +54,25 @@ matrix:
             - PIMCORE_VERSION="~5.7.2"
 
         - sudo: required
-          php: 7.1
+          php: 7.2
           env:
-            - PIMCORE_VERSION="dev-master"
+            - PIMCORE_VERSION="~5.8.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="dev-master"
+           - PIMCORE_VERSION="~6.0.0"
+           - SYMFONY_VERSION="^4.0"
+
+        - sudo: required
+          php: 7.3
+          env:
+           - PIMCORE_VERSION="~6.0.0"
+           - SYMFONY_VERSION="^4.0"
+
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
-        - env:
-            - PIMCORE_VERSION="dev-master"
     fast_finish: true
 
 cache:

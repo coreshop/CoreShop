@@ -22,7 +22,7 @@
     "coreshop/resource-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",
     "liip/theme-bundle": "^1.4",
-    "pimcore/pimcore": "^5.4.0"
+    "pimcore/pimcore": "^5.4.0 | ~6.0"
   },
   "config": {
     "bin-dir": "bin"

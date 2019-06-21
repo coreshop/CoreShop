@@ -16,3 +16,19 @@ services:
             - '@coreshop.resource.installer'
         tags:
             - { name: console.command, command: 'coreshop:resources:install' }
+
+    coreshop.command.create_database_tables:
+        class: CoreShop\Bundle\ResourceBundle\Command\CreateDatabaseTablesCommand
+        arguments:
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: 'coreshop:resources:create-tables' }
+
+    coreshop.command.drop_database_tables:
+        class: CoreShop\Bundle\ResourceBundle\Command\DropDatabaseTablesCommand
+        arguments:
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: 'coreshop:resources:drop-tables' }

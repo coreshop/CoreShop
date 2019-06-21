@@ -20,9 +20,9 @@
   "require": {
     "php": "^7.0",
     "coreshop/resource-bundle": "^2.0",
-    "symfony/framework-bundle": "^3.3",
-    "symfony/doctrine-bridge": "^3.3",
-    "symfony/twig-bundle": "^3.3",
+    "symfony/framework-bundle": "^3.4 | ^4.0",
+    "symfony/doctrine-bridge": "^3.4 | ^4.0",
+    "symfony/twig-bundle": "^3.4 | ^4.0",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/dbal": "^2.1",
     "doctrine/orm": "^2.1"

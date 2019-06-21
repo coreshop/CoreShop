@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-echo "BEHAT TESTS"
+echo "YAML LINT"
 bin/console lint:yaml src --no-debug

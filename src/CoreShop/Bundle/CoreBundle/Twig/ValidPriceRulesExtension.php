@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class ValidPriceRulesExtension extends \Twig_Extension
+final class ValidPriceRulesExtension extends AbstractExtension
 {
     /**
      * @var ValidPriceRulesHelperInterface
@@ -35,7 +37,7 @@ final class ValidPriceRulesExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_product_price_rules', [$this->helper, 'getValidRules']),
+            new TwigFilter('coreshop_product_price_rules', [$this->helper, 'getValidRules']),
         ];
     }
 }

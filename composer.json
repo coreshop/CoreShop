@@ -89,7 +89,7 @@
     "dachcom-digital/emailizr": "^1.0.6",
     "symfony/twig-bundle": "~3.2",
     "doctrine/data-fixtures": "^1.0",
-    "pimcore/pimcore": "^5.4.0"
+    "pimcore/pimcore": "^5.4.0 | ~6.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^6",

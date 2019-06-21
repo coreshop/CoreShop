@@ -19,7 +19,7 @@
   ],
   "require": {
     "doctrine/common": "^2.6",
-    "pimcore/pimcore": "^5.4.0",
+    "pimcore/pimcore": "^5.4.0 | ~6.0",
     "webmozart/assert": "^1.2"
   },
   "config": {
