@@ -107,23 +107,26 @@ final class DynamicDropdownController extends AdminController
      */
     public function methodsAction(Request $request)
     {
-        $methods = [];
+        $availableMethods = [];
 
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
 
         if (!empty($className)) {
-            $classMethods = $this->getThisClassMethods('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $class = new \ReflectionClass('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $methods = $class->getMethods();
 
-            if (!is_null($classMethods)) {
-                foreach ($classMethods as $methodName) {
-                    if (substr($methodName, 0, 3) == 'get') {
-                        $methods[] = ['value' => $methodName, 'key' => $methodName];
-                    }
+            $classMethods = array_map(function(\ReflectionMethod $method) {
+                return $method->getName();
+            }, $methods);
+
+            foreach ($classMethods as $methodName) {
+                if (substr($methodName, 0, 3) === 'get') {
+                    $availableMethods[] = ['value' => $methodName, 'key' => $methodName];
                 }
             }
         }
 
-        return $this->json($methods);
+        return $this->json($availableMethods);
     }
 
     /**
