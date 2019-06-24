@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use Pimcore\Model\DataObject\Concrete;
 
 class CartCreationController extends AbstractCartCreationController
 {
@@ -25,8 +26,10 @@ class CartCreationController extends AbstractCartCreationController
         $cart->setPublished(true);
 
         foreach ($cart->getItems() as $item) {
-            $item->setKey(uniqid());
-            $item->setPublished(true);
+            if ($item instanceof Concrete) {
+                $item->setKey(uniqid());
+                $item->setPublished(true);
+            }
         }
 
         $this->get('coreshop.cart.manager')->persistCart($cart);

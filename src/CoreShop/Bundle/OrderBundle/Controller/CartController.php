@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use Carbon\Carbon;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -166,7 +167,11 @@ class CartController extends AbstractSaleController
      */
     protected function prepareSale(CartInterface $cart)
     {
-        $date = (int) $cart->getCreationDate()->getTimestamp();
+        $date = (int) $cart->getCreationDate();
+
+        if ($date instanceof Carbon) {
+            $date = $date->getTimestamp();
+        }
 
         $element = [
             'o_id' => $cart->getId(),
@@ -174,7 +179,6 @@ class CartController extends AbstractSaleController
             'lang' => $cart->getLocaleCode(),
             'discount' => $cart->getDiscount(),
             'subtotal' => $cart->getSubtotal(),
-            'shipping' => $cart->getShipping(),
             'totalTax' => $cart->getTotalTax(),
             'total' => $cart->getTotal(),
             'currency' => $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency()),

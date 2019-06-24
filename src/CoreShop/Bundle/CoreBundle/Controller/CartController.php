@@ -28,6 +28,7 @@ class CartController extends BaseCartController
 
         if ($sale instanceof \CoreShop\Component\Core\Model\CartInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
+            $order['shipping'] = $sale->getShipping();
         }
 
         return $order;
