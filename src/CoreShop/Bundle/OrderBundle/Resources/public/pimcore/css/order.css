@@ -90,6 +90,22 @@ body.pimcore_version_6 .coreshop_nav_icon_quote_create {
     background: url(../img/cart-create.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_carts {
+    background: url(../img/cart.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_carts {
+    background: url(../img/cart_white.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_cart_create {
+    background: url(../img/cart-create.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_cart_create {
+    background: url(../img/cart-create_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_additional_data {
     background: url(../img/info.svg) center center no-repeat !important;
 }

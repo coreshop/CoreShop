@@ -299,15 +299,6 @@ class CartController extends AbstractSaleController
 
         $totals = $this->getSummary($cart);
 
-        foreach ($totals as &$totalEntry) {
-            $priceFormatted = $this->get('coreshop.money_formatter')->format(
-                $totalEntry['value'],
-                $cart->getCurrency()->getIsoCode()
-            );
-
-            $totalEntry['valueFormatted'] = $priceFormatted;
-        }
-
         unset ($totalEntry);
 
         $jsonSale['summary'] = $totals;
@@ -387,10 +378,10 @@ class CartController extends AbstractSaleController
             'o_id' => $item->getId(),
             'product_name' => $item->getProduct() ? $item->getProduct()->getName() : '',
             'quantity' => $item->getQuantity(),
-            'totalGrossFormatted' => $this->get('coreshop.money_formatter')->format($item->getTotal(true), $item->getCart()->getCurrency()->getIsoCode()),
-            'totalNetFormatted' => $this->get('coreshop.money_formatter')->format($item->getTotal(false), $item->getCart()->getCurrency()->getIsoCode()),
-            'itemPriceGrossFormatted' => $this->get('coreshop.money_formatter')->format($item->getItemPrice(true), $item->getCart()->getCurrency()->getIsoCode()),
-            'itemPriceNetFormatted' => $this->get('coreshop.money_formatter')->format($item->getItemPrice(false), $item->getCart()->getCurrency()->getIsoCode()),
+            'totalGross' => $item->getTotal(true),
+            'totalNet' => $item->getTotal(false),
+            'itemPriceGross' => $item->getItemPrice(true),
+            'itemPriceNet' => $item->getItemPrice(false),
         ];
     }
 

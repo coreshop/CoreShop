@@ -74,17 +74,12 @@ class CartEditController extends AbstractSaleController
                 ['success' => false, 'message' => "Cart with ID '$cartId' not found"]
             );
         }
-//
-//        if ($cart->getState() === PurchaseOrderStates::STATE_COMPLETE) {
-//            return $this->viewHandler->handle(
-//                ['success' => false, 'message' => "Purchase Order is not changeable anymore."]
-//            );
-//        }
 
         $commands = [];
 
         foreach ($request->get('items', []) as $product) {
-            $productId = $product['purchasable'];
+            $productId = $product['cartItem']['purchasable'];
+            $quantity = $product['cartItem']['quantity'] ?? 1;
 
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
@@ -95,7 +90,7 @@ class CartEditController extends AbstractSaleController
                 ]);
             }
 
-            $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product);
+            $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $quantity);
 
             $commands[] = $this->createAddToCart($cart, $cartItem);
         }

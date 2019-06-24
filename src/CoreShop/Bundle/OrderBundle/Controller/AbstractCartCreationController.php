@@ -122,6 +122,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
         $jsonCart['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
         $jsonCart['items'] = $this->getItemDetails($cart);
         $jsonCart['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());
+        $jsonCart['baseCurrency'] = $this->getCurrency($cart->getStore()->getCurrency());
         $jsonCart['store'] = $cart->getStore() instanceof StoreInterface ? $this->getStore($cart->getStore()) : null;
 
         $jsonCart['address'] = [
@@ -147,8 +148,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
         foreach ($totals as &$totalEntry) {
             $price = $totalEntry['value'];
             $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $cart->getStore()->getCurrency()->getIsoCode(), $cart->getCurrency()->getIsoCode());
-            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted, $cart->getCurrency()->getIsoCode());
-            $totalEntry['valueFormatted'] = $priceFormatted;
+            $totalEntry['value'] = $priceConverted;
         }
 
         unset ($totalEntry);
@@ -179,6 +179,8 @@ abstract class AbstractCartCreationController extends AbstractSaleController
     /**
      * @param CartItemInterface $item
      *
+     *
+     *
      * @return array
      */
     protected function prepareCartItem(CartInterface $cart, CartItemInterface $item)
@@ -198,14 +200,10 @@ abstract class AbstractCartCreationController extends AbstractSaleController
             'product' => $item->getProduct() ? $item->getProduct()->getId() : 0,
             'productName' => $item->getProduct() ? $item->getProduct()->getName() : '',
             'quantity' => $item->getQuantity(),
-            'baseTrice' => $price,
-            'basePriceFormatted' => $moneyFormatter->format($price, $currency),
+            'basePrice' => $price,
             'baseTotal' => $total,
-            'baseTotalFormatted' => $moneyFormatter->format($total, $currency),
             'price' => $basePrice,
-            'priceFormatted' => $moneyFormatter->format($basePrice, $currentCurrency),
             'total' => $baseTotal,
-            'totalFormatted' => $moneyFormatter->format($baseTotal, $currentCurrency),
         ];
     }
 

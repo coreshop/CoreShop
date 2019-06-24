@@ -23,6 +23,43 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
             data: []
         });
 
+        me.detailsInfo = Ext.create('Ext.panel.Panel', {
+            title: t('coreshop_products'),
+            border: true,
+            margin: '0 0 20 0',
+            iconCls: 'coreshop_icon_product',
+            items: [],
+            tools: [{
+                type: 'coreshop-add',
+                tooltip: t('add'),
+                handler: function () {
+                    pimcore.helpers.itemselector(
+                        true,
+                        function (products) {
+                            products = products.map(function (pr) {
+                                return {cartItem: {purchasable: pr.id, quantity: 1}};
+                            });
+
+                            me.addProducts(products);
+                        }.bind(this),
+                        {
+                            type: ['object'],
+                            subtype: {
+                                object: ['object', 'variant']
+                            },
+                            specific: {
+                                classes: coreshop.stack.coreshop.purchasable
+                            }
+                        }
+                    );
+                }.bind(this)
+            }]
+        });
+    },
+
+    generateGrid: function() {
+        var me = this;
+
         var actions = [
             {
                 iconCls: 'pimcore_icon_open',
@@ -93,9 +130,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_price_without_tax'),
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('itemPriceNetFormatted') + '</span>';
-                    }.bind(this)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
 
                 {
@@ -104,9 +139,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_price_with_tax'),
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('itemPriceGrossFormatted') + '</span>';
-                    }.bind(this)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -124,9 +157,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_total_without_tax'),
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('totalNetFormatted') + '</span>';
-                    }.bind(this)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -134,9 +165,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_total'),
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('totalGrossFormatted') + '</span>';
-                    }.bind(this)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
                     menuDisabled: true,
@@ -175,45 +204,12 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     dataIndex: 'value',
                     width: 150,
                     align: 'right',
-                    renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('valueFormatted') + '</span>';
-                    }
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 }
             ]
         };
 
-        me.detailsInfo = Ext.create('Ext.panel.Panel', {
-            title: t('coreshop_products'),
-            border: true,
-            margin: '0 0 20 0',
-            iconCls: 'coreshop_icon_product',
-            items: [itemsGrid, summaryGrid],
-            tools: [{
-                type: 'coreshop-add',
-                tooltip: t('add'),
-                handler: function () {
-                    pimcore.helpers.itemselector(
-                        true,
-                        function (products) {
-                            products = products.map(function (pr) {
-                                return {purchasable: pr.id, quantity: 1};
-                            });
-
-                            me.addProducts(products);
-                        }.bind(this),
-                        {
-                            type: ['object'],
-                            subtype: {
-                                object: ['object', 'variant']
-                            },
-                            specific: {
-                                classes: coreshop.stack.coreshop.purchasable
-                            }
-                        }
-                    );
-                }.bind(this)
-            }]
-        });
+        this.detailsInfo.add(itemsGrid, summaryGrid);
     },
 
     updateSale: function () {
@@ -235,6 +231,9 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                 tool.hidden = true;
             }
         }
+
+        me.detailsInfo.removeAll();
+        this.generateGrid();
     },
 
     addProducts: function(items) {

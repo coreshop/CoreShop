@@ -201,7 +201,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->addChild('coreshop_carts')
             ->setLabel('coreshop_carts')
             ->setAttribute('permission', 'coreshop_permission_cart_list')
-            ->setAttribute('iconCls', 'coreshop_icon_carts')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_carts')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'carts')
             ->setExtra('order', 50);
@@ -210,7 +210,7 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->addChild('coreshop_cart_create')
             ->setLabel('coreshop_cart_create')
             ->setAttribute('permission', 'coreshop_permission_cart_create')
-            ->setAttribute('iconCls', 'coreshop_icon_cart_create')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_cart_create')
             ->setAttribute('resource', 'coreshop.order')
             ->setAttribute('function', 'create_cart')
             ->setExtra('order', 60);
