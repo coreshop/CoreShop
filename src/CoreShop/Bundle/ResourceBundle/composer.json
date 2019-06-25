@@ -25,7 +25,7 @@
     "stof/doctrine-extensions-bundle": "^1.2",
     "coreshop/pimcore-bundle": "^2.0",
     "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.0",
+    "coreshop/resource": "^2.1",
     "symfony/config": "^3.4 | ^4.0",
     "symfony/expression-language": "^3.4 | ^4.0",
     "symfony/form": "^3.4 | ^4.0",
