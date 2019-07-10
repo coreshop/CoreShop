@@ -226,6 +226,22 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount,
+            'gross' => true
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
+     * @Given /^the (shipping rule) has a condition amount from "([^"]+)" to "([^"]+)" which is net$/
+     */
+    public function theShippingRuleHasAAmountConditionWhichIsNet(ShippingRuleInterface $rule, $minAmount, $maxAmount)
+    {
+        $this->assertConditionForm(AmountConfigurationType::class, 'amount');
+
+        $this->addCondition($rule, $this->createConditionWithForm('amount', [
+            'minAmount' => $minAmount,
+            'maxAmount' => $maxAmount,
+            'gross' => false
         ]));
     }
 

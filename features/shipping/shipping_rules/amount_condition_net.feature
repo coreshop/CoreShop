@@ -1,4 +1,4 @@
-@shipping @shipping_rules @shipping_rule_condition_amount @shipping_rule_condition_amount_gross
+@shipping @shipping_rules @shipping_rule_condition_amount @shipping_rule_condition_amount_net
 Feature: Adding a new Shipping Rule
   In order to calculate shipping
   I'll create a new shipping rule
@@ -19,17 +19,17 @@ Feature: Adding a new Shipping Rule
   Scenario: Add a new amount shipping rule which is valid
     Given adding a shipping rule named "amount"
     And the shipping rule is active
-    And the shipping rule has a condition amount from "50" to "150"
+    And the shipping rule has a condition amount from "100" to "150" which is net
     Then the shipping rule should be valid for my cart with carrier "Post"
 
   Scenario: Add a new amount shipping rule which is inactive
     Given adding a shipping rule named "amount"
     And the shipping rule is inactive
-    And the shipping rule has a condition amount from "50" to "150"
+    And the shipping rule has a condition amount from "50" to "150" which is net
     Then the shipping rule should be invalid for my cart with carrier "Post"
 
   Scenario: Add a new amount shipping rule which is invalid
     Given adding a shipping rule named "amount"
     And the shipping rule is active
-    And the shipping rule has a condition amount from "50" to "119"
+    And the shipping rule has a condition amount from "50" to "99" which is net
     Then the shipping rule should be invalid for my cart with carrier "Post"
