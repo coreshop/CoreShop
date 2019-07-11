@@ -18,40 +18,45 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
         // init
         var _this = this;
         var addMenu = [];
-        var store = pimcore.globalmanager.get('coreshop_index_interpreters').getRange();
 
-        store.clearFilter();
+        var store = Ext.create('store.coreshop_index_interpreters');
 
-        var records = store.map(function(interpreter) {return interpreter.get('type')});
+        this.wrapperContainer = new Ext.container.Container();
 
-        Ext.each(records, function (interpreter) {
-            if (interpreter === 'abstract')
-                return;
+        store.load(function() {
+            var types = store.map(function(interpreter) {return interpreter.get('type')});
 
-            addMenu.push({
-                text: interpreter,
-                handler: _this.addInterpreter.bind(_this, interpreter, record, {})
+             Ext.each(types, function (interpreter) {
+                if (interpreter === 'abstract')
+                    return;
+
+                addMenu.push({
+                    text: interpreter,
+                    handler: _this.addInterpreter.bind(_this, interpreter, record, {})
+                });
             });
 
-        });
+             this.interpreterContainer = new Ext.Panel({
+                 autoScroll: true,
+                 forceLayout: true,
+                 tbar: [{
+                     iconCls: 'pimcore_icon_add',
+                     menu: addMenu
+                 }],
+                 border: false
+             });
 
-        this.interpreterContainer = new Ext.Panel({
-            autoScroll: true,
-            forceLayout: true,
-            tbar: [{
-                iconCls: 'pimcore_icon_add',
-                menu: addMenu
-            }],
-            border: false
-        });
+            if (interpreterConfig && interpreterConfig.interpreters) {
+                Ext.each(interpreterConfig.interpreters, function (interpreter) {
+                    this.addInterpreter(interpreter.type, record, interpreter.interpreterConfig);
+                }.bind(this));
+            }
 
-        if (interpreterConfig && interpreterConfig.interpreters) {
-            Ext.each(interpreterConfig.interpreters, function (interpreter) {
-                this.addInterpreter(interpreter.type, record, interpreter.interpreterConfig);
-            }.bind(this));
-        }
 
-        return this.interpreterContainer;
+             this.wrapperContainer.add(this.interpreterContainer);
+        }.bind(this));
+
+        return this.wrapperContainer;
     },
 
     destroy: function () {

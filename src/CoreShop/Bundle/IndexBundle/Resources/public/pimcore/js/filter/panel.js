@@ -40,8 +40,6 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     initialize: function () {
         var me = this;
 
-        pimcore.globalmanager.get('coreshop_indexes').load();
-
         Ext.Ajax.request({
             url: '/admin/coreshop/filters/get-config',
             method: 'GET',

@@ -25,7 +25,7 @@ coreshop.index.objecttype.abstract = Class.create({
             name: 'columnType',
             length: 255,
             value: record.data.columnType,
-            store: pimcore.globalmanager.get('coreshop_index_fieldTypes'),
+            store: pimcore.globalmanager.get('coreshop_index_field_types'),
             valueField: 'type',
             displayField: 'name',
             queryMode: 'local',
