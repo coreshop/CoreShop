@@ -56,12 +56,12 @@ class CheckoutEvent extends GenericEvent
         $this->stopPropagation();
     }
 
-    public function isStopped(): bool
+    public function isStopped()
     {
         return $this->isPropagationStopped();
     }
 
-    public function getMessageType(): string
+    public function getMessageType()
     {
         return $this->messageType;
     }
