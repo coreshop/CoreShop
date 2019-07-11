@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
