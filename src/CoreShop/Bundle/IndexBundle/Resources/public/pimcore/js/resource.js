@@ -15,10 +15,11 @@ coreshop.index.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.global.addStore('coreshop_indexes', 'coreshop/indices');
         coreshop.global.addStore('coreshop_filters', 'coreshop/filters');
+        coreshop.global.addStoreWithUrl('coreshop_index_types', '/admin/coreshop/indices/get-types');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.index', this);
     },
-    
+
     openResource: function(item) {
         if (item === 'index') {
             this.openIndex();
@@ -26,7 +27,7 @@ coreshop.index.resource = Class.create(coreshop.resource, {
             this.openFilter();
         }
     },
-    
+
     openIndex: function() {
         try {
             pimcore.globalmanager.get('coreshop_indexes_panel').activate();
@@ -35,7 +36,7 @@ coreshop.index.resource = Class.create(coreshop.resource, {
             pimcore.globalmanager.add('coreshop_indexes_panel', new coreshop.index.panel());
         }
     },
-    
+
     openFilter: function() {
         try {
             pimcore.globalmanager.get('coreshop_filters_panel').activate();

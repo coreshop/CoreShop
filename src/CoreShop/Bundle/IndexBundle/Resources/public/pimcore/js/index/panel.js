@@ -34,22 +34,6 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
      * constructor
      */
     initialize: function () {
-        var proxy = new Ext.data.HttpProxy({
-            url: this.url.types
-        });
-
-        var reader = new Ext.data.JsonReader({}, [
-            {name: 'name'}
-        ]);
-
-        this.typesStore = new Ext.data.Store({
-            restful: false,
-            proxy: proxy,
-            reader: reader,
-            autoload: true
-        });
-        this.typesStore.load();
-
         this.getConfig();
 
         this.panels = [];
@@ -87,7 +71,7 @@ coreshop.index.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_index_getters', this.getterStore);
         pimcore.globalmanager.add('coreshop_index_interpreters', this.interpreterStore);
         pimcore.globalmanager.add('coreshop_index_classes', this.classes);
-        pimcore.globalmanager.add('coreshop_index_fieldTypes', this.fieldTypeStore);
+        pimcore.globalmanager.add('coreshop_index_field_types', this.fieldTypeStore);
 
         Ext.Ajax.request({
             url: this.url.config,

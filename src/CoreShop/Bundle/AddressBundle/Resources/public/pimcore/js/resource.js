@@ -28,12 +28,6 @@ coreshop.address.resource = Class.create(coreshop.resource, {
             value: true
         });
 
-        pimcore.globalmanager.get('coreshop_countries').load();
-        pimcore.globalmanager.get('coreshop_address_identifier').load();
-        pimcore.globalmanager.get('coreshop_countries_active').load();
-        pimcore.globalmanager.get('coreshop_states').load();
-        pimcore.globalmanager.get('coreshop_zones').load();
-
         coreshop.broker.fireEvent('resource.register', 'coreshop.address', this);
     },
 

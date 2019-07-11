@@ -19,8 +19,7 @@ coreshop.taxation.resource = Class.create(coreshop.resource, {
             {name: 'rate'}
         ]);
         coreshop.global.addStore('coreshop_taxrulegroups', 'coreshop/tax_rule_groups');
-
-        pimcore.globalmanager.get('coreshop_tax_rates').load();
+        coreshop.global.addStore('coreshop_tax_rule_groups', 'coreshop/tax_rule_groups');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.taxation', this);
     },
