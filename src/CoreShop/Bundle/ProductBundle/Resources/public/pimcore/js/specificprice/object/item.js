@@ -16,6 +16,11 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
+    postSaveObject: function (object, refreshedRuleData, task, fieldName) {
+        // remove dirty flag!
+        //this.settingsForm.getForm().setValues(this.settingsForm.getForm().getValues());
+    },
+
     getPanel: function () {
         this.panel = new Ext.TabPanel({
             activeTab: 0,
@@ -120,6 +125,10 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
         }
 
         return {};
+    },
+
+    getId: function () {
+        return this.data.id ? this.data.id : null;
     },
 
     isDirty: function () {
