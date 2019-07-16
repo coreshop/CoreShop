@@ -138,6 +138,22 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];

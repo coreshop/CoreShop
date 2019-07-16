@@ -290,7 +290,15 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
