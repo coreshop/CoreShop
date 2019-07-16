@@ -367,15 +367,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function isEmpty($data)
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
-        return is_null($data);
+        return [];
     }
 
     /**
