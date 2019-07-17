@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\DataHub\Type\ResourceType;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,6 +30,32 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
     public function getType()
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addDataHubServices(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $typeParameterName = sprintf('%s.data_hub.object_type.%s', $metadata->getApplicationName(), $metadata->getName());
+        $typeClass = ResourceType::class;
+
+        if ($container->hasParameter($typeParameterName)) {
+            $typeClass = $container->getParameter($typeParameterName);
+        }
+
+        if ($metadata->hasClass('data_hub')) {
+            $typeClass = $metadata->getClass('data_hub');
+        }
+
+        $definition = new Definition($typeClass);
+        $definition->setPublic(true);
+        $definition->setArguments([
+            new Reference('doctrine.orm.entity_manager'),
+            $this->getClassMetadataDefinition($metadata),
+        ]);
+
+        $container->setDefinition($metadata->getServiceId('data_hub.type'), $definition);
     }
 
     /**
