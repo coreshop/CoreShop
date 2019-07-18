@@ -12,13 +12,7 @@
 
 namespace CoreShop\Component\Resource\DataHub\Resolver;
 
-use CoreShop\Component\Resource\DataHub\DoctrineDeferredBuffer;
 use CoreShop\Component\Resource\DataHub\DoctrineProvider;
-use CoreShop\Component\Resource\DataHub\GraphHydrator;
-use CoreShop\Component\Resource\DataHub\GraphResultList;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Query;
-use Doctrine\ORM\QueryBuilder;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -33,43 +27,22 @@ class DoctrineToMany
     /**
      * @var string
      */
-    private $doctrineClass;
-
-    /**
-     * @var string
-     */
     private $graphName;
-
-    /**
-     * @var array
-     */
-    private $association;
 
     /**
      * @var DoctrineProvider
      */
     private $typeProvider;
 
-    /**
-     * @var string
-     */
-    private $bufferKey;
-
 
     public function __construct(
         DoctrineProvider $provider,
         string $name,
-        string $doctrineClass,
-        string $graphName,
-        array $association
+        string $graphName
     ) {
         $this->name = $name;
-        $this->doctrineClass = $doctrineClass;
         $this->graphName = $graphName;
-        $this->association = $association;
         $this->typeProvider = $provider;
-
-        $this->bufferKey = $graphName.'.'.$association['fieldName'];
     }
 
     public function getDefinition()

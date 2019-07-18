@@ -19,14 +19,9 @@ use CoreShop\Component\Resource\DataHub\Resolver\DoctrineToOne;
 use CoreShop\Component\Resource\DataHub\Type\JsonType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use GraphQL\Type\Definition\BooleanType;
-use GraphQL\Type\Definition\FloatType;
-use GraphQL\Type\Definition\IDType;
 use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\InterfaceType;
-use GraphQL\Type\Definition\IntType;
 use GraphQL\Type\Definition\ObjectType;
-use GraphQL\Type\Definition\StringType;
 use GraphQL\Type\Definition\Type;
 
 class DoctrineProvider
@@ -142,9 +137,9 @@ class DoctrineProvider
                     $resolver = null;
 
                     if ($association['type'] === ClassMetadataInfo::ONE_TO_ONE || $association['type'] === ClassMetadataInfo::MANY_TO_ONE) {
-                        $resolver = new DoctrineToOne($this, $fieldName, $doctrineClass, $graphName, $association);
+                        $resolver = new DoctrineToOne($this, $fieldName, $graphName);
                     } else {
-                        $resolver = new DoctrineToMany($this, $fieldName, $doctrineClass, $graphName, $association);
+                        $resolver = new DoctrineToMany($this, $fieldName, $graphName);
                     }
 
                     $fields[$fieldName] = $resolver->getDefinition();

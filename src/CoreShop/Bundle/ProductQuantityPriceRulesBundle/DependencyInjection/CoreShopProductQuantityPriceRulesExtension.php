@@ -38,6 +38,12 @@ class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
 
         $container->setParameter('coreshop.product_quantity_price_rules.ranges.action_constraints', $config['action_constraints']);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         $container

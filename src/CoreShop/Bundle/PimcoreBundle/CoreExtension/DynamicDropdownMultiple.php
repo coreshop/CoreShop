@@ -12,9 +12,9 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use Pimcore\Model\DataObject\ClassDefinition\Data\Multiselect;
+use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyObjectRelation;
 
-class DynamicDropdownMultiple extends Multiselect
+class DynamicDropdownMultiple extends ManyToManyObjectRelation
 {
     /**
      * Static type of this element.
@@ -47,6 +47,14 @@ class DynamicDropdownMultiple extends Multiselect
      * @var string
      */
     public $sortBy;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return [['classes' => $this->getClassName()]];
+    }
 
     /**
      * @return mixed

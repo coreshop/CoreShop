@@ -56,7 +56,7 @@ final class EmbeddedClassController extends AdminController
             throw new NotFoundHttpException();
         }
 
-        $fqcn = 'Pimcore\\Model\\DataObject\\' . $className;
+        $fqcn = 'Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
         $tempInstance = new $fqcn();
 
         $validLayouts = DataObject\Service::getValidLayouts($tempInstance);
@@ -76,7 +76,10 @@ final class EmbeddedClassController extends AdminController
             $layout = $tempInstance->getClass()->getLayoutDefinitions();
         }
 
-        $general = [];
+        $general = [
+            'icon' => '',
+            'iconCls' => '',
+        ];
 
         if ($tempInstance->getElementAdminStyle()->getElementIcon()) {
             $general['icon'] = $tempInstance->getElementAdminStyle()->getElementIcon();
