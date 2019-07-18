@@ -59,6 +59,22 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
