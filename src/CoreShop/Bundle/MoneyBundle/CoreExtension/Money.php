@@ -316,7 +316,14 @@ class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePer
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
