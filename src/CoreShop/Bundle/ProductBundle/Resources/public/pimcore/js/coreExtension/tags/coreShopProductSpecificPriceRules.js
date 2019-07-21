@@ -34,7 +34,106 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         this.panels = [];
         this.conditions = data.conditions;
         this.actions = data.actions;
+        this.eventDispatcherKey = pimcore.eventDispatcher.registerTarget(this.eventDispatcherKey, this);
     },
+
+    postSaveObject: function (object, task) {
+
+        var fieldName = this.getName();
+
+        if (object.id !== this.object.id) {
+            return;
+        }
+
+        if (this.isDirty()) {
+            this.reloadPriceRuleData(object, task, fieldName);
+        }
+    },
+
+    reloadPriceRuleData: function (object, task, fieldName) {
+        this.component.setLoading(true);
+        Ext.Ajax.request({
+            url: '/admin/object/get',
+            params: {id: object.id},
+            ignoreErrors: true,
+            success: function (response) {
+
+                this.dirty = false;
+
+                var refreshedObject = null,
+                    refreshedObjectData = null;
+                try {
+                    refreshedObject = Ext.decode(response.responseText);
+                    if (!refreshedObject.hasOwnProperty('data') || !refreshedObject.data.hasOwnProperty(fieldName)) {
+                        this.component.setLoading(false);
+                        return;
+                    }
+                    refreshedObjectData = refreshedObject.data[fieldName];
+                } catch (e) {
+                    console.log(e);
+                }
+
+                this.component.setLoading(false);
+                if (refreshedObjectData !== null) {
+                    this.dispatchPostSaveToPanels(object, refreshedObjectData, task, fieldName);
+                }
+            }.bind(this),
+            failure: function () {
+                this.component.setLoading(false);
+            }.bind(this),
+        });
+    },
+
+    dispatchPostSaveToPanels: function (object, refreshedData, task, fieldName) {
+
+        var refreshAllPanels = false;
+
+        if (!refreshedData.hasOwnProperty('rules') || !Ext.isArray(refreshedData.rules)) {
+            return;
+        }
+
+        Ext.each(this.panels, function (panel) {
+            if (panel.getId() === null) {
+                refreshAllPanels = true;
+                return false;
+            }
+        });
+
+        if (refreshAllPanels === true) {
+            this.rebuildPriceRules(refreshedData.rules);
+        } else {
+            this.rebuildPriceRuleData(object, refreshedData.rules, task, fieldName);
+        }
+    },
+
+    rebuildPriceRuleData: function (object, refreshedRuleData, task, fieldName) {
+        Ext.each(this.panels, function (panelClass) {
+            var newRulePanelData = null;
+            Ext.Array.each(refreshedRuleData, function (ruleData) {
+                if (ruleData.hasOwnProperty('id') && ruleData.id === panelClass.getId()) {
+                    newRulePanelData = ruleData;
+                    return false;
+                }
+            });
+            if (newRulePanelData !== null) {
+                panelClass.postSaveObject(object, newRulePanelData, task, fieldName);
+            }
+        });
+    },
+
+    rebuildPriceRules: function (refreshedRuleData) {
+
+        var lastActiveItem = this.getTabPanel().getActiveTab(),
+            activeTabIndex = this.getTabPanel().items.findIndex('id', lastActiveItem.id);
+
+        this.getTabPanel().removeAll();
+
+        this.data = refreshedRuleData;
+        this.panels = [];
+
+        this.showPriceRules(activeTabIndex);
+    },
+
 
     getGridColumnConfig: function (field) {
         return {
@@ -95,23 +194,30 @@ pimcore.object.tags.coreShopProductSpecificPriceRules = Class.create(pimcore.obj
         return this.layout;
     },
 
-    showPriceRules: function () {
+    showPriceRules: function (lastActiveItemIndex) {
         Ext.each(this.data, function (data) {
-            var panel = new coreshop.product.specificprice.object.item(this, data, data.id, 'productSpecificPriceRule');
-
-            this.panels.push(panel);
-
-            panel.panel.on('beforedestroy', function () {
-                var index = this.panels.indexOf(panel);
-                this.panels.splice(index, 1);
-
-                this.dirty = true;
-            }.bind(this));
+            this.createItemPanel(data, data.id);
         }.bind(this));
 
         if (this.panels.length > 0) {
-            this.getTabPanel().setActiveItem(this.panels[0].panel);
+            var activePanel = lastActiveItemIndex && this.panels[lastActiveItemIndex] ? this.panels[lastActiveItemIndex].panel : this.panels[0].panel;
+            this.getTabPanel().setActiveItem(activePanel);
         }
+    },
+
+    createItemPanel: function (data, id) {
+        var panelItem = new coreshop.product.specificprice.object.item(this, data, id, 'productSpecificPriceRule');
+
+        this.panels.push(panelItem);
+
+        panelItem.panel.on('beforedestroy', function () {
+            var index = this.panels.indexOf(panelItem);
+            this.panels.splice(index, 1);
+
+            this.dirty = true;
+        }.bind(this));
+
+        return panelItem;
     },
 
     getTabPanel: function () {
