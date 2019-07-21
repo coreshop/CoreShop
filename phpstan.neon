@@ -16,6 +16,7 @@ parameters:
         - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
         - '**/ProcessManager/IndexListener.php'
         - '**/ProcessManager/IndexProcess.php'
+        - '**/DataHub/*.php'
 
     ignoreErrors:
         # Magic calls
@@ -28,7 +29,6 @@ parameters:
         - '/Constant PIMCORE_WEB_ROOT not found./'
         - '/Constant PIMCORE_DEVMODE not found./'
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
-        - '/Class (.*)Pimcore\\Bundle\\DataHubBundle(.*)/'
 
         - '/Class LuceneSearchBundle/'
         - '/unknown class LuceneSearchBundle/'
