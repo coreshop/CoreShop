@@ -65,6 +65,12 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         if (array_key_exists('checkout', $config)) {

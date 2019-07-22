@@ -58,6 +58,10 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $loader->load('services/installer.yml');
         }
 
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
         $container

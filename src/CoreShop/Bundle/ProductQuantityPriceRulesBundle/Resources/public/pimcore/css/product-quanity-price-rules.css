@@ -1,4 +1,4 @@
-.coreshop_icon_product_quantity_price_rules {
+.coreshop_icon_product_quantity_price_rules, .pimcore_icon_coreShopProductQuantityPriceRules {
     background: url(../img/product-quanity-price-rules.svg) center center no-repeat !important;
 }
 

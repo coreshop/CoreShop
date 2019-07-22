@@ -1,0 +1,24 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Href
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopDynamicDropdown }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown_multiple:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Multihref
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopDynamicDropdownMultiple }
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopItemSelector }
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopSuperBoxSelect }
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopEmbeddedClass }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.serialized_data:
+        class: CoreShop\Bundle\PimcoreBundle\DataHub\QueryType\SerializedData
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopSerializedData }

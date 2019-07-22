@@ -1,4 +1,4 @@
-.coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency {
+.coreshop_icon_currency, .pimcore_icon_coreShopCurrencyMultiselect, .pimcore_icon_coreShopCurrency, .pimcore_icon_coreShopMoneyCurrency {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
 
