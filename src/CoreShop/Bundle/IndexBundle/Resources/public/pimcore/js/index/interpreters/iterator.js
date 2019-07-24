@@ -15,9 +15,7 @@ pimcore.registerNS('coreshop.index.interpreters.iterator');
 
 coreshop.index.interpreters.iterator = Class.create(coreshop.index.interpreters.abstract, {
     getStore: function() {
-        return {
-            type: 'coreshop_index_interpreters'
-        }
+        return pimcore.globalmanager.get('coreshop_index_interpreters');
     },
 
     getClassItem: function() {
