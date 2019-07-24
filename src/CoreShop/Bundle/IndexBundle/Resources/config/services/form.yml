@@ -5,7 +5,8 @@ parameters:
     coreshop.form.type.index.columns.validation_groups: [coreshop]
     coreshop.form.type.index.worker.validation_groups: [coreshop]
     coreshop.form.type.filter.validation_groups: [coreshop]
-    coreshop.form.type.filter.filter_condition.validation_groups: [coreshop]
+    coreshop.form.type.filter.pre_condition.validation_groups: [coreshop]
+    coreshop.form.type.filter.user_condition.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -81,23 +82,45 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType:
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionType:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionType
         arguments:
             - '%coreshop.model.filter_condition.class%'
-            - '%coreshop.form.type.filter.filter_condition.validation_groups%'
-            - '@coreshop.form_registry.filter.condition_types'
+            - '%coreshop.form.type.filter.pre_condition.validation_groups%'
+            - '@coreshop.form_registry.filter.pre_condition_types'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionChoiceType:
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterUserConditionType:
         arguments:
-            - '%coreshop.filter.condition_types%'
+            - '%coreshop.model.filter_condition.class%'
+            - '%coreshop.form.type.filter.user_condition.validation_groups%'
+            - '@coreshop.form_registry.filter.user_condition_types'
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionCollectionType:
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionChoiceType:
         arguments:
-            - '@coreshop.registry.filter.condition_types'
+            - '%coreshop.filter.pre_condition_types%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterUserConditionChoiceType:
+        arguments:
+            - '%coreshop.filter.user_condition_types%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionCollectionType:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionCollectionType
+        arguments:
+            - '@coreshop.registry.filter.pre_condition_types'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterUserConditionCollectionType:
+        arguments:
+            - '@coreshop.registry.filter.user_condition_types'
         tags:
             - { name: form.type }
 
@@ -107,8 +130,13 @@ services:
         tags:
           -  { name: form.type }
 
-    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType:
-        arguments:
-            - '@coreshop.repository.filter_condition'
+    # Condition Config Types
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType
+        tags:
+          - { name: form.type }
+
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType:
+        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType
         tags:
           - { name: form.type }

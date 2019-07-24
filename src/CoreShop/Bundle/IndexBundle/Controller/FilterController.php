@@ -30,7 +30,8 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(
             [
                 'success' => true,
-                'conditions' => array_keys($this->getConditionTypes()),
+                'pre_conditions' => array_keys($this->getPreConditionTypes()),
+                'user_conditions' => array_keys($this->getUserConditionTypes()),
             ]
         );
     }
@@ -89,8 +90,16 @@ class FilterController extends ResourceController
     /**
      * @return array
      */
-    protected function getConditionTypes()
+    protected function getPreConditionTypes()
     {
-        return $this->getParameter('coreshop.filter.condition_types');
+        return $this->getParameter('coreshop.filter.pre_condition_types');
+    }
+
+    /**
+     * @return array
+     */
+    protected function getUserConditionTypes()
+    {
+        return $this->getParameter('coreshop.filter.user_condition_types');
     }
 }
