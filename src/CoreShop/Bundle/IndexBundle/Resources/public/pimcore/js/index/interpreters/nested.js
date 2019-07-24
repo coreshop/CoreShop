@@ -18,45 +18,40 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
         // init
         var _this = this;
         var addMenu = [];
+        var store = pimcore.globalmanager.get('coreshop_index_interpreters');
 
-        var store = Ext.create('store.coreshop_index_interpreters');
+        store.clearFilter();
 
-        this.wrapperContainer = new Ext.container.Container();
+        var records = store.getRange().map(function(interpreter) {return interpreter.get('type')});
 
-        store.load(function() {
-            var types = store.map(function(interpreter) {return interpreter.get('type')});
+        Ext.each(records, function (interpreter) {
+            if (interpreter === 'abstract')
+                return;
 
-             Ext.each(types, function (interpreter) {
-                if (interpreter === 'abstract')
-                    return;
-
-                addMenu.push({
-                    text: interpreter,
-                    handler: _this.addInterpreter.bind(_this, interpreter, record, {})
-                });
+            addMenu.push({
+                text: interpreter,
+                handler: _this.addInterpreter.bind(_this, interpreter, record, {})
             });
 
-             this.interpreterContainer = new Ext.Panel({
-                 autoScroll: true,
-                 forceLayout: true,
-                 tbar: [{
-                     iconCls: 'pimcore_icon_add',
-                     menu: addMenu
-                 }],
-                 border: false
-             });
+        });
 
-            if (interpreterConfig && interpreterConfig.interpreters) {
-                Ext.each(interpreterConfig.interpreters, function (interpreter) {
-                    this.addInterpreter(interpreter.type, record, interpreter.interpreterConfig);
-                }.bind(this));
-            }
+        this.interpreterContainer = new Ext.Panel({
+            autoScroll: true,
+            forceLayout: true,
+            tbar: [{
+                iconCls: 'pimcore_icon_add',
+                menu: addMenu
+            }],
+            border: false
+        });
 
+        if (interpreterConfig && interpreterConfig.interpreters) {
+            Ext.each(interpreterConfig.interpreters, function (interpreter) {
+                this.addInterpreter(interpreter.type, record, interpreter.interpreterConfig);
+            }.bind(this));
+        }
 
-             this.wrapperContainer.add(this.interpreterContainer);
-        }.bind(this));
-
-        return this.wrapperContainer;
+        return this.interpreterContainer;
     },
 
     destroy: function () {
@@ -75,6 +70,8 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
 
     addInterpreter: function (type, record, config) {
         // create condition
+        type = type.toLowerCase();
+        
         var interpreterClass = this.getInterpreterClassItem(type);
         var item = new interpreterClass();
         var container = new coreshop.index.interpreters.nestedcontainer(this, type, item);
