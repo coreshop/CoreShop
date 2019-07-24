@@ -60,7 +60,7 @@ class OrderExtractor implements TrackingExtractorInterface
                 'affiliation' => $object->getTotal() / 100,
                 'total' => $object->getTotal() / 100,
                 'subtotal' => $object->getSubtotal() / 100,
-                'tax' => $object->getTotalTax() / 100,
+                'totalTax' => $object->getTotalTax() / 100,
                 'shipping' => $object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING) / 100,
                 'discount' => $object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE) / 100,
                 'currency' => $object->getCurrency()->getIsoCode(),

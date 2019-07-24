@@ -52,5 +52,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'purchase', {"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":null,"shipping":0,"currency":"EUR","items":[{"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'purchase', {"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR","items":[{"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """
