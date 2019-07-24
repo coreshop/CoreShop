@@ -169,7 +169,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $orderData = $this->transformOrder($order);
         $items = $order['items'];
 
-        $actionData = array_merge($this->transformOrder($orderData), ['items' => []]);
+        $actionData = array_merge($orderData, ['items' => []]);
 
         foreach ($items as $item) {
             $actionData['items'][] = $this->transformProductAction($item);
