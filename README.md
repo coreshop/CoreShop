@@ -1,4 +1,6 @@
-# CoreShop 2
+![CoreShop](etc/logo.png)
+
+---
 
 **CoreShop - Pimcore eCommerce**
 
