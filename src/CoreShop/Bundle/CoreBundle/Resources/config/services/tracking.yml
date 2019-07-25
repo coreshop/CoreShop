@@ -7,6 +7,7 @@ services:
         arguments:
             - '@coreshop.tracking.extractor'
             - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'
         tags:
             - { name: coreshop.tracking.extractor, type: order }
 

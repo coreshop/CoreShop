@@ -29,13 +29,20 @@ class OrderExtractor implements TrackingExtractorInterface
     protected $decimalFactor;
 
     /**
+     * @var int
+     */
+    protected $decimalPrecision;
+
+    /**
      * @param TrackingExtractorInterface $extractor
      * @param int                        $decimalFactor
+     * @param int                        $decimalPrecision
      */
-    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor)
+    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {
         $this->extractor = $extractor;
         $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -63,16 +70,26 @@ class OrderExtractor implements TrackingExtractorInterface
         return array_merge(
             $data,
             [
-                'id' => $object->getId(),
-                'affiliation' => $object->getTotal() / $this->decimalFactor,
-                'total' => $object->getTotal() / $this->decimalFactor,
-                'subtotal' => $object->getSubtotal() / $this->decimalFactor,
-                'totalTax' => $object->getTotalTax() / $this->decimalFactor,
-                'shipping' => $object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING) / $this->decimalFactor,
-                'discount' => $object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE) / $this->decimalFactor,
-                'currency' => $object->getCurrency()->getIsoCode(),
-                'items' => $items,
+                'id'          => $object->getId(),
+                'affiliation' => $this->parseAmount($object->getTotal()),
+                'total'       => $this->parseAmount($object->getTotal()),
+                'subtotal'    => $this->parseAmount($object->getSubtotal()),
+                'totalTax'    => $this->parseAmount($object->getTotalTax()),
+                'shipping'    => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING)),
+                'discount'    => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE)),
+                'currency'    => $object->getCurrency()->getIsoCode(),
+                'items'       => $items,
             ]
         );
+    }
+
+    /**
+     * @param int $amount
+     *
+     * @return int
+     */
+    protected function parseAmount($amount)
+    {
+        return (int) round((round($amount / $this->decimalFactor, $this->decimalPrecision) * 100), 0);
     }
 }
