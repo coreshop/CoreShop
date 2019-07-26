@@ -2572,36 +2572,36 @@ fieldset:disabled a.btn {
 
 .btn-success {
     color: #fff;
-    background-color: #5cb672;
-    border-color: #5cb672;
+    background-color: #cd1017;
+    border-color: #cd1017;
 }
 
 .btn-success:hover {
     color: #fff;
-    background-color: #218838;
-    border-color: #1e7e34;
+    background-color: #333333;
+    border-color: #333333;
 }
 
 .btn-success:focus, .btn-success.focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(51, 51, 51, 0.5);
 }
 
 .btn-success.disabled, .btn-success:disabled {
     color: #fff;
-    background-color: #28a745;
-    border-color: #28a745;
+    background-color: #333333;
+    border-color: #333333;
 }
 
 .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active,
 .show > .btn-success.dropdown-toggle {
     color: #fff;
-    background-color: #1e7e34;
-    border-color: #1c7430;
+    background-color: #333333;
+    border-color: #333333;
 }
 
 .btn-success:not(:disabled):not(.disabled):active:focus, .btn-success:not(:disabled):not(.disabled).active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(51, 51, 51, 0.5);
 }
 
 .btn-info {
@@ -5008,7 +5008,7 @@ tbody.collapse.show {
 .alert-success {
     color: #155724;
     background-color: #d4edda;
-    border-color: #5cb672;
+    border-color: #5CB672;
 }
 
 .alert-success hr {
@@ -11347,7 +11347,7 @@ body {
 
 /* Standard Styles Starts */
 a {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 a:hover {
@@ -11394,7 +11394,7 @@ h6 {
 
 .navbar-dark:not(.bg-green) .navbar-nav .nav-link:hover
 {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 @media (min-width: 992px)
@@ -11556,7 +11556,7 @@ hr {
 
 #header-area .main-header #logo a:hover {
     text-decoration: none;
-    color: #5cb672;
+    color: #cd1017;
 }
 
 #header-area .main-header #logo a:hover .black {
@@ -11588,7 +11588,7 @@ hr {
 
 #header-area .main-header #search .input-group .form-control {
     background: none;
-    border: solid #5cb672;
+    border: solid #cd1017;
     border-width: 1px 1px 1px 1px;
     color: #878a8c;
     -webkit-border-radius: 0;
@@ -11601,9 +11601,9 @@ hr {
 
 #header-area .main-header #search .input-group .btn {
     background: none;
-    border: solid #5cb672;
+    border: solid #cd1017;
     border-width: 1px 1px 1px 0;
-    color: #5cb672;
+    color: #cd1017;
     height: 46px;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
@@ -11617,7 +11617,7 @@ hr {
 #cart .btn {
     color: #383838;
     background: none;
-    border: 1px solid #5cb672;
+    border: 1px solid #cd1017;
     text-align: left;
     padding: 10px 15px;
     margin: 12px 0 0 0;
@@ -11631,7 +11631,7 @@ hr {
 }
 
 #cart .btn .fa-shopping-cart {
-    color: #5cb672;
+    color: #cd1017;
     font-size: 22px;
     margin-right: 10px;
     vertical-align: top;
@@ -11644,12 +11644,12 @@ hr {
 }
 
 #cart .btn span#cart-total {
-    color: #5cb672;
+    color: #cd1017;
     padding: 0 8px 0 5px;
 }
 
 #cart .btn i.fa-caret-down {
-    color: #5cb672;
+    color: #cd1017;
     margin-left: 5px;
 }
 
@@ -11680,7 +11680,7 @@ hr {
 }
 
 #cart .dropdown-menu table td a {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 #cart .dropdown-menu table td a:hover {
@@ -11717,7 +11717,7 @@ hr {
 }
 
 #cart .btn-block1 a:hover, #cart .btn-block1 a + a {
-    background: #5cb672;
+    background: #cd1017;
     color: #fff;
 }
 
@@ -11737,7 +11737,7 @@ hr {
 
 /* Main Menu Styles Starts */
 .bg-green {
-    background: #5cb672!important;
+    background: #cd1017!important;
 }
 
 #main-menu.navbar {
@@ -11845,7 +11845,7 @@ hr {
 .tabs-panel .nav-tabs {
     text-transform: uppercase;
     font-size: 16px;
-    border-bottom: 4px solid #5cb672;
+    border-bottom: 4px solid #cd1017;
 }
 
 .tabs-panel .nav-tabs > li {
@@ -11853,7 +11853,7 @@ hr {
 }
 
 .tabs-panel .nav-tabs > li > a {
-    color: #5cb672;
+    color: #cd1017;
     margin: 0;
 }
 
@@ -11862,7 +11862,7 @@ hr {
 }
 
 .tabs-panel .nav-tabs > li.active, .tabs-panel .nav-tabs > li.active > a {
-    background: #5cb672;
+    background: #cd1017;
     color: #fff;
 }
 
@@ -11922,13 +11922,13 @@ hr {
 }
 
 .page-item.active .page-link {
-    background: #5cb672;
-    border-color: #5cb672;
+    background: #cd1017;
+    border-color: #cd1017;
 }
 
 .page-item .page-link:hover, .page-item .page-link:focus {
-    background: #5cb672;
-    border-color: #5cb672;
+    background: #cd1017;
+    border-color: #cd1017;
     color:white;
 }
 
@@ -11964,7 +11964,7 @@ hr {
 .list-group-item .fa {
     font-size: 12px;
     padding-right: 6px;
-    color: #5cb672;
+    color: #cd1017;
 }
 
 .list-group.categories {
@@ -11972,7 +11972,7 @@ hr {
 }
 
 .list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item.active {
-    background-color: #5cb672;
+    background-color: #cd1017;
     border-color: white;
 }
 
@@ -12059,7 +12059,7 @@ hr {
 
 .copyright a,
 .copyright a:hover {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 .copyright p {
@@ -12212,7 +12212,7 @@ hr {
 .btn-wishlist:hover,
 .btn-compare:hover,
 .btn-cart {
-    background: #5cb672;
+    background: #cd1017;
 }
 
 .btn-cart {
@@ -12281,7 +12281,7 @@ hr {
 }
 
 .product-filter .display a.active {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 .product-filter .control-label {
@@ -12376,7 +12376,7 @@ hr {
 }
 
 .product-info .product-details .price .price-new {
-    color: #5cb672;
+    color: #cd1017;
     font-size: 24px;
     padding-right: 5px;
 }
@@ -12421,7 +12421,7 @@ hr {
 .product-info .product-details .btn-wishlist:hover,
 .product-info .product-details .btn-compare:hover,
 .product-info .product-details .btn-cart {
-    background: #5cb672;
+    background: #cd1017;
 }
 
 .product-info .product-details .btn-cart {
@@ -12432,7 +12432,7 @@ hr {
 
 .product-info .product-details .btn-cart:hover {
     color: #fff;
-    background: #4a925b;
+    background: #333333;
 }
 
 .product-info-box {
@@ -12446,12 +12446,12 @@ hr {
 .product-info-box .heading {
     padding: 13px 20px;
     font-size: 18px;
-    color: #5cb672;
+    color: #cd1017;
     text-transform: uppercase;
     background: #fff;
     border-top: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
-    border-bottom: 4px solid #5cb672;
+    border-bottom: 4px solid #cd1017;
     border-left: 1px solid #e8e8e8;
 }
 
@@ -12518,7 +12518,7 @@ hr {
 }
 
 .compare-table .rating .fa-star {
-    color: #5cb672;
+    color: #cd1017;
 }
 
 .order-table {
@@ -12583,7 +12583,7 @@ hr {
 }
 
 .registration-area .dl-horizontal.total {
-    color: #5cb672;
+    color: #cd1017;
     font-size: 18px;
 }
 
@@ -12625,7 +12625,7 @@ hr {
 
 .content-box .special-heading {
     font-size: 100px;
-    color: #5cb672;
+    color: #cd1017;
     margin-top: 0;
     margin-bottom: 30px;
 }
@@ -12636,7 +12636,7 @@ hr {
 }
 
 .contact-details li .fa {
-    color: #5cb672;
+    color: #cd1017;
     padding: 5px 10px 0 0;
     font-size: 18px;
 }
@@ -12687,7 +12687,7 @@ hr {
     width: 30px;
     height: 30px;
     display: block;
-    background: #5cb672;
+    background: #cd1017;
     top: 45px;
     left: 50%;
     margin-top: -15px;
@@ -12717,7 +12717,7 @@ hr {
 .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
     width: 0px;
     box-shadow: none;
-    background: #5cb672;
+    background: #cd1017;
 }
 
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
@@ -13086,7 +13086,7 @@ hr {
 }
 
 .slider-selection {
-    background: #5cb672;
+    background: #cd1017;
 }
 
 /*! ========================================================================
@@ -13241,7 +13241,7 @@ hr {
     padding-top:0.8em;
 }
 #cart .btn {
-    color: #5cb672;
+    color: #cd1017;
 }
 .open .dropdown-menu {
     display: block;

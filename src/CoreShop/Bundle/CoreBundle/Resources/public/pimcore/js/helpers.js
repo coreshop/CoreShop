@@ -42,7 +42,7 @@ coreshop.util.format.currency = function (currency, v, forceTwoDecimals) {
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';
-    html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo.svg" style="width: 60px;"><br>';
+    html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo-full.svg" style="width: 400px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.bundle.version + '</b>';
     html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="https://www.coreshop.org/" target="_blank">coreshop.org</a>)';
     html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';
