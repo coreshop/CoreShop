@@ -29,6 +29,14 @@ final class CoreShopMoneyExtension extends AbstractPimcoreExtension
 
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
+        if (!$container->hasParameter('coreshop.currency.decimal_factor')) {
+            $container->setParameter('coreshop.currency.decimal_factor', 100);
+        }
+
+        if (!$container->hasParameter('coreshop.currency.decimal_precision')) {
+            $container->setParameter('coreshop.currency.decimal_precision', 2);
+        }
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
