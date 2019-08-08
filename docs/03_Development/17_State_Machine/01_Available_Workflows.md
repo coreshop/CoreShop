@@ -24,6 +24,9 @@ Description: The Order Workflow is the most simplest and also the most important
 | `cancel` | `new`, `confirmed`  |
 | `complete` | `confirmed` |
 
+### Visualization
+![CoreShop Order Worflow Visualization](/docs/03_Development/17_State_Machine/CoreShop_Workflow_Order.jpg)
+
 ## Order Payment Workflow
 
 State Machine: `coreshop_order_payment`
