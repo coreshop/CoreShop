@@ -179,7 +179,7 @@ final class StoreContext implements Context
              * @var CountryInterface $country
              */
             $country = $this->countryFactory->createNew();
-            $country->setName('Austria');
+            $country->setName('Austria', 'en');
             $country->setIsoCode('AT');
             $country->setCurrency($currency);
             $country->setActive(true);

@@ -10,28 +10,34 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Behat\Extension\CompilerPass;
+namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
-final class CoverageWhitelistPass implements CompilerPassInterface
+final class ValidatorAutoMappingFixPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('behat.code_coverage.php_code_coverage_filter')) {
+        if (!$container->hasParameter('validator.auto_mapping')) {
             return;
         }
 
-        $filter = $container->getDefinition('behat.code_coverage.php_code_coverage_filter');
+        $autoMapping = $container->getParameter('validator.auto_mapping');
 
-        $paths = ['lib/CoreShop/src/CoreShop/Component', 'lib/CoreShop/src/CoreShop/Bundle', 'vendor/coreshop/core-shop/src/CoreShop/Component', 'vendor/coreshop/core-shop/src/CoreShop/Bundle'];
-
-        foreach ($paths as $path) {
-            $filter->addMethodCall('addDirectoryToWhiteList', [$path]);
+        if ([] !== $autoMapping) {
+            return;
         }
+
+        $container->setParameter('validator.auto_mapping', [
+            'AppBundle\Entity' => [
+                'services' => []
+            ]
+        ]);
     }
 }

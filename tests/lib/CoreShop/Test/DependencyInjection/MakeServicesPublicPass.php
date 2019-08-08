@@ -39,5 +39,6 @@ class MakeServicesPublicPass implements CompilerPassInterface
         $container->findDefinition('coreshop.context.currency')->setPublic(true);
         $container->findDefinition('coreshop.context.country')->setPublic(true);
         $container->findDefinition('coreshop.context.store')->setPublic(true);
+        $container->getAlias('knp_menu.menu_provider')->setPublic(true);
     }
 }

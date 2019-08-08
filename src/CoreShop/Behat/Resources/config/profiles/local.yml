@@ -1,0 +1,14 @@
+default:
+    formatters:
+        pretty:
+            verbose: true
+            paths: false
+            snippets: false
+
+    extensions:
+        FriendsOfBehat\SymfonyExtension:
+            bootstrap: lib/CoreShop/tests/behat-bootstrap.php
+            kernel:
+                path: lib/CoreShop/app/BehatAppKernel.php
+                class: BehatAppKernel
+                environment: behat

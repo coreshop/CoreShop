@@ -34,4 +34,12 @@ final class CountryTypeExtension extends AbstractTypeExtension
     {
         return CountryType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [CountryType::class];
+    }
 }

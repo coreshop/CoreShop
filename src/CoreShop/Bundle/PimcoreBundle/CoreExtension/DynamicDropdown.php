@@ -56,6 +56,22 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
     public $onlyPublished;
 
     /**
+     * {@inheritdoc}
+     */
+    public function getObjectsAllowed()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return [['classes' => $this->getClassName()]];
+    }
+
+    /**
      * @return mixed
      */
     public function getFolderName()

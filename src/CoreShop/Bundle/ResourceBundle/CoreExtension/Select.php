@@ -34,6 +34,22 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     abstract protected function getModel();
 
     /**
+     * {@inheritDoc}
+     */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
      * @return string | array
      */
     public function getQueryColumnType()

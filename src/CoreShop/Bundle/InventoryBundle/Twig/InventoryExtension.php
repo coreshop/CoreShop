@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\InventoryBundle\Twig;
 
 use CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class InventoryExtension extends \Twig_Extension
+final class InventoryExtension extends AbstractExtension
 {
     /**
      * @var InventoryHelper
@@ -35,8 +37,8 @@ final class InventoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('coreshop_inventory_is_available', [$this->helper, 'isStockAvailable']),
-            new \Twig_SimpleFunction('coreshop_inventory_is_sufficient', [$this->helper, 'isStockSufficient']),
+            new TwigFunction('coreshop_inventory_is_available', [$this->helper, 'isStockAvailable']),
+            new TwigFunction('coreshop_inventory_is_sufficient', [$this->helper, 'isStockSufficient']),
         ];
     }
 }

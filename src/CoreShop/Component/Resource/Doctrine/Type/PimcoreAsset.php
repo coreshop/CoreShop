@@ -64,4 +64,12 @@ class PimcoreAsset extends Type
     {
         return self::PIMCORE_ASSET;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }

@@ -37,7 +37,7 @@ final class DynamicDropdownController extends AdminController
 
         if ($parentFolderPath) {
             // remove trailing slash
-            if ($parentFolderPath != '/') {
+            if ($parentFolderPath !== '/') {
                 $parentFolderPath = rtrim($parentFolderPath, '/ ');
             }
 
@@ -50,7 +50,6 @@ final class DynamicDropdownController extends AdminController
                 $options = $this->walkPath($request, $folder);
             } else {
                 $message = sprintf('The folder submitted could not be found: "%s"', $folderName);
-                \Pimcore\Logger::crit($message);
 
                 return $this->json(
                     [
@@ -62,7 +61,6 @@ final class DynamicDropdownController extends AdminController
             }
         } else {
             $message = sprintf('The folder submitted for parentId is not valid: "%s"', $folderName);
-            \Pimcore\Logger::warning($message);
 
             return $this->json(
                 [
@@ -73,13 +71,13 @@ final class DynamicDropdownController extends AdminController
             );
         }
 
-        if (!is_null($options)) {
+        if (null !== $options) {
             usort(
                 $options,
                 function ($a, $b) use ($sort) {
                     $field = 'id';
 
-                    if ($sort == 'byValue') {
+                    if ($sort === 'byValue') {
                         $field = 'key';
                     }
 
@@ -107,23 +105,26 @@ final class DynamicDropdownController extends AdminController
      */
     public function methodsAction(Request $request)
     {
-        $methods = [];
+        $availableMethods = [];
 
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
 
         if (!empty($className)) {
-            $classMethods = $this->getThisClassMethods('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $class = new \ReflectionClass('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $methods = $class->getMethods();
 
-            if (!is_null($classMethods)) {
-                foreach ($classMethods as $methodName) {
-                    if (substr($methodName, 0, 3) == 'get') {
-                        $methods[] = ['value' => $methodName, 'key' => $methodName];
-                    }
+            $classMethods = array_map(function(\ReflectionMethod $method) {
+                return $method->getName();
+            }, $methods);
+
+            foreach ($classMethods as $methodName) {
+                if (strpos($methodName, 'get') === 0) {
+                    $availableMethods[] = ['value' => $methodName, 'key' => $methodName];
                 }
             }
         }
 
-        return $this->json($methods);
+        return $this->json($availableMethods);
     }
 
     /**
@@ -197,24 +198,6 @@ final class DynamicDropdownController extends AdminController
     }
 
     /**
-     * @param string $class
-     *
-     * @return array
-     */
-    private function getThisClassMethods($class)
-    {
-        $classMethods = get_class_methods($class);
-
-        if ($parentClass = get_parent_class($class)) {
-            $parentClassMethods = get_class_methods($parentClass);
-
-            return array_diff($classMethods, $parentClassMethods);
-        }
-
-        return $classMethods;
-    }
-
-    /**
      * @param DataObject\Concrete $object
      * @param string              $method
      *
@@ -246,7 +229,7 @@ final class DynamicDropdownController extends AdminController
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?
             $children = $tree->getChildren();
             foreach ($children as $child) {
-                $definition['get' . ucfirst($child->name)] = $tree->fieldtype == 'localizedfields';
+                $definition['get' . ucfirst($child->name)] = $tree->fieldtype === 'localizedfields';
                 $definition = $this->parseTree($child, $definition);
             }
         }

@@ -121,7 +121,9 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
             typeAhead: true,
             listWidth: 100,
             width: 250,
-            store: pimcore.globalmanager.get('coreshop_indexes'),
+            store: {
+                type: 'coreshop_indexes'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,

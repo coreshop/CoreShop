@@ -22,10 +22,35 @@ mkdir -p $CS_HOME/var/config
 cp $CS_HOME/etc/_config/system.template.php var/config/system.php
 cp app/config/parameters.example.yml app/config/parameters.yml
 
+if [[ "$PIMCORE_VERSION" == "~5.8" ]];
+then
+    cp $CS_HOME/etc/_config/config_5.yml app/config/config.yml
+fi
+
+if [[ "$PIMCORE_VERSION" == "~6.0" ]];
+then
+    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
+fi
+
+if [[ "$PIMCORE_VERSION" == "dev-master" ]];
+then
+    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
+fi
+
 ##########################################################################################
 #########
 #########  Install composer dependencies
 #########
 ##########################################################################################
-COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:$PIMCORE_VERSION --no-interaction --no-scripts
-COMPOSER_MEMORY_LIMIT=-1 composer install -o
+composer config minimum-stability dev
+composer config prefer-stable true
+COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:$PIMCORE_VERSION symfony/symfony:$SYMFONY_VERSION --no-interaction --no-scripts --no-update
+COMPOSER_MEMORY_LIMIT=-1 composer install -o --no-interaction
+
+##########################################################################################
+#########
+#########  Install composer dependencies
+#########
+##########################################################################################
+bin/console cache:clear
+bin/console assets:install --symlink web

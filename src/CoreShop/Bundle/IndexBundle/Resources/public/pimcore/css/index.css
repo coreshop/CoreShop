@@ -1,9 +1,29 @@
+#pimcore_navigation li.coreshop_logo_menu:hover svg path {
+    fill: #cd1017;
+}
+
 .coreshop_icon_indexes, .coreshop_icon_indexes_fields, .processmanager_icon_executable_type_coreshop_index {
     background: url(../img/indexes.svg) center center no-repeat !important;
 }
 
+.coreshop_nav_icon_indexes {
+    background: url(../img/indexes.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_indexes {
+    background: url(../img/indexes_white.svg) center center no-repeat !important;
+}
+
 .coreshop_icon_filters, .pimcore_icon_coreShopFilter {
     background: url(../img/filters.svg) center center no-repeat !important;
+}
+
+.coreshop_nav_icon_filters {
+    background: url(../img/filters.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_filters {
+    background: url(../img/filters_white.svg) center center no-repeat !important;
 }
 
 .coreshop_filters_conditions {

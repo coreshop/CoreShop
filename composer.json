@@ -88,21 +88,15 @@
     "payum/paypal-express-checkout-nvp": "^1.4",
     "payum/payum-bundle": "^2.2",
     "payum/sofort": "^1.4",
-    "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/pimcore": "^5.8.0",
-    "rinvex/countries": "^5.0",
+    "php-http/guzzle6-adapter": "^2.0",
+    "pimcore/pimcore": "^5.8 | ^6.0",
+    "rinvex/countries": "^6.0",
     "stof/doctrine-extensions-bundle": "^1.2",
-    "symfony/twig-bundle": "^3.2",
     "webmozart/assert": "^1.2"
   },
   "require-dev": {
     "behat/behat": "^3.3",
-    "friends-of-behat/context-service-extension": "^1.1",
-    "friends-of-behat/cross-container-extension": "^1.1",
-    "friends-of-behat/service-container-extension": "^1.0",
-    "friends-of-behat/symfony-extension": "^1.2",
-    "friends-of-behat/variadic-extension": "^1.1",
-    "leanphp/behat-code-coverage": "^3.2",
+    "friends-of-behat/symfony-extension": "^2.0.0",
     "phpstan/phpstan": "^0.10.5",
     "phpstan/phpstan-doctrine": "^0.10",
     "phpstan/phpstan-shim": "^0.10",
@@ -134,26 +128,6 @@
     },
     "classmap": [
       "app/AppKernel.php"
-    ]
-  },
-  "scripts": {
-    "post-create-project-cmd": "Pimcore\\Composer::postCreateProject",
-    "post-install-cmd": [
-      "Pimcore\\Composer::postInstall",
-      "@symfony-scripts"
-    ],
-    "post-update-cmd": [
-      "Pimcore\\Composer::postUpdate",
-      "@symfony-scripts"
-    ],
-    "pre-package-update": [
-      "Pimcore\\Composer::prePackageUpdate"
-    ],
-    "symfony-scripts": [
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-      "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
     ]
   },
   "extra": {

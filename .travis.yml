@@ -2,16 +2,19 @@ sudo: false
 language: php
 
 addons:
-    mariadb: '10.1'
+    mariadb: '10.2'
     hosts:
         - pimcore-test.dev
+services:
+    - mysql
 env:
     global:
         - PIMCORE_ENVIRONMENT=test
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - PIMCORE_VERSION="^5"
+        - PIMCORE_VERSION="~5.8"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
+        - SYMFONY_VERSION="^3.4"
 
 matrix:
     include:
@@ -43,17 +46,43 @@ matrix:
         - sudo: required
           php: 7.2
           env:
+            - PIMCORE_VERSION="~6.0"
+            - SYMFONY_VERSION="^4.0"
+
+        - sudo: required
+          php: 7.3
+          env:
+            - PIMCORE_VERSION="~6.0"
+            - SYMFONY_VERSION="^4.0"
+
+        - sudo: required
+          php: 7.2
+          env:
             - PIMCORE_VERSION="dev-master"
 
         - sudo: required
           php: 7.3
           env:
             - PIMCORE_VERSION="dev-master"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_VERSION="dev-master"
+            - SYMFONY_VERSION="^4.0"
+        - sudo: required
+          php: 7.3
+          env:
+             - PIMCORE_VERSION="dev-master"
+             - SYMFONY_VERSION="^4.0"
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
         - env:
             - PIMCORE_VERSION="dev-master"
+        - env:
+            - PIMCORE_VERSION="dev-master"
+            - SYMFONY_VERSION="^4.0"
     fast_finish: true
 
 cache:

@@ -6,3 +6,5 @@ services:
         class: CoreShop\Component\Order\Payment\OrderPaymentProvider
         arguments:
             - '@coreshop.factory.payment'
+            - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'

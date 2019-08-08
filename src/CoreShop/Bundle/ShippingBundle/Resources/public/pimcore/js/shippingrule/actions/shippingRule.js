@@ -16,7 +16,6 @@ coreshop.shippingrule.actions.shippingRule = Class.create(coreshop.rules.actions
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
 
         var rule = {
             xtype: 'combo',
@@ -24,7 +23,9 @@ coreshop.shippingrule.actions.shippingRule = Class.create(coreshop.rules.actions
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_carrier_shipping_rules'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -33,15 +34,7 @@ coreshop.shippingrule.actions.shippingRule = Class.create(coreshop.rules.actions
             name: 'shippingRule',
             maxHeight: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.shippingRule)
-                        this.setValue(me.data.shippingRule);
-                }
-            }
+            value: me.data.shippingRule
         };
 
         if (this.data && this.data.shippingRule) {

@@ -20,7 +20,7 @@ coreshop.product.pricerule.actions.price = Class.create(coreshop.rules.actions.a
         var currency = null;
 
         if (this.data) {
-            priceValue = this.data.price / 100;
+            priceValue = this.data.price / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
             currency = this.data.currency;
         }
 

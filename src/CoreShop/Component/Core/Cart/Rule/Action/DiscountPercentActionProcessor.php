@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
+
     /**
      * @var CartRuleApplierInterface
      */

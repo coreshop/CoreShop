@@ -28,11 +28,25 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     private $paymentFactory;
 
     /**
-     * @param FactoryInterface $paymentFactory
+     * @var int
      */
-    public function __construct(FactoryInterface $paymentFactory)
+    private $decimalFactor;
+
+    /**
+     * @var int
+     */
+    private $decimalPrecision;
+
+    /**
+     * @param FactoryInterface $paymentFactory
+     * @param int              $decimalFactor
+     * @param int              $decimalPrecision
+     */
+    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
     {
         $this->paymentFactory = $paymentFactory;
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -51,7 +65,17 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
+
+        // only allow two decimals in payment amounts!
+        // example: 898757 becomes 8988
+        if ($this->decimalFactor === 100) {
+            $totalAmount = $order->getTotal();
+        } else {
+            $totalAmount = (int) round((round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0);
+        }
+
+        $payment->setTotalAmount($totalAmount);
+
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
@@ -67,7 +91,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $description = sprintf(
             'Payment contains %s item(s) for a total of %s.',
             count($order->getItems()),
-            round($order->getTotal() / 100, 2)
+            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
         );
 
         //payum setters

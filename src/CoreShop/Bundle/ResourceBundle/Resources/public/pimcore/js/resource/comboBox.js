@@ -10,19 +10,4 @@ Ext.define('CoreShop.resource.ComboBox', {
     forceSelection: true,
     triggerAction: 'all',
     queryMode: 'local',
-
-    config: {
-        storeId: null
-    },
-
-    initComponent: function() {
-        this.callParent();
-
-        if (this.getStoreId()) {
-            this.setStore(pimcore.globalmanager.get(this.getStoreId()));
-        }
-        else {
-            this.setStore(coreshop.deepCloneStore(this.getStore()));
-        }
-    }
 });

@@ -21,9 +21,15 @@ class ClassInstaller implements ClassInstallerInterface
      */
     public function createBrick($jsonFile, $brickName)
     {
+        $objectBrick = null;
+        
         try {
             $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
         } catch (\Exception $e) {
+
+        }
+
+        if (null === $objectBrick) {
             $objectBrick = new DataObject\Objectbrick\Definition();
             $objectBrick->setKey($brickName);
         }
@@ -92,9 +98,15 @@ class ClassInstaller implements ClassInstallerInterface
      */
     public function createFieldCollection($jsonFile, $name)
     {
+        $fieldCollection = null;
+
         try {
             $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
         } catch (\Exception $e) {
+
+        }
+
+        if (null === $fieldCollection) {
             $fieldCollection = new DataObject\Fieldcollection\Definition();
             $fieldCollection->setKey($name);
         }

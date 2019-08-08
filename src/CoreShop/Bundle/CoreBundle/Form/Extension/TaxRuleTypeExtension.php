@@ -43,4 +43,12 @@ final class TaxRuleTypeExtension extends AbstractTypeExtension
     {
         return TaxRuleType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [TaxRuleType::class];
+    }
 }

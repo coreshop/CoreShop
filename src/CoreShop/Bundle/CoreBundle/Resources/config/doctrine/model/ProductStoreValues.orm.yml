@@ -13,7 +13,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             type: pimcoreObject
         price:
             column: price
-            type: integer
+            type: bigint
     manyToOne:
         store:
             targetEntity: CoreShop\Component\Store\Model\StoreInterface

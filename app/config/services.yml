@@ -21,3 +21,5 @@ services:
     # AppBundle\EventListener\TestListener:
     #     tags:
     #         - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: onObjectPreUpdate }
+
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler: ~

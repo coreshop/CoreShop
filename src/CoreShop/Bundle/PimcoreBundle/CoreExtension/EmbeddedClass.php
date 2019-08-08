@@ -48,6 +48,22 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
     /**
      * {@inheritdoc}
      */
+    public function getObjectsAllowed()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return [['classes' => $this->getEmbeddedClassName()]];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!is_array($data)) {

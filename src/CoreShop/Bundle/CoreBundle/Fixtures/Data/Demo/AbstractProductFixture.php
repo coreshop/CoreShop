@@ -62,6 +62,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
+        $decimalFactor = $this->container->getParameter('coreshop.currency.decimal_factor');
 
         $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
         $stores = $this->container->get('coreshop.repository.store')->findAll();
@@ -114,10 +115,10 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $product->setActive(true);
         $product->setCategories([$usedCategory]);
         $product->setOnHand(10);
-        $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * 100);
+        $product->setWholesalePrice($faker->randomFloat(2, 100, 200) * $decimalFactor);
 
         foreach ($stores as $store) {
-            $product->setStorePrice((int) $faker->randomFloat(2, 200, 400) * 100, $store);
+            $product->setStorePrice((int) $faker->randomFloat(2, 200, 400) * $decimalFactor, $store);
         }
 
         $product->setTaxRule($this->getReference('taxRule'));

@@ -38,11 +38,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     public $width;
 
     /**
-     * @var int
-     */
-    public $defaultValue;
-
-    /**
      * @var string
      */
     public $phpdocType = 'array';
@@ -73,32 +68,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     public function setWidth($width)
     {
         $this->width = $this->getAsIntegerCast($width);
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDefaultValue()
-    {
-        if ($this->defaultValue !== null) {
-            return $this->toNumeric($this->defaultValue);
-        }
-
-        return 0;
-    }
-
-    /**
-     * @param int $defaultValue
-     *
-     * @return $this
-     */
-    public function setDefaultValue($defaultValue)
-    {
-        if (strlen(strval($defaultValue)) > 0) {
-            $this->defaultValue = $defaultValue;
-        }
 
         return $this;
     }
@@ -171,7 +140,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n\n";
         $code .= "\t" . 'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
-        $code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);' . "\n";
+        $code .= "\t\t" . 'try {' . "\n";
+        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);'  . "\n";
+        $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
+        $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
+        $code .= "\t\t" . '}' . "\n";
         $code .= "\t" . '}' . "\n\n";
         $code .= "\t" . 'if (is_array($data)) {' . "\n";
         $code .= "\t\t" . '/** @var \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValuesBlock */' . "\n";
@@ -576,7 +549,15 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**

@@ -13,37 +13,39 @@
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\Asset;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigTest;
 
-final class AssetHelperExtensions extends \Twig_Extension
+final class AssetHelperExtensions extends AbstractExtension
 {
     public function getTests()
     {
         return [
-            new \Twig_Test('asset', function ($object) {
+            new TwigTest('asset', function ($object) {
                 return is_object($object) && $object instanceof Asset;
             }),
-            new \Twig_Test('asset_archive', function ($object) {
+            new TwigTest('asset_archive', function ($object) {
                 return is_object($object) && $object instanceof Asset\Archive;
             }),
-            new \Twig_Test('asset_audio', function ($object) {
+            new TwigTest('asset_audio', function ($object) {
                 return is_object($object) && $object instanceof Asset\Audio;
             }),
-            new \Twig_Test('asset_document', function ($object) {
+            new TwigTest('asset_document', function ($object) {
                 return is_object($object) && $object instanceof Asset\Document;
             }),
-            new \Twig_Test('asset_folder', function ($object) {
+            new TwigTest('asset_folder', function ($object) {
                 return is_object($object) && $object instanceof Asset\Folder;
             }),
-            new \Twig_Test('asset_image', function ($object) {
+            new TwigTest('asset_image', function ($object) {
                 return is_object($object) && $object instanceof Asset\Image;
             }),
-            new \Twig_Test('asset_text', function ($object) {
+            new TwigTest('asset_text', function ($object) {
                 return is_object($object) && $object instanceof Asset\Text;
             }),
-            new \Twig_Test('asset_unknown', function ($object) {
+            new TwigTest('asset_unknown', function ($object) {
                 return is_object($object) && $object instanceof Asset\Unknown;
             }),
-            new \Twig_Test('asset_video', function ($object) {
+            new TwigTest('asset_video', function ($object) {
                 return is_object($object) && $object instanceof Asset\Video;
             }),
         ];

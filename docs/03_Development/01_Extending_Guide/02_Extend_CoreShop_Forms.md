@@ -64,6 +64,11 @@ final class StoreTypeExtension extends AbstractTypeExtension
     {
         return StoreType::class;
     }
+
+    public static function getExtendedTypes()
+    {
+        return [StoreType::class];
+    }
 }
 ```
 

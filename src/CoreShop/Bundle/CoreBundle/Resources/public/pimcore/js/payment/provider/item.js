@@ -21,6 +21,7 @@ coreshop.provider.item = Class.create(coreshop.provider.item, {
             id: logoId,
             type: 'asset',
         }, {
+            classes: [],
             documentsAllowed: false,
             objectsAllowed: false,
             assetsAllowed: true,

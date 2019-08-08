@@ -1,0 +1,36 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.country:
+        class: CoreShop\Component\Resource\DataHub\QueryType\Resource
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.country.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCountry }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.state:
+        class: CoreShop\Component\Resource\DataHub\QueryType\Resource
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.state.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopState }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.address_identifier:
+        class: CoreShop\Component\Resource\DataHub\QueryType\Resource
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.address_identifier.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopAddressIdentifier }
+
+    coreshop.datahub.graphql.querytypegenerator.resource.country.list:
+        class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.country.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCountryMultiselect }

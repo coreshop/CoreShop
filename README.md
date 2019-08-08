@@ -1,4 +1,6 @@
-# CoreShop 2
+![CoreShop](etc/logo.png)
+
+---
 
 **CoreShop - Pimcore eCommerce**
 
@@ -14,10 +16,10 @@
 ![CoreShop Interface](docs/img/screenshot5.png)
 
 # Requirements
-* Pimcore 5.4
+* Pimcore 5.8 or 6.0
 
 # Installation
- - Install with composer ```composer require coreshop/core-shop:^2.0```
+ - Install with composer ```composer require coreshop/core-shop:^2.1```
  - Run enable Bundle command
     ```php bin/console pimcore:bundle:enable CoreShopCoreBundle```
  - Run Install Command

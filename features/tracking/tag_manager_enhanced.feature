@@ -53,5 +53,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : { 'purchase' : {"actionField":{"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":null,"shipping":0,"currency":"EUR"},"products":[{"id":%DataObject(orderItem, {"method": "getId"});,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : { 'purchase' : {"actionField":{"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"},"products":[{"id":%DataObject(orderItem, {"method": "getId"});,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
       """

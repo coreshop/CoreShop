@@ -15,10 +15,10 @@ coreshop.global = {
     resource: null,
 
     addStore: function (name, url, fields, sorters) {
-        var proxy = new Ext.data.HttpProxy({
-            url: '/admin/' + url + '/list'
-        });
+        return this.addStoreWithUrl(name, '/admin/' + url + '/list', fields, sorters);
+    },
 
+    addStoreWithUrl: function(name, url, fields, sorters) {
         if (!fields) {
             fields = [
                 {name: 'id'},
@@ -26,21 +26,31 @@ coreshop.global = {
             ];
         }
 
-        var reader = new Ext.data.JsonReader({}, fields);
+        if (Ext.isDefined('Ext.CoreShop.Store.' + name)) {
+            Ext.define('Ext.CoreShop.Store.' + name, {
+                extend: 'Ext.data.Store',
+                alias: 'store.' + name,
+                proxy: {
+                    type: 'ajax',
+                    url: url,
+                    reader: {
+                        type: 'json',
+                    }
+                },
+                fields: fields,
+                autoLoad: true,
+                sorters: sorters ? sorters : [],
+                remoteSort: false,
+                remoteFilter: false
+            });
+        }
 
-        var store = new Ext.data.Store({
-            restful: false,
-            proxy: proxy,
-            reader: reader,
-            autoload: true,
-            fields: fields,
-            sorters: sorters ? sorters : [],
-            remoteSort: false,
-            remoteFilter: false
+        var store = new Ext.CoreShop.Store[name]({
+            autoLoad: false
         });
 
         pimcore.globalmanager.add(name, store);
-    }
+    },
 };
 
 

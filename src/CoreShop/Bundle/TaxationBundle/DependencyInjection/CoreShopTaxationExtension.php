@@ -34,6 +34,12 @@ final class CoreShopTaxationExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
     }
 }

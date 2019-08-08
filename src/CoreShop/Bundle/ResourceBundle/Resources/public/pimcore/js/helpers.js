@@ -10,6 +10,8 @@
  *
  */
 
+pimcore.registerNS('coreshop.helpers.x');
+
 coreshop.helpers.requestNicePathData = function (targets, responseHandler) {
     var elementData = Ext.encode(targets);
 
