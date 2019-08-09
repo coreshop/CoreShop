@@ -25,7 +25,7 @@ Description: The Order Workflow is the most simplest and also the most important
 | `complete` | `confirmed` |
 
 ### Visualization
-![CoreShop Order Worflow Visualization](/docs/03_Development/17_State_Machine/CoreShop_Workflow_Order.jpg)
+![coreshop_order Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order.png)
 
 ## Order Payment Workflow
 
@@ -54,6 +54,9 @@ Description: Defines the summary payment state
 | `partially_refund` | `paid`, `partially_paid`, `partially_refunded` |
 | `refund` | `paid`, `partially_paid`, `partially_refunded` |
 
+### Visualization
+![coreshop_order_payment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_payment.png)
+
 
 ## Order Shipment Workflow
 
@@ -77,6 +80,9 @@ Description: Defines the summary shipment state
 | `cancel` | `new` |
 | `ship` | `new`, `partially_shipped`  |
 
+### Visualization
+![coreshop_order_shipment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_shipment.png)
+
 
 ## Order Invoice Workflow
 
@@ -99,6 +105,9 @@ Description: Defines the summary invoice state
 | `cancel` | `new` |
 | `partially_invoice` | `new` |
 | `invoice` | `new`, `partially_invoiced`  |
+
+### Visualization
+![coreshop_order_invoice Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_invoice.png)
 
 
 ## Payment Workflow
@@ -127,6 +136,9 @@ Description: Defines the single payment state
 | `cancel` | `new`, `processing`  |
 | `refund` | `completed` |
 
+### Visualization
+![coreshop_payment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_payment.png)
+
 
 ## Shipment Workflow
 
@@ -150,6 +162,8 @@ Description: Defines the single shipment state
 | `ship` | `ready` |
 | `cancel` | `ready`|
 
+### Visualization
+![coreshop_shipment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_shipment.png)
 
 ## Invoice Workflow
 
@@ -172,3 +186,7 @@ Description: Defines the single invoice state
 | `create` | `new` |
 | `cancel` | `ready` |
 | `complete` | `ready`|
+
+
+### Visualization
+![coreshop_invoice Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_invoice.png)
