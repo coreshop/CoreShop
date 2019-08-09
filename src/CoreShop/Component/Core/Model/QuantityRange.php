@@ -42,7 +42,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
      */
     public function getAmount()
     {
-        return $this->amount;
+        return (int)$this->amount;
     }
 
     /**
@@ -98,7 +98,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
      */
     public function getPseudoPrice()
     {
-        return $this->pseudoPrice;
+        return (int)$this->pseudoPrice;
     }
 
     /**
@@ -106,7 +106,7 @@ class QuantityRange extends BaseQuantityRange implements QuantityRangeInterface
      */
     public function hasPseudoPrice()
     {
-        return $this->pseudoPrice !== 0;
+        return $this->getPseudoPrice() !== 0;
     }
 
     /**
