@@ -52,7 +52,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
      */
     public function getPrice()
     {
-        return $this->price;
+        return (int)$this->price;
     }
 
     /**
