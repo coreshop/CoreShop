@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
+use CoreShop\Bundle\CoreBundle\Faker\Commerce;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -62,6 +63,8 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
+        $faker->addProvider(new Commerce($faker));
+
         $decimalFactor = $this->container->getParameter('coreshop.currency.decimal_factor');
 
         $defaultStore = $this->container->get('coreshop.repository.store')->findStandard()->getId();
@@ -77,7 +80,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
          * @var CategoryInterface $usedCategory
          */
         $usedCategory = $categories[rand(0, count($categories) - 1)];
-        $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/%s/%s', $parentPath, $usedCategory->getName()));
+        $folder = \Pimcore\Model\Asset\Service::createFolderByPath(sprintf('/demo/%s/%s', $parentPath, Service::getValidKey($usedCategory->getName(), 'asset')));
 
         $images = [];
 
@@ -107,7 +110,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
          * @var ProductInterface $product
          */
         $product = $this->container->get('coreshop.factory.product')->createNew();
-        $product->setName($faker->words(3, true));
+        $product->setName($faker->productName);
         $product->setSku($faker->ean13);
         $product->setShortDescription($faker->text());
         $product->setDescription(implode('<br/>', $faker->paragraphs(3)));
@@ -128,9 +131,9 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $product->setWeight($faker->numberBetween(5, 10));
         $product->setImages($images);
         $product->setStores([$defaultStore]);
-        $product->setParent($this->container->get('coreshop.object_service')->createFolderByPath(sprintf('/demo/%s/%s', $parentPath, $usedCategory->getName())));
-        $product->setKey($product->getName());
+        $product->setParent($this->container->get('coreshop.object_service')->createFolderByPath(sprintf('/demo/%s/%s', $parentPath, Service::getValidKey($usedCategory->getName(), 'object'))));
         $product->setPublished(true);
+        $product->setKey($product->getName());
         $product->setKey(Service::getUniqueKey($product));
 
         return $product;
