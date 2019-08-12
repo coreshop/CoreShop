@@ -25,7 +25,7 @@ Description: The Order Workflow is the most simplest and also the most important
 | `complete` | `confirmed` |
 
 ### Visualization
-![coreshop_order Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order.png)
+![coreshop_order Workflow Visualization](img/coreshop_order.png)
 
 ## Order Payment Workflow
 
@@ -55,7 +55,7 @@ Description: Defines the summary payment state
 | `refund` | `paid`, `partially_paid`, `partially_refunded` |
 
 ### Visualization
-![coreshop_order_payment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_payment.png)
+![coreshop_order_payment Workflow Visualization](img/coreshop_order_payment.png)
 
 
 ## Order Shipment Workflow
@@ -81,7 +81,7 @@ Description: Defines the summary shipment state
 | `ship` | `new`, `partially_shipped`  |
 
 ### Visualization
-![coreshop_order_shipment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_shipment.png)
+![coreshop_order_shipment Workflow Visualization](img/coreshop_order_shipment.png)
 
 
 ## Order Invoice Workflow
@@ -107,7 +107,7 @@ Description: Defines the summary invoice state
 | `invoice` | `new`, `partially_invoiced`  |
 
 ### Visualization
-![coreshop_order_invoice Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_order_invoice.png)
+![coreshop_order_invoice Workflow Visualization](img/coreshop_order_invoice.png)
 
 
 ## Payment Workflow
@@ -137,7 +137,7 @@ Description: Defines the single payment state
 | `refund` | `completed` |
 
 ### Visualization
-![coreshop_payment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_payment.png)
+![coreshop_payment Workflow Visualization](img/coreshop_payment.png)
 
 
 ## Shipment Workflow
@@ -163,7 +163,7 @@ Description: Defines the single shipment state
 | `cancel` | `ready`|
 
 ### Visualization
-![coreshop_shipment Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_shipment.png)
+![coreshop_shipment Workflow Visualization](img/coreshop_shipment.png)
 
 ## Invoice Workflow
 
@@ -189,4 +189,4 @@ Description: Defines the single invoice state
 
 
 ### Visualization
-![coreshop_invoice Workflow Visualization](/docs/03_Development/17_State_Machine/coreshop_invoice.png)
+![coreshop_invoice Workflow Visualization](img/coreshop_invoice.png)
