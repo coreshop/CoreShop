@@ -26,7 +26,7 @@
   },
   "autoload": {
     "psr-4": {
-      "CoreShop\\Index\\Locale\\": ""
+      "CoreShop\\Component\\Locale\\": ""
     }
   },
   "minimum-stability": "dev",
