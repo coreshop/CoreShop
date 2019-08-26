@@ -13,6 +13,6 @@ Let's create a new theme called `sports`:
 
 Every view request inside the given store context will search for a view file in the `app/Resources/themes/sports/CoreShopFrontendBundle/*` directory.
 
-So for example you want to have a different homepage you will need to create a file: `app/Resources/themes/sports/CoreShopFrontendBundle/index/index.html.twig`.
+So for example you want to have a different homepage you will need to create a file: `app/Resources/themes/sports/CoreShopFrontendBundle/Index/index.html.twig`.
 
 When the customer then visits your website on store `sports`, CoreShop will load the new index.html.twig file.
