@@ -77,17 +77,17 @@ matrix:
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="dev-5.8"
+            - PIMCORE_VERSION="5.8.x-dev"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="dev-5.8"
+            - PIMCORE_VERSION="5.8.x-dev"
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
         - env:
-            - PIMCORE_VERSION="dev-5.8"
+            - PIMCORE_VERSION="5.8.x-dev"
     fast_finish: true
 
 cache:
