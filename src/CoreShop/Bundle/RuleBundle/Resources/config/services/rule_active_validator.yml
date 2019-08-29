@@ -1,7 +1,8 @@
 services:
 
-    coreshop.rule_availability_processor:
-        class: CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor
+    coreshop.rule_availability_processor: '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor'
+    CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessorInterface: '@CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor'
+    CoreShop\Bundle\RuleBundle\Processor\RuleAvailabilityProcessor:
         arguments:
             - '@event_dispatcher'
             - '@doctrine.orm.default_entity_manager'

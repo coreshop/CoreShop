@@ -2,30 +2,29 @@ services:
     _defaults:
         public: true
 
-    coreshop.fixture.data.executor:
-        class: CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor
+    coreshop.fixture.data.executor: '@CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor'
+    CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
 
-    coreshop.fixture.update_data_fixtures:
-        class: CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture
+    coreshop.fixture.update_data_fixtures: '@CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture'
+    CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture:
         arguments:
             - '@coreshop.factory.data_fixture'
             - '@coreshop.repository.data_fixture'
 
-    coreshop.fixture.data.loader:
-        class: CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader
+    coreshop.fixture.data.loader: '@CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader'
+    CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@service_container'
-            - '@coreshop.fixture.update_data_fixtures'
+            - '@CoreShop\Bundle\FixtureBundle\Fixture\UpdateDataFixturesFixture'
             - '@coreshop.repository.data_fixture'
 
-    coreshop.command.load_fixtures:
-        class: CoreShop\Bundle\FixtureBundle\Command\LoadDataFixturesCommand
+    CoreShop\Bundle\FixtureBundle\Command\LoadDataFixturesCommand:
         arguments:
-            - '@coreshop.fixture.data.loader'
-            - '@coreshop.fixture.data.executor'
+            - '@CoreShop\Bundle\FixtureBundle\Fixture\Loader\DataFixturesLoader'
+            - '@CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutor'
         tags:
-          - { name: console.command, command: 'coreshop:fixture:data:load' }
+          - { name: console.command, command: coreshop:fixture:data:load }

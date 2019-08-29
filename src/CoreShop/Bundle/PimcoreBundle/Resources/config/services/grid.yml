@@ -2,11 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore_controller.grid:
-        class: CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController
+    CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController: ~
 
-    coreshop.data_object.grid_column_config.list.listener.before_filter_prepare:
-        class: CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener
+    CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener:
         arguments:
             - '@coreshop.registry.grid.filter'
         tags:

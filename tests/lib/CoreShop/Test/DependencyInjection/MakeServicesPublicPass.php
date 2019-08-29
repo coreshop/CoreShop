@@ -29,9 +29,11 @@ class MakeServicesPublicPass implements CompilerPassInterface
                 $container->getAlias($serviceId)->setPublic(true);
             }
 
-            $container
-                ->findDefinition($serviceId)
-                ->setPublic(true);
+            if ($container->hasDefinition($serviceId)) {
+                $container
+                    ->findDefinition($serviceId)
+                    ->setPublic(true);
+            }
         }
 
         $container->findDefinition('coreshop.context.cart')->setPublic(true);

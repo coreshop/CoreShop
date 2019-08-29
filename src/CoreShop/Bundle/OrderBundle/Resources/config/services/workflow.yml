@@ -5,32 +5,32 @@ parameters:
     coreshop.workflow.include_invoice_state_to_complete_order: false
 
 services:
-    coreshop.state_machine_resolver.order:
+    coreshop.state_machine_resolver.order: '@CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver'
+    CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver:
         public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
             - '%coreshop.workflow.include_invoice_state_to_complete_order%'
 
-    coreshop.state_machine_resolver.order_payment:
+    coreshop.state_machine_resolver.order_payment: '@CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver'
+    CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver:
         public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.payment'
 
-    coreshop.state_machine_resolver.order_shipment:
+    coreshop.state_machine_resolver.order_shipment: '@CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver'
+    CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver:
         public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderShippingStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.order_shipment'
             - '@coreshop.order.shipment.processable'
 
     # @coreshop.order.invoice.processable
-    coreshop.state_machine_resolver.order_invoice:
+    coreshop.state_machine_resolver.order_invoice: '@CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver'
+    CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver:
         public: true
-        class: CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver
         arguments:
             - '@coreshop.state_machine_manager'
             - '@coreshop.repository.order_invoice'

@@ -46,7 +46,6 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: currencies, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType }
 
-
     coreshop.shipping_rule.action.price:
         class: CoreShop\Component\Core\Shipping\Rule\Action\PriceActionProcessor
         arguments:

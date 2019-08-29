@@ -2,8 +2,7 @@ parameters:
     coreshop.form.type.add_to_cart.validation_groups: [coreshop]
 
 services:
-    coreshop.form.type.add_to_cart:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType
+    CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType:
         arguments:
             - '%coreshop.dto.add_to_cart.class%'
             - '%coreshop.form.type.add_to_cart.validation_groups%'

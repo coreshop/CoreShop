@@ -5,15 +5,13 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.store_choice:
-        class: CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType
+    CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType:
         arguments:
             - '@coreshop.repository.store'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.store:
-        class: CoreShop\Bundle\StoreBundle\Form\Type\StoreType
+    CoreShop\Bundle\StoreBundle\Form\Type\StoreType:
         arguments:
             - '%coreshop.model.store.class%'
             - '%coreshop.form.type.store.validation_groups%'

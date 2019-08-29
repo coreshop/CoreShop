@@ -58,7 +58,7 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->compositeId)) {
+        if (!$container->hasDefinition($this->compositeId) && !$container->hasAlias($this->compositeId)) {
             return;
         }
 

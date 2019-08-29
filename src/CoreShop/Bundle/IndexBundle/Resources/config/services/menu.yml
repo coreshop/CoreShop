@@ -2,7 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.index.menu.index:
-        class: CoreShop\Bundle\IndexBundle\Menu\IndexMenuBuilder
+    CoreShop\Bundle\IndexBundle\Menu\IndexMenuBuilder:
         tags:
             - { name: 'coreshop.menu', type: index, menu: index }

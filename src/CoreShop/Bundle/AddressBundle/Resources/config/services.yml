@@ -7,60 +7,63 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.country.composite:
-        class: CoreShop\Component\Address\Context\CompositeCountryContext
+    coreshop.context.country.composite: '@CoreShop\Component\Address\Context\CompositeCountryContext'
+    CoreShop\Component\Address\Context\CompositeCountryContext:
         public: false
 
-    coreshop.context.country.request_based:
-        class: CoreShop\Component\Address\Context\RequestBased\CountryContext
+    CoreShop\Component\Address\Context\CountryContextInterface: '@CoreShop\Component\Address\Context\CompositeCountryContext'
+
+    coreshop.context.country.request_based: '@CoreShop\Component\Address\Context\RequestBased\CountryContext'
+    CoreShop\Component\Address\Context\RequestBased\CountryContext:
         public: false
         arguments:
-            - '@coreshop.context.country.request_based.resolver'
+            - '@CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface'
             - '@request_stack'
         tags:
             - { name: coreshop.context.country }
 
-    coreshop.context.country.fixed:
-        class: CoreShop\Component\Address\Context\FixedCountryContext
+    coreshop.context.country.fixed: '@CoreShop\Component\Address\Context\FixedCountryContext'
+    CoreShop\Component\Address\Context\FixedCountryContext:
         tags:
             - { name: coreshop.context.country }
 
-    coreshop.context.country.request_based.resolver.composite:
-        class: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
+    coreshop.context.country.request_based.resolver.composite: '@CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver'
+    CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver'
+
+    CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.country.request_based.resolver.geo_lite:
-        class: CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver
+    coreshop.context.country.request_based.resolver.geo_lite: '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
+    CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver:
         public: false
         arguments:
             - '@coreshop.repository.country'
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
-    coreshop.address.formatter:
-        class: CoreShop\Component\Address\Formatter\AddressFormatter
+    coreshop.address.formatter: '@CoreShop\Component\Address\Formatter\AddressFormatter'
+    CoreShop\Component\Address\Formatter\AddressFormatterInterface: '@CoreShop\Component\Address\Formatter\AddressFormatter'
+    CoreShop\Component\Address\Formatter\AddressFormatter:
         arguments:
             - '@pimcore.translator'
 
-    coreshop.templating.helper.format_address:
-        class: CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper
+    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper:
+    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface:
         arguments:
-            - '@coreshop.address.formatter'
+            - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
         lazy: true
         tags:
             - { name: templating.helper, alias: coreshop_format_address }
 
-    coreshop.twig.extension.address:
-        class: CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension
+    CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension:
         public: false
         arguments:
-            - '@coreshop.templating.helper.format_address'
+            - '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface'
         tags:
             - { name: twig.extension }
 
-    coreshop.validator.address_valid_identifier:
-      class: CoreShop\Bundle\AddressBundle\Validator\Constraints\ValidAddressIdentifierValidator
-      arguments:
-          - '@coreshop.repository.address_identifier'
-      tags:
-          - { name: validator.constraint_validator, alias: 'coreshop_address_valid_identifier' }
+    CoreShop\Bundle\AddressBundle\Validator\Constraints\ValidAddressIdentifierValidator:
+        arguments:
+            - '@coreshop.repository.address_identifier'
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_address_valid_identifier' }

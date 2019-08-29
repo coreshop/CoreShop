@@ -2,27 +2,26 @@ services:
     _defaults:
         public: true
 
-    coreshop.inventory.availability_checker.default:
-        class: CoreShop\Component\Inventory\Checker\AvailabilityChecker
+    coreshop.inventory.availability_checker.default: '@CoreShop\Component\Inventory\Checker\AvailabilityChecker'
+    CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface: '@CoreShop\Component\Inventory\Checker\AvailabilityChecker'
+    CoreShop\Component\Inventory\Checker\AvailabilityChecker: ~
 
-    coreshop.validator.in_stock:
-        class: CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator
+    CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator:
         arguments:
-          - '@coreshop.inventory.availability_checker'
+          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
-           - { name: validator.constraint_validator, alias: 'coreshop_in_stock' }
+           - { name: validator.constraint_validator, alias: coreshop_in_stock }
 
-    coreshop.templating.helper.inventory:
-        class: CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper
+    CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelperInterface: '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper'
+    CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper:
         arguments:
-          - '@coreshop.inventory.availability_checker'
+          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
             - { name: templating.helper, alias: coreshop_inventory }
 
-    coreshop.twig.extension.inventory:
-        class: CoreShop\Bundle\InventoryBundle\Twig\InventoryExtension
+    CoreShop\Bundle\InventoryBundle\Twig\InventoryExtension:
         public: false
         arguments:
-          - '@coreshop.templating.helper.inventory'
+          - '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelperInterface'
         tags:
             - { name: twig.extension }

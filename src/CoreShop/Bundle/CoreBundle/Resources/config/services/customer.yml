@@ -5,8 +5,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.customer.registration_service:
-        class: CoreShop\Bundle\CoreBundle\Customer\RegistrationService
+    coreshop.customer.registration_service: '@CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface'
+    CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\RegistrationService'
+    CoreShop\Bundle\CoreBundle\Customer\RegistrationService:
         arguments:
             - '@coreshop.repository.customer'
             - '@coreshop.object_service'
@@ -16,13 +17,13 @@ services:
             - '%coreshop.folder.guest%'
             - '%coreshop.folder.address%'
 
-    coreshop.customer.login_service:
-        class: CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService
+    coreshop.customer.login_service: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'
+    CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'
+    CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService:
         arguments:
             - '@security.token_storage'
 
-    coreshop.customer.request_newsletter_confirm.listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerNewsletterConfirmListener:
         arguments:
             - '@coreshop.link_generator'
             - '@request_stack'
@@ -31,8 +32,7 @@ services:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: checkCustomerNewsletterConfirmation }
             - { name: kernel.event_listener, event: coreshop.customer.update_post, method: checkCustomerNewsletterConfirmation }
 
-    coreshop.customer.login.listener:
-        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerLoginListener
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerLoginListener:
         arguments:
             - '@coreshop.customer.login_service'
         tags:

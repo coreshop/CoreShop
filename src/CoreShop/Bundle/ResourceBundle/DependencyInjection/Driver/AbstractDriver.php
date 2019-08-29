@@ -16,6 +16,7 @@ use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -129,7 +130,7 @@ abstract class AbstractDriver implements DriverInterface
     {
         $definition = new Definition(Metadata::class);
         $definition
-            ->setFactory([new Reference('coreshop.resource_registry'), 'get'])
+            ->setFactory([new Reference(RegistryInterface::class), 'get'])
             ->setArguments([$metadata->getAlias()]);
 
         return $definition;

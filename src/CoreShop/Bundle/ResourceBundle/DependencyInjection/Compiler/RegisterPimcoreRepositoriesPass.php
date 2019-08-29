@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -27,7 +28,7 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
             return;
         }
 
-        $registry = $container->get('coreshop.resource_registry');
+        $registry = $container->get(RegistryInterface::class);
 
         foreach ($container->findTaggedServiceIds('coreshop.pimcore.repository') as $id => $attributes) {
             if (!isset($attributes[0]['alias'])) {

@@ -5,8 +5,7 @@ services:
             - CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface
             - product-quantity-price-rules-calculators
 
-    coreshop.product_quantity_price_rules.calculator.volume:
-        class: CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator
+    CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator:
         arguments:
             - '@coreshop.registry.product_quantity_price_rules.actions'
         tags:

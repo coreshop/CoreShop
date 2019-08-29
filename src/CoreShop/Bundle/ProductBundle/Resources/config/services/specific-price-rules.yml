@@ -10,25 +10,22 @@ services:
     _defaults:
         public: true
 
-  # Forms
-    coreshop.form.type.product_specific_price_rule:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType
+    # Forms
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType:
         arguments:
             - '%coreshop.model.product_specific_price_rule.class%'
             - '%coreshop.form.type.product_specific_price_rule.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.product_specific_price_rule_translation:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleTranslationType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleTranslationType:
         arguments:
             - '%coreshop.model.product_specific_price_rule_translation.class%'
             - '%coreshop.form.type.product_specific_price_rule_translation.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.product_specific_price_rule.rule_action:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionType:
         arguments:
             - '%coreshop.model.rule_action.class%'
             - '%coreshop.form.type.product_specific_price_rule.rule_action.validation_groups%'
@@ -36,29 +33,25 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.product_specific_price_rule.type.rule_action.collection:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionCollectionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionCollectionType:
         arguments:
             - '@coreshop.registry.product_specific_price_rule.actions'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_specific_price_rule.type.rule_condition.collection:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionCollectionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionCollectionType:
         arguments:
             - '@coreshop.registry.product_specific_price_rule.conditions'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_specific_price_rule.type.rule_action_choice:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionChoiceType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleActionChoiceType:
         arguments:
             - '%coreshop.product_specific_price_rule.actions%'
         tags:
             - { name: form.type }
 
-    coreshop.form.product_specific_price_rule.type.rule_condition:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType:
         arguments:
             - '%coreshop.model.rule_condition.class%'
             - '%coreshop.form.type.product_specific_price_rule.rule_condition.validation_groups%'
@@ -66,8 +59,7 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.product_specific_price_rule.type.rule_condition_choice:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionChoiceType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionChoiceType:
         arguments:
             - '%coreshop.product_specific_price_rule.conditions%'
         tags:
@@ -106,8 +98,8 @@ services:
             - '@coreshop.product_specific_price_rule.conditions.processor'
 
     # Price Calculators
-    coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher:
-        class: CoreShop\Component\Product\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher
+    coreshop.product.price_calculator.product_specific_price_valid_rules_fetcher: '@CoreShop\Component\Product\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher'
+    CoreShop\Component\Product\Rule\Fetcher\ValidProductSpecificPriceRuleFetcher:
         arguments:
             - '@coreshop.product_specific_price_rule.processor'
         tags:

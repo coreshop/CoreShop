@@ -8,12 +8,13 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.store.composite:
-        class: CoreShop\Component\Store\Context\CompositeStoreContext
+    coreshop.context.store.composite: '@CoreShop\Component\Store\Context\CompositeStoreContext'
+    CoreShop\Component\Store\Context\StoreContextInterface: '@CoreShop\Component\Store\Context\CompositeStoreContext'
+    CoreShop\Component\Store\Context\CompositeStoreContext:
         public: false
 
-    coreshop.context.store.request_based:
-        class: CoreShop\Component\Store\Context\RequestBased\StoreContext
+    coreshop.context.store.request_based: '@CoreShop\Component\Store\Context\RequestBased\StoreContext'
+    CoreShop\Component\Store\Context\RequestBased\StoreContext:
         public: false
         arguments:
             - '@coreshop.context.store.request_based.resolver'
@@ -21,23 +22,24 @@ services:
         tags:
             - { name: coreshop.context.store, priority: 1 }
 
-    coreshop.context.store.request_based.cached:
-        class: CoreShop\Component\Store\Context\RequestBased\CachedStoreContext
+    coreshop.context.store.request_based.cached: '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext'
+    CoreShop\Component\Store\Context\RequestBased\CachedStoreContext:
         decorates: coreshop.context.store.request_based
         arguments:
-            - '@coreshop.context.store.request_based.cached.inner'
+            - '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext.inner'
 
-    coreshop.context.store.fixed:
-        class: CoreShop\Component\Store\Context\FixedStoreContext
+    coreshop.context.store.fixed: '@CoreShop\Component\Store\Context\FixedStoreContext'
+    CoreShop\Component\Store\Context\FixedStoreContext:
         tags:
             - { name: coreshop.context.store, priority: 2 }
 
-    coreshop.context.store.request_based.resolver.composite:
-        class: CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver
+    coreshop.context.store.request_based.resolver.composite: '@CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver'
+    CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver'
+    CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.store.request_based.resolver.admin:
-        class: CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver
+    coreshop.context.store.request_based.resolver.admin: '@CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver'
+    CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver:
         public: false
         arguments:
             - '@coreshop.repository.store'
@@ -46,8 +48,8 @@ services:
         tags:
             - { name: coreshop.context.store.request_based.resolver, priority: 200 }
 
-    coreshop.context.store.request_based.resolver.hostname_based:
-        class: CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver
+    coreshop.context.store.request_based.resolver.hostname_based: '@CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver'
+    CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver:
         public: false
         arguments:
             - '@coreshop.repository.store'

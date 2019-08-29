@@ -14,8 +14,8 @@ services:
             - '@coreshop.sequence.generator'
             - 'quote'
 
-    coreshop.order.transformer.cart_item_to_order_item:
-        class: CoreShop\Component\Order\Transformer\CartItemToOrderItemTransformer
+    coreshop.order.transformer.cart_item_to_order_item: '@CoreShop\Component\Order\Transformer\CartItemToOrderItemTransformer'
+    CoreShop\Component\Order\Transformer\CartItemToOrderItemTransformer:
         arguments:
             - '@coreshop.object_service'
             - '%coreshop.folder.order_item%'
@@ -23,8 +23,8 @@ services:
             - '@coreshop.currency_converter'
             - '@coreshop.translation_locale_provider'
 
-    coreshop.order.transformer.cart_to_order:
-        class: CoreShop\Component\Order\Transformer\CartToOrderTransformer
+    coreshop.order.transformer.cart_to_order: '@CoreShop\Component\Order\Transformer\CartToOrderTransformer'
+    CoreShop\Component\Order\Transformer\CartToOrderTransformer:
         arguments:
             - '@coreshop.order.transformer.cart_item_to_order_item'
             - '@coreshop.core.key_transformer'
@@ -37,15 +37,15 @@ services:
             - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
 
-    coreshop.order.transformer.cart_to_order.workflow_applier:
-        class: CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier
-        decorates: 'coreshop.order.transformer.cart_to_order'
+    coreshop.order.transformer.cart_to_order.workflow_applier: '@CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier'
+    CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier:
+        decorates: 'CoreShop\Component\Order\Transformer\CartToOrderTransformer'
         arguments:
-            - '@coreshop.order.transformer.cart_to_order.workflow_applier.inner'
+            - '@CoreShop\Component\Order\Transformer\CartToOrderTransformerWorkflowApplier.inner'
             - '@coreshop.state_machine_applier'
 
-    coreshop.order.transformer.cart_item_to_quote_item:
-        class: CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer
+    coreshop.order.transformer.cart_item_to_quote_item: '@CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer'
+    CoreShop\Component\Order\Transformer\CartItemToQuoteItemTransformer:
         arguments:
             - '@coreshop.object_service'
             - '%coreshop.folder.quote_item%'
@@ -53,8 +53,8 @@ services:
             - '@coreshop.currency_converter'
             - '@coreshop.translation_locale_provider'
 
-    coreshop.order.transformer.cart_to_quote:
-        class: CoreShop\Component\Order\Transformer\CartToQuoteTransformer
+    coreshop.order.transformer.cart_to_quote: '@CoreShop\Component\Order\Transformer\CartToQuoteTransformer'
+    CoreShop\Component\Order\Transformer\CartToQuoteTransformer:
         arguments:
             - '@coreshop.order.transformer.cart_item_to_quote_item'
             - '@coreshop.core.key_transformer'
@@ -67,14 +67,15 @@ services:
             - '@coreshop.object_cloner'
             - '@coreshop.repository.cart_price_rule_voucher_code'
 
-    coreshop.templating.helper.order_state:
-        class: CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper
-        arguments: ['@coreshop.workflow.state_info_manager']
+    CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelperInterface: '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
+    CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper:
+        arguments:
+            - '@coreshop.workflow.state_info_manager'
         tags:
             - { name: templating.helper, alias: coreshop_order_state }
 
-    coreshop.twig.extension.order_state:
-        class: CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension
-        arguments: ['@coreshop.templating.helper.order_state']
+    CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension:
+        arguments:
+            - '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
         tags:
             - { name: twig.extension }

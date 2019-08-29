@@ -10,18 +10,21 @@ services:
     _defaults:
         public: true
 
-    coreshop.factory.index.list:
-        class: CoreShop\Bundle\IndexBundle\Factory\ListingFactory
+    coreshop.factory.index.list: '@CoreShop\Bundle\IndexBundle\Factory\ListingFactory'
+    CoreShop\Component\Index\Factory\ListingFactoryInterface: '@CoreShop\Bundle\IndexBundle\Factory\ListingFactory'
+    CoreShop\Bundle\IndexBundle\Factory\ListingFactory:
         arguments:
             - '@coreshop.registry.index.worker'
 
-    coreshop.filter.processor:
-        class: CoreShop\Component\Index\Filter\FilterProcessor
+    coreshop.filter.processor: '@CoreShop\Component\Index\Filter\FilterProcessor'
+    CoreShop\Component\Index\Filter\FilterProcessorInterface: '@CoreShop\Component\Index\Filter\FilterProcessor'
+    CoreShop\Component\Index\Filter\FilterProcessor:
         arguments:
             - '@coreshop.registry.filter.condition_types'
 
-    coreshop.factory.filter.list:
-        class: CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory
+    coreshop.factory.filter.list: '@CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory'
+    CoreShop\Component\Index\Factory\FilteredListingFactoryInterface: '@CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory'
+    CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory:
         arguments:
             - '@coreshop.factory.index.list'
             - '@coreshop.filter.processor'
@@ -84,19 +87,20 @@ services:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
     # Filter Group Helper
-    coreshop.index.filter_group_helper:
-        class: CoreShop\Component\Index\Worker\FilterGroupHelper
+    coreshop.index.filter_group_helper: '@CoreShop\Component\Index\Worker\FilterGroupHelper'
+    CoreShop\Component\Index\Worker\FilterGroupHelperInterface: '@CoreShop\Component\Index\Worker\FilterGroupHelper'
+    CoreShop\Component\Index\Worker\FilterGroupHelper:
         arguments:
             - '@coreshop.registry.index.interpreter'
 
     # Index Workers
-    coreshop.index.worker.mysql:
-        class: CoreShop\Bundle\IndexBundle\Worker\MysqlWorker
+    coreshop.index.worker.mysql: '@CoreShop\Bundle\IndexBundle\Worker\MysqlWorker'
+    CoreShop\Bundle\IndexBundle\Worker\MysqlWorker:
         arguments:
             - '@coreshop.registry.index.extensions'
             - '@coreshop.registry.index.getter'
             - '@coreshop.registry.index.interpreter'
-            - '@coreshop.index.filter_group_helper'
+            - '@CoreShop\Component\Index\Worker\FilterGroupHelperInterface'
             - '@coreshop.index.condition.renderer'
             - '@coreshop.index.order.renderer'
             - '@doctrine.dbal.default_connection'
@@ -107,154 +111,154 @@ services:
             - { name: coreshop.index.worker, type: mysql, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Worker\MysqlWorkerType}
 
     # Index Getter
-    coreshop.index.getter.brickfield:
-        class: CoreShop\Component\Index\Getter\BrickGetter
+    coreshop.index.getter.brickfield: '@CoreShop\Component\Index\Getter\BrickGetter'
+    CoreShop\Component\Index\Getter\BrickGetter:
         tags:
           - { name: coreshop.index.getter, type: brick, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\BrickGetterFormType}
 
-    coreshop.index.getter.classification_store:
-        class: CoreShop\Component\Index\Getter\ClassificationStoreGetter
+    coreshop.index.getter.classification_store: '@CoreShop\Component\Index\Getter\ClassificationStoreGetter'
+    CoreShop\Component\Index\Getter\ClassificationStoreGetter:
         tags:
           - { name: coreshop.index.getter, type: classificationstore, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\ClassificationStoreGetterFormType}
 
-    coreshop.index.getter.field_collection:
-        class: CoreShop\Component\Index\Getter\FieldCollectionGetter
+    coreshop.index.getter.field_collection: '@CoreShop\Component\Index\Getter\FieldCollectionGetter'
+    CoreShop\Component\Index\Getter\FieldCollectionGetter:
         tags:
           - { name: coreshop.index.getter, type: fieldcollection, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Getter\FieldCollectionGetterFormType}
 
-    coreshop.index.getter.localized_field:
-        class: CoreShop\Component\Index\Getter\LocalizedFieldGetter
+    coreshop.index.getter.localized_field: '@CoreShop\Component\Index\Getter\LocalizedFieldGetter'
+    CoreShop\Component\Index\Getter\LocalizedFieldGetter:
         arguments:
             - '@coreshop.translation_locale_provider'
         tags:
             - { name: coreshop.index.getter, type: localizedfield, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
     # Index Interpreter
-    coreshop.index.interpreter.soundex:
-        class: CoreShop\Component\Index\Interpreter\SoundexInterpreter
+    coreshop.index.interpreter.soundex: '@CoreShop\Component\Index\Interpreter\SoundexInterpreter'
+    CoreShop\Component\Index\Interpreter\SoundexInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: soundex, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.object_id:
-        class: CoreShop\Component\Index\Interpreter\ObjectIdInterpreter
+    coreshop.index.interpreter.object_id: '@CoreShop\Component\Index\Interpreter\ObjectIdInterpreter'
+    CoreShop\Component\Index\Interpreter\ObjectIdInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: objectId, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.object_id_sum:
-        class: CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter
+    coreshop.index.interpreter.object_id_sum: '@CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter'
+    CoreShop\Component\Index\Interpreter\ObjectIdSumInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: objectIdSum, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.object:
-        class: CoreShop\Component\Index\Interpreter\ObjectInterpreter
+    coreshop.index.interpreter.object: '@CoreShop\Component\Index\Interpreter\ObjectInterpreter'
+    CoreShop\Component\Index\Interpreter\ObjectInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.object_property:
-        class: CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter
+    coreshop.index.interpreter.object_property: '@CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter'
+    CoreShop\Component\Index\Interpreter\ObjectPropertyInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: objectProperty, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ObjectPropertyInterpreterFormType}
 
-    coreshop.index.interpreter.quantity_value:
-        class: CoreShop\Component\Index\Interpreter\QuantityValueInterpreter
+    coreshop.index.interpreter.quantity_value: '@CoreShop\Component\Index\Interpreter\QuantityValueInterpreter'
+    CoreShop\Component\Index\Interpreter\QuantityValueInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: quantityValue, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.locale_mapping:
-        class: CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter
+    coreshop.index.interpreter.locale_mapping: '@CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter'
+    CoreShop\Component\Index\Interpreter\LocaleMappingInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: localeMapping, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}
 
-    coreshop.index.interpreter.timestamp:
-        class: CoreShop\Component\Index\Interpreter\TimestampInterpreter
+    coreshop.index.interpreter.timestamp: '@CoreShop\Component\Index\Interpreter\TimestampInterpreter'
+    CoreShop\Component\Index\Interpreter\TimestampInterpreter:
         tags:
           - { name: coreshop.index.interpreter, type: timestamp, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
 
-    coreshop.index.interpreter.expression:
-        class: CoreShop\Component\Index\Interpreter\ExpressionInterpreter
+    coreshop.index.interpreter.expression: '@CoreShop\Component\Index\Interpreter\ExpressionInterpreter'
+    CoreShop\Component\Index\Interpreter\ExpressionInterpreter:
         arguments:
             - '@coreshop.expression_language'
             - '@service_container'
         tags:
           - { name: coreshop.index.interpreter, type: expression, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\ExpressionInterpreterFormType}
 
-    coreshop.index.interpreter.nested:
-        class: CoreShop\Component\Index\Interpreter\NestedInterpreter
+    coreshop.index.interpreter.nested: '@CoreShop\Component\Index\Interpreter\NestedInterpreter'
+    CoreShop\Component\Index\Interpreter\NestedInterpreter:
         arguments:
             - '@coreshop.registry.index.interpreter'
         tags:
           - { name: coreshop.index.interpreter, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
 
-    coreshop.index.interpreter.nested_localized:
-        class: CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter
+    coreshop.index.interpreter.nested_localized: '@CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter'
+    CoreShop\Component\Index\Interpreter\LocalizedNestedInterpreter:
         arguments:
             - '@coreshop.registry.index.interpreter'
         tags:
           - { name: coreshop.index.interpreter, type: nestedLocalized, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
 
-    coreshop.index.interpreter.nested_relational:
-        class: CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter
+    coreshop.index.interpreter.nested_relational: '@CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter'
+    CoreShop\Component\Index\Interpreter\RelationalNestedInterpreter:
         arguments:
             - '@coreshop.registry.index.interpreter'
         tags:
           - { name: coreshop.index.interpreter, type: nestedRelational, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
 
-    coreshop.index.interpreter.iterator:
-        class: CoreShop\Component\Index\Interpreter\IteratorInterpreter
+    coreshop.index.interpreter.iterator: '@CoreShop\Component\Index\Interpreter\IteratorInterpreter'
+    CoreShop\Component\Index\Interpreter\IteratorInterpreter:
         arguments:
             - '@coreshop.registry.index.interpreter'
         tags:
             - { name: coreshop.index.interpreter, type: iterator, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\IteratorInterpreterType}
 
     # Index Column Types
-    coreshop.index.column_type.classification_store:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType
+    coreshop.index.column_type.classification_store: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType:
         tags:
             - { name: coreshop.index.column_type, type: classificationstore, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeClassificationStoreType}
 
-    coreshop.index.column_type.field_collection:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType
+    coreshop.index.column_type.field_collection: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType:
         tags:
             - { name: coreshop.index.column_type, type: fieldcollections, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeFieldCollectionType }
 
-    coreshop.index.column_type.localized_fields:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType
+    coreshop.index.column_type.localized_fields: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType:
         tags:
             - { name: coreshop.index.column_type, type: localizedfields, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeLocalizedFieldsType }
 
-    coreshop.index.column_type.object_brick:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType
+    coreshop.index.column_type.object_brick: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType:
         tags:
             - { name: coreshop.index.column_type, type: objectbricks, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectBrickType }
 
-    coreshop.index.column_type.object:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType
+    coreshop.index.column_type.object: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType:
         tags:
             - { name: coreshop.index.column_type, type: object, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeObjectType }
 
-    coreshop.index.column_type.system:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType
+    coreshop.index.column_type.system: '@CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType'
+    CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType:
         tags:
             - { name: coreshop.index.column_type, type: system, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Column\IndexColumnTypeSystemType }
 
     # Filter Condition Types
-    coreshop.filter.condition_type.select:
-        class: CoreShop\Component\Index\Filter\SelectFilterConditionProcessor
+    coreshop.filter.condition_type.select: '@CoreShop\Component\Index\Filter\SelectFilterConditionProcessor'
+    CoreShop\Component\Index\Filter\SelectFilterConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}
 
-    coreshop.filter.condition_type.range:
-        class: CoreShop\Component\Index\Filter\RangeFilterConditionProcessor
+    coreshop.filter.condition_type.range: '@CoreShop\Component\Index\Filter\RangeFilterConditionProcessor'
+    CoreShop\Component\Index\Filter\RangeFilterConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType}
 
-    coreshop.filter.condition_type.multiselect:
-        class: CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor
+    coreshop.filter.condition_type.multiselect: '@CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor'
+    CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
-    coreshop.filter.condition_type.nested:
-        class: CoreShop\Component\Index\Filter\NestedFilterConditionProcessor
+    coreshop.filter.condition_type.nested: '@CoreShop\Component\Index\Filter\NestedFilterConditionProcessor'
+    CoreShop\Component\Index\Filter\NestedFilterConditionProcessor:
         arguments:
             - '@coreshop.registry.filter.condition_types'
         tags:
@@ -266,24 +270,25 @@ services:
     #  tags:
     #    - { name: coreshop.filter.condition_type, type: boolean, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionBooleanType}
 
-    coreshop.filter.condition_type.relational_multihref:
-        class: CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor
+    coreshop.filter.condition_type.relational_multihref: '@CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor'
+    CoreShop\Component\Index\Filter\RelationalMultiselectConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: relational_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
-    coreshop.filter.condition_type.relational_select:
-        class: CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor
+    coreshop.filter.condition_type.relational_select: '@CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor'
+    CoreShop\Component\Index\Filter\RelationalSelectConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: relational_select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}
 
-    coreshop.filter.condition_type.category_select:
-        class: CoreShop\Component\Index\Filter\CategorySelectConditionProcessor
+    coreshop.filter.condition_type.category_select: '@CoreShop\Component\Index\Filter\CategorySelectConditionProcessor'
+    CoreShop\Component\Index\Filter\CategorySelectConditionProcessor:
         tags:
             - { name: coreshop.filter.condition_type, type: category_select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionCategorySelectType}
 
     # Index Updater Service
-    coreshop.index.updater:
-        class: CoreShop\Component\Index\Service\IndexUpdaterService
+    coreshop.index.updater: '@CoreShop\Component\Index\Service\IndexUpdaterService'
+    CoreShop\Component\Index\Service\IndexUpdaterServiceInterface: '@CoreShop\Component\Index\Service\IndexUpdaterService'
+    CoreShop\Component\Index\Service\IndexUpdaterService:
         arguments:
             - '@coreshop.repository.index'
             - '@coreshop.registry.index.worker'

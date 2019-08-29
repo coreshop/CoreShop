@@ -8,15 +8,15 @@ services:
             - '@coreshop.sequence.generator'
             - 'shipment'
 
-    coreshop.order_shipment.transformer.order_item_to_shipment_item:
-        class: CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer
+    coreshop.order_shipment.transformer.order_item_to_shipment_item: '@CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer'
+    CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer:
         arguments:
             - '@coreshop.object_service'
             - '%coreshop.folder.order_shipment_item%'
             - '@coreshop.transformer.event_dispatcher'
 
-    coreshop.order.transformer.order_to_shipment:
-        class: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
+    coreshop.order.transformer.order_to_shipment: '@CoreShop\Component\Order\Transformer\OrderToShipmentTransformer'
+    CoreShop\Component\Order\Transformer\OrderToShipmentTransformer:
         arguments:
             - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
             - '@coreshop.core.key_transformer'
@@ -37,22 +37,18 @@ services:
              - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
              - !php/const CoreShop\Component\Order\ShipmentTransitions::TRANSITION_CREATE
 
-    coreshop.form.type.order_shipment_creation_items:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationItemsType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationItemsType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.order_shipment_creation:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType:
         tags:
            - { name: form.type }
 
-    coreshop.form.type.order_invoice_creation_items:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationItemsType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationItemsType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.order_invoice_creation:
-        class: CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType
+    CoreShop\Bundle\OrderBundle\Form\Type\OrderInvoiceCreationType:
         tags:
             - { name: form.type }

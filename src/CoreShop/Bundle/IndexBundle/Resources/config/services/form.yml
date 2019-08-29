@@ -11,8 +11,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.index:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexType:
         arguments:
             - '%coreshop.model.index.class%'
             - '%coreshop.form.type.index.validation_groups%'
@@ -20,8 +19,7 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index_column:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnType:
         arguments:
             - '%coreshop.model.index_column.class%'
             - '%coreshop.form.type.index.column_type.validation_groups%'
@@ -31,70 +29,59 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index.index_column_choice:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnChoiceType:
         arguments:
             - '%coreshop.index.column_types%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index_column.type_collection:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnCollectionType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnCollectionType:
         arguments:
             - '@coreshop.registry.index.column_types'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index.worker_choice:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexWorkerChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexWorkerChoiceType:
         arguments:
             - '%coreshop.index.workers%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index.getter_choice:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnGetterChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnGetterChoiceType:
         arguments:
             - '%coreshop.index.getters%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index.interpter_choice:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnInterpreterChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnInterpreterChoiceType:
         arguments:
             - '%coreshop.index.interpreters%'
         tags:
             - { name: form.type }
 
-
-    coreshop.form.type.index.interpreter_type:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterType
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterType:
         arguments: ['@coreshop.form_registry.index.interpreter']
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index.interpreter_collection:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterCollectionType
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\InterpreterCollectionType:
         arguments: ['@coreshop.registry.index.interpreter']
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index_nested:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType
+    CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType:
         tags:
             - { name: form.type }
 
     # Filter Forms
-    coreshop.form.type.filter:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterType
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterType:
         arguments:
             - '%coreshop.model.filter.class%'
             - '%coreshop.form.type.filter.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.filter.condition_type:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionType:
         arguments:
             - '%coreshop.model.filter_condition.class%'
             - '%coreshop.form.type.filter.filter_condition.validation_groups%'
@@ -102,31 +89,25 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.filter.condition_choice_type:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionChoiceType:
         arguments:
             - '%coreshop.filter.condition_types%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.filter.condition_type_collection:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionCollectionType
+    CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionCollectionType:
         arguments:
             - '@coreshop.registry.filter.condition_types'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.index_choice:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\IndexChoiceType
+    CoreShop\Bundle\IndexBundle\Form\Type\IndexChoiceType:
         arguments:
           - '@coreshop.repository.index'
         tags:
           -  { name: form.type }
 
-    # Condition Config Types
-
-    coreshop.form.type.filter.condition.nested:
-        class: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType
+    CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType:
         arguments:
             - '@coreshop.repository.filter_condition'
         tags:

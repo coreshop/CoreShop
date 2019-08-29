@@ -8,8 +8,8 @@ services:
     coreshop.store.theme_helper:
         alias: coreshop.theme.helper
 
-    coreshop.theme.store_resolver:
-        class: CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver
+    coreshop.theme.store_resolver: '@CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver'
+    CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver:
         arguments:
             - '@coreshop.theme.active_theme'
             - '@coreshop.context.store'

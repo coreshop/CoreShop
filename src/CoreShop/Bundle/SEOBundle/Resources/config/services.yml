@@ -11,9 +11,11 @@ services:
             - 'CoreShop\Component\SEO\Extractor\ExtractorInterface'
             - 'seo metadata extractor'
 
-    coreshop.seo.presentation:
-        class: CoreShop\Component\SEO\SEOPresentation
+    CoreShop\Component\SEO\SEOPresentation:
         arguments:
             - '@Pimcore\Templating\Helper\HeadMeta'
             - '@Pimcore\Templating\Helper\HeadTitle'
             - '@coreshop.registry.seo.extractor'
+
+    coreshop.seo.presentation: '@CoreShop\Component\SEO\SEOPresentation'
+    CoreShop\Component\SEO\SEOPresentationInterface: '@CoreShop\Component\SEO\SEOPresentation'
