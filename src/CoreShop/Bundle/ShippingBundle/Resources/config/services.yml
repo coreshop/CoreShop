@@ -44,7 +44,7 @@ services:
     coreshop.carrier.price_calculator.default: '@CoreShop\Component\Shipping\Calculator\CompositePriceCalculator'
     CoreShop\Component\Shipping\Calculator\CompositePriceCalculator:
         arguments:
-            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
+            - ['@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface']
 
     coreshop.shipping.default_resolver.cheapest: '@CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver'
     CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface: '@CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver'
