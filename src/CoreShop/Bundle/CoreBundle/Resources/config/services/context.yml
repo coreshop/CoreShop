@@ -41,9 +41,9 @@ services:
     # country store resolver
     coreshop.context.cart.new.store_based: '@CoreShop\Component\Core\Context\StoreBasedCartContext'
     CoreShop\Component\Core\Context\StoreBasedCartContext:
-        decorates: coreshop.context.cart.new
+        decorates: CoreShop\Component\Order\Context\CartContext
         arguments:
-            - 'CoreShop\Component\Core\Context\StoreBasedCartContext.inner'
+            - '@CoreShop\Component\Core\Context\StoreBasedCartContext.inner'
             - '@coreshop.context.shopper'
 
     coreshop.context.country.store_aware: '@CoreShop\Component\Core\Context\Country\StoreAwareCountryContext'
