@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
@@ -26,8 +27,10 @@ class SettingsController extends AdminController
      */
     public function onKernelController(FilterControllerEvent $event)
     {
+        $user = $this->getUser();
+
         // permission check
-        if (!$this->getUser()->isAllowed('coreshop_permission_settings')) {
+        if (!$user instanceof User || !$user->isAllowed('coreshop_permission_settings')) {
             throw new \Exception(sprintf('this function requires "%s" permission!', 'coreshop_permission_settings'));
         }
     }
