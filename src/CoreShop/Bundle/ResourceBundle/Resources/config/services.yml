@@ -50,9 +50,10 @@ services:
         decoration_priority: 256
         public: false
 
+    coreshop.admin_controller.resource_settings: '@CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController'
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
-          - '@coreshop.resource_controller.view_handler'
+          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
           - [setContainer, ['@service_container']]
 

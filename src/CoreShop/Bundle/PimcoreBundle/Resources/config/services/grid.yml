@@ -2,7 +2,10 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController: ~
+    coreshop.pimcore_controller.grid: '@CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController'
+    CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
+        tags:
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener:
         arguments:

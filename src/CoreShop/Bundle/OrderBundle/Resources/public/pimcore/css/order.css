@@ -254,10 +254,14 @@ body.pimcore_version_6 .coreshop_nav_icon_quote_create {
     height: 32px;
 }
 
-.coreshop-detail-grid .x-column-header {
+body:not(.pimcore_version_6) .coreshop-detail-grid .x-column-header {
     background: white;
     border-right-color: white;
     font-size: 13px;
+}
+body.pimcore_version_6 .coreshop-detail-grid .x-column-header {
+    font-size: 13px;
+    border-right-color: white;
 }
 
 .coreshop-detail-grid .x-grid-body {

@@ -1,4 +1,5 @@
 services:
+    coreshop.pimcore_controller.dynamic_dropdown: '@CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController'
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\DynamicDropdownController:
         tags:
             - { name: controller.service_arguments }
