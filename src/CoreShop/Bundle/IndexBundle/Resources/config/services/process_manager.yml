@@ -1,17 +1,15 @@
 services:
-    coreshop.index.process_manager.listener:
-        class: CoreShop\Bundle\IndexBundle\ProcessManager\IndexListener
+    CoreShop\Bundle\IndexBundle\ProcessManager\IndexListener:
         arguments:
             - '@process_manager.factory.process'
             - '@process_manager.logger'
         tags:
-            - { name: 'kernel.event_listener', event: 'coreshop.index.classes', method: 'onClasssesEvent' }
-            - { name: 'kernel.event_listener', event: 'coreshop.index.start', method: 'onStartEvent' }
-            - { name: 'kernel.event_listener', event: 'coreshop.index.status', method: 'onStatusEvent' }
-            - { name: 'kernel.event_listener', event: 'coreshop.index.finished', method: 'onFinishedEvent' }
-            - { name: 'kernel.event_listener', event: 'coreshop.index.progress', method: 'onProgressEvent' }
+            - { name: kernel.event_listener, event: coreshop.index.classes, method: onClasssesEvent }
+            - { name: kernel.event_listener, event: coreshop.index.start, method: onStartEvent }
+            - { name: kernel.event_listener, event: coreshop.index.status, method: onStatusEvent }
+            - { name: kernel.event_listener, event: coreshop.index.finished, method: onFinishedEvent }
+            - { name: kernel.event_listener, event: coreshop.index.progress, method: onProgressEvent }
 
-    coreshop.index.process_manager.process:
-        class: CoreShop\Bundle\IndexBundle\ProcessManager\IndexProcess
+    CoreShop\Bundle\IndexBundle\ProcessManager\IndexProcess:
         tags:
-            - { name: 'process_manager.process', type: 'coreshop_index', form-type: CoreShop\Bundle\IndexBundle\ProcessManager\Form\Type\CoreShopIndexProcessType }
+            - { name: process_manager.process, type: coreshop_index, form-type: CoreShop\Bundle\IndexBundle\ProcessManager\Form\Type\CoreShopIndexProcessType }

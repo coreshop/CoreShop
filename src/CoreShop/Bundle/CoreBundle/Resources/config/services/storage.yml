@@ -2,11 +2,11 @@ services:
     _defaults:
         public: true
 
-    coreshop.storage.session:
-        class: CoreShop\Bundle\CoreBundle\Storage\SessionStorage
+    coreshop.storage.session: '@CoreShop\Bundle\CoreBundle\Storage\SessionStorage'
+    CoreShop\Bundle\CoreBundle\Storage\SessionStorage:
         arguments: ['@session']
 
-    coreshop.storage.cookie:
-        class: CoreShop\Bundle\CoreBundle\Storage\CookieStorage
+    coreshop.storage.cookie: '@CoreShop\Bundle\CoreBundle\Storage\CookieStorage'
+    CoreShop\Bundle\CoreBundle\Storage\CookieStorage:
         tags:
             - { name: kernel.event_subscriber }

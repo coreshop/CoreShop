@@ -6,23 +6,20 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.currency_choice:
-        class: CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType
+    CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType:
         arguments:
             - '@coreshop.repository.currency'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.currency:
-        class: CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType
+    CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyType:
         arguments:
             - '%coreshop.model.currency.class%'
             - '%coreshop.form.type.currency.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.exchange_rate:
-        class: CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType
+    CoreShop\Bundle\CurrencyBundle\Form\Type\ExchangeRateType:
         arguments:
             - '%coreshop.model.exchange_rate.class%'
             - '%coreshop.form.type.exchange_rate.validation_groups%'

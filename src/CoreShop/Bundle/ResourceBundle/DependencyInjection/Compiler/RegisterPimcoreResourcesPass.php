@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -25,7 +26,7 @@ final class RegisterPimcoreResourcesPass implements CompilerPassInterface
     {
         try {
             $resources = $container->getParameter('coreshop.all.pimcore_classes');
-            $registry = $container->findDefinition('coreshop.resource_registry');
+            $registry = $container->findDefinition(RegistryInterface::class);
         } catch (InvalidArgumentException $exception) {
             return;
         }

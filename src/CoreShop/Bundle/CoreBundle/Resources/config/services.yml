@@ -33,25 +33,26 @@ services:
     _defaults:
         public: true
 
-    coreshop.core.key_transformer:
-        class: CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer
+    coreshop.core.key_transformer: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
+    CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
+    CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer: ~
 
-    coreshop.taxation.factory.tax_calculator:
-        class: CoreShop\Component\Core\Taxation\TaxCalculatorFactory
+    coreshop.taxation.factory.tax_calculator: '@CoreShop\Component\Core\Taxation\TaxCalculatorFactory'
+    CoreShop\Component\Core\Taxation\TaxCalculatorFactory:
         arguments:
             - '@coreshop.repository.tax_rule'
 
-    coreshop.taxation.tax_applicator:
-        class: CoreShop\Component\Core\Taxation\TaxApplicator
+    coreshop.taxation.tax_applicator: '@CoreShop\Component\Core\Taxation\TaxApplicator'
+    CoreShop\Component\Core\Taxation\TaxApplicator: ~
 
-    coreshop.taxation.factory.cached_tax_calculator:
-        class: CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory
+    coreshop.taxation.factory.cached_tax_calculator: '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory'
+    CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory:
         decorates: coreshop.taxation.factory.tax_calculator
         arguments:
-            - '@coreshop.taxation.factory.cached_tax_calculator.inner'
+            - '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory.inner'
 
-    coreshop.security.customer.user_provider:
-        class: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
+    coreshop.security.customer.user_provider: '@CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider'
+    CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider:
         arguments:
             - '@coreshop.repository.customer'
             - '%coreshop.model.customer.class%'
@@ -62,8 +63,8 @@ services:
             - Pimcore\Security\Encoder\PasswordFieldEncoder
             - ['password']
 
-    coreshop.core.configuration.service:
-        class: CoreShop\Component\Core\Configuration\ConfigurationService
+    coreshop.core.configuration.service: '@CoreShop\Component\Core\Configuration\ConfigurationService'
+    CoreShop\Component\Core\Configuration\ConfigurationService:
         decorates: coreshop.configuration.service
         arguments:
             - '@doctrine.orm.default_entity_manager'
@@ -71,13 +72,13 @@ services:
             - '@coreshop.factory.configuration'
             - '@coreshop.context.store'
 
-    coreshop.provider.store_based_default_address_provider:
-        class: CoreShop\Component\Core\Provider\StoreBasedAddressProvider
+    coreshop.provider.store_based_default_address_provider: '@CoreShop\Component\Core\Provider\StoreBasedAddressProvider'
+    CoreShop\Component\Core\Provider\StoreBasedAddressProvider:
         arguments:
             - '@coreshop.factory.address'
             - '@coreshop.context.shopper'
 
-    coreshop.provider.taxation.default_country:
-        class: CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider
+    coreshop.provider.taxation.default_country: '@CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider'
+    CoreShop\Component\Core\Provider\ContextBasedDefaultTaxAddressProvider:
         arguments:
             - '@coreshop.factory.address'

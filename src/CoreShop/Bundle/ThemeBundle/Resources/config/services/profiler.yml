@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.theme_collector:
-        class: CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector
+    CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector:
         arguments:
             - '@coreshop.theme.active_theme'
             - '@coreshop.theme.resolver'

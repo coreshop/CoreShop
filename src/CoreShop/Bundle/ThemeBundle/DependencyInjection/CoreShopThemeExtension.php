@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection;
 
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
+use CoreShop\Bundle\ThemeBundle\Service\PimcoreDocumentPropertyResolver;
+use CoreShop\Bundle\ThemeBundle\Service\PimcoreSiteThemeResolver;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -32,11 +34,11 @@ class CoreShopThemeExtension extends Extension
         $loader->load('services.yml');
 
         if (!$config['default_resolvers']['pimcore_site']) {
-            $container->removeDefinition('coreshop.theme.resolver.pimcore_site');
+            $container->removeDefinition(PimcoreSiteThemeResolver::class);
         }
 
         if (!$config['default_resolvers']['pimcore_document_property']) {
-            $container->removeDefinition('coreshop.theme.resolver.pimcore_document_property');
+            $container->removeDefinition(PimcoreDocumentPropertyResolver::class);
         }
 
         $container

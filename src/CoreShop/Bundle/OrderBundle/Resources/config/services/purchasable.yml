@@ -8,8 +8,9 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface
             - purchasable-retail-price-calculators
 
-    coreshop.order.purchasable.retail_price_calculator:
-        class: CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator
+    coreshop.order.purchasable.retail_price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator'
+    CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.retail_price_calculators'
 
@@ -19,13 +20,14 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface
             - purchasable-discount-calculators
 
-    coreshop.order.purchasable.discount_calculator.no_discount:
-        class: CoreShop\Component\Order\Calculator\NoDiscountPurchasableCalculator
+    coreshop.order.purchasable.discount_calculator.no_discount: '@CoreShop\Component\Order\Calculator\NoDiscountPurchasableCalculator'
+    CoreShop\Component\Order\Calculator\NoDiscountPurchasableCalculator:
         tags:
           - { name: coreshop.order.purchasable.discount_calculator, type: no_discount, priority: 10 }
 
-    coreshop.order.purchasable.discount_calculator:
-        class: CoreShop\Component\Order\Calculator\CompositePurchasableDiscountCalculator
+    coreshop.order.purchasable.discount_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountCalculator'
+    CoreShop\Component\Order\Calculator\CompositePurchasableDiscountCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.discount_calculators'
 
@@ -35,8 +37,9 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface
             - purchasable-discount-price-calculators
 
-    coreshop.order.purchasable.price_discount_calculator:
-        class: CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator
+    coreshop.order.purchasable.price_discount_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator'
+    CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.discount_price_calculators'
 
@@ -52,13 +55,14 @@ services:
             - CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface
             - purchasable-wholesale-price-calculators
 
-    coreshop.order.purchasable.price_calculator:
-        class: CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator
+    coreshop.order.purchasable.price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'
+    CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.price_calculators'
 
-    coreshop.order.purchasable.price_calculactor.default:
-        class: CoreShop\Component\Order\Calculator\PurchasablePriceCalculator
+    coreshop.order.purchasable.price_calculactor.default: '@CoreShop\Component\Order\Calculator\PurchasablePriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasablePriceCalculator:
         arguments:
             - '@coreshop.order.purchasable.retail_price_calculator'
             - '@coreshop.order.purchasable.price_discount_calculator'
@@ -66,21 +70,22 @@ services:
         tags:
             - { name: coreshop.order.purchasable.price_calculator, type: default, priority: 10 }
 
-    coreshop.order.purchasable.calculator:
-        class: CoreShop\Component\Order\Calculator\PurchasableCalculator
+    coreshop.order.purchasable.calculator: '@CoreShop\Component\Order\Calculator\PurchasableCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableCalculator:
         arguments:
-            - '@coreshop.order.purchasable.price_calculator'
-            - '@coreshop.order.purchasable.retail_price_calculator'
-            - '@coreshop.order.purchasable.price_discount_calculator'
-            - '@coreshop.order.purchasable.discount_calculator'
+            - '@CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface'
+            - '@CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface'
+            - '@CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface'
+            - '@CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface'
 
-    coreshop.order.purchasable.wholesale_price_calculator:
-        class: CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator
+    coreshop.order.purchasable.wholesale_price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator'
+    CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.wholesale_price_calculators'
 
-    coreshop.order.purchasable.wholesale_price_calculator.default:
-        class: CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator
+    coreshop.order.purchasable.wholesale_price_calculator.default: '@CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator:
         arguments:
             - '@coreshop.currency_converter'
         tags:

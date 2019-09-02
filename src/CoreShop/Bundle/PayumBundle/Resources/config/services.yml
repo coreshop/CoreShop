@@ -14,39 +14,39 @@ services:
         class: Payum\Core\HttpClientInterface
         factory: [Payum\Core\Bridge\Guzzle\HttpClientFactory, create]
 
-    coreshop.payum_action.resolve_next_route:
-        class: CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction
+    coreshop.payum_action.resolve_next_route: '@CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction'
+    CoreShop\Bundle\PayumBundle\Action\ResolveNextRouteAction:
         tags:
             - { name: payum.action, all: true, alias: coreshop.resolve_next_route }
 
-    coreshop.payum_action.confirm_order:
-        class: CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction
+    coreshop.payum_action.confirm_order: '@CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction'
+    CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction:
         arguments:
             - '@coreshop.state_machine_applier'
         tags:
             - { name: payum.action, all: true, alias: coreshop.confirm_order }
 
     # Offline Payment
-    coreshop.payum_action.offline.convert_payment:
-        class: CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction
+    coreshop.payum_action.offline.convert_payment: '@CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction'
+    CoreShop\Bundle\PayumBundle\Action\Offline\ConvertPaymentAction:
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.convert_payment }
 
-    coreshop.payum_action.offine.resolve_next_route:
-        class: CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction
+    coreshop.payum_action.offine.resolve_next_route: '@CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction'
+    CoreShop\Bundle\PayumBundle\Action\Offline\ResolveNextRouteAction:
         arguments:
             - '@coreshop.repository.order'
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.resolve_next_route }
 
-    coreshop.payum_action.offine.confirm_order:
-        class: CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction
+    coreshop.payum_action.offine.confirm_order: '@CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction'
+    CoreShop\Bundle\PayumBundle\Action\Offline\ConfirmOrderAction:
         arguments:
             - '@coreshop.state_machine_applier'
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.confirm_order }
 
-    coreshop.payum_action.offline.status:
-        class: CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction
+    coreshop.payum_action.offline.status: '@CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction'
+    CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction:
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.status }

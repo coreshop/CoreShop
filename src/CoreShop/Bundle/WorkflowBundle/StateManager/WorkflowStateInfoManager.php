@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
 use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -26,7 +26,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
     private $eventDispatcher;
 
     /**
-     * @var StateMachineManager
+     * @var StateMachineManagerInterface
      */
     private $stateMachineManager;
 
@@ -46,15 +46,15 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
     private $stateColors;
 
     /**
-     * @param EventDispatcherInterface   $eventDispatcher
-     * @param StateMachineManager        $stateMachineManager
-     * @param TranslatorInterface        $translator
-     * @param HistoryRepositoryInterface $historyRepository
-     * @param array                      $stateColors
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param StateMachineManagerInterface $stateMachineManager
+     * @param TranslatorInterface          $translator
+     * @param HistoryRepositoryInterface   $historyRepository
+     * @param array                        $stateColors
      */
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
-        StateMachineManager $stateMachineManager,
+        StateMachineManagerInterface $stateMachineManager,
         TranslatorInterface $translator,
         HistoryRepositoryInterface $historyRepository,
         $stateColors
@@ -76,35 +76,13 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
     public function getStateInfo($workflowName, $value, $forFrontend = true)
     {
         $transPrefix = $forFrontend ? 'coreshop.ui.workflow.state.' : 'coreshop_workflow_state_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $value;
+        $transValue = $transPrefix.$workflowName.($forFrontend ? '.' : '_').$value;
 
         $color = isset($this->stateColors[$workflowName]['place_colors'][$value]) ? $this->stateColors[$workflowName]['place_colors'][$value] : '#f6f1de';
 
         $data = [
             'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
             'state' => $value,
-            'color' => $color,
-        ];
-
-        return $data;
-    }
-
-    /**
-     * @param string $workflowName
-     * @param string $transition
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
-    public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
-    {
-        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
-        $transValue = $transPrefix . $workflowName . ($forFrontend ? '.' : '_') . $transition;
-        $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
-
-        $data = [
-            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
-            'transition' => $transition,
             'color' => $color,
         ];
 
@@ -133,6 +111,28 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         }
 
         return $valid;
+    }
+
+    /**
+     * @param string $workflowName
+     * @param string $transition
+     * @param bool   $forFrontend
+     *
+     * @return array
+     */
+    public function getTransitionInfo($workflowName, $transition, $forFrontend = true)
+    {
+        $transPrefix = $forFrontend ? 'coreshop.ui.workflow.transition.' : 'coreshop_workflow_transition_';
+        $transValue = $transPrefix.$workflowName.($forFrontend ? '.' : '_').$transition;
+        $color = isset($this->stateColors[$workflowName]['transition_colors'][$transition]) ? $this->stateColors[$workflowName]['transition_colors'][$transition] : '#999999';
+
+        $data = [
+            'label' => $this->translator->trans($transValue, [], $forFrontend ? null : 'admin'),
+            'transition' => $transition,
+            'color' => $color,
+        ];
+
+        return $data;
     }
 
     /**

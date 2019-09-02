@@ -2,15 +2,13 @@ services:
     _defaults:
         public: true
 
-    coreshop.payum_extension.update_payment_state:
-        class: CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension
+    CoreShop\Bundle\PayumBundle\Extension\UpdatePaymentStateExtension:
         arguments:
             - '@coreshop.state_machine_manager'
         tags:
             - { name: payum.extension, all: true, prepend: true }
 
-    coreshop.payum_extension.update_order_state:
-        class: CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension
+    CoreShop\Bundle\PayumBundle\Extension\UpdateOrderStateExtension:
         arguments:
             - '@coreshop.state_machine_manager'
         tags:

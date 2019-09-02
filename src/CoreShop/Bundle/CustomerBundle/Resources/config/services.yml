@@ -5,30 +5,32 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.customer.composite:
-        class: CoreShop\Component\Customer\Context\CompositeCustomerContext
+    coreshop.context.customer.composite: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
+    CoreShop\Component\Customer\Context\CustomerContextInterface: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
+    CoreShop\Component\Customer\Context\CompositeCustomerContext:
         public: false
 
-    coreshop.context.customer.request_based:
-        class: CoreShop\Component\Customer\Context\RequestBased\CustomerContext
+    coreshop.context.customer.request_based: '@CoreShop\Component\Customer\Context\RequestBased\CustomerContext'
+    CoreShop\Component\Customer\Context\RequestBased\CustomerContext:
         public: false
         arguments:
-            - '@coreshop.context.customer.request_based.resolver'
+            - '@CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface'
             - '@request_stack'
         tags:
             - { name: coreshop.context.customer }
 
-    coreshop.context.customer.fixed:
-        class: CoreShop\Component\Customer\Context\FixedCustomerContext
+    coreshop.context.customer.fixed: '@CoreShop\Component\Customer\Context\FixedCustomerContext'
+    CoreShop\Component\Customer\Context\FixedCustomerContext:
         tags:
             - { name: coreshop.context.customer }
 
-    coreshop.context.customer.request_based.resolver.composite:
-        class: CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver
+    CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
+    coreshop.context.customer.request_based.resolver.composite: '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
+    CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.customer.request_based.resolver.token_based:
-        class: CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver
+    coreshop.context.customer.request_based.resolver.token_based: '@CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver'
+    CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver:
         public: false
         arguments:
             - '@security.token_storage'

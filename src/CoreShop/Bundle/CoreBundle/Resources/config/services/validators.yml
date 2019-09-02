@@ -1,31 +1,26 @@
 services:
-    coreshop.validator.add_to_cart_availability:
-        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator:
         arguments:
             - '@coreshop.inventory.availability_checker'
         tags:
-            - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_availability' }
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_availability }
 
-    coreshop.validator.cart_stock_availabilty:
-        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailabilityValidator
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartStockAvailabilityValidator:
         arguments:
             - '@coreshop.inventory.availability_checker'
         tags:
-            - { name: validator.constraint_validator, alias: 'coreshop_cart_stock_availability' }
+            - { name: validator.constraint_validator, alias: coreshop_cart_stock_availability }
 
-    coreshop.validator.quantity_validator:
-        class: CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService
+    CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService: ~
 
-    coreshop.validator.add_to_cart_quantity:
-        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
         arguments:
-            - '@coreshop.validator.quantity_validator'
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
         tags:
-            - { name: validator.constraint_validator, alias: 'coreshop_add_to_cart_quantity' }
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_quantity }
 
-    coreshop.validator.cart_quantity:
-        class: CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator:
         arguments:
-            - '@coreshop.validator.quantity_validator'
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
         tags:
-            - { name: validator.constraint_validator, alias: 'coreshop_cart_quantity' }
+            - { name: validator.constraint_validator, alias: coreshop_cart_quantity }

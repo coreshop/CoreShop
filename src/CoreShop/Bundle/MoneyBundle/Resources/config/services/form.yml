@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.money:
-        class: CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType
+    CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType:
         arguments:
             - '%coreshop.currency.decimal_factor%'
         tags:

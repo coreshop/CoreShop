@@ -2,7 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.menu.main:
-        class: CoreShop\Bundle\CoreBundle\Menu\MainMenuBuilder
+    CoreShop\Bundle\CoreBundle\Menu\MainMenuBuilder:
         tags:
             - { name: 'coreshop.menu', type: main, menu: main }

@@ -5,8 +5,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.gateway.config:
-        class: CoreShop\Bundle\PayumBundle\Form\Type\GatewayConfigType
+    CoreShop\Bundle\PayumBundle\Form\Type\GatewayConfigType:
         arguments:
             - '%coreshop.model.gateway_config.class%'
             - '%coreshop.form.type.gateway_config.validation_groups%'
@@ -14,14 +13,12 @@ services:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.gateway_configuration.paypal:
-        class: CoreShop\Bundle\PayumBundle\Form\Type\PaypalGatewayConfigurationType
+    CoreShop\Bundle\PayumBundle\Form\Type\PaypalGatewayConfigurationType:
         tags:
             - { name: coreshop.gateway_configuration_type, type: paypal_express_checkout }
             - { name: form.type }
 
-    coreshop.form.type.gateway_configuration.sofort:
-        class: CoreShop\Bundle\PayumBundle\Form\Type\SofortGatewayConfigurationType
+    CoreShop\Bundle\PayumBundle\Form\Type\SofortGatewayConfigurationType:
         tags:
             - { name: coreshop.gateway_configuration_type, type: sofort }
             - { name: form.type }

@@ -2,8 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.shopper:
-        class: CoreShop\Component\Core\Context\ShopperContext
+    coreshop.context.shopper: '@CoreShop\Component\Core\Context\ShopperContextInterface'
+    CoreShop\Component\Core\Context\ShopperContextInterface: '@CoreShop\Component\Core\Context\ShopperContext'
+    CoreShop\Component\Core\Context\ShopperContext:
         lazy: true
         arguments:
             - '@coreshop.context.store'
@@ -13,47 +14,48 @@ services:
             - '@coreshop.context.customer'
             - '@coreshop.context.cart'
 
-    coreshop.storage.currency:
-        class: CoreShop\Component\Core\Currency\CurrencyStorage
+    coreshop.storage.currency: '@CoreShop\Component\Core\Currency\CurrencyStorageInterface'
+    CoreShop\Component\Core\Currency\CurrencyStorageInterface: '@CoreShop\Component\Core\Currency\CurrencyStorage'
+    CoreShop\Component\Core\Currency\CurrencyStorage:
         arguments:
             - '@coreshop.storage.cookie'
             - '@coreshop.repository.currency'
 
-    coreshop.context.currency.storage_based:
-        class: CoreShop\Component\Core\Context\Currency\StorageBasedCurrencyContext
+    coreshop.context.currency.storage_based: '@CoreShop\Component\Core\Context\Currency\StorageBasedCurrencyContext'
+    CoreShop\Component\Core\Context\Currency\StorageBasedCurrencyContext:
         arguments:
             - '@coreshop.context.store'
             - '@coreshop.storage.currency'
         tags:
             - { name: 'coreshop.context.currency' }
 
-    coreshop.context.currency.store_aware:
-        class: CoreShop\Component\Core\Context\Currency\StoreAwareCurrencyContext
+    coreshop.context.currency.store_aware: '@CoreShop\Component\Core\Context\Currency\StoreAwareCurrencyContext'
+    CoreShop\Component\Core\Context\Currency\StoreAwareCurrencyContext:
         decorates: coreshop.context.currency
         decoration_priority: 256
         arguments:
-            - '@coreshop.context.currency.store_aware.inner'
+            - '@CoreShop\Component\Core\Context\Currency\StoreAwareCurrencyContext.inner'
             - '@coreshop.context.store'
             - '@coreshop.repository.currency'
 
     # country store resolver
-    coreshop.context.cart.new.store_based:
-        decorates: coreshop.context.cart.new
-        class: CoreShop\Component\Core\Context\StoreBasedCartContext
+    coreshop.context.cart.new.store_based: '@CoreShop\Component\Core\Context\StoreBasedCartContext'
+    CoreShop\Component\Core\Context\StoreBasedCartContext:
+        decorates: CoreShop\Component\Order\Context\CartContext
         arguments:
-            - '@coreshop.context.cart.new.store_based.inner'
+            - '@CoreShop\Component\Core\Context\StoreBasedCartContext.inner'
             - '@coreshop.context.shopper'
 
-    coreshop.context.country.store_aware:
-        class: CoreShop\Component\Core\Context\Country\StoreAwareCountryContext
+    coreshop.context.country.store_aware: '@CoreShop\Component\Core\Context\Country\StoreAwareCountryContext'
+    CoreShop\Component\Core\Context\Country\StoreAwareCountryContext:
         decorates: coreshop.context.country
         decoration_priority: 256
         arguments:
-            - '@coreshop.context.country.store_aware.inner'
+            - '@CoreShop\Component\Core\Context\Country\StoreAwareCountryContext.inner'
             - '@coreshop.context.store'
 
-    coreshop.context.currency.country_currency_based:
-        class: CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext
+    coreshop.context.currency.country_currency_based: '@CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext'
+    CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext:
         arguments:
             - '@coreshop.context.country'
         tags:

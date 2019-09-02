@@ -6,15 +6,15 @@ services:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments: ['@coreshop.sequence.generator', 'invoice']
 
-    coreshop.order_invoice.transformer.cart_item_to_order_item:
-        class: CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer
+    coreshop.order_invoice.transformer.cart_item_to_order_item: '@CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer'
+    CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer:
         arguments:
             - '@coreshop.object_service'
             - '%coreshop.folder.order_invoice_item%'
             - '@coreshop.transformer.event_dispatcher'
 
-    coreshop.order.transformer.order_to_invoice:
-        class: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
+    coreshop.order.transformer.order_to_invoice: '@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer'
+    CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer:
         arguments:
             - '@coreshop.order_invoice.transformer.cart_item_to_order_item'
             - '@coreshop.core.key_transformer'

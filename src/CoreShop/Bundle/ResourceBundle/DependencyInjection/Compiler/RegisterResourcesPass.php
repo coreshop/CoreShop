@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +27,7 @@ final class RegisterResourcesPass implements CompilerPassInterface
     {
         try {
             $resources = $container->getParameter('coreshop.resources');
-            $registry = $container->findDefinition('coreshop.resource_registry');
+            $registry = $container->findDefinition(RegistryInterface::class);
         } catch (InvalidArgumentException $exception) {
             return;
         }

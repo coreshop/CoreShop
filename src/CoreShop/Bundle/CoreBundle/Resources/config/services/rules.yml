@@ -164,10 +164,6 @@ services:
             - '@coreshop.provider.store_based_default_address_provider'
             - '@coreshop.factory.adjustment'
 
-    # Deprecated and will be removed in 3.0. Use coreshop.cart_price_rule.cart_rule_applier instead
-    coreshop.cart_price_rule.discount.applier:
-        alias: coreshop.cart_price_rule.cart_rule_applier
-
     # Rules Availability Check
     coreshop.maintenance.rule_availability_task:
         class: CoreShop\Bundle\CoreBundle\Maintenance\RuleAvailabilityTask
@@ -177,8 +173,8 @@ services:
         tags:
             - { name: pimcore.maintenance.task, type: coreshop_rule_availability }
 
-    coreshop.templating.helper.product_valid_rules:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper
+    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
+    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper:
         lazy: true
         arguments:
             - '@coreshop.product.rules.fetcher'
@@ -186,10 +182,9 @@ services:
         tags:
             - { name: templating.helper, alias: coreshop_product_price_rules }
 
-    coreshop.twig.extension.product_valid_rules:
-        class: CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension
+    CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension:
         public: false
         arguments:
-            - '@coreshop.templating.helper.product_valid_rules'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface'
         tags:
             - { name: twig.extension }

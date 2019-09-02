@@ -8,8 +8,8 @@ services:
     _defaults:
         public: true
 
-    coreshop.templating.helper.checkout_identifier:
-        class: CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper
+    CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper'
+    CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper:
         arguments:
             - '@request_stack'
             - '@coreshop.link_generator'
@@ -18,51 +18,49 @@ services:
         tags:
             - { name: templating.helper, alias: coreshop_checkout_identifier}
 
-    coreshop.twig.extension.checkout_identifier:
-        class: CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension
+    CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension:
         arguments:
-            - '@coreshop.templating.helper.checkout_identifier'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelperInterface'
         tags:
             - { name: twig.extension }
 
     #default steps
-    coreshop.checkout.step.customer:
-        class: CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep
+    coreshop.checkout.step.customer: '@CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep'
+    CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep:
         arguments:
             - '@coreshop.context.customer'
             - '@form.factory'
             - '@coreshop.customer.registration_service'
 
-    coreshop.checkout.step.address:
-        class: CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep
+    coreshop.checkout.step.address: '@CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep'
+    CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:
         arguments:
             - '@form.factory'
             - '@security.token_storage'
             - '@coreshop.cart.manager'
 
-    coreshop.checkout.step.shipping:
-        class: CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep
+    coreshop.checkout.step.shipping: '@CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep'
+    CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep:
         arguments:
             - '@coreshop.carrier.resolver'
             - '@coreshop.shipping.carrier.validator'
             - '@form.factory'
             - '@coreshop.cart.manager'
 
-    coreshop.checkout.step.payment:
-        class: CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep
+    coreshop.checkout.step.payment: '@CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep'
+    CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep:
         arguments:
             - '@form.factory'
             - '@coreshop.context.store'
             - '@coreshop.cart.manager'
 
-    coreshop.checkout.step.summary:
-        class: CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep
+    coreshop.checkout.step.summary: '@CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep'
+    CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep:
         arguments:
             - '@form.factory'
 
     # Forms
-    coreshop.form.type.checkout_address:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\AddressType:
         arguments:
             - '%coreshop.model.cart.class%'
             - '%coreshop.form.type.checkout.address.validation_groups%'
@@ -70,8 +68,7 @@ services:
         tags:
             - {name: form.type}
 
-    coreshop.form.type.checkout_payment:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType:
         arguments:
             - '%coreshop.model.cart.class%'
             - '%coreshop.form.type.checkout.payment.validation_groups%'
@@ -81,16 +78,14 @@ services:
         tags:
             - {name: form.type}
 
-    coreshop.form.type.checkout_summary:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType:
         arguments:
             - '%coreshop.model.cart.class%'
             - '%coreshop.form.type.checkout.summary.validation_groups%'
         tags:
             - {name: form.type}
 
-    coreshop.form.type.checkout_carrier:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType:
         arguments:
             - '%coreshop.model.cart.class%'
             - '%coreshop.form.type.checkout.carrier.validation_groups%'
