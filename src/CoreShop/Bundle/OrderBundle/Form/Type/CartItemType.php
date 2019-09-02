@@ -15,10 +15,11 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Range;
 
 final class CartItemType extends AbstractResourceType
 {
@@ -54,8 +55,9 @@ final class CartItemType extends AbstractResourceType
                 return;
             }
 
-            $event->getForm()->add('quantity', IntegerType::class, [
-                'attr' => ['min' => 1],
+            $event->getForm()->add('quantity', NumberType::class, [
+                'attr' => ['min' => 0],
+                'constraints' => [new Range(['min' => 0])],
                 'label' => 'coreshop.ui.quantity',
                 'disabled' => $data->getIsGiftItem(),
             ]);

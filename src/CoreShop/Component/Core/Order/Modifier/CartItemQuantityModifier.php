@@ -19,7 +19,11 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    public function modify(StorageListItemInterface $item, int $targetQuantity)
+    /**
+     * @param StorageListItemInterface $item
+     * @param float                    $targetQuantity
+     */
+    public function modify(StorageListItemInterface $item, float $targetQuantity)
     {
         /**
          * @var CartItemInterface $item
