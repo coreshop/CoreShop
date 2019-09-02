@@ -14,6 +14,11 @@ class Version20190902090625 extends AbstractPimcoreMigration
             if (!$table->hasColumn('precision')) {
                 $this->addSql('ALTER TABLE coreshop_product_unit_definition ADD `precision` INT NOT NULL;');
             }
+
+        }
+
+        if ($schema->hasTable('coreshop_product_quantity_price_rule_range')) {
+            $this->addSql('ALTER TABLE coreshop_product_quantity_price_rule_range CHANGE range_starting_from range_starting_from DOUBLE PRECISION NOT NULL;');
         }
     }
 

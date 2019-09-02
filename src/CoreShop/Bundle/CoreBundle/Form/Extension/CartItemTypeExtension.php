@@ -59,10 +59,11 @@ final class CartItemTypeExtension extends AbstractTypeExtension
             ]);
         });
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'roundQuantity'], -2048);
-        $builder->addEventListener(FormEvents::POST_SET_DATA, [$this, 'roundQuantity'], -2048);
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'roundQuantity'], -2048);
-        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'roundQuantity'], -2048);
+        $builder
+            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'roundQuantity'], -2048)
+            ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'roundQuantity'], -2048)
+            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'roundQuantity'], -2048)
+            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'roundQuantity'], -2048);
     }
 
     /**

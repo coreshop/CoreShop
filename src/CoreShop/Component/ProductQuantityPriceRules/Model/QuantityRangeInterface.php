@@ -17,14 +17,14 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 interface QuantityRangeInterface extends ResourceInterface
 {
     /**
-     * @return int
+     * @return float
      */
     public function getRangeStartingFrom();
 
     /**
-     * @param int $rangeStartingFrom
+     * @param float $rangeStartingFrom
      */
-    public function setRangeStartingFrom(int $rangeStartingFrom);
+    public function setRangeStartingFrom(float $rangeStartingFrom);
 
     /**
      * @return string
