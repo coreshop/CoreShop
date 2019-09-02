@@ -393,7 +393,7 @@ coreshop.product.unit.builder = Class.create({
             minValue: 0,
             value: data.precisionValue,
             decimalPrecision: 1,
-            maxWidth: 220,
+            maxWidth: 150,
         });
 
         if (isDefault === false) {

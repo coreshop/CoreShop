@@ -46,6 +46,9 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
             'choice_label'              => function (ProductUnitDefinitionInterface $definition) {
                 return $definition->getUnit()->getName();
             },
+            'choice_attr'               => function (ProductUnitDefinitionInterface $definition) {
+                return ['data-precision' => $definition->getPrecision()];
+            },
             'choice_translation_domain' => false
         ]);
     }
