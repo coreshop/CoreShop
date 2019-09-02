@@ -32,6 +32,11 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     protected $conversionRate;
 
     /**
+     * @var int
+     */
+    protected $precision;
+
+    /**
      * @var ProductUnitDefinitionsInterface
      */
     protected $productUnitDefinitions;
@@ -82,6 +87,22 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPrecision()
+    {
+        return $this->precision;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPrecision(int $precision)
+    {
+        $this->precision = $precision;
     }
 
     /**

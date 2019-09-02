@@ -85,7 +85,10 @@ coreshop.product.unit.builder = Class.create({
                 idValue: hasId ? defaultUnitDefinition.id : null,
                 unitName: 'defaultUnitDefinition.unit',
                 unitLabel: 'coreshop_product_unit_default_type',
-                unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue()
+                unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue(),
+                precisionLabel: 'coreshop_product_unit_precision',
+                precisionName: 'defaultUnitDefinition.precision',
+                precisionValue: hasId && !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
             }, true);
 
         return Ext.create('Ext.form.Panel', {
@@ -191,6 +194,9 @@ coreshop.product.unit.builder = Class.create({
                 unitLabel: 'coreshop_product_unit_type',
                 unitValue: data !== null && Ext.isObject(data) ? data.unit.id : null,
                 conversionRateName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.conversionRate',
+                precisionLabel: 'coreshop_product_unit_precision',
+                precisionName: 'additionalUnitDefinitions.' + this.additionalUnitsCounter + '.precision',
+                precisionValue: data !== null && !isNaN(data.precision) ? data.precision : 0,
                 conversionRateLabel: 'coreshop_product_unit_conversion_rate',
                 conversionRateValue: data !== null ? data.conversionRate : 0
             }, false);
@@ -350,7 +356,7 @@ coreshop.product.unit.builder = Class.create({
                 xtype: 'combo',
                 fieldLabel: t(data.unitLabel),
                 name: data.unitName,
-                labelWidth: 80,
+                labelWidth: isDefault ? 120 : 80,
                 store: null,
                 triggerAction: 'all',
                 itemCls: 'unit-store',
@@ -362,7 +368,7 @@ coreshop.product.unit.builder = Class.create({
                 displayField: 'fullLabel',
                 valueField: 'id',
                 value: data.unitValue,
-                maxWidth: isDefault ? 250 : 200,
+                maxWidth: isDefault ? 280 : 200,
                 readOnly: data.idValue !== null && isDefault === false,
                 listeners: {
                     change: function (comp, value) {
@@ -379,17 +385,28 @@ coreshop.product.unit.builder = Class.create({
             }
         ];
 
+        fields.push({
+            xtype: 'numberfield',
+            fieldLabel: t(data.precisionLabel),
+            name: data.precisionName,
+            labelWidth: 80,
+            minValue: 0,
+            value: data.precisionValue,
+            decimalPrecision: 1,
+            maxWidth: 220,
+        });
+
         if (isDefault === false) {
 
             fields.push({
                 xtype: 'numberfield',
                 fieldLabel: t(data.conversionRateLabel),
                 name: data.conversionRateName,
-                labelWidth: 110,
+                labelWidth: 140,
                 minValue: 0,
                 value: data.conversionRateValue,
                 decimalPrecision: 2,
-                maxWidth: 220,
+                maxWidth: 250,
             });
 
             fields.push({

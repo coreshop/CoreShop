@@ -37,6 +37,16 @@ interface ProductUnitDefinitionInterface extends ResourceInterface
     public function setConversionRate(float $conversionRate = null);
 
     /**
+     * @return int
+     */
+    public function getPrecision();
+
+    /**
+     * @param int $precision
+     */
+    public function setPrecision(int $precision);
+
+    /**
      * @return ProductUnitDefinitionsInterface|null
      */
     public function getProductUnitDefinitions();
