@@ -16,12 +16,10 @@ use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartItemTypeExtension extends AbstractTypeExtension
@@ -58,66 +56,6 @@ final class CartItemTypeExtension extends AbstractTypeExtension
                 'label'    => null,
             ]);
         });
-
-        $builder
-            ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'roundQuantity'], -2048)
-            ->addEventListener(FormEvents::POST_SET_DATA, [$this, 'roundQuantity'], -2048)
-            ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'roundQuantity'], -2048)
-            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'roundQuantity'], -2048);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function roundQuantity(FormEvent $event)
-    {
-        $data = $event->getData();
-        if (!$data instanceof CartItemInterface) {
-            return;
-        }
-
-        $product = $data->getProduct();
-        if (!$product instanceof ProductInterface) {
-            return;
-        }
-
-        $scale = $this->getScale($event->getForm());
-        if ($scale === null) {
-            return;
-        }
-
-        $quantity = $data->getQuantity();
-        $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
-
-        if ($quantity !== $formattedQuantity) {
-            $data->setQuantity($formattedQuantity);
-        }
-    }
-
-    /**
-     * @param FormInterface $form
-     *
-     * @return int|null
-     */
-    protected function getScale(FormInterface $form)
-    {
-        $productUnitField = 'unitDefinition';
-        if (!$form->has($productUnitField)) {
-            return null;
-        }
-
-        $productUnitDefinition = $form->get($productUnitField)->getData();
-        if (!$productUnitDefinition instanceof ProductUnitDefinitionInterface) {
-            return null;
-        }
-
-        $precision = $productUnitDefinition->getPrecision();
-
-        if (is_int($precision)) {
-            return $precision;
-        }
-
-        return null;
     }
 
     /**
