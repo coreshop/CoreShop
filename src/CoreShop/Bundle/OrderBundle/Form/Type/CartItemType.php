@@ -29,8 +29,8 @@ final class CartItemType extends AbstractResourceType
     private $dataMapper;
 
     /**
-     * @param string $dataClass
-     * @param array $validationGroups
+     * @param string              $dataClass
+     * @param array               $validationGroups
      * @param DataMapperInterface $dataMapper
      */
     public function __construct(
@@ -55,11 +55,21 @@ final class CartItemType extends AbstractResourceType
                 return;
             }
 
+            $attr = [
+                'min'            => 0,
+                'class'          => 'q-validate',
+                'data-precision' => 0
+            ];
+
+            if ($data->hasUnitDefinition()) {
+                $attr['data-precision'] = $data->getUnitDefinition()->getPrecision();
+            }
+
             $event->getForm()->add('quantity', NumberType::class, [
-                'attr' => ['min' => 0],
+                'attr'        => $attr,
                 'constraints' => [new Range(['min' => 0])],
-                'label' => 'coreshop.ui.quantity',
-                'disabled' => $data->getIsGiftItem(),
+                'label'       => 'coreshop.ui.quantity',
+                'disabled'    => $data->getIsGiftItem(),
             ]);
         });
 
