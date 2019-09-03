@@ -37,7 +37,7 @@ class QuantityPriceFetcher
     /**
      * @param ProductQuantityPriceRuleInterface $rule
      * @param QuantityRangePriceAwareInterface  $subject
-     * @param int                               $quantity
+     * @param float                             $quantity
      * @param int                               $originalPrice
      * @param array                             $context
      *
@@ -48,7 +48,7 @@ class QuantityPriceFetcher
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
     ) {
