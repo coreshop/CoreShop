@@ -11,6 +11,7 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: coreshop_cart_stock_availability }
 
+    coreshop.validator.quantity_validator: '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
     CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService: ~
 
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
