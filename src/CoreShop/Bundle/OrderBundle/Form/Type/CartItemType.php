@@ -57,12 +57,12 @@ final class CartItemType extends AbstractResourceType
 
             $attr = [
                 'min'            => 0,
-                'class'          => 'q-validate',
+                'class'          => 'cs-unit-input',
                 'data-precision' => 0
             ];
 
             if ($data->hasUnitDefinition()) {
-                $attr['data-precision'] = $data->getUnitDefinition()->getPrecision();
+                $attr['data-cs-unit-precision'] = $data->getUnitDefinition()->getPrecision();
             }
 
             $event->getForm()->add('quantity', NumberType::class, [

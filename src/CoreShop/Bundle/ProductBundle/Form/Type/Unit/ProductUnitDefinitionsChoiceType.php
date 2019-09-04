@@ -47,7 +47,7 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
                 return $definition->getUnit()->getName();
             },
             'choice_attr'               => function (ProductUnitDefinitionInterface $definition) {
-                return ['data-precision-preset' => $definition->getPrecision()];
+                return ['data-cs-unit-precision' => $definition->getPrecision()];
             },
             'choice_translation_domain' => false
         ]);

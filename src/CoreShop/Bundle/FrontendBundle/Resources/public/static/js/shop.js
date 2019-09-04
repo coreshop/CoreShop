@@ -1,10 +1,8 @@
-addToCartRunning = false;
-
 $(document).ready(function () {
     shop.init();
 });
 
-(function (shop, $, undefined) {
+(function (shop, $) {
 
     shop.init = function () {
         shop.initChangeAddress();
@@ -19,51 +17,10 @@ $(document).ready(function () {
     };
 
     shop.initQuantityValidator = function () {
-
-        var $fields = $('input.q-validate'),
-            $precisionPresetSelector = $('select.unit-selector'),
-            pad = function (str, max) {
-                str = str.toString();
-                return str.length < max ? pad(str + '0', max) : str;
-            },
-            initNumeric = function ($field, precision) {
-                $field.removeNumeric();
-                $field.numeric(precision === 0
-                    ? {decimalPlaces: -1, decimal: false, negative: false}
-                    : {decimalPlaces: precision, negative: false, altDecimal: ','}
-                );
-                $field.attr('placeholder', precision === 0 ? '0' : ('0.' + (pad('0', precision))));
-            };
-
-        // listen to unit definition selector
-        $precisionPresetSelector.on('change', function () {
-
-            if (!$(this).data('unit-definition-identifier')) {
-                return;
-            }
-
-            var $selectedOption = $(this).find(':selected'),
-                quantityIdentifier = $(this).data('unit-definition-identifier'),
-                $quantityInput = $('input[data-unit-definition-identifier="' + quantityIdentifier + '"]'),
-                precision = $selectedOption.data('precision-preset') ? $selectedOption.data('precision-preset') : 0;
-
-            if ($quantityInput.length === 0) {
-                return;
-            }
-
-            $quantityInput.val('');
-            $quantityInput.attr('data-precision', precision);
-
-            initNumeric($quantityInput, precision);
-
+        $.coreshopQuantitySelector({
+            buttondown_class: 'btn btn-secondary',
+            buttonup_class: 'btn btn-secondary',
         });
-
-        // add quantity validation based on precision
-        $fields.each(function () {
-            var precision = isNaN($(this).attr('data-precision')) ? 0 : parseInt($(this).attr('data-precision'));
-            initNumeric($(this), precision);
-        });
-
     };
 
     shop.initCartShipmentCalculator = function () {
