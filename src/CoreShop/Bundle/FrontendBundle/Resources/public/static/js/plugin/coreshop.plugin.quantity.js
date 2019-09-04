@@ -7,7 +7,7 @@
 
         var $fields = $('input.cs-unit-input'),
             $precisionPresetSelector = $('select.cs-unit-selector'),
-            touchSpinOptions = $.extend( options, {} );
+            touchSpinOptions = $.extend(options, {});
 
         // listen to unit definition selector
         $precisionPresetSelector.on('change', function () {
@@ -29,6 +29,7 @@
             $quantityInput.attr('data-cs-unit-precision', precision);
             $quantityInput.trigger('touchspin.updatesettings', {
                 min: 0,
+                max: 1000000000,
                 decimals: precision,
                 step: precision === 0 ? 1 : strPrecision
             });
@@ -37,16 +38,19 @@
 
         // add quantity validation based on precision
         $fields.each(function () {
-            var precision = isNaN($(this).attr('data-cs-unit-precision')) ? 0 : parseInt($(this).attr('data-cs-unit-precision')),
+            var $el = $(this),
+                precision = isNaN($el.attr('data-cs-unit-precision')) ? 0 : parseInt($el.attr('data-cs-unit-precision')),
                 strPrecision = '0.' + (Array(precision).join('0')) + '1';
 
-            console.log($(this));
+            $el.val($el.val().replace(/,/g, '.'));
 
-            $(this).TouchSpin($.extend({
+            $el.TouchSpin($.extend({
                 verticalbuttons: true,
-                callback_before_calculation: function(v) {
-                    console.log(v);
-                    return 99;
+                callback_before_calculation: function (v) {
+                    return v.replace(/,/g, '.');
+                },
+                callback_after_calculation: function (v) {
+                    return v.replace(/,/g, '.');
                 },
                 min: 0,
                 max: 1000000000,

@@ -56,9 +56,9 @@ final class CartItemType extends AbstractResourceType
             }
 
             $attr = [
-                'min'            => 0,
-                'class'          => 'cs-unit-input',
-                'data-precision' => 0
+                'min'                    => 0,
+                'class'                  => 'cs-unit-input',
+                'data-cs-unit-precision' => 0
             ];
 
             if ($data->hasUnitDefinition()) {
