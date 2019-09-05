@@ -17,7 +17,7 @@ services:
     CoreShop\Component\Address\Context\RequestBased\CountryContext:
         public: false
         arguments:
-            - '@CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface'
+            - '@CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver'
             - '@request_stack'
         tags:
             - { name: coreshop.context.country }
@@ -47,10 +47,10 @@ services:
         arguments:
             - '@pimcore.translator'
 
+    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface: '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper'
     CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper:
-    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface:
         arguments:
-            - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
+            - '@CoreShop\Component\Address\Formatter\AddressFormatter'
         lazy: true
         tags:
             - { name: templating.helper, alias: coreshop_format_address }
@@ -58,7 +58,7 @@ services:
     CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface'
+            - '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper'
         tags:
             - { name: twig.extension }
 

@@ -14,7 +14,7 @@ services:
     CoreShop\Component\Customer\Context\RequestBased\CustomerContext:
         public: false
         arguments:
-            - '@CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface'
+            - '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
             - '@request_stack'
         tags:
             - { name: coreshop.context.customer }

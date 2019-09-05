@@ -100,7 +100,7 @@ services:
             - '@coreshop.registry.index.extensions'
             - '@coreshop.registry.index.getter'
             - '@coreshop.registry.index.interpreter'
-            - '@CoreShop\Component\Index\Worker\FilterGroupHelperInterface'
+            - '@CoreShop\Component\Index\Worker\FilterGroupHelper'
             - '@coreshop.index.condition.renderer'
             - '@coreshop.index.order.renderer'
             - '@doctrine.dbal.default_connection'

@@ -8,20 +8,20 @@ services:
 
     CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator:
         arguments:
-          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
+          - '@coreshop.inventory.availability_checker'
         tags:
            - { name: validator.constraint_validator, alias: coreshop_in_stock }
 
     CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelperInterface: '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper'
     CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper:
         arguments:
-          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
+          - '@coreshop.inventory.availability_checker'
         tags:
             - { name: templating.helper, alias: coreshop_inventory }
 
     CoreShop\Bundle\InventoryBundle\Twig\InventoryExtension:
         public: false
         arguments:
-          - '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelperInterface'
+          - '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper'
         tags:
             - { name: twig.extension }

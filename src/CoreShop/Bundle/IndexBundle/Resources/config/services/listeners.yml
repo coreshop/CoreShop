@@ -16,7 +16,7 @@ services:
 
     CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener:
         arguments:
-            - '@CoreShop\Component\Index\Service\IndexUpdaterServiceInterface'
+            - '@CoreShop\Component\Index\Service\IndexUpdaterService'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }

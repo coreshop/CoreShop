@@ -14,7 +14,7 @@ services:
         arguments:
             - '@fragment.renderer.inline'
             - '@event_dispatcher'
-            - '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface'
+            - '@coreshop.order.renderer.pdf'
             - '@coreshop.theme.helper'
 
     coreshop.renderer.order.pdf.asset: '@CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer'

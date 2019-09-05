@@ -28,7 +28,7 @@ services:
     CoreShop\Bundle\IndexBundle\Condition\Mysql\ConcatRenderer:
         arguments:
             - '@doctrine.dbal.default_connection'
-            - '@CoreShop\Component\Index\Condition\ConditionRendererInterface'
+            - '@CoreShop\Component\Index\Condition\ConditionRenderer'
         tags:
             - { name: coreshop.index.condition.renderer, type: mysql_concat }
 

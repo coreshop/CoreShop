@@ -20,11 +20,11 @@ services:
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface: '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner'
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner:
         arguments:
-            - '@CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface'
+            - '@coreshop.translation_locale_provider.pimcore'
 
     CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType:
         arguments:
-            - '@CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface'
+            - '@coreshop.translation_locale_provider.pimcore'
         tags:
             - { name: form.type }
 

@@ -100,7 +100,7 @@ services:
     coreshop.shippable_carrier.shipping_rule.validator: '@CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator'
     CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator:
         arguments:
-            - '@CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface'
+            - '@CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker'
         tags:
             - { name: coreshop.shipping.carrier.validator, priority: 10 }
 

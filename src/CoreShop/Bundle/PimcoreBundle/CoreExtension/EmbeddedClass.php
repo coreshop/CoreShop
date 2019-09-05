@@ -89,15 +89,19 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
                 'index' => $embeddedObject->getIndex(),
+                'o_published' => $embeddedObject->getPublished(),
+                'o_key' => $embeddedObject->getKey(),
+                'o_id' => $embeddedObject->getId(),
+                'o_modificationDate' => $embeddedObject->getModificationDate(),
+                'o_creationDate' => $embeddedObject->getCreationDate(),
+                'o_classId' => $embeddedObject->getClassId(),
+                'o_className' => $embeddedObject->getClassName(),
+                'o_locked' => $embeddedObject->getLocked(),
+                'o_type' => $embeddedObject->getType(),
+                'o_parentId' => $embeddedObject->getParentId(),
+                'o_userOwner' => $embeddedObject->getUserOwner(),
+                'o_userModification' => $embeddedObject->getUserModification()
             ];
-
-            $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
-
-            foreach (get_object_vars($embeddedObject) as $key => $value) {
-                if (strstr($key, 'o_') && in_array($key, $allowedKeys)) {
-                    $objectData['general'][$key] = $value;
-                }
-            }
 
             $returnData[] = $objectData;
         }

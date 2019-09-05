@@ -11,7 +11,7 @@ services:
     CoreShop\Bundle\CurrencyBundle\Twig\CurrencyExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelperInterface'
+            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper'
         tags:
             - { name: twig.extension }
 
@@ -19,13 +19,13 @@ services:
     CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper:
         lazy: true
         arguments:
-            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverter'
         tags:
             - { name: templating.helper, alias: coreshop_convert_currency }
 
     CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface'
+            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper'
         tags:
             - { name: twig.extension }

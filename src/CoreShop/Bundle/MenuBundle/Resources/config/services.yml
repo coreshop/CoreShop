@@ -8,7 +8,7 @@ services:
     coreshop.menu.registry:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface'
+            - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilder'
             - 'menu-builder'
 
     coreshop.menu.renderer.json: '@CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer'
