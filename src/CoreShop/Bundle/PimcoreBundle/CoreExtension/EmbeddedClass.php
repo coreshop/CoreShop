@@ -57,6 +57,7 @@ final class EmbeddedClass extends Multihref
 
         $returnData = [];
 
+        $i = 0;
         foreach ($data as $embeddedObject) {
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 continue;
@@ -72,12 +73,12 @@ final class EmbeddedClass extends Multihref
             list('objectData' => $objectData['data'], 'metaData' => $objectData['metaData']) = $editmodeHelper->getDataForObject($embeddedObject);
 
             $objectData['id'] = $embeddedObject->getId();
+            $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
+
             $objectData['general'] = [
-                'index' => $embeddedObject->getIndex(),
+                'o_className' => $embeddedObject->getClassName(),
+                'index' => ++$i
             ];
-
-            $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
-
             foreach (get_object_vars($embeddedObject) as $key => $value) {
                 if (strstr($key, 'o_') && in_array($key, $allowedKeys)) {
                     $objectData['general'][$key] = $value;
