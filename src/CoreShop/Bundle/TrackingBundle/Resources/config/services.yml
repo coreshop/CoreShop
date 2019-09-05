@@ -109,13 +109,13 @@ services:
             - '@coreshop.registry.tracking.extractor'
 
     coreshop.tracking.manager:
-        alias: '@CoreShop\Component\Tracking\Tracker\TrackerInterface'
+        alias: 'CoreShop\Component\Tracking\Tracker\TrackerInterface'
         public: true
 
     CoreShop\Component\Tracking\Tracker\TrackerInterface:
-        alias: '@CoreShop\Component\Tracking\Tracker\CompositeTracker'
+        alias: 'CoreShop\Component\Tracking\Tracker\CompositeTracker'
         public: true
-        
+
     CoreShop\Component\Tracking\Tracker\CompositeTracker:
         public: true
         arguments:
