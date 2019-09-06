@@ -20,7 +20,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper'
         tags:
             - { name: twig.extension }
 

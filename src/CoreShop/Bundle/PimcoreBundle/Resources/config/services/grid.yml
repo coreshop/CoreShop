@@ -17,12 +17,12 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         public: true
         arguments:
-            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface'
+            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridFilter'
             - 'coreshop-grid-filter'
 
     coreshop.registry.grid.action:
         class: CoreShop\Component\Registry\ServiceRegistry
         public: true
         arguments:
-            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface'
+            - 'CoreShop\Component\Pimcore\DataObject\Grid\GridAction'
             - 'coreshop-grid-action'

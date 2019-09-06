@@ -27,7 +27,7 @@ services:
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper'
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper:
         arguments:
-            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface'
+            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
             - '@coreshop.order.purchasable.calculator'
             - '@coreshop.provider.taxation.default_country'
             - '@coreshop.product.tax_factory'
@@ -38,7 +38,7 @@ services:
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper'
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
             - '@coreshop.context.shopper'
             - '@coreshop.product.tax_factory'
             - '@coreshop.provider.taxation.default_country'
@@ -47,19 +47,19 @@ services:
 
     CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
         tags:
             - { name: twig.extension }
 
     CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper'
         tags:
             - { name: twig.extension }
 
     CoreShop\Bundle\CoreBundle\Twig\ProductTaxExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper'
         tags:
             - { name: twig.extension }
 
@@ -72,7 +72,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper'
         tags:
             - { name: twig.extension }
 

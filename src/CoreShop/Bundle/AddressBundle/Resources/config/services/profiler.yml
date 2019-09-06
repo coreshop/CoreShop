@@ -4,7 +4,7 @@ services:
 
     CoreShop\Bundle\AddressBundle\Collector\CountryCollector:
         arguments:
-            - '@CoreShop\Component\Address\Context\CountryContextInterface'
+            - '@coreshop.context.country'
             - false
         tags:
             - { name: data_collector, template: 'CoreShopAddressBundle:Collector:country.html.twig', id: coreshop.country_collector }

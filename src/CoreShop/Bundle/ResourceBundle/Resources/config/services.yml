@@ -53,7 +53,7 @@ services:
     coreshop.admin_controller.resource_settings: '@CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController'
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
         calls:
           - [setContainer, ['@service_container']]
 

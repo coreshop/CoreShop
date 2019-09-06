@@ -64,7 +64,7 @@ services:
             - '@kernel'
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@pimcore.dao.object_manager'
-            - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface'
+            - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
             - '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
         tags:
             - { name: coreshop.resource.installer, type: grid_config, priority: 200}

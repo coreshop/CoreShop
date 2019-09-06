@@ -185,6 +185,6 @@ services:
     CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface'
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
         tags:
             - { name: twig.extension }

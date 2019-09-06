@@ -22,6 +22,6 @@ services:
 
     CoreShop\Component\Pimcore\Twig\Extension\LinkGeneratorExtensions:
         arguments:
-            - '@CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelperInterface'
+            - '@CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelper'
         tags:
             - { name: twig.extension }

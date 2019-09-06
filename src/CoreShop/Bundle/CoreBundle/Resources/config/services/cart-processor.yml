@@ -17,7 +17,7 @@ services:
     CoreShop\Component\Core\Order\Processor\CartItemsProcessor:
         arguments:
             - '@coreshop.order.purchasable.calculator'
-            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface'
+            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
             - '@coreshop.cart_item.processor'
         tags:
             - { name: coreshop.cart_processor, priority: 600 }

@@ -15,13 +15,13 @@ services:
     CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper:
         lazy: true
         arguments:
-            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
+            - '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
         tags:
             - { name: templating.helper, alias: coreshop_format_money }
 
     CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface'
+            - '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
         tags:
             - { name: twig.extension }

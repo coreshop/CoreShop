@@ -17,13 +17,13 @@ services:
     coreshop.state_machine_applier: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier:
         arguments:
-            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
 
     coreshop.state_machine_cascade_transition: '@CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition'
     CoreShop\Bundle\WorkflowBundle\Callback\CascadeTransition:
         public: true
         arguments:
-            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
 
     ## event handler
     CoreShop\Bundle\WorkflowBundle\EventListener\WorkflowListener:
@@ -38,7 +38,7 @@ services:
     CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface: '@CoreShop\Bundle\WorkflowBundle\History\HistoryLogger'
     CoreShop\Bundle\WorkflowBundle\History\HistoryLogger:
         arguments:
-            - '@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface'
+            - '@CoreShop\Component\Pimcore\DataObject\NoteService'
             - '@Pimcore\Translation\Translator'
             - '%coreshop.workflow.manager.history_log_state_identifier%'
 
@@ -46,7 +46,7 @@ services:
     CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface: '@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLogger'
     CoreShop\Bundle\WorkflowBundle\History\StateHistoryLogger:
         arguments:
-            - '@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface'
+            - '@CoreShop\Component\Pimcore\DataObject\NoteService'
             - '@Pimcore\Translation\Translator'
             - '%coreshop.workflow.manager.history_log_state_identifier%'
 
@@ -61,7 +61,7 @@ services:
     CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManager:
         arguments:
             - '@event_dispatcher'
-            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'
             - '@translator'
             - '@coreshop.repository.workflow_history'
             - '%coreshop.state_machine.colors%'
