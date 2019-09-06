@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -55,21 +54,12 @@ final class CartItemType extends AbstractResourceType
                 return;
             }
 
-            $attr = [
-                'min'                    => 0,
-                'class'                  => 'cs-unit-input',
-                'data-cs-unit-precision' => 0
-            ];
-
-            if ($data->hasUnitDefinition()) {
-                $attr['data-cs-unit-precision'] = $data->getUnitDefinition()->getPrecision();
-            }
-
-            $event->getForm()->add('quantity', NumberType::class, [
-                'attr'        => $attr,
-                'constraints' => [new Range(['min' => 0])],
-                'label'       => 'coreshop.ui.quantity',
-                'disabled'    => $data->getIsGiftItem(),
+            $event->getForm()->add('quantity', QuantityType::class, [
+                'html5'           => true,
+                'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
+                'constraints'     => [new Range(['min' => 0])],
+                'label'           => 'coreshop.ui.quantity',
+                'disabled'        => $data->getIsGiftItem(),
             ]);
         });
 

@@ -26,6 +26,7 @@
                 return;
             }
 
+            $quantityInput.attr('step',  precision === 0 ? 1 : strPrecision);
             $quantityInput.attr('data-cs-unit-precision', precision);
             $quantityInput.trigger('touchspin.updatesettings', {
                 min: 0,
@@ -41,8 +42,6 @@
             var $el = $(this),
                 precision = isNaN($el.attr('data-cs-unit-precision')) ? 0 : parseInt($el.attr('data-cs-unit-precision')),
                 strPrecision = '0.' + (Array(precision).join('0')) + '1';
-
-            $el.val($el.val().replace(/,/g, '.'));
 
             $el.TouchSpin($.extend({
                 verticalbuttons: true,

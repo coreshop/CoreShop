@@ -47,3 +47,7 @@ services:
             - '@coreshop.form.data_mapper.cart_item_quantity'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\QuantityType:
+        tags:
+            - { name: form.type }

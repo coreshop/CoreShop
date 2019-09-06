@@ -5,7 +5,7 @@
 
     <div class="input-group">
         {% set relation_id = random() %}
-        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control cart-item-quantity cs-unit-input', 'autocomplete': 'off', 'data-cs-unit-identifier': relation_id }}) }}
+        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control cart-item-quantity cs-unit-input', 'data-cs-unit-identifier': relation_id }}) }}
 
         {% if form.cartItem.unitDefinition is defined %}
             {{ form_row(form.cartItem.unitDefinition, {label: false, attr: {class: 'form-control ml-1 cs-unit-selector', 'data-cs-unit-identifier': relation_id}}) }}
