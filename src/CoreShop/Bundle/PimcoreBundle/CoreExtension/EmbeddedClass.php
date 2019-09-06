@@ -72,6 +72,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
 
         $returnData = [];
 
+        $i = 0;
         foreach ($data as $embeddedObject) {
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 continue;
@@ -89,6 +90,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
                 'index' => $embeddedObject->getIndex(),
+                'index' => ++$i,
                 'o_published' => $embeddedObject->getPublished(),
                 'o_key' => $embeddedObject->getKey(),
                 'o_id' => $embeddedObject->getId(),
