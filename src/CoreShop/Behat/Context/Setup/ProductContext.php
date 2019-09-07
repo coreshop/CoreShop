@@ -312,16 +312,19 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price ([^"]+)$/
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d++")$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
+     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
+     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
      */
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,
         ProductUnitInterface $unit,
         $conversionRate,
-        int $price = null
+        int $price = null,
+        int $precison = null
     ) {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
@@ -331,6 +334,7 @@ final class ProductContext implements Context
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
         $defaultUnitDefinition->setConversionRate((float)$conversionRate);
+        $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
 

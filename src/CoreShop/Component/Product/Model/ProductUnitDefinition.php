@@ -34,7 +34,7 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     /**
      * @var int
      */
-    protected $precision;
+    protected $precision = 0;
 
     /**
      * @var ProductUnitDefinitionsInterface
