@@ -15,10 +15,10 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Range;
 
 final class CartItemType extends AbstractResourceType
 {
@@ -28,8 +28,8 @@ final class CartItemType extends AbstractResourceType
     private $dataMapper;
 
     /**
-     * @param string $dataClass
-     * @param array $validationGroups
+     * @param string              $dataClass
+     * @param array               $validationGroups
      * @param DataMapperInterface $dataMapper
      */
     public function __construct(
@@ -54,10 +54,12 @@ final class CartItemType extends AbstractResourceType
                 return;
             }
 
-            $event->getForm()->add('quantity', IntegerType::class, [
-                'attr' => ['min' => 1],
-                'label' => 'coreshop.ui.quantity',
-                'disabled' => $data->getIsGiftItem(),
+            $event->getForm()->add('quantity', QuantityType::class, [
+                'html5'           => true,
+                'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
+                'constraints'     => [new Range(['min' => 0])],
+                'label'           => 'coreshop.ui.quantity',
+                'disabled'        => $data->getIsGiftItem(),
             ]);
         });
 

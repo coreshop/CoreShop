@@ -15,6 +15,10 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             expose: true
             type: float
             groups: [List, Detailed]
+        precision:
+            expose: true
+            type: int
+            groups: [List, Detailed]
         productUnitDefinitions:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinitions

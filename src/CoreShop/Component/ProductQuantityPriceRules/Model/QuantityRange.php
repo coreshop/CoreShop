@@ -22,7 +22,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     protected $id;
 
     /**
-     * @var int
+     * @var float
      */
     protected $rangeStartingFrom;
 
@@ -73,7 +73,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     /**
      * {@inheritdoc}
      */
-    public function setRangeStartingFrom(int $rangeStartingFrom)
+    public function setRangeStartingFrom(float $rangeStartingFrom)
     {
         $this->rangeStartingFrom = $rangeStartingFrom;
     }

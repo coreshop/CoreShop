@@ -50,7 +50,7 @@ class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
     /**
      * {@inheritdoc}
      */
-    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context)
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context)
     {
         $priceRule = $this->detectRule($subject, $context);
 

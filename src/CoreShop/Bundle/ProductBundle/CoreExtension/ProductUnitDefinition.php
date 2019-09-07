@@ -167,6 +167,7 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         $parsedData = [
             'id'               => null,
             'conversationRate' => null,
+            'precision'        => null,
             'unitName'         => null
         ];
 
@@ -174,6 +175,7 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
             $parsedData = [
                 'id' => $data->getId(),
                 'conversationRate' => $data->getConversionRate(),
+                'precision' => $data->getPrecision(),
                 'unitName' => $data->getUnit()->getName(),
                 'fullLabel' => $data->getUnit()->getFullLabel(),
                 'fullPluralLabel' => $data->getUnit()->getFullPluralLabel(),

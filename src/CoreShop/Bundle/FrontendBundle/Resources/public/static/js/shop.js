@@ -1,19 +1,25 @@
-addToCartRunning = false;
-
 $(document).ready(function () {
     shop.init();
 });
 
-(function (shop, $, undefined) {
+(function (shop, $) {
 
     shop.init = function () {
         shop.initChangeAddress();
         shop.initCartShipmentCalculator();
+        shop.initQuantityValidator();
 
         $('#paymentProvider').handlePrototypes({
             'prototypePrefix': 'paymentProvider',
             'containerSelector': '.paymentSettings',
             'selectorAttr': 'data-factory'
+        });
+    };
+
+    shop.initQuantityValidator = function () {
+        $.coreshopQuantitySelector({
+            buttondown_class: 'btn btn-secondary',
+            buttonup_class: 'btn btn-secondary',
         });
     };
 
@@ -29,7 +35,7 @@ $(document).ready(function () {
                 url: $form.attr('action'),
                 method: 'POST',
                 data: $form.serialize(),
-                success: function(res) {
+                success: function (res) {
                     $form.removeClass('loading');
                     $form.closest('.cart-shipment-calculation-box').replaceWith($(res));
                 }
@@ -111,13 +117,12 @@ $(document).ready(function () {
                 if (address) {
                     $shippingAddress.val(value).trigger('change');
                 }
-                if($shippingAddAddressButton) {
+                if ($shippingAddAddressButton) {
                     $shippingAddAddressButton.addClass('d-none');
                 }
-            }
-            else {
+            } else {
                 $shippingField.slideDown();
-                if($shippingAddAddressButton) {
+                if ($shippingAddAddressButton) {
                     $shippingAddAddressButton.removeClass('d-none');
                 }
             }

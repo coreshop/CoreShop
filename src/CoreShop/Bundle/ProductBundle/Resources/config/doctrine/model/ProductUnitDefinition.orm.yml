@@ -12,6 +12,9 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             column: conversion_rate
             type: float
             nullable: true
+        precision:
+            column: '`precision`'
+            type: integer
     manyToOne:
         unit:
             targetEntity: CoreShop\Component\Product\Model\ProductUnitInterface

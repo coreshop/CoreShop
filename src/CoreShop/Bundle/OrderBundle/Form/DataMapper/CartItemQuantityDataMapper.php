@@ -74,7 +74,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
 
         if (null !== $quantityForm) {
             $targetQuantity = $quantityForm->getData();
-            $this->cartItemQuantityModifier->modify($data, (int) $targetQuantity);
+            $this->cartItemQuantityModifier->modify($data, (float) $targetQuantity);
         }
     }
 }

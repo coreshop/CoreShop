@@ -52,7 +52,7 @@ class UnitVolumeCalculator implements CalculatorInterface
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
     ) {
@@ -94,12 +94,12 @@ class UnitVolumeCalculator implements CalculatorInterface
 
     /**
      * @param Collection                     $ranges
-     * @param int                            $quantity
+     * @param float                          $quantity
      * @param ProductUnitDefinitionInterface $unitDefinition
      *
      * @return QuantityRangeInterface|null
      */
-    protected function locate(Collection $ranges, int $quantity, ProductUnitDefinitionInterface $unitDefinition)
+    protected function locate(Collection $ranges, float $quantity, ProductUnitDefinitionInterface $unitDefinition)
     {
         if ($ranges->isEmpty()) {
             return null;
