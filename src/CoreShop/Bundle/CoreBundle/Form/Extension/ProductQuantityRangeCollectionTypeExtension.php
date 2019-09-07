@@ -72,18 +72,15 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                     $realRowIndex = $quantityRange['row'];
                     $startingFrom = $quantityRange['startingFrom'];
 
-                    if (!is_numeric($startingFrom)) {
-                        $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . ' needs to be numeric'));
-                        break;
-                    } elseif ((int) $startingFrom < 0) {
+                    if ((float) $startingFrom < 0) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
                         break;
-                    } elseif ((int) $startingFrom <= $lastEnd) {
+                    } elseif ((float) $startingFrom <= $lastEnd) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
                         break;
                     }
 
-                    $lastEnd = (int) $startingFrom;
+                    $lastEnd = (float) $startingFrom;
                 }
             }
         });

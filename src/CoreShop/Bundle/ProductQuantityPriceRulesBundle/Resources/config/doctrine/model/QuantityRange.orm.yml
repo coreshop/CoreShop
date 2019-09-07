@@ -10,7 +10,7 @@ CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRange:
                 strategy: AUTO
         rangeStartingFrom:
             column: range_starting_from
-            type: integer
+            type: float
         pricingBehaviour:
             column: pricing_behaviour
             type: string

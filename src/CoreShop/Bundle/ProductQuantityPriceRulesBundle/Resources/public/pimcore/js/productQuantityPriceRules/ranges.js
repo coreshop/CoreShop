@@ -157,9 +157,14 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                 name: 'quantity_range_starting_from',
                 getEditor: function () {
                     return new Ext.form.NumberField({
-                        minValue: 0
+                        minValue: 0,
+                        decimalPrecision: 0,
+                        step: 1,
+                        listeners: {
+                            render: this.onRangeStartingFromRender.bind(this)
+                        }
                     });
-                },
+                }.bind(this),
                 renderer: function (value) {
                     if (value === undefined || value === null) {
                         return '0' + ' ' + t('coreshop_product_quantity_price_rules_quantity_amount');
@@ -312,6 +317,10 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
 
     cellEditingIsAllowed: function (record, currentColumnName) {
         return true;
+    },
+
+    onRangeStartingFromRender: function (field) {
+        // keep it for 3rd party modifiers.
     },
 
     onPriceBehaviourChange: function (field) {

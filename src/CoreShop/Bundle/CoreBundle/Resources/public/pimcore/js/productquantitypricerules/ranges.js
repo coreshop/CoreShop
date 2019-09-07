@@ -320,6 +320,40 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         return true;
     },
 
+    onRangeStartingFromRender: function ($super, field) {
+
+        var grid = field.up('grid'),
+            selectedModel = grid.getSelectionModel().getSelected().getAt(0),
+            unitDefinitionId,
+            unitDefinitionRecord,
+            precision, step = 1;
+
+        $super();
+
+        if (!selectedModel) {
+            return;
+        }
+
+        unitDefinitionId = selectedModel.get('unitDefinition');
+        unitDefinitionRecord = this.productUnitDefinitionsStore.getById(unitDefinitionId);
+
+        if (!unitDefinitionRecord) {
+            return;
+        }
+
+        precision = unitDefinitionRecord.get('precision');
+        if (isNaN(precision)) {
+            return;
+        }
+
+        if (precision > 0) {
+            step = (1 / parseInt('1' + (Ext.String.repeat('0', precision))));
+        }
+
+        field.decimalPrecision = precision;
+        field.step = step;
+    },
+
     onPriceBehaviourChange: function ($super, field) {
 
         var grid = field.up('grid'),
@@ -395,4 +429,5 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
 
         return data;
     }
+
 });

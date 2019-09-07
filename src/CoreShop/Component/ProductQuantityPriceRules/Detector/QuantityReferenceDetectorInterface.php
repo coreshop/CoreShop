@@ -32,7 +32,7 @@ interface QuantityReferenceDetectorInterface
 
     /**
      * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $quantity
+     * @param float                            $quantity
      * @param int                              $originalPrice
      * @param array                            $context
      *
@@ -40,7 +40,7 @@ interface QuantityReferenceDetectorInterface
      *
      * @return int
      */
-    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, int $quantity, int $originalPrice, array $context);
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context);
 
     /**
      * @param QuantityRangePriceAwareInterface $subject

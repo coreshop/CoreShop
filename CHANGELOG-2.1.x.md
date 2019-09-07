@@ -19,12 +19,13 @@
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeResolver.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeResolver.php)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeResolverInterface.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeResolverInterface.php)
    
- - Introduce AddToCartFormType. This allows to use validators to check if its allowed to add a product to the cart. If you update from CoreShop 2.0.* change the add-to-cart form in your templates to the following: (https://github.com/coreshop/CoreShop/pull/812/files#diff-3e06a5f0e813be230a0cd232e916738eL29)
-   ```
-   {{ render(url('coreshop_cart_add', {'product': product.id})) }}
-   ``` 
+ - Introduce AddToCartFormType and QuantityType. This allows to use validators to check if its allowed to add a product to the cart. If you update from CoreShop 2.0.* change the add-to-cart form in your templates to the following: (https://github.com/coreshop/CoreShop/pull/812/files#diff-3e06a5f0e813be230a0cd232e916738eL29)
+   - `{{ render(url('coreshop_cart_add', {'product': product.id})) }}` 
+   - Be sure you have adopted the new form template in `views/Product/_addToCart.html.twig`
    
  - Introduced Store Unit:
     - Please add `product_unit` to permission table.
     - Remove `storePrice` field from all product classes
-    - If you don't use the `Store Price` element in your classes besides the `storePrice` field, you should delete the `coreshop_product_store_price` table after migration.
+    - If you don't use the `Store Price` element in your classes besides the `storePrice` field, you should delete the `coreshop_product_store_price` table after migration.   
+    - We introduced a new jquery plugin `$.coreshopQuantitySelector()` which allows you to add more numeric control to your quantity field, checkout our demo [example](https://github.com/coreshop/CoreShop/blob/7d05ccd89aed99f9fd93c585e096cd1edaf20010/src/CoreShop/Bundle/FrontendBundle/Resources/public/static/js/shop.js#L20).
+

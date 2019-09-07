@@ -33,12 +33,12 @@ interface ProposalItemInterface extends ResourceInterface, AdjustableInterface
     public function setProduct($product);
 
     /**
-     * @return int
+     * @return float
      */
     public function getQuantity();
 
     /**
-     * @param int $quantity
+     * @param float $quantity
      */
     public function setQuantity($quantity);
 

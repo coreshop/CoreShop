@@ -107,6 +107,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         if ($productUnit instanceof ProductUnitInterface &&
             $existingUnitDefinition = $this->getUnitDefinition($productUnit->getName())
         ) {
+            $existingUnitDefinition->setPrecision($productUnitDefinition->getPrecision());
             $existingUnitDefinition->setConversionRate($productUnitDefinition->getConversionRate());
             $existingUnitDefinition->setProductUnitDefinitions($this);
         } else {
