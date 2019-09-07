@@ -89,7 +89,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
-                'index' => $embeddedObject->getIndex(),
                 'index' => ++$i,
                 'o_published' => $embeddedObject->getPublished(),
                 'o_key' => $embeddedObject->getKey(),
