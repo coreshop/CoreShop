@@ -57,3 +57,4 @@ tmp/
 phpda.html
 parameters.yml
 var
+app/config/config.yml

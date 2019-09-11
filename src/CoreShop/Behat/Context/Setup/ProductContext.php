@@ -324,7 +324,7 @@ final class ProductContext implements Context
         ProductUnitInterface $unit,
         $conversionRate,
         int $price = null,
-        int $precison = null
+        int $precison = 0
     ) {
         $definitions = $this->getOrCreateUnitDefinitions($product->getUnitDefinitions());
 
