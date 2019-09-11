@@ -36,6 +36,7 @@ default:
                 - coreshop.behat.context.setup.tax_rate
                 - coreshop.behat.context.setup.tax_rule_group
                 - coreshop.behat.context.setup.product_unit
+                - coreshop.behat.context.setup.pimcore_class
 
                 - coreshop.behat.context.domain.product
                 - coreshop.behat.context.domain.product_price_rule

@@ -29,7 +29,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     /**
      * @var int
      */
-    protected $price;
+    protected $price = 0;
 
     /**
      * @var ProductInterface
