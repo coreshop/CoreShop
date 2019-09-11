@@ -25,27 +25,10 @@ cp app/config/parameters.example.yml app/config/parameters.yml
 if [[ "$PIMCORE_VERSION" == "~5.8" ]];
 then
     cp $CS_HOME/etc/_config/config_5.yml app/config/config.yml
-fi
-
-if [[ "$PIMCORE_VERSION" == "~6.0.0" ]];
-then
+else
     cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
 fi
 
-if [[ "$PIMCORE_VERSION" == "~6.1.0" ]];
-then
-    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
-fi
-
-if [[ "$PIMCORE_VERSION" == "~6.2.0" ]];
-then
-    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
-fi
-
-if [[ "$PIMCORE_VERSION" == "dev-master" ]];
-then
-    cp $CS_HOME/etc/_config/config_6.yml app/config/config.yml
-fi
 
 ##########################################################################################
 #########
