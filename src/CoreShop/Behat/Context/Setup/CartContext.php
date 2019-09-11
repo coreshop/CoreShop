@@ -135,9 +135,11 @@ final class CartContext implements Context
 
     /**
      * @Given /^I add the (product "[^"]+" with unit "[^"]+") to my cart$/
+     * @Given /^I add the (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
+     * @Given /^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      */
-    public function addProductInUnitToCart(array $productAndUnit)
+    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1)
     {
         $cart = $this->cartContext->getCart();
 
@@ -146,6 +148,7 @@ final class CartContext implements Context
          */
         $cartItem = $this->factory->createWithPurchasable($productAndUnit['product']);
         $cartItem->setUnitDefinition($productAndUnit['unit']);
+        $cartItem->setQuantity($quantity);
 
         $this->cartModifier->addToList($cart, $cartItem);
 
