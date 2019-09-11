@@ -20,7 +20,8 @@ services:
     CoreShop\Component\Index\Filter\FilterProcessorInterface: '@CoreShop\Component\Index\Filter\FilterProcessor'
     CoreShop\Component\Index\Filter\FilterProcessor:
         arguments:
-            - '@coreshop.registry.filter.condition_types'
+            - '@coreshop.registry.filter.pre_condition_types'
+            - '@coreshop.registry.filter.user_condition_types'
 
     coreshop.factory.filter.list: '@CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory'
     CoreShop\Component\Index\Factory\FilteredListingFactoryInterface: '@CoreShop\Bundle\IndexBundle\Factory\FilteredListingFactory'
@@ -57,13 +58,22 @@ services:
             - index-extensions
 
     # Filter Registry
-    coreshop.registry.filter.condition_types:
+    coreshop.registry.filter.pre_condition_types:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Index\Filter\FilterConditionProcessorInterface
             - filter-processor
 
-    coreshop.form_registry.filter.condition_types:
+    coreshop.form_registry.filter.pre_condition_types:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
+    coreshop.registry.filter.user_condition_types:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Index\Filter\FilterConditionProcessorInterface
+            - filter-processor
+
+    coreshop.form_registry.filter.user_condition_types:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
     # Index Getter Registry
@@ -257,12 +267,19 @@ services:
         tags:
             - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
 
-    coreshop.filter.condition_type.nested: '@CoreShop\Component\Index\Filter\NestedFilterConditionProcessor'
-    CoreShop\Component\Index\Filter\NestedFilterConditionProcessor:
+    coreshop.filter.condition_type.pre_nested:
+        class: CoreShop\Component\Index\Filter\NestedFilterConditionProcessor
         arguments:
-            - '@coreshop.registry.filter.condition_types'
+            - '@coreshop.registry.filter.pre_condition_types'
         tags:
-            - { name: coreshop.filter.condition_type, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionNestedType}
+            - { name: coreshop.filter.pre_condition_type, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterPreConditionNestedType }
+
+    coreshop.filter.condition_type.user_nested:
+        class: CoreShop\Component\Index\Filter\NestedFilterConditionProcessor
+        arguments:
+            - '@coreshop.registry.filter.user_condition_types'
+        tags:
+            - { name: coreshop.filter.user_condition_type, type: nested, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterUserConditionNestedType }
 
     # Will be deactivated for now, this is not functional as it is right now
     #coreshop.filter.condition_type.boolean:

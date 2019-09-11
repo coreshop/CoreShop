@@ -23,14 +23,23 @@ class FilterProcessor implements FilterProcessorInterface
     /**
      * @var ServiceRegistryInterface
      */
-    private $conditionProcessors;
+    private $preConditionProcessors;
 
     /**
-     * @param ServiceRegistryInterface $conditionProcessors
+     * @var ServiceRegistryInterface
      */
-    public function __construct(ServiceRegistryInterface $conditionProcessors)
-    {
-        $this->conditionProcessors = $conditionProcessors;
+    private $userConditionProcessors;
+
+    /**
+     * @param ServiceRegistryInterface $preConditionProcessors
+     * @param ServiceRegistryInterface $userConditionProcessors
+     */
+    public function __construct(
+        ServiceRegistryInterface $preConditionProcessors,
+        ServiceRegistryInterface $userConditionProcessors
+    ) {
+        $this->preConditionProcessors = $preConditionProcessors;
+        $this->userConditionProcessors = $userConditionProcessors;
     }
 
     /**
@@ -50,7 +59,7 @@ class FilterProcessor implements FilterProcessorInterface
 
         if ($filter->hasPreConditions()) {
             foreach ($preConditions as $condition) {
-                $currentFilter = $this->getConditionProcessorForCondition($condition)->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, true);
+                $currentFilter = $this->getPreConditionProcessorForCondition($condition)->addCondition($condition, $filter, $list, $currentFilter, $parameterBag, true);
             }
         }
 
@@ -81,6 +90,16 @@ class FilterProcessor implements FilterProcessorInterface
      */
     private function getConditionProcessorForCondition(FilterConditionInterface $condition)
     {
-        return $this->conditionProcessors->get($condition->getType());
+        return $this->userConditionProcessors->get($condition->getType());
+    }
+
+    /**
+     * @param FilterConditionInterface $condition
+     *
+     * @return FilterConditionProcessorInterface
+     */
+    private function getPreConditionProcessorForCondition(FilterConditionInterface $condition)
+    {
+        return $this->preConditionProcessors->get($condition->getType());
     }
 }

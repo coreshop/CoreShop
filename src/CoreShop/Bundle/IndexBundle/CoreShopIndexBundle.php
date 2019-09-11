@@ -16,6 +16,8 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRe
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterPreConditionTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterUserConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
@@ -65,6 +67,8 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         $container->addCompilerPass(new RegisterExtensionsPass());
         $container->addCompilerPass(new RegisterConditionRendererTypesPass());
         $container->addCompilerPass(new RegisterOrderRendererTypesPass());
+        $container->addCompilerPass(new RegisterFilterPreConditionTypesPass());
+        $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
     }
 
     /**

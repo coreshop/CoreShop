@@ -46,7 +46,8 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
             success: function (result) {
                 var config = Ext.decode(result.responseText);
 
-                me.conditions = config.conditions;
+                me.pre_conditions = config.pre_conditions;
+                me.user_conditions = config.user_conditions;
                 //me.similarities = config.similarities;
             }
         });

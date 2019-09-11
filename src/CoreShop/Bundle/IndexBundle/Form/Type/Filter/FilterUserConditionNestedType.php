@@ -12,35 +12,21 @@
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
-use CoreShop\Bundle\IndexBundle\Form\Type\FilterConditionCollectionType;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Bundle\IndexBundle\Form\Type\FilterUserConditionCollectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-final class FilterConditionNestedType extends AbstractType
+final class FilterUserConditionNestedType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $repository;
-
-    /**
-     * @param RepositoryInterface $repository
-     */
-    public function __construct(RepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('conditions', FilterConditionCollectionType::class);
+            ->add('conditions', FilterUserConditionCollectionType::class);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
@@ -58,6 +44,6 @@ final class FilterConditionNestedType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_filter_condition_type_nested';
+        return 'coreshop_filter_user_condition_type_nested';
     }
 }

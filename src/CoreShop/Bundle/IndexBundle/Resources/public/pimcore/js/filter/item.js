@@ -42,8 +42,8 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     },
 
     getItems: function () {
-        this.preConditions = new coreshop.filter.condition(this, this.parentPanel.conditions, 'preConditions', 'pre_conditions');
-        this.conditions = new coreshop.filter.condition(this, this.parentPanel.conditions, 'conditions');
+        this.preConditions = new coreshop.filter.condition(this, this.parentPanel.pre_conditions, 'preConditions', 'pre_conditions');
+        this.conditions = new coreshop.filter.condition(this, this.parentPanel.user_conditions, 'conditions');
         //this.similarities = new coreshop.filter.similarity(this, this.parentPanel.similarities);
 
         var items = [

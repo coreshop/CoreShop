@@ -12,32 +12,27 @@
 
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class FilterType extends AbstractResourceType
+final class FilterPreConditionType extends FilterConditionType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        parent::buildForm($builder, $options);
+
         $builder
-            ->add('name', TextType::class)
-            ->add('orderKey', TextType::class)
-            ->add('orderDirection', ChoiceType::class, [
-                'choices' => array(
-                    'ASC' => 'asc',
-                    'DESC' => 'desc',
-                ),
-            ])
-            ->add('preConditions', FilterPreConditionCollectionType::class)
-            ->add('conditions', FilterUserConditionCollectionType::class)
-            ->add('resultsPerPage', IntegerType::class)
-            ->add('index', IndexChoiceType::class);
+            ->add('type', FilterPreConditionChoiceType::class);
     }
 
     /**
@@ -45,6 +40,6 @@ class FilterType extends AbstractResourceType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_filter';
+        return 'coreshop_filter_pre_condition';
     }
 }
