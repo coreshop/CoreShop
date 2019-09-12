@@ -15,7 +15,7 @@ CoreShop\Component\Index\Model\Filter:
             expose: true
             type: string
             groups: [Detailed]
-        order:
+        orderDirection:
             expose: true
             type: string
             groups: [Detailed]
