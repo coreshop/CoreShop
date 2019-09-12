@@ -123,8 +123,9 @@ final class ProductContext implements Context
 
     /**
      * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
      */
-    public function theProductHasAVariant(
+    public function theProductHasAVariantPricedAt(
         ProductInterface $product,
         string $productName,
         int $price = 100,
@@ -132,7 +133,20 @@ final class ProductContext implements Context
     ) {
         $variant = $this->createVariant($product, $productName, $price, $store);
 
-        $this->saveVariant($variant);
+        $this->saveProduct($variant);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)"$/
+     * @Given /^the (product) has a variant "([^"]+)"$/
+     */
+    public function theProductHasAVariant(
+        ProductInterface $product,
+        string $productName
+    ) {
+        $variant = $this->createSimpleVariant($product, $productName);
+
+        $this->saveProduct($variant);
     }
 
     /**
@@ -281,6 +295,17 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (variant "[^"]+") has a price of ([^"]+) for (store "[^"]+")$/
+     * @Given /^the (variants) price is ([^"]+) for (store "[^"]+")$/
+     */
+    public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStorePrice($price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") has a minimum order quantity of "([^"]+)"$/
      * @Given /^the (product) has a minimum order quantity of "([^"]+)"$/
      */
@@ -418,6 +443,26 @@ final class ProductContext implements Context
     /**
      * @param ProductInterface    $product
      * @param string              $productName
+     *
+     * @return ProductInterface
+     */
+    private function createSimpleVariant(
+        ProductInterface $product,
+        string $productName
+    ) {
+        $variant = $this->createSimpleProduct($productName);
+        $variant->setParent($product);
+
+        if ($variant instanceof Concrete) {
+            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
+        }
+
+        return $variant;
+    }
+
+    /**
+     * @param ProductInterface    $product
+     * @param string              $productName
      * @param int                 $price
      * @param StoreInterface|null $store
      *
@@ -429,12 +474,7 @@ final class ProductContext implements Context
         int $price = 100,
         StoreInterface $store = null
     ) {
-        $variant = $this->createSimpleProduct($productName);
-        $variant->setParent($product);
-
-        if ($variant instanceof Concrete) {
-            $variant->setType(AbstractObject::OBJECT_TYPE_VARIANT);
-        }
+        $variant = $this->createSimpleVariant($product, $productName);
 
         if (null === $store && $this->sharedStorage->has('store')) {
             $store = $this->sharedStorage->get('store');
@@ -454,15 +494,12 @@ final class ProductContext implements Context
     private function saveProduct(ProductInterface $product)
     {
         $product->save();
-        $this->sharedStorage->set('product', $product);
-    }
 
-    /**
-     * @param ProductInterface $product
-     */
-    private function saveVariant(ProductInterface $product)
-    {
-        $product->save();
-        $this->sharedStorage->set('variant', $product);
+        if ($product->getType() === 'variant') {
+            $this->sharedStorage->set('variant', $product);
+        }
+        else {
+            $this->sharedStorage->set('product', $product);
+        }
     }
 }

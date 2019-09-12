@@ -114,4 +114,13 @@ final class ProductContext implements Context
     {
         return $this->sharedStorage->get('product');
     }
+
+    /**
+     * @Transform /^variant(?:|s)/
+     * @Transform /^variant(?:|s)/
+     */
+    public function variant()
+    {
+        return $this->sharedStorage->get('variant');
+    }
 }
