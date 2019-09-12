@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Resource\Model\AbstractObject;
 use Pimcore\Cache;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -149,6 +150,14 @@ final class PimcoreDaoContext implements Context
 
             $class->delete();
         }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function disableGlobalInheritance()
+    {
+        AbstractObject::setGetInheritedValues(false);
     }
 
     /**

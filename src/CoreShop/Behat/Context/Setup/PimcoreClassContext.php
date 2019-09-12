@@ -53,6 +53,42 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^I enable inheritance for class "([^"]+)"$/
+     */
+    public function iEnableInheritanceForPimcoreClass($className)
+    {
+        $definitionUpdater = new ClassUpdate($className);
+        $definitionUpdater->setProperty('allowInherit', true);
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @Given /^I enable variants for class "([^"]+)"$/
+     */
+    public function iEnableVariantsForPimcoreClass($className)
+    {
+        $definitionUpdater = new ClassUpdate($className);
+        $definitionUpdater->setProperty('allowVariants', true);
+        $definitionUpdater->save();
+    }
+
+    /**
+     * @Given /^I enable pimcore inheritance$/
+     */
+    public function enableInheritance()
+    {
+        DataObject\AbstractObject::setGetInheritedValues(true);
+    }
+
+    /**
+     * @Given /^I disable pimcore inheritance$/
+     */
+    public function disableInheritance()
+    {
+        DataObject\AbstractObject::setGetInheritedValues(false);
+    }
+
+    /**
      * @Given /^there is a pimcore class "([^"]+)"$/
      */
     public function createClassNamed($className)

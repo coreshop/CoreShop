@@ -212,7 +212,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= '* @return static' . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function set' . ucfirst($key) . 'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store) {' . "\n";
-        $code .= "\t" . '$storeValue = $this->get'.ucfirst($key).'($store);' . "\n";
+        $code .= "\t" . '$storeValue = \CoreShop\Component\Pimcore\DataObject\InheritanceHelper::useInheritedValues(function() use ($store) {' . "\n";
+        $code .= "\t\t" . 'return $this->getStoreValues($store);' . "\n";
+        $code .= "\t" . '}, false);' . "\n";
         $code .= "\t" . "\n";
         $code .= "\t" . 'if (!$storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {' . "\n";
         $code .= "\t\t" . '$storeValue = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->createNew($this, $store);' . "\n";
