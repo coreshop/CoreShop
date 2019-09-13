@@ -64,10 +64,14 @@ coreshop.order.resource = Class.create(coreshop.resource, {
             this.openOrders();
         } else if (item === 'quotes') {
             this.openQuotes();
-        }else if (item === 'create_order') {
+        } else if (item === 'create_order') {
             this.openCreateOrder();
         } else if (item === 'create_quote') {
             this.openCreateQuote();
+        } else if (item === 'carts') {
+            this.openCarts();
+        } else if (item === 'create_cart') {
+            this.openCreateCart();
         } else if (item === 'cart_price_rule') {
             this.openCartPriceRules();
         } else if (item === 'open_order_by_number') {
@@ -101,6 +105,19 @@ coreshop.order.resource = Class.create(coreshop.resource, {
 
     openCreateQuote: function () {
         new coreshop.order.quote.create.panel();
+    },
+
+    openCarts: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_cart').activate();
+        }
+        catch (e) {
+            pimcore.globalmanager.add('coreshop_cart', new coreshop.order.cart.list());
+        }
+    },
+
+    openCreateCart: function () {
+        new coreshop.order.cart.create.panel();
     },
 
     openCartPriceRules: function () {

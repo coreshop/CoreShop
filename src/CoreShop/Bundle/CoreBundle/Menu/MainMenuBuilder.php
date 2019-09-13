@@ -197,6 +197,24 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('function', 'create_quote')
             ->setExtra('order', 40);
 
+        $ordersMenu
+            ->addChild('coreshop_carts')
+            ->setLabel('coreshop_carts')
+            ->setAttribute('permission', 'coreshop_permission_cart_list')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_carts')
+            ->setAttribute('resource', 'coreshop.order')
+            ->setAttribute('function', 'carts')
+            ->setExtra('order', 50);
+
+        $ordersMenu
+            ->addChild('coreshop_cart_create')
+            ->setLabel('coreshop_cart_create')
+            ->setAttribute('permission', 'coreshop_permission_cart_create')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_cart_create')
+            ->setAttribute('resource', 'coreshop.order')
+            ->setAttribute('function', 'create_cart')
+            ->setExtra('order', 60);
+
         $carriersMenu = $menuItem
             ->addChild('coreshop_shipping')
             ->setLabel('coreshop_shipping')

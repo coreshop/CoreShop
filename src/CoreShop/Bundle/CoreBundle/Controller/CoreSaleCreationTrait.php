@@ -79,14 +79,11 @@ trait CoreSaleCreationTrait
                 $cart->getShippingAddress());
             $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency,
                 $cart->getCurrency()->getIsoCode());
-            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted,
-                $cart->getCurrency()->getIsoCode());
 
             $result[] = [
                 'id' => $carrier->getId(),
                 'name' => $carrier->getIdentifier(),
-                'price' => $price,
-                'priceFormatted' => $priceFormatted,
+                'price' => $price
             ];
         }
 

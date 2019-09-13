@@ -1,10 +1,26 @@
 parameters:
     coreshop.form.type.add_to_cart.validation_groups: [coreshop]
+    coreshop.form.type.edit_cart.validation_groups: [coreshop]
 
 services:
     CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType:
         arguments:
             - '%coreshop.dto.add_to_cart.class%'
             - '%coreshop.form.type.add_to_cart.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.edit_cart:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\EditCartType
+        arguments:
+            - '%coreshop.model.cart.class%'
+            - '%coreshop.form.type.edit_cart.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    coreshop.form.type.purchaseable_selection_type:
+        class: CoreShop\Bundle\OrderBundle\Form\Type\PurchasableSelectionType
+        arguments:
+            - '@coreshop.repository.stack.purchasable'
         tags:
             - { name: form.type }

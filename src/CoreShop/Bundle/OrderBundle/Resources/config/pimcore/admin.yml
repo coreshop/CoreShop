@@ -57,5 +57,12 @@ core_shop_order:
             core_extension_tag_cart_price_rule: '/bundles/coreshoporder/pimcore/js/coreExtension/tags/coreShopCartPriceRule.js'
             object_grid_column_order_state: '/bundles/coreshoporder/pimcore/js/object/gridcolumn/operator/coreshop_order_state.js'
             object_grid_column_price_formatter: '/bundles/coreshoporder/pimcore/js/object/gridcolumn/operator/coreshop_price_formatter.js'
+            cart_list: '/bundles/coreshoporder/pimcore/js/cart/list.js'
+            cart_creation: '/bundles/coreshoporder/pimcore/js/cart/create/panel.js'
+            cart_detail_panel: '/bundles/coreshoporder/pimcore/js/cart/detail/panel.js'
+            cart_detail_abstract_block_header: '/bundles/coreshoporder/pimcore/js/cart/detail/blocks/header.js'
+            cart_detail_abstract_block_info: '/bundles/coreshoporder/pimcore/js/cart/detail/blocks/info.js'
+            cart_detail_abstract_block_customer: '/bundles/coreshoporder/pimcore/js/cart/detail/blocks/customer.js'
+            cart_detail_abstract_block_detail: '/bundles/coreshoporder/pimcore/js/cart/detail/blocks/detail.js'
         css:
             order: '/bundles/coreshoporder/pimcore/css/order.css'

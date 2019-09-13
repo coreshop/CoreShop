@@ -29,6 +29,7 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     },
 
     setPreviewData: function(data) {
+        this.sale = data;
         this.totalStore.loadData(data.summary);
 
         if (data.shippingAddress && data.invoiceAddress && data.items.length > 0) {
@@ -48,6 +49,8 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
     },
 
     getPanel: function () {
+        var me = this;
+
         this.totalPanel = Ext.create('Ext.panel.Panel', {
             items: [
                 {
@@ -70,7 +73,7 @@ coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create
                             width: 150,
                             align: 'right',
                             renderer: function (value, metaData, record) {
-                                return '<span style="font-weight:bold">' + record.get('valueFormatted') + '</span>';
+                                return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
                             }.bind(this)
                         }
                     ]

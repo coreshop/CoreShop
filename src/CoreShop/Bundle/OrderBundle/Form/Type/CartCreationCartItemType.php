@@ -16,6 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartCreationCartItemType extends AbstractResourceType
 {
@@ -44,12 +45,27 @@ final class CartCreationCartItemType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['allow_product']) {
+            $builder
+                ->add('product', PurchasableSelectionType::class);
+        }
+
         $builder
             ->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
                 'label' => 'coreshop.ui.quantity',
             ])
             ->setDataMapper($this->dataMapper);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('allow_product', true);
     }
 
     /**
