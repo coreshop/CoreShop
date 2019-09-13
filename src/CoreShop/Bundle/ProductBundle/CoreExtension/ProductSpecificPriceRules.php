@@ -146,7 +146,7 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

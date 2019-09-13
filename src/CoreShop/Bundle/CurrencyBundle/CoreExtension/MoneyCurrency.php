@@ -292,7 +292,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
