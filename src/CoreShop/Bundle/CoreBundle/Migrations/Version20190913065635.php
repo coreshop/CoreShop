@@ -19,7 +19,7 @@ class Version20190913065635 extends AbstractPimcoreMigration
         $table = $schema->getTable('users_permission_definitions');
 
         if ($table->hasColumn('category')) {
-            $this->addSql('UPDATE users_permission_definitions SET category=\'coreshop\' WHERE `key` LIKE \'coreshop_%\'');
+            $this->addSql('UPDATE users_permission_definitions SET category=\'coreshop_permission_group_coreshop\' WHERE `key` LIKE \'coreshop_%\'');
         }
     }
 

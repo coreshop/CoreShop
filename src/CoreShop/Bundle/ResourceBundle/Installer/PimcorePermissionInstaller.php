@@ -78,7 +78,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
                             $this->connection->insert('users_permission_definitions', [
                                 'key' => $permission,
-                                'category' => $group
+                                'category' => sprintf('coreshop_permission_group_%s', $group)
                             ]);
                         }
                         else {
