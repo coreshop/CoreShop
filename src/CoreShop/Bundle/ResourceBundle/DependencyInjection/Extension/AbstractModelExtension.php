@@ -141,13 +141,14 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $applicationParameter = sprintf('%s.permissions', $applicationName);
             $resourcePermissions = [];
             $globalParameter = 'coreshop.all.permissions';
+            $globalPermissions = [];
 
             if ($container->hasParameter($applicationParameter)) {
                 $applicationPermissions = $container->getParameter($applicationParameter);
             }
 
             if ($container->hasParameter($globalParameter)) {
-                $resourcePermissions = $container->getParameter($globalParameter);
+                $globalPermissions = $container->getParameter($globalParameter);
             }
 
             $permissions = [];
@@ -159,7 +160,11 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
                 $resourcePermissions[] = $identifier;
             }
 
-            $container->setParameter($globalParameter, array_merge($applicationPermissions, $permissions));
+            $globalApplicationPermissions = array_key_exists($applicationName, $globalPermissions) ? $globalPermissions[$applicationName] : [];
+            $globalApplicationPermissions = array_merge($globalApplicationPermissions, $resourcePermissions);
+            $globalPermissions[$applicationName] = $globalApplicationPermissions;
+
+            $container->setParameter($globalParameter, $globalPermissions);
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
         }
     }

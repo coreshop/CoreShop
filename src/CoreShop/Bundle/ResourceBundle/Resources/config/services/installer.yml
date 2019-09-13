@@ -36,6 +36,7 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller:
         arguments:
             - '@kernel'
+            - '@doctrine.dbal.default_connection'
         tags:
             - { name: coreshop.resource.installer, type: permissions, priority: 350}
 
