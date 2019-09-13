@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
 use Pimcore\Model\User\Permission;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,7 +32,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
     private $connection;
 
     /**
-     * @param KernelInterface $kernelm
+     * @param KernelInterface $kernel
      * @param Connection      $connection
      */
     public function __construct(KernelInterface $kernel, Connection $connection)
@@ -63,6 +64,10 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
             $progress->start(count($permissionGroups, COUNT_RECURSIVE));
 
+            $columns = array_map(function(Column $column) {
+                return $column->getName();
+            }, $this->connection->getSchemaManager()->listTableColumns('users_permission_definitions'));
+
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {
                     $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
@@ -70,20 +75,16 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
                     $permissionDefinition = Permission\Definition::getByKey($permission);
 
                     if (!$permissionDefinition instanceof Permission\Definition) {
-                        $permissionDefinition = new Permission\Definition();
-
-                        //Pimcore with < 6.2 doesn't persist the category with the object... (https://github.com/pimcore/pimcore/pull/4978)
-                        if (method_exists($permissionDefinition, 'setCategory')) {
-                            $permissionDefinition->setCategory($group);
-
+                        if (in_array('category', $columns, true)) {
                             $this->connection->insert('users_permission_definitions', [
                                 'key' => $permission,
                                 'category' => sprintf('coreshop_permission_group_%s', $group)
                             ]);
                         }
                         else {
-                            $permissionDefinition->setKey($permission);
-                            $permissionDefinition->save();
+                            $this->connection->insert('users_permission_definitions', [
+                                'key' => $permission
+                            ]);
                         }
                     }
 
