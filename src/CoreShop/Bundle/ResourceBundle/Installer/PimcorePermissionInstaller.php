@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\User\Permission;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,12 +25,19 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
      */
     private $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
+    /**
+     * @var Connection
      */
-    public function __construct(KernelInterface $kernel)
+    private $connection;
+
+    /**
+     * @param KernelInterface $kernelm
+     * @param Connection      $connection
+     */
+    public function __construct(KernelInterface $kernel, Connection $connection)
     {
         $this->kernel = $kernel;
+        $this->connection = $connection;
     }
 
     /**
@@ -40,27 +48,47 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
         $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.all.permissions';
 
         if ($this->kernel->getContainer()->hasParameter($parameter)) {
-            $permissions = $this->kernel->getContainer()->getParameter($parameter);
+            $permissionGroups = $this->kernel->getContainer()->getParameter($parameter);
+
+            if ($parameter !== 'coreshop.all.permissions') {
+                $permissionGroups = [
+                    $applicationName => $permissionGroups
+                ];
+            }
 
             $progress = new ProgressBar($output);
             $progress->setBarCharacter('<info>░</info>');
             $progress->setEmptyBarCharacter(' ');
             $progress->setProgressCharacter('<comment>░</comment>');
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
-            $progress->start(count($permissions));
+            $progress->start(count($permissionGroups, COUNT_RECURSIVE));
 
-            foreach ($permissions as $permission) {
-                $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
+            foreach ($permissionGroups as $group => $permissions) {
+                foreach ($permissions as $permission) {
+                    $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
 
-                $permissionDefinition = Permission\Definition::getByKey($permission);
+                    $permissionDefinition = Permission\Definition::getByKey($permission);
 
-                if (!$permissionDefinition instanceof Permission\Definition) {
-                    $permissionDefinition = new Permission\Definition();
-                    $permissionDefinition->setKey($permission);
-                    $permissionDefinition->save();
+                    if (!$permissionDefinition instanceof Permission\Definition) {
+                        $permissionDefinition = new Permission\Definition();
+
+                        //Pimcore with < 6.2 doesn't persist the category with the object... (https://github.com/pimcore/pimcore/pull/4978)
+                        if (method_exists($permissionDefinition, 'setCategory')) {
+                            $permissionDefinition->setCategory($group);
+
+                            $this->connection->insert('users_permission_definitions', [
+                                'key' => $permission,
+                                'category' => $group
+                            ]);
+                        }
+                        else {
+                            $permissionDefinition->setKey($permission);
+                            $permissionDefinition->save();
+                        }
+                    }
+
+                    $progress->advance();
                 }
-
-                $progress->advance();
             }
 
             $progress->finish();
