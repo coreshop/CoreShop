@@ -2,6 +2,7 @@ core_shop_pimcore:
     pimcore_admin:
         js:
             broker: '/bundles/coreshoppimcore/pimcore/js/broker.js'
+            helpers: '/bundles/coreshoppimcore/pimcore/js/helpers.js'
             clear_button: '/bundles/coreshoppimcore/pimcore/js/ext/ClearButton.js'
             core_extension_tag_serializedData: '/bundles/coreshoppimcore/pimcore/js/coreExtension/tags/coreShopSerializedData.js'
             core_extension_data_serializedData: '/bundles/coreshoppimcore/pimcore/js/coreExtension/data/coreShopSerializedData.js'

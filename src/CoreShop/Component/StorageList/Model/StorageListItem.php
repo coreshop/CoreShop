@@ -12,9 +12,7 @@
 
 namespace CoreShop\Component\StorageList\Model;
 
-use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
-
-class StorageListItem extends AbstractPimcoreModel implements StorageListItemInterface
+class StorageListItem implements StorageListItemInterface
 {
     /**
      * @var int
@@ -25,6 +23,14 @@ class StorageListItem extends AbstractPimcoreModel implements StorageListItemInt
      * @var StorageListProductInterface
      */
     protected $product;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->product ? $this->product->getId() : 0;
+    }
 
     /**
      * {@inheritdoc}

@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyAwareTrait;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\StorageList\Model\StorageListProductInterface;
 use CoreShop\Component\Store\Model\StoreAwareTrait;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -35,8 +35,12 @@ class Cart extends AbstractProposal implements CartInterface
 
         foreach ($this->getItems() as $item) {
             if ($item instanceof CartItemInterface) {
-                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId(
-                ) === $product->getId()) {
+                //Gift Items are not considered as products here
+                if ($item->getIsGiftItem()) {
+                    continue;
+                }
+
+                if ($item->getProduct() instanceof PurchasableInterface && $item->getProduct()->getId() === $product->getId()) {
                     return $item;
                 }
             }
@@ -107,20 +111,6 @@ class Cart extends AbstractProposal implements CartInterface
         }
 
         return $subtotalTax;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        $weight = 0;
-
-        foreach ($this->getItems() as $item) {
-            $weight += $item->getTotalWeight();
-        }
-
-        return $weight;
     }
 
     /**

@@ -41,12 +41,7 @@ services:
         arguments:
             - '@coreshop.registry.product.discount_calculators'
 
-  # Product Price Rule CONDITIONS
-    coreshop.product_price_rule.condition.products:
-        class: CoreShop\Component\Product\Rule\Condition\ProductsConditionChecker
-        tags:
-          - { name: coreshop.product_price_rule.condition, type: products, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductsConfigurationType }
-
+    # Product Price Rule CONDITIONS
     coreshop.product_price_rule.condition.nested:
         class: CoreShop\Component\Rule\Condition\NestedConditionChecker
         arguments:

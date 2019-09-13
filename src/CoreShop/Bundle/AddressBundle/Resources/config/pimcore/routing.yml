@@ -3,6 +3,11 @@ coreshop_admin_country:
     resource: |
         alias: coreshop.country
 
+coreshop_admin_address_identifier:
+    type: coreshop.resources
+    resource: |
+        alias: coreshop.address_identifier
+
 coreshop_admin_zone:
     type: coreshop.resources
     resource: |

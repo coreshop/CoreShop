@@ -25,8 +25,14 @@ coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
 
     getStoreFields: function () {
         return [
+            {name: 'emailAddress', type: 'string'},
+            {name: 'orderCount', type: 'integer'},
             {name: 'sales', type: 'number'}
         ];
+    },
+
+    showPaginator: function () {
+        return true;
     },
 
     getGrid: function () {
@@ -38,8 +44,8 @@ coreshop.report.reports.customers = Class.create(coreshop.report.abstract, {
                 store: this.getStore(),
                 columns: [
                     {
-                        text: t('name'),
-                        dataIndex: 'name',
+                        text: t('email'),
+                        dataIndex: 'emailAddress',
                         flex: 3
                     },
                     {

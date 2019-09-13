@@ -4,6 +4,7 @@ imports:
     - { resource: "services/commands.yml" }
     - { resource: "services/pimcore.yml" }
     - { resource: "services/condition_renderer.yml" }
+    - { resource: "services/order_renderer.yml" }
 
 services:
     _defaults:
@@ -97,6 +98,7 @@ services:
             - '@coreshop.registry.index.interpreter'
             - '@coreshop.index.filter_group_helper'
             - '@coreshop.index.condition.renderer'
+            - '@coreshop.index.order.renderer'
             - '@doctrine.dbal.default_connection'
         shared: false
         calls:
@@ -196,6 +198,13 @@ services:
             - '@coreshop.registry.index.interpreter'
         tags:
           - { name: coreshop.index.interpreter, type: nestedRelational, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\NestedInterpreterType}
+
+    coreshop.index.interpreter.iterator:
+        class: CoreShop\Component\Index\Interpreter\IteratorInterpreter
+        arguments:
+            - '@coreshop.registry.index.interpreter'
+        tags:
+            - { name: coreshop.index.interpreter, type: iterator, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Interpreter\IteratorInterpreterType}
 
     # Index Column Types
     coreshop.index.column_type.classification_store:

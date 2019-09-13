@@ -7,6 +7,9 @@ jms_serializer:
             coreshop-resource:
                 namespace_prefix: "Pimcore"
                 path: "@CoreShopResourceBundle/Resources/config/serializer"
+            coreshop-carbon:
+                namespace_prefix: "Carbon"
+                path: "@CoreShopResourceBundle/Resources/config/serializer"
     property_naming:
         id: 'jms_serializer.identical_property_naming_strategy'
 
@@ -14,6 +17,9 @@ doctrine:
     dbal:
         types:
             pimcoreObject: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
+            pimcoreDocument: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
+            pimcoreAsset: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
+            pimcoreSite: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
         mapping_types:
             enum: string
     orm:

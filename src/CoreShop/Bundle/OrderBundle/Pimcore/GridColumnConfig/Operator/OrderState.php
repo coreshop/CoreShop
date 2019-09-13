@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Pimcore\GridColumnConfig\Operator;
 
-use CoreShop\Component\Order\Workflow\WorkflowStateManagerInterface;
+use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class OrderState extends AbstractOperator
@@ -23,16 +23,16 @@ class OrderState extends AbstractOperator
     private $highlightLabel = false;
 
     /**
-     * @var WorkflowStateManagerInterface
+     * @var WorkflowStateInfoManagerInterface
      */
     private $workflowManager;
 
     /**
-     * @param WorkflowStateManagerInterface $workflowManager
-     * @param \stdClass                     $config
-     * @param null                          $context
+     * @param WorkflowStateInfoManagerInterface $workflowManager
+     * @param \stdClass                         $config
+     * @param null                              $context
      */
-    public function __construct(WorkflowStateManagerInterface $workflowManager, \stdClass $config, $context = null)
+    public function __construct(WorkflowStateInfoManagerInterface $workflowManager, \stdClass $config, $context = null)
     {
         parent::__construct($config, $context);
         $this->workflowManager = $workflowManager;
@@ -89,7 +89,7 @@ class OrderState extends AbstractOperator
         $state = $this->workflowManager->getStateInfo($workflow, $result->value, false);
 
         $rgb = $this->hex2rgb($state['color']);
-        $opacity = $workflow === 'coreshop_order' ? 1 : 0.3;
+        $opacity = $workflow === 'coreshop_order' ? '1' : '0.3';
 
         if ($this->highlightLabel === true) {
             $textColor = $workflow === 'coreshop_order' ? $this->getContrastColor($rgb[0], $rgb[1], $rgb[2]) : 'black';

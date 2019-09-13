@@ -20,7 +20,10 @@ use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Condition\MatchCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderInterface;
+use CoreShop\Component\Index\Order\SimpleOrder;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -28,7 +31,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 
-class Listing extends AbstractListing
+class Listing extends AbstractListing implements OrderAwareListingInterface
 {
     /**
      * @var null|PimcoreModelInterface[]
@@ -78,25 +81,25 @@ class Listing extends AbstractListing
     /**
      * @var bool
      */
-    protected $orderByPrice = false;
-
-    /**
-     * @var bool
-     */
     protected $enabled = true;
 
     /**
-     * @var string[]
+     * @var ConditionInterface[]
      */
     protected $conditions = [];
 
     /**
-     * @var string[]
+     * @var OrderInterface[]
+     */
+    protected $orders = [];
+
+    /**
+     * @var ConditionInterface[]
      */
     protected $relationConditions = [];
 
     /**
-     * @var string[][]
+     * @var ConditionInterface[][]
      */
     protected $queryConditions = [];
 
@@ -203,8 +206,28 @@ class Listing extends AbstractListing
      */
     public function setOrder($order)
     {
+        if ($this->order instanceof SimpleOrder) {
+            $this->order = new SimpleOrder($this->order->getKey(), $order);
+        }
         $this->objects = null;
-        $this->order = $order;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addOrder(OrderInterface $order)
+    {
+        $this->objects = null;
+        $this->orders[] = $order;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resetOrder()
+    {
+        $this->orders = [];
+        $this->order = null;
     }
 
     /**
@@ -212,7 +235,7 @@ class Listing extends AbstractListing
      */
     public function getOrder()
     {
-        return $this->order;
+        return $this->order instanceof SimpleOrder ? $this->order->getDirection() : null;
     }
 
     /**
@@ -221,13 +244,7 @@ class Listing extends AbstractListing
     public function setOrderKey($orderKey)
     {
         $this->objects = null;
-        if ($orderKey == AbstractListing::ORDERKEY_PRICE) {
-            $this->orderByPrice = true;
-        } else {
-            $this->orderByPrice = false;
-        }
-
-        $this->orderKey = $orderKey;
+        $this->order = new SimpleOrder($orderKey, 'ASC');
     }
 
     /**
@@ -235,7 +252,7 @@ class Listing extends AbstractListing
      */
     public function getOrderKey()
     {
-        return $this->orderKey;
+        return $this->order instanceof SimpleOrder ? $this->order->getKey() : null;
     }
 
     /**
@@ -521,32 +538,12 @@ class Listing extends AbstractListing
      */
     protected function addOrderBy(QueryBuilder $queryBuilder)
     {
-        if (!empty($this->orderKey) && $this->orderKey !== AbstractListing::ORDERKEY_PRICE) {
-            $orderKeys = $this->orderKey;
-            if (!is_array($orderKeys)) {
-                $orderKeys = [$orderKeys];
-            }
-            $directionOrderKeys = [];
-            foreach ($orderKeys as $key) {
-                if (is_array($key)) {
-                    $directionOrderKeys[] = $key;
-                } else {
-                    $directionOrderKeys[] = [$key, $this->order];
-                }
-            }
-            foreach ($directionOrderKeys as $keyDirection) {
-                $key = $keyDirection[0];
-                $direction = $keyDirection[1];
-                if ($this->getVariantMode() == AbstractListing::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
-                    if (strtoupper($this->order) == 'DESC') {
-                        $queryBuilder->addOrderBy('max(' . $this->dao->quoteIdentifier($key) . ')', $direction);
-                    } else {
-                        $queryBuilder->addOrderBy('min(' . $this->dao->quoteIdentifier($key) . ')', $direction);
-                    }
-                } else {
-                    $queryBuilder->addOrderBy($this->dao->quoteIdentifier($key), $direction);
-                }
-            }
+        if ($this->order instanceof SimpleOrder) {
+            $queryBuilder->add('orderBy', $this->worker->renderOrder($this->order, 'q'));
+        }
+
+        foreach ($this->orders as $order) {
+            $queryBuilder->add('orderBy', $this->worker->renderOrder($order, 'q'));
         }
     }
 

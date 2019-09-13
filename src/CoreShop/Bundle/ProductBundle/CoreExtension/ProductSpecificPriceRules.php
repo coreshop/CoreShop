@@ -13,6 +13,8 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\LazyLoadedFields;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -21,7 +23,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Webmozart\Assert\Assert;
 
-class ProductSpecificPriceRules extends Data
+class ProductSpecificPriceRules extends Data implements CustomResourcePersistingInterface
 {
     /**
      * Static type of this element.
@@ -107,11 +109,11 @@ class ProductSpecificPriceRules extends Data
             $data = $object->{$this->getName()};
         }
 
-        if (!method_exists($object, 'getO__loadedLazyFields')) {
+        /*if (!method_exists($object, 'getO__loadedLazyFields')) {
             return $data;
-        }
+        }*/
 
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
+        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
             $setter = 'set' . ucfirst($this->getName());
@@ -128,11 +130,27 @@ class ProductSpecificPriceRules extends Data
      */
     public function preSetData($object, $data, $params = [])
     {
-        if (!in_array($this->getName(), $object->getO__loadedLazyFields())) {
-            $object->addO__loadedLazyField($this->getName());
+        if (!LazyLoadedFields::hasLazyKey($object, $this->getName())) {
+            LazyLoadedFields::addLazyKey($object, $this->getName());
         }
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -187,7 +205,15 @@ class ProductSpecificPriceRules extends Data
 
         if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
-                $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class);
+                $ruleId = isset($dataRow['id']) && is_numeric($dataRow['id']) ? $dataRow['id'] : null;
+
+                $storedRule = null;
+
+                if ($ruleId !== null) {
+                    $storedRule = $this->getProductSpecificPriceRuleRepository()->find($ruleId);
+                }
+
+                $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class, $storedRule);
 
                 $form->submit($dataRow);
 
@@ -267,15 +293,19 @@ class ProductSpecificPriceRules extends Data
     }
 
     /**
-     * Returns the data which should be stored in the query columns.
-     *
-     * @param mixed $data
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getDataForQueryResource($data)
+    public function delete($object, $params = [])
     {
-        return 'not_supported';
+        if ($object instanceof ProductInterface) {
+            $all = $this->load($object, ['force' => true]);
+
+            foreach ($all as $price) {
+                $this->getEntityManager()->remove($price);
+            }
+
+            $this->getEntityManager()->flush();
+        }
     }
 
     /**

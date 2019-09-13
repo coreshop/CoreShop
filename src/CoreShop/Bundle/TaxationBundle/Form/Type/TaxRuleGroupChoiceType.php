@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\TaxationBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\Options;
@@ -43,12 +44,8 @@ final class TaxRuleGroupChoiceType extends AbstractType
                 'choices' => function (Options $options) {
                     $taxRuleGroups = $this->taxRuleGroupRepository->findAll();
 
-                    /*
-                     * PHP 5.* bug, fixed in PHP 7: https://bugs.php.net/bug.php?id=50688
-                     * "usort(): Array was modified by the user comparison function"
-                     */
-                    @usort($taxRuleGroups, function ($a, $b) {
-                        return $a->getName() < $b->getName() ? -1 : 1;
+                    usort($taxRuleGroups, function (TaxRuleGroupInterface $a, TaxRuleGroupInterface $b): int {
+                        return $a->getName() <=> $b->getName();
                     });
 
                     return $taxRuleGroups;

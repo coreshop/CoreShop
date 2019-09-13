@@ -27,10 +27,17 @@ coreshop.core.settings = Class.create({
 
                 this.data = Ext.decode(response.responseText).data;
 
-                this.getTabPanel();
+                this.loadStores();
 
             }.bind(this)
         });
+    },
+
+    loadStores: function()
+    {
+        this.stores = Ext.create('store.coreshop_stores').load(function() {
+            this.getTabPanel();
+        }.bind(this));
     },
 
     getValue: function (shopId, key) {
@@ -248,8 +255,7 @@ coreshop.core.settings = Class.create({
 
         var me = this,
             shopPanel,
-            store = pimcore.globalmanager.get('coreshop_stores'),
-            shop = store.getById(shopId);
+            shop = this.stores.getById(shopId);
 
         if (!shop) {
             alert('STORE NOT FOUND!');
@@ -450,7 +456,7 @@ coreshop.core.settings = Class.create({
                         },
                         {
                             fieldLabel: t('coreshop_wkhtmltopdf_params'),
-                            name: 'system.invoice.wktml',
+                            name: 'system.invoice.wkhtml',
                             value: this.getValue(shopId, 'system.invoice.wkhtml')
                         }
                     ]
@@ -484,6 +490,8 @@ coreshop.core.settings = Class.create({
                 }
             ]
         });
+
+        coreshop.broker.fireEvent('coreShop.settings.store', this, shopId, shopPanel);
 
         return shopPanel;
     }

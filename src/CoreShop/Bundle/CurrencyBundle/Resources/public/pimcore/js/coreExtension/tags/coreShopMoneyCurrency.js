@@ -50,9 +50,9 @@ pimcore.object.tags.coreShopMoneyCurrency = Class.create(pimcore.object.tags.abs
         }
 
         if (this.fieldConfig.width) {
-            //container.width = this.fieldConfig.width;
+            container.width = this.fieldConfig.width;
         } else {
-            //container.width = 350;
+            container.width = 350;
         }
 
         if (this.fieldConfig.labelWidth) {

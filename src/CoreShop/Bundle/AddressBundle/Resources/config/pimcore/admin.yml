@@ -17,6 +17,8 @@ core_shop_address:
             core_extension_tag_country_multiselect: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopCountryMultiselect.js'
             core_extension_data_state: '/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopState.js'
             core_extension_tag_state: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopState.js'
+            core_extension_data_address_identifier: '/bundles/coreshopaddress/pimcore/js/coreExtension/data/coreShopAddressIdentifier.js'
+            core_extension_tag_address_identifier: '/bundles/coreshopaddress/pimcore/js/coreExtension/tags/coreShopAddressIdentifier.js'
         css:
             address: '/bundles/coreshopaddress/pimcore/css/address.css'
         editmode_js:

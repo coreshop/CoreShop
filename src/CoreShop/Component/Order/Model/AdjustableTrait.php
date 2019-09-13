@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 trait AdjustableTrait
@@ -174,6 +174,22 @@ trait AdjustableTrait
     {
         foreach ($this->getAdjustments($type) as $adjustment) {
             $this->removeAdjustment($adjustment);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAdjustmentsRecursively(string $type = null)
+    {
+        $this->removeAdjustments($type);
+
+        if (method_exists($this, 'getItems')) {
+            foreach ($this->getItems() as $item) {
+                if ($item instanceof AdjustableInterface) {
+                    $item->removeAdjustmentsRecursively($type);
+                }
+            }
         }
     }
 

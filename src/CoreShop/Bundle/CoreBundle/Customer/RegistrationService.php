@@ -21,8 +21,6 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class RegistrationService implements RegistrationServiceInterface
 {

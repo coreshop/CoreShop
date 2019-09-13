@@ -43,14 +43,4 @@ interface OrderShipmentInterface extends OrderDocumentInterface
      * @param string $trackingCode
      */
     public function setTrackingCode($trackingCode);
-
-    /**
-     * @return float
-     */
-    public function getWeight();
-
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
 }

@@ -102,7 +102,7 @@ class CartPriceRuleVoucherCodeGenerator
         $i = 0;
         $code = '';
 
-        while ($i <= $length) {
+        while ($i < $length) {
             $num = rand() % 33;
             $tmp = substr($letters, $num, 1);
             $code = $code . $tmp;

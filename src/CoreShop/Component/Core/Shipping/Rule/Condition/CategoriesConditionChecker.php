@@ -21,7 +21,6 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
-use Webmozart\Assert\Assert;
 
 final class CategoriesConditionChecker extends AbstractConditionChecker
 {
@@ -42,10 +41,9 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      */
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
-        /**
-         * @var $shippable CartInterface
-         */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        if (!$shippable instanceof CartInterface) {
+            return false;
+        }
 
         $cartItems = $shippable->getItems();
 

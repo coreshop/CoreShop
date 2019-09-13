@@ -13,8 +13,11 @@
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Core\Model\CartItemInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 final class CartItemType extends AbstractResourceType
 {
@@ -23,11 +26,19 @@ final class CartItemType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('quantity', IntegerType::class, [
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (!$data instanceof CartItemInterface) {
+                return;
+            }
+
+            $event->getForm()->add('quantity', IntegerType::class, [
                 'attr' => ['min' => 1],
                 'label' => 'coreshop.ui.quantity',
+                'disabled' => $data->getIsGiftItem(),
             ]);
+        });
     }
 
     /**

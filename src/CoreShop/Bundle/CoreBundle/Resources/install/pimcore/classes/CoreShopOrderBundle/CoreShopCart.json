@@ -69,10 +69,7 @@
                                     {
                                         "fieldtype": "input",
                                         "width": null,
-                                        "queryColumnType": "varchar",
-                                        "columnType": "varchar",
                                         "columnLength": 190,
-                                        "phpdocType": "string",
                                         "regex": "",
                                         "name": "name",
                                         "title": "Name",
@@ -92,10 +89,7 @@
                                     {
                                         "fieldtype": "input",
                                         "width": null,
-                                        "queryColumnType": "varchar",
-                                        "columnType": "varchar",
                                         "columnLength": 190,
-                                        "phpdocType": "string",
                                         "regex": "",
                                         "name": "customIdentifier",
                                         "title": "Custom Identifier",
@@ -114,13 +108,10 @@
                                     },
                                     {
                                         "fieldtype": "coreShopStore",
-                                        "queryColumnType": "int(11)",
-                                        "columnType": "int(11)",
                                         "allowEmpty": false,
                                         "options": null,
                                         "width": "",
                                         "defaultValue": null,
-                                        "phpdocType": "string",
                                         "name": "store",
                                         "title": "Store",
                                         "tooltip": "",
@@ -2917,9 +2908,6 @@
                                         "defaultValue": null,
                                         "optionsProviderClass": null,
                                         "optionsProviderData": null,
-                                        "queryColumnType": "varchar(190)",
-                                        "columnType": "varchar(190)",
-                                        "phpdocType": "string",
                                         "name": "localeCode",
                                         "title": "Locale",
                                         "tooltip": "",
@@ -2937,9 +2925,6 @@
                                     },
                                     {
                                         "fieldtype": "coreShopCarrier",
-                                        "phpdocType": "CoreShop\\Component\\Shipping\\Model\\CarrierInterface",
-                                        "queryColumnType": "int(11)",
-                                        "columnType": "int(11)",
                                         "allowEmpty": false,
                                         "options": null,
                                         "width": "",
@@ -2961,9 +2946,6 @@
                                     },
                                     {
                                         "fieldtype": "coreShopPaymentProvider",
-                                        "phpdocType": "CoreShop\\Component\\Payment\\Model\\PaymentProvider",
-                                        "queryColumnType": "int(11)",
-                                        "columnType": "int(11)",
                                         "allowEmpty": false,
                                         "options": null,
                                         "width": "",
@@ -2985,7 +2967,6 @@
                                     },
                                     {
                                         "fieldtype": "coreShopSerializedData",
-                                        "phpdocType": "array",
                                         "allowedTypes": [],
                                         "maxItems": 1,
                                         "name": "paymentSettings",
@@ -2998,8 +2979,6 @@
                                         "style": "",
                                         "permissions": null,
                                         "datatype": "data",
-                                        "columnType": null,
-                                        "queryColumnType": null,
                                         "relationType": false,
                                         "invisible": false,
                                         "visibleGridView": false,
@@ -3010,11 +2989,6 @@
                                         "width": "",
                                         "assetUploadPath": "",
                                         "relationType": true,
-                                        "queryColumnType": {
-                                            "id": "int(11)",
-                                            "type": "enum('document','asset','object')"
-                                        },
-                                        "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                         "objectsAllowed": true,
                                         "assetsAllowed": false,
                                         "assetTypes": [],
@@ -3037,20 +3011,16 @@
                                         "style": "",
                                         "permissions": null,
                                         "datatype": "data",
-                                        "columnType": null,
                                         "invisible": false,
                                         "visibleGridView": false,
                                         "visibleSearch": false
                                     },
                                     {
                                         "fieldtype": "coreShopCurrency",
-                                        "queryColumnType": "int(11)",
-                                        "columnType": "int(11)",
                                         "allowEmpty": false,
                                         "options": null,
                                         "width": "",
                                         "defaultValue": null,
-                                        "phpdocType": "string",
                                         "name": "currency",
                                         "title": "Currency",
                                         "tooltip": "",
@@ -3070,9 +3040,6 @@
                                         "fieldtype": "textarea",
                                         "width": 350,
                                         "height": "",
-                                        "queryColumnType": "longtext",
-                                        "columnType": "longtext",
-                                        "phpdocType": "string",
                                         "name": "comment",
                                         "title": "Comment",
                                         "tooltip": "",
@@ -3090,7 +3057,6 @@
                                     },
                                     {
                                         "fieldtype": "objectbricks",
-                                        "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                                         "allowedTypes": [],
                                         "maxItems": "",
                                         "name": "additionalData",
@@ -3103,8 +3069,6 @@
                                         "style": "",
                                         "permissions": null,
                                         "datatype": "data",
-                                        "columnType": null,
-                                        "queryColumnType": null,
                                         "relationType": false,
                                         "invisible": false,
                                         "visibleGridView": false,
@@ -3134,7 +3098,6 @@
                         "childs": [
                             {
                                 "fieldtype": "fieldcollections",
-                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                 "allowedTypes": [
                                     "CoreShopProposalCartPriceRuleItem"
                                 ],
@@ -3154,8 +3117,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
-                                "queryColumnType": null,
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
@@ -3186,8 +3147,6 @@
                                 "height": "",
                                 "maxItems": "",
                                 "assetUploadPath": "",
-                                "queryColumnType": "text",
-                                "phpdocType": "array",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -3211,7 +3170,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -3219,9 +3177,6 @@
                             {
                                 "fieldtype": "checkbox",
                                 "defaultValue": 0,
-                                "queryColumnType": "tinyint(1)",
-                                "columnType": "tinyint(1)",
-                                "phpdocType": "boolean",
                                 "name": "needsRecalculation",
                                 "title": "Needs Recalculation",
                                 "tooltip": "",
@@ -3261,11 +3216,6 @@
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -3288,7 +3238,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -3298,11 +3247,6 @@
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -3325,7 +3269,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -3335,11 +3278,6 @@
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -3362,7 +3300,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
@@ -3390,9 +3327,6 @@
                                 "fieldtype": "numeric",
                                 "width": "",
                                 "defaultValue": null,
-                                "queryColumnType": "double",
-                                "columnType": "double",
-                                "phpdocType": "float",
                                 "decimalPrecision": null,
                                 "integer": false,
                                 "unsigned": false,
@@ -3415,7 +3349,6 @@
                             },
                             {
                                 "fieldtype": "fieldcollections",
-                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                 "allowedTypes": [
                                     "CoreShopTaxItem"
                                 ],
@@ -3435,8 +3368,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
-                                "queryColumnType": null,
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,
@@ -3446,9 +3377,6 @@
                                 "fieldtype": "coreShopMoney",
                                 "width": "",
                                 "defaultValue": null,
-                                "queryColumnType": "bigint(20)",
-                                "columnType": "bigint(20)",
-                                "phpdocType": "int",
                                 "minValue": null,
                                 "maxValue": null,
                                 "name": "pimcoreAdjustmentTotalNet",
@@ -3470,9 +3398,6 @@
                                 "fieldtype": "coreShopMoney",
                                 "width": "",
                                 "defaultValue": null,
-                                "queryColumnType": "bigint(20)",
-                                "columnType": "bigint(20)",
-                                "phpdocType": "int",
                                 "minValue": null,
                                 "maxValue": null,
                                 "name": "pimcoreAdjustmentTotalGross",
@@ -3492,7 +3417,6 @@
                             },
                             {
                                 "fieldtype": "fieldcollections",
-                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                 "allowedTypes": [
                                     "CoreShopAdjustment"
                                 ],
@@ -3512,8 +3436,6 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "columnType": null,
-                                "queryColumnType": null,
                                 "relationType": false,
                                 "invisible": false,
                                 "visibleGridView": false,

@@ -14,11 +14,8 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
     order: null,
     cb: null,
 
-    show: function ($super, shipAbleItems) {
-        pimcore.globalmanager.get('coreshop_carriers').load();
-
+    createWindow: function ($super, shipAbleItems) {
         var window = $super(shipAbleItems),
-            store = pimcore.globalmanager.get('coreshop_carriers'),
             hasCarrier = this.order.shippingPayment.carrier !== null,
             orderCarrierId = parseInt(this.order.carrier),
             orderCarrierName = this.order.shippingPayment.carrier,
@@ -28,7 +25,9 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
             xtype: 'combo',
             fieldLabel: t('coreshop_carrier'),
             mode: 'local',
-            store: store,
+            store: {
+                type: 'coreshop_carriers'
+            },
             displayField: 'identifier',
             valueField: 'id',
             forceSelection: true,
@@ -60,25 +59,6 @@ coreshop.order.order.shipment = Class.create(coreshop.order.order.shipment, {
                 },
                 change: function() {
                     showToolTip = false;
-                },
-                afterrender: function () {
-                    if (hasCarrier === true) {
-                        var orderCarrierIndex;
-                        if (store.isLoaded()) {
-                            orderCarrierIndex = store.findExact('id', orderCarrierId);
-                            if (orderCarrierIndex !== -1) {
-                                this.setValue(store.getAt(orderCarrierIndex));
-                            }
-                        } else {
-                            store.load();
-                            store.on('load', function (store, records, options) {
-                                orderCarrierIndex = store.findExact('id', orderCarrierId);
-                                if (orderCarrierIndex !== -1) {
-                                    this.setValue(store.getAt(orderCarrierIndex));
-                                }
-                            }.bind(this));
-                        }
-                    }
                 }
             }
         });

@@ -45,6 +45,11 @@ interface AdjustableInterface
     public function removeAdjustments(string $type = null);
 
     /**
+     * @param string|null $type
+     */
+    public function removeAdjustmentsRecursively(string $type = null);
+
+    /**
      * Recalculates adjustments total. Should be used after adjustment change.
      */
     public function recalculateAdjustmentsTotal();

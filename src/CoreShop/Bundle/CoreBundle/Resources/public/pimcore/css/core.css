@@ -18,7 +18,7 @@
 }
 
 #pimcore_navigation li#pimcore_menu_coreshop:hover:after {
-    background-color: #5CB672;
+    background-color: #cd1017;
 }
 
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
@@ -30,11 +30,8 @@
     background-size: 20px;
 }
 
-.coreshop_icon_settings {
-    background:url(../img/services.svg) center center no-repeat !important;
-}
 .coreshop_icon_localization {
-    background: url(../img//collaboration.svg) center center no-repeat !important;
+    background: url(../img/collaboration.svg) center center no-repeat !important;
 }
 
 .coreshop_settings_inherited {

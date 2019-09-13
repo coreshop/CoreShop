@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressesAwareTrait;
 use CoreShop\Component\Customer\Model\Customer as BaseCustomer;
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class Customer extends BaseCustomer implements CustomerInterface
 {

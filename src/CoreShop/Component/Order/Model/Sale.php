@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 abstract class Sale extends AbstractProposal implements SaleInterface
@@ -158,22 +158,6 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     public function getShipping($withTax = true)
     {
         return $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setWeight($weight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

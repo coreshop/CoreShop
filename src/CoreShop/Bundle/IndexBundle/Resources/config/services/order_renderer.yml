@@ -1,0 +1,25 @@
+services:
+    coreshop.registry.index.order.renderers:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Index\Order\DynamicOrderRendererInterface
+            - order-renderers
+
+    ## Renderer
+    coreshop.index.order.renderer:
+        class: CoreShop\Component\Index\Order\OrderRenderer
+        arguments:
+            - '@coreshop.registry.index.order.renderers'
+
+    coreshop.index.order.renderer.mysql.abstract:
+        class: CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer
+        abstract: true
+        arguments:
+            - '@doctrine.dbal.default_connection'
+
+    coreshop.index.order.renderer.mysql.simple:
+        class: CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer
+        parent: coreshop.index.order.renderer.mysql.abstract
+        tags:
+            - { name: coreshop.index.order.renderer, type: mysql_simple }
+

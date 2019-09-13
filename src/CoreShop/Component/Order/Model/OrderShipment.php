@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class OrderShipment extends AbstractPimcoreModel implements OrderShipmentInterface
@@ -165,22 +165,6 @@ class OrderShipment extends AbstractPimcoreModel implements OrderShipmentInterfa
      * {@inheritdoc}
      */
     public function setTrackingCode($trackingCode)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setWeight($weight)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

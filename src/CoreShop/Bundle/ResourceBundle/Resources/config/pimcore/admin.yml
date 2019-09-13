@@ -3,6 +3,7 @@ core_shop_resource:
         js:
             global: '/bundles/coreshopresource/pimcore/js/global.js'
             plugin: '/bundles/coreshopresource/pimcore/js/plugin.js'
+            helpers: '/bundles/coreshopresource/pimcore/js/helpers.js'
             event_manager: '/bundles/coreshopresource/pimcore/js/eventManager.js'
             resource: '/bundles/coreshopresource/pimcore/js/resource.js'
             resource_panel: '/bundles/coreshopresource/pimcore/js/resource/panel.js'

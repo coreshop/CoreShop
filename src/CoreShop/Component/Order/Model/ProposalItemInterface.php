@@ -132,16 +132,6 @@ interface ProposalItemInterface extends ResourceInterface, AdjustableInterface
     public function getIsGiftItem();
 
     /**
-     * @return float
-     */
-    public function getItemWeight();
-
-    /**
-     * @return float
-     */
-    public function getTotalWeight();
-
-    /**
      * @return mixed
      */
     public function getTaxes();

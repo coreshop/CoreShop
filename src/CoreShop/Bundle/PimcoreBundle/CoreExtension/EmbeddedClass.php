@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CoreShop.
  *
@@ -13,6 +12,7 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\Multihref;
 use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
 use Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver;
 use Pimcore\Bundle\AdminBundle\Security\User\User as UserProxy;
@@ -22,8 +22,15 @@ use Pimcore\Model\Element;
 use Pimcore\Model\User;
 use Pimcore\Tool;
 
-final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
+final class EmbeddedClass extends Multihref
 {
+    /**
+     * Static type of this element.
+     *
+     * @var string
+     */
+    public $fieldtype = 'coreShopEmbeddedClass';
+
     /**
      * @var int
      */
@@ -50,6 +57,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
         $returnData = [];
 
+        $i = 0;
         foreach ($data as $embeddedObject) {
             if (!$embeddedObject instanceof DataObject\Concrete) {
                 continue;
@@ -66,16 +74,20 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
             $objectData['id'] = $embeddedObject->getId();
             $objectData['general'] = [
-                'index' => $embeddedObject->getIndex(),
+                'index' => ++$i,
+                'o_published' => $embeddedObject->getPublished(),
+                'o_key' => $embeddedObject->getKey(),
+                'o_id' => $embeddedObject->getId(),
+                'o_modificationDate' => $embeddedObject->getModificationDate(),
+                'o_creationDate' => $embeddedObject->getCreationDate(),
+                'o_classId' => $embeddedObject->getClassId(),
+                'o_className' => $embeddedObject->getClassName(),
+                'o_locked' => $embeddedObject->getLocked(),
+                'o_type' => $embeddedObject->getType(),
+                'o_parentId' => $embeddedObject->getParentId(),
+                'o_userOwner' => $embeddedObject->getUserOwner(),
+                'o_userModification' => $embeddedObject->getUserModification()
             ];
-
-            $allowedKeys = ['o_published', 'o_key', 'o_id', 'o_modificationDate', 'o_creationDate', 'o_classId', 'o_className', 'o_locked', 'o_type', 'o_parentId', 'o_userOwner', 'o_userModification'];
-
-            foreach (get_object_vars($embeddedObject) as $key => $value) {
-                if (strstr($key, 'o_') && in_array($key, $allowedKeys)) {
-                    $objectData['general'][$key] = $value;
-                }
-            }
 
             $returnData[] = $objectData;
         }
@@ -199,10 +211,15 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\Multihref
 
         if (!is_array($data)) {
             $data = $this->load($object, ['force' => true]);
-            $setter = 'set' . ucfirst($this->getName());
 
-            if (method_exists($object, $setter)) {
-                $object->$setter($data);
+            //TODO: Remove once CoreShop requires min Pimcore 5.5
+            if (method_exists($object, 'setObjectVar')) {
+                $object->setObjectVar($this->getName(), $data);
+            } else {
+                $setter = 'set' . ucfirst($this->getName());
+                if (method_exists($object, $setter)) {
+                    $object->$setter($data);
+                }
             }
         }
 

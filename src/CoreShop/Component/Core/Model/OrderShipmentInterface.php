@@ -17,4 +17,13 @@ use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 
 interface OrderShipmentInterface extends BaseOrderShipmentInterface, CarrierAwareInterface
 {
+    /**
+     * @return float
+     */
+    public function getWeight();
+
+    /**
+     * @param float $weight
+     */
+    public function setWeight($weight);
 }

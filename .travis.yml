@@ -2,9 +2,11 @@ sudo: false
 language: php
 
 addons:
-    mariadb: '10.1'
+    mariadb: '10.2'
     hosts:
         - pimcore-test.dev
+services:
+    - mysql
 env:
     global:
         - PIMCORE_ENVIRONMENT=test
@@ -24,6 +26,13 @@ matrix:
           php: 7.2
           env:
             - CORESHOP_SUITE=stan
+            - PIMCORE_VERSION="~5.6.0"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - CORESHOP_SUITE=stan
+            - PIMCORE_VERSION="^5.7.2"
 
         - sudo: required
           php: 7.1
@@ -38,27 +47,47 @@ matrix:
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="^5"
+            - PIMCORE_VERSION="~5.5.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="^5"
+            - PIMCORE_VERSION="~5.5.0"
 
         - sudo: required
           php: 7.1
           env:
-            - PIMCORE_VERSION="dev-master"
+            - PIMCORE_VERSION="~5.6.0"
 
         - sudo: required
           php: 7.2
           env:
-            - PIMCORE_VERSION="dev-master"
+            - PIMCORE_VERSION="~5.6.0"
+
+        - sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_VERSION="~5.7.2"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_VERSION="~5.7.2"
+
+        - sudo: required
+          php: 7.1
+          env:
+            - PIMCORE_VERSION="5.8.x-dev"
+
+        - sudo: required
+          php: 7.2
+          env:
+            - PIMCORE_VERSION="5.8.x-dev"
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
         - env:
-            - PIMCORE_VERSION="dev-master"
+            - PIMCORE_VERSION="5.8.x-dev"
     fast_finish: true
 
 cache:

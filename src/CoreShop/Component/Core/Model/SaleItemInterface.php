@@ -45,4 +45,24 @@ interface SaleItemInterface extends BaseSaleItemInterface
      * @param int $mainObjectId
      */
     public function setMainObjectId($mainObjectId);
+
+    /**
+     * @return float
+     */
+    public function getItemWeight();
+
+    /**
+     * @param float $itemWeight
+     */
+    public function setItemWeight($itemWeight);
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
+
+    /**
+     * @param float $totalWeight
+     */
+    public function setTotalWeight($totalWeight);
 }

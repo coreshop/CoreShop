@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Fixtures\Application;
+namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;

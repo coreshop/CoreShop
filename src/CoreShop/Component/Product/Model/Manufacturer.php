@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class Manufacturer extends AbstractPimcoreModel implements ManufacturerInterface

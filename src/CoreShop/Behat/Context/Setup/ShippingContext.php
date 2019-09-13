@@ -338,6 +338,21 @@ final class ShippingContext implements Context
 
         $this->addCondition($rule, $this->createConditionWithForm('products', [
             'products' => [$product->getId()],
+            'include_variants' => false,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (product "[^"]+") which includes variants$/
+     * @Given /^the (shipping rule) has a condition products with (product "[^"]+") which includes variants$/
+     */
+    public function theShippingRuleHasAProductsWithVariantsCondition(ShippingRuleInterface $rule, ProductInterface $product)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => [$product->getId()],
+            'include_variants' => true,
         ]));
     }
 
@@ -353,6 +368,23 @@ final class ShippingContext implements Context
             'products' => array_map(function ($product) {
                 return $product->getId();
             }, $products),
+            'include_variants' => false,
+        ]));
+    }
+
+    /**
+     * @Given /^the (shipping rule "[^"]+") has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
+     * @Given /^the (shipping rule) has a condition products with (products "[^"]+", "[^"]+") which includes variants$/
+     */
+    public function theShippingRuleHasAProductsConditionWithTwoProductsWithVariants(ShippingRuleInterface $rule, array $products)
+    {
+        $this->assertConditionForm(ProductsConfigurationType::class, 'products');
+
+        $this->addCondition($rule, $this->createConditionWithForm('products', [
+            'products' => array_map(function ($product) {
+                return $product->getId();
+            }, $products),
+            'include_variants' => true,
         ]));
     }
 
@@ -443,7 +475,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(PriceActionConfigurationType::class, 'price');
 
         $this->addAction($rule, $this->createActionWithForm('price', [
-            'price' => intval($price),
+            'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
     }
@@ -457,7 +489,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionAmountActionConfigurationType::class, 'additionAmount');
 
         $this->addAction($rule, $this->createActionWithForm('additionAmount', [
-            'amount' => intval($amount),
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -471,7 +503,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(AdditionPercentActionConfigurationType::class, 'additionPercent');
 
         $this->addAction($rule, $this->createActionWithForm('additionPercent', [
-            'percent' => intval($amount),
+            'percent' => (int) $amount,
         ]));
     }
 
@@ -484,7 +516,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountAmountActionConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
-            'amount' => intval($amount),
+            'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
     }
@@ -498,7 +530,7 @@ final class ShippingContext implements Context
         $this->assertActionForm(DiscountPercentActionConfigurationType::class, 'discountPercent');
 
         $this->addAction($rule, $this->createActionWithForm('discountPercent', [
-            'percent' => intval($amount),
+            'percent' => (int) $amount,
         ]));
     }
 

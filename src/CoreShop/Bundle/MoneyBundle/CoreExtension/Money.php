@@ -1,5 +1,4 @@
 <?php
-
 /**
  * CoreShop.
  *
@@ -13,16 +12,18 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
+use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use Pimcore\Model;
 
-class Money extends Model\DataObject\ClassDefinition\Data
+class Money extends Model\DataObject\ClassDefinition\Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
      *
      * @var string
      */
-    public $fieldtype = 'int';
+    public $fieldtype = 'coreShopMoney';
 
     /**
      * @var float
@@ -33,20 +34,6 @@ class Money extends Model\DataObject\ClassDefinition\Data
      * @var int
      */
     public $defaultValue;
-
-    /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = 'bigint(20)';
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = 'bigint(20)';
 
     /**
      * Type for the generated phpdoc.
@@ -141,6 +128,22 @@ class Money extends Model\DataObject\ClassDefinition\Data
     public function getMinValue()
     {
         return $this->minValue;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return 'bigint(20)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getQueryColumnType()
+    {
+        return 'bigint(20)';
     }
 
     /**
@@ -313,7 +316,14 @@ class Money extends Model\DataObject\ClassDefinition\Data
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**

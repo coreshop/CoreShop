@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
 
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
@@ -22,32 +23,12 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      *
      * @var string
      */
-    public $fieldtype = \CoreShop\Component\Currency\Model\Money::class;
+    public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
      * @var float
      */
     public $width;
-
-    /**
-     * Type for the column to query.
-     *
-     * @var string
-     */
-    public $queryColumnType = [
-        'value' => 'bigint(20)',
-        'currency' => 'int',
-    ];
-
-    /**
-     * Type for the column.
-     *
-     * @var string
-     */
-    public $columnType = [
-        'value' => 'bigint(20)',
-        'currency' => 'int',
-    ];
 
     /**
      * Type for the generated phpdoc.
@@ -121,6 +102,48 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     /**
      * {@inheritdoc}
      */
+    public function getQueryColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
+    }
+
+    public function preGetData($object, $params = [])
+    {
+        if (method_exists($object, 'getObjectVar')) {
+            $data = $object->getObjectVar($this->getName());
+        } else {
+            $data = $object->{$this->getName()};
+        }
+
+        if ($data instanceof Money) {
+            if ($data->getCurrency()) {
+                $currency = $data->getCurrency();
+                $currency = $this->getEntityManager()->merge($currency);
+
+                return new Money($data->getValue(), $currency);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
@@ -143,7 +166,9 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
-        if (is_array($data)) {
+        $currencyIndex = $this->getName() . '__currency';
+
+        if (is_array($data) && isset($data[$currencyIndex]) && null !== $data[$currencyIndex]) {
             $currency = $this->getCurrencyById($data[$this->getName() . '__currency']);
 
             if (null !== $currency) {
@@ -170,7 +195,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue(),
+                    'value' => $data->getValue() / 100,
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }
@@ -191,7 +216,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             $currency = $this->getCurrencyById($data['currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']), $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * 100, $currency);
             }
         }
 
@@ -215,26 +240,24 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
-        if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+        if ($this->isEmpty($data)) {
+            return;
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
-            $data = $this->toNumeric($data);
-
-            if ($data >= PHP_INT_MAX) {
+            if ($data->getValue() >= PHP_INT_MAX) {
                 throw new Model\Element\ValidationException(
                     'Value exceeds PHP_INT_MAX please use an input data type instead of numeric!'
                 );
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
+            if (strlen($this->getMinValue()) && $this->getMinValue() > $data->getValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue()
                 );
             }
 
-            if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
+            if (strlen($this->getMaxValue()) && $data->getValue() > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException(
                     'Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue()
                 );
@@ -265,7 +288,15 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -273,6 +304,10 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function isEmpty($data)
     {
+        if ($data instanceof Money) {
+            return false;
+        }
+
         if (!is_array($data)) {
             return true;
         }
@@ -299,6 +334,14 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
     }
 
     /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    protected function getEntityManager()
+    {
+        return \Pimcore::getContainer()->get('coreshop.manager.currency');
+    }
+
+    /**
      * @param int $value
      *
      * @return int
@@ -309,6 +352,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             return (int) $value;
         }
 
-        return (int) round($value * 100, 0);
+        return (int) round($value, 0);
     }
 }

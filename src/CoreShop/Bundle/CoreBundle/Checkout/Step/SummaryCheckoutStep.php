@@ -75,7 +75,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        $form = $this->createForm($request);
+        $form = $this->createForm($request, $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -93,7 +93,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
      */
     public function prepareStep(CartInterface $cart, Request $request)
     {
-        return ['form' => $this->createForm($request)->createView()];
+        return ['form' => $this->createForm($request, $cart)->createView()];
     }
 
     /**
@@ -101,9 +101,9 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
      *
      * @return \Symfony\Component\Form\FormInterface
      */
-    private function createForm(Request $request)
+    private function createForm(Request $request, CartInterface $cart)
     {
-        $form = $this->formFactory->createNamed('', SummaryType::class);
+        $form = $this->formFactory->createNamed('', SummaryType::class, $cart);
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);

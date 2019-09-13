@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Resource\ImplementedByPimcoreException;
+use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -20,22 +20,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
     use AdjustableTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalWeight()
-    {
-        return $this->getItemWeight() * $this->getQuantity();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemWeight()
-    {
-        return $this->getProduct()->getWeight();
-    }
 
     /**
      * {@inheritdoc}
