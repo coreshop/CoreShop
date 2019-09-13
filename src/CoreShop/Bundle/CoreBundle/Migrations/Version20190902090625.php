@@ -14,7 +14,6 @@ class Version20190902090625 extends AbstractPimcoreMigration
             if (!$table->hasColumn('precision')) {
                 $this->addSql('ALTER TABLE coreshop_product_unit_definition ADD `precision` INT NOT NULL;');
             }
-
         }
 
         if ($schema->hasTable('coreshop_product_quantity_price_rule_range')) {
@@ -28,6 +27,5 @@ class Version20190902090625 extends AbstractPimcoreMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

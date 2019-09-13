@@ -31,7 +31,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
      */
     public function __construct(int $decimalFactor)
     {
-         $this->decimalFactor = $decimalFactor;
+        $this->decimalFactor = $decimalFactor;
     }
 
     /**

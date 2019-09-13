@@ -55,7 +55,9 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
 
     /**
      * @param string $parentPath
+     *
      * @return ProductInterface
+     *
      * @throws \Exception
      */
     protected function createProduct(string $parentPath)

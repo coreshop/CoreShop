@@ -46,14 +46,14 @@ final class QuantityType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'html5'           => true,
+            'html5' => true,
             'unit_definition' => null,
-            'attr'            => [
-                'min'                    => 0,
-                'step'                   => 1,
+            'attr' => [
+                'min' => 0,
+                'step' => 1,
                 'data-cs-unit-precision' => 0,
-                'autocomplete'           => 'off'
-            ]
+                'autocomplete' => 'off',
+            ],
         ]);
 
         $resolver->setAllowedTypes('html5', 'bool');
@@ -65,7 +65,6 @@ final class QuantityType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         if ($options['unit_definition'] instanceof ProductUnitDefinitionInterface) {
-
             $precision = $options['unit_definition']->getPrecision();
             $view->vars['attr']['data-cs-unit-precision'] = $precision;
 

@@ -55,11 +55,11 @@ final class CartItemType extends AbstractResourceType
             }
 
             $event->getForm()->add('quantity', QuantityType::class, [
-                'html5'           => true,
+                'html5' => true,
                 'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
-                'constraints'     => [new Range(['min' => 0])],
-                'label'           => 'coreshop.ui.quantity',
-                'disabled'        => $data->getIsGiftItem(),
+                'constraints' => [new Range(['min' => 0])],
+                'label' => 'coreshop.ui.quantity',
+                'disabled' => $data->getIsGiftItem(),
             ]);
         });
 

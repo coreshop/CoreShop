@@ -13,8 +13,6 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderItem as BaseOrderItem;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 class OrderItem extends BaseOrderItem implements OrderItemInterface
 {

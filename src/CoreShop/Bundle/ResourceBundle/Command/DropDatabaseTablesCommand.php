@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DropDatabaseTablesCommand extends Command
 {
-   /**
+    /**
      * @var array
      */
     private $coreShopResources;

@@ -474,7 +474,7 @@ final class Configuration implements ConfigurationInterface
                             'quote_create',
                             'cart_list',
                             'cart_detail',
-                            'cart_create'
+                            'cart_create',
                         ])
                     ->end()
                     ->arrayNode('install')

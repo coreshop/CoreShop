@@ -31,9 +31,6 @@ class ResourceResolver
         $this->fieldDefinition = $fieldDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null)
     {
         $resource = $value[$this->fieldDefinition->getName()];

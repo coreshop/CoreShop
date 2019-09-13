@@ -32,7 +32,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
 
     /**
      * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param DataMapperInterface $propertyPathDataMapper
+     * @param DataMapperInterface                      $propertyPathDataMapper
      */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
@@ -62,6 +62,7 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         foreach ($forms as $key => $form) {
             if ('quantity' === $form->getName()) {
                 $quantityForm = $form;
+
                 continue;
             }
 

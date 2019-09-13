@@ -16,5 +16,4 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 
 final class PurchasableSelectionType extends PimcoreResourceSelectionType
 {
-
 }

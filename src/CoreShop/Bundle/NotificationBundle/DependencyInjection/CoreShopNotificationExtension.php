@@ -41,12 +41,10 @@ final class CoreShopNotificationExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(NotificationRuleProcessorInterface::class)
-            ->addTag(NotificationRuleActionPass::NOTIFICATION_ACTION_TAG)
-        ;
+            ->addTag(NotificationRuleActionPass::NOTIFICATION_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(NotificationConditionCheckerInterface::class)
-            ->addTag(NotificationRuleConditionPass::NOTIFICATION_CONDITION_TAG)
-        ;
+            ->addTag(NotificationRuleConditionPass::NOTIFICATION_CONDITION_TAG);
     }
 }

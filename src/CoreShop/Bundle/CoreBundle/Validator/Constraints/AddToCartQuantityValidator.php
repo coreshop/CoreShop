@@ -75,7 +75,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
                 $constraint->messageBelowMinimum,
                 [
                     '%stockable%' => $purchasable->getInventoryName(),
-                    '%limit%' => $minLimit
+                    '%limit%' => $minLimit,
                 ]
             );
         }
@@ -107,5 +107,4 @@ final class AddToCartQuantityValidator extends ConstraintValidator
 
         return $quantity;
     }
-
 }

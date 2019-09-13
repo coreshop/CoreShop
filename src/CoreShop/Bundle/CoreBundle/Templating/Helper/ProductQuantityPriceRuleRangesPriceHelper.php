@@ -52,11 +52,11 @@ class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements Produc
     private $taxApplicator;
 
     /**
-     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
-     * @param PurchasableCalculatorInterface $purchasableCalculator
-     * @param DefaultTaxAddressProviderInterface $defaultTaxAddressProvider
+     * @param QuantityReferenceDetectorInterface   $quantityReferenceDetector
+     * @param PurchasableCalculatorInterface       $purchasableCalculator
+     * @param DefaultTaxAddressProviderInterface   $defaultTaxAddressProvider
      * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxApplicatorInterface $taxApplicator
+     * @param TaxApplicatorInterface               $taxApplicator
      */
     public function __construct(
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
@@ -71,7 +71,6 @@ class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements Produc
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->taxApplicator = $taxApplicator;
     }
-
 
     /**
      * {@inheritdoc}

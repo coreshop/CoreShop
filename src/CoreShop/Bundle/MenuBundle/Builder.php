@@ -34,8 +34,8 @@ class Builder
     protected $registry;
 
     /**
-     * @param FactoryInterface  $factory
-     * @param string            $type
+     * @param FactoryInterface         $factory
+     * @param string                   $type
      * @param ServiceRegistryInterface $registry
      */
     public function __construct(FactoryInterface $factory, string $type, ServiceRegistryInterface $registry)

@@ -14,13 +14,9 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pimcore\File;
-use Pimcore\Model\DataObject\Service;
 
 final class ProductUnitContext implements Context
 {

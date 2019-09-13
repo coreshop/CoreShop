@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
 use CoreShop\Component\Order\Model\OrderShipmentItem;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
@@ -35,8 +34,7 @@ class Version20190410180305 extends AbstractPimcoreMigration implements Containe
         if ($classUpdater->getProperty('parentClass') === OrderShipmentItem::class) {
             $classUpdater->setProperty('parentClass', \CoreShop\Component\Core\Model\OrderShipmentItem::class);
             $classUpdater->save();
-        }
-        else {
+        } else {
             $this->write(
                 sprintf(
                     '<error>You use a non default parent-class in your %s class, please make sure to inherit from %s now.</error>',

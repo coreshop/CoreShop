@@ -74,8 +74,7 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
-            ->addTag(RegisterInstallersPass::INSTALLER_TAG)
-        ;
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

@@ -28,7 +28,7 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * @param CustomerInterface $customer
      *
-     * @return boolean
+     * @return bool
      */
     public function hasCustomerOrders(CustomerInterface $customer);
 

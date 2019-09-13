@@ -27,8 +27,7 @@ final class ProductUnitTranslationType extends AbstractResourceType
             ->add('fullLabel', TextType::class)
             ->add('fullPluralLabel', TextType::class)
             ->add('shortLabel', TextType::class)
-            ->add('shortPluralLabel', TextType::class)
-        ;
+            ->add('shortPluralLabel', TextType::class);
     }
 
     /**

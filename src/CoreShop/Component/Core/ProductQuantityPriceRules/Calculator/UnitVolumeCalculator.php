@@ -77,7 +77,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         return $price;
-
     }
 
     /**
@@ -113,6 +112,7 @@ class UnitVolumeCalculator implements CalculatorInterface
             if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
                 return false;
             }
+
             return true;
         });
 
@@ -121,7 +121,6 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         /** @var CoreQuantityRangeInterface $range */
         foreach ($unitFilteredRanges as $index => $range) {
-
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

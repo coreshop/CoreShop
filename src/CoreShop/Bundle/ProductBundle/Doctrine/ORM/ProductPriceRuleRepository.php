@@ -16,5 +16,4 @@ use CoreShop\Component\Product\Repository\ProductPriceRuleRepositoryInterface;
 
 class ProductPriceRuleRepository extends PriceRuleRepository implements ProductPriceRuleRepositoryInterface
 {
-
 }

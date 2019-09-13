@@ -20,9 +20,6 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,13 +47,14 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function salePreviewAction(Request $request)
     {
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
-            'customer' => $request->get('customer')
+            'customer' => $request->get('customer'),
         ]);
 
         if ($request->getMethod() === 'POST') {
@@ -75,6 +73,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     public function saleCreationAction(Request $request)
@@ -83,7 +82,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
         $cart = $this->get('coreshop.factory.cart')->createNew();
         $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
-            'customer' => $request->get('customer')
+            'customer' => $request->get('customer'),
         ]);
 
         if ($request->getMethod() === 'POST') {
@@ -93,7 +92,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form)
+                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
                     ]
                 );
             }
@@ -112,6 +111,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
     /**
      * @param CartInterface $cart
+     *
      * @return array
      */
     protected function getCartDetails(CartInterface $cart)
@@ -151,7 +151,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
             $totalEntry['value'] = $priceConverted;
         }
 
-        unset ($totalEntry);
+        unset($totalEntry);
 
         $jsonCart['summary'] = $totals;
 
@@ -178,8 +178,6 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
     /**
      * @param CartItemInterface $item
-     *
-     *
      *
      * @return array
      */
@@ -290,6 +288,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
     /**
      * @param CartInterface $cart
+     *
      * @return mixed
      */
     abstract protected function persistCart(CartInterface $cart);

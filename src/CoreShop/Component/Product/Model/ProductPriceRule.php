@@ -12,9 +12,6 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Resource\Model\TranslatableTrait;
-use CoreShop\Component\Rule\Model\RuleTrait;
-
 class ProductPriceRule extends AbstractPriceRule implements ProductPriceRuleInterface
 {
     /**

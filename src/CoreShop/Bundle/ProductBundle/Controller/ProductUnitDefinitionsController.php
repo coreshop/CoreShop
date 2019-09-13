@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\ProductBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

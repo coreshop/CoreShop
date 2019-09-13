@@ -19,7 +19,7 @@ class ArrayType extends ScalarType
     public $name = 'array';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function serialize($value)
     {
@@ -27,7 +27,7 @@ class ArrayType extends ScalarType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parseValue($value)
     {
@@ -35,7 +35,7 @@ class ArrayType extends ScalarType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parseLiteral($valueNode, ?array $variables = null)
     {

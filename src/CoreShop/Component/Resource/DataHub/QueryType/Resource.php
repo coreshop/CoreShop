@@ -42,12 +42,17 @@ class Resource extends Input
      */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
-        return $this->enrichConfig($fieldDefinition, $class, $attribute,
-        [
+        return $this->enrichConfig(
+            $fieldDefinition,
+            $class,
+            $attribute,
+            [
             'name' => $fieldDefinition->getName(),
             'type' => $this->getFieldType($fieldDefinition, $class, $container),
-            'resolve' => $this->getResolver($attribute, $fieldDefinition, $class)
-        ], $container);
+            'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
+        ],
+            $container
+            );
     }
 
     /**

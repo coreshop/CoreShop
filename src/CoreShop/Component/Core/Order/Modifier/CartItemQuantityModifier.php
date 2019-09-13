@@ -45,7 +45,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
 
     /**
      * @param StorageListItemInterface $item
-     * @param float $targetQuantity
+     * @param float                    $targetQuantity
      *
      * @return float
      */

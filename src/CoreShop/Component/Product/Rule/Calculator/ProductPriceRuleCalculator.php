@@ -19,14 +19,12 @@ use CoreShop\Component\Product\Exception\NoDiscountPriceFoundException;
 use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 use CoreShop\Component\Product\Model\PriceRuleInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
-use CoreShop\Component\Product\Model\ProductPriceRuleInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductDiscountPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Action\ProductPriceActionProcessorInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
-use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
 {

@@ -67,7 +67,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
      */
     public function getPrice()
     {
-        return (int)$this->price;
+        return (int) $this->price;
     }
 
     /**

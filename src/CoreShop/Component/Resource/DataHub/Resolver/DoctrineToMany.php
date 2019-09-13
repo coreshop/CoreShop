@@ -34,7 +34,6 @@ class DoctrineToMany
      */
     private $typeProvider;
 
-
     public function __construct(
         DoctrineProvider $provider,
         string $name,
@@ -57,7 +56,6 @@ class DoctrineToMany
             'type' => $outputType,
             'args' => $args,
             'resolve' => function ($value, $args, $context, $info) {
-
                 if (is_array($value)) {
                     return $value[$this->name];
                 }
@@ -79,7 +77,7 @@ class DoctrineToMany
     public function getOutputType()
     {
         $listType = $this->typeProvider->getType($this->graphName);
-        $outputTypeName = $listType->name.'__List';
+        $outputTypeName = $listType->name . '__List';
 
         if ($this->typeProvider->getType($outputTypeName) === null) {
             $outputType = $this->getListType($outputTypeName, $listType);
@@ -103,7 +101,7 @@ class DoctrineToMany
 
         $resultFields[] = array(
             'name' => 'items',
-            'type' => Type::listOf($listType)
+            'type' => Type::listOf($listType),
         );
 
         return new ObjectType(array('name' => $name, 'fields' => $resultFields));

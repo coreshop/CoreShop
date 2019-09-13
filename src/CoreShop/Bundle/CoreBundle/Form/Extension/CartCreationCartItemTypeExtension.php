@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType;
-use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -75,6 +74,7 @@ final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
     {
         return CartCreationCartItemType::class;
     }
+
     /**
      * {@inheritdoc}
      */

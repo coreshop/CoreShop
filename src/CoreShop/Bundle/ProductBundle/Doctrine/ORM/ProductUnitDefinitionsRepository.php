@@ -18,7 +18,7 @@ use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterf
 
 class ProductUnitDefinitionsRepository extends EntityRepository implements ProductUnitDefinitionsRepositoryInterface
 {
-     /**
+    /**
      * {@inheritdoc}
      */
     public function findOneForProduct(ProductInterface $product)

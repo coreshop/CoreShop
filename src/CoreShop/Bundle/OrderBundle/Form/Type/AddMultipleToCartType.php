@@ -26,7 +26,7 @@ final class AddMultipleToCartType extends AbstractType
     {
         $builder->add('items', CollectionType::class, [
             'entry_type' => AddToCartType::class,
-            'allow_add' => true
+            'allow_add' => true,
         ]);
     }
 

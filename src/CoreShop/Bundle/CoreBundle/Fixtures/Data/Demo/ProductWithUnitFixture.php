@@ -62,9 +62,9 @@ class ProductWithUnitFixture extends AbstractProductFixture
             $unitDefinitions->setProduct($product);
 
             /**
-             * @var ProductUnitDefinitionInterface $defaultDefinition
-             * @var ProductUnitDefinitionInterface $cartonDefinition
-             * @var ProductUnitDefinitionInterface $paletteDefinition
+             * @var ProductUnitDefinitionInterface      $defaultDefinition
+             * @var ProductUnitDefinitionInterface      $cartonDefinition
+             * @var ProductUnitDefinitionInterface      $paletteDefinition
              * @var ProductUnitDefinitionPriceInterface $cartonPrice
              * @var ProductUnitDefinitionPriceInterface $palettePrice
              */

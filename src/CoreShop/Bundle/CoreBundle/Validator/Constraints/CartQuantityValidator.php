@@ -86,6 +86,7 @@ final class CartQuantityValidator extends ConstraintValidator
 
             if ($lowerThenMinimum === true) {
                 $invalidProduct = $product;
+
                 break;
             }
         }
@@ -95,7 +96,7 @@ final class CartQuantityValidator extends ConstraintValidator
                 $constraint->messageBelowMinimum,
                 [
                     '%stockable%' => $invalidProduct->getInventoryName(),
-                    '%limit%'     => $minLimit
+                    '%limit%' => $minLimit,
                 ]
             );
         }
@@ -127,5 +128,4 @@ final class CartQuantityValidator extends ConstraintValidator
 
         return $quantity;
     }
-
 }

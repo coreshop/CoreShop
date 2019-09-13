@@ -51,9 +51,9 @@ final class CartItemTypeExtension extends AbstractTypeExtension
             }
 
             $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
-                'product'  => $product,
+                'product' => $product,
                 'required' => false,
-                'label'    => null,
+                'label' => null,
             ]);
         });
     }

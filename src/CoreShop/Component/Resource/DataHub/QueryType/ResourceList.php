@@ -12,11 +12,8 @@
 
 namespace CoreShop\Component\Resource\DataHub\QueryType;
 
-use CoreShop\Component\Resource\DataHub\DoctrineProvider;
 use GraphQL\Type\Definition\ResolveInfo;
 use GraphQL\Type\Definition\Type;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
-use Pimcore\Bundle\DataHubBundle\GraphQL\Service;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ResourceList extends Resource
@@ -36,7 +33,7 @@ class ResourceList extends Resource
         return function ($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null) use ($parentResolver) {
             $value = $parentResolver($value, $args, $context, $resolveInfo);
 
-            return array_map(function($id) {
+            return array_map(function ($id) {
                 return $this->doctrineProvider->getRepository($this->className)->find($id);
             }, $value);
         };

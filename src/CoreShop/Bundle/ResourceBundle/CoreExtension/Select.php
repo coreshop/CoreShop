@@ -34,7 +34,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     abstract protected function getModel();
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
@@ -42,7 +42,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

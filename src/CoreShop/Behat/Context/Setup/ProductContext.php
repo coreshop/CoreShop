@@ -358,7 +358,7 @@ final class ProductContext implements Context
          */
         $defaultUnitDefinition = $this->productUnitDefinition->createNew();
         $defaultUnitDefinition->setUnit($unit);
-        $defaultUnitDefinition->setConversionRate((float)$conversionRate);
+        $defaultUnitDefinition->setConversionRate((float) $conversionRate);
         $defaultUnitDefinition->setPrecision($precison);
 
         $definitions->addAdditionalUnitDefinition($defaultUnitDefinition);
@@ -373,7 +373,7 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int)$price);
+            $productUnitDefinitionPrice->setPrice((int) $price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues
@@ -441,8 +441,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @param ProductInterface    $product
-     * @param string              $productName
+     * @param ProductInterface $product
+     * @param string           $productName
      *
      * @return ProductInterface
      */
@@ -497,8 +497,7 @@ final class ProductContext implements Context
 
         if ($product->getType() === 'variant') {
             $this->sharedStorage->set('variant', $product);
-        }
-        else {
+        } else {
             $this->sharedStorage->set('product', $product);
         }
     }

@@ -18,6 +18,7 @@ class CartEditController extends AbstractSaleController
 {
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function editItemsAction(Request $request)
@@ -60,6 +61,7 @@ class CartEditController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function addItemsAction(Request $request)
@@ -83,8 +85,7 @@ class CartEditController extends AbstractSaleController
 
             $product = $this->get('coreshop.repository.stack.purchasable')->find($productId);
 
-            if (!$product instanceof PurchasableInterface)
-            {
+            if (!$product instanceof PurchasableInterface) {
                 return new JsonResponse([
                     'success' => false,
                 ]);
@@ -129,6 +130,7 @@ class CartEditController extends AbstractSaleController
 
     /**
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function removeItemAction(Request $request)
@@ -172,9 +174,9 @@ class CartEditController extends AbstractSaleController
     }
 
     /**
-     * @param CartInterface $cart
+     * @param CartInterface     $cart
      * @param CartItemInterface $item
-
+     *
      * @return AddToCartInterface
      */
     protected function createAddToCart(CartInterface $cart, CartItemInterface $item)

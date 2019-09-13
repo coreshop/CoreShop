@@ -13,10 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
-use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Webmozart\Assert\Assert;
 
 class OrderCreationController extends BaseOrderCreationController
 {

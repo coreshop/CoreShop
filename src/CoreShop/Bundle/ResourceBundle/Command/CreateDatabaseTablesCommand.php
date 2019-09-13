@@ -45,7 +45,6 @@ final class CreateDatabaseTablesCommand extends Command
         parent::__construct();
     }
 
-
     /**
      * {@inheritdoc}
      */

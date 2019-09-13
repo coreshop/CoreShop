@@ -16,7 +16,7 @@ class Version20190527080721 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         if ($schema->hasTable('coreshop_payment_provider')) {
-          $this->addSql('
+            $this->addSql('
               ALTER TABLE coreshop_payment_provider ADD COLUMN logoId int(11) DEFAULT NULL AFTER position
           ');
         }
@@ -28,6 +28,5 @@ class Version20190527080721 extends AbstractPimcoreMigration
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

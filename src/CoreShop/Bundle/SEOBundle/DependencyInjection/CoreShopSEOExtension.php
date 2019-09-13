@@ -37,7 +37,6 @@ final class CoreShopSEOExtension extends Extension
 
         $container
             ->registerForAutoconfiguration(ExtractorInterface::class)
-            ->addTag(ExtractorRegistryServicePass::EXTRACTOR_TAG)
-        ;
+            ->addTag(ExtractorRegistryServicePass::EXTRACTOR_TAG);
     }
 }

@@ -21,7 +21,6 @@ use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
@@ -141,7 +140,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t" . '$data = $this->' . $key . ";\n\n";
         $code .= "\t" . 'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
         $code .= "\t\t" . 'try {' . "\n";
-        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);'  . "\n";
+        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '", $store);' . "\n";
         $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
         $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
         $code .= "\t\t" . '}' . "\n";
@@ -166,7 +165,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= '* @return mixed' . "\n";
         $code .= '*/' . "\n";
         $code .= 'public function get' . ucfirst($key) . 'OfType (string $type, \CoreShop\Component\Store\Model\StoreInterface $store) {' . "\n";
-        $code .= "\t" . '$storeValue = $this->get'.ucfirst($key).'($store);' . "\n";
+        $code .= "\t" . '$storeValue = $this->get' . ucfirst($key) . '($store);' . "\n";
         $code .= "\t" . 'if ($storeValue instanceof \CoreShop\Component\Core\Model\ProductStoreValuesInterface) {' . "\n";
         $code .= "\t\t" . '$getter = sprintf(\'get%s\', ucfirst($type));' . "\n";
         $code .= "\t\t" . 'if (method_exists($storeValue, $getter)) {' . "\n";
@@ -226,7 +225,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $code .= "\t\t" . '$storeValue->$setter($value);' . "\n";
         $code .= "\t" . '}' . "\n";
         $code .= "\t" . "\n";
-        $code .= "\t" . '$this->set'.ucfirst($key).'($storeValue, $store);' . "\n";
+        $code .= "\t" . '$this->set' . ucfirst($key) . '($storeValue, $store);' . "\n";
         $code .= "\t" . "\n";
         $code .= "\t" . 'return $this;' . "\n";
         $code .= "}\n\n";
@@ -387,9 +386,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $values = json_decode($serializedData, true);
 
             $storeData[$storeValuesEntity->getStore()->getId()] = [
-                'name'           => $storeValuesEntity->getStore()->getName(),
+                'name' => $storeValuesEntity->getStore()->getName(),
                 'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
-                'values'         => $values
+                'values' => $values,
             ];
         }
 
@@ -397,16 +396,15 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          * @var StoreInterface $store
          */
         foreach ($stores as $store) {
-
             if (array_key_exists($store->getId(), $storeData)) {
                 continue;
             }
 
             //Fill missing stores with empty values
             $storeData[$store->getId()] = [
-                'name'           => $store->getName(),
+                'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
-                'values'         => ['price' => 0],
+                'values' => ['price' => 0],
             ];
         }
 
@@ -531,7 +529,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
     /**
      * @param ProductInterface $object
-     * @param StoreInterface $store
+     * @param StoreInterface   $store
+     *
      * @return ProductStoreValuesInterface
      */
     public function createNew($object, StoreInterface $store)
@@ -555,7 +554,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
@@ -669,5 +668,4 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     {
         return \Pimcore::getContainer()->get('jms_serializer');
     }
-
 }

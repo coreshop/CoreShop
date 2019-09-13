@@ -32,7 +32,7 @@ class ProductUnit extends Select
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

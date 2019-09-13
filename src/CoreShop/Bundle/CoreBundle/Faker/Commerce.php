@@ -17,28 +17,28 @@ use Faker\Provider\Base;
 class Commerce extends Base
 {
     protected static $department = [
-        "Books",
-        "Movies",
-        "Music",
-        "Games",
-        "Electronics",
-        "Computers",
-        "Home",
-        "Garden",
-        "Tools",
-        "Grocery",
-        "Health",
-        "Beauty",
-        "Toys",
-        "Kids",
-        "Baby",
-        "Clothing",
-        "Shoes",
-        "Jewelry",
-        "Sports",
-        "Outdoors",
-        "Automotive",
-        "Industrial",
+        'Books',
+        'Movies',
+        'Music',
+        'Games',
+        'Electronics',
+        'Computers',
+        'Home',
+        'Garden',
+        'Tools',
+        'Grocery',
+        'Health',
+        'Beauty',
+        'Toys',
+        'Kids',
+        'Baby',
+        'Clothing',
+        'Shoes',
+        'Jewelry',
+        'Sports',
+        'Outdoors',
+        'Automotive',
+        'Industrial',
     ];
     protected static $productName = [
         'adjective' => [
@@ -122,8 +122,8 @@ class Commerce extends Base
     public function promotionCode(int $digits = 6): string
     {
         return static::randomElement(static::$promotionCode['adjective'])
-            .static::randomElement(static::$promotionCode['noun'])
-            .$this->generator->randomNumber($digits, true);
+            . static::randomElement(static::$promotionCode['noun'])
+            . $this->generator->randomNumber($digits, true);
     }
 
     public function department(int $max = 3, bool $fixedAmount = false): string
@@ -155,7 +155,7 @@ class Commerce extends Base
     public function productName(): string
     {
         return static::randomElement(static::$productName['adjective'])
-            .' '.static::randomElement(static::$productName['material'])
-            .' '.static::randomElement(static::$productName['product']);
+            . ' ' . static::randomElement(static::$productName['material'])
+            . ' ' . static::randomElement(static::$productName['product']);
     }
 }

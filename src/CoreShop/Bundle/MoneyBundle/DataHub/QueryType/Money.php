@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\MoneyBundle\DataHub\QueryType;
 
-use CoreShop\Bundle\ResourceBundle\DataHub\Resolver\ResourceResolver;
 use GraphQL\Type\Definition\Type;
 use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
@@ -24,11 +23,16 @@ class Money extends Input
      */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
-        return $this->enrichConfig($fieldDefinition, $class, $attribute,
-        [
+        return $this->enrichConfig(
+            $fieldDefinition,
+            $class,
+            $attribute,
+            [
             'name' => $fieldDefinition->getName(),
             'type' => $this->getFieldType($fieldDefinition, $class, $container),
-        ], $container);
+        ],
+            $container
+            );
     }
 
     /**

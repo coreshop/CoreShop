@@ -19,7 +19,7 @@ class JsonType extends ScalarType
     public $name = 'json';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function serialize($value)
     {
@@ -27,7 +27,7 @@ class JsonType extends ScalarType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parseValue($value)
     {
@@ -35,7 +35,7 @@ class JsonType extends ScalarType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function parseLiteral($valueNode, ?array $variables = null)
     {
@@ -43,12 +43,12 @@ class JsonType extends ScalarType
     }
 
     /**
-     *
-     * Recursively parse through the parameter and return a flat list of path's to values
+     * Recursively parse through the parameter and return a flat list of path's to values.
      *
      * @param $result
      * @param $currentPath
      * @param $valueNode
+     *
      * @return mixed
      */
     private function parseNodeAsList(&$result, $currentPath, $valueNode)

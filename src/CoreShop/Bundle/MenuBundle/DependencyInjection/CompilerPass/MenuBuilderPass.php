@@ -67,16 +67,15 @@ final class MenuBuilderPass implements CompilerPassInterface
                         [MenuBuilderInterface::class, 'menu-' . $type]
                     );
 
-
                     $builderService = new Definition(
                         Builder::class,
-                        [new Reference('knp_menu.factory'), $type, new Reference('coreshop.menu.registry.'.$type)]
+                        [new Reference('knp_menu.factory'), $type, new Reference('coreshop.menu.registry.' . $type)]
                     );
 
-                    $container->setDefinition('coreshop.menu.builder.'.$type, $builderService);
-                    $container->setDefinition('coreshop.menu.registry.'.$type, $registries[$type]);
+                    $container->setDefinition('coreshop.menu.builder.' . $type, $builderService);
+                    $container->setDefinition('coreshop.menu.registry.' . $type, $registries[$type]);
 
-                    $menuBuilders[sprintf('coreshop.%s', $type)] = [new ServiceClosureArgument(new Reference('coreshop.menu.builder.'.$type)), 'createMenu'];
+                    $menuBuilders[sprintf('coreshop.%s', $type)] = [new ServiceClosureArgument(new Reference('coreshop.menu.builder.' . $type)), 'createMenu'];
 
                     $types[] = $type;
                 }

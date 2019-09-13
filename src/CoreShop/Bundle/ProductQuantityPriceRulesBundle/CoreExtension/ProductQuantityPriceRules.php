@@ -146,7 +146,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

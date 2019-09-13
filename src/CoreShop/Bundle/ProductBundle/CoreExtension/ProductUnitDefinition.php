@@ -65,7 +65,7 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
@@ -165,10 +165,10 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $parsedData = [
-            'id'               => null,
+            'id' => null,
             'conversationRate' => null,
-            'precision'        => null,
-            'unitName'         => null
+            'precision' => null,
+            'unitName' => null,
         ];
 
         if ($data instanceof ProductUnitDefinitionInterface) {

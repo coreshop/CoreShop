@@ -26,6 +26,7 @@ interface ShippableInterface
 
     /**
      * @param bool $withTax
+     *
      * @return int
      */
     public function getSubtotal($withTax = true);

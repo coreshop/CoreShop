@@ -58,7 +58,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        # deprecated
+                        // deprecated
                         ->arrayNode('product_store_price')
                             ->addDefaultsIfNotSet()
                             ->children()

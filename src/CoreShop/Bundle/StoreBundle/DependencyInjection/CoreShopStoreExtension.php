@@ -47,11 +47,9 @@ final class CoreShopStoreExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(StoreContextInterface::class)
-            ->addTag(CompositeStoreContextPass::STORE_CONTEXT_TAG)
-        ;
+            ->addTag(CompositeStoreContextPass::STORE_CONTEXT_TAG);
         $container
             ->registerForAutoconfiguration(RequestResolverInterface::class)
-            ->addTag(CompositeRequestResolverPass::STORE_REQUEST_RESOLVER_TAG)
-        ;
+            ->addTag(CompositeRequestResolverPass::STORE_REQUEST_RESOLVER_TAG);
     }
 }

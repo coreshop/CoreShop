@@ -266,7 +266,7 @@ class Product extends BaseProduct implements ProductInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-        /**
+    /**
      * {@inheritdoc}
      */
     public function getWholesaleBuyingPrice()
@@ -317,7 +317,6 @@ class Product extends BaseProduct implements ProductInterface
 
                 $this->setStoreValuesOfType('price', $singleStorePrice, $currentStore);
             }
-
         } elseif ($store instanceof \CoreShop\Component\Store\Model\StoreInterface) {
             $this->setStoreValuesOfType('price', $storePrice, $store);
         }

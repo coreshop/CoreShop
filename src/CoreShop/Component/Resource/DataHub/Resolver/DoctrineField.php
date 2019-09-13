@@ -29,7 +29,7 @@ class DoctrineField
 
     /**
      * @param string $name
-     * @param Type $type
+     * @param Type   $type
      */
     public function __construct(string $name, Type $type)
     {
@@ -42,7 +42,6 @@ class DoctrineField
      */
     public function getDefinition()
     {
-
         /**
          * Value will be the parent object when it's passed in.
          */
@@ -50,7 +49,6 @@ class DoctrineField
             'name' => $this->name,
             'type' => $this->type,
             'resolve' => function ($value, $args, $context, $info) {
-
                 if (is_array($value)) {
                     return $value[$this->name];
                 }
@@ -60,6 +58,7 @@ class DoctrineField
                 }
 
                 $propertyAccessor = new PropertyAccessor();
+
                 return $propertyAccessor->getValue($value, $this->name);
             },
         );

@@ -49,11 +49,11 @@ class AddressIdentifierFixture extends AbstractFixture implements ContainerAware
     {
         $fixtureData = [
             1 => [
-                'name' => 'shipping'
+                'name' => 'shipping',
             ],
             2 => [
-                'name' => 'invoice'
-            ]
+                'name' => 'invoice',
+            ],
         ];
 
         foreach ($fixtureData as $entry) {
