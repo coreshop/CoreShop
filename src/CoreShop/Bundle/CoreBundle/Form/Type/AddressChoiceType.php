@@ -61,9 +61,9 @@ final class AddressChoiceType extends AbstractType
 
                         return array_filter($customer->getAddresses(), function (AddressInterface $address) use ($allowedAddressIdentifier) {
                             $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
+
                             return in_array($addressIdentifierName, $allowedAddressIdentifier);
                         });
-
                     },
                     'choice_value' => 'id',
                     'choice_label' => function ($address) {
