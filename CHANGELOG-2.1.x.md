@@ -13,19 +13,92 @@
    - `CoreShop\Component\StorageList\Model\StorageListProductInterface` got deprecated, since not it's not needed anymore
  - `CoreShop\Component\Order\Factory\CartItemFactoryInterface` introduced a new function `public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1);`
 
- - Introduced Theme-Bundle to handle Themes
+ - Introduced Theme-Bundle to handle Themes (https://github.com/coreshop/CoreShop/pull/749, https://github.com/coreshop/CoreShop/pull/756, https://github.com/coreshop/CoreShop/pull/755)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeHelper](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeHelper.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeHelper](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeHelper.php)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeHelperInterface.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeHelperInterface.php)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeResolver.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeResolver](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeResolver.php)
    - deprecated [CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/StoreBundle/Theme/ThemeResolverInterface.php) in favor of [CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface](https://github.com/coreshop/CoreShop/blob/master/src/CoreShop/Bundle/ThemeBundle/Service/ThemeResolverInterface.php)
    
- - Introduce AddToCartFormType and QuantityType. This allows to use validators to check if its allowed to add a product to the cart. If you update from CoreShop 2.0.* change the add-to-cart form in your templates to the following: (https://github.com/coreshop/CoreShop/pull/812/files#diff-3e06a5f0e813be230a0cd232e916738eL29)
+ - Introduce AddToCartFormType and QuantityType. This allows to use validators to check if its allowed to add a product to the cart. If you update from CoreShop 2.0.* change the add-to-cart form in your templates to the following: (https://github.com/coreshop/CoreShop/pull/812/files#diff-3e06a5f0e813be230a0cd232e916738eL29) (https://github.com/coreshop/CoreShop/pull/812, https://github.com/coreshop/CoreShop/pull/864)
    - `{{ render(url('coreshop_cart_add', {'product': product.id})) }}` 
    - Be sure you have adopted the new form template in `views/Product/_addToCart.html.twig`
    
- - Introduced Store Unit:
+ - Introduced Store Unit: (https://github.com/coreshop/CoreShop/pull/877, https://github.com/coreshop/CoreShop/pull/883, https://github.com/coreshop/CoreShop/pull/950, https://github.com/coreshop/CoreShop/pull/902, https://github.com/coreshop/CoreShop/pull/896)
     - Please add `product_unit` to permission table.
     - Remove `storePrice` field from all product classes
     - If you don't use the `Store Price` element in your classes besides the `storePrice` field, you should delete the `coreshop_product_store_price` table after migration.   
     - We introduced a new jquery plugin `$.coreshopQuantitySelector()` which allows you to add more numeric control to your quantity field, checkout our demo [example](https://github.com/coreshop/CoreShop/blob/7d05ccd89aed99f9fd93c585e096cd1edaf20010/src/CoreShop/Bundle/FrontendBundle/Resources/public/static/js/shop.js#L20).
 
+-  Features:
+    - *Product Quantity Rules*, big thanks to @solverat (https://github.com/coreshop/CoreShop/pull/791, https://github.com/coreshop/CoreShop/pull/954, https://github.com/coreshop/CoreShop/pull/951, https://github.com/coreshop/CoreShop/pull/898, https://github.com/coreshop/CoreShop/pull/813) 
+    - *Product Units*, big thanks to @solverat (https://github.com/coreshop/CoreShop/pull/861, https://github.com/coreshop/CoreShop/pull/911, https://github.com/coreshop/CoreShop/pull/900, https://github.com/coreshop/CoreShop/pull/897, https://github.com/coreshop/CoreShop/pull/891, https://github.com/coreshop/CoreShop/pull/875)
+    - *Minimum Order Quantity and Item Quantity Factor* big thanks to @solverat (https://github.com/coreshop/CoreShop/pull/881)
+    - Introduce Menu Bundle (https://github.com/coreshop/CoreShop/pull/854, https://github.com/coreshop/CoreShop/pull/880, https://github.com/coreshop/CoreShop/pull/878, https://github.com/coreshop/CoreShop/pull/876)
+    - Introduce Theme Bundle (https://github.com/coreshop/CoreShop/pull/749, https://github.com/coreshop/CoreShop/pull/756, https://github.com/coreshop/CoreShop/pull/755)
+    - [Store Values] swap store-prices with store-values and make them extendable for custom store values (https://github.com/coreshop/CoreShop/pull/877, https://github.com/coreshop/CoreShop/pull/883, https://github.com/coreshop/CoreShop/pull/950, https://github.com/coreshop/CoreShop/pull/902, https://github.com/coreshop/CoreShop/pull/896)
+    - [ResourceBundle] Add group to ThumbnailInstaller (https://github.com/coreshop/CoreShop/pull/1017) @AndiKeiser
+    - [All] AutoWiring (https://github.com/coreshop/CoreShop/pull/850)
+    - [All] Pimcore 6/Symfony 4 compatibilty (https://github.com/coreshop/CoreShop/pull/996, https://github.com/coreshop/CoreShop/pull/1062, https://github.com/coreshop/CoreShop/pull/1035)
+    - [Tests] Update to friends-of-behat/symfony-extension:^2.0 (https://github.com/coreshop/CoreShop/pull/1024)
+    - [Travis] add setup for Pimcore 6 changed system.yml config (https://github.com/coreshop/CoreShop/pull/1029)
+    - [All] Introduce configurable decimal precision and factor (https://github.com/coreshop/CoreShop/pull/1030)
+    - [All] change db type for pricing fields to BIGINT (https://github.com/coreshop/CoreShop/pull/1032, https://github.com/coreshop/CoreShop/pull/1098)
+    - [ShippingBundle] introduce gross/net checkbox for amount condition (https://github.com/coreshop/CoreShop/pull/1042)
+    - [Graphql] Add Support for Pimcore GraphQl Data Hub (https://github.com/coreshop/CoreShop/pull/1052)
+    - [Tracking] Add Decimal Precision to Order Extractor (https://github.com/coreshop/CoreShop/pull/1058)
+    - [MoneyBundle] add fallback in money-bundle for decimal precision (https://github.com/coreshop/CoreShop/pull/1061)
+    - [Docs] Added visualization for coreshop_order Workflow (https://github.com/coreshop/CoreShop/pull/1067) @davidhoeck
+    - [Pimcore] add conflict for Pimcore 6.1.0 and Pimcore 6.1.1 (https://github.com/coreshop/CoreShop/pull/1069)
+    - [Docs] Update 03_Theme.md (https://github.com/coreshop/CoreShop/pull/1072) @D37R4C7
+    - [FQCN] FQCN Services (https://github.com/coreshop/CoreShop/pull/1079, https://github.com/coreshop/CoreShop/pull/1084, https://github.com/coreshop/CoreShop/issues/1085, https://github.com/coreshop/CoreShop/pull/1086, https://github.com/coreshop/CoreShop/pull/1090)
+    - [Product] Unit Definition - Precision (https://github.com/coreshop/CoreShop/pull/1081, https://github.com/coreshop/CoreShop/pull/1091, https://github.com/coreshop/CoreShop/pull/1092) @solverat
+    - [IndexBundle] split conditions into pre_conditions and user_conditions (https://github.com/coreshop/CoreShop/pull/1055)
+    - [Quantity Price Rules] Remove "to" field from quantity price range (https://github.com/coreshop/CoreShop/pull/1003, https://github.com/coreshop/CoreShop/pull/1095)
+    - [Order] Introduce backend cart-creation and cart-details (https://github.com/coreshop/CoreShop/pull/963)
+    - [PermissionSetup] add category to Permission (https://github.com/coreshop/CoreShop/pull/1101)
+    - [ShippingBundle] add more carrier price options (https://github.com/coreshop/CoreShop/pull/1015)
+    - [FrontendBundle] show discount/surcharge label in order overview (https://github.com/coreshop/CoreShop/pull/1006)
+    - [Index, IndexBundle] allow options for the listing load function (https://github.com/coreshop/CoreShop/pull/1001)
+    - [ResourceBundle] add connection interface into Pimcore Repository (https://github.com/coreshop/CoreShop/pull/1000)
+    - [ProductBundle, CoreBundle] set itemQuantityFactor min value to null (https://github.com/coreshop/CoreShop/pull/993)
+    - [Core] use default unit quanity in onhold inventory (https://github.com/coreshop/CoreShop/pull/990) @solverat
+    - [Maintenance] refactor to use new maintenance task from pimcore 5.8 (https://github.com/coreshop/CoreShop/pull/986)
+    - [All] require min Pimcore 5.8 and PHP 7.2 (https://github.com/coreshop/CoreShop/pull/973)
+    - [CoreBundle] introduce store-preview for products (https://github.com/coreshop/CoreShop/pull/982)
+    - [Adjustments] remove return type AdjustmentInterface (https://github.com/coreshop/CoreShop/pull/978) @solverat
+    - [Taxation] fix tax collection on gross values - 2.1 (https://github.com/coreshop/CoreShop/pull/974)
+    - [Order] introduce translatable cart-price-rules (https://github.com/coreshop/CoreShop/pull/969)
+    - [WholesaleCalculator] introduce purchasable wholesale calculator (https://github.com/coreshop/CoreShop/pull/957)
+    - [Product] introduce stop propagation flag for price-rules (https://github.com/coreshop/CoreShop/pull/946)
+    - [Pimcore] make CoreShop 2.1 compatible with Pimcore 5.7.2 (https://github.com/coreshop/CoreShop/pull/915)
+    - [CoreBundle] serialize relational values (product and store) as relation (https://github.com/coreshop/CoreShop/pull/916)
+    - [Core] Disable Customer Deletion if bounded Orders are available (https://github.com/coreshop/CoreShop/pull/732)
+    - [PriceRules] add priority to product-price-rules (https://github.com/coreshop/CoreShop/pull/905)
+    - [Product] add translation to product price rules (https://github.com/coreshop/CoreShop/pull/879)
+    - [All] Min 5.7 (https://github.com/coreshop/CoreShop/pull/871)
+    - [Core] Refactor how we identify CartItem - Product (https://github.com/coreshop/CoreShop/pull/866)
+    - [Core/Cart] Refactor add to cart (https://github.com/coreshop/CoreShop/pull/864)
+    - [Cart] implement add-to-cart as Symfony Form (https://github.com/coreshop/CoreShop/pull/812)
+    - [Core, Order, Product] throw exceptions for when a price can't be found (https://github.com/coreshop/CoreShop/pull/811)
+    - [Order] make accessor protected for OrderDocument Processor (https://github.com/coreshop/CoreShop/pull/775)
+    - [WorkflowBundle, OrderBundle] always load all available coreshop states into js (https://github.com/coreshop/CoreShop/pull/773)
+    - [Core, Order] also apply discounts to cart-items (https://github.com/coreshop/CoreShop/pull/770)
+    - [OrderBundle, Pimcore] extract DataLoader from Controller to be used oustide (https://github.com/coreshop/CoreShop/pull/771)
+    - [OrderBundle] add event to prepare sale in order to better extend details (https://github.com/coreshop/CoreShop/pull/772)
+    - [IndexBundle] implement optional inclusion into ProcessManager (https://github.com/coreshop/CoreShop/pull/758)
+ 
+- Bugs:
+    - [Product] remove getIsAvailableWhenOutOfStock and setIsAvailableWhenOutOfStock (https://github.com/coreshop/CoreShop/pull/1019)
+    - [CoreBundle] fix inheritance for store-values (https://github.com/coreshop/CoreShop/pull/1028)
+    - [ResourceBundle] Fix missing coreshop.helper namespace (https://github.com/coreshop/CoreShop/pull/1039)
+    - [PimcoreBundle] fix dynamic-dropdown for pimcore-6 (https://github.com/coreshop/CoreShop/pull/1040)
+    - [All] fix related to element.href and this pimcore PR: pimcore/pimcore#4496 (https://github.com/coreshop/CoreShop/pull/1041)
+    - [Core] Store Values - default value to 0 instead of null, fix setting inherited store values (https://github.com/coreshop/CoreShop/pull/1093)
+    - [FrontendBundle] fix wishlist remove and allow purchasables (https://github.com/coreshop/CoreShop/pull/997)
+    - [Bundles] provide proper version strings and names (https://github.com/coreshop/CoreShop/pull/970)
+    - [Migration] only add indices to store_price table if table actually exists (https://github.com/coreshop/CoreShop/pull/967)
+    - [IndexBundle] improve standalone usage (https://github.com/coreshop/CoreShop/pull/965)
+    - [Product] allow price rule labels to be null and fix error with two trait constructors (https://github.com/coreshop/CoreShop/pull/953)
+    - [ProductBundle] re-add active to list serializer group (https://github.com/coreshop/CoreShop/pull/912)
+    - [CoreBundle] fix cart-stock validation (https://github.com/coreshop/CoreShop/pull/894)
+    - [Tests] [Behat] the cart tests haven't been ran since the theme-bundle was introduced (https://github.com/coreshop/CoreShop/pull/872)
