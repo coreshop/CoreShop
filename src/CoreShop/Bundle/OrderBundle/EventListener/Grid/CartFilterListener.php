@@ -12,8 +12,6 @@
 
 namespace CoreShop\Bundle\OrderBundle\EventListener\Grid;
 
-use CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\EventDispatcher\GenericEvent;
 

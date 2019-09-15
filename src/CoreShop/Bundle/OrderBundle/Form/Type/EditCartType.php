@@ -12,15 +12,8 @@
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
-use CoreShop\Bundle\LocaleBundle\Form\Type\LocaleChoiceType;
-use CoreShop\Bundle\PurchaseOrderBundle\PurchaseOrderGoodsStates;
-use CoreShop\Bundle\PurchaseOrderBundle\PurchaseOrderStates;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class EditCartType extends AbstractResourceType
 {
@@ -30,7 +23,6 @@ final class EditCartType extends AbstractResourceType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('items', EditCartItemsCollectionType::class)
-        ;
+            ->add('items', EditCartItemsCollectionType::class);
     }
 }

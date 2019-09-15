@@ -18,8 +18,9 @@ use Doctrine\Common\Collections\Collection;
 
 interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
 {
-     /**
+    /**
      * @param string|null $language
+     *
      * @return string
      */
     public function getLabel($language = null);

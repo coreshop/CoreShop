@@ -48,11 +48,9 @@ final class CoreShopAddressExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(CountryContextInterface::class)
-            ->addTag(CompositeCountryContextPass::COUNTRY_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeCountryContextPass::COUNTRY_CONTEXT_SERVICE_TAG);
         $container
             ->registerForAutoconfiguration(RequestResolverInterface::class)
-            ->addTag(CompositeRequestResolverPass::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG)
-        ;
+            ->addTag(CompositeRequestResolverPass::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG);
     }
 }

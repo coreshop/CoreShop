@@ -44,14 +44,11 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
-
         $container
             ->registerForAutoconfiguration(CustomerContextInterface::class)
-            ->addTag(CompositeCustomerContextPass::CUSTOMER_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeCustomerContextPass::CUSTOMER_CONTEXT_SERVICE_TAG);
         $container
             ->registerForAutoconfiguration(RequestResolverInterface::class)
-            ->addTag(CompositeRequestResolverPass::CUSTOMER_REQUEST_RESOLVER_SERVICE_TAG)
-        ;
+            ->addTag(CompositeRequestResolverPass::CUSTOMER_REQUEST_RESOLVER_SERVICE_TAG);
     }
 }

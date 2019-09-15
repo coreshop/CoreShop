@@ -16,9 +16,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
 
-class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
-    Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface,
-    Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
+class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
@@ -294,7 +292,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

@@ -15,9 +15,6 @@ namespace CoreShop\Bundle\ResourceBundle\DataHub\Resolver;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use GraphQL\Type\Definition\ResolveInfo;
-use Pimcore\Bundle\DataHubBundle\GraphQL\Service;
-use Pimcore\Bundle\DataHubBundle\GraphQL\Traits\ServiceTrait;
-use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class MultiResourceResolver
@@ -42,9 +39,6 @@ class MultiResourceResolver
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve($value = null, $args = [], $context = [], ResolveInfo $resolveInfo = null)
     {
         $resource = $value[$this->fieldDefinition->getName()];

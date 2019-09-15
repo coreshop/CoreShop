@@ -14,12 +14,6 @@ namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Context\CountryContextInterface;
-use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
-use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Core\Model\CurrencyInterface;
-use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use Webmozart\Assert\Assert;
 
@@ -36,7 +30,7 @@ final class ProductUnitContext implements Context
     private $unitRepository;
 
     /**
-     * @param SharedStorageInterface     $sharedStorage
+     * @param SharedStorageInterface         $sharedStorage
      * @param ProductUnitRepositoryInterface $unitRepository
      */
     public function __construct(

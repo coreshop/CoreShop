@@ -40,11 +40,10 @@ class DoctrineToOne
         $this->name = $name;
         $this->graphName = $graphName;
         $this->typeProvider = $provider;
-
     }
 
     /**
-     * Generate the definition for the GraphQL field
+     * Generate the definition for the GraphQL field.
      *
      * @return array
      */

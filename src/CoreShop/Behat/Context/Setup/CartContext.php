@@ -123,8 +123,8 @@ final class CartContext implements Context
 
         $formData = [
             'cartItem' => [
-                'quantity' => 1
-            ]
+                'quantity' => 1,
+            ],
         ];
 
         $form->submit($formData);
@@ -261,7 +261,7 @@ final class CartContext implements Context
      *
      * @return AddToCartInterface
      */
-    protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
     {
         return $this->addToCartFactory->createWithCartAndCartItem($cart, $cartItem);
     }

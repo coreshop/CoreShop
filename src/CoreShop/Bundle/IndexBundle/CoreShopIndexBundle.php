@@ -136,7 +136,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
 
         if (!array_key_exists('CoreShopCoreBundle', $bundles)) {
             return [
-                '/admin/coreshop/coreshop.index/menu.js'
+                '/admin/coreshop/coreshop.index/menu.js',
             ];
         }
 

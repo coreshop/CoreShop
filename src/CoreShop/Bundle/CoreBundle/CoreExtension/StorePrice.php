@@ -515,7 +515,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

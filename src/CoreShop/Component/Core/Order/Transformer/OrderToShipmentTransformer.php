@@ -33,7 +33,7 @@ final class OrderToShipmentTransformer implements OrderDocumentTransformerInterf
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
     {

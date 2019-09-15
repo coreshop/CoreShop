@@ -45,12 +45,17 @@ class MoneyCurrency extends Input
      */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
-        return $this->enrichConfig($fieldDefinition, $class, $attribute,
-        [
+        return $this->enrichConfig(
+            $fieldDefinition,
+            $class,
+            $attribute,
+            [
             'name' => $fieldDefinition->getName(),
             'type' => $this->getFieldType($fieldDefinition, $class, $container),
-            'resolve' => $this->getResolver($attribute, $fieldDefinition, $class)
-        ], $container);
+            'resolve' => $this->getResolver($attribute, $fieldDefinition, $class),
+        ],
+            $container
+            );
     }
 
     /**
@@ -63,13 +68,13 @@ class MoneyCurrency extends Input
             'fields' => [
                 [
                     'name' => 'value',
-                    'type' => Type::int()
+                    'type' => Type::int(),
                 ],
                 [
                     'name' => 'currency',
-                    'type' => $this->doctrineProvider->getGraphQlType($this->currencyClass)
-                ]
-            ]
+                    'type' => $this->doctrineProvider->getGraphQlType($this->currencyClass),
+                ],
+            ],
         ]);
     }
 }

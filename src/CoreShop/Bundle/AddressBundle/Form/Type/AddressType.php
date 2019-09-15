@@ -27,7 +27,7 @@ final class AddressType extends AbstractResourceType
     {
         $builder
             ->add('company', TextType::class, [
-                'label'    => 'coreshop.form.address.company',
+                'label' => 'coreshop.form.address.company',
                 'required' => false,
             ])
             ->add('salutation', SalutationChoiceType::class, [
@@ -53,10 +53,10 @@ final class AddressType extends AbstractResourceType
             ])
             ->add('country', CountryChoiceType::class, [
                 'active' => true,
-                'label'  => 'coreshop.form.address.country',
+                'label' => 'coreshop.form.address.country',
             ])
             ->add('phoneNumber', TextType::class, [
-                'label'    => 'coreshop.form.address.phone_number',
+                'label' => 'coreshop.form.address.phone_number',
                 'required' => false,
             ])
             ->add('_redirect', HiddenType::class, [
@@ -65,7 +65,7 @@ final class AddressType extends AbstractResourceType
 
         if ($options['show_address_identifier_choice'] === true) {
             $builder->add('addressIdentifier', AddressIdentifierChoiceType::class, [
-                'label'    => false,
+                'label' => false,
                 'required' => false,
             ]);
         }

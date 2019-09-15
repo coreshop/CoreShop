@@ -88,12 +88,10 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container
             ->registerForAutoconfiguration(PortletInterface::class)
-            ->addTag(RegisterPortletsPass::PORTLET_TAG)
-        ;
+            ->addTag(RegisterPortletsPass::PORTLET_TAG);
         $container
             ->registerForAutoconfiguration(ReportInterface::class)
-            ->addTag(RegisterReportsPass::REPORT_TAG)
-        ;
+            ->addTag(RegisterReportsPass::REPORT_TAG);
     }
 
     /**

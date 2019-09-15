@@ -49,8 +49,8 @@ final class ProductQuantityPriceRuleType extends RuleType
             ->add('calculationBehaviour', ChoiceType::class, [
                 'choices' => $this->calculatorTypes,
                 'constraints' => [
-                    new NotBlank(['groups' => 'coreshop'])
-                ]
+                    new NotBlank(['groups' => 'coreshop']),
+                ],
             ])
             ->add('active', CheckboxType::class)
             ->add('priority', NumberType::class)

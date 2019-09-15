@@ -26,7 +26,7 @@ use GraphQL\Type\Definition\Type;
 
 class DoctrineProvider
 {
-    public const JSON  = 'Json';
+    public const JSON = 'Json';
     public const ARRAY = 'Array';
 
     /** @var Type[] */
@@ -84,7 +84,6 @@ class DoctrineProvider
          * @var ClassMetadataInfo $metaType
          */
         foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metaType) {
-
             // Ignore superclasses as they cannot be instantiated so always ignore;
             if ($metaType->isMappedSuperclass) {
                 continue;
@@ -144,18 +143,16 @@ class DoctrineProvider
 
                     $fields[$fieldName] = $resolver->getDefinition();
                 }
-
             }
 
             return $fields;
-
         };
 
         $interfaces = [];
 
         if ($this->hasSubClasses($entityMetaType)) {
             $interfaceConfig = $config;
-            $interfaceKey = $name.'__Interface';
+            $interfaceKey = $name . '__Interface';
             $interfaceConfig['name'] .= '__Interface';
             $interfaceConfig['resolveType'] = function ($value) use ($entityMetaType) {
                 $column = $entityMetaType->discriminatorColumn['fieldName'];
@@ -163,7 +160,6 @@ class DoctrineProvider
                 $instanceType = $entityMetaType->discriminatorMap[$type];
 
                 return $this->getType($this->getTypeName($instanceType));
-
             };
 
             $this->types[$interfaceKey] = new InterfaceType($interfaceConfig);
@@ -175,12 +171,10 @@ class DoctrineProvider
 
         // If this class has parent classes then we want to add the parent classes
         if ($this->hasParentClasses($entityMetaType)) {
-
             foreach ($entityMetaType->parentClasses as $parent) {
-
                 $parentName = $this->getTypeName($parent);
 
-                $interfaces[] = $this->getType($parentName.'__Interface');
+                $interfaces[] = $this->getType($parentName . '__Interface');
             }
 
             if (count($interfaces) > 0) {
@@ -191,11 +185,9 @@ class DoctrineProvider
         $this->types[$name] = new ObjectType($config);
 
         $inputConfig = [
-            'name' => $config['name'].'__Input',
+            'name' => $config['name'] . '__Input',
             'fields' => function () use ($entityMetaType, $inputFields) {
-
                 foreach ($entityMetaType->getAssociationMappings() as $association) {
-
                     if ($association['type'] === ClassMetadataInfo::MANY_TO_ONE || $association['type'] === ClassMetadataInfo::ONE_TO_ONE) {
                         $fieldName = $association['fieldName'];
                         $fieldType = $this->getInputType($this->getTypeName($association['targetEntity']));
@@ -223,7 +215,6 @@ class DoctrineProvider
             },
         ];
 
-
         // Instantiate the input type
         if (count($inputFields) > 0) {
             $this->inputTypes[$name] = new InputObjectType($inputConfig);
@@ -249,8 +240,8 @@ class DoctrineProvider
     {
         if (self::$standardTypes === null) {
             self::$standardTypes = [
-                self::JSON      => new JsonType(),
-                self::ARRAY     => new ArrayType(),
+                self::JSON => new JsonType(),
+                self::ARRAY => new ArrayType(),
             ];
         }
 
@@ -281,11 +272,9 @@ class DoctrineProvider
 
     public function getTypeName($className)
     {
-
         $key = str_replace('\\', '__', $className);
 
         return $this->doctrineToName[$key];
-
     }
 
     private function hasSubClasses($entityMetaType)
@@ -348,13 +337,11 @@ class DoctrineProvider
 
     public function initBuffer($bufferType, $key)
     {
-
         if (!isset($this->dataBuffers[$key])) {
             $this->dataBuffers[$key] = new $bufferType();
         }
 
         return $this->dataBuffers[$key];
-
     }
 
     public function getDoctrineType($type)
@@ -381,5 +368,4 @@ class DoctrineProvider
     {
         return $this->typeClass[$graphName];
     }
-
 }

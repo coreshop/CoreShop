@@ -25,7 +25,7 @@ class EditCartItemsCollectionType extends AbstractType
     {
         $resolver->setDefault('entry_type', CartCreationCartItemType::class);
         $resolver->setDefault('entry_options', [
-            'allow_product' => false
+            'allow_product' => false,
         ]);
     }
 

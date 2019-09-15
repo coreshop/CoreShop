@@ -109,7 +109,6 @@ trait SaleItemTrait
      * {@inheritdoc}
      */
     public function getTotalWeight()
-
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

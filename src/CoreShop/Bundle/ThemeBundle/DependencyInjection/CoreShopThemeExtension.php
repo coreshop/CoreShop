@@ -43,7 +43,6 @@ class CoreShopThemeExtension extends Extension
 
         $container
             ->registerForAutoconfiguration(ThemeResolverInterface::class)
-            ->addTag(CompositeThemeResolverPass::THEME_RESOLVER_TAG)
-        ;
+            ->addTag(CompositeThemeResolverPass::THEME_RESOLVER_TAG);
     }
 }

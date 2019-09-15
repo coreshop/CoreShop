@@ -2,8 +2,6 @@
 
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
-use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
@@ -30,7 +28,6 @@ class Version20190308133009 extends AbstractPimcoreMigration implements Containe
         }
 
         $this->writeMessage('You need to drop the coreshop_product_store_price table manually, if you\'re not using the storePrice tag in other object definitions.');
-
     }
 
     /**

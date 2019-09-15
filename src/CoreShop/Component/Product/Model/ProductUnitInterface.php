@@ -30,6 +30,7 @@ interface ProductUnitInterface extends ResourceInterface, TranslatableInterface,
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getFullLabel($language = null);
@@ -42,6 +43,7 @@ interface ProductUnitInterface extends ResourceInterface, TranslatableInterface,
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getFullPluralLabel($language = null);
@@ -54,6 +56,7 @@ interface ProductUnitInterface extends ResourceInterface, TranslatableInterface,
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getShortLabel($language = null);
@@ -66,6 +69,7 @@ interface ProductUnitInterface extends ResourceInterface, TranslatableInterface,
 
     /**
      * @param string $language
+     *
      * @return string
      */
     public function getShortPluralLabel($language = null);

@@ -72,47 +72,38 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(CartPriceRuleActionProcessorInterface::class)
-            ->addTag(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG)
-        ;
+            ->addTag(CartPriceRuleActionPass::CART_PRICE_RULE_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(CartRuleConditionCheckerInterface::class)
-            ->addTag(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG)
-        ;
+            ->addTag(CartPriceRuleConditionPass::CART_PRICE_RULE_CONDITION_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableDiscountCalculatorInterface::class)
-            ->addTag(PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableDiscountCalculatorsPass::PURCHASABLE_DISCOUNT_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableDiscountPriceCalculatorInterface::class)
-            ->addTag(PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableDiscountPriceCalculatorsPass::PURCHASABLE_DISCOUNT_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasablePriceCalculatorInterface::class)
-            ->addTag(PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasablePriceCalculatorsPass::PURCHASABLE_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableRetailPriceCalculatorInterface::class)
-            ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableRetailPriceCalculatorsPass::PURCHASABLE_RETAIL_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(PurchasableWholesalePriceCalculatorInterface::class)
-            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(PurchasableWholesalePriceCalculatorsPass::PURCHASABLE_WHOLESALE_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(CartContextInterface::class)
-            ->addTag(RegisterCartContextsPass::CART_CONTEXT_TAG)
-        ;
+            ->addTag(RegisterCartContextsPass::CART_CONTEXT_TAG);
 
         $container
             ->registerForAutoconfiguration(CartProcessorInterface::class)
-            ->addTag(RegisterCartProcessorPass::CART_PROCESSOR_TAG)
-        ;
+            ->addTag(RegisterCartProcessorPass::CART_PROCESSOR_TAG);
     }
 }

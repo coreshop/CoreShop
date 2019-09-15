@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\CoreBundle\Menu;
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Pimcore\Version;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
@@ -24,8 +23,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([
             'class' => 'coreshop_logo_menu',
-            'content' =>
-                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 87">
+            'content' => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 87">
                     <defs>
                         <style>.cls-1{fill:#cd1017;fill-rule:evenodd;}</style>
                     </defs>
@@ -274,7 +272,6 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('function', 'filter')
             ->setExtra('order', 20);
 
-
         $menuItem->addChild('coreshop_notification_rules')
             ->setLabel('coreshop_notification_rules')
             ->setAttribute('permission', 'coreshop_permission_notification')
@@ -298,7 +295,6 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('resource', 'coreshop.store')
             ->setAttribute('function', 'store')
             ->setExtra('order', 100);
-
 
         $menuItem->addChild('coreshop_about')
             ->setLabel('coreshop_about')

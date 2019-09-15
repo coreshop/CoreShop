@@ -113,7 +113,7 @@ final class DynamicDropdownController extends AdminController
             $class = new \ReflectionClass('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
             $methods = $class->getMethods();
 
-            $classMethods = array_map(function(\ReflectionMethod $method) {
+            $classMethods = array_map(function (\ReflectionMethod $method) {
                 return $method->getName();
             }, $methods);
 

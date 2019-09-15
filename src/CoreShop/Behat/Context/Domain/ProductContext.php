@@ -208,7 +208,7 @@ final class ProductContext implements Context
         $found = false;
 
         foreach ($additionalUnitDefinitions as $unitDefinition) {
-            if ($unitDefinition->getUnit() === $unit && (float)$conversionRate === $unitDefinition->getConversionRate()) {
+            if ($unitDefinition->getUnit() === $unit && (float) $conversionRate === $unitDefinition->getConversionRate()) {
                 $found = true;
             }
         }

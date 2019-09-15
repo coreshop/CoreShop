@@ -14,5 +14,4 @@ namespace CoreShop\Component\Index\Filter;
 
 interface FilterUserConditionProcessorInterface extends FilterConditionProcessorInterface
 {
-
 }

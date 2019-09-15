@@ -102,7 +102,6 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                     $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
                 }
 
-
                 $registeredTypes[$fqtn] = $fqtn;
             }
         }

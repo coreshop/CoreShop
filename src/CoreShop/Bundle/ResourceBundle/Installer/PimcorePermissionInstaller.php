@@ -53,7 +53,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
             if ($parameter !== 'coreshop.all.permissions') {
                 $permissionGroups = [
-                    $applicationName => $permissionGroups
+                    $applicationName => $permissionGroups,
                 ];
             }
 
@@ -64,7 +64,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             $progress->setFormat(' %current%/%max% [%bar%] %percent:3s%% %message%');
             $progress->start(count($permissionGroups, COUNT_RECURSIVE));
 
-            $columns = array_map(function(Column $column) {
+            $columns = array_map(function (Column $column) {
                 return $column->getName();
             }, $this->connection->getSchemaManager()->listTableColumns('users_permission_definitions'));
 
@@ -78,12 +78,11 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
                         if (in_array('category', $columns, true)) {
                             $this->connection->insert('users_permission_definitions', [
                                 'key' => $permission,
-                                'category' => sprintf('coreshop_permission_group_%s', $group)
+                                'category' => sprintf('coreshop_permission_group_%s', $group),
                             ]);
-                        }
-                        else {
+                        } else {
                             $this->connection->insert('users_permission_definitions', [
-                                'key' => $permission
+                                'key' => $permission,
                             ]);
                         }
                     }

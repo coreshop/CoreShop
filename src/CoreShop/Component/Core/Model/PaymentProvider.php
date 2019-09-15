@@ -22,7 +22,6 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         __construct as storesAwareConstructor;
     }
 
-
     private $logo;
 
     /**

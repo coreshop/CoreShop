@@ -30,7 +30,6 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
-
             /** @var ArrayCollection $data */
             $data = $event->getData();
             $form = $event->getForm();
@@ -41,7 +40,6 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
              * @var QuantityRangeInterface $quantityRange
              */
             foreach ($data as $rowIndex => $quantityRange) {
-
                 $realRowIndex = $rowIndex + 1;
 
                 $unit = $quantityRange->getUnitDefinition() instanceof ProductUnitDefinitionInterface ? $quantityRange->getUnitDefinition()->getUnitName() : 'default';
@@ -51,8 +49,8 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 }
 
                 $dataCheck[$unit][] = [
-                    'row'          => $realRowIndex,
-                    'startingFrom' => $quantityRange->getRangeStartingFrom()
+                    'row' => $realRowIndex,
+                    'startingFrom' => $quantityRange->getRangeStartingFrom(),
                 ];
             }
 
@@ -60,7 +58,6 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
              * @var QuantityRangeInterface $quantityRange
              */
             foreach ($dataCheck as $unitName => $quantityRangesToCheck) {
-
                 $lastEnd = -1;
 
                 /**
@@ -68,15 +65,16 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                  * @var QuantityRangeInterface $quantityRange
                  */
                 foreach ($quantityRangesToCheck as $quantityRange) {
-
                     $realRowIndex = $quantityRange['row'];
                     $startingFrom = $quantityRange['startingFrom'];
 
                     if ((float) $startingFrom < 0) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater or equal than 0'));
+
                         break;
                     } elseif ((float) $startingFrom <= $lastEnd) {
                         $form->addError(new FormError('Field "starting from" in row ' . $realRowIndex . '  needs to be greater than ' . $lastEnd));
+
                         break;
                     }
 

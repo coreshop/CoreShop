@@ -145,6 +145,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
             if ($unit = $unitDefinition->getUnit()) {
                 if ($unit->getName() === $identifier) {
                     $result = $unitDefinition;
+
                     break;
                 }
             }

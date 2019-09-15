@@ -20,7 +20,7 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * @var int
      */
-    protected $decimalFactor;
+    private $decimalFactor;
 
     /**
      * @param int $decimalFactor

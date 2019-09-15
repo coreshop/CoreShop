@@ -34,7 +34,7 @@ final class OrderItemToShipmentItemTransformer implements OrderDocumentItemTrans
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function transform(
         OrderDocumentInterface $orderDocument,

@@ -41,7 +41,7 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
-         /**
+        /**
          * @var CurrencyInterface $contextCurrency
          */
         $contextCurrency = $context['currency'];

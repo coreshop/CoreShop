@@ -44,13 +44,13 @@ class CartController extends BaseCartController
         if ($sale instanceof \CoreShop\Component\Core\Model\CartInterface) {
             $order['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
-                'weight'  => $sale->getWeight(),
-                'cost'    => $sale->getShipping(),
+                'weight' => $sale->getWeight(),
+                'cost' => $sale->getShipping(),
             ];
 
             if ($sale->getCarrier() instanceof CarrierInterface) {
                 $order['carrierInfo'] = [
-                    'name' => $sale->getCarrier()->getTitle()
+                    'name' => $sale->getCarrier()->getTitle(),
                 ];
             }
         }

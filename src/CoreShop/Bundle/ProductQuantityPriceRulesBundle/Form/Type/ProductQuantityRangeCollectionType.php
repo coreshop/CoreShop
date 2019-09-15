@@ -26,11 +26,11 @@ class ProductQuantityRangeCollectionType extends AbstractType
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'allow_add'      => true,
-            'allow_delete'   => true,
-            'by_reference'   => false,
+            'allow_add' => true,
+            'allow_delete' => true,
+            'by_reference' => false,
             'error_bubbling' => false,
-            'entry_type'     => ProductQuantityRangeType::class,
+            'entry_type' => ProductQuantityRangeType::class,
         ]);
     }
 

@@ -12,10 +12,6 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Resource\Model\AbstractTranslation;
-use CoreShop\Component\Resource\Model\TimestampableTrait;
-
 class ProductSpecificPriceRuleTranslation extends PriceRuleTranslation implements ProductSpecificPriceRuleTranslationInterface
 {
-
 }

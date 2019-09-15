@@ -42,10 +42,10 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
         $builder
             ->add('product', ProductSelectionType::class)
             ->add('defaultUnitDefinition', ProductUnitDefinitionType::class, [
-                'mapped' => false
+                'mapped' => false,
             ])
             ->add('additionalUnitDefinitions', ProductUnitDefinitionCollectionType::class, [
-                'mapped' => false
+                'mapped' => false,
             ]);
     }
 

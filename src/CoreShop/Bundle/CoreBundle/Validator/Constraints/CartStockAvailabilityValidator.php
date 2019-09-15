@@ -12,12 +12,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
-use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Model\PurchasableInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -43,7 +41,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
     public function validate($cart, Constraint $constraint): void
     {
         /**
-         * @var CartInterface $cart
+         * @var CartInterface         $cart
          * @var CartStockAvailability $constraint
          */
         Assert::isInstanceOf($cart, CartInterface::class);
@@ -76,6 +74,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
 
             if (!$isStockSufficient) {
                 $insufficientProduct = $product;
+
                 break;
             }
         }

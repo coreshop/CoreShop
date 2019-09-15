@@ -101,7 +101,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
                 'o_type' => $embeddedObject->getType(),
                 'o_parentId' => $embeddedObject->getParentId(),
                 'o_userOwner' => $embeddedObject->getUserOwner(),
-                'o_userModification' => $embeddedObject->getUserModification()
+                'o_userModification' => $embeddedObject->getUserModification(),
             ];
 
             $returnData[] = $objectData;

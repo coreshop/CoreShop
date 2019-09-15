@@ -100,7 +100,6 @@ class ProductUnitTranslation extends AbstractTranslation implements ProductUnitT
         $this->shortLabel = $shortLabel;
     }
 
-
     public function getShortPluralLabel()
     {
         return $this->shortPluralLabel;

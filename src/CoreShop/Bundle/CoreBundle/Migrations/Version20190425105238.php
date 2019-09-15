@@ -49,7 +49,7 @@ class Version20190425105238 extends AbstractPimcoreMigration implements Containe
             'relationType' => false,
             'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch' => false
+            'visibleSearch' => false,
         ];
 
         foreach ([$orderItemClass, $quoteItemClass] as $class) {

@@ -70,15 +70,15 @@ class OrderExtractor implements TrackingExtractorInterface
         return array_merge(
             $data,
             [
-                'id'          => $object->getId(),
+                'id' => $object->getId(),
                 'affiliation' => $this->parseAmount($object->getTotal()),
-                'total'       => $this->parseAmount($object->getTotal()),
-                'subtotal'    => $this->parseAmount($object->getSubtotal()),
-                'totalTax'    => $this->parseAmount($object->getTotalTax()),
-                'shipping'    => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING)),
-                'discount'    => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE)),
-                'currency'    => $object->getCurrency()->getIsoCode(),
-                'items'       => $items,
+                'total' => $this->parseAmount($object->getTotal()),
+                'subtotal' => $this->parseAmount($object->getSubtotal()),
+                'totalTax' => $this->parseAmount($object->getTotalTax()),
+                'shipping' => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING)),
+                'discount' => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE)),
+                'currency' => $object->getCurrency()->getIsoCode(),
+                'items' => $items,
             ]
         );
     }

@@ -35,7 +35,6 @@ final class CoreShopCurrencyExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
-
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
@@ -49,7 +48,6 @@ final class CoreShopCurrencyExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(CurrencyContextInterface::class)
-            ->addTag(CompositeCurrencyContextPass::CURRENCY_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeCurrencyContextPass::CURRENCY_CONTEXT_SERVICE_TAG);
     }
 }

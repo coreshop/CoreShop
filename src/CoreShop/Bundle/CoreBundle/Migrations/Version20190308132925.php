@@ -26,10 +26,10 @@ class Version20190308132925 extends AbstractPimcoreMigration implements Containe
         $storeValuesField = [
              'fieldtype' => 'coreShopStoreValues',
              'width' => '',
-             'defaultValue' => NULL,
+             'defaultValue' => null,
              'phpdocType' => 'array',
-             'minValue' => NULL,
-             'maxValue' => NULL,
+             'minValue' => null,
+             'maxValue' => null,
              'name' => 'storeValues',
              'title' => 'Store Values',
              'tooltip' => '',
@@ -38,7 +38,7 @@ class Version20190308132925 extends AbstractPimcoreMigration implements Containe
              'index' => false,
              'locked' => false,
              'style' => '',
-             'permissions' => NULL,
+             'permissions' => null,
              'datatype' => 'data',
              'relationType' => false,
              'invisible' => false,
@@ -60,6 +60,5 @@ class Version20190308132925 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

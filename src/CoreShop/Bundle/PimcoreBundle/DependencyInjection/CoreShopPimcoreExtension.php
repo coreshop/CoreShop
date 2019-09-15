@@ -44,12 +44,10 @@ final class CoreShopPimcoreExtension extends AbstractPimcoreExtension
 
         $container
             ->registerForAutoconfiguration(GridActionInterface::class)
-            ->addTag(RegisterGridActionPass::GRID_ACTION_TAG)
-        ;
+            ->addTag(RegisterGridActionPass::GRID_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(GridFilterInterface::class)
-            ->addTag(RegisterGridFilterPass::GRID_FILTER_TAG)
-        ;
+            ->addTag(RegisterGridFilterPass::GRID_FILTER_TAG);
     }
 }

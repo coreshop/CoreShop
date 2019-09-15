@@ -39,15 +39,14 @@ final class CartBlamerListener
 
     /**
      * @param CartProcessorInterface $cartProcessor
-     * @param CartContextInterface $cartContext
-     * @param CartManagerInterface $cartManager
+     * @param CartContextInterface   $cartContext
+     * @param CartManagerInterface   $cartManager
      */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         CartContextInterface $cartContext,
         CartManagerInterface $cartManager
-    )
-    {
+    ) {
         $this->cartProcessor = $cartProcessor;
         $this->cartContext = $cartContext;
         $this->cartManager = $cartManager;
@@ -105,6 +104,7 @@ final class CartBlamerListener
 
         if ($cart->getId()) {
             $this->cartManager->persistCart($cart);
+
             return;
         }
 

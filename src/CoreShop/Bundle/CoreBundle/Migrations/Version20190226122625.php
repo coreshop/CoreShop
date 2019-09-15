@@ -40,24 +40,24 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
         }
 
         $unitDefinitionsField = [
-            'fieldtype'       => 'coreShopProductUnitDefinitions',
-            'width'           => '',
-            'defaultValue'    => null,
-            'phpdocType'      => 'array',
-            'name'            => 'unitDefinitions',
-            'title'           => 'Product Unit Definitions',
-            'tooltip'         => '',
-            'mandatory'       => false,
-            'noteditable'     => false,
-            'index'           => false,
-            'locked'          => false,
-            'style'           => '',
-            'permissions'     => null,
-            'datatype'        => 'data',
-            'relationType'    => false,
-            'invisible'       => false,
+            'fieldtype' => 'coreShopProductUnitDefinitions',
+            'width' => '',
+            'defaultValue' => null,
+            'phpdocType' => 'array',
+            'name' => 'unitDefinitions',
+            'title' => 'Product Unit Definitions',
+            'tooltip' => '',
+            'mandatory' => false,
+            'noteditable' => false,
+            'index' => false,
+            'locked' => false,
+            'style' => '',
+            'permissions' => null,
+            'datatype' => 'data',
+            'relationType' => false,
+            'invisible' => false,
             'visibleGridView' => false,
-            'visibleSearch'   => false,
+            'visibleSearch' => false,
         ];
 
         $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
@@ -79,7 +79,7 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
              'index' => false,
              'locked' => false,
              'style' => '',
-             'permissions' => NULL,
+             'permissions' => null,
              'datatype' => 'data',
              'relationType' => false,
              'invisible' => false,
@@ -103,6 +103,5 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
     public function down(Schema $schema)
     {
         // this down() migration is auto-generated, please modify it to your needs
-
     }
 }

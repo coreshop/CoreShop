@@ -226,7 +226,7 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount,
-            'gross' => true
+            'gross' => true,
         ]));
     }
 
@@ -241,7 +241,7 @@ final class ShippingContext implements Context
         $this->addCondition($rule, $this->createConditionWithForm('amount', [
             'minAmount' => $minAmount,
             'maxAmount' => $maxAmount,
-            'gross' => false
+            'gross' => false,
         ]));
     }
 

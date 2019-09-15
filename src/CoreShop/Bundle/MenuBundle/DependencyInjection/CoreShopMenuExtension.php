@@ -32,10 +32,8 @@ final class CoreShopMenuExtension extends AbstractPimcoreExtension
 
         $loader->load('services.yml');
 
-
         $container
             ->registerForAutoconfiguration(MenuBuilderInterface::class)
-            ->addTag(MenuBuilderPass::MENU_BUILDER_TAG)
-        ;
+            ->addTag(MenuBuilderPass::MENU_BUILDER_TAG);
     }
 }

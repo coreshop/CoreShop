@@ -12,10 +12,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class ValidatorAutoMappingFixPass implements CompilerPassInterface
 {
@@ -36,8 +34,8 @@ final class ValidatorAutoMappingFixPass implements CompilerPassInterface
 
         $container->setParameter('validator.auto_mapping', [
             'AppBundle\Entity' => [
-                'services' => []
-            ]
+                'services' => [],
+            ],
         ]);
     }
 }

@@ -61,7 +61,6 @@ class CartController extends AbstractSaleController
         return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
 
-
     /**
      * @param Request $request
      *
@@ -299,7 +298,7 @@ class CartController extends AbstractSaleController
 
         $totals = $this->getSummary($cart);
 
-        unset ($totalEntry);
+        unset($totalEntry);
 
         $jsonSale['summary'] = $totals;
 

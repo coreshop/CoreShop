@@ -39,7 +39,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {

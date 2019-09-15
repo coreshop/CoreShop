@@ -45,7 +45,7 @@ class CartItem extends BaseCartItem implements CartItemInterface
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWidth() : 0;
     }
 
-    /** 
+    /**
      * {@inheritdoc}
      */
     public function getHeight()

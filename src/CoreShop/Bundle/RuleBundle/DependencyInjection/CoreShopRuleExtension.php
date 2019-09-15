@@ -39,7 +39,6 @@ final class CoreShopRuleExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(RuleAvailabilityAssessorInterface::class)
-            ->addTag(RuleAvailabilityAssessorPass::RULE_AVAILABILITY_ASSESSOR_TAG)
-        ;
+            ->addTag(RuleAvailabilityAssessorPass::RULE_AVAILABILITY_ASSESSOR_TAG);
     }
 }

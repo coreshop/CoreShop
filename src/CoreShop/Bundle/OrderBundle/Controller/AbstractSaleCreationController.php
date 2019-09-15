@@ -12,20 +12,10 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
-use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
-use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
-use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\CountryInterface;
-use CoreShop\Component\Currency\Model\CurrencyInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractSaleCreationController extends AbstractCartCreationController
 {

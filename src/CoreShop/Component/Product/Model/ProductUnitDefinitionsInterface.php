@@ -12,9 +12,7 @@
 
 namespace CoreShop\Component\Product\Model;
 
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Doctrine\Common\Collections\Collection;
 
 interface ProductUnitDefinitionsInterface extends ResourceInterface
@@ -75,5 +73,4 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
      * @return Collection|ProductUnitDefinitionInterface[]
      */
     public function getAdditionalUnitDefinitions();
-
 }

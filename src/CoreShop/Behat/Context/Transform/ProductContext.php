@@ -16,7 +16,6 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
-use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Pimcore\Model\DataObject\AbstractObject;
 use Webmozart\Assert\Assert;
 
@@ -85,7 +84,7 @@ final class ProductContext implements Context
             if ($unit->getUnit()->getName() === $productUnit) {
                 return [
                     'product' => $product,
-                    'unit' => $unit
+                    'unit' => $unit,
                 ];
             }
         }

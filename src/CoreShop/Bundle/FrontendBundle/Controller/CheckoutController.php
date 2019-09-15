@@ -205,7 +205,6 @@ class CheckoutController extends FrontendController
             }
         }
 
-
         $event = new CheckoutEvent($this->getCart());
 
         $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_PRE, $event);
