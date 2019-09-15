@@ -17,7 +17,7 @@ final class Version
     const MAJOR_VERSION = '2';
     const MINOR_VERSION = '1';
     const RELEASE_VERSION = '0';
-    const EXTRA_VERSION = '';
+    const EXTRA_VERSION = 'rc.1';
 
     /**
      * @return string
