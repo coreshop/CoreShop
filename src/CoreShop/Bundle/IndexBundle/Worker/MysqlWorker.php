@@ -420,7 +420,7 @@ QUERY;
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $index->getColumns());
 
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
@@ -451,7 +451,7 @@ QUERY;
                 $insertData[] = $value;
             }
 
-            foreach ($columns as $column) {
+            foreach ($index->getColumns() as $column) {
                 if (!array_key_exists($column->getName(), $values)) {
                     continue;
                 }
