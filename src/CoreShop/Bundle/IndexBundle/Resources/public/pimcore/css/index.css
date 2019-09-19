@@ -30,11 +30,15 @@ body.pimcore_version_6 .coreshop_nav_icon_filters {
     background: url(../img/filter-empty.svg) center center no-repeat !important;
 }
 
-.coreshop_filters_icon_conditions_select, .coreshop_filters_icon_conditions_relational_select {
+.coreshop_filters_icon_conditions_select,
+.coreshop_filters_icon_conditions_relational_select,
+.coreshop_filters_icon_conditions_select_from_multiselect {
     background: url(../img/filter-select.svg) center center no-repeat !important;
 }
 
-.coreshop_filters_icon_conditions_multiselect, .coreshop_filters_icon_conditions_relational_multiselect {
+.coreshop_filters_icon_conditions_multiselect,
+.coreshop_filters_icon_conditions_relational_multiselect,
+.coreshop_filters_icon_conditions_multiselect_from_multiselect {
     background: url(../img/filter-multiselect.svg) center center no-repeat !important;
 }
 

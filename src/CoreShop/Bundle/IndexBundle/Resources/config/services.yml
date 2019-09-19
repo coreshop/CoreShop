@@ -255,17 +255,25 @@ services:
     coreshop.filter.condition_type.select: '@CoreShop\Component\Index\Filter\SelectFilterConditionProcessor'
     CoreShop\Component\Index\Filter\SelectFilterConditionProcessor:
         tags:
-            - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType}
+            - { name: coreshop.filter.condition_type, type: select, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType }
+
+    CoreShop\Component\Index\Filter\SelectFilterConditionFromMulitselectProcessor:
+        tags:
+            - { name: coreshop.filter.condition_type, type: select_from_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionSelectType }
 
     coreshop.filter.condition_type.range: '@CoreShop\Component\Index\Filter\RangeFilterConditionProcessor'
     CoreShop\Component\Index\Filter\RangeFilterConditionProcessor:
         tags:
-            - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType}
+            - { name: coreshop.filter.condition_type, type: range, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionRangeType }
 
     coreshop.filter.condition_type.multiselect: '@CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor'
     CoreShop\Component\Index\Filter\MultiselectFilterConditionProcessor:
         tags:
-            - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType}
+            - { name: coreshop.filter.condition_type, type: multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType }
+
+    CoreShop\Component\Index\Filter\MultiselectFilterConditionFromMultiselectProcessor:
+        tags:
+            - { name: coreshop.filter.condition_type, type: multiselect_from_multiselect, form-type: CoreShop\Bundle\IndexBundle\Form\Type\Filter\FilterConditionMultiselectType }
 
     coreshop.filter.condition_type.pre_nested:
         class: CoreShop\Component\Index\Filter\NestedFilterConditionProcessor
