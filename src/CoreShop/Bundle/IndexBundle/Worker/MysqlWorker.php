@@ -420,7 +420,8 @@ QUERY;
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
-        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $index->getColumns());
+        $columns = $index->getColumns()->toArray();
+        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
 
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
