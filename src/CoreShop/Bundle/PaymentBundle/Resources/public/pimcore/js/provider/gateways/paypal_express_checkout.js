@@ -35,6 +35,12 @@ coreshop.provider.gateways.paypal_express_checkout = Class.create(coreshop.provi
                 name: 'gatewayConfig.config.signature',
                 length: 255,
                 value: config.signature
+            },
+            {
+                xtype: 'checkbox',
+                fieldLabel: t('coreshop_paypal_sandbox'),
+                name: 'gatewayConfig.config.sandbox',
+                value: config.sandbox
             }
         ];
     }
