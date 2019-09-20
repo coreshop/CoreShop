@@ -10,6 +10,8 @@ services:
         arguments:
             - 'CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
             - 'Theme Resolver'
+        tags:
+            - { name: coreshop.registry, type_hint: themeResolvers }
 
     coreshop.theme.active_theme: '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
     CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface: '@CoreShop\Bundle\ThemeBundle\Service\ActiveTheme'

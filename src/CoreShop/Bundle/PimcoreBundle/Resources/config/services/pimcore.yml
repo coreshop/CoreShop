@@ -7,6 +7,8 @@ services:
         arguments:
             - CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface
             - document-tag-factories
+        tags:
+            - { name: coreshop.registry, type_hint: pimcoreDocumentTags }
 
     CoreShop\Bundle\PimcoreBundle\Loader\DependencyInjectionImplementationLoader:
         arguments:

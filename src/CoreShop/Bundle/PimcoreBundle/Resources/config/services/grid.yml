@@ -2,7 +2,10 @@ services:
     _defaults:
         public: true
 
-    coreshop.pimcore_controller.grid: '@CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController'
+    coreshop.pimcore_controller.grid:
+        alias: 'CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController'
+        public: true
+
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
         tags:
             - { name: controller.service_arguments }
@@ -19,6 +22,8 @@ services:
         arguments:
             - 'CoreShop\Component\Pimcore\DataObject\Grid\GridFilterInterface'
             - 'coreshop-grid-filter'
+        tags:
+            - { name: coreshop.registry, type_hint: gridFilters }
 
     coreshop.registry.grid.action:
         class: CoreShop\Component\Registry\ServiceRegistry
@@ -26,3 +31,5 @@ services:
         arguments:
             - 'CoreShop\Component\Pimcore\DataObject\Grid\GridActionInterface'
             - 'coreshop-grid-action'
+        tags:
+            - { name: coreshop.registry, type_hint: gridActions }

@@ -51,6 +51,8 @@ services:
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
             - product-quantity-price-rules-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: productQuantityPriceRuleConditions }
 
     coreshop.form_registry.product_quantity_price_rules.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

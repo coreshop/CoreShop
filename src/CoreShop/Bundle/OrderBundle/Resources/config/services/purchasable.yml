@@ -7,6 +7,8 @@ services:
         arguments:
             - CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface
             - purchasable-retail-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: purchaseableRetailPriceCalculators }
 
     coreshop.order.purchasable.retail_price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasableRetailPriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableRetailPriceCalculator'
@@ -19,6 +21,8 @@ services:
         arguments:
             - CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface
             - purchasable-discount-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: purchaseableDiscountCalculators }
 
     coreshop.order.purchasable.discount_calculator.no_discount: '@CoreShop\Component\Order\Calculator\NoDiscountPurchasableCalculator'
     CoreShop\Component\Order\Calculator\NoDiscountPurchasableCalculator:
@@ -36,6 +40,8 @@ services:
         arguments:
             - CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface
             - purchasable-discount-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: purchaseableDiscountPriceCalculators }
 
     coreshop.order.purchasable.price_discount_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableDiscountPriceCalculator'
@@ -48,12 +54,16 @@ services:
         arguments:
             - CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface
             - purchasable-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: purchaseablePriceCalculators }
 
     coreshop.registry.order.purchasable.wholesale_price_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface
             - purchasable-wholesale-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: purchaseableWholesalePriceCalculators }
 
     coreshop.order.purchasable.price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'

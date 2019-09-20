@@ -7,12 +7,16 @@ services:
         arguments:
             - 'CoreShop\Component\Core\Report\ReportInterface'
             - 'coreshop-reports'
+        tags:
+            - { name: coreshop.registry, type_hint: reports }
 
     coreshop.registry.portlets:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - 'CoreShop\Component\Core\Portlet\PortletInterface'
             - 'coreshop-portlets'
+        tags:
+            - { name: coreshop.registry, type_hint: portlets }
 
     coreshop.report.products: '@CoreShop\Bundle\CoreBundle\Report\ProductsReport'
     CoreShop\Bundle\CoreBundle\Report\ProductsReport:

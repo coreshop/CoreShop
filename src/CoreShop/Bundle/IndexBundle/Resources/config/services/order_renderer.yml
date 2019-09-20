@@ -4,6 +4,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Order\DynamicOrderRendererInterface
             - order-renderers
+        tags:
+            - { name: coreshop.registry, type_hint: indexOrderRenderers }
 
     ## Renderer
     coreshop.index.order.renderer: '@CoreShop\Component\Index\Order\OrderRenderer'

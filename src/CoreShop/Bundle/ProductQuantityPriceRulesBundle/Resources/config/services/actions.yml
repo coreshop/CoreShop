@@ -4,6 +4,8 @@ services:
         arguments:
             - CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface
             - product-quantity-price-rules-actions
+        tags:
+            - { name: coreshop.registry, type_hint: productQuantityPriceRuleActions }
 
     CoreShop\Component\ProductQuantityPriceRules\Rule\Action\PercentageDecreaseAction:
         tags:
