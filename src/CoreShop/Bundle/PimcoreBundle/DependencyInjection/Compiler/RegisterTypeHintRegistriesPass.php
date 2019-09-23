@@ -25,6 +25,10 @@ final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        if (!method_exists($container, 'registerAliasForArgument')) {
+            return;
+        }
+
         foreach ($container->findTaggedServiceIds('coreshop.registry') as $id => $attributes) {
             if (!isset($attributes[0]['type_hint'])) {
                 throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type_hint` attributes');
