@@ -71,6 +71,8 @@ services:
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
             - product-price-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceRuleConditions }
 
     coreshop.form_registry.product_price_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -80,6 +82,8 @@ services:
         arguments:
             - CoreShop\Component\Product\Rule\Action\ActionProcessorInterface
             - product-price-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceRuleActions }
 
     coreshop.form_registry.product_price_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

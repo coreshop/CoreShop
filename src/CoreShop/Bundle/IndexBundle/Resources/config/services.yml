@@ -36,6 +36,8 @@ services:
         arguments:
             - Symfony\Component\Form\FormTypeInterface
             - index-column-types
+        tags:
+            - { name: coreshop.registry, type_hint: indexColumnTypes }
 
     coreshop.form_registry.index_column_types:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -46,6 +48,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Worker\WorkerInterface
             - index-workers
+        tags:
+            - { name: coreshop.registry, type_hint: indexWorkers }
 
     coreshop.form_registry.index.worker:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -56,6 +60,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Extension\IndexExtensionInterface
             - index-extensions
+        tags:
+            - { name: coreshop.registry, type_hint: indexExtensions }
 
     # Filter Registry
     coreshop.registry.filter.pre_condition_types:
@@ -63,6 +69,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Filter\FilterConditionProcessorInterface
             - filter-processor
+        tags:
+            - { name: coreshop.registry, type_hint: filterPreConditionProcessors }
 
     coreshop.form_registry.filter.pre_condition_types:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -72,6 +80,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Filter\FilterConditionProcessorInterface
             - filter-processor
+        tags:
+            - { name: coreshop.registry, type_hint: filterConditionProcessors }
 
     coreshop.form_registry.filter.user_condition_types:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -82,6 +92,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Getter\GetterInterface
             - index-getters
+        tags:
+            - { name: coreshop.registry, type_hint: indexGetters }
 
     coreshop.form_registry.index.getter:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -92,6 +104,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Interpreter\InterpreterInterface
             - index-interpreters
+        tags:
+            - { name: coreshop.registry, type_hint: indexInterpreters }
 
     coreshop.form_registry.index.interpreter:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

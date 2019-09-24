@@ -5,6 +5,8 @@ services:
         arguments:
             - CoreShop\Component\Tracking\Tracker\TrackerInterface
             - 'tracker'
+        tags:
+            - { name: coreshop.registry, type_hint: trackers }
 
     coreshop.registry.tracking.extractor:
         class: CoreShop\Component\Registry\ServiceRegistry
@@ -12,6 +14,8 @@ services:
         arguments:
             - CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface
             - 'tracking-extractor'
+        tags:
+            - { name: coreshop.registry, type_hint: trackingExtractors }
 
     coreshop.tracking.resolver.tracking_config: '@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface'
     CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface: '@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver'

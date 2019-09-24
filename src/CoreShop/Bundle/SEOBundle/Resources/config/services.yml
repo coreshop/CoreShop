@@ -10,6 +10,8 @@ services:
         arguments:
             - 'CoreShop\Component\SEO\Extractor\ExtractorInterface'
             - 'seo metadata extractor'
+        tags:
+            - { name: coreshop.registry, type_hint: seoExtractors }
 
     CoreShop\Component\SEO\SEOPresentation:
         arguments:

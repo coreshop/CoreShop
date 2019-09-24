@@ -10,6 +10,8 @@ services:
         arguments:
             - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilder'
             - 'menu-builder'
+        tags:
+            - { name: coreshop.registry, type_hint: menues }
 
     coreshop.menu.renderer.json: '@CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer'
     CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer:

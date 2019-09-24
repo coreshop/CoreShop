@@ -17,6 +17,7 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActio
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagImplementationLoaderPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterTypeHintRegistriesPass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
@@ -77,6 +78,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new RegisterPimcoreDocumentTagImplementationLoaderPass());
         $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());
         $container->addCompilerPass(new ExpressionLanguageServicePass());
+        $container->addCompilerPass(new RegisterTypeHintRegistriesPass());
     }
 
     /**

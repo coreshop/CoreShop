@@ -6,6 +6,8 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - 'CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface'
+        tags:
+            - { name: coreshop.registry, type_hint: productRuleFetchers }
 
     coreshop.product.rules.fetcher: '@CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface'
     CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface: '@CoreShop\Component\Product\Rule\Fetcher\CompositeValidRuleFetcher'

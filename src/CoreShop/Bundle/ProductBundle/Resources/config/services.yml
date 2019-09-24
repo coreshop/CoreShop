@@ -14,18 +14,24 @@ services:
         arguments:
             - CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface
             - product-retail-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productRetailPriceCalculators }
 
     coreshop.registry.product.discount_price_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface
             - product-discount-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productDiscountPriceCalculators }
 
     coreshop.registry.product.discount_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface
             - product-discount-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productDiscountCalculators }
 
     coreshop.product.retail_price_calculator: '@CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface'
     CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface: '@CoreShop\Component\Product\Calculator\CompositeRetailPriceCalculator'
@@ -106,6 +112,8 @@ services:
         arguments:
             - CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface
             - product-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceCalculators }
 
     coreshop.product.price_calculator: '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
     CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface: '@CoreShop\Component\Product\Calculator\ProductPriceCalculator'

@@ -13,3 +13,5 @@ services:
         arguments:
             - 'CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface'
             - 'rule-availability-assessor'
+        tags:
+            - { name: coreshop.registry, type_hint: ruleAvailabilityAssessors }

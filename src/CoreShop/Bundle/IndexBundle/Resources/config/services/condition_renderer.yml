@@ -4,6 +4,8 @@ services:
         arguments:
             - CoreShop\Component\Index\Condition\DynamicRendererInterface
             - condition-renderers
+        tags:
+            - { name: coreshop.registry, type_hint: indexConditionRenderers }
 
     ## Renderer
     coreshop.index.condition.renderer: '@CoreShop\Component\Index\Condition\ConditionRenderer'

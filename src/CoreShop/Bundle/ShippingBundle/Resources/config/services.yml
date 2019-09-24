@@ -27,6 +27,8 @@ services:
         arguments:
             - CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface
             - shipping-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: shippingPriceCalculators }
 
     coreshop.carrier.price_calculator.shipping_rules: '@CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator'
     CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator:

@@ -4,6 +4,8 @@ services:
         arguments:
             - CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface
             - product-quantity-price-rules-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productQuantityPriceRuleCalculators }
 
     CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator:
         arguments:

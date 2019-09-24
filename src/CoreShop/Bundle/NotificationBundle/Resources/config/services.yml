@@ -39,6 +39,8 @@ services:
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
             - notification-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: notificationRuleConditions }
 
     coreshop.form_registry.notification_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -48,6 +50,8 @@ services:
         arguments:
             - CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface
             - notification-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: notificationRuleActions }
 
     coreshop.form_registry.notification_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

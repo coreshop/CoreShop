@@ -6,7 +6,9 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
-            - ShippingRuleCondition
+            - shipping-rule-condition
+        tags:
+            - { name: coreshop.registry, type_hint: shippingRuleConditions }
 
     coreshop.form_registry.shipping_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -15,7 +17,9 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface
-            - ShippingRuleAction
+            - shipping-rule-action
+        tags:
+            - { name: coreshop.registry, type_hint: shippingRuleActions }
 
     coreshop.form_registry.shipping_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry

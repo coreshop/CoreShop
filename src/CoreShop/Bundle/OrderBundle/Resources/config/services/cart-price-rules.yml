@@ -91,7 +91,9 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
-            - product-price-rule-conditions
+            - cart-price-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: cartPriceRuleConditions }
 
     coreshop.form_registry.cart_price_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -100,7 +102,9 @@ services:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
             - CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface
-            - product-price-rule-actions
+            - cart-price-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: cartPriceRuleActions }
 
     coreshop.form_registry.cart_price_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
