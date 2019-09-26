@@ -10,6 +10,7 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: resourceInstallers }
 
+    coreshop.resource.installer.classes: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller:
         arguments:
             - '@kernel'
@@ -17,24 +18,28 @@ services:
         tags:
             - { name: coreshop.resource.installer, type: classes, priority: 100}
 
+    coreshop.resource.installer.routes: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller:
         arguments:
             - '@kernel'
         tags:
             - { name: coreshop.resource.installer, type: routes, priority: 200}
 
+    coreshop.resource.installer.documents: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller:
         arguments:
             - '@kernel'
         tags:
            - { name: coreshop.resource.installer, type: documents, priority: 250}
 
+    coreshop.resource.installer.image_thumbnails: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreImageThumbnailsInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreImageThumbnailsInstaller:
         arguments:
             - '@kernel'
         tags:
             - { name: coreshop.resource.installer, type: image_thumbnail, priority: 300}
 
+    coreshop.resource.installer.permissions: '@CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller:
         arguments:
             - '@kernel'
@@ -42,12 +47,14 @@ services:
         tags:
             - { name: coreshop.resource.installer, type: permissions, priority: 350}
 
+    coreshop.resource.installer.sql: '@CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller:
         arguments:
             - '@kernel'
         tags:
            - { name: coreshop.resource.installer, type: sql, priority: 400}
 
+    coreshop.resource.installer.shared_translations: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller:
         arguments:
             - '@kernel'
@@ -55,6 +62,7 @@ services:
         tags:
            - { name: coreshop.resource.installer, type: translations, priority: 450}
 
+    coreshop.resource.installer.admin_translations: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller:
         arguments:
             - '@kernel'
@@ -62,6 +70,7 @@ services:
         tags:
            - { name: coreshop.resource.installer, type: admin_translations, priority: 500}
 
+    coreshop.resource.installer.grid_config: '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller'
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller:
         arguments:
             - '@kernel'
