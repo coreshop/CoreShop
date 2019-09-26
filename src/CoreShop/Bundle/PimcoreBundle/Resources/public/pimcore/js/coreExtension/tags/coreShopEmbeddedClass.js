@@ -141,10 +141,10 @@ pimcore.object.tags.coreShopEmbeddedClass = Class.create(pimcore.object.tags.abs
                 index: t('new')
             },
             object = {
+                general: general,
                 data: data,
                 metaData: {}
             };
-
         me.addEmbeddedClass(object, general, false);
     },
 
