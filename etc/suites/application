@@ -1,5 +1,9 @@
-$CS_HOME/etc/_scripts/composer
-$CS_HOME/etc/_scripts/twig
-$CS_HOME/etc/_scripts/yaml
-$CS_HOME/etc/_scripts/behat
-$CS_HOME/etc/_scripts/phpunit
+code=0
+
+$CS_HOME/etc/_scripts/composer || code=$?
+$CS_HOME/etc/_scripts/twig || code=$?
+$CS_HOME/etc/_scripts/yaml || code=$?
+$CS_HOME/etc/_scripts/behat || code=$?
+$CS_HOME/etc/_scripts/phpunit || code=$?
+
+exit ${code}
