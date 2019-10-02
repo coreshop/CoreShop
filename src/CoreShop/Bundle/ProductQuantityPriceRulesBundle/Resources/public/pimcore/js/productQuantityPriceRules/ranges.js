@@ -349,8 +349,6 @@ coreshop.product_quantity_price_rules.ranges = Class.create({
                                     subItems[0].focus();
                                 }
 
-                                this.commitStoreChanges();
-
                             }.bind(this),
                             // see https://github.com/pimcore/pimcore/issues/979
                             cellmousedown: function (element, td, cellIndex, record, tr, rowIndex, event) {
