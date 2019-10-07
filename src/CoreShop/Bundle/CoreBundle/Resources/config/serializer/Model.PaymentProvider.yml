@@ -8,7 +8,3 @@ CoreShop\Component\Core\Model\PaymentProvider:
             groups: [Detailed]
         gatewayConfig:
             groups: [Detailed]
-        logo:
-            expose: true
-            type: pimcoreAsset
-            groups: [List, Detailed]
