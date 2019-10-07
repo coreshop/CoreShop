@@ -57,20 +57,4 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
     {
         return sprintf('%s', $this->getIdentifier());
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogo()
-    {
-        return $this->logo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLogo($logo)
-    {
-        $this->logo = $logo;
-    }
 }

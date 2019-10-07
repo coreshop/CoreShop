@@ -191,7 +191,7 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      */
     public function getLogo()
     {
-        return $this->getLogoId() != null ? Asset::getById($this->getLogoId()) : null;
+        return Asset::getById($this->getLogoId());
     }
 
     /**
