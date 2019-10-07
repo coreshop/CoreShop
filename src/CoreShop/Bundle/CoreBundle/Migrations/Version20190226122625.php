@@ -8,9 +8,6 @@ use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 class Version20190226122625 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
@@ -34,6 +31,7 @@ class Version20190226122625 extends AbstractPimcoreMigration implements Containe
                 ALTER TABLE coreshop_product_unit_definition_price ADD CONSTRAINT FK_13ECB5BD314F81B FOREIGN KEY (product_store_values) REFERENCES coreshop_product_store_values (id) ON DELETE CASCADE;
                 ALTER TABLE coreshop_product_quantity_price_rule_range ADD unit_definition INT DEFAULT NULL;
                 ALTER TABLE coreshop_product_quantity_price_rule_range ADD CONSTRAINT FK_C6BA05DA6B98B918 FOREIGN KEY (unit_definition) REFERENCES coreshop_product_unit_definition (id);
+                ALTER TABLE coreshop_product_quantity_price_rule_range CHANGE range_from range_starting_from int(11) NOT NULL AFTER unit_definition, DROP range_to;
                 CREATE INDEX IDX_C6BA05DA6B98B918 ON coreshop_product_quantity_price_rule_range (unit_definition);
                 CREATE UNIQUE INDEX definitions_and_unit ON coreshop_product_unit_definition (product_unit_definitions, unit);
             ');
