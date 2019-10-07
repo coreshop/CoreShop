@@ -77,7 +77,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 name: 'active',
                 checked: this.data.active
             },
-            this.getLogoSelect(),
+            this.getLogoSelect().getLayoutEdit(),
             {
                 xtype: 'combobox',
                 itemId: 'paymentFactory',
@@ -167,7 +167,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         }, {
             classes: [],
             assetsAllowed: true,
-            name: 'logo',
+            name: 'logoId',
             title: t('coreshop_logo')
         });
     },
