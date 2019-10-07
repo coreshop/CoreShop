@@ -34,6 +34,9 @@ final class PaymentProviderType extends AbstractResourceType
             ->add('position', IntegerType::class, [
                 'required' => false,
             ])
+            ->add('logo', IntegerType::class, [
+                'required' => false
+            ])
             ->add('active', CheckboxType::class, [
                 'required' => false,
             ]);
