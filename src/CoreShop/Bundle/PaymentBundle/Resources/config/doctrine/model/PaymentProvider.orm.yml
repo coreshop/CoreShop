@@ -19,6 +19,10 @@ CoreShop\Component\Payment\Model\PaymentProvider:
         position:
             column: position
             type: integer
+        logoId:
+            column: logoId
+            type: integer
+            nullable: true
         creationDate:
             type: datetime
             gedmo:
