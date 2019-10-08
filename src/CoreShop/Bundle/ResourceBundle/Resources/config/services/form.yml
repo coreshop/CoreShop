@@ -3,8 +3,7 @@ services:
         public: true
 
     CoreShop\Bundle\ResourceBundle\Form\DataTransformer\PimcoreAssetDataTransformer:
-        autoconfigure: true
-        autowire: true
+
 
     CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreAssetChoiceType:
         arguments:
