@@ -161,7 +161,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
 
     getLogoSelect: function () {
         return new coreshop.object.elementHref({
-            id: this.data.logoId,
+            id: this.data.logo,
             type: 'asset',
             subtype: 'image'
         }, {

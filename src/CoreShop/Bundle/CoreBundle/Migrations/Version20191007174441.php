@@ -17,16 +17,25 @@ class Version20191007174441 extends AbstractPimcoreMigration
      */
     public function up(Schema $schema)
     {
-        // check if logoId column is already in the table
+
         if ($schema->hasTable('coreshop_payment_provider')) {
 
             $table = $schema->getTable('coreshop_payment_provider');
 
-            if (!$table->hasColumn('logoId')) {
-                $this->addSql('
-                    ALTER TABLE coreshop_payment_provider ADD COLUMN logoId int(11) DEFAULT NULL AFTER position
-                ');
+            if ($table->hasColumn('logo')) {
+                $table->dropColumn('logo');
             }
+
+            if ($table->hasColumn('logoId')) {
+                $table->dropColumn('logoId');
+            }
+
+            $table->addColumn('logo', 'integer', [
+                'length' => 11,
+                'comment' => '(DC2Type:pimcoreAsset)',
+                'notnull' => false
+            ]);
+
         }
     }
 
