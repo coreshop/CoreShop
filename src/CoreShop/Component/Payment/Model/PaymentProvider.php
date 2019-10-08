@@ -43,9 +43,9 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     protected $position = 1;
 
     /**
-     * @var int
+     * @var Asset|null
      */
-    protected $logoId;
+    protected $logo;
 
     public function __construct()
     {
@@ -149,6 +149,22 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
      * @param null $locale
      * @param bool $useFallbackTranslation
      *
@@ -170,35 +186,4 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
         return new PaymentProviderTranslation();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogoId()
-    {
-        return $this->logoId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLogoId($logoId)
-    {
-        $this->logoId = $logoId;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLogo()
-    {
-        return Asset::getById($this->getLogoId());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLogo($logo)
-    {
-        $this->setLogoId($logo->getId());
-    }
 }

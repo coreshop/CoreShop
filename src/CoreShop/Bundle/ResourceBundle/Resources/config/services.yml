@@ -4,6 +4,7 @@ imports:
     - { resource: "services/installer.yml" }
     - { resource: "services/commands.yml" }
     - { resource: "services/validators.yml" }
+    - { resource: "services/form.yml" }
 
 services:
     _defaults:

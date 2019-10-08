@@ -167,7 +167,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         }, {
             classes: [],
             assetsAllowed: true,
-            name: 'logoId',
+            name: 'logo',
             title: t('coreshop_logo')
         });
     },

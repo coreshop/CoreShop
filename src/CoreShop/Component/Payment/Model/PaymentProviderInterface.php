@@ -79,16 +79,6 @@ interface PaymentProviderInterface extends ToggleableInterface, TranslatableInte
     public function setPosition($position);
 
     /**
-     * @return int
-     */
-    public function getLogoId();
-
-    /**
-     * @param int $logoId
-     */
-    public function setLogoId($logoId);
-
-    /**
      * @return Asset|null
      */
     public function getLogo();

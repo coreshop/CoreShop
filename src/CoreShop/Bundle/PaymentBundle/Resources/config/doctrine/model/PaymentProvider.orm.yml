@@ -19,9 +19,9 @@ CoreShop\Component\Payment\Model\PaymentProvider:
         position:
             column: position
             type: integer
-        logoId:
-            column: logoId
-            type: integer
+        logo:
+            column: logo
+            type: pimcoreAsset
             nullable: true
         creationDate:
             type: datetime
