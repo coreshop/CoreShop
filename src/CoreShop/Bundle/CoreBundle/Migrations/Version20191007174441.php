@@ -12,7 +12,6 @@ class Version20191007174441 extends AbstractPimcoreMigration
      */
     public function up(Schema $schema)
     {
-
         if ($schema->hasTable('coreshop_payment_provider')) {
             $this->addSql('ALTER TABLE coreshop_payment_provider CHANGE logoId logo INT DEFAULT NULL COMMENT "(DC2Type:pimcoreAsset)"');
         }
