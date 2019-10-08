@@ -14,7 +14,7 @@ class Version20191007174441 extends AbstractPimcoreMigration
     {
 
         if ($schema->hasTable('coreshop_payment_provider')) {
-            $this->addSql('ALTER TABLE coreshop_payment_provider CHANGE logoId logoId INT DEFAULT NULL COMMENT `(DC2Type:pimcoreAsset)`');
+            $this->addSql('ALTER TABLE coreshop_payment_provider CHANGE logoId logo INT DEFAULT NULL COMMENT "(DC2Type:pimcoreAsset)"');
         }
     }
 
