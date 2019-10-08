@@ -41,6 +41,10 @@ services:
         tags:
             - { name: jms_serializer.handler, type: pimcoreSite, direction: serialization, format: json, method: serializeRelation}
 
+    CoreShop\Bundle\ResourceBundle\Serialization\CarbonHandler:
+        tags:
+            - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
+
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
@@ -64,3 +68,8 @@ services:
     CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:
         arguments:
             - '@Pimcore\Cache\Core\CoreHandlerInterface'
+
+    CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver:
+        decorates: 'jms_serializer.metadata.annotation_driver'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver.inner'

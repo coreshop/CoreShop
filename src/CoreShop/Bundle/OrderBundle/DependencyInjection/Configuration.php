@@ -72,6 +72,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->booleanNode('legacy_serialization')->defaultTrue()->end()
             ->end();
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);

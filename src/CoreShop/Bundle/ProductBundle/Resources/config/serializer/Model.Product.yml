@@ -1,0 +1,34 @@
+CoreShop\Component\Product\Model\Product:
+    exclusion_policy: ALL
+    xml_root_name: product
+    properties:
+        o_id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [List, Detailed]
+        sku:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        ean:
+            expose: true
+            type: string
+            groups: [List, Detailed]
+        shortDescription:
+            expose: true
+            type: string
+            groups: [Detailed]
+        active:
+            expose: true
+            type: boolean
+            groups: [Detailed]
+        name:
+            expose: true
+            type: string
+            groups: [Detailed]
+        images:
+            expose: true
+            type: array
+            groups: [Detailed]
+

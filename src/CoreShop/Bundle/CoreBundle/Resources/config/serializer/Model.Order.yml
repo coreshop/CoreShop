@@ -1,0 +1,13 @@
+CoreShop\Component\Core\Model\Order:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        weight:
+            serialized_name: weight
+            exp: object.getWeight()
+            type: float
+            groups: [Detailed]
+        carrier:
+            serialized_name: carrier
+            exp: object.getCarrier()
+            groups: [Detailed]
