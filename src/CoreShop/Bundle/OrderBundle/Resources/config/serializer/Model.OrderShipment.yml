@@ -13,13 +13,8 @@ CoreShop\Component\Order\Model\OrderShipment:
             type: string
             groups: [Detailed]
         shipmentDate:
-            serialized_name: invoiceDate
+            serialized_name: shipmentDate
             exp: object.getShipmentDate()
-            type: integer
-            groups: [Detailed]
-        documentDate:
-            serialized_name: documentDate
-            exp: object.getDocumentDate()
             type: integer
             groups: [Detailed]
         shipmentNumber:
