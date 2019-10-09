@@ -19,6 +19,10 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: boolean
             groups: [Detailed]
+        logo:
+            expose: true
+            type: pimcoreAsset
+            groups: [Detailed]
         shippingRules:
             expose: true
             type: array

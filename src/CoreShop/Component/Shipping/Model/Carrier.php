@@ -17,6 +17,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\Asset;
 
 class Carrier extends AbstractResource implements CarrierInterface
 {
@@ -45,6 +46,11 @@ class Carrier extends AbstractResource implements CarrierInterface
      * @var bool
      */
     private $isFree = false;
+
+    /**
+     * @var Asset|null
+     */
+    private $logo;
 
     /**
      * @var Collection|ShippingRuleGroupInterface[]
@@ -149,6 +155,22 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getShippingRules()
     {
         return $this->shippingRules;
@@ -214,4 +236,6 @@ class Carrier extends AbstractResource implements CarrierInterface
     {
         return new CarrierTranslation();
     }
+
+
 }
