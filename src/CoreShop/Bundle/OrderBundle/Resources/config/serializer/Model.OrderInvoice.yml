@@ -24,7 +24,7 @@ CoreShop\Component\Order\Model\OrderInvoice:
             groups: [Detailed]
         invoiceNumber:
             serialized_name: invoiceNumber
-            exp: object.getDocumentNumber()
+            exp: object.getInvoiceNumber()
             type: string
             groups: [Detailed]
         totalNet:
