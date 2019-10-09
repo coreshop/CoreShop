@@ -96,7 +96,7 @@ CoreShop\Component\Order\Model\Sale:
             exp: object.getTotal(false)
             type: integer
             groups: [Detailed]
-        totaGross:
+        totalGross:
             serialized_name: totalGross
             exp: object.getTotal(true)
             type: integer
@@ -106,7 +106,7 @@ CoreShop\Component\Order\Model\Sale:
             exp: object.getBaseTotal(false)
             type: integer
             groups: [Detailed]
-        baseTotaGross:
+        baseTotalGross:
             serialized_name: baseTotalGross
             exp: object.getBaseTotal(true)
             type: integer

@@ -1,0 +1,3 @@
+CoreShop\Component\Order\Model\OrderInvoiceItem:
+    exclusion_policy: ALL
+    xml_root_name: order_invoice_item
