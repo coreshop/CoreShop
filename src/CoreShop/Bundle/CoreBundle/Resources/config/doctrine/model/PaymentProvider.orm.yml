@@ -1,11 +1,6 @@
 CoreShop\Component\Core\Model\PaymentProvider:
     type: mappedSuperclass
     table: coreshop_payment_provider
-    fields:
-        logo:
-            type: pimcoreAsset
-            column: logoId
-            nullable: true
     manyToMany:
         stores:
             targetEntity: CoreShop\Component\Store\Model\StoreInterface

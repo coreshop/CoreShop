@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PaymentBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreAssetChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -33,6 +34,9 @@ final class PaymentProviderType extends AbstractResourceType
             ])
             ->add('position', IntegerType::class, [
                 'required' => false,
+            ])
+            ->add('logo', PimcoreAssetChoiceType::class, [
+                'required' => false
             ])
             ->add('active', CheckboxType::class, [
                 'required' => false,

@@ -16,6 +16,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Resource\Model\TranslatableTrait;
+use Pimcore\Model\Asset;
 
 class PaymentProvider extends AbstractResource implements PaymentProviderInterface
 {
@@ -40,6 +41,11 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
      * @var int
      */
     protected $position = 1;
+
+    /**
+     * @var Asset|null
+     */
+    protected $logo;
 
     public function __construct()
     {
@@ -143,6 +149,22 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
      * @param null $locale
      * @param bool $useFallbackTranslation
      *
@@ -163,4 +185,5 @@ class PaymentProvider extends AbstractResource implements PaymentProviderInterfa
     {
         return new PaymentProviderTranslation();
     }
+
 }

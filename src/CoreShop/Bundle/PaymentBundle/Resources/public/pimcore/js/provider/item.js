@@ -77,6 +77,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
                 name: 'active',
                 checked: this.data.active
             },
+            this.getLogoSelect().getLayoutEdit(),
             {
                 xtype: 'combobox',
                 itemId: 'paymentFactory',
@@ -120,7 +121,7 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
             buttons: [
                 {
                     text: t('save'),
-                    handler: this.save.bind(this, function(res) {
+                    handler: this.save.bind(this, function (res) {
                         if (res.success) {
                             this.formPanel.down('#paymentFactory').setReadOnly(true);
                         }
@@ -156,6 +157,19 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
         }
 
         return this.gatewayConfigPanel;
+    },
+
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
     },
 
     getGatewayConfigPanelLayout: function (type) {
