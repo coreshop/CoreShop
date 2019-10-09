@@ -1,0 +1,39 @@
+CoreShop\Component\Order\Model\OrderShipment:
+    exclusion_policy: ALL
+    xml_root_name: order_shipment
+    virtual_properties:
+        o_id:
+            serialized_name: o_id
+            exp: object.getId()
+            type: integer
+            groups: [Detailed]
+        documentType:
+            serialized_name: documentType
+            exp: object.getDocumentType()
+            type: string
+            groups: [Detailed]
+        shipmentDate:
+            serialized_name: invoiceDate
+            exp: object.getShipmentDate()
+            type: integer
+            groups: [Detailed]
+        documentDate:
+            serialized_name: documentDate
+            exp: object.getDocumentDate()
+            type: integer
+            groups: [Detailed]
+        shipmentNumber:
+            serialized_name: shipmentNumber
+            exp: object.getShipmentNumber()
+            type: string
+            groups: [Detailed]
+        trackingCode:
+            serialized_name: trackingCode
+            exp: object.getTrackingCode()
+            type: integer
+            groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems()
+            type: array
+            groups: [Detailed]

@@ -332,11 +332,6 @@ class OrderController extends AbstractSaleDetailController
         foreach ($shipments as $shipment) {
             $data = $this->getSerializer()->toArray($shipment);
 
-            //This should be in CoreBundle, but for BC reasons, we keep it here
-            if (method_exists($shipment, 'getCarrier')) {
-                $data['carrierName'] = $shipment->getCarrier()->getTitle();
-            }
-
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',
                 'ship',

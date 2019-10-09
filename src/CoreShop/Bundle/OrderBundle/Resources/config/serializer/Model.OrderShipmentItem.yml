@@ -1,0 +1,14 @@
+CoreShop\Component\Order\Model\OrderShipmentItem:
+    exclusion_policy: ALL
+    xml_root_name: order_shipment_item
+    virtual_properties:
+        _itemName:
+            serialized_name: _itemName
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null'
+            type: string
+            groups: [Detailed]
+        name:
+            serialized_name: name
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null'
+            type: string
+            groups: [Detailed]
