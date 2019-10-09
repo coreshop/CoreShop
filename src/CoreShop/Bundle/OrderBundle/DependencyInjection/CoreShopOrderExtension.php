@@ -62,6 +62,7 @@ final class CoreShopOrderExtension extends AbstractModelExtension
             $loader->load('services/data_hub.yml');
         }
 
+        $container->setParameter('coreshop.order.legacy_serialization', $config['legacy_serialization']);
         $container->setParameter('coreshop.cart.expiration.days', $config['expiration']['cart']['days']);
         $container->setParameter('coreshop.cart.expiration.anonymous', $config['expiration']['cart']['anonymous']);
         $container->setParameter('coreshop.cart.expiration.customer', $config['expiration']['cart']['customer']);

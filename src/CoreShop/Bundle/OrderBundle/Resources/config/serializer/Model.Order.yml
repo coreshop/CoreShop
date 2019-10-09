@@ -1,0 +1,23 @@
+CoreShop\Component\Order\Model\Order:
+    exclusion_policy: ALL
+    xml_root_name: order
+    virtual_properties:
+        saleDate:
+            serialized_name: saleDate
+            exp: object.getSaleDate()
+            type: carbon
+            groups: [List, Detailed]
+        token:
+            serialized_name: token
+            exp: object.getToken()
+            type: string
+            groups: [List, Detailed]
+        paymentProvider:
+            serialized_name: paymentProvider
+            exp: object.getPaymentProvider()
+            groups: [Detailed]
+        paymentSettings:
+            serialized_name: paymentSettings
+            exp: object.getPaymentSettings()
+            type: array
+            groups: [Detailed]

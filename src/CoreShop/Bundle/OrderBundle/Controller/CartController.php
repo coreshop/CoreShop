@@ -24,6 +24,7 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use JMS\Serializer\SerializationContext;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
@@ -241,19 +242,25 @@ class CartController extends AbstractSaleController
      */
     protected function getDetails(CartInterface $cart)
     {
-        $jsonSale = $this->getDataForObject($cart);
+        if ($this->getParameter('coreshop.order.legacy_serialization')) {
+            $jsonSale = $this->getDataForObject($cart);
+            $jsonSale['o_id'] = $cart->getId();
+            $jsonSale['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
+            $jsonSale['store'] = $cart->getStore() instanceof StoreInterface ? $this->getStore($cart->getStore()) : null;
+            $jsonSale['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());
+            $jsonSale['totalGross'] = $cart->getTotal();
+            $jsonSale['saleDate'] = $cart->getCreationDate();
+        }
+        else {
+            $jsonSale = $this->get('jms_serializer')->toArray($cart);
+        }
 
         if ($jsonSale['items'] === null) {
             $jsonSale['items'] = [];
         }
 
         $jsonSale['o_id'] = $cart->getId();
-        $jsonSale['saleDate'] = $cart->getCreationDate();
-        $jsonSale['customer'] = $cart->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($cart->getCustomer()) : null;
         $jsonSale['details'] = $this->getItemDetails($cart);
-        $jsonSale['currency'] = $this->getCurrency($cart->getCurrency() ?: $cart->getStore()->getCurrency());
-        $jsonSale['store'] = $cart->getStore() instanceof StoreInterface ? $this->getStore($cart->getStore()) : null;
-        $jsonSale['totalGross'] = $cart->getTotal();
         $jsonSale['edit'] = true;
 
         $jsonSale['address'] = [

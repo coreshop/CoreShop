@@ -211,21 +211,26 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function getDetails(SaleInterface $sale)
     {
-        $jsonSale = $this->getDataForObject($sale);
+        if ($this->getParameter('coreshop.order.legacy_serialization')) {
+            $jsonSale = $this->getDataForObject($sale);
+            $jsonSale['o_id'] = $sale->getId();
+            $jsonSale['saleNumber'] = $sale->getSaleNumber();
+            $jsonSale['saleDate'] = $sale->getSaleDate()->getTimestamp();
+            $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
+            $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
+            $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
+        }
+        else {
+            $jsonSale = $this->get('jms_serializer')->toArray($sale);
+        }
 
         if ($jsonSale['items'] === null) {
             $jsonSale['items'] = [];
         }
-
-        $jsonSale['o_id'] = $sale->getId();
-        $jsonSale['saleNumber'] = $sale->getSaleNumber();
-        $jsonSale['saleDate'] = $sale->getSaleDate()->getTimestamp();
-        $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
+        
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
         $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($sale);
-        $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
-        $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
 
         $jsonSale['address'] = [
             'shipping' => $this->getDataForObject($sale->getShippingAddress()),

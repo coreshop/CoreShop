@@ -1,0 +1,8 @@
+CoreShop\Component\Core\Model\Quote:
+    exclusion_policy: ALL
+    xml_root_name: quote
+    virtual_properties:
+        carrier:
+            serialized_name: carrier
+            exp: object.getCarrier()
+            groups: [Detailed]

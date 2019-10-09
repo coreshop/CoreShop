@@ -1,0 +1,43 @@
+CoreShop\Component\Core\Model\OrderItem:
+    exclusion_policy: ALL
+    xml_root_name: order_item
+    virtual_properties:
+        digitalProduct:
+            serialized_name: digitalProduct
+            exp: object.getDigitalProduct()
+            type: boolean
+            groups: [Detailed]
+        defaultUnitQuantity:
+            serialized_name: defaultUnitQuantity
+            exp: object.getDefaultUnitQuantity()
+            type: float
+            groups: [Detailed]
+        objectId:
+            serialized_name: objectId
+            exp: object.getObjectId()
+            type: integer
+            groups: [Detailed]
+        mainObjectId:
+            serialized_name: mainObjectId
+            exp: object.getMainObjectId()
+            type: integer
+            groups: [Detailed]
+        unitIdentifier:
+            serialized_name: unitIdentifier
+            exp: object.getUnitIdentifier()
+            type: string
+            groups: [Detailed]
+        unit:
+            serialized_name: unit
+            exp: object.getUnit()
+            groups: [Detailed]
+        itemWeight:
+            serialized_name: itemWeight
+            exp: object.getItemWeight()
+            type: float
+            groups: [Detailed]
+        totalWeight:
+            serialized_name: totalWeight
+            exp: object.getTotalWeight()
+            type: float
+            groups: [Detailed]
