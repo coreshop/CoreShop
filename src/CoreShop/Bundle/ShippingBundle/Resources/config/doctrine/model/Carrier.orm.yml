@@ -19,6 +19,10 @@ CoreShop\Component\Shipping\Model\Carrier:
         isFree:
             column: isFree
             type: boolean
+        logo:
+            column: logo
+            type: pimcoreAsset
+            nullable: true
         creationDate:
             type: datetime
             gedmo:

@@ -115,7 +115,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         name: 'trackingUrl',
                         fieldLabel: t('coreshop_carrier_trackingUrl'),
                         value: data.trackingUrl
-                    }, {
+                    },
+                    this.getLogoSelect().getLayoutEdit(),
+                    {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -129,6 +131,19 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         });
 
         return this.settingsForm;
+    },
+
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
     },
 
     getShippingRulesGrid: function () {
