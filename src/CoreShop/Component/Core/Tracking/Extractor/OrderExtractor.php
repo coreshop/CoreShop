@@ -90,6 +90,6 @@ class OrderExtractor implements TrackingExtractorInterface
      */
     protected function parseAmount($amount)
     {
-        return (int) round((round($amount / $this->decimalFactor, $this->decimalPrecision) * 100), 0);
+        return (int) round((round($amount / $this->decimalFactor, $this->decimalPrecision)), 0);
     }
 }
