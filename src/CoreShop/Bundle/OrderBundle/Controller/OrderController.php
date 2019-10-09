@@ -246,9 +246,12 @@ class OrderController extends AbstractSaleDetailController
             $order['availableOrderTransitions'] = $availableTransitions;
             $order['statesHistory'] = $this->getStatesHistory($sale);
 
+
+            $invoices = $this->getInvoices($sale);
+
+            $order['editable'] = count($invoices) > 0 ? false : true;
+            $order['invoices'] = $invoices;
             $order['payments'] = $this->getPayments($sale);
-            $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
-            $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
             $order['paymentCreationAllowed'] = !in_array($sale->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
             $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
@@ -300,7 +303,7 @@ class OrderController extends AbstractSaleDetailController
                 'cancel',
             ], false);
 
-            $data = $this->getDataForObject($invoice);
+            $data = $this->getSerializer()->toArray($invoice);
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
             $data['transitions'] = $availableTransitions;
@@ -327,7 +330,7 @@ class OrderController extends AbstractSaleDetailController
         $shipmentArray = [];
 
         foreach ($shipments as $shipment) {
-            $data = $this->getDataForObject($shipment);
+            $data = $this->getSerializer()->toArray($shipment);
 
             //This should be in CoreBundle, but for BC reasons, we keep it here
             if (method_exists($shipment, 'getCarrier')) {

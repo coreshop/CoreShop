@@ -138,7 +138,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function prepareSale(SaleInterface $sale)
     {
-        $date = (int) $sale->getSaleDate()->getTimestamp();
+        $date = (int)$sale->getSaleDate()->getTimestamp();
 
         $element = [
             'o_id' => $sale->getId(),
@@ -219,15 +219,14 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
             $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
             $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
-        }
-        else {
-            $jsonSale = $this->get('jms_serializer')->toArray($sale);
+        } else {
+            $jsonSale = $this->getSerializer()->toArray($sale);
         }
 
         if ($jsonSale['items'] === null) {
             $jsonSale['items'] = [];
         }
-        
+
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
         $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($sale);
@@ -464,5 +463,13 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     private function getAddressFormatter()
     {
         return $this->get('coreshop.address.formatter');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    protected function getSerializer()
+    {
+        return $this->get('jms_serializer');
     }
 }
