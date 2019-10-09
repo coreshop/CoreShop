@@ -135,7 +135,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
     getLogoSelect: function () {
         return new coreshop.object.elementHref({
-            id: logoId,
+            id: this.data.logo,
             type: 'asset',
             subtype: 'image'
         }, {
