@@ -341,11 +341,6 @@ class OrderController extends AbstractSaleDetailController
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
             $data['transitions'] = $availableTransitions;
 
-            // better solution?
-            foreach ($shipment->getItems() as $index => $item) {
-                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-            }
-
             $shipmentArray[] = $data;
         }
 
@@ -367,7 +362,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return ProcessableInterface
      */
-    private function getInvoiceProcessableHelper()
+    protected function getInvoiceProcessableHelper()
     {
         return $this->get('coreshop.order.invoice.processable');
     }
@@ -375,7 +370,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return ProcessableInterface
      */
-    private function getShipmentProcessableHelper()
+    protected function getShipmentProcessableHelper()
     {
         return $this->get('coreshop.order.shipment.processable');
     }
@@ -383,7 +378,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return OrderInvoiceRepositoryInterface
      */
-    private function getOrderInvoiceRepository()
+    protected function getOrderInvoiceRepository()
     {
         return $this->get('coreshop.repository.order_invoice');
     }
@@ -391,7 +386,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return OrderShipmentRepositoryInterface
      */
-    private function getOrderShipmentRepository()
+    protected function getOrderShipmentRepository()
     {
         return $this->get('coreshop.repository.order_shipment');
     }
@@ -399,7 +394,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return WorkflowStateInfoManagerInterface
      */
-    private function getWorkflowStateManager()
+    protected function getWorkflowStateManager()
     {
         return $this->get('coreshop.workflow.state_info_manager');
     }

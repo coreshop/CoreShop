@@ -1,3 +1,14 @@
 CoreShop\Component\Order\Model\OrderInvoiceItem:
     exclusion_policy: ALL
     xml_root_name: order_invoice_item
+    virtual_properties:
+        _itemName:
+            serialized_name: _itemName
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
+            type: string
+            groups: [Detailed]
+        name:
+            serialized_name: name
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
+            type: string
+            groups: [Detailed]

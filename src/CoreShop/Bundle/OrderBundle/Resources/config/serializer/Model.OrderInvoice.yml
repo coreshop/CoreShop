@@ -37,3 +37,8 @@ CoreShop\Component\Order\Model\OrderInvoice:
             exp: object.getTotal(true)
             type: integer
             groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems
+            type: array
+            groups: [Detailed]

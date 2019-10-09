@@ -4,11 +4,11 @@ CoreShop\Component\Order\Model\OrderShipmentItem:
     virtual_properties:
         _itemName:
             serialized_name: _itemName
-            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null'
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
             type: string
             groups: [Detailed]
         name:
             serialized_name: name
-            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null'
+            exp: 'object.getOrderItem() != null ? object.getOrderItem().getName() : null' # TODO: add interface check when upgrading to JMS Serializer > 3.0
             type: string
             groups: [Detailed]

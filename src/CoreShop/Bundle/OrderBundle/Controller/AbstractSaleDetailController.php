@@ -460,7 +460,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @return AddressFormatterInterface
      */
-    private function getAddressFormatter()
+    protected function getAddressFormatter()
     {
         return $this->get('coreshop.address.formatter');
     }
