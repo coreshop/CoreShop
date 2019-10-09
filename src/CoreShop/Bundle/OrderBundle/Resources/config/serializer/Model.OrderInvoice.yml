@@ -22,8 +22,8 @@ CoreShop\Component\Order\Model\OrderInvoice:
             exp: object.getInvoiceDate()
             type: integer
             groups: [Detailed]
-        documentNumber:
-            serialized_name: documentNumber
+        invoiceNumber:
+            serialized_name: invoiceNumber
             exp: object.getDocumentNumber()
             type: string
             groups: [Detailed]
