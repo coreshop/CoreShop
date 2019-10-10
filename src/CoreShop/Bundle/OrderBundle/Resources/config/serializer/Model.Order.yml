@@ -21,3 +21,4 @@ CoreShop\Component\Order\Model\Order:
             exp: object.getPaymentSettings()
             type: array
             groups: [Detailed]
+
