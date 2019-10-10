@@ -211,7 +211,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function getDetails(SaleInterface $sale)
     {
-        if ($this->getParameter('coreshop.order.legacy_serialization')) {
+        if ($this->useLegacySerialization()) {
             $jsonSale = $this->getDataForObject($sale);
             $jsonSale['o_id'] = $sale->getId();
             $jsonSale['saleNumber'] = $sale->getSaleNumber();
@@ -471,5 +471,13 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     protected function getSerializer()
     {
         return $this->get('jms_serializer');
+    }
+
+    /**
+     * @return bool
+     */
+    protected function useLegacySerialization()
+    {
+        return $this->getParameter('coreshop.order.legacy_serialization') === true;
     }
 }

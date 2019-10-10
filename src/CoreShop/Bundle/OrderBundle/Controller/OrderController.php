@@ -303,15 +303,18 @@ class OrderController extends AbstractSaleDetailController
                 'cancel',
             ], false);
 
-            $data = $this->getSerializer()->toArray($invoice);
+            if ($this->useLegacySerialization()) {
+                $data = $this->getDataForObject($invoice);
+
+                foreach ($invoice->getItems() as $index => $item) {
+                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+                }
+            } else {
+                $data = $this->getSerializer()->toArray($invoice);
+            }
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
             $data['transitions'] = $availableTransitions;
-
-            // better solution?
-            foreach ($invoice->getItems() as $index => $item) {
-                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-            }
 
             $invoiceArray[] = $data;
         }
@@ -330,13 +333,22 @@ class OrderController extends AbstractSaleDetailController
         $shipmentArray = [];
 
         foreach ($shipments as $shipment) {
-            $data = $this->getSerializer()->toArray($shipment);
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',
                 'ship',
                 'cancel',
             ], false);
+
+            if ($this->useLegacySerialization()) {
+                $data = $this->getDataForObject($shipment);
+
+                foreach ($shipment->getItems() as $index => $item) {
+                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+                }
+            } else {
+                $data = $this->getSerializer()->toArray($shipment);
+            }
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
             $data['transitions'] = $availableTransitions;
@@ -446,4 +458,5 @@ class OrderController extends AbstractSaleDetailController
     {
         return 'orderNumber';
     }
+
 }
