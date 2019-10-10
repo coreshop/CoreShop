@@ -24,7 +24,7 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
                     className: this.fieldConfig.className,
                     recursive: this.fieldConfig.recursive,
                     current_language: pimcore.settings.language,
-                    sortBy: this.fieldConfig.sortBy
+                    sortNy: this.fieldConfig.sortBy
                 },
                 reader: {
                     type: 'json',
