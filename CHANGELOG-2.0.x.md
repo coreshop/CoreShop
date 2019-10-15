@@ -1,5 +1,9 @@
 # Within V2
 
+## 2.0.10
+ - Bugs:
+   - [PayumBundle]: add sandbox to PayPal Configuration (https://github.com/coreshop/CoreShop/pull/1112)
+
 ## 2.0.9
  - Bugs:
    - [Pimcore] fix stan tests on 2.0 (https://github.com/coreshop/CoreShop/pull/998)
