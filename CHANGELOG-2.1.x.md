@@ -1,5 +1,21 @@
 # Within 2.1
 
+## 2.1.0-rc.2
+ - Features:
+   - [IndexBundle] allow for more complex doctrine types in index (https://github.com/coreshop/CoreShop/pull/1110)
+   - [IndexBundle] add Select and Multiselect Filter Processor from Multiselect (https://github.com/coreshop/CoreShop/pull/1111)
+   - [Autowire] improvement: allow service registries to be autowired (https://github.com/coreshop/CoreShop/pull/1113, https://github.com/coreshop/CoreShop/pull/1116, https://github.com/coreshop/CoreShop/pull/1122)
+   - [QuantityPriceRules] allow price range ordering @solverat (https://github.com/coreshop/CoreShop/pull/1121)
+   - [Payment] Fix payment provider logo @davidhoeck (https://github.com/coreshop/CoreShop/pull/1124)
+   - [ResourceBundle, OrderBundle, CoreBundle] introduce more memory efficient (https://github.com/coreshop/CoreShop/pull/1126, https://github.com/coreshop/CoreShop/pull/1129)
+   - [Shipping, ShippingBundle] Add logo field to carrier @davidhoeck (https://github.com/coreshop/CoreShop/pull/1127)
+   - 
+
+ - Bugs:
+   - [Tests] exit code (https://github.com/coreshop/CoreShop/pull/1119)
+   - [Tracking] remove decimal factor multiplier in order extractor @solverat (https://github.com/coreshop/CoreShop/pull/1128)
+   - [QuantityPriceRules] Move migration for Quantity Rule Range Unit to Sales Unit migration  (https://github.com/coreshop/CoreShop/pull/1123)
+   s
 ## 2.1.0
  - BC-Break: Introduced `array $options` parameter into `CoreShop\Component\Index\Listing\ListingInterface` to allow certain variations for loading data
   
