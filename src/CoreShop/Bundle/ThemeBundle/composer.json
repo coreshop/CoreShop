@@ -20,6 +20,7 @@
   "require": {
     "php": "^7.2",
     "coreshop/registry": "^2.0",
+    "coreshop/pimcore-bundle": "^2.0",
     "liip/theme-bundle": "^1.4",
     "pimcore/pimcore": "^5.8.0 | ^6.0.0"
   },
