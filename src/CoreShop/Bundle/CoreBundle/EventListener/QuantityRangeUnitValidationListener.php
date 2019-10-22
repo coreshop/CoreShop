@@ -101,7 +101,7 @@ final class QuantityRangeUnitValidationListener
             }
 
             if ($unitDefinitionProduct->getId() !== $product->getId()) {
-                throw new ValidationException('Invalid unit definition reference. please reload your object, define unit definition first and blabla.');
+                throw new ValidationException('Invalid unit definition reference. Please reload the object and adjust the unit definitions first.');
             }
         }
     }
