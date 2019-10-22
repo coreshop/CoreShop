@@ -31,6 +31,8 @@ final class CoreShopFrontendExtension extends AbstractModelExtension
         }
 
         if (array_key_exists('controllers', $config)) {
+            $container->setParameter('coreshop.frontend.controllers', $config['controllers']);
+
             foreach ($config['controllers'] as $key => $value) {
                 $container->setParameter(sprintf('coreshop.frontend.controller.%s', $key), $value);
             }
