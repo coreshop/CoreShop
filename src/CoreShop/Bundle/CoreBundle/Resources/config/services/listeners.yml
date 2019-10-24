@@ -71,3 +71,9 @@ services:
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
             - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
+
+    CoreShop\Bundle\CoreBundle\EventListener\QuantityRangeUnitValidationListener:
+        arguments:
+            - '@coreshop.repository.product_unit_definition'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.product_quantity_price_rules.data_validation, method: validate }
