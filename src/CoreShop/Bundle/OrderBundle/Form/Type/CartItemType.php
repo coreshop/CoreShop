@@ -18,8 +18,6 @@ use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\NotEqualTo;
-use Symfony\Component\Validator\Constraints\Range;
 
 final class CartItemType extends AbstractResourceType
 {
