@@ -3,4 +3,4 @@ CoreShop\Component\Order\Model\CartItem:
         quantity:
             - NotBlank: { message: coreshop.cart_item.quantity.not_blank, groups: coreshop }
             - Type: { type: numeric, message: coreshop.cart_item.quantity.numeric, groups: coreshop }
-            - Range: { min: 0, minMessage: coreshop.cart_item.quantity.min, groups: coreshop }
+            - NotEqualTo: { value: 0, message: coreshop.cart_item.quantity.min, groups: coreshop }

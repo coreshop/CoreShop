@@ -18,7 +18,6 @@ use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Validator\Constraints\Range;
 
 final class CartItemType extends AbstractResourceType
 {
@@ -57,7 +56,6 @@ final class CartItemType extends AbstractResourceType
             $event->getForm()->add('quantity', QuantityType::class, [
                 'html5' => true,
                 'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
-                'constraints' => [new Range(['min' => 0])],
                 'label' => 'coreshop.ui.quantity',
                 'disabled' => $data->getIsGiftItem(),
             ]);
