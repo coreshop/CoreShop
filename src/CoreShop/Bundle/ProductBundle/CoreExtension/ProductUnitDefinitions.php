@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
@@ -22,7 +23,7 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 
-class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
+class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
     /**
      * @var string
@@ -150,6 +151,26 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $code .= "}\n\n";
 
         return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if ($data instanceof ProductUnitDefinitionsInterface) {
+            return $data->getId();
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getProductUnitDefinitionsRepository()->find($data);
     }
 
     /**
