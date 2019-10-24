@@ -18,13 +18,14 @@ use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 
-class StoreValues extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
+class StoreValues extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
     /**
      * @var string
@@ -365,6 +366,48 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         }
 
         $this->getEntityManager()->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if (is_array($data)) {
+            $marshaled = [];
+
+            foreach ($data as $storeValue) {
+                if ($storeValue instanceof ProductStoreValuesInterface) {
+                    $marshaled[] = $storeValue->getId();
+                }
+            }
+
+            return $marshaled;
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        if (is_array($data)) {
+            $unmarshaled = [];
+
+            foreach ($data as $id) {
+                $storeValue = $this->getProductStoreValuesRepository()->find($id);
+
+                if ($storeValue instanceof ProductStoreValuesInterface && $storeValue->getProduct()->getId() === $object->getId()) {
+                    $unmarshaled[] = $storeValue;
+                }
+            }
+
+            return $unmarshaled;
+        }
+
+        return $data;
     }
 
     /**
