@@ -52,6 +52,12 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                     ]);
                 break;
 
+                case 'checkout':
+                    $controllerDefinition->setArguments([
+                        new Reference('coreshop.checkout_manager.factory')
+                    ]);
+                    break;
+
                 case 'payment':
                     $controllerDefinition->setMethodCalls([
                         ['setContainer', [new Reference('service_container')]]
