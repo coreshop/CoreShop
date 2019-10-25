@@ -1,5 +1,13 @@
 # Within 2.1
 
+## 2.1.0
+ - Bugs:
+   - [ThemeBundle] add missing dependency to pimcore-bundle (https://github.com/coreshop/CoreShop/pull/1138, https://github.com/coreshop/CoreShop/pull/1140)
+   - [ResourceBundle] fix naming of parameter sortBy (https://github.com/coreshop/CoreShop/pull/1132)
+   - [Quantity Price Rules] Check Inherited Product Quantity Price Range Data (https://github.com/coreshop/CoreShop/pull/1143)
+   - [FrontendBundle] allow usage of auto-wired Frontend Controllers (https://github.com/coreshop/CoreShop/pull/1141)
+   - [OrderBundle] CartItem Quantity has to be > 0 (https://github.com/coreshop/CoreShop/pull/1144)
+
 ## 2.1.0-rc.2
  - Features:
    - [IndexBundle] allow for more complex doctrine types in index (https://github.com/coreshop/CoreShop/pull/1110)
