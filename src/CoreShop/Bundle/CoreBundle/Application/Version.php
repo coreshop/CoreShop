@@ -16,7 +16,7 @@ final class Version
 {
     const MAJOR_VERSION = '2';
     const MINOR_VERSION = '0';
-    const RELEASE_VERSION = '10';
+    const RELEASE_VERSION = '11';
     const EXTRA_VERSION = '';
 
     /**

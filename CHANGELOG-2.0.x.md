@@ -1,5 +1,9 @@
 # Within V2
 
+## 2.0.11
+ - Bugs:
+   - [IndexBundle] use doctrine schema-config to create index-table schema (https://github.com/coreshop/CoreShop/pull/1142)
+
 ## 2.0.10
  - Bugs:
    - [PayumBundle]: add sandbox to PayPal Configuration (https://github.com/coreshop/CoreShop/pull/1112)
