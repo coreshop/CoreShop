@@ -1,5 +1,7 @@
 # CoreShop Installation
 
+You need a running instance of Pimcore on your system before you can install CoreShop. 
+
 You can setup your own example:
 
  - Install with composer ```composer require coreshop/core-shop dev-master```
