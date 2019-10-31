@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -22,7 +23,7 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
-class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface
+class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -69,7 +70,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
-     * @return \JMS\Serializer\SerializerInterface
+     * @return \JMS\Serializer\Serializer
      */
     private function getSerializer()
     {
@@ -160,6 +161,22 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object)['rules'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
+    }
+
+    /**
      * @param mixed $data
      * @param null  $object
      * @param array $params
@@ -181,9 +198,9 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
 
-            $serializedData = $this->getSerializer()->serialize($prices, 'json', $context);
+            $serializedData = $this->getSerializer()->toArray($prices, $context);
 
-            $data['rules'] = json_decode($serializedData, true);
+            $data['rules'] = $serializedData;
         }
 
         return $data;

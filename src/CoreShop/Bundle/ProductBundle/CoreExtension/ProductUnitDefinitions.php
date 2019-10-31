@@ -158,11 +158,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function marshalVersion($object, $data)
     {
-        if ($data instanceof ProductUnitDefinitionsInterface) {
-            return $data->getId();
-        }
-
-        return $data;
+        return null;
     }
 
     /**
@@ -170,7 +166,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function unmarshalVersion($object, $data)
     {
-        return $this->getProductUnitDefinitionsRepository()->find($data);
+        return null;
     }
 
     /**
@@ -297,10 +293,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->setGroups(['Default', 'Detailed']);
-        $serializedData = $this->getSerializer()->serialize($productUnitDefinition, 'json', $context);
-        $values = json_decode($serializedData, true);
 
-        return $values;
+        return $this->getSerializer()->toArray($productUnitDefinition, $context);
     }
 
     /**
@@ -308,6 +302,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
+        if (!is_array($data)) {
+            return null;
+        }
+
         $errors = [];
         $productUnitDefinitionsValues = null;
 
@@ -468,7 +466,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     }
 
     /**
-     * @return \JMS\Serializer\SerializerInterface
+     * @return \JMS\Serializer\Serializer
      */
     private function getSerializer()
     {
