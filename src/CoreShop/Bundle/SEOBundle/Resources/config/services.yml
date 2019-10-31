@@ -6,7 +6,7 @@ services:
         public: true
 
     coreshop.registry.seo.extractor:
-        class: CoreShop\Component\Registry\ServiceRegistry
+        class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - 'CoreShop\Component\SEO\Extractor\ExtractorInterface'
             - 'seo metadata extractor'

@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\SEO;
 
-use CoreShop\Component\Registry\ServiceRegistryInterface;
+use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use CoreShop\Component\SEO\Extractor\ExtractorInterface;
 use CoreShop\Component\SEO\Model\SEOMetadata;
 use Pimcore\Templating\Helper\HeadMeta;
@@ -31,17 +31,20 @@ class SEOPresentation implements SEOPresentationInterface
     protected $headTitle;
 
     /**
-     * @var ServiceRegistryInterface
+     * @var PrioritizedServiceRegistryInterface
      */
     protected $extractorRegistry;
 
     /**
-     * @param HeadMeta                 $headMeta
-     * @param HeadTitle                $headTitle
-     * @param ServiceRegistryInterface $extractorRegistry
+     * @param HeadMeta                            $headMeta
+     * @param HeadTitle                           $headTitle
+     * @param PrioritizedServiceRegistryInterface $extractorRegistry
      */
-    public function __construct(HeadMeta $headMeta, HeadTitle $headTitle, ServiceRegistryInterface $extractorRegistry)
-    {
+    public function __construct(
+        HeadMeta $headMeta,
+        HeadTitle $headTitle,
+        PrioritizedServiceRegistryInterface $extractorRegistry
+    ) {
         $this->headMeta = $headMeta;
         $this->headTitle = $headTitle;
         $this->extractorRegistry = $extractorRegistry;
