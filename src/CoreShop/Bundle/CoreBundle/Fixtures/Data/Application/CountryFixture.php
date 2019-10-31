@@ -147,6 +147,12 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                     $addressFormat = str_replace($replaceFrom, $replaceTo, $addressFormat);
                 }
 
+                $addressFormat = explode(PHP_EOL, $addressFormat);
+                $addressFormat = array_map(function($entry) {
+                    return trim($entry);
+                }, $addressFormat);
+                $addressFormat = implode(PHP_EOL, $addressFormat);
+
                 $newCountry->setAddressFormat($addressFormat);
                 $newCountry->setSalutations($defaultSalutations);
                 $manager->persist($newCountry);
