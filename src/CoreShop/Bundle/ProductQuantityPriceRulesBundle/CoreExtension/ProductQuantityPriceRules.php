@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -25,7 +26,7 @@ use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface
+class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -88,7 +89,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
-     * @return \JMS\Serializer\SerializerInterface
+     * @return \JMS\Serializer\Serializer
      */
     private function getSerializer()
     {
@@ -173,6 +174,26 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if ($object instanceof QuantityRangePriceAwareInterface) {
+            return $this->getDataForEditmode($data, $object)['rules'];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
+    }
+
+    /**
      * @param mixed $data
      * @param null  $object
      * @param array $params
@@ -206,8 +227,8 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
             $quantityPriceRules = $this->load($object, ['force' => true]);
-            $serializedData = $this->getSerializer()->serialize($quantityPriceRules, 'json', $context);
-            $data['rules'] = json_decode($serializedData, true);
+
+            $data['rules'] = $this->getSerializer()->toArray($quantityPriceRules, $context);
         }
 
         return $data;
