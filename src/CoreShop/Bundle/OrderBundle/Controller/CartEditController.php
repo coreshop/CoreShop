@@ -2,6 +2,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddMultipleToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\EditCartType;
@@ -96,16 +97,18 @@ class CartEditController extends AbstractSaleController
             $commands[] = $this->createAddToCart($cart, $cartItem);
         }
 
-        $form = $this->get('form.factory')->createNamed('', AddMultipleToCartType::class, ['items' => $commands]);
+        $addMultipleAddToCarts = $this->createMultipleAddToCart($commands);
+
+        $form = $this->get('form.factory')->createNamed('', AddMultipleToCartType::class, $addMultipleAddToCarts);
 
         if ($request->isMethod('POST')) {
             if ($form->handleRequest($request)->isValid()) {
+                /**
+                 * @var AddMultipleToCartInterface $addsToCart
+                 */
                 $addsToCart = $form->getData();
 
-                /**
-                 * @var AddToCartInterface $addToCart
-                 */
-                foreach ($addsToCart['items'] as $addToCart) {
+                foreach ($addsToCart->getItems() as $addToCart) {
                     $this->getCartModifier()->addToList(
                         $addToCart->getCart(),
                         $addToCart->getCartItem()
@@ -171,6 +174,15 @@ class CartEditController extends AbstractSaleController
         $this->get('coreshop.cart.manager')->persistCart($cart);
 
         return $this->viewHandler->handle(['success' => true]);
+    }
+
+    /**
+     * @param array $addToCarts
+     * @return AddMultipleToCartInterface
+     */
+    protected function createMultipleAddToCart(array $addToCarts)
+    {
+        return $this->get('coreshop.factory.add_multiple_to_cart')->createWithMultipleAddToCarts($addToCarts);
     }
 
     /**

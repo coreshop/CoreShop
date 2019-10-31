@@ -1,5 +1,6 @@
 parameters:
     coreshop.dto.add_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddToCart'
+    coreshop.dto.add_multiple_to_cart.class: 'CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCart'
 
 imports:
     - { resource: "services/order.yml" }
@@ -104,3 +105,8 @@ services:
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory:
         arguments:
             - '%coreshop.dto.add_to_cart.class%'
+
+    coreshop.factory.add_multiple_to_cart: '@CoreShop\Bundle\OrderBundle\Factory\AddMultipleToCartFactory'
+    CoreShop\Bundle\OrderBundle\Factory\AddMultipleToCartFactory:
+        arguments:
+            - '%coreshop.dto.add_multiple_to_cart.class%'
