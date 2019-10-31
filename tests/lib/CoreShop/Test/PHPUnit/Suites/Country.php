@@ -70,7 +70,7 @@ class Country extends Base
 
         $addressFormatted = $this->get('coreshop.address.formatter')->formatAddress($address, false);
 
-        $this->assertSame(" \n Mr. Dominik Pfaffenbauer\nFreiung 9-11/N3 \n \nAustria ", $addressFormatted);
+        $this->assertSame("\nMr. Dominik Pfaffenbauer\nFreiung 9-11/N3 \n\nAustria ", $addressFormatted);
     }
 
     public function testCountryContext()
