@@ -373,19 +373,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function marshalVersion($object, $data)
     {
-        if (is_array($data)) {
-            $marshaled = [];
-
-            foreach ($data as $storeValue) {
-                if ($storeValue instanceof ProductStoreValuesInterface) {
-                    $marshaled[] = $storeValue->getId();
-                }
-            }
-
-            return $marshaled;
-        }
-
-        return $data;
+        return array_map(function($storeValues) {
+            return $storeValues['values'];
+        }, $this->getDataForEditmode($data, $object));
     }
 
     /**
@@ -393,21 +383,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function unmarshalVersion($object, $data)
     {
-        if (is_array($data)) {
-            $unmarshaled = [];
-
-            foreach ($data as $id) {
-                $storeValue = $this->getProductStoreValuesRepository()->find($id);
-
-                if ($storeValue instanceof ProductStoreValuesInterface && $storeValue->getProduct()->getId() === $object->getId()) {
-                    $unmarshaled[] = $storeValue;
-                }
-            }
-
-            return $unmarshaled;
-        }
-
-        return $data;
+        return $this->getDataFromEditmode($data, $object, ['clone' => true]);
     }
 
     /**
@@ -444,8 +420,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
-            $serializedData = $this->getSerializer()->serialize($storeValuesEntity, 'json', $context);
-            $values = json_decode($serializedData, true);
+            $values = $this->getSerializer()->toArray($storeValuesEntity, $context);
 
             $storeData[$storeValuesEntity->getStore()->getId()] = [
                 'name' => $storeValuesEntity->getStore()->getName(),
@@ -491,6 +466,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
             if ($storeValuesId !== null) {
                 $storeValuesEntity = $this->getProductStoreValuesRepository()->find($storeValuesId);
+            }
+
+            if (isset($params['clone']) && $storeValuesEntity) {
+                $storeValuesEntity = clone $storeValuesEntity;
             }
 
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
@@ -724,7 +703,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
-     * @return \JMS\Serializer\SerializerInterface
+     * @return \JMS\Serializer\Serializer
      */
     private function getSerializer()
     {
