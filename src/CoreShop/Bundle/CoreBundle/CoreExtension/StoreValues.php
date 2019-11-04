@@ -375,7 +375,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     {
         return array_map(function($storeValues) {
             return $storeValues['values'];
-        }, $this->getDataForEditmode($data, $object));
+        }, $this->getDataForEditmode($data, $object, ['groups' => ['Version']]));
     }
 
     /**
@@ -419,7 +419,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($storeValues as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
-            $context->setGroups(['Default', 'Detailed']);
+            $context->setGroups($params['groups'] ?? ['Default', 'Detailed']);
             $values = $this->getSerializer()->toArray($storeValuesEntity, $context);
 
             $storeData[$storeValuesEntity->getStore()->getId()] = [
