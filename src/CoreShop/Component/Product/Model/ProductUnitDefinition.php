@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
+use Doctrine\Common\Collections\Collection;
 
 class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {
@@ -139,5 +140,14 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     public function __toString()
     {
         return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $this->id = null;
     }
 }
