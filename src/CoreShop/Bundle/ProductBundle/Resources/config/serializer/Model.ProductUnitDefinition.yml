@@ -6,7 +6,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         unit:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnit
@@ -14,12 +14,18 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
         conversionRate:
             expose: true
             type: float
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         precision:
             expose: true
             type: int
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         productUnitDefinitions:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinitions
             groups: [List, Detailed]
+    virtual_properties:
+        unit:
+            exp: 'object.getUnit() ? object.getUnit().getId() : null'
+            type: integer
+            serialized_name: unit
+            groups: [Version]
