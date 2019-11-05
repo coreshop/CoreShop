@@ -79,7 +79,9 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
                 fieldLabel: t('coreshop_country_addressFormat'),
                 xtype: 'textarea',
                 name: 'addressFormat',
-                value: data.addressFormat
+                value: data.addressFormat,
+                width: 500,
+                height: 400
             },
             {
                 xtype: 'tagfield',
