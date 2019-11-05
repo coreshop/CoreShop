@@ -12,12 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
+use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Valid;
 
-final class AddMultipleToCartType extends AbstractType
+final class AddMultipleToCartType extends AbstractResourceType
 {
     /**
      * {@inheritdoc}
@@ -27,6 +28,9 @@ final class AddMultipleToCartType extends AbstractType
         $builder->add('items', CollectionType::class, [
             'entry_type' => AddToCartType::class,
             'allow_add' => true,
+            'constraints' => [
+                new Valid()
+            ]
         ]);
     }
 
