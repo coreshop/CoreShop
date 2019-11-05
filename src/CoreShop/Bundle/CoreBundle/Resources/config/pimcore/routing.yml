@@ -53,6 +53,11 @@ coreshop_admin_purchasable_store_preview:
     methods: [GET]
     defaults:  { _controller: coreshop.admin_controller.product_preview:previewAction}
 
+coreshop_admin_purchasable_validate_unit_definitions:
+    path: /%coreshop.admin.route.base%/product/validation/unit-definitions-deletion
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.product_validation:validateUnitDefinitionDeletionAction}
+
 coreshop_admin_purchsable_variant_unit_solidifier_check:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/check/{objectId}
     methods: [GET]

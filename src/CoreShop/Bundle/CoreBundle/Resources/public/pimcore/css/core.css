@@ -186,3 +186,8 @@ body.pimcore_version_6 .coreshop_nav_icon_localization {
 .x-tool-download:before {
     content: "\f0ed";
 }
+
+.x-btn.coreshop-transparent-btn {
+    background: transparent;
+    border: transparent;
+}
