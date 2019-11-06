@@ -40,9 +40,13 @@ final class ExtractorRegistryServicePass implements CompilerPassInterface
                 $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
             }
 
+            if (!isset($attributes[0]['priority'])) {
+                $attributes[0]['priority'] = 1000;
+            }
+
             $map[$attributes[0]['type']] = $attributes[0]['type'];
 
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
+            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
         }
 
         $container->setParameter('coreshop.seo.extractors', $map);
