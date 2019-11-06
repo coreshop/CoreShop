@@ -52,3 +52,13 @@ coreshop_admin_purchasable_store_preview:
     path: /%coreshop.admin.route.base%/preview
     methods: [GET]
     defaults:  { _controller: coreshop.admin_controller.product_preview:previewAction}
+
+coreshop_admin_purchsable_variant_unit_solidifier_check:
+    path: /%coreshop.admin.route.base%/product-variant-solidifier/check/{objectId}
+    methods: [GET]
+    defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:checkStatusAction}
+
+coreshop_admin_purchsable_variant_unit_solidifier_apply:
+    path: /%coreshop.admin.route.base%/product-variant-solidifier/apply/{objectId}
+    methods: [PUT]
+    defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:applyAction}
