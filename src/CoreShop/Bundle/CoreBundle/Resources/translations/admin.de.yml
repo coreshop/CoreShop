@@ -205,3 +205,6 @@ coreshop_product_unit_definition_price_not_available: 'Einheitenpreis Definition
 coreshop_store_values_unit_price: 'Preis'
 coreshop_unit: 'Einheit'
 coreshop_store_preview: 'Store-Vorschau'
+coreshop_solidify_variant_unit_definition_data: 'Produkteinheiten Definitionen (und SPR) auf Varianten übertragen'
+coreshop_solidify_variant_unit_definition_data_error_no_variants: 'Produkt hat keine Varianten.'
+coreshop_solidify_variant_unit_definition_data_error_no_unit_definitions: 'Das Produkt hat keine zugewiesenen Einheiten-Definitionen.'
