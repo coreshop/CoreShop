@@ -140,6 +140,22 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
@@ -189,7 +205,15 @@ class ProductSpecificPriceRules extends Data implements CustomResourcePersisting
 
         if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
-                $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class);
+                $ruleId = isset($dataRow['id']) && is_numeric($dataRow['id']) ? $dataRow['id'] : null;
+
+                $storedRule = null;
+
+                if ($ruleId !== null) {
+                    $storedRule = $this->getProductSpecificPriceRuleRepository()->find($ruleId);
+                }
+
+                $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class, $storedRule);
 
                 $form->submit($dataRow);
 

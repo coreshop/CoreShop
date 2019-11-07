@@ -1,4 +1,6 @@
-# CoreShop 2
+![CoreShop](etc/logo.png)
+
+---
 
 **CoreShop - Pimcore eCommerce**
 
@@ -26,7 +28,7 @@
 
 # Further Information
  - [Website](https://www.coreshop.org)
- - [Documentation](https://www.coreshop.org/docs/latest)
+ - [Documentation](https://docs.coreshop.org/latest)
  - [Pimcore Forum](https://talk.pimcore.org)
  - [Help translate CoreShop](https://crowdin.com/project/coreshop)
 

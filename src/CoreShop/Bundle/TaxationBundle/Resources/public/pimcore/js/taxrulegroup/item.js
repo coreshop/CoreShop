@@ -93,19 +93,22 @@ coreshop.taxrulegroup.item = Class.create(coreshop.resource.item, {
             data: this.data.taxRules
         });
 
+        var taxRatesStore = Ext.create('store.coreshop_tax_rates');
+        taxRatesStore.load();
+
         var gridColumns = [
             {
                 header: t('coreshop_tax'),
                 width: 200,
                 dataIndex: 'taxRate',
                 editor: new Ext.form.ComboBox({
-                    store: pimcore.globalmanager.get('coreshop_tax_rates'),
+                    store: taxRatesStore,
                     valueField: 'id',
                     displayField: 'name',
                     queryMode: 'local'
                 }),
                 renderer: function (taxRate) {
-                    var record = pimcore.globalmanager.get('coreshop_tax_rates').getById(taxRate);
+                    var record = taxRatesStore.getById(taxRate);
 
                     if (record) {
                         return record.get('name');

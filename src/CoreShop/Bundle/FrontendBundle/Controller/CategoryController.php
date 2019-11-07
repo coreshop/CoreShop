@@ -195,7 +195,7 @@ class CategoryController extends FrontendController
         $viewParameters['page'] = $page;
         $viewParameters['perPage'] = $perPage;
         $viewParameters['type'] = $type;
-        $viewParameters['perPageAllowed'] = [10, 20, 30, 40, 50];
+        $viewParameters['perPageAllowed'] = $allowedPerPage;
         $viewParameters['sort'] = $sort;
         $viewParameters['validSortElements'] = $this->validSortProperties;
 

@@ -85,8 +85,8 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        $newSchema = new Schema();
-        $oldSchema = new Schema($oldTables);
+        $newSchema = new Schema([], [], $this->database->getSchemaManager()->createSchemaConfig());
+        $oldSchema = new Schema($oldTables, [], $this->database->getSchemaManager()->createSchemaConfig());
 
         $this->createTableSchema($index, $newSchema);
         $this->createLocalizedTableSchema($index, $newSchema);
@@ -116,6 +116,7 @@ class MysqlWorker extends AbstractWorker
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('o_id', 'integer');
         $table->addColumn('o_key', 'string');
@@ -172,6 +173,8 @@ class MysqlWorker extends AbstractWorker
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getLocalizedTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
+
         $table->addColumn('oo_id', 'integer');
         $table->addColumn('language', 'string');
         $table->addColumn('name', 'string', ['notnull' => false]);
@@ -220,6 +223,8 @@ class MysqlWorker extends AbstractWorker
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getRelationTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
+
         $table->addColumn('src', 'integer');
         $table->addColumn('src_virtualObjectId', 'integer');
         $table->addColumn('dest', 'integer');

@@ -9251,7 +9251,7 @@ button.list-group-item-danger.active:focus {
 .btn-black:active,
 .btn-black.active,
 .btn-main {
-  background-color: #5cb672;
+  background-color: #cd1017;
 }
 
 .btn-main:hover,
@@ -9295,7 +9295,7 @@ body {
 
 /* Standard Styles Starts */
 a {
-  color: #5cb672;
+  color: #cd1017;
 }
 a:hover {
   color: #252a2f;
@@ -9461,7 +9461,7 @@ hr {
 }
 #header-area .main-header #logo a:hover {
   text-decoration: none;
-  color: #5cb672;
+  color: #cd1017;
 }
 #header-area .main-header #logo a:hover .black {
   color: black;
@@ -9487,7 +9487,7 @@ hr {
 }
 #header-area .main-header #search .input-group .form-control {
   background: none;
-  border: solid #5cb672;
+  border: solid #cd1017;
   border-width: 1px 0 1px 1px;
   color: #878a8c;
   -webkit-border-radius: 0;
@@ -9499,9 +9499,9 @@ hr {
 }
 #header-area .main-header #search .input-group .btn {
   background: none;
-  border: solid #5cb672;
+  border: solid #cd1017;
   border-width: 1px 1px 1px 0;
-  color: #5cb672;
+  color: #cd1017;
   height: 46px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -9515,7 +9515,7 @@ hr {
 #cart .btn {
   color: #383838;
   background: none;
-  border: 1px solid #5cb672;
+  border: 1px solid #cd1017;
   text-align: left;
   padding: 10px 15px;
   margin: 12px 0 0 0;
@@ -9528,7 +9528,7 @@ hr {
   box-shadow: none;
 }
 #cart .btn .fa-shopping-cart {
-  color: #5cb672;
+  color: #cd1017;
   font-size: 22px;
   margin-right: 10px;
   vertical-align: top;
@@ -9539,11 +9539,11 @@ hr {
   text-transform: uppercase;
 }
 #cart .btn span#cart-total {
-  color: #5cb672;
+  color: #cd1017;
   padding: 0 8px 0 5px;
 }
 #cart .btn i.fa-caret-down {
-  color: #5cb672;
+  color: #cd1017;
   margin-left: 5px;
 }
 #cart .dropdown-menu {
@@ -9569,7 +9569,7 @@ hr {
   border-bottom: 1px solid #e8e8e8;
 }
 #cart .dropdown-menu table td a {
-  color: #5cb672;
+  color: #cd1017;
 }
 #cart .dropdown-menu table td a:hover {
   color: #fff;
@@ -9598,7 +9598,7 @@ hr {
   text-decoration: none;
 }
 #cart .btn-block1 a:hover, #cart .btn-block1 a + a {
-  background: #5cb672;
+  background: #cd1017;
   color: #fff;
 }
 #cart .btn-block1 a, #cart .btn-block1 a + a:hover {
@@ -9617,7 +9617,7 @@ hr {
 
 /* Main Menu Styles Starts */
 #main-menu {
-  background: #5cb672;
+  background: #cd1017;
 }
 #main-menu.navbar {
   margin: 0;
@@ -9710,20 +9710,20 @@ hr {
 .tabs-panel .nav-tabs {
   text-transform: uppercase;
   font-size: 16px;
-  border-bottom: 4px solid #5cb672;
+  border-bottom: 4px solid #cd1017;
 }
 .tabs-panel .nav-tabs > li {
   margin-bottom: 0;
 }
 .tabs-panel .nav-tabs > li > a {
-  color: #5cb672;
+  color: #cd1017;
   margin: 0;
 }
 .tabs-panel .nav-tabs > li > a:hover {
   background: #fff;
 }
 .tabs-panel .nav-tabs > li.active, .tabs-panel .nav-tabs > li.active > a {
-  background: #5cb672;
+  background: #cd1017;
   color: #fff;
 }
 .tabs-panel .nav-tabs > li > a, .tabs-panel .btn, .tabs-panel .form-control {
@@ -9778,8 +9778,8 @@ hr {
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-  background: #5cb672;
-  border-color: #5cb672;
+  background: #cd1017;
+  border-color: #cd1017;
 }
 
 .results {
@@ -9813,14 +9813,14 @@ hr {
 .list-group-item .fa {
   font-size: 12px;
   padding-right: 6px;
-  color: #5cb672;
+  color: #cd1017;
 }
 
 .list-group.categories {
   margin-bottom: -1px;
 }
 .list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item.active {
-  background-color: #5cb672;
+  background-color: #cd1017;
   border-color: white;
 }
 .list-group.categories a.list-group-item:hover, .list-group.categories a.list-group-item:focus, .list-group.categories a.list-group-item:hover .fa, .list-group.categories a.list-group-item:focus .fa, .list-group.categories a.list-group-item.active .fa {
@@ -9884,7 +9884,7 @@ hr {
 }
 .copyright a,
 .copyright a:hover {
-  color: #5cb672;
+  color: #cd1017;
 }
 .copyright p {
   padding-top: 4px;
@@ -10019,7 +10019,7 @@ hr {
 .product-col .btn-compare:hover,
 .product-col .btn-cart,
 .product-col .btn-cart:hover .fa {
-  background: #5cb672;
+  background: #cd1017;
 }
 .product-col .btn-cart {
   padding: 0 0 0 15px;
@@ -10076,7 +10076,7 @@ hr {
   margin-right: 6px;
 }
 .product-filter .display a.active {
-  color: #5cb672;
+  color: #cd1017;
 }
 .product-filter .control-label {
   padding-top: 5px;
@@ -10154,7 +10154,7 @@ hr {
   text-transform: uppercase;
 }
 .product-info .product-details .price .price-new {
-  color: #5cb672;
+  color: #cd1017;
   font-size: 24px;
   padding-right: 5px;
 }
@@ -10182,7 +10182,7 @@ hr {
 .product-info .product-details .btn-wishlist:hover,
 .product-info .product-details .btn-compare:hover,
 .product-info .product-details .btn-cart {
-  background: #5cb672;
+  background: #cd1017;
 }
 .product-info .product-details .btn-cart {
   font-size: 14px;
@@ -10203,12 +10203,12 @@ hr {
 .product-info-box .heading {
   padding: 13px 20px;
   font-size: 18px;
-  color: #5cb672;
+  color: #cd1017;
   text-transform: uppercase;
   background: #fff;
   border-top: 1px solid #e8e8e8;
   border-right: 1px solid #e8e8e8;
-  border-bottom: 4px solid #5cb672;
+  border-bottom: 4px solid #cd1017;
   border-left: 1px solid #e8e8e8;
 }
 .product-info-box .content {
@@ -10258,7 +10258,7 @@ hr {
   text-align: center;
 }
 .compare-table .rating .fa-star {
-  color: #5cb672;
+  color: #cd1017;
 }
 
 .order-table {
@@ -10312,7 +10312,7 @@ hr {
   margin-bottom: 5px;
 }
 .registration-area .dl-horizontal.total {
-  color: #5cb672;
+  color: #cd1017;
   font-size: 18px;
 }
 .registration-area .dl-horizontal.total dt, .registration-area .dl-horizontal.total dd {
@@ -10348,7 +10348,7 @@ hr {
 }
 .content-box .special-heading {
   font-size: 100px;
-  color: #5cb672;
+  color: #cd1017;
   margin-top: 0;
   margin-bottom: 30px;
 }
@@ -10359,7 +10359,7 @@ hr {
 }
 
 .contact-details li .fa {
-  color: #5cb672;
+  color: #cd1017;
   padding: 5px 10px 0 0;
   font-size: 18px;
 }
@@ -10409,7 +10409,7 @@ hr {
   width: 30px;
   height: 30px;
   display: block;
-  background: #5cb672;
+  background: #cd1017;
   top: 45px;
   left: 50%;
   margin-top: -15px;
@@ -10439,7 +10439,7 @@ hr {
 .bs-wizard > .bs-wizard-step > .progress > .progress-bar {
   width: 0px;
   box-shadow: none;
-  background: #5cb672;
+  background: #cd1017;
 }
 
 .bs-wizard > .bs-wizard-step.complete > .progress > .progress-bar {
@@ -10803,7 +10803,7 @@ hr {
 }
 
 .slider-selection {
-  background: #5cb672;
+  background: #cd1017;
 }
 
 /*! ========================================================================

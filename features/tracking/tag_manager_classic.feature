@@ -21,5 +21,5 @@ Feature: In order to track ecommerce sales
   Scenario: Track Checkout Complete
     Then tracking my order checkout complete with tracker "google-gtm-classic-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({"transactionId":%DataObject(order, {"method" : "getId"});,"transactionAffiliation":24,"transactionTotal":24,"transactionTax":null,"transactionShipping":0,"transactionCurrency":"EUR","transactionProducts":[{"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1}]});
+      window.dataLayer = window.dataLayer || [];dataLayer.push({"transactionId":%DataObject(order, {"method" : "getId"});,"transactionAffiliation":24,"transactionTotal":24,"transactionTax":4,"transactionShipping":0,"transactionCurrency":"EUR","transactionProducts":[{"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1}]});
       """

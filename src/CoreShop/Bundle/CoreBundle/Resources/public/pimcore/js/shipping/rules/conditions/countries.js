@@ -16,14 +16,15 @@ coreshop.shippingrule.conditions.countries = Class.create(coreshop.rules.conditi
 
     getForm: function () {
         var me = this;
-        var store = pimcore.globalmanager.get('coreshop_countries');
 
         var countries = {
             fieldLabel: t('coreshop_condition_countries'),
             typeAhead: true,
             listWidth: 100,
             width: 500,
-            store: store,
+            store: {
+                type: 'coreshop_countries'
+            },
             displayField: 'name',
             valueField: 'id',
             forceSelection: true,
@@ -32,15 +33,7 @@ coreshop.shippingrule.conditions.countries = Class.create(coreshop.rules.conditi
             name: 'countries',
             height: 400,
             delimiter: false,
-            listeners: {
-                beforerender: function () {
-                    if (!store.isLoaded() && !store.isLoading())
-                        store.load();
-
-                    if (me.data && me.data.countries)
-                        this.setValue(me.data.countries);
-                }
-            }
+            value: me.data.countries
         };
 
 

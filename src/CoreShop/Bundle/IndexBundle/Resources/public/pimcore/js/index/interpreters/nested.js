@@ -18,11 +18,11 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
         // init
         var _this = this;
         var addMenu = [];
-        var store = pimcore.globalmanager.get('coreshop_index_interpreters').getRange();
+        var store = pimcore.globalmanager.get('coreshop_index_interpreters');
 
         store.clearFilter();
 
-        var records = store.map(function(interpreter) {return interpreter.get('type')});
+        var records = store.getRange().map(function(interpreter) {return interpreter.get('type')});
 
         Ext.each(records, function (interpreter) {
             if (interpreter === 'abstract')
@@ -70,6 +70,8 @@ coreshop.index.interpreters.nested = Class.create(coreshop.index.interpreters.ab
 
     addInterpreter: function (type, record, config) {
         // create condition
+        type = type.toLowerCase();
+        
         var interpreterClass = this.getInterpreterClassItem(type);
         var item = new interpreterClass();
         var container = new coreshop.index.interpreters.nestedcontainer(this, type, item);

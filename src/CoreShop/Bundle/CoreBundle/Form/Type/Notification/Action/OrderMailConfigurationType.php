@@ -33,8 +33,7 @@ class OrderMailConfigurationType extends AbstractType
             ])
             ->add('sendInvoices', CheckboxType::class)
             ->add('sendShipments', CheckboxType::class)
-            ->add('doNotSendToDesignatedRecipient', CheckboxType::class)
-        ;
+            ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }
 
     /**

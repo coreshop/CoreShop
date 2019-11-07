@@ -534,7 +534,15 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Custom
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
