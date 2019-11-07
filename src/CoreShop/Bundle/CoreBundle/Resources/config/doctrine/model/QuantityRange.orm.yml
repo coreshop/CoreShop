@@ -20,3 +20,4 @@ CoreShop\Component\Core\Model\QuantityRange:
             joinColumn:
                 name: unit_definition
                 referencedColumnName: id
+                onDelete: 'SET NULL'

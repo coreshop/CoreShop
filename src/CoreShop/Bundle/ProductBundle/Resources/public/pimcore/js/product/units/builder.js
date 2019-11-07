@@ -213,25 +213,32 @@ coreshop.product.unit.builder = Class.create({
             xtype: 'button',
             itemId: 'additional-unit-delete-button',
             iconCls: 'pimcore_icon_delete',
-            handler: function (compositeField) {
-                Ext.MessageBox.confirm(t('info'), t('coreshop_product_unit_additional_unit_definition_delete_confirm'), function (buttonValue) {
-
-                    if (buttonValue !== 'yes') {
-                        return;
-                    }
-
-                    fieldSet.remove(compositeField);
-
-                    this.dirty = true;
-                    this.checkAddUnitBlockAvailability(fieldSet);
-                    this.adjustUnitStores(false);
-                    this.dispatchUnitDefinitionChangeEvent();
-                }.bind(this));
-
-            }.bind(this, compositeField)
+            cls: 'coreshop-transparent-btn',
+            handler: this.onAdditionalUnitDelete.bind(this, fieldSet, compositeField)
         });
 
         fieldSet.add(compositeField);
+    },
+
+    onAdditionalUnitDelete: function (fieldSet, compositeField) {
+
+        Ext.MessageBox.confirm(
+            t('info'),
+            t('coreshop_product_unit_additional_unit_definition_delete_confirm'),
+            function (buttonValue) {
+
+                if (buttonValue !== 'yes') {
+                    return;
+                }
+
+                fieldSet.remove(compositeField);
+
+                this.dirty = true;
+                this.checkAddUnitBlockAvailability(fieldSet);
+                this.adjustUnitStores(false);
+                this.dispatchUnitDefinitionChangeEvent();
+
+            }.bind(this));
     },
 
     adjustUnitStores: function (initializing) {
@@ -371,6 +378,7 @@ coreshop.product.unit.builder = Class.create({
                 maxWidth: isDefault ? 280 : 200,
                 readOnly: data.idValue !== null && isDefault === false,
                 listeners: {
+                    beforerender: this.onBeforeUnitComboRender.bind(this, data),
                     change: function (comp, value) {
                         if (comp.getName() === 'defaultUnitDefinition.unit' && value) {
                             this.adjustAdditionalUnitLabel();
@@ -421,6 +429,10 @@ coreshop.product.unit.builder = Class.create({
 
     },
 
+    onBeforeUnitComboRender: function (data, comp) {
+        // keep it for 3rd party modifiers.
+    },
+
     postSaveObject: function (object, refreshedData) {
 
         if (Ext.isObject(refreshedData)) {
@@ -455,8 +467,9 @@ coreshop.product.unit.builder = Class.create({
         var obj = {};
 
         Object.keys(data).forEach(function (key) {
-            var val = data[key];
-            var step = obj
+            var val = data[key],
+                step = obj;
+
             key.split('.').forEach(function (part, index, arr) {
                 if (index === arr.length - 1) {
                     step[part] = val;

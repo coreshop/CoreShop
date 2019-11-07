@@ -30,6 +30,13 @@ services:
         calls:
             - [setContainer, ['@service_container']]
 
+    coreshop.admin_controller.product_validation: '@CoreShop\Bundle\CoreBundle\Controller\ProductValidationController'
+    CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
+        arguments:
+            - '@coreshop.resource_controller.view_handler'
+        calls:
+            - [setContainer, ['@service_container']]
+
     coreshop.admin_controller.product_variant_unit_solidifer: '@CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController'
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
         arguments:
