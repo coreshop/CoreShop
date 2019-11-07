@@ -202,6 +202,8 @@ coreshop_product_quantity_price_rules_behaviour_amount_decrease: 'Preisnachlass 
 coreshop_product_quantity_price_rules_behaviour_amount_increase: 'Preis­auf­schlag (Menge)'
 coreshop_product_quantity_price_rules_unit_definition: 'Einheit'
 coreshop_product_unit_definition_price_not_available: 'Einheitenpreis Definition nach Objektspeichern & Neu laden verfügbar.'
+coreshop_product_unit_additional_unit_definition_deletion_disabled: 'Die Produkteinheiten Definitionen kann nicht gelöscht werden da es Abhängigkeiten zu den Stückmengen-Preisregeln gibt. Sie müssen zuerst die verbundenen Preisregeln bzw. Bereiche löschen. Nachdem Sie das Produkt gespeichert haben, können Sie diese Definition löschen.'
+coreshop_product_unit_unit_definition_change_disabled: 'Die Einheit dieser Produkteinheiten Definitionen kann nicht geändert werden da es Abhängigkeiten zu den Stückmengen-Preisregeln gibt. Sie müssen zuerst die verbundenen Preisregeln bzw. Bereiche löschen. Nachdem Sie das Produkt gespeichert haben, können Sie diese Definition ändern.'
 coreshop_store_values_unit_price: 'Preis'
 coreshop_unit: 'Einheit'
 coreshop_store_preview: 'Store-Vorschau'
