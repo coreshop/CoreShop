@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.listener.cart_blamer:
-        class: CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener
+    CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener:
         arguments:
             - '@coreshop.cart_processor'
             - '@coreshop.context.cart'
@@ -12,8 +11,7 @@ services:
             - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onRegisterEvent }
 
-    coreshop.listener.price_rule_update:
-        class: CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener
+    CoreShop\Bundle\CoreBundle\EventListener\PriceRuleUpdateEventListener:
         arguments: ['@coreshop.configuration.service']
         tags:
             - { name: kernel.event_listener, event: coreshop.cart_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
@@ -21,29 +19,26 @@ services:
             - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: storeConfigurationThatPriceRulesChanged }
             - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: storeConfigurationThatPriceRulesChanged }
 
-    coreshop.listener.object.wkhtml_options:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener
+    CoreShop\Bundle\CoreBundle\EventListener\Order\OrderDocumentWkhtmlPrintOptionsListener:
         arguments:
             - '@coreshop.configuration.service'
         tags:
             - { name: kernel.event_listener, event: coreshop.order.shipment.wkhtml.options, method: resolveOptions }
             - { name: kernel.event_listener, event: coreshop.order.invoice.wkhtml.options, method: resolveOptions }
 
-    coreshop.listener.order.mail_sent:
-        class: CoreShop\Bundle\CoreBundle\EventListener\Order\OrderMailNoteEventListener
+    CoreShop\Bundle\CoreBundle\EventListener\Order\OrderMailNoteEventListener:
         arguments:
             - '@coreshop.object_note_service'
         tags:
             - { name: kernel.event_listener, event: coreshop.mail.post_send, method: onOrderMailSent }
 
-    coreshop.listener.product_update:
-        class: CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener
-        arguments: ['@coreshop.configuration.service']
+    CoreShop\Bundle\CoreBundle\EventListener\ProductUpdateEventListener:
+        arguments:
+            - '@coreshop.configuration.service'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: storeConfigurationThatProductChanged }
 
-    coreshop.listener.product_check_availability:
-        class: CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener
+    CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener:
         arguments:
             - '@coreshop.repository.cart_item'
             - '@Pimcore\Model\Factory'
@@ -52,8 +47,7 @@ services:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: postUpdateListener }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: postDeleteListener }
 
-    coreshop.listener.update_cart_price_rules:
-        class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation
+    CoreShop\Bundle\CoreBundle\EventListener\RequestCartRecalculation:
         arguments:
            - '@coreshop.cart.manager'
            - '@coreshop.context.shopper'
@@ -62,8 +56,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkPriceRuleState, priority: 0 }
 
-    coreshop.listener.update_cart_avilability:
-        class: CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability
+    CoreShop\Bundle\CoreBundle\EventListener\RequestCartAvailability:
         arguments:
            - '@coreshop.cart.manager'
            - '@coreshop.context.shopper'
@@ -72,10 +65,15 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }
 
-    coreshop.listener.customer_odrer_deletion:
-        class: CoreShop\Bundle\CoreBundle\EventListener\CustomerOrderDeletionListener
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerOrderDeletionListener:
         arguments:
             - '@coreshop.repository.order'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
             - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
+
+    CoreShop\Bundle\CoreBundle\EventListener\QuantityRangeUnitValidationListener:
+        arguments:
+            - '@coreshop.repository.product_unit_definition'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.product_quantity_price_rules.data_validation, method: validate }

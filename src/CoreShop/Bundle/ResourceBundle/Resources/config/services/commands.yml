@@ -2,9 +2,22 @@ services:
     _defaults:
         public: true
 
-    coreshop.command.resource.installer:
-        class: CoreShop\Bundle\ResourceBundle\Command\InstallResourcesCommand
+    CoreShop\Bundle\ResourceBundle\Command\InstallResourcesCommand:
         arguments:
-            - '@coreshop.resource.installer'
+            - '@CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface'
         tags:
-            - { name: console.command, command: 'coreshop:resources:install' }
+            - { name: console.command, command: coreshop:resources:install }
+
+    CoreShop\Bundle\ResourceBundle\Command\CreateDatabaseTablesCommand:
+        arguments:
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: coreshop:resources:create-tables }
+
+    CoreShop\Bundle\ResourceBundle\Command\DropDatabaseTablesCommand:
+        arguments:
+            - '%coreshop.resources%'
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: console.command, command: coreshop:resources:drop-tables }

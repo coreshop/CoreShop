@@ -18,7 +18,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\Model\SaleItemInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class OrderController extends BaseOrderController
 {
@@ -46,8 +45,8 @@ class OrderController extends BaseOrderController
         if ($sale instanceof OrderInterface) {
             $order['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
-                'weight'  => $sale->getWeight(),
-                'cost'    => $sale->getShipping(),
+                'weight' => $sale->getWeight(),
+                'cost' => $sale->getShipping(),
             ];
         }
 

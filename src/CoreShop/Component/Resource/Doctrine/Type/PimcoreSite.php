@@ -64,4 +64,12 @@ class PimcoreSite extends Type
     {
         return self::PIMCORE_SITE;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
+    }
 }

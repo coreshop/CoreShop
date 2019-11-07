@@ -2,8 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.sequence.generator:
-        class: CoreShop\Component\Sequence\Generator\SequenceGenerator
+    coreshop.sequence.generator: '@CoreShop\Component\Sequence\Generator\SequenceGenerator'
+    CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface: '@CoreShop\Component\Sequence\Generator\SequenceGenerator'
+    CoreShop\Component\Sequence\Generator\SequenceGenerator:
         arguments:
             - '@coreshop.repository.sequence'
             - '@coreshop.factory.sequence'

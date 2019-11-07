@@ -35,12 +35,19 @@ final class CoreShopCurrencyExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
+        $container->setParameter('coreshop.currency.decimal_factor', $config['money_decimal_factor']);
+        $container->setParameter('coreshop.currency.decimal_precision', $config['money_decimal_precision']);
 
         $container
             ->registerForAutoconfiguration(CurrencyContextInterface::class)
-            ->addTag(CompositeCurrencyContextPass::CURRENCY_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeCurrencyContextPass::CURRENCY_CONTEXT_SERVICE_TAG);
     }
 }

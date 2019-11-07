@@ -19,7 +19,7 @@ class StorageListItemQuantityModifier implements StorageListItemQuantityModifier
     /**
      * {@inheritdoc}
      */
-    public function modify(StorageListItemInterface $item, int $targetQuantity): void
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         $currentQuantity = $item->getQuantity();
         if (0 >= $targetQuantity || $currentQuantity === $targetQuantity) {

@@ -29,31 +29,33 @@ final class CartItemTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if ($options['allow_units']) {
-            $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-                $data = $event->getData();
-
-                if (!$data instanceof CartItemInterface) {
-                    return;
-                }
-
-                /** @var ProductInterface $product */
-                $product = $data->getProduct();
-                if (!$product instanceof ProductInterface) {
-                    return;
-                }
-
-                if (!$product->hasUnitDefinitions()) {
-                    return;
-                }
-
-                $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
-                    'product' => $product,
-                    'required' => false,
-                    'label' => null,
-                ]);
-            });
+        if (!$options['allow_units']) {
+            return;
         }
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $data = $event->getData();
+
+            if (!$data instanceof CartItemInterface) {
+                return;
+            }
+
+            /** @var ProductInterface $product */
+            $product = $data->getProduct();
+            if (!$product instanceof ProductInterface) {
+                return;
+            }
+
+            if (!$product->hasUnitDefinitions()) {
+                return;
+            }
+
+            $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
+                'product' => $product,
+                'required' => false,
+                'label' => null,
+            ]);
+        });
     }
 
     /**
@@ -70,5 +72,13 @@ final class CartItemTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return CartItemType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [CartItemType::class];
     }
 }

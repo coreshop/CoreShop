@@ -21,14 +21,15 @@ coreshop.product.storeValues.items.price = Class.create(coreshop.product.storeVa
                 componentCls: 'object_field',
                 labelWidth: 250,
                 minValue: 0,
-                value: 0
+                value: 0,
+                decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
             });
 
         // do not fire dirty flag on initial data setup
         priceField.suspendEvents();
 
         if (price !== null) {
-            priceField.setValue(price / 100);
+            priceField.setValue(price / pimcore.globalmanager.get('coreshop.currency.decimal_factor'));
             priceField.resetOriginalValue();
             priceField.setFieldLabel(priceField.fieldLabel + ' (' + this.builder.data.currencySymbol + ')');
         }

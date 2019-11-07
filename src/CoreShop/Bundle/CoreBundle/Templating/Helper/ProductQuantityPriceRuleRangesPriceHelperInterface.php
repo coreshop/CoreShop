@@ -23,6 +23,7 @@ interface ProductQuantityPriceRuleRangesPriceHelperInterface extends HelperInter
      * @param ProductInterface       $product
      * @param array                  $context
      * @param bool                   $withTax
+     *
      * @return mixed
      */
     public function getQuantityPriceRuleRangePrice(

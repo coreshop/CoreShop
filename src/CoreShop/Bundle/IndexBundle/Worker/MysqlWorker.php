@@ -85,8 +85,8 @@ class MysqlWorker extends AbstractWorker
             }
         }
 
-        $newSchema = new Schema();
-        $oldSchema = new Schema($oldTables);
+        $newSchema = new Schema([], [], $this->database->getSchemaManager()->createSchemaConfig());
+        $oldSchema = new Schema($oldTables, [], $this->database->getSchemaManager()->createSchemaConfig());
 
         $this->createTableSchema($index, $newSchema);
         $this->createLocalizedTableSchema($index, $newSchema);
@@ -116,6 +116,7 @@ class MysqlWorker extends AbstractWorker
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
 
         $table->addColumn('o_id', 'integer');
         $table->addColumn('o_key', 'string');
@@ -172,6 +173,8 @@ class MysqlWorker extends AbstractWorker
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getLocalizedTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
+
         $table->addColumn('oo_id', 'integer');
         $table->addColumn('language', 'string');
         $table->addColumn('name', 'string', ['notnull' => false]);
@@ -220,6 +223,8 @@ class MysqlWorker extends AbstractWorker
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getRelationTablename($index));
+        $table->addOption('row_format', 'DYNAMIC');
+
         $table->addColumn('src', 'integer');
         $table->addColumn('src_virtualObjectId', 'integer');
         $table->addColumn('dest', 'integer');
@@ -276,6 +281,18 @@ QUERY;
         $type = Type::getType($doctrineType);
 
         return $type->convertToDatabaseValue($value, $this->database->getDatabasePlatform());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function typeCastValueSQLDecleration(IndexColumnInterface $column)
+    {
+        $doctrineType = $this->renderFieldType($column->getColumnType());
+
+        $type = Type::getType($doctrineType);
+
+        return $type->convertToDatabaseValueSQL('?', $this->database->getDatabasePlatform());
     }
 
     /**
@@ -367,11 +384,31 @@ QUERY;
         $insertData = [];
         $insertStatement = [];
 
-        foreach ($data as $key => $d) {
+        $columns = $index->getColumns()->toArray();
+        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $columnNames)) {
+                continue;
+            }
+
             $dataKeys[$this->database->quoteIdentifier($key)] = '?';
-            $updateData[] = $d;
+            $updateData[] = $value;
             $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
-            $insertData[] = $d;
+            $insertData[] = $value;
+        }
+
+        foreach ($columns as $column) {
+            if (!array_key_exists($column->getName(), $data)) {
+                continue;
+            }
+
+            $value = $data[$column->getName()];
+
+            $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);
+            $updateData[] = $value;
+            $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);
+            $insertData[] = $value;
         }
 
         $insert = 'INSERT INTO ' . $this->getTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'
@@ -388,6 +425,9 @@ QUERY;
      */
     protected function doInsertLocalizedData(IndexInterface $index, $data)
     {
+        $columns = $index->getColumns()->toArray();
+        $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
+
         foreach ($data['values'] as $language => $values) {
             $dataKeys = [
                 'oo_id' => '?',
@@ -406,12 +446,29 @@ QUERY;
                 $language,
             ];
 
-            foreach ($values as $key => $d) {
-                $dataKeys[$this->database->quoteIdentifier($key)] = '?';
-                $updateData[] = $d;
+            foreach ($values as $key => $value) {
+                if (in_array($key, $columnNames)) {
+                    continue;
+                }
 
+                $dataKeys[$this->database->quoteIdentifier($key)] = '?';
+                $updateData[] = $value;
                 $insertStatement[] = $this->database->quoteIdentifier($key) . ' = ?';
-                $insertData[] = $d;
+                $insertData[] = $value;
+            }
+
+            foreach ($index->getColumns() as $column) {
+                if (!array_key_exists($column->getName(), $values)) {
+                    continue;
+                }
+
+                $value = $values[$column->getName()];
+
+                $dataKeys[$this->database->quoteIdentifier($column->getName())] = $this->typeCastValueSQLDecleration($column);;
+                $updateData[] = $value;
+
+                $insertStatement[] = $this->database->quoteIdentifier($column->getName()) . ' = ' . $this->typeCastValueSQLDecleration($column);;
+                $insertData[] = $value;
             }
 
             $insert = 'INSERT INTO ' . $this->getLocalizedTablename($index) . ' (' . implode(',', array_keys($dataKeys)) . ') VALUES (' . implode(',', $dataKeys) . ')'

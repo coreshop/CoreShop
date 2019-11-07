@@ -101,10 +101,11 @@ class Select extends Tag
                 $this->getResourceName($resource),
             ];
         }
+        $options = parent::getOptions();
 
-        return [
-            'store' => $result,
-        ];
+        $options['store'] = $result;
+
+        return $options;
     }
 
     /**

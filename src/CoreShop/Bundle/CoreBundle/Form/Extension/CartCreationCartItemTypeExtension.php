@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationCartItemType;
-use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -42,9 +41,6 @@ final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('product', ProductSelectionType::class);
-
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
             $data = $event->getData();
             $product = $data['product'];
@@ -77,5 +73,13 @@ final class CartCreationCartItemTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return CartCreationCartItemType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [CartCreationCartItemType::class];
     }
 }

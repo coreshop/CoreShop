@@ -107,6 +107,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         if ($productUnit instanceof ProductUnitInterface &&
             $existingUnitDefinition = $this->getUnitDefinition($productUnit->getName())
         ) {
+            $existingUnitDefinition->setPrecision($productUnitDefinition->getPrecision());
             $existingUnitDefinition->setConversionRate($productUnitDefinition->getConversionRate());
             $existingUnitDefinition->setProductUnitDefinitions($this);
         } else {
@@ -144,6 +145,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
             if ($unit = $unitDefinition->getUnit()) {
                 if ($unit->getName() === $identifier) {
                     $result = $unitDefinition;
+
                     break;
                 }
             }
@@ -209,5 +211,31 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
         && $this->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $this->getDefaultUnitDefinition()->getUnit()->getName() : '--';
 
         return sprintf('Default Unit: %s, additional units: %d', $defaultUnit, $this->getAdditionalUnitDefinitions()->count());
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $newDefaultUnitDefinition = clone $this->getDefaultUnitDefinition();
+        $newDefaultUnitDefinition->setProductUnitDefinitions($this);
+
+        $additionalUnits = $this->getAdditionalUnitDefinitions();
+
+        $this->id = null;
+        $this->unitDefinitions =  new ArrayCollection();
+        $this->defaultUnitDefinition = null;
+
+        $this->setDefaultUnitDefinition($newDefaultUnitDefinition);
+
+        if ($additionalUnits instanceof Collection) {
+            foreach ($additionalUnits as $additionalUnit) {
+                $newAdditionalDefinition = clone $additionalUnit;
+                $newAdditionalDefinition->setProductUnitDefinitions($this);
+                $this->addUnitDefinition($newAdditionalDefinition);
+            }
+        }
     }
 }

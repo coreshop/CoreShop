@@ -42,6 +42,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
         $stores = $this->container->get('coreshop.repository.store')->findAll();
 
         $productsCount = 10;
+        $decimalFactor = $this->container->getParameter('coreshop.currency.decimal_factor');
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));
         $faker->addProvider(new Barcode($faker));
@@ -61,9 +62,9 @@ class ProductWithUnitFixture extends AbstractProductFixture
             $unitDefinitions->setProduct($product);
 
             /**
-             * @var ProductUnitDefinitionInterface $defaultDefinition
-             * @var ProductUnitDefinitionInterface $cartonDefinition
-             * @var ProductUnitDefinitionInterface $paletteDefinition
+             * @var ProductUnitDefinitionInterface      $defaultDefinition
+             * @var ProductUnitDefinitionInterface      $cartonDefinition
+             * @var ProductUnitDefinitionInterface      $paletteDefinition
              * @var ProductUnitDefinitionPriceInterface $cartonPrice
              * @var ProductUnitDefinitionPriceInterface $palettePrice
              */
@@ -95,7 +96,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                     $storeValues->setStore($store);
                 }
 
-                $storeValues->setPrice((int) $faker->randomFloat(2, 200, 400) * 100);
+                $storeValues->setPrice((int) $faker->randomFloat(2, 200, 400) * $decimalFactor);
 
                 $cartonPrice = $productUnitDefinitionPriceFactory->createNew();
                 $cartonPrice->setUnitDefinition($cartonDefinition);

@@ -13,8 +13,11 @@
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\Asset\Image;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-final class ImageThumbnailExtension extends \Twig_Extension
+final class ImageThumbnailExtension extends AbstractExtension
 {
     /**
      * {@inheritdoc}
@@ -22,8 +25,8 @@ final class ImageThumbnailExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
-            new \Twig_Filter('image_thumbnail_html', [$this, 'getImageThumbnailHtml'], ['is_safe' => ['html']]),
+            new TwigFilter('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
+            new TwigFilter('image_thumbnail_html', [$this, 'getImageThumbnailHtml'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -33,8 +36,8 @@ final class ImageThumbnailExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_Function('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
-            new \Twig_Function('image_thumbnail_html', [$this, 'getImageThumbnailHtml'], ['is_safe' => ['html']]),
+            new TwigFunction('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
+            new TwigFunction('image_thumbnail_html', [$this, 'getImageThumbnailHtml'], ['is_safe' => ['html']]),
         ];
     }
 

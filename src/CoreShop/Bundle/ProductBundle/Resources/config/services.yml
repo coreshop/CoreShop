@@ -14,31 +14,40 @@ services:
         arguments:
             - CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface
             - product-retail-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productRetailPriceCalculators }
 
     coreshop.registry.product.discount_price_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface
             - product-discount-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productDiscountPriceCalculators }
 
     coreshop.registry.product.discount_calculators:
         class: CoreShop\Component\Registry\PrioritizedServiceRegistry
         arguments:
             - CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface
             - product-discount-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productDiscountCalculators }
 
-    coreshop.product.retail_price_calculator:
-        class: CoreShop\Component\Product\Calculator\CompositeRetailPriceCalculator
+    coreshop.product.retail_price_calculator: '@CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface'
+    CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface: '@CoreShop\Component\Product\Calculator\CompositeRetailPriceCalculator'
+    CoreShop\Component\Product\Calculator\CompositeRetailPriceCalculator:
         arguments:
             - '@coreshop.registry.product.retail_price_calculators'
 
-    coreshop.product.discount_price_calculator:
-        class: CoreShop\Component\Product\Calculator\CompositeDiscountPriceCalculator
+    coreshop.product.discount_price_calculator: '@CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface'
+    CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface: '@CoreShop\Component\Product\Calculator\CompositeDiscountPriceCalculator'
+    CoreShop\Component\Product\Calculator\CompositeDiscountPriceCalculator:
         arguments:
             - '@coreshop.registry.product.discount_price_calculators'
 
-    coreshop.product.discount_calculator:
-        class: CoreShop\Component\Product\Calculator\CompositeDiscountCalculator
+    coreshop.product.discount_calculator: '@CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface'
+    CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface: '@CoreShop\Component\Product\Calculator\CompositeDiscountCalculator'
+    CoreShop\Component\Product\Calculator\CompositeDiscountCalculator:
         arguments:
             - '@coreshop.registry.product.discount_calculators'
 
@@ -57,15 +66,15 @@ services:
         tags:
             - { name: coreshop.product_specific_price_rule.condition, type: nested, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType }
 
-    coreshop.product_price_rule.condition.timespan:
-        class: CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker
+    coreshop.product_price_rule.condition.timespan: '@CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker'
+    CoreShop\Component\Product\Rule\Condition\TimeSpanConditionChecker:
         tags:
             - { name: coreshop.product_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
             - { name: coreshop.product_specific_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
     # Product Price Rule ACTIONS
-    coreshop.product_price_rule.action.price:
-        class: CoreShop\Component\Product\Rule\Action\PriceActionProcessor
+    coreshop.product_price_rule.action.price: '@CoreShop\Component\Product\Rule\Action\PriceActionProcessor'
+    CoreShop\Component\Product\Rule\Action\PriceActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
@@ -73,8 +82,8 @@ services:
             - { name: coreshop.product_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: price, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
 
-    coreshop.product_price_rule.action.discount_price:
-        class: CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor
+    coreshop.product_price_rule.action.discount_price: '@CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor'
+    CoreShop\Component\Product\Rule\Action\DiscountPriceActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
@@ -82,8 +91,8 @@ services:
             - { name: coreshop.product_price_rule.action, type: discountPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountPrice, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\PriceConfigurationType }
 
-    coreshop.product_price_rule.action.discount_amount:
-        class: CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor
+    coreshop.product_price_rule.action.discount_amount: '@CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor'
+    CoreShop\Component\Product\Rule\Action\DiscountAmountActionProcessor:
         arguments:
             - '@coreshop.repository.currency'
             - '@coreshop.currency_converter'
@@ -91,8 +100,8 @@ services:
             - { name: coreshop.product_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
-    coreshop.product_price_rule.action.discount_percent:
-        class: CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor
+    coreshop.product_price_rule.action.discount_percent: '@CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor'
+    CoreShop\Component\Product\Rule\Action\DiscountPercentActionProcessor:
         tags:
             - { name: coreshop.product_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
             - { name: coreshop.product_specific_price_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ProductBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType }
@@ -103,29 +112,29 @@ services:
         arguments:
             - CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface
             - product-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: productPriceCalculators }
 
-    coreshop.product.price_calculator:
-        class: CoreShop\Component\Product\Calculator\ProductPriceCalculator
+    coreshop.product.price_calculator: '@CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface'
+    CoreShop\Component\Product\Calculator\ProductPriceCalculatorInterface: '@CoreShop\Component\Product\Calculator\ProductPriceCalculator'
+    CoreShop\Component\Product\Calculator\ProductPriceCalculator:
         arguments:
-            - '@coreshop.product.retail_price_calculator'
-            - '@coreshop.product.discount_price_calculator'
-            - '@coreshop.product.discount_calculator'
+            - '@CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface'
+            - '@CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface'
+            - '@CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface'
 
-    coreshop.event_listener.clear_cached_rules:
-        class: CoreShop\Bundle\ProductBundle\EventListener\ClearCachedPriceRulesListener
+    CoreShop\Bundle\ProductBundle\EventListener\ClearCachedPriceRulesListener:
         tags:
             - { name: kernel.event_listener, event: coreshop.product_price_rule.post_save, method: clearCachedRules }
             - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_save, method: clearCachedRules }
             - { name: kernel.event_listener, event: coreshop.product_price_rule.post_delete, method: clearCachedRules }
             - { name: kernel.event_listener, event: coreshop.product_specific_price_rule.post_delete, method: clearCachedRules }
 
-    coreshop.listeners.product.category.pre_update:
-        class: CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener
+    CoreShop\Bundle\ProductBundle\EventListener\CategoryPersistEventListener:
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: onPreUpdate }
 
-    coreshop.listeners.product.post_delete:
-        class: CoreShop\Bundle\ProductBundle\EventListener\ProductDeleteListener
+    CoreShop\Bundle\ProductBundle\EventListener\ProductDeleteListener:
         arguments:
             - '@coreshop.repository.product_specific_price_rule'
             - '@coreshop.manager.product_specific_price_rule'

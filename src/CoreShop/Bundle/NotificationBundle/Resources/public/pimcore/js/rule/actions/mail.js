@@ -30,6 +30,7 @@ coreshop.notification.rule.actions.mail = Class.create(coreshop.rules.actions.ab
                 type: 'document',
                 subtype: 'email'
             }, {
+                classes: [],
                 documentsAllowed: true,
                 documentTypes: [{
                     documentTypes: 'email'

@@ -32,7 +32,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_core');
+        $rootNode = $treeBuilder->root('core_shop_core');
 
         $rootNode
             ->children()
@@ -58,7 +58,7 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        # deprecated
+                        // deprecated
                         ->arrayNode('product_store_price')
                             ->addDefaultsIfNotSet()
                             ->children()

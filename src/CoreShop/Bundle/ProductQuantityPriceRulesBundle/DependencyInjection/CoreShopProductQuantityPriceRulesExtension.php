@@ -38,21 +38,24 @@ class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
 
         $container->setParameter('coreshop.product_quantity_price_rules.ranges.action_constraints', $config['action_constraints']);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         $container
             ->registerForAutoconfiguration(ProductQuantityPriceRuleActionInterface::class)
-            ->addTag(ProductQuantityPriceRulesActionPass::PRODUCT_QUANTITY_PRICE_RULE_ACTION_TAG)
-        ;
+            ->addTag(ProductQuantityPriceRulesActionPass::PRODUCT_QUANTITY_PRICE_RULE_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(CalculatorInterface::class)
-            ->addTag(ProductQuantityPriceRulesCalculatorPass::PRODUCT_QUANTITY_PRICE_RULE_CALCULATOR_TAG)
-        ;
+            ->addTag(ProductQuantityPriceRulesCalculatorPass::PRODUCT_QUANTITY_PRICE_RULE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(QuantityRuleConditionCheckerInterface::class)
-            ->addTag(ProductQuantityPriceRulesConditionPass::PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG)
-        ;
+            ->addTag(ProductQuantityPriceRulesConditionPass::PRODUCT_QUANTITY_PRICE_RULE_CONDITION_TAG);
     }
 }

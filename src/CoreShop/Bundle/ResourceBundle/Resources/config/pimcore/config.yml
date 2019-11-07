@@ -16,10 +16,18 @@ jms_serializer:
 doctrine:
     dbal:
         types:
-            pimcoreObject: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
-            pimcoreDocument: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
-            pimcoreAsset: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
-            pimcoreSite: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
+            pimcoreObject:
+                class: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
+                commented: true
+            pimcoreDocument:
+                class: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
+                commented: true
+            pimcoreAsset:
+                class: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
+                commented: true
+            pimcoreSite:
+                class: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
+                commented: true
         mapping_types:
             enum: string
     orm:

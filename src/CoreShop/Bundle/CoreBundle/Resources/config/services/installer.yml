@@ -5,18 +5,18 @@ services:
     _defaults:
         public: true
 
-    coreshop.installer.checker.command_directory:
-        class: CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker
+    coreshop.installer.checker.command_directory: '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+    CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker:
         arguments:
             - '@filesystem'
 
-    coreshop.commands_provider.database_setup:
-        class: CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider
+    coreshop.commands_provider.database_setup: '@CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider'
+    CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider:
         arguments:
             - '@doctrine'
 
-    coreshop.installer.executor.folder_installer:
-        class: CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider
+    coreshop.installer.executor.folder_installer: '@CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider'
+    CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider:
         arguments:
             - [
                 '%coreshop.folder.cart%',

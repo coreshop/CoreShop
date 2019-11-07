@@ -2,24 +2,21 @@ services:
     _defaults:
         public: true
 
-    coreshop.listeners.index.post_save:
-        class: CoreShop\Bundle\IndexBundle\EventListener\CreateIndexListener
+    CoreShop\Bundle\IndexBundle\EventListener\CreateIndexListener:
         arguments:
             - '@coreshop.registry.index.worker'
         tags:
             - { name: kernel.event_listener, event: coreshop.index.post_save, method: onIndexSavePost }
 
-    coreshop.listeners.index.pre_delete:
-        class: CoreShop\Bundle\IndexBundle\EventListener\DeleteIndexListener
+    CoreShop\Bundle\IndexBundle\EventListener\DeleteIndexListener:
         arguments:
             - '@coreshop.registry.index.worker'
         tags:
             - { name: kernel.event_listener, event: coreshop.index.pre_delete, method: onIndexDeletePre }
 
-    coreshop.listeners.index.object.post_update:
-        class: CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener
+    CoreShop\Bundle\IndexBundle\EventListener\IndexObjectListener:
         arguments:
-            - '@coreshop.index.updater'
+            - '@CoreShop\Component\Index\Service\IndexUpdaterService'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.postUpdate, method: onPostUpdate }
             - { name: kernel.event_listener, event: pimcore.dataobject.postDelete, method: onPostDelete }

@@ -6,8 +6,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.collector.taxes:
-        class: CoreShop\Component\Taxation\Collector\TaxCollector
+    coreshop.collector.taxes: '@CoreShop\Component\Taxation\Collector\TaxCollector'
+    CoreShop\Component\Taxation\Collector\TaxCollectorInterface: '@CoreShop\Component\Taxation\Collector\TaxCollector'
+    CoreShop\Component\Taxation\Collector\TaxCollector:
         arguments:
             - '@coreshop.repository.tax_rate'
             - '@coreshop.factory.tax_item'

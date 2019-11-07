@@ -52,7 +52,7 @@ class UnitVolumeCalculator implements CalculatorInterface
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
     ) {
@@ -77,7 +77,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         }
 
         return $price;
-
     }
 
     /**
@@ -94,12 +93,12 @@ class UnitVolumeCalculator implements CalculatorInterface
 
     /**
      * @param Collection                     $ranges
-     * @param int                            $quantity
+     * @param float                          $quantity
      * @param ProductUnitDefinitionInterface $unitDefinition
      *
      * @return QuantityRangeInterface|null
      */
-    protected function locate(Collection $ranges, int $quantity, ProductUnitDefinitionInterface $unitDefinition)
+    protected function locate(Collection $ranges, float $quantity, ProductUnitDefinitionInterface $unitDefinition)
     {
         if ($ranges->isEmpty()) {
             return null;
@@ -113,6 +112,7 @@ class UnitVolumeCalculator implements CalculatorInterface
             if ($range->getUnitDefinition()->getId() !== $unitDefinition->getId()) {
                 return false;
             }
+
             return true;
         });
 
@@ -121,7 +121,6 @@ class UnitVolumeCalculator implements CalculatorInterface
 
         /** @var CoreQuantityRangeInterface $range */
         foreach ($unitFilteredRanges as $index => $range) {
-
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

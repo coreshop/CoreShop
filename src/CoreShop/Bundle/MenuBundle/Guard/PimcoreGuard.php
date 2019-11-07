@@ -31,9 +31,6 @@ class PimcoreGuard
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function matchItem(ItemInterface $item)
     {
         if (!$item->getAttribute('permission')) {

@@ -37,13 +37,11 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(TrackerInterface::class)
-            ->addTag(TrackerPass::TRACKER_TAG)
-        ;
+            ->addTag(TrackerPass::TRACKER_TAG);
 
         $container
             ->registerForAutoconfiguration(TrackingExtractorInterface::class)
-            ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG)
-        ;
+            ->addTag(TrackingExtractorPass::TRACKING_EXTRACTOR_TAG);
     }
 
     /**

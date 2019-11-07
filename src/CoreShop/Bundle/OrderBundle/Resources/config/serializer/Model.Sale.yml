@@ -1,0 +1,148 @@
+CoreShop\Component\Order\Model\Sale:
+    exclusion_policy: ALL
+    xml_root_name: sale
+    virtual_properties:
+        baseCurrency:
+            serialized_name: baseCurrency
+            exp: object.getBaseCurrency()
+            groups: [Detailed]
+        baseTaxes:
+            serialized_name: baseTaxes
+            exp: object.getBaseTaxes()
+            type: array
+            groups: [Detailed]
+        backendCreated:
+            serialized_name: backendCreated
+            exp: object.getBackendCreated()
+            type: boolean
+            groups: [Detailed]
+        priceRuleItems:
+            serialized_name: priceRuleItems
+            exp: object.getPriceRuleItems()
+            type: array
+            groups: [Detailed]
+        totalTax:
+            serialized_name: totalTax
+            exp: object.getTotalTax()
+            type: integer
+            groups: [Detailed]
+        baseTotalTax:
+            serialized_name: baseTotalTax
+            exp: object.getBaseTotalTax()
+            type: integer
+            groups: [Detailed]
+        subtotalTax:
+            serialized_name: subtotalTax
+            exp: object.getSubtotalTax()
+            type: integer
+            groups: [Detailed]
+        baseSubtotalTax:
+            serialized_name: baseSubtotalTax
+            exp: object.getBaseSubtotalTax()
+            type: integer
+            groups: [Detailed]
+        shippingTax:
+            serialized_name: shippingTax
+            exp: object.getShippingTax()
+            type: integer
+            groups: [Detailed]
+        baseShippingTax:
+            serialized_name: baseShippingTax
+            exp: object.getBaseShippingTax()
+            type: integer
+            groups: [Detailed]
+        discountNet:
+            serialized_name: discountNet
+            exp: object.getDiscount(false)
+            type: integer
+            groups: [Detailed]
+        discountGross:
+            serialized_name: discountGross
+            exp: object.getDiscount(true)
+            type: integer
+            groups: [Detailed]
+        baseDiscountNet:
+            serialized_name: baseDiscountNet
+            exp: object.getBaseDiscount(false)
+            type: integer
+            groups: [Detailed]
+        baseDiscountGross:
+            serialized_name: baseDiscountGross
+            exp: object.getBaseDiscount(true)
+            type: integer
+            groups: [Detailed]
+        subtotalNet:
+            serialized_name: subtotalNet
+            exp: object.getSubtotal(false)
+            type: integer
+            groups: [Detailed]
+        subtotaGross:
+            serialized_name: subtotaGross
+            exp: object.getSubtotal(true)
+            type: integer
+            groups: [Detailed]
+        baseSubtotalNet:
+            serialized_name: baseSubtotalNet
+            exp: object.getBaseSubtotal(false)
+            type: integer
+            groups: [Detailed]
+        baseSubtotaGross:
+            serialized_name: baseSubtotaGross
+            exp: object.getBaseSubtotal(true)
+            type: integer
+            groups: [Detailed]
+        totalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: integer
+            groups: [Detailed]
+        totalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: integer
+            groups: [Detailed]
+        baseTotalNet:
+            serialized_name: baseTotalNet
+            exp: object.getBaseTotal(false)
+            type: integer
+            groups: [Detailed]
+        baseTotalGross:
+            serialized_name: baseTotalGross
+            exp: object.getBaseTotal(true)
+            type: integer
+            groups: [Detailed]
+        shippingNet:
+            serialized_name: shippingNet
+            exp: object.getShipping(false)
+            type: integer
+            groups: [Detailed]
+        shippingGross:
+            serialized_name: shippingGross
+            exp: object.getShipping(true)
+            type: integer
+            groups: [Detailed]
+        baseShippingNet:
+            serialized_name: baseSshippingNet
+            exp: object.getBaseShipping(false)
+            type: integer
+            groups: [Detailed]
+        baseShippingGross:
+            serialized_name: baseShippingGross
+            exp: object.getBaseShipping(true)
+            type: integer
+            groups: [Detailed]
+        baseAdjustments:
+            serialized_name: baseAdjustments
+            exp: object.getBaseAdjustments()
+            type: array
+            groups: [Detailed]
+        saleDate:
+            serialized_name: saleDate
+            exp: object.getSaleDate()
+            type: carbon
+            groups: [Detailed]
+        saleNumber:
+            serialized_name: saleNumber
+            exp: object.getSaleNumber()
+            type: string
+            groups: [Detailed]

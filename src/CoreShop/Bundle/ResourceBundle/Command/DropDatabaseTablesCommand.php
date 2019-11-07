@@ -12,16 +12,39 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-final class DropDatabaseTablesCommand extends ContainerAwareCommand
+final class DropDatabaseTablesCommand extends Command
 {
+    /**
+     * @var array
+     */
+    private $coreShopResources;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * @param array                  $coreShopResources
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(array $coreShopResources, EntityManagerInterface $entityManager)
+    {
+        $this->coreShopResources = $coreShopResources;
+        $this->entityManager = $entityManager;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -60,8 +83,8 @@ EOT
     {
         $ui = new SymfonyStyle($input, $output);
 
-        $resources = $this->getContainer()->getParameter('coreshop.resources');
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $resources = $this->coreShopResources;
+        $em = $this->entityManager;
 
         $metadatas = [];
 

@@ -1,3 +1,0 @@
-imports:
-    - behat.yml.dist
-    - src/CoreShop/Behat/Resources/config/coverage.yml

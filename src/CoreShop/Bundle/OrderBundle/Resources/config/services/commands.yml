@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.command.cart.expire:
-        class: CoreShop\Bundle\OrderBundle\Command\CartExpireCommand
+    CoreShop\Bundle\OrderBundle\Command\CartExpireCommand:
         arguments:
             - '@coreshop.cart.expire'
             - '%coreshop.cart.expiration.days%'
@@ -11,8 +10,7 @@ services:
         tags:
           - { name: console.command, command: 'coreshop:cart:expire' }
 
-    coreshop.command.order.expire:
-        class: CoreShop\Bundle\OrderBundle\Command\OrderExpireCommand
+    CoreShop\Bundle\OrderBundle\Command\OrderExpireCommand:
         arguments:
             - '@coreshop.order.expire'
             - '%coreshop.order.expiration.days%'

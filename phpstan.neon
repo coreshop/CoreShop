@@ -16,6 +16,7 @@ parameters:
         - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
         - '**/ProcessManager/IndexListener.php'
         - '**/ProcessManager/IndexProcess.php'
+        - '**/DataHub/*.php'
 
     ignoreErrors:
         # Magic calls

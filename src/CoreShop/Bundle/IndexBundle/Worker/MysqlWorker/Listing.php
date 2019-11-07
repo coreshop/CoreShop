@@ -19,6 +19,7 @@ use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing\Dao;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Condition\MatchCondition;
+use CoreShop\Component\Index\Listing\ExtendedListingInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Listing\OrderAwareListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
@@ -31,7 +32,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 
-class Listing extends AbstractListing implements OrderAwareListingInterface
+class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface
 {
     /**
      * @var null|PimcoreModelInterface[]
@@ -408,6 +409,26 @@ class Listing extends AbstractListing implements OrderAwareListingInterface
         $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
 
         return $this->dao->loadGroupByRelationValues($queryBuilder, $fieldName, $countValues);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGroupByRelationValuesAndType(
+        $fieldName,
+        $type,
+        $countValues = false,
+        $fieldNameShouldBeExcluded = true
+    ) {
+        $excludedFieldName = $fieldName;
+        if (!$fieldNameShouldBeExcluded) {
+            $excludedFieldName = null;
+        }
+
+        $queryBuilder = $this->dao->createQueryBuilder();
+        $this->addQueryFromConditions($queryBuilder, false, $excludedFieldName, AbstractListing::VARIANT_MODE_INCLUDE);
+
+        return $this->dao->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, $type, $countValues);
     }
 
     /**

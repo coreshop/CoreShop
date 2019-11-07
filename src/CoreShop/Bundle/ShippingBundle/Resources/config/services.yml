@@ -8,13 +8,15 @@ services:
         public: true
 
   # Carrier Validator
-    coreshop.shipping.carrier.validator.composite:
-        class: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator
+    coreshop.shipping.carrier.validator.composite: '@CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator'
+    CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface: '@CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator'
+    CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator:
         public: false
 
     # Carrier Processor
-    coreshop.carrier.resolver:
-        class: CoreShop\Component\Shipping\Resolver\CarriersResolver
+    coreshop.carrier.resolver: '@CoreShop\Component\Shipping\Resolver\CarriersResolver'
+    CoreShop\Component\Shipping\Resolver\CarriersResolverInterface: '@CoreShop\Component\Shipping\Resolver\CarriersResolver'
+    CoreShop\Component\Shipping\Resolver\CarriersResolver:
         arguments:
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'
@@ -25,27 +27,30 @@ services:
         arguments:
             - CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface
             - shipping-price-calculators
+        tags:
+            - { name: coreshop.registry, type_hint: shippingPriceCalculators }
 
-    coreshop.carrier.price_calculator:
-        class: CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator
-        arguments:
-            - '@coreshop.registry.shipping.price_calculators'
-
-    coreshop.carrier.price_calculator.shipping_rules:
-        class: CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator
+    coreshop.carrier.price_calculator.shipping_rules: '@CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator'
+    CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator:
         arguments:
             - '@coreshop.carrier.shipping_rule.checker'
             - '@coreshop.carrier.processor.shipping_rules'
         tags:
             - { name: coreshop.shipping.price_calculator, type: shipping-rule, priority: 256 }
 
-    coreshop.carrier.price_calculator.default:
-        class: CoreShop\Component\Shipping\Calculator\CompositePriceCalculator
-        arguments:
-            - ['@coreshop.carrier.price_calculator']
+    coreshop.carrier.price_calculator: '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator'
+    CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface: '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator'
+    CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator:
+        - '@coreshop.registry.shipping.price_calculators'
 
-    coreshop.shipping.default_resolver.cheapest:
-        class: CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver
+    coreshop.carrier.price_calculator.default: '@CoreShop\Component\Shipping\Calculator\CompositePriceCalculator'
+    CoreShop\Component\Shipping\Calculator\CompositePriceCalculator:
+        arguments:
+            - ['@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator']
+
+    coreshop.shipping.default_resolver.cheapest: '@CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver'
+    CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface: '@CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver'
+    CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver:
         arguments:
             - '@coreshop.carrier.resolver'
             - '@coreshop.carrier.price_calculator'

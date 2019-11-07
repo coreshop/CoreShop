@@ -65,8 +65,7 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
                 $item->setItemWholesalePrice(
                     $this->wholesalePriceCalculator->getPurchasableWholesalePrice($product, $context)
                 );
-            }
-            catch (NoPurchasableWholesalePriceFoundException $ex) {
+            } catch (NoPurchasableWholesalePriceFoundException $ex) {
                 $item->setItemWholesalePrice(0);
             }
         }

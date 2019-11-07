@@ -35,7 +35,6 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
         ];
 
         foreach ($tables as $tableName) {
-
             if (!$schema->hasTable($tableName)) {
                 continue;
             }
@@ -46,7 +45,6 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
             }
 
             foreach ($items as $item) {
-
                 $executeQuery = false;
 
                 $index = $item['index'];
@@ -75,12 +73,14 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
 
                 if ($executeQuery === true) {
                     $this->addSql(sprintf(
-                            'UPDATE `%s` SET `discountNet` = %d, `discountGross` = %d WHERE `o_id` = "%d" AND `index` = "%d" AND `fieldname` = "%s";',
-                            $tableName,
-                            $discountNet, $discountGross,
-                            $objectId, $index, $fieldName
-                        )
-                    );
+                        'UPDATE `%s` SET `discountNet` = %d, `discountGross` = %d WHERE `o_id` = "%d" AND `index` = "%d" AND `fieldname` = "%s";',
+                        $tableName,
+                        $discountNet,
+                        $discountGross,
+                        $objectId,
+                        $index,
+                        $fieldName
+                    ));
                 }
             }
         }
@@ -91,7 +91,6 @@ class Version20190415095007 extends AbstractPimcoreMigration implements Containe
         // clear cache
         Cache::clearAll();
         Cache\Runtime::clear();
-
     }
 
     /**

@@ -12,50 +12,55 @@ services:
     _defaults:
         public: true
 
-    coreshop.class_installer:
-        class: CoreShop\Component\Pimcore\DataObject\ClassInstaller
+    coreshop.class_installer: '@CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface'
+    CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\ClassInstaller'
+    CoreShop\Component\Pimcore\DataObject\ClassInstaller: ~
 
-    coreshop.object_link_generator:
-        class: CoreShop\Component\Pimcore\DataObject\LinkGenerator
+    coreshop.object_link_generator: '@CoreShop\Component\Pimcore\DataObject\LinkGenerator'
+    CoreShop\Component\Pimcore\DataObject\LinkGenerator: ~
 
-    coreshop.grid_config_installer:
-        class: CoreShop\Component\Pimcore\DataObject\GridConfigInstaller
+    coreshop.grid_config_installer: '@CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface'
+    CoreShop\Component\Pimcore\DataObject\GridConfigInstallerInterface: '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
+    CoreShop\Component\Pimcore\DataObject\GridConfigInstaller: ~
 
-    coreshop.resource_loader:
-        class: CoreShop\Component\Pimcore\ResourceLoader
+    coreshop.resource_loader: '@CoreShop\Component\Pimcore\ResourceLoader'
+    CoreShop\Component\Pimcore\ResourceLoader: ~
 
-    coreshop.object_service:
-        class: CoreShop\Component\Pimcore\DataObject\ObjectService
+    coreshop.object_service: '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+    CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectService'
+    CoreShop\Component\Pimcore\DataObject\ObjectService: ~
 
-    coreshop.object_note_service:
-        class: CoreShop\Component\Pimcore\DataObject\NoteService
+    coreshop.object_note_service: '@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface'
+    CoreShop\Component\Pimcore\DataObject\NoteServiceInterface: '@CoreShop\Component\Pimcore\DataObject\NoteService'
+    CoreShop\Component\Pimcore\DataObject\NoteService:
         arguments:
             - '@event_dispatcher'
 
-    coreshop.object_cloner:
-        class: CoreShop\Component\Pimcore\DataObject\ObjectCloner
+    coreshop.object_cloner: '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
+    CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface: '@CoreShop\Component\Pimcore\DataObject\ObjectCloner'
+    CoreShop\Component\Pimcore\DataObject\ObjectCloner: ~
 
-    coreshop.link_generator:
-        class: CoreShop\Component\Pimcore\Routing\LinkGenerator
+    coreshop.link_generator: '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+    CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface: '@CoreShop\Component\Pimcore\Routing\LinkGenerator'
+    CoreShop\Component\Pimcore\Routing\LinkGenerator:
         arguments:
             - '@coreshop.object_link_generator'
             - '@router'
 
-    coreshop.mail_processor:
-        class: CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor
+    coreshop.mail_processor: '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface'
+    CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface: '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor'
+    CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor:
         arguments:
             - '@event_dispatcher'
 
     coreshop.expression_language:
         class: Symfony\Component\ExpressionLanguage\ExpressionLanguage
 
-    coreshop.expression_language.provider.pimcore:
-        class: CoreShop\Component\Pimcore\ExpressionLanguage\PimcoreLanguageProvider
+    CoreShop\Component\Pimcore\ExpressionLanguage\PimcoreLanguageProvider:
         tags:
             - { name: coreshop.expression_language_provider }
 
-    coreshop.expression_language.provider.php:
-        class: CoreShop\Component\Pimcore\ExpressionLanguage\PHPFunctionsProvider
+    CoreShop\Component\Pimcore\ExpressionLanguage\PHPFunctionsProvider:
         tags:
             - { name: coreshop.expression_language_provider }
 

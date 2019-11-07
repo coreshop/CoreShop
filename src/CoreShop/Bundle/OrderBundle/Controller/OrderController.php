@@ -246,9 +246,12 @@ class OrderController extends AbstractSaleDetailController
             $order['availableOrderTransitions'] = $availableTransitions;
             $order['statesHistory'] = $this->getStatesHistory($sale);
 
+
+            $invoices = $this->getInvoices($sale);
+
+            $order['editable'] = count($invoices) > 0 ? false : true;
+            $order['invoices'] = $invoices;
             $order['payments'] = $this->getPayments($sale);
-            $order['editable'] = count($this->getInvoices($sale)) > 0 ? false : true;
-            $order['invoices'] = $this->getInvoices($sale);
             $order['shipments'] = $this->getShipments($sale);
             $order['paymentCreationAllowed'] = !in_array($sale->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
             $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
@@ -300,15 +303,18 @@ class OrderController extends AbstractSaleDetailController
                 'cancel',
             ], false);
 
-            $data = $this->getDataForObject($invoice);
+            if ($this->useLegacySerialization()) {
+                $data = $this->getDataForObject($invoice);
+
+                foreach ($invoice->getItems() as $index => $item) {
+                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+                }
+            } else {
+                $data = $this->getSerializer()->toArray($invoice);
+            }
 
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
             $data['transitions'] = $availableTransitions;
-
-            // better solution?
-            foreach ($invoice->getItems() as $index => $item) {
-                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-            }
 
             $invoiceArray[] = $data;
         }
@@ -327,12 +333,6 @@ class OrderController extends AbstractSaleDetailController
         $shipmentArray = [];
 
         foreach ($shipments as $shipment) {
-            $data = $this->getDataForObject($shipment);
-
-            //This should be in CoreBundle, but for BC reasons, we keep it here
-            if (method_exists($shipment, 'getCarrier')) {
-                $data['carrierName'] = $shipment->getCarrier()->getTitle();
-            }
 
             $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
                 'create',
@@ -340,13 +340,18 @@ class OrderController extends AbstractSaleDetailController
                 'cancel',
             ], false);
 
+            if ($this->useLegacySerialization()) {
+                $data = $this->getDataForObject($shipment);
+
+                foreach ($shipment->getItems() as $index => $item) {
+                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
+                }
+            } else {
+                $data = $this->getSerializer()->toArray($shipment);
+            }
+
             $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
             $data['transitions'] = $availableTransitions;
-
-            // better solution?
-            foreach ($shipment->getItems() as $index => $item) {
-                $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-            }
 
             $shipmentArray[] = $data;
         }
@@ -369,7 +374,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return ProcessableInterface
      */
-    private function getInvoiceProcessableHelper()
+    protected function getInvoiceProcessableHelper()
     {
         return $this->get('coreshop.order.invoice.processable');
     }
@@ -377,7 +382,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return ProcessableInterface
      */
-    private function getShipmentProcessableHelper()
+    protected function getShipmentProcessableHelper()
     {
         return $this->get('coreshop.order.shipment.processable');
     }
@@ -385,7 +390,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return OrderInvoiceRepositoryInterface
      */
-    private function getOrderInvoiceRepository()
+    protected function getOrderInvoiceRepository()
     {
         return $this->get('coreshop.repository.order_invoice');
     }
@@ -393,7 +398,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return OrderShipmentRepositoryInterface
      */
-    private function getOrderShipmentRepository()
+    protected function getOrderShipmentRepository()
     {
         return $this->get('coreshop.repository.order_shipment');
     }
@@ -401,7 +406,7 @@ class OrderController extends AbstractSaleDetailController
     /**
      * @return WorkflowStateInfoManagerInterface
      */
-    private function getWorkflowStateManager()
+    protected function getWorkflowStateManager()
     {
         return $this->get('coreshop.workflow.state_info_manager');
     }
@@ -453,4 +458,5 @@ class OrderController extends AbstractSaleDetailController
     {
         return 'orderNumber';
     }
+
 }

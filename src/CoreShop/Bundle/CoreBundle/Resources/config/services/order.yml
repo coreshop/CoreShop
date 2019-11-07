@@ -5,8 +5,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.order_payment:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType
+    CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType:
         arguments:
             - '%coreshop.model.order.class%'
             - '%coreshop.form.type.order.payment.validation_groups%'
@@ -110,8 +109,8 @@ services:
             - 'system.shipment.prefix'
             - 'system.shipment.suffix'
 
-    coreshop.mail.processor.order:
-        class: CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor
+    coreshop.mail.processor.order: '@CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor'
+    CoreShop\Bundle\CoreBundle\Order\OrderMailProcessor:
         arguments:
            - '@monolog.logger.pimcore'
            - '@coreshop.money_formatter'
@@ -121,6 +120,6 @@ services:
            - '@coreshop.theme.helper'
            - '@coreshop.mail_processor'
 
-    coreshop.core.cart_item.quantity_modifier:
-        class: CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier
+    coreshop.core.cart_item.quantity_modifier: '@CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier'
+    CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier

@@ -24,11 +24,25 @@ class OrderExtractor implements TrackingExtractorInterface
     private $extractor;
 
     /**
-     * @param TrackingExtractorInterface $extractor
+     * @var int
      */
-    public function __construct(TrackingExtractorInterface $extractor)
+    protected $decimalFactor;
+
+    /**
+     * @var int
+     */
+    protected $decimalPrecision;
+
+    /**
+     * @param TrackingExtractorInterface $extractor
+     * @param int                        $decimalFactor
+     * @param int                        $decimalPrecision
+     */
+    public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {
         $this->extractor = $extractor;
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -57,15 +71,25 @@ class OrderExtractor implements TrackingExtractorInterface
             $data,
             [
                 'id' => $object->getId(),
-                'affiliation' => $object->getTotal() / 100,
-                'total' => $object->getTotal() / 100,
-                'subtotal' => $object->getSubtotal() / 100,
-                'tax' => $object->getTotalTax() / 100,
-                'shipping' => $object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING) / 100,
-                'discount' => $object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE) / 100,
+                'affiliation' => $this->parseAmount($object->getTotal()),
+                'total' => $this->parseAmount($object->getTotal()),
+                'subtotal' => $this->parseAmount($object->getSubtotal()),
+                'totalTax' => $this->parseAmount($object->getTotalTax()),
+                'shipping' => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::SHIPPING)),
+                'discount' => $this->parseAmount($object->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE)),
                 'currency' => $object->getCurrency()->getIsoCode(),
                 'items' => $items,
             ]
         );
+    }
+
+    /**
+     * @param int $amount
+     *
+     * @return int
+     */
+    protected function parseAmount($amount)
+    {
+        return round((round($amount / $this->decimalFactor, $this->decimalPrecision)), 0);
     }
 }

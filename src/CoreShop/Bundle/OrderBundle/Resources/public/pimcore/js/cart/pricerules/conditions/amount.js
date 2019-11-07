@@ -21,11 +21,11 @@ coreshop.cart.pricerules.conditions.amount = Class.create(coreshop.rules.conditi
         var me = this;
 
         if (this.data && this.data.minAmount) {
-            minAmountValue = this.data.minAmount / 100;
+            minAmountValue = this.data.minAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
         }
 
         if (this.data && this.data.maxAmount) {
-            maxAmountValue = this.data.maxAmount / 100;
+            maxAmountValue = this.data.maxAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
         }
 
         var minAmount = new Ext.form.NumberField({

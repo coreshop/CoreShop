@@ -138,7 +138,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function prepareSale(SaleInterface $sale)
     {
-        $date = (int) $sale->getSaleDate()->getTimestamp();
+        $date = (int)$sale->getSaleDate()->getTimestamp();
 
         $element = [
             'o_id' => $sale->getId(),
@@ -211,21 +211,25 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
      */
     protected function getDetails(SaleInterface $sale)
     {
-        $jsonSale = $this->getDataForObject($sale);
+        if ($this->useLegacySerialization()) {
+            $jsonSale = $this->getDataForObject($sale);
+            $jsonSale['o_id'] = $sale->getId();
+            $jsonSale['saleNumber'] = $sale->getSaleNumber();
+            $jsonSale['saleDate'] = $sale->getSaleDate()->getTimestamp();
+            $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
+            $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
+            $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
+        } else {
+            $jsonSale = $this->getSerializer()->toArray($sale);
+        }
 
         if ($jsonSale['items'] === null) {
             $jsonSale['items'] = [];
         }
 
-        $jsonSale['o_id'] = $sale->getId();
-        $jsonSale['saleNumber'] = $sale->getSaleNumber();
-        $jsonSale['saleDate'] = $sale->getSaleDate()->getTimestamp();
-        $jsonSale['customer'] = $sale->getCustomer() instanceof CustomerInterface ? $this->getDataForObject($sale->getCustomer()) : null;
         $jsonSale['details'] = $this->getItemDetails($sale);
         $jsonSale['summary'] = $this->getSummary($sale);
         $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($sale);
-        $jsonSale['currency'] = $this->getCurrency($sale->getCurrency() ?: $sale->getStore()->getCurrency());
-        $jsonSale['store'] = $sale->getStore() instanceof StoreInterface ? $this->getStore($sale->getStore()) : null;
 
         $jsonSale['address'] = [
             'shipping' => $this->getDataForObject($sale->getShippingAddress()),
@@ -254,16 +258,16 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                     $rule = $ruleItem->getCartPriceRule();
 
                     $ruleData = [
-                        'id'       => -1,
-                        'name'     => '--',
+                        'id' => -1,
+                        'name' => '--',
                         'code' => empty($ruleItem->getVoucherCode()) ? null : $ruleItem->getVoucherCode(),
                         'discount' => $ruleItem->getDiscount(),
                     ];
 
                     if ($rule instanceof CartPriceRuleInterface) {
                         $ruleData = array_merge($ruleData, [
-                            'id'   => $rule->getId(),
-                            'name' => $rule->getName()
+                            'id' => $rule->getId(),
+                            'name' => $rule->getName(),
                         ]);
                     }
 
@@ -456,8 +460,24 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @return AddressFormatterInterface
      */
-    private function getAddressFormatter()
+    protected function getAddressFormatter()
     {
         return $this->get('coreshop.address.formatter');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    protected function getSerializer()
+    {
+        return $this->get('jms_serializer');
+    }
+
+    /**
+     * @return bool
+     */
+    protected function useLegacySerialization()
+    {
+        return $this->getParameter('coreshop.order.legacy_serialization') === true;
     }
 }

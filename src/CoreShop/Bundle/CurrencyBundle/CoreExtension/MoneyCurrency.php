@@ -16,7 +16,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
 
-class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
+class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
     /**
      * Static type of this element.
@@ -195,7 +195,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
             if ($data->getCurrency() instanceof CurrencyInterface) {
                 return [
-                    'value' => $data->getValue() / 100,
+                    'value' => $data->getValue() / $this->getDecimalFactor(),
                     'currency' => $data->getCurrency()->getId(),
                 ];
             }
@@ -216,7 +216,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             $currency = $this->getCurrencyById($data['currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']), $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * $this->getDecimalFactor(), $currency);
             }
         }
 
@@ -288,7 +288,15 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -333,6 +341,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
         return \Pimcore::getContainer()->get('coreshop.manager.currency');
     }
 
+    protected function getDecimalFactor()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
+    }
+
     /**
      * @param int $value
      *
@@ -344,6 +357,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data
             return (int) $value;
         }
 
-        return (int) round($value * 100, 0);
+        return (int) round($value, 0);
     }
 }

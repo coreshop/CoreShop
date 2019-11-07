@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.country_collector:
-        class: CoreShop\Bundle\AddressBundle\Collector\CountryCollector
+    CoreShop\Bundle\AddressBundle\Collector\CountryCollector:
         arguments:
             - '@coreshop.context.country'
             - false

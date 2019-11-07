@@ -75,18 +75,21 @@ trait CoreSaleCreationTrait
          * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
-            $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice($carrier, $cart,
-                $cart->getShippingAddress());
-            $priceConverted = $this->get('coreshop.currency_converter')->convert($price, $currentCurrency,
-                $cart->getCurrency()->getIsoCode());
-            $priceFormatted = $this->get('coreshop.money_formatter')->format($priceConverted,
-                $cart->getCurrency()->getIsoCode());
+            $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice(
+                $carrier,
+                $cart,
+            $cart->getShippingAddress()
+                );
+            $priceConverted = $this->get('coreshop.currency_converter')->convert(
+                $price,
+                $currentCurrency,
+            $cart->getCurrency()->getIsoCode()
+                );
 
             $result[] = [
                 'id' => $carrier->getId(),
                 'name' => $carrier->getIdentifier(),
                 'price' => $price,
-                'priceFormatted' => $priceFormatted,
             ];
         }
 

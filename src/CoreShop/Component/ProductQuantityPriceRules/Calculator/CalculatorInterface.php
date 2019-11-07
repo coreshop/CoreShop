@@ -22,7 +22,7 @@ interface CalculatorInterface
     /**
      * @param ProductQuantityPriceRuleInterface $quantityPriceRule
      * @param QuantityRangePriceAwareInterface  $subject
-     * @param int                               $quantity
+     * @param float                             $quantity
      * @param int                               $originalPrice
      * @param array                             $context
      *
@@ -33,7 +33,7 @@ interface CalculatorInterface
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
     );

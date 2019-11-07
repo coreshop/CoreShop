@@ -66,12 +66,15 @@ final class CoreShopResourceExtension extends AbstractModelExtension
             $container->setDefinition('coreshop.body_listener', $bodyListener);
         }
 
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
 
         $container
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
-            ->addTag(RegisterInstallersPass::INSTALLER_TAG)
-        ;
+            ->addTag(RegisterInstallersPass::INSTALLER_TAG);
     }
 
     private function loadPersistence(array $drivers, array $resources, LoaderInterface $loader)

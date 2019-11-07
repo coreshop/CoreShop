@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -39,7 +40,8 @@ final class AmountConfigurationType extends AbstractType
                     new NotBlank(['groups' => ['coreshop']]),
                     new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
                 ],
-            ]);
+            ])
+            ->add('gross', CheckboxType::class, []);
     }
 
     /**

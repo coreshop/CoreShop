@@ -19,6 +19,7 @@ use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
 {
@@ -280,5 +281,37 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     public function __toString()
     {
         return sprintf('%s (%s)', $this->getName(), $this->getId());
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $conditions = $this->getConditions();
+        $ranges = $this->getRanges();
+
+        $this->id = null;
+        $this->product = null;
+        $this->conditions = new ArrayCollection();
+        $this->ranges = new ArrayCollection();
+
+        if ($conditions instanceof Collection) {
+            /** @var ConditionInterface $condition */
+            foreach ($conditions as $condition) {
+                $newCondition = clone $condition;
+                $this->addCondition($newCondition);
+            }
+        }
+
+        if ($ranges instanceof Collection) {
+            /** @var QuantityRangeInterface $range */
+            foreach ($ranges as $range) {
+                $newRange = clone $range;
+                $newRange->setRule($this);
+                $this->addRange($newRange);
+            }
+        }
     }
 }

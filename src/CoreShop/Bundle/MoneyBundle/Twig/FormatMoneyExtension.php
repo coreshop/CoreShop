@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\MoneyBundle\Twig;
 
 use CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class FormatMoneyExtension extends \Twig_Extension
+final class FormatMoneyExtension extends AbstractExtension
 {
     /**
      * @var FormatMoneyHelperInterface
@@ -35,7 +37,7 @@ final class FormatMoneyExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_format_money', [$this->helper, 'formatAmount']),
+            new TwigFilter('coreshop_format_money', [$this->helper, 'formatAmount']),
         ];
     }
 }

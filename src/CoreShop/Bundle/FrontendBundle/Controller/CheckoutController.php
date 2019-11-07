@@ -18,7 +18,9 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
+use CoreShop\Component\Order\CheckoutEvents;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Event\CheckoutEvent;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +82,20 @@ class CheckoutController extends FrontendController
             }
         }
 
+        $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
+
+        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_PRE, $event);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         if ($request->isMethod('POST')) {
             try {
                 if ($step->commitStep($cart, $request)) {
@@ -117,6 +133,20 @@ class CheckoutController extends FrontendController
             'step' => $step,
             'identifier' => $stepIdentifier,
         ]);
+
+        $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
+
+        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_POST, $event);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->redirectToRoute('coreshop_index');
+        }
 
         return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
     }
@@ -175,22 +205,53 @@ class CheckoutController extends FrontendController
             }
         }
 
+        $event = new CheckoutEvent($this->getCart());
+
+        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_PRE, $event);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->redirectToRoute('coreshop_index');
+        }
+
         /**
          * If everything is valid, we continue with Order-Creation.
          */
         $order = $this->getOrderFactory()->createNew();
         $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+        $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
 
-            return $this->redirectToRoute('coreshop_checkout_confirmation');
+            $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, new CheckoutEvent($this->getCart(), ['order' => $order]));
+
+            $response = $this->redirectToRoute('coreshop_checkout_confirmation');
+        }
+
+        $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
+
+        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, $event);
+
+        if ($event->isStopped()) {
+            $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
+
+            if ($event->hasResponse()) {
+                return $event->getResponse();
+            }
+
+            return $this->redirectToRoute('coreshop_index');
         }
 
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
         */
-        return $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
+        return $response;
     }
 
     /**
@@ -252,6 +313,27 @@ class CheckoutController extends FrontendController
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
+    }
+
+    private function addEventFlash(string $type, string $message = null, array $parameters = [])
+    {
+        if (!$message) {
+            return;
+        }
+
+        if (!empty($parameters)) {
+            $message = $this->prepareMessage($message, $parameters);
+        }
+
+        $this->addFlash($type, $message);
+    }
+
+    private function prepareMessage(string $message, array $parameters)
+    {
+        return [
+            'message' => $message,
+            'parameters' => $parameters,
+        ];
     }
 
     /**

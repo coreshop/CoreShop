@@ -14,11 +14,8 @@ namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
-use CoreShop\Component\Core\Model\CartInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class CartCreationTypeExtension extends AbstractTypeExtension
 {
@@ -28,11 +25,11 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('shippingAddress', AddressChoiceType::class, [
-            'customer' => $options['customer']
+            'customer' => $options['customer'],
         ]);
 
         $builder->add('invoiceAddress', AddressChoiceType::class, [
-            'customer' => $options['customer']
+            'customer' => $options['customer'],
         ]);
     }
 
@@ -42,5 +39,13 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
     public function getExtendedType()
     {
         return CartCreationType::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [CartCreationType::class];
     }
 }

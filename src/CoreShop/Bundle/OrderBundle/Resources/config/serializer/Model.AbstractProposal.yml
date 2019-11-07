@@ -1,0 +1,55 @@
+CoreShop\Component\Order\Model\AbstractProposal:
+    exclusion_policy: ALL
+    xml_root_name: proposal
+    virtual_properties:
+        shippingAddress:
+            serialized_name: shippingAddress
+            exp: object.getShippingAddress()
+            type: array
+            groups: [Detailed]
+        invoiceAddress:
+            serialized_name: invoiceAddress
+            exp: object.getInvoiceAddress()
+            type: array
+            groups: [Detailed]
+        taxes:
+            serialized_name: taxes
+            exp: object.getTaxes()
+            type: array
+            groups: [Detailed]
+        comment:
+            serialized_name: comment
+            exp: object.getComment()
+            type: string
+            groups: [Detailed]
+        additionalData:
+            serialized_name: additionalData
+            exp: object.getAdditionalData()
+            type: array
+            groups: [Detailed]
+        localeCode:
+            serialized_name: localeCode
+            exp: object.getLocaleCode()
+            type: string
+            groups: [Detailed]
+        adjustments:
+            serialized_name: adjustments
+            exp: object.getAdjustments()
+            type: array
+            groups: [Detailed]
+        currency:
+            serialized_name: currency
+            exp: object.getCurrency()
+            groups: [Detailed]
+        store:
+            serialized_name: store
+            exp: object.getStore()
+            groups: [Detailed]
+        items:
+            serialized_name: items
+            exp: object.getItems()
+            groups: [Detailed]
+        customer:
+            serialized_name: customer
+            exp: object.getCustomer()
+            groups: [Detailed]

@@ -120,9 +120,13 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $code .= 'public function get' . ucfirst($key) . ' () {' . "\n";
         $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
         $code .= "\t" . '$data = $this->' . $key . ";\n";
-        $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {'  . "\n";
-		$code .= "\t\t" . 'return $this->getValueFromParent("' . $key . '");'  . "\n";
-	    $code .= "\t" . '}'  . "\n";
+        $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
+        $code .= "\t\t" . 'try {' . "\n";
+        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '");' . "\n";
+        $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
+        $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
+        $code .= "\t\t" . '}' . "\n";
+        $code .= "\t" . '}' . "\n";
         $code .= "\t" . 'return $data;' . "\n";
         $code .= "}\n\n";
 
@@ -363,15 +367,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isEmpty($data)
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
-        return is_null($data);
+        return [];
     }
 
     /**
@@ -449,5 +453,4 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     {
         return \Pimcore::getContainer()->get('jms_serializer');
     }
-
 }

@@ -30,7 +30,7 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('coreshop_sequence');
+        $rootNode = $treeBuilder->root('core_shop_sequence');
 
         $rootNode
             ->children()

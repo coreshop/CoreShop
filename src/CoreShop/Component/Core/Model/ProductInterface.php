@@ -63,6 +63,7 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
     /**
      * @param string                                         $type
      * @param \CoreShop\Component\Store\Model\StoreInterface $store
+     *
      * @return mixed
      */
     public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);

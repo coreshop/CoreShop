@@ -8,21 +8,22 @@ services:
     coreshop.menu.registry:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface'
+            - 'CoreShop\Bundle\MenuBundle\Builder\MenuBuilder'
             - 'menu-builder'
+        tags:
+            - { name: coreshop.registry, type_hint: menues }
 
-    coreshop.menu.renderer.json:
-        class: CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer
+    coreshop.menu.renderer.json: '@CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer'
+    CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer:
         arguments:
             - '@twig'
             - '%coreshop.menu.json.template%'
-            - '@coreshop.menu.guard.pimcore'
+            - '@CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard'
             - {}
         tags:
             - { name: knp_menu.renderer, alias: json }
 
-    coreshop.menu.guard.pimcore:
-        class: CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard
+    CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard:
         arguments:
             - '@Pimcore\Bundle\AdminBundle\Security\User\TokenStorageUserResolver'
 

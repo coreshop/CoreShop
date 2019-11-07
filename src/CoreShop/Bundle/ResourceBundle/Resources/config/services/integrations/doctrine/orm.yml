@@ -6,16 +6,14 @@ services:
     _defaults:
         public: true
 
-    coreshop.event_subscriber.orm_mapped_super_class:
-        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMMappedSuperClassSubscriber
+    CoreShop\Bundle\ResourceBundle\EventListener\ORMMappedSuperClassSubscriber:
         arguments:
-            - '@coreshop.resource_registry'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: doctrine.event_subscriber, priority: 8192 }
 
-    coreshop.event_subscriber.orm_repository_class:
-        class: CoreShop\Bundle\ResourceBundle\EventListener\ORMRepositoryClassSubscriber
+    CoreShop\Bundle\ResourceBundle\EventListener\ORMRepositoryClassSubscriber:
         arguments:
-            - '@coreshop.resource_registry'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
         tags:
             - { name: doctrine.event_subscriber, priority: 8192 }

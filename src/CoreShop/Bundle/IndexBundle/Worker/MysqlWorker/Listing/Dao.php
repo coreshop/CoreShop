@@ -130,6 +130,21 @@ class Dao
      */
     public function loadGroupByRelationValues(QueryBuilder $queryBuilder, $fieldName, $countValues = false)
     {
+        return $this->loadGroupByRelationValuesAndType($queryBuilder, $fieldName, null, $countValues);
+    }
+
+    /**
+     * Load Grouo by Relation values and type.
+     *
+     * @param QueryBuilder $queryBuilder
+     * @param string       $fieldName
+     * @param string       $type
+     * @param bool         $countValues
+     *
+     * @return array
+     */
+    public function loadGroupByRelationValuesAndType(QueryBuilder $queryBuilder, $fieldName, $type, $countValues = false)
+    {
         $queryBuilder->from($this->model->getRelationTablename(), 'q');
 
         if ($countValues) {
@@ -138,12 +153,20 @@ class Dao
             $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
             $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
 
-            if ($this->model->getVariantMode() == ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
+            if ($this->model->getVariantMode() === ListingInterface::VARIANT_MODE_INCLUDE_PARENT_OBJECT) {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(DISTINCT src_virtualObjectId) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+
+                if (null !== $type) {
+                    $queryBuilder->where('type = ' . $this->quote($type));
+                }
             } else {
                 $queryBuilder->select($this->quoteIdentifier('dest') . ' AS ' . $this->quoteIdentifier('value') . ', count(*) AS ' . $this->quoteIdentifier('count'));
                 $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+
+                if (null !== $type) {
+                    $queryBuilder->where('type = '.$this->quote($type));
+                }
             }
 
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
@@ -153,29 +176,34 @@ class Dao
             $result = $stmt->fetchAll();
 
             return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier('dest'));
-            $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
-
-            $subQueryBuilder = new QueryBuilder($this->database);
-            $subQueryBuilder->select('o_id');
-            $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
-            $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
-            $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
-            $queryBuilder->groupBy('dest');
-
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-
-            $result = [];
-            foreach ($queryResult as $row) {
-                if ($row['dest']) {
-                    $result[] = $row['dest'];
-                }
-            }
-
-            return $result;
         }
+
+        $queryBuilder->select($this->quoteIdentifier('dest'));
+        $queryBuilder->where('fieldname = ' . $this->quote($fieldName));
+
+        if (null !== $type) {
+            $queryBuilder->where('type = ' . $this->quote($type));
+        }
+
+        $subQueryBuilder = new QueryBuilder($this->database);
+        $subQueryBuilder->select('o_id');
+        $subQueryBuilder->from($this->model->getQueryTableName(), 'q');
+        $subQueryBuilder->where($queryBuilder->getQueryPart('where'));
+        $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
+        $queryBuilder->groupBy('dest');
+
+        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+        $queryResult = $stmt->fetchAll();
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row['dest']) {
+                $result[] = $row['dest'];
+            }
+        }
+
+        return $result;
     }
 
     /**

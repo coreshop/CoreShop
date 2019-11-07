@@ -17,14 +17,19 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
     getForm: function () {
         var minAmountValue = 0;
         var maxAmountValue = 0;
+        var grossValue = true;
         var me = this;
 
         if (this.data && this.data.minAmount) {
-            minAmountValue = this.data.minAmount / 100;
+            minAmountValue = this.data.minAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
         }
 
         if (this.data && this.data.maxAmount) {
-            maxAmountValue = this.data.maxAmount / 100;
+            maxAmountValue = this.data.maxAmount / pimcore.globalmanager.get('coreshop.currency.decimal_factor');
+        }
+
+        if (this.data && this.data.hasOwnProperty('gross')) {
+            grossValue = this.data.gross;
         }
 
         var minAmount = new Ext.form.NumberField({
@@ -43,9 +48,15 @@ coreshop.shippingrule.conditions.amount = Class.create(coreshop.rules.conditions
             decimalPrecision: 2
         });
 
+        var gross = new Ext.form.Checkbox({
+            fieldLabel: t('coreshop_condition_amount_gross'),
+            name: 'gross',
+            value: grossValue
+        });
+
         this.form = Ext.create('Ext.form.Panel', {
             items: [
-                minAmount, maxAmount
+                minAmount, maxAmount, gross
             ]
         });
 

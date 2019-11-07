@@ -41,7 +41,7 @@ class VolumeCalculator implements CalculatorInterface
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
-        int $quantity,
+        float $quantity,
         int $originalPrice,
         array $context
     ) {
@@ -100,11 +100,11 @@ class VolumeCalculator implements CalculatorInterface
 
     /**
      * @param Collection $ranges
-     * @param int        $quantity
+     * @param float      $quantity
      *
      * @return QuantityRangeInterface|null
      */
-    protected function locate(Collection $ranges, int $quantity)
+    protected function locate(Collection $ranges, float $quantity)
     {
         if ($ranges->isEmpty()) {
             return null;
@@ -113,7 +113,6 @@ class VolumeCalculator implements CalculatorInterface
         $cheapestRangePrice = null;
         /** @var QuantityRangeInterface $range */
         foreach ($ranges as $index => $range) {
-
             if ($range->getRangeStartingFrom() > $quantity) {
                 break;
             }

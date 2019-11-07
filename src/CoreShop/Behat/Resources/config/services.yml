@@ -3,6 +3,9 @@ imports:
 
 
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.shared_storage:
         class: CoreShop\Behat\Service\SharedStorage
 

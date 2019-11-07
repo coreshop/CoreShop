@@ -1,0 +1,59 @@
+CoreShop\Component\Order\Model\Cart:
+    exclusion_policy: ALL
+    xml_root_name: cart
+    virtual_properties:
+        priceRuleItems:
+            serialized_name: priceRuleItems
+            exp: object.getPriceRuleItems()
+            type: array
+            groups: [Detailed]
+        saleDate:
+            serialized_name: saleDate
+            exp: object.getCreationDate()
+            type: carbon
+            groups: [Detailed]
+        totalTax:
+            serialized_name: totalTax
+            exp: object.getTotalTax()
+            type: integer
+            groups: [Detailed]
+        totalNet:
+            serialized_name: totalNet
+            exp: object.getTotal(false)
+            type: integer
+            groups: [Detailed]
+        totalGross:
+            serialized_name: totalGross
+            exp: object.getTotal(true)
+            type: integer
+            groups: [Detailed]
+        subtotalNet:
+            serialized_name: subtotalNet
+            exp: object.getSubtotal(false)
+            type: integer
+            groups: [Detailed]
+        subtotalGross:
+            serialized_name: subtotalGross
+            exp: object.getSubtotal(true)
+            type: integer
+            groups: [Detailed]
+        subtotalTax:
+            serialized_name: subtotalTax
+            exp: object.getSubtotalTax()
+            type: integer
+            groups: [Detailed]
+        discountNet:
+            serialized_name: discountNet
+            exp: object.getDiscount(false)
+            type: integer
+            groups: [Detailed]
+        discountGross:
+            serialized_name: discountGross
+            exp: object.getDiscount(true)
+            type: integer
+            groups: [Detailed]
+        paymentProvider:
+            serialized_name: paymentProvider
+            exp: object.getPaymentProvider(true)
+            type: relation
+            groups: [Detailed]

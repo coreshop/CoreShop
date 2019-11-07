@@ -15,11 +15,12 @@ namespace CoreShop\Bundle\MenuBundle\Renderer;
 use CoreShop\Bundle\MenuBundle\Guard\PimcoreGuard;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Renderer\RendererInterface;
+use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $environment;
 
@@ -34,13 +35,13 @@ class JsonRenderer implements RendererInterface
     private $defaultOptions;
 
     /**
-     * @param \Twig_Environment $environment
-     * @param string            $template
-     * @param PimcoreGuard      $guard
-     * @param array             $defaultOptions
+     * @param Environment  $environment
+     * @param string       $template
+     * @param PimcoreGuard $guard
+     * @param array        $defaultOptions
      */
     public function __construct(
-        \Twig_Environment $environment,
+        Environment $environment,
         $template,
         PimcoreGuard $guard,
         array $defaultOptions = array()
@@ -52,9 +53,8 @@ class JsonRenderer implements RendererInterface
             'matchingDepth' => null,
             'template' => $template,
             'compressed' => false,
-            'clear_matcher' => true
+            'clear_matcher' => true,
         ), $defaultOptions);
-
     }
 
     public function render(ItemInterface $item, array $options = array())
@@ -65,11 +65,12 @@ class JsonRenderer implements RendererInterface
 
         $items = $this->recursiveProcessMenuItems($item);
 
-        $html = $this->environment->render($options['template'],
+        $html = $this->environment->render(
+            $options['template'],
             [
                 'item' => $this->renderItem($item),
                 'items' => $items,
-                'options' => $options
+                'options' => $options,
             ]
         );
 
@@ -114,7 +115,6 @@ class JsonRenderer implements RendererInterface
         $alreadyTaken = array();
 
         foreach ($menu->getChildren() as $key => $menuItem) {
-
             if ($menuItem->hasChildren()) {
                 $this->reorderMenuItems($menuItem);
             }
@@ -148,8 +148,11 @@ class JsonRenderer implements RendererInterface
                     continue;
                 }
 
-                $menuOrderArray = array_merge(array_slice($menuOrderArray, 0, $position), array($value),
-                    array_slice($menuOrderArray, $position));
+                $menuOrderArray = array_merge(
+                    array_slice($menuOrderArray, 0, $position),
+                    array($value),
+                array_slice($menuOrderArray, $position)
+                    );
             }
         }
 

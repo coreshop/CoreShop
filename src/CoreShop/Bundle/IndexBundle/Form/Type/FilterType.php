@@ -34,8 +34,8 @@ class FilterType extends AbstractResourceType
                     'DESC' => 'desc',
                 ),
             ])
-            ->add('preConditions', FilterConditionCollectionType::class)
-            ->add('conditions', FilterConditionCollectionType::class)
+            ->add('preConditions', FilterPreConditionCollectionType::class)
+            ->add('conditions', FilterUserConditionCollectionType::class)
             ->add('resultsPerPage', IntegerType::class)
             ->add('index', IndexChoiceType::class);
     }

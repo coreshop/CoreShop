@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
+use CoreShop\Bundle\CoreBundle\Faker\Commerce;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -52,20 +53,19 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
         if (!count($this->container->get('coreshop.repository.category')->findAll())) {
             $categoriesCount = 5;
             $faker = Factory::create();
+            $faker->addProvider(new Commerce($faker));
 
             for ($i = 0; $i < $categoriesCount; $i++) {
                 /**
                  * @var CategoryInterface $category
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
-                $category->setName($faker->words(3, true));
+                $category->setName($faker->department);
                 $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
-                $category->setKey($category->getName());
                 $category->setPublished(true);
-
-                Service::getUniqueKey($category);
-
+                $category->setKey($category->getName());
+                $category->setKey(Service::getUniqueKey($category));
                 $category->save();
             }
         }

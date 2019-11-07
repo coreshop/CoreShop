@@ -47,26 +47,28 @@ final class CoreShopShippingExtension extends AbstractModelExtension
 
         $container->setAlias('coreshop.carrier.default_resolver', $alias);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         $container
             ->registerForAutoconfiguration(ShippableCarrierValidatorInterface::class)
-            ->addTag(CompositeShippableValidatorPass::SHIPABLE_VALIDATOR_TAG)
-        ;
+            ->addTag(CompositeShippableValidatorPass::SHIPABLE_VALIDATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(CarrierPriceCalculatorInterface::class)
-            ->addTag(ShippingPriceCalculatorsPass::SHIPPING_PRICE_CALCULATOR_TAG)
-        ;
+            ->addTag(ShippingPriceCalculatorsPass::SHIPPING_PRICE_CALCULATOR_TAG);
 
         $container
             ->registerForAutoconfiguration(ShippingRuleActionProcessorInterface::class)
-            ->addTag(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG)
-        ;
+            ->addTag(ShippingRuleActionPass::SHIPPING_RULE_ACTION_TAG);
 
         $container
             ->registerForAutoconfiguration(ShippingConditionCheckerInterface::class)
-            ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG)
-        ;
+            ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG);
     }
 }

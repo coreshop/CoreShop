@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\PayumBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -48,6 +49,9 @@ final class PaypalGatewayConfigurationType extends AbstractType
                         'groups' => 'coreshop',
                     ]),
                 ],
+            ])
+            ->add('sandbox', CheckboxType::class, [
+
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $data = $event->getData();

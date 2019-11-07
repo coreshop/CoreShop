@@ -15,6 +15,7 @@ coreshop.index.resource = Class.create(coreshop.resource, {
     initialize: function () {
         coreshop.global.addStore('coreshop_indexes', 'coreshop/indices');
         coreshop.global.addStore('coreshop_filters', 'coreshop/filters');
+        coreshop.global.addStoreWithUrl('coreshop_index_types', '/admin/coreshop/indices/get-types');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.index', this);
 

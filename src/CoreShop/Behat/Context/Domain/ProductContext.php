@@ -73,6 +73,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") should be priced at "([^"]+)"$/
+     * @Then /^the (product) should be priced at "([^"]+)"$/
+     * @Then /^the (variant) should be priced at "([^"]+)"$/
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {
@@ -81,6 +83,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") discount-price should be "([^"]+)"$/
+     * @Then /^the (product) discount-price should be "([^"]+)"$/
+     * @Then /^the (variant) discount-price should be "([^"]+)"$/
      */
     public function productsDiscountPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -89,6 +93,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") retail-price should be "([^"]+)"$/
+     * @Then /^the (product) retail-price should be "([^"]+)"$/
+     * @Then /^the (variant) retail-price should be "([^"]+)"$/
      */
     public function productsRetailPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -97,6 +103,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") discount should be "([^"]+)"$/
+     * @Then /^the (product) discount should be "([^"]+)"$/
+     * @Then /^the (variant) discount should be "([^"]+)"$/
      */
     public function productDiscountShouldBe(ProductInterface $product, int $discount)
     {
@@ -108,6 +116,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
+     * @Then /^the (product) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
+     * @Then /^the (variant) should have the prices, price: "([^"]+)" and discount-price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
      */
     public function productPricesShouldBe(ProductInterface $product, int $price, int $discountPrice, int $retailPrice, int $discount)
     {
@@ -119,6 +129,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
+     * @Then /^the (product) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
+     * @Then /^the (variant) should have the prices, price: "([^"]+)" and retail-price: "([^"]+)" and discount: "([^"]+)"$/
      */
     public function productPricesShouldBeExceptDiscountPrice(ProductInterface $product, int $price, int $retailPrice, int $discount)
     {
@@ -129,6 +141,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") should be priced at "([^"]+)" including tax$/
+     * @Then /^the (product) should be priced at "([^"]+)" including tax$/
+     * @Then /^the (variant) should be priced at "([^"]+)" including tax$/
      */
     public function productTaxedPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -137,6 +151,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") retail-price should be "([^"]+)" including tax$/
+     * @Then /^the (product) retail-price should be "([^"]+)" including tax$/
+     * @Then /^the (variant) retail-price should be "([^"]+)" including tax$/
      */
     public function productTaxedRetailPriceShouldBe(ProductInterface $product, int $price)
     {
@@ -145,6 +161,8 @@ final class ProductContext implements Context
 
     /**
      * @Then /^the (product "[^"]+") should have (tax rule group "[^"]+")$/
+     * @Then /^the (product) should have (tax rule group "[^"]+")$/
+     * @Then /^the (variant) should have (tax rule group "[^"]+")$/
      */
     public function theProductShouldHaveTaxRuleGroup(ProductInterface $product, TaxRuleGroupInterface $taxRuleGroup)
     {
@@ -152,8 +170,9 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (products) default unit should be (unit "[^"]+")$/
      * @Then /^the (products "[^"]+") default unit should be (unit "[^"]+")$/
+     * @Then /^the (products) default unit should be (unit "[^"]+")$/
+     * @Then /^the (variants) default unit should be (unit "[^"]+")$/
      */
     public function theProductsDefaultUnitShouldBe(ProductInterface $product, ProductUnitInterface $unit)
     {
@@ -175,8 +194,9 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Then /^the (product) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
      * @Then /^the (product "[^"]+") should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Then /^the (product) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
+     * @Then /^the (variant) should have and additional (unit "[^"]+") with conversion rate ("[^"]+")$/
      */
     public function theProductsShouldHaveAnAdditionalUnitWithConversionRate(ProductInterface $product, ProductUnitInterface $unit, $conversionRate)
     {
@@ -188,7 +208,7 @@ final class ProductContext implements Context
         $found = false;
 
         foreach ($additionalUnitDefinitions as $unitDefinition) {
-            if ($unitDefinition->getUnit() === $unit && (float)$conversionRate === $unitDefinition->getConversionRate()) {
+            if ($unitDefinition->getUnit() === $unit && (float) $conversionRate === $unitDefinition->getConversionRate()) {
                 $found = true;
             }
         }

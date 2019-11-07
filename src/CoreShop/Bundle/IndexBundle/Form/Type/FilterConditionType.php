@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class FilterConditionType extends AbstractResourceType
+class FilterConditionType extends AbstractResourceType
 {
     /**
      * @var FormTypeRegistryInterface

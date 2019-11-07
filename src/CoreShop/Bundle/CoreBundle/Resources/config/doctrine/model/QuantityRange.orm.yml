@@ -4,10 +4,10 @@ CoreShop\Component\Core\Model\QuantityRange:
     fields:
         amount:
             column: amount
-            type: integer
+            type: bigint
         pseudoPrice:
             column: pseudo_price
-            type: integer
+            type: bigint
     manyToOne:
         currency:
             targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface

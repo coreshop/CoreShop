@@ -87,3 +87,7 @@ coreshop.order.helper.openOrder = function (id, callback) {
 coreshop.order.helper.openQuote = function (id, callback) {
     coreshop.order.helper.openSale(id, 'quote', callback);
 };
+
+coreshop.order.helper.openCart = function (id, callback) {
+    coreshop.order.helper.openSale(id, 'cart', callback);
+};

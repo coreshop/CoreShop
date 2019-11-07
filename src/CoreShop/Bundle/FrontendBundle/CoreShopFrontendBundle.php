@@ -13,13 +13,14 @@
 namespace CoreShop\Bundle\FrontendBundle;
 
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
+use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use EmailizrBundle\EmailizrBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
@@ -32,6 +33,16 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     {
         $collection->addBundle(new CoreShopCoreBundle(), 1600);
         $collection->addBundle(new EmailizrBundle(), 1000);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterFrontendControllerPass());
     }
 
     /**

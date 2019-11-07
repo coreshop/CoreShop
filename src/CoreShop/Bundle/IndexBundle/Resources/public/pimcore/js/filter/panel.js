@@ -40,15 +40,14 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     initialize: function () {
         var me = this;
 
-        pimcore.globalmanager.get('coreshop_indexes').load();
-
         Ext.Ajax.request({
             url: '/admin/coreshop/filters/get-config',
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);
 
-                me.conditions = config.conditions;
+                me.pre_conditions = config.pre_conditions;
+                me.user_conditions = config.user_conditions;
                 //me.similarities = config.similarities;
             }
         });

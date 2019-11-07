@@ -28,30 +28,21 @@ coreshop.helpers.createOrder = function () {
     );
 };
 
-coreshop.util.format.currency = function (currency, v) {
-    v = (Math.round(((v / 100) - 0) * 100)) / 100;
-    v = (v == Math.floor(v)) ? v + '.00' : ((v * 10 == Math.floor(v * 10)) ? v + '0' : v);
-    v = String(v);
-    var ps = v.split('.'),
-        whole = ps[0],
-        sub = ps[1] ? '.' + ps[1] : '.00',
-        r = /(\d+)(\d{3})/;
-    while (r.test(whole)) {
-        whole = whole.replace(r, '$1' + ',' + '$2');
-    }
+coreshop.util.format.currency = function (currency, v, forceTwoDecimals) {
 
-    v = whole + sub;
-    if (v.charAt(0) == '-') {
-        return '-' + currency + ' ' + v.substr(1);
-    }
+    var factor = forceTwoDecimals === true ? 100 : pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+        decimalPrecision = forceTwoDecimals === true ? 2 : pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
+        value = (Math.round(((v / factor) - 0) * factor)) / factor;
 
-    return currency + ' ' + v;
+    currency = currency + ' ';
+
+    return Ext.util.Format.currency(value, currency, decimalPrecision, false);
 };
 
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';
-    html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo.svg" style="width: 60px;"><br>';
+    html += '<br><img src="/bundles/coreshopcore/pimcore/img/logo-full.svg" style="width: 400px;"><br>';
     html += '<br><b>Version: ' + coreshop.settings.bundle.version + '</b>';
     html += '<br><br>&copy; by Dominik Pfaffenbauer, Wels, Austria (<a href="https://www.coreshop.org/" target="_blank">coreshop.org</a>)';
     html += '<br><br><a href="https://github.com/coreshop/coreshop/blob/master/LICENSE.md" target="_blank">License</a> | ';

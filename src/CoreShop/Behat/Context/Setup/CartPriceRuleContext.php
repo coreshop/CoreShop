@@ -510,7 +510,6 @@ final class CartPriceRuleContext implements Context
         ]));
     }
 
-
     /**
      * @Given /^the (cart rule "[^"]+") has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
      * @Given /^the (cart rule) has a action surcharge with ([^"]+) in (currency "[^"]+") off$/
@@ -524,7 +523,6 @@ final class CartPriceRuleContext implements Context
             'currency' => $currency->getId(),
         ]));
     }
-
 
     /**
      * @param CartPriceRuleInterface $rule

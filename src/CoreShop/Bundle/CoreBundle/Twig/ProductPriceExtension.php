@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-final class ProductPriceExtension extends \Twig_Extension
+final class ProductPriceExtension extends AbstractExtension
 {
     /**
      * @var ProductPriceHelperInterface
@@ -35,10 +37,10 @@ final class ProductPriceExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_Filter('coreshop_product_price', [$this->helper, 'getPrice'], ['withTax' => ['with_tax']]),
-            new \Twig_Filter('coreshop_product_retail_price', [$this->helper, 'getRetailPrice'], ['withTax' => ['with_tax']]),
-            new \Twig_Filter('coreshop_product_discount_price', [$this->helper, 'getDiscountPrice'], ['withTax' => ['with_tax']]),
-            new \Twig_Filter('coreshop_product_discount', [$this->helper, 'getDiscount'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_price', [$this->helper, 'getPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_retail_price', [$this->helper, 'getRetailPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_discount_price', [$this->helper, 'getDiscountPrice'], ['withTax' => ['with_tax']]),
+            new TwigFilter('coreshop_product_discount', [$this->helper, 'getDiscount'], ['withTax' => ['with_tax']]),
         ];
     }
 }

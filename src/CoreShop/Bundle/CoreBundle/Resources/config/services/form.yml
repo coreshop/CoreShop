@@ -2,90 +2,73 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.extension.type.store:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\StoreBundle\Form\Type\StoreType }
 
-    coreshop.form.extension.type.tax_rule:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\TaxRuleTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType }
 
-    coreshop.form.extension.type.carrier:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CarrierTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType }
 
-    coreshop.form.extension.type.country:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CountryTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CountryTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\CountryType }
 
-    coreshop.form.extension.type.customer:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CustomerTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CustomerTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType }
 
-    coreshop.form.extension.type.payment_provider:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\PaymentProviderTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderType }
 
-    coreshop.form.extension.type.order_shipment_creation:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\OrderShipmentCreationTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType }
 
-    coreshop.form.extension.type.product_quantity_price_rule:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeType }
 
-    coreshop.form.extension.type.product_quantity_price_rule_range:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeCollectionTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\ProductQuantityRangeCollectionTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeCollectionType }
 
-    coreshop.form.type.address_choice:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType
+    CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:
             - '@coreshop.repository.customer'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.customer_registration:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType
+    CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
         tags:
             - { name: form.type }
 
-    coreshop.form.type.guest_registration:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType
+    CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType:
         tags:
             - { name: form.type }
 
-    coreshop.form.extension.type.cart:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartType }
 
-    coreshop.form.extension.type.cart_item_type:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartItemTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartItemTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartItemType }
 
-    coreshop.form.extension.type.add_to_cart_type:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\AddToCartTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }
 
-    coreshop.form.extension.type.cart_creation_type:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType }
 
-    coreshop.form.extension.type.cart_creation_cart_item_type:
-        class: CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationCartItemTypeExtension
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationCartItemTypeExtension:
         arguments:
             - '@coreshop.repository.stack.product'
         tags:

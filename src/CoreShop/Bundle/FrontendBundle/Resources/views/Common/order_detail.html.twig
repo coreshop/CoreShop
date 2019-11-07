@@ -155,23 +155,23 @@
                     {{ currency.format(order.getSubtotal(false), order.getCurrency.isoCode) }}
                 </td>
             </tr>
-            {% if discount > 0 %}
+            {% if discount != 0 %}
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'coreshop.ui.discount_incl'|trans }}:</strong>
+                        <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_incl'|trans : 'coreshop.ui.discount_incl'|trans }}:</strong>
                     </td>
                     <td colspan="1"
                         class="text-right cart-discount">
-                        -{{ currency.format(discountIt, order.getCurrency.isoCode) }}
+                        {{ currency.format(discountIt, order.getCurrency.isoCode) }}
                     </td>
                 </tr>
                 <tr>
                     <td class="text-right">
-                        <strong>{{ 'coreshop.ui.discount_excl'|trans }}:</strong>
+                        <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_excl'|trans : 'coreshop.ui.discount_excl'|trans }}:</strong>
                     </td>
                     <td colspan="1"
                         class="text-right cart-discount">
-                        -{{ currency.format(discount, order.getCurrency.isoCode) }}
+                        {{ currency.format(discount, order.getCurrency.isoCode) }}
                     </td>
                 </tr>
             {% endif %}

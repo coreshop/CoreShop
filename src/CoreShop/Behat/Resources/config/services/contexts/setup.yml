@@ -1,12 +1,15 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.behat.context.setup.product:
         class: CoreShop\Behat\Context\Setup\ProductContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.product'
-            - '@__symfony__.coreshop.factory.product_unit_definitions'
-            - '@__symfony__.coreshop.factory.product_unit_definition'
-            - '@__symfony__.coreshop.factory.product_unit_definition_price'
+            - '@coreshop.factory.product'
+            - '@coreshop.factory.product_unit_definitions'
+            - '@coreshop.factory.product_unit_definition'
+            - '@coreshop.factory.product_unit_definition_price'
         tags:
             - { name: fob.context_service }
 
@@ -14,12 +17,12 @@ services:
         class: CoreShop\Behat\Context\Setup\ProductSpecificPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.form.factory'
-            - '@__symfony__.coreshop.form_registry.product_specific_price_rule.conditions'
-            - '@__symfony__.coreshop.form_registry.product_specific_price_rule.actions'
-            - '@__symfony__.coreshop.factory.product_specific_price_rule'
-            - '@__symfony__.coreshop.repository.product_specific_price_rule'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.product_specific_price_rule.conditions'
+            - '@coreshop.form_registry.product_specific_price_rule.actions'
+            - '@coreshop.factory.product_specific_price_rule'
+            - '@coreshop.repository.product_specific_price_rule'
         tags:
             - { name: fob.context_service }
 
@@ -27,12 +30,12 @@ services:
         class: CoreShop\Behat\Context\Setup\StoreContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.store'
-            - '@__symfony__.coreshop.repository.store'
-            - '@__symfony__.coreshop.factory.currency'
-            - '@__symfony__.coreshop.factory.country'
-            - '@__symfony__.coreshop.context.store.fixed'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.store'
+            - '@coreshop.repository.store'
+            - '@coreshop.factory.currency'
+            - '@coreshop.factory.country'
+            - '@coreshop.context.store.fixed'
         tags:
             - { name: fob.context_service }
 
@@ -40,8 +43,8 @@ services:
         class: CoreShop\Behat\Context\Setup\CategoryContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.category'
-            - '@__symfony__.coreshop.repository.category'
+            - '@coreshop.factory.category'
+            - '@coreshop.repository.category'
         tags:
             - { name: fob.context_service }
 
@@ -49,10 +52,10 @@ services:
         class: CoreShop\Behat\Context\Setup\CountryContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.country'
-            - '@__symfony__.coreshop.repository.country'
-            - '@__symfony__.coreshop.context.country.fixed'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.country'
+            - '@coreshop.repository.country'
+            - '@coreshop.context.country.fixed'
         tags:
             - { name: fob.context_service }
 
@@ -60,10 +63,10 @@ services:
         class: CoreShop\Behat\Context\Setup\CurrencyContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.currency'
-            - '@__symfony__.coreshop.repository.currency'
-            - '@__symfony__.coreshop.context.currency.fixed'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.currency'
+            - '@coreshop.repository.currency'
+            - '@coreshop.context.currency.fixed'
         tags:
             - { name: fob.context_service }
 
@@ -71,10 +74,10 @@ services:
         class: CoreShop\Behat\Context\Setup\CustomerContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.customer'
-            - '@__symfony__.coreshop.repository.customer'
-            - '@__symfony__.coreshop.context.customer.fixed'
-            - '@__symfony__.coreshop.factory.address'
+            - '@coreshop.factory.customer'
+            - '@coreshop.repository.customer'
+            - '@coreshop.context.customer.fixed'
+            - '@coreshop.factory.address'
         tags:
             - { name: fob.context_service }
 
@@ -82,7 +85,7 @@ services:
         class: CoreShop\Behat\Context\Setup\CustomerGroupContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.customer_group'
+            - '@coreshop.factory.customer_group'
         tags:
             - { name: fob.context_service }
 
@@ -90,9 +93,9 @@ services:
         class: CoreShop\Behat\Context\Setup\ZoneContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.zone'
-            - '@__symfony__.coreshop.repository.zone'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.zone'
+            - '@coreshop.repository.zone'
         tags:
             - { name: fob.context_service }
 
@@ -100,12 +103,12 @@ services:
         class: CoreShop\Behat\Context\Setup\ProductPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.form.factory'
-            - '@__symfony__.coreshop.form_registry.product_price_rule.conditions'
-            - '@__symfony__.coreshop.form_registry.product_price_rule.actions'
-            - '@__symfony__.coreshop.factory.product_price_rule'
-            - '@__symfony__.coreshop.repository.product_price_rule'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.product_price_rule.conditions'
+            - '@coreshop.form_registry.product_price_rule.actions'
+            - '@coreshop.factory.product_price_rule'
+            - '@coreshop.repository.product_price_rule'
         tags:
             - { name: fob.context_service }
 
@@ -113,9 +116,9 @@ services:
         class: CoreShop\Behat\Context\Setup\ExchangeRateContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.exchange_rate'
-            - '@__symfony__.coreshop.repository.exchange_rate'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.exchange_rate'
+            - '@coreshop.repository.exchange_rate'
         tags:
             - { name: fob.context_service }
 
@@ -123,9 +126,9 @@ services:
         class: CoreShop\Behat\Context\Setup\TaxRateContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.tax_rate'
-            - '@__symfony__.coreshop.repository.tax_rate'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.tax_rate'
+            - '@coreshop.repository.tax_rate'
         tags:
             - { name: fob.context_service }
 
@@ -133,10 +136,10 @@ services:
         class: CoreShop\Behat\Context\Setup\TaxRuleGroupContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.tax_rule_group'
-            - '@__symfony__.coreshop.factory.tax_rule'
-            - '@__symfony__.coreshop.repository.tax_rule_group'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.tax_rule_group'
+            - '@coreshop.factory.tax_rule'
+            - '@coreshop.repository.tax_rule_group'
         tags:
             - { name: fob.context_service }
 
@@ -144,12 +147,12 @@ services:
         class: CoreShop\Behat\Context\Setup\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.cart'
-            - '@__symfony__.coreshop.cart.modifier'
-            - '@__symfony__.coreshop.cart.manager'
-            - '@__symfony__.coreshop.factory.add_to_cart'
-            - '@__symfony__.coreshop.factory.cart_item'
-            - '@__symfony__.form.factory'
+            - '@coreshop.context.cart'
+            - '@coreshop.cart.modifier'
+            - '@coreshop.cart.manager'
+            - '@coreshop.factory.add_to_cart'
+            - '@coreshop.factory.cart_item'
+            - '@form.factory'
         tags:
             - { name: fob.context_service }
 
@@ -157,14 +160,14 @@ services:
         class: CoreShop\Behat\Context\Setup\ShippingContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.form.factory'
-            - '@__symfony__.coreshop.form_registry.shipping_rule.conditions'
-            - '@__symfony__.coreshop.form_registry.shipping_rule.actions'
-            - '@__symfony__.coreshop.repository.carrier'
-            - '@__symfony__.coreshop.factory.carrier'
-            - '@__symfony__.coreshop.factory.shipping_rule'
-            - '@__symfony__.coreshop.factory.shipping_rule_group'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.shipping_rule.conditions'
+            - '@coreshop.form_registry.shipping_rule.actions'
+            - '@coreshop.repository.carrier'
+            - '@coreshop.factory.carrier'
+            - '@coreshop.factory.shipping_rule'
+            - '@coreshop.factory.shipping_rule_group'
         tags:
             - { name: fob.context_service }
 
@@ -172,8 +175,8 @@ services:
         class: CoreShop\Behat\Context\Setup\AddressContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.factory.address'
-            - '@__symfony__.coreshop.repository.address'
+            - '@coreshop.factory.address'
+            - '@coreshop.repository.address'
         tags:
             - { name: fob.context_service }
 
@@ -182,11 +185,11 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.behat.class_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.index'
-            - '@__symfony__.coreshop.repository.index'
-            - '@__symfony__.coreshop.registry.index.worker'
-            - '@__symfony__.coreshop.factory.index_column'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.index'
+            - '@coreshop.repository.index'
+            - '@coreshop.registry.index.worker'
+            - '@coreshop.factory.index_column'
         tags:
             - { name: fob.context_service }
 
@@ -195,10 +198,10 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.behat.class_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.filter'
-            - '@__symfony__.coreshop.repository.filter'
-            - '@__symfony__.coreshop.factory.filter_condition'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.filter'
+            - '@coreshop.repository.filter'
+            - '@coreshop.factory.filter_condition'
         tags:
             - { name: fob.context_service }
 
@@ -214,11 +217,11 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.store'
-            - '@__symfony__.coreshop.order.transformer.cart_to_order'
-            - '@__symfony__.coreshop.factory.order'
-            - '@__symfony__.coreshop.repository.payment'
-            - '@__symfony__.coreshop.state_machine_applier'
+            - '@coreshop.context.store'
+            - '@coreshop.order.transformer.cart_to_order'
+            - '@coreshop.factory.order'
+            - '@coreshop.repository.payment'
+            - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
 
@@ -226,10 +229,10 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderShipmentContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.order.transformer.order_to_shipment'
-            - '@__symfony__.coreshop.factory.order_shipment'
-            - '@__symfony__.coreshop.repository.order_shipment'
-            - '@__symfony__.coreshop.state_machine_applier'
+            - '@coreshop.order.transformer.order_to_shipment'
+            - '@coreshop.factory.order_shipment'
+            - '@coreshop.repository.order_shipment'
+            - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
 
@@ -237,10 +240,10 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderInvoiceContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.order.transformer.order_to_invoice'
-            - '@__symfony__.coreshop.factory.order_invoice'
-            - '@__symfony__.coreshop.repository.order_invoice'
-            - '@__symfony__.coreshop.state_machine_applier'
+            - '@coreshop.order.transformer.order_to_invoice'
+            - '@coreshop.factory.order_invoice'
+            - '@coreshop.repository.order_invoice'
+            - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
 
@@ -248,7 +251,7 @@ services:
         class: CoreShop\Behat\Context\Setup\LocaleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.coreshop.context.locale.fixed'
+            - '@coreshop.context.locale.fixed'
         tags:
             - { name: fob.context_service }
 
@@ -256,10 +259,10 @@ services:
         class: CoreShop\Behat\Context\Setup\PaymentContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.payment'
-            - '@__symfony__.coreshop.factory.payment_provider'
-            - '@__symfony__.coreshop.factory.gateway_config'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.payment'
+            - '@coreshop.factory.payment_provider'
+            - '@coreshop.factory.gateway_config'
         tags:
             - { name: fob.context_service }
 
@@ -267,8 +270,8 @@ services:
         class: CoreShop\Behat\Context\Setup\ManufacturerContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.pimcore.dao.object_manager'
-            - '@__symfony__.coreshop.factory.manufacturer'
+            - '@pimcore.dao.object_manager'
+            - '@coreshop.factory.manufacturer'
         tags:
             - { name: fob.context_service }
 
@@ -283,16 +286,16 @@ services:
         class: CoreShop\Behat\Context\Setup\CartPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.form.factory'
-            - '@__symfony__.coreshop.form_registry.cart_price_rule.conditions'
-            - '@__symfony__.coreshop.form_registry.cart_price_rule.actions'
-            - '@__symfony__.coreshop.factory.cart_price_rule'
-            - '@__symfony__.coreshop.repository.cart_price_rule'
-            - '@__symfony__.coreshop.repository.cart_price_rule_voucher_code'
-            - '@__symfony__.coreshop.cart_price_rule.processor'
-            - '@__symfony__.coreshop.cart.manager'
-            - '@__symfony__.coreshop.factory.cart_price_rule_voucher_code'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@coreshop.form_registry.cart_price_rule.conditions'
+            - '@coreshop.form_registry.cart_price_rule.actions'
+            - '@coreshop.factory.cart_price_rule'
+            - '@coreshop.repository.cart_price_rule'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.cart_price_rule.processor'
+            - '@coreshop.cart.manager'
+            - '@coreshop.factory.cart_price_rule_voucher_code'
         tags:
             - { name: fob.context_service }
 
@@ -300,11 +303,11 @@ services:
         class: CoreShop\Behat\Context\Setup\ProductQuantityPriceRuleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.product_quantity_price_rule_range'
-            - '@__symfony__.form.factory'
-            - '@__symfony__.coreshop.form_registry.product_quantity_price_rules.conditions'
-            - '@__symfony__.coreshop.factory.product_quantity_price_rule'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.product_quantity_price_rule_range'
+            - '@form.factory'
+            - '@coreshop.form_registry.product_quantity_price_rules.conditions'
+            - '@coreshop.factory.product_quantity_price_rule'
         tags:
             - { name: fob.context_service }
 
@@ -312,7 +315,7 @@ services:
         class: CoreShop\Behat\Context\Setup\ProductUnitContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@__symfony__.doctrine.orm.entity_manager'
-            - '@__symfony__.coreshop.factory.product_unit'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.factory.product_unit'
         tags:
             - { name: fob.context_service }

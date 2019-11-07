@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
-use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier;
-
 if (class_exists(CartRuleApplier::class)) {
     @trigger_error('Class CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier is deprecated since version 2.1.0 and will be removed in 3.0.0. Use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplier class instead.', E_USER_DEPRECATED);
 } else {

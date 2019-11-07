@@ -12,7 +12,9 @@
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
+use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
+use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
@@ -20,6 +22,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPrice
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 
 class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface
@@ -42,6 +45,14 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     private function getContainer()
     {
         return \Pimcore::getContainer();
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    private function getEventDispatcher()
+    {
+        return \Pimcore::getEventDispatcher();
     }
 
     /**
@@ -140,6 +151,22 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
@@ -200,41 +227,47 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         $prices = [];
         $errors = [];
 
-        if ($data && $object instanceof Concrete) {
-            foreach ($data as $rule) {
-                $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
+        if (!is_array($data) || !$object instanceof Concrete) {
+            return $prices;
+        }
 
-                $storedRule = null;
-                $ruleData = null;
+        $event = new ProductQuantityPriceRuleValidationEvent($object, $data);
+        $this->getEventDispatcher()->dispatch(Events::RULES_DATA_FROM_EDITMODE_VALIDATION, $event);
 
-                if ($ruleId !== null) {
-                    $storedRule = $this->getProductQuantityPriceRuleRepository()->find($ruleId);
-                }
+        foreach ($event->getData() as $rule) {
 
-                if ($storedRule instanceof ProductQuantityPriceRuleInterface) {
-                    $ruleData = $this->checkForRangeOrphans($storedRule, $rule);
-                }
+            $storedRule = null;
+            $ruleData = null;
 
-                $form = $this->getFormFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
+            $ruleId = isset($rule['id']) && is_numeric($rule['id']) ? $rule['id'] : null;
 
-                $form->submit($rule);
+            if ($ruleId !== null) {
+                $storedRule = $this->getProductQuantityPriceRuleRepository()->find($ruleId);
+            }
 
-                if ($form->isValid()) {
-                    $formData = $form->getData();
-                    $formData->setProduct($object->getId());
-                    $prices[] = $formData;
-                } else {
-                    foreach ($form->getErrors(true, true) as $e) {
-                        $errorMessageTemplate = $e->getMessageTemplate();
-                        foreach ($e->getMessageParameters() as $key => $value) {
-                            $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
-                        }
+            if ($storedRule instanceof ProductQuantityPriceRuleInterface) {
+                $ruleData = $this->checkForRangeOrphans($storedRule, $rule);
+            }
 
-                        $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+            $form = $this->getFormFactory()->createNamed('', ProductQuantityPriceRuleType::class, $ruleData);
+
+            $form->submit($rule);
+
+            if ($form->isValid()) {
+                $formData = $form->getData();
+                $formData->setProduct($object->getId());
+                $prices[] = $formData;
+            } else {
+                foreach ($form->getErrors(true, true) as $e) {
+                    $errorMessageTemplate = $e->getMessageTemplate();
+                    foreach ($e->getMessageParameters() as $key => $value) {
+                        $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
                     }
 
-                    throw new \Exception(implode(PHP_EOL, $errors));
+                    $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
                 }
+
+                throw new \Exception(implode(PHP_EOL, $errors));
             }
         }
 

@@ -25,7 +25,9 @@ interface ShippableInterface
     public function getWeight();
 
     /**
-     * @return float
+     * @param bool $withTax
+     *
+     * @return int
      */
-    public function getSubtotal();
+    public function getSubtotal($withTax = true);
 }

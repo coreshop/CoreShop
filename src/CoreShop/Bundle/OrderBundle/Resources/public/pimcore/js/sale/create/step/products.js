@@ -96,7 +96,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     align: 'right',
                     text: t('coreshop_base_price'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('basePriceFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.symbol, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -106,7 +106,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     align: 'right',
                     text: t('coreshop_price'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('priceFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -126,7 +126,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     align: 'right',
                     text: t('coreshop_base_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('baseTotalFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.symbol, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -136,7 +136,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
                     align: 'right',
                     text: t('coreshop_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + record.get('totalFormatted') + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -214,8 +214,9 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
     setPreviewData: function(data) {
         this.cartPanelStore.removeAll();
 
-        this.cartPanelStore.add(data.items);
         this.products = data.items;
+        this.sale = data;
+        this.cartPanelStore.add(data.items);
     },
 
     removeProductFromCart: function(product) {

@@ -46,6 +46,7 @@ final class ProductStoreValuesSelectionType extends AbstractType
                 if ($value instanceof ProductStoreValuesInterface) {
                     return $value->getId();
                 }
+
                 return null;
             },
             function ($value) {

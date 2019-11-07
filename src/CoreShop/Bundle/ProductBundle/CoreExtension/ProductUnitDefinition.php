@@ -59,6 +59,22 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function preSetData($object, $data, $params = [])
     {
         if (is_int($data) || is_string($data)) {
@@ -149,15 +165,17 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $parsedData = [
-            'id'               => null,
+            'id' => null,
             'conversationRate' => null,
-            'unitName'         => null
+            'precision' => null,
+            'unitName' => null,
         ];
 
         if ($data instanceof ProductUnitDefinitionInterface) {
             $parsedData = [
                 'id' => $data->getId(),
                 'conversationRate' => $data->getConversionRate(),
+                'precision' => $data->getPrecision(),
                 'unitName' => $data->getUnit()->getName(),
                 'fullLabel' => $data->getUnit()->getFullLabel(),
                 'fullPluralLabel' => $data->getUnit()->getFullPluralLabel(),

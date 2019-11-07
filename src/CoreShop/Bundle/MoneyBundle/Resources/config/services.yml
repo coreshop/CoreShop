@@ -5,21 +5,23 @@ services:
     _defaults:
         public: true
 
-    coreshop.money_formatter:
-        class: CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter
-
-    coreshop.twig.extension.money:
-        class: CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension
-        public: false
+    coreshop.money_formatter: '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
+    CoreShop\Component\Currency\Formatter\MoneyFormatterInterface: '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
+    CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter:
         arguments:
-            - '@coreshop.templating.helper.format_money'
-        tags:
-            - { name: twig.extension }
+            - '%coreshop.currency.decimal_factor%'
 
-    coreshop.templating.helper.format_money:
-        class: CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper
+    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface: '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
+    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper:
         lazy: true
         arguments:
-            - '@coreshop.money_formatter'
+            - '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
         tags:
             - { name: templating.helper, alias: coreshop_format_money }
+
+    CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension:
+        public: false
+        arguments:
+            - '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
+        tags:
+            - { name: twig.extension }

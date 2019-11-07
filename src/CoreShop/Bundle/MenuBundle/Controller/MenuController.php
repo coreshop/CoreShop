@@ -13,20 +13,19 @@
 namespace CoreShop\Bundle\MenuBundle\Controller;
 
 use Pimcore\Bundle\AdminBundle\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class MenuController extends Controller\AdminController
 {
-
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Exception
      */
     public function menuAction($type)
     {
         $response = $this->render('@CoreShopMenu/menu.js.twig', [
             'type' => $type,
-            'typeId' => str_replace('.', '_', $type)
+            'typeId' => str_replace('.', '_', $type),
         ]);
 
         $response->headers->set('Content-Type', 'application/javascript');

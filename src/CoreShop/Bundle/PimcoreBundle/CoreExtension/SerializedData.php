@@ -33,6 +33,22 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         return serialize($data);

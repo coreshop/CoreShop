@@ -1,0 +1,9 @@
+services:
+    coreshop.datahub.graphql.querytypegenerator.resource.payment_provider:
+        class: CoreShop\Component\Resource\DataHub\QueryType\Resource
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@coreshop.data_hub.doctrine_provider'
+            - '%coreshop.model.payment_provider.class%'
+        tags:
+            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopPaymentProvider }

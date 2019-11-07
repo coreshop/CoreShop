@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -25,7 +26,8 @@ final class ProductUnitDefinitionType extends AbstractResourceType
     {
         $builder
             ->add('unit', ProductUnitChoiceType::class)
-            ->add('conversionRate', NumberType::class);
+            ->add('conversionRate', NumberType::class)
+            ->add('precision', IntegerType::class);
     }
 
     /**

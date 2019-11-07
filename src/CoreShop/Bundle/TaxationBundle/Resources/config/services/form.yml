@@ -8,46 +8,40 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.tax_rule_choice:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateChoiceType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateChoiceType:
         arguments:
             - '@coreshop.repository.tax_rate'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.tax_rule:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleType:
         arguments:
             - '%coreshop.model.tax_rule.class%'
             - '%coreshop.form.type.tax_rule.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.tax_rule_group:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupType:
         arguments:
             - '%coreshop.model.tax_rule_group.class%'
             - '%coreshop.form.type.tax_rule_group.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.tax_rule_group_choice:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupChoiceType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRuleGroupChoiceType:
         arguments:
             - '@coreshop.repository.tax_rule_group'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.tax_rate_translation:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateTranslationType:
         arguments:
             - '%coreshop.model.tax_rate_translation.class%'
             - '%coreshop.form.type.tax_rate_translation.validation_groups%'
         tags:
             -  { name: form.type }
 
-    coreshop.form.type.tax_rate:
-        class: CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType
+    CoreShop\Bundle\TaxationBundle\Form\Type\TaxRateType:
         arguments:
             - '%coreshop.model.tax_rate.class%'
             - '%coreshop.form.type.tax_rate.validation_groups%'

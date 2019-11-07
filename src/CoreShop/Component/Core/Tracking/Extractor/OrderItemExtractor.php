@@ -22,6 +22,19 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 class OrderItemExtractor implements TrackingExtractorInterface
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
+     * @param int $decimalFactor
+     */
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function supports($object)
@@ -57,7 +70,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
             'sku' => $product instanceof ProductInterface ? $product->getSku() : '',
             'name' => $product instanceof PurchasableInterface ? $product->getName() : '',
             'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
-            'price' => $object->getTotal() / 100,
+            'price' => $object->getTotal() / $this->decimalFactor,
             'quantity' => $object->getQuantity(),
             'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : '',
         ]);

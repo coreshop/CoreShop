@@ -75,13 +75,31 @@ class FilterGroupHelper implements FilterGroupHelperInterface
                 break;
 
             default:
-                $values = $list->getGroupByValues($field);
+                $rawValues = $list->getGroupByValues($field, true);
+                $values = [];
+
+                foreach ($rawValues as $v) {
+                    $explode = explode(',', $v['value']);
+
+                    foreach ($explode as $e) {
+                        if (!$e) {
+                            continue;
+                        }
+
+                        if ($values[$e]) {
+                            $values[$e]['count'] += $v['count'];
+                            continue;
+                        }
+
+                        $values[$e] = ['value' => $e, 'count' => $v['count']];
+                    }
+                }
 
                 foreach ($values as $value) {
                     if ($value) {
                         $returnValues[] = [
-                            'key' => $value,
-                            'value' => $value,
+                            'key' => $value['value'],
+                            'value' => $value['value'],
                         ];
                     } else {
                         $returnValues[] = [

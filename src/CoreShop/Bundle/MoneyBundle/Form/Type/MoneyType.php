@@ -21,12 +21,25 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class MoneyType extends AbstractType
 {
     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    /**
+     * @param int $decimalFactor
+     */
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addModelTransformer(
-            new MoneyToIntegerTransformer()
+            new MoneyToIntegerTransformer($this->decimalFactor)
         );
     }
 

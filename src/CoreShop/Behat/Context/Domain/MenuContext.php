@@ -31,8 +31,8 @@ final class MenuContext implements Context
     private $menuProvider;
 
     /**
-     * @param SharedStorageInterface    $sharedStorage
-     * @param MenuProviderInterface     $menuProvider
+     * @param SharedStorageInterface $sharedStorage
+     * @param MenuProviderInterface  $menuProvider
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,

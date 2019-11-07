@@ -25,7 +25,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         this.panelKey = panelKey;
         this.type = type;
 
-        pimcore.globalmanager.get('coreshop_carrier_shipping_rules').load(function () {
+        var store = Ext.create('store.coreshop_carrier_shipping_rules');
+
+        store.load(function () {
             this.initPanel();
         }.bind(this));
     },
@@ -113,7 +115,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         name: 'trackingUrl',
                         fieldLabel: t('coreshop_carrier_trackingUrl'),
                         value: data.trackingUrl
-                    }, {
+                    },
+                    this.getLogoSelect().getLayoutEdit(),
+                    {
                         xtype: 'tabpanel',
                         activeTab: 0,
                         defaults: {
@@ -129,6 +133,19 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         return this.settingsForm;
     },
 
+    getLogoSelect: function () {
+        return new coreshop.object.elementHref({
+            id: this.data.logo,
+            type: 'asset',
+            subtype: 'image'
+        }, {
+            classes: [],
+            assetsAllowed: true,
+            name: 'logo',
+            title: t('coreshop_logo')
+        });
+    },
+
     getShippingRulesGrid: function () {
         this.shippingRuleGroupsStore = new Ext.data.Store({
             restful: false,
@@ -136,6 +153,9 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
             sorters: 'priority',
             data: this.data.shippingRules
         });
+
+        var store = Ext.create('store.coreshop_carrier_shipping_rules');
+        store.load();
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
             store: this.shippingRuleGroupsStore,
@@ -145,14 +165,13 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     flex: 2,
                     dataIndex: 'shippingRule',
                     editor: new Ext.form.ComboBox({
-                        store: pimcore.globalmanager.get('coreshop_carrier_shipping_rules'),
+                        store: store,
                         valueField: 'id',
                         displayField: 'name',
                         queryMode: 'local',
                         required: true
                     }),
                     renderer: function (shippingRule) {
-                        var store = pimcore.globalmanager.get('coreshop_carrier_shipping_rules');
                         var pos = store.findExact('id', shippingRule);
                         if (pos >= 0) {
                             return store.getAt(pos).get('name');

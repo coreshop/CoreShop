@@ -13,19 +13,20 @@
 namespace CoreShop\Bundle\WorkflowBundle\Callback;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use Symfony\Component\Workflow\Event\Event;
 
 class CascadeTransition
 {
     /**
-     * @var StateMachineManager
+     * @var StateMachineManagerInterface
      */
     protected $stateMachineManager;
 
     /**
-     * @param StateMachineManager $stateMachineManager
+     * @param StateMachineManagerInterface $stateMachineManager
      */
-    public function __construct(StateMachineManager $stateMachineManager)
+    public function __construct(StateMachineManagerInterface $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }

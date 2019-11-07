@@ -31,7 +31,6 @@ final class CoreShopLocaleExtension extends AbstractModelExtension
 
         $container
             ->registerForAutoconfiguration(LocaleContextInterface::class)
-            ->addTag(CompositeLocaleContextPass::LOCALE_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeLocaleContextPass::LOCALE_CONTEXT_SERVICE_TAG);
     }
 }

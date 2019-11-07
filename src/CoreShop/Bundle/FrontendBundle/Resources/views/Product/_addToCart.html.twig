@@ -4,10 +4,11 @@
     {{ form_errors(form) }}
 
     <div class="input-group">
-        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control cart-item-quantity'}}) }}
+        {% set relation_id = random() %}
+        {{ form_row(form.cartItem.quantity, {label: false, attr: {class: 'form-control cart-item-quantity cs-unit-input', 'data-cs-unit-identifier': relation_id }}) }}
 
         {% if form.cartItem.unitDefinition is defined %}
-            {{ form_row(form.cartItem.unitDefinition, {label: false, attr: {class: 'form-control ml-1'}}) }}
+            {{ form_row(form.cartItem.unitDefinition, {label: false, attr: {class: 'form-control ml-1 cs-unit-selector', 'data-cs-unit-identifier': relation_id}}) }}
         {% endif %}
 
         <div class="input-group-append {{ form.cartItem.unitDefinition is defined ? 'ml-2' : '' }}">

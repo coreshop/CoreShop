@@ -16,5 +16,4 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface QuantityRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
-
 }

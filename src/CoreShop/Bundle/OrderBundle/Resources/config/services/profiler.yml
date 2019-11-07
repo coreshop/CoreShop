@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.cart_collector:
-        class: CoreShop\Bundle\OrderBundle\Collector\CartCollector
+    CoreShop\Bundle\OrderBundle\Collector\CartCollector:
         arguments:
             - '@coreshop.context.cart'
             - '@coreshop.context.locale'

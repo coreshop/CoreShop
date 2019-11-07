@@ -3,16 +3,14 @@ parameters:
 
 services:
     # Forms
-    coreshop.form.type.core.product_store_values:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType
+    CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType:
         arguments:
             - '%coreshop.model.product_store_values.class%'
             - '%coreshop.form.type.product_store_values.validation_groups%'
         tags:
             - { name: form.type }
 
-    coreshop.form.type.core.product_store_values_selection:
-        class: CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesSelectionType
+    CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesSelectionType:
         arguments:
             - '@coreshop.repository.product_store_values'
         tags:

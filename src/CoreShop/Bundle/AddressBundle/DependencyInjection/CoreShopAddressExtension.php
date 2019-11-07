@@ -38,15 +38,19 @@ final class CoreShopAddressExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         $container
             ->registerForAutoconfiguration(CountryContextInterface::class)
-            ->addTag(CompositeCountryContextPass::COUNTRY_CONTEXT_SERVICE_TAG)
-        ;
+            ->addTag(CompositeCountryContextPass::COUNTRY_CONTEXT_SERVICE_TAG);
         $container
             ->registerForAutoconfiguration(RequestResolverInterface::class)
-            ->addTag(CompositeRequestResolverPass::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG)
-        ;
+            ->addTag(CompositeRequestResolverPass::COUNTRY_REQUEST_RESOLVER_SERVICE_TAG);
     }
 }

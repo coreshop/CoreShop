@@ -2,8 +2,7 @@ services:
     _defaults:
         public: true
 
-    coreshop.form.type.product:
-        class: CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType
+    CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType:
         arguments:
             - '@coreshop.repository.stack.product'
         tags:

@@ -28,8 +28,7 @@ final class ProductUnitType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => ProductUnitTranslationType::class,
-            ])
-        ;
+            ]);
     }
 
     /**

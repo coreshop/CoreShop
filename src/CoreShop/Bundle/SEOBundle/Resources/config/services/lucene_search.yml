@@ -2,8 +2,8 @@ services:
     _defaults:
         public: true
 
-    coreshop.seo.extractor.lucene_search:
-        class: CoreShop\Component\SEO\Extractor\LuceneSearchExtractor
+    coreshop.seo.extractor.lucene_search: '@CoreShop\Component\SEO\Extractor\LuceneSearchExtractor'
+    CoreShop\Component\SEO\Extractor\LuceneSearchExtractor:
         arguments:
             - '@LuceneSearchBundle\Tool\CrawlerState'
         tags:

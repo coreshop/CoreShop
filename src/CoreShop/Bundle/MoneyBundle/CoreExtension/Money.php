@@ -204,7 +204,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        return round($data / 100, 2);
+        return round($data / $this->getDecimalFactor(), $this->getDecimalPrecision());
     }
 
     /**
@@ -219,7 +219,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
-            return (int) round((round($data, 2) * 100), 0);
+            return (int) round((round($data, $this->getDecimalPrecision()) * $this->getDecimalFactor()), 0);
         }
 
         return $data;
@@ -315,7 +315,15 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
-        return true;
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
     }
 
     /**
@@ -326,6 +334,22 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public function isEmpty($data)
     {
         return strlen($data) < 1;
+    }
+
+    /**
+     * @return int
+     */
+    protected function getDecimalFactor()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
+    }
+
+    /**
+     * @return int
+     */
+    protected function getDecimalPrecision()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_precision');
     }
 
     /**

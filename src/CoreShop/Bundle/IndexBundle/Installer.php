@@ -20,9 +20,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 
 class Installer extends MigrationInstaller
 {
-    /**
-     *
-     */
     protected function beforeInstallMigration()
     {
         $kernel = \Pimcore::getKernel();
@@ -37,13 +34,11 @@ class Installer extends MigrationInstaller
         $application->run(new ArrayInput($options));
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function migrateInstall(Schema $schema, Version $version)
     {
-
     }
 
     /**
@@ -51,6 +46,5 @@ class Installer extends MigrationInstaller
      */
     public function migrateUninstall(Schema $schema, Version $version)
     {
-
     }
 }

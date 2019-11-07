@@ -6,8 +6,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.notification_rule.applier:
-        class: CoreShop\Component\Notification\Processor\RuleApplier
+    coreshop.notification_rule.applier: '@CoreShop\Component\Notification\Processor\RuleApplier'
+    CoreShop\Component\Notification\Processor\RuleApplierInterface: '@CoreShop\Component\Notification\Processor\RuleApplier'
+    CoreShop\Component\Notification\Processor\RuleApplier:
         arguments:
             - '@coreshop.registry.notification_rule.actions'
 
@@ -24,8 +25,9 @@ services:
         arguments:
             - '@coreshop.notification_rule.conditions.processor'
 
-    coreshop.notification_rule.processor:
-        class: CoreShop\Component\Notification\Processor\RulesProcessor
+    coreshop.notification_rule.processor: '@CoreShop\Component\Notification\Processor\RulesProcessor'
+    CoreShop\Component\Notification\Processor\RulesProcessorInterface: '@CoreShop\Component\Notification\Processor\RulesProcessor'
+    CoreShop\Component\Notification\Processor\RulesProcessor:
         shared: false
         arguments:
             - '@coreshop.repository.notification_rule'
@@ -37,6 +39,8 @@ services:
         arguments:
             - CoreShop\Component\Rule\Condition\ConditionCheckerInterface
             - notification-rule-conditions
+        tags:
+            - { name: coreshop.registry, type_hint: notificationRuleConditions }
 
     coreshop.form_registry.notification_rule.conditions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
@@ -46,13 +50,15 @@ services:
         arguments:
             - CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface
             - notification-rule-actions
+        tags:
+            - { name: coreshop.registry, type_hint: notificationRuleActions }
 
     coreshop.form_registry.notification_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.notification_rule.event_rule_processor:
-        class: CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor
+    coreshop.notification_rule.event_rule_processor: '@CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor'
+    CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor:
         decorates: coreshop.notification_rule.processor
         arguments:
-            - '@coreshop.notification_rule.event_rule_processor.inner'
+            - '@CoreShop\Bundle\NotificationBundle\Processor\EventedRuleProcessor.inner'
             - '@event_dispatcher'

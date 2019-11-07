@@ -34,4 +34,12 @@ final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
     {
         return OrderShipmentCreationType::class;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getExtendedTypes()
+    {
+        return [OrderShipmentCreationType::class];
+    }
 }

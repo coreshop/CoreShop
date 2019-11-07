@@ -21,8 +21,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 class Cart extends AbstractProposal implements CartInterface
 {
     use ProposalPriceRuleTrait;
-    use StoreAwareTrait;
-    use CurrencyAwareTrait;
 
     /**
      * {@inheritdoc}

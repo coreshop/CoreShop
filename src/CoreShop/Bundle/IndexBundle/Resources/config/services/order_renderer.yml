@@ -4,22 +4,25 @@ services:
         arguments:
             - CoreShop\Component\Index\Order\DynamicOrderRendererInterface
             - order-renderers
+        tags:
+            - { name: coreshop.registry, type_hint: indexOrderRenderers }
 
     ## Renderer
-    coreshop.index.order.renderer:
-        class: CoreShop\Component\Index\Order\OrderRenderer
+    coreshop.index.order.renderer: '@CoreShop\Component\Index\Order\OrderRenderer'
+    CoreShop\Component\Index\Order\OrderRendererInterface: '@CoreShop\Component\Index\Order\OrderRenderer'
+    CoreShop\Component\Index\Order\OrderRenderer:
         arguments:
             - '@coreshop.registry.index.order.renderers'
 
-    coreshop.index.order.renderer.mysql.abstract:
-        class: CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer
+    coreshop.index.order.renderer.mysql.abstract: '@CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer'
+    CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer:
         abstract: true
         arguments:
             - '@doctrine.dbal.default_connection'
 
-    coreshop.index.order.renderer.mysql.simple:
-        class: CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer
-        parent: coreshop.index.order.renderer.mysql.abstract
+    coreshop.index.order.renderer.mysql.simple: '@CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer'
+    CoreShop\Bundle\IndexBundle\Order\Mysql\SimpleOrderRenderer:
+        parent: CoreShop\Bundle\IndexBundle\Order\Mysql\AbstractMysqlDynamicRenderer
         tags:
             - { name: coreshop.index.order.renderer, type: mysql_simple }
 

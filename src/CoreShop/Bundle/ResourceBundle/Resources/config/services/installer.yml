@@ -7,78 +7,112 @@ services:
         arguments:
             - CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface
             - 'coreshop-resource-installer'
+        tags:
+            - { name: coreshop.registry, type_hint: resourceInstallers }
 
     coreshop.resource.installer.classes:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller:
         arguments:
             - '@kernel'
             - '@coreshop.class_installer'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'classes', priority: 100}
+            - { name: coreshop.resource.installer, type: classes, priority: 100}
 
     coreshop.resource.installer.routes:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreRoutesInstaller:
         arguments:
             - '@kernel'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'routes', priority: 200}
+            - { name: coreshop.resource.installer, type: routes, priority: 200}
 
     coreshop.resource.installer.documents:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreDocumentsInstaller:
         arguments:
             - '@kernel'
         tags:
-           - { name: 'coreshop.resource.installer', type: 'documents', priority: 250}
+           - { name: coreshop.resource.installer, type: documents, priority: 250}
 
     coreshop.resource.installer.image_thumbnails:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreImageThumbnailsInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreImageThumbnailsInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreImageThumbnailsInstaller:
         arguments:
             - '@kernel'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'image_thumbnail', priority: 300}
+            - { name: coreshop.resource.installer, type: image_thumbnail, priority: 300}
 
     coreshop.resource.installer.permissions:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcorePermissionInstaller:
         arguments:
             - '@kernel'
+            - '@doctrine.dbal.default_connection'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'permissions', priority: 350}
+            - { name: coreshop.resource.installer, type: permissions, priority: 350}
 
     coreshop.resource.installer.sql:
-        class: CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\SqlInstaller:
         arguments:
             - '@kernel'
         tags:
-           - { name: 'coreshop.resource.installer', type: 'sql', priority: 400}
+           - { name: coreshop.resource.installer, type: sql, priority: 400}
 
     coreshop.resource.installer.shared_translations:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller:
         arguments:
             - '@kernel'
             - 'Pimcore\Model\Translation\Website'
         tags:
-           - { name: 'coreshop.resource.installer', type: 'translations', priority: 450}
+           - { name: coreshop.resource.installer, type: translations, priority: 450}
 
     coreshop.resource.installer.admin_translations:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller:
         arguments:
             - '@kernel'
             - 'Pimcore\Model\Translation\Admin'
         tags:
-           - { name: 'coreshop.resource.installer', type: 'admin_translations', priority: 500}
+           - { name: coreshop.resource.installer, type: admin_translations, priority: 500}
 
     coreshop.resource.installer.grid_config:
-        class: CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreGridConfigInstaller:
         arguments:
             - '@kernel'
-            - '@coreshop.resource_registry'
+            - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
             - '@pimcore.dao.object_manager'
-            - '@coreshop.grid_config_installer'
-            - '@coreshop.resource.installer.classes'
+            - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
+            - '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
         tags:
-            - { name: 'coreshop.resource.installer', type: 'grid_config', priority: 200}
+            - { name: coreshop.resource.installer, type: grid_config, priority: 200}
 
     coreshop.resource.installer:
-        class: CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller
+        alias: 'CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller'
+        public: true
+
+    CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface: '@CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller'
+    CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller:
         arguments:
             - '@coreshop.registry.resource.installers'

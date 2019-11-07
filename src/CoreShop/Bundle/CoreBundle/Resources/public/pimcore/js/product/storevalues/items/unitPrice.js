@@ -197,7 +197,7 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
 
         Ext.Array.each(productUnitDefinitionPrices, function (definitionPrice) {
             if (definitionPrice.hasOwnProperty('unitDefinition') && parseInt(definitionPrice.unitDefinition.id) === parseInt(unitDefinitionId)) {
-                data = {'id': definitionPrice.id, 'price': (parseInt(definitionPrice.price) / 100)};
+                data = {'id': definitionPrice.id, 'price': (parseInt(definitionPrice.price) / pimcore.globalmanager.get('coreshop.currency.decimal_factor'))};
                 return false;
             }
         });

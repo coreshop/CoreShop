@@ -26,6 +26,22 @@ class ProductUnit extends Select
     /**
      * {@inheritdoc}
      */
+    public function isDiffChangeAllowed($object, $params = [])
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDiffDataForEditMode($data, $object = null, $params = [])
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit');

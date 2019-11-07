@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\IndexBundle\DependencyInjection;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterConditionTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterPreConditionTypesPass;
+use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterFilterUserConditionTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterGetterPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterIndexWorkerPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterInterpreterPass;
@@ -23,6 +25,8 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelEx
 use CoreShop\Component\Index\Condition\DynamicRendererInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Filter\FilterConditionProcessorInterface;
+use CoreShop\Component\Index\Filter\FilterPreConditionProcessorInterface;
+use CoreShop\Component\Index\Filter\FilterUserConditionProcessorInterface;
 use CoreShop\Component\Index\Getter\GetterInterface;
 use CoreShop\Component\Index\Interpreter\InterpreterInterface;
 use CoreShop\Component\Index\Order\DynamicOrderRendererInterface;
@@ -58,41 +62,46 @@ final class CoreShopIndexExtension extends AbstractModelExtension
             $loader->load('services/installer.yml');
         }
 
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
         $container
             ->registerForAutoconfiguration(DynamicRendererInterface::class)
-            ->addTag(RegisterConditionRendererTypesPass::INDEX_CONDITION_RENDERER_TAG)
-        ;
+            ->addTag(RegisterConditionRendererTypesPass::INDEX_CONDITION_RENDERER_TAG);
 
         $container
             ->registerForAutoconfiguration(DynamicOrderRendererInterface::class)
-            ->addTag(RegisterOrderRendererTypesPass::INDEX_ORDER_RENDERER_TAG)
-        ;
+            ->addTag(RegisterOrderRendererTypesPass::INDEX_ORDER_RENDERER_TAG);
 
         $container
             ->registerForAutoconfiguration(IndexExtensionInterface::class)
-            ->addTag(RegisterExtensionsPass::INDEX_EXTENSION_TAG)
-        ;
+            ->addTag(RegisterExtensionsPass::INDEX_EXTENSION_TAG);
 
         $container
             ->registerForAutoconfiguration(FilterConditionProcessorInterface::class)
-            ->addTag(RegisterFilterConditionTypesPass::INDEX_FILTER_CONDITION_TAG)
-        ;
+            ->addTag(RegisterFilterConditionTypesPass::INDEX_FILTER_CONDITION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(FilterPreConditionProcessorInterface::class)
+            ->addTag(RegisterFilterPreConditionTypesPass::INDEX_FILTER_PRE_CONDITION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(FilterUserConditionProcessorInterface::class)
+            ->addTag(RegisterFilterUserConditionTypesPass::INDEX_FILTER_USER_CONDITION_TAG);
 
         $container
             ->registerForAutoconfiguration(GetterInterface::class)
-            ->addTag(RegisterGetterPass::INDEX_GETTER_TAG)
-        ;
+            ->addTag(RegisterGetterPass::INDEX_GETTER_TAG);
 
         $container
             ->registerForAutoconfiguration(WorkerInterface::class)
-            ->addTag(RegisterIndexWorkerPass::INDEX_WORKER_TAG)
-        ;
+            ->addTag(RegisterIndexWorkerPass::INDEX_WORKER_TAG);
 
         $container
             ->registerForAutoconfiguration(InterpreterInterface::class)
-            ->addTag(RegisterInterpreterPass::INDEX_INTERPRETER_TAG)
-        ;
+            ->addTag(RegisterInterpreterPass::INDEX_INTERPRETER_TAG);
     }
 }

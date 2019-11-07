@@ -65,6 +65,12 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
 
+        $bundles = $container->getParameter('kernel.bundles');
+
+        if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
+            $loader->load('services/data_hub.yml');
+        }
+
         $loader->load('services.yml');
 
         if (array_key_exists('checkout', $config)) {
@@ -82,12 +88,10 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container
             ->registerForAutoconfiguration(PortletInterface::class)
-            ->addTag(RegisterPortletsPass::PORTLET_TAG)
-        ;
+            ->addTag(RegisterPortletsPass::PORTLET_TAG);
         $container
             ->registerForAutoconfiguration(ReportInterface::class)
-            ->addTag(RegisterReportsPass::REPORT_TAG)
-        ;
+            ->addTag(RegisterReportsPass::REPORT_TAG);
     }
 
     /**
