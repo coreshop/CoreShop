@@ -21,6 +21,7 @@ class Version20190308132925 extends AbstractPimcoreMigration implements Containe
         if (!$schema->hasTable('coreshop_product_store_values')) {
             $this->addSql('CREATE TABLE coreshop_product_store_values (id INT AUTO_INCREMENT NOT NULL, store INT DEFAULT NULL, product INT NOT NULL COMMENT \'(DC2Type:pimcoreObject)\', price INT NOT NULL, INDEX IDX_9EED0E97FF575877 (store), UNIQUE INDEX product_store (product, store), PRIMARY KEY(id)) DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_general_ci ENGINE = InnoDB;');
             $this->addSql('ALTER TABLE coreshop_product_store_values ADD CONSTRAINT FK_9EED0E97FF575877 FOREIGN KEY (store) REFERENCES coreshop_store (id) ON DELETE SET NULL;');
+            $this->addSql('ALTER TABLE coreshop_product_unit_definition_price ADD CONSTRAINT FK_13ECB5BD314F81B FOREIGN KEY (product_store_values) REFERENCES coreshop_product_store_values (id) ON DELETE CASCADE;');
         }
 
         $storeValuesField = [

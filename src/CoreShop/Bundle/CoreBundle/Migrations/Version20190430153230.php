@@ -20,8 +20,15 @@ class Version20190430153230 extends AbstractPimcoreMigration implements Containe
      */
     public function up(Schema $schema)
     {
-        $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_cart_list\', \'\');');
-        $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_cart_create\', \'\');');
+        $table = $schema->getTable('users_permission_definitions');
+
+        if ($table->hasColumn('category')) {
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_cart_list\', \'\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_cart_create\', \'\');');
+        } else {
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_cart_list\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_cart_create\');');
+        }
 
         $cartClassId = $this->container->get('coreshop.repository.cart')->getClassId();
 
