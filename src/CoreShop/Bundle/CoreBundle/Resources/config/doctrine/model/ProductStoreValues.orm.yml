@@ -22,7 +22,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             joinColumn:
                 name: store
                 referencedColumnName: id
-                onDelete: 'SET NULL'
+                onDelete: CASCADE
     oneToMany:
         productUnitDefinitionPrices:
             targetEntity: CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface
