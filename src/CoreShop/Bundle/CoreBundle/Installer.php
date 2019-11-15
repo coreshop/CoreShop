@@ -25,6 +25,14 @@ class Installer extends MigrationInstaller
      */
     protected $runUpdateAfterInstall = false;
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getMigrationVersion(): string
+    {
+        return '00000001';
+    }
+
     protected function beforeInstallMigration()
     {
         $kernel = \Pimcore::getKernel();
