@@ -16,7 +16,7 @@ use CoreShop\Component\Currency\Model\Money;
 use CoreShop\Component\Resource\DataHub\DoctrineProvider;
 use GraphQL\Type\Definition\ObjectType;
 use GraphQL\Type\Definition\Type;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Bundle\DataHubBundle\GraphQL\Service;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 

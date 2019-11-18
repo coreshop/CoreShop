@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\PimcoreBundle\DataHub\QueryType;
 
 use CoreShop\Bundle\PimcoreBundle\DataHub\Type\SerializedDataType;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class SerializedData extends Input

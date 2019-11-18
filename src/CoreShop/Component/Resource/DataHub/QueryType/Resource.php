@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Resource\DataHub\QueryType;
 
 use CoreShop\Component\Resource\DataHub\DoctrineProvider;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Bundle\DataHubBundle\GraphQL\Service;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
