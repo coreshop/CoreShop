@@ -51,6 +51,10 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
      */
     public function unmarshalVersion($object, $data)
     {
+        if (null === $data) {
+            return null;
+        }
+        
         return $this->getRepository()->find($data);
     }
 
