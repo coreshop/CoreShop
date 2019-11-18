@@ -109,7 +109,8 @@
     "phpstan/phpstan-webmozart-assert": "^0.10"
   },
   "conflict": {
-    "pimcore/pimcore": "5.7.0 || 5.7.1"
+    "pimcore/pimcore": "5.7.0 || 5.7.1",
+    "monolog/monolog": ">=2"
   },
   "autoload": {
     "psr-4": {
