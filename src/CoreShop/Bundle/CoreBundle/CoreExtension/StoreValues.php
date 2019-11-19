@@ -12,7 +12,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
+use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnitDefinitionPriceUnmarshalEvent;
+use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnmarshalEvent;
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
+use CoreShop\Component\Core\Events;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -22,8 +25,10 @@ use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
@@ -373,9 +378,21 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function marshalVersion($object, $data)
     {
-        return array_map(function($storeValues) {
-            return $storeValues['values'];
-        }, $this->getDataForEditmode($data, $object, ['groups' => ['Version']]));
+        if (!is_array($data)) {
+            return [];
+        }
+
+        $context = SerializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+
+        $storeData = [];
+
+        foreach ($data as $storeValuesEntity) {
+            $storeData[] = $this->getSerializer()->toArray($storeValuesEntity, $context);
+        }
+
+        return $storeData;
     }
 
     /**
@@ -383,7 +400,74 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object, ['clone' => true]);
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $context = DeserializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+
+        $entities = [];
+
+        foreach ($data as $storeData) {
+            $entities[] = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
+        }
+
+        $currentData = $this->load($object, ['force' => true]);
+
+        $storeValuesMetadata = $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName());
+        $productUnitDefinitionPriceClassNameMetadata = $this->getEntityManager()->getClassMetadata($this->getProductUnitDefinitionPriceClassName());
+
+        /**
+         * @var ProductStoreValuesInterface $entity
+         * @var ProductStoreValuesInterface $currentDatum
+         */
+        foreach ($entities as $entity) {
+            foreach ($currentData as $currentDatum) {
+                if ($currentDatum->getStore()->getId() !== $entity->getStore()->getId()) {
+                    continue;
+                }
+
+                foreach ($storeValuesMetadata->getFieldNames() as $fieldName) {
+                    if (in_array($fieldName, ['id', 'product'], true)) {
+                        continue;
+                    }
+
+                    $value = $storeValuesMetadata->getFieldValue($entity, $fieldName);
+
+                    $storeValuesMetadata->setFieldValue($currentDatum, $fieldName, $value);
+                }
+
+                $event = new ProductStoreValuesUnmarshalEvent($object, $currentDatum, $entity);
+                $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UMMARSHAL, $event);
+
+                $currentDatum = $event->getOriginal();
+
+                foreach ($currentDatum->getProductUnitDefinitionPrices() as $datumUnitPrice) {
+                    foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
+                        if ($datumUnitPrice->getUnitDefinition()->getUnit()->getId() !== $entityUnitPrice->getUnitDefinition()->getUnit()->getId()) {
+                            continue;
+                        }
+
+                        foreach ($productUnitDefinitionPriceClassNameMetadata->getFieldNames() as $fieldName) {
+                            if (in_array($fieldName, ['id'], true)) {
+                                continue;
+                            }
+
+                            $value = $productUnitDefinitionPriceClassNameMetadata->getFieldValue($entityUnitPrice, $fieldName);
+
+                            $productUnitDefinitionPriceClassNameMetadata->setFieldValue($datumUnitPrice, $fieldName, $value);
+                        }
+
+                        $event = new ProductStoreValuesUnitDefinitionPriceUnmarshalEvent($object, $datumUnitPrice, $entityUnitPrice);
+                        $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UNIT_DEFINITION_PRICE_UMMARSHAL, $event);
+
+                        $datumUnitPrice = $event->getOriginal();
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -655,9 +739,17 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return \Pimcore::getContainer()->get('event_dispatcher');
+    }
+
+    /**
      * @return \Doctrine\ORM\EntityManager
      */
-    private function getEntityManager()
+    protected function getEntityManager()
     {
         return \Pimcore::getContainer()->get('doctrine.orm.entity_manager');
     }
@@ -665,7 +757,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
-    private function getFormFactory()
+    protected function getFormFactory()
     {
         return \Pimcore::getContainer()->get('form.factory');
     }
@@ -705,8 +797,15 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     /**
      * @return \JMS\Serializer\Serializer
      */
-    private function getSerializer()
+    protected function getSerializer()
     {
         return \Pimcore::getContainer()->get('jms_serializer');
+    }
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    protected function getProductUnitDefinitionPriceClassName()
+    {
+        return \Pimcore::getContainer()->getParameter('coreshop.model.product_unit_definition_price.class');
     }
 }

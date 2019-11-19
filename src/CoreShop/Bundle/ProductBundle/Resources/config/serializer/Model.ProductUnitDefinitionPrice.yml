@@ -6,7 +6,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed, Version]
+            groups: [List, Detailed]
         price:
             expose: true
             type: integer
