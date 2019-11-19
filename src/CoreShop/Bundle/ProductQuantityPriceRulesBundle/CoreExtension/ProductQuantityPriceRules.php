@@ -212,7 +212,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $pricingBehaviourTypes[] = [$type, 'coreshop_product_quantity_price_rules_behaviour_' . strtolower($type)];
         }
 
-        $data = [
+        $serializedData = [
             'conditions' => array_keys($this->getConfigConditions()),
             'actions' => array_keys($this->getConfigActions()),
             'rules' => [],
@@ -228,10 +228,10 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
             $context->setGroups(['Default', 'Detailed']);
             $quantityPriceRules = $this->load($object, ['force' => true]);
 
-            $data['rules'] = $this->getSerializer()->toArray($quantityPriceRules, $context);
+            $serializedData['rules'] = $this->getSerializer()->toArray($quantityPriceRules, $context);
         }
 
-        return $data;
+        return $serializedData;
     }
 
     /**

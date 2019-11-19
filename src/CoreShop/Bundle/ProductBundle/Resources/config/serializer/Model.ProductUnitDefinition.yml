@@ -24,7 +24,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             type: CoreShop\Component\Product\Model\ProductUnitDefinitions
             groups: [List, Detailed]
     virtual_properties:
-        unit:
+        unit_id:
             exp: 'object.getUnit() ? object.getUnit().getId() : null'
             type: integer
             serialized_name: unit
