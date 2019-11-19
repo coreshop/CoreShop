@@ -382,13 +382,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             return [];
         }
 
-        $context = SerializationContext::create();
-        $context->setSerializeNull(false);
-        $context->setGroups(['Version']);
-
         $storeData = [];
 
         foreach ($data as $storeValuesEntity) {
+            $context = SerializationContext::create();
+            $context->setSerializeNull(false);
+            $context->setGroups(['Version']);
+
             $storeData[] = $this->getSerializer()->toArray($storeValuesEntity, $context);
         }
 
@@ -404,13 +404,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             return null;
         }
 
-        $context = DeserializationContext::create();
-        $context->setSerializeNull(false);
-        $context->setGroups(['Version']);
-
         $entities = [];
 
         foreach ($data as $storeData) {
+            $context = DeserializationContext::create();
+            $context->setSerializeNull(false);
+            $context->setGroups(['Version']);
+
             $entities[] = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
         }
 
@@ -468,6 +468,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                 }
             }
         }
+
+        return $currentData;
     }
 
     /**
