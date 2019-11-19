@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\DataHub\QueryType;
 
 use CoreShop\Bundle\ResourceBundle\DataHub\Resolver\ResourceResolver;
 use GraphQL\Type\Definition\Type;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Select extends Input

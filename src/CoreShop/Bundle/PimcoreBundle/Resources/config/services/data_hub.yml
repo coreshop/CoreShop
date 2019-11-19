@@ -1,13 +1,13 @@
 services:
     coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown:
-        class: Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Href
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Href
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
             - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopDynamicDropdown }
 
     coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown_multiple:
-        class: Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Multihref
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Multihref
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:

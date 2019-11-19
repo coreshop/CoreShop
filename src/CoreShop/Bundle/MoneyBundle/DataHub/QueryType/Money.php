@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\MoneyBundle\DataHub\QueryType;
 
 use GraphQL\Type\Definition\Type;
-use Pimcore\Bundle\DataHubBundle\GraphQL\QueryFieldConfigGenerator\Input;
+use Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Input;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Money extends Input
