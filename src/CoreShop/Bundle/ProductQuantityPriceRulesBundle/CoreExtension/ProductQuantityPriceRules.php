@@ -178,10 +178,6 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function marshalVersion($object, $data)
     {
-        if ($object instanceof QuantityRangePriceAwareInterface) {
-            return $this->getDataForEditmode($data, $object)['rules'];
-        }
-
         return null;
     }
 
@@ -190,7 +186,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     public function unmarshalVersion($object, $data)
     {
-        return $this->getDataFromEditmode($data, $object);
+        return null;
     }
 
     /**
