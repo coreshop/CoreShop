@@ -33,6 +33,8 @@
                         <span class="input-group-text">{{ item.getUnitDefinition.getUnit.getName }}</span>
                     </div>
                 {% endif %}
+
+                {{ form_errors(form.quantity) }}
             </div>
         {% endif %}
     </td>
