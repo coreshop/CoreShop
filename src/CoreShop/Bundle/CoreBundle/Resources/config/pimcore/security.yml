@@ -10,7 +10,8 @@ security:
 
     firewalls:
         coreshop_frontend:
-            anonymous: ~
+            anonymous: lazy
+            provider: coreshop_customer
             pattern: ^/(?!(admin)).*$
             context: shop
             logout_on_user_change: true
@@ -33,5 +34,3 @@ security:
                 invalidate_session: false
                 success_handler: coreshop.handler.shop_logout
 
-
-#http://stackoverflow.com/questions/11602337/how-to-change-role-hierarchy-storage-in-symfony2

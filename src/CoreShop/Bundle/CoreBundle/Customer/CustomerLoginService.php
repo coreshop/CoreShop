@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 final class CustomerLoginService implements CustomerLoginServiceInterface
@@ -23,7 +24,7 @@ final class CustomerLoginService implements CustomerLoginServiceInterface
      */
     private $securityTokenStorage;
 
-    public function __construct(TokenStorage $tokenStorage)
+    public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->securityTokenStorage = $tokenStorage;
     }
