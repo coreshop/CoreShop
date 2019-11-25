@@ -28,7 +28,7 @@
         <server name="IS_DOCTRINE_ORM_SUPPORTED" value="true" />
 
         <env name="KERNEL_CLASS" value="TestAppKernel" />
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="100"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="200"/>
     </php>
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
