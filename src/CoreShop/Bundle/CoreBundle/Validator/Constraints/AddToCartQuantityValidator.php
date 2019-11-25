@@ -18,7 +18,9 @@ use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
+use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -31,11 +33,29 @@ final class AddToCartQuantityValidator extends ConstraintValidator
     private $quantityValidatorService;
 
     /**
-     * @param QuantityValidatorService $quantityValidatorService
+     * @var StorageListItemResolverInterface
      */
-    public function __construct(QuantityValidatorService $quantityValidatorService)
+    protected $cartItemResolver;
+
+    /**
+     * @param QuantityValidatorService         $quantityValidatorService
+     * @param StorageListItemResolverInterface $cartItemResolver
+     */
+    public function __construct(
+        QuantityValidatorService $quantityValidatorService,
+        StorageListItemResolverInterface $cartItemResolver = null
+    )
     {
         $this->quantityValidatorService = $quantityValidatorService;
+
+        if (null === $cartItemResolver) {
+            @trigger_error(
+                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
+                E_USER_DEPRECATED
+            );
+
+            $this->cartItemResolver = new CartItemResolver();
+        }
     }
 
     /**
@@ -96,7 +116,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if (!$product && $item->equals($cartItem)) {
+            if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {
                 return $item->getDefaultUnitQuantity();
             }
 

@@ -16,6 +16,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -35,15 +36,31 @@ class CartModifier implements StorageListModifierInterface
     protected $eventDispatcher;
 
     /**
+     * @var StorageListItemResolverInterface
+     */
+    protected $cartItemResolver;
+
+    /**
      * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
      * @param EventDispatcherInterface                 $eventDispatcher
+     * @param StorageListItemResolverInterface         $cartItemResolver
      */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        StorageListItemResolverInterface $cartItemResolver = null
     ) {
         $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
+
+        if (null === $cartItemResolver) {
+            @trigger_error(
+                'Not passing a StorageListItemResolverInterface as third argument is deprecated since 2.1.1 and will be removed with 3.0.0',
+                E_USER_DEPRECATED
+            );
+
+            $this->cartItemResolver = new CartItemResolver();
+        }
     }
 
     /**
@@ -68,16 +85,16 @@ class CartModifier implements StorageListModifierInterface
 
         $this->eventDispatcher->dispatch(
             'coreshop.cart.remove_add_pre',
-        new GenericEvent($storageList, ['item' => $item])
-            );
+            new GenericEvent($storageList, ['item' => $item])
+        );
 
         $storageList->removeItem($item);
         $item->delete();
 
         $this->eventDispatcher->dispatch(
             'coreshop.cart.remove_add_post',
-        new GenericEvent($storageList, ['item' => $item])
-            );
+            new GenericEvent($storageList, ['item' => $item])
+        );
     }
 
     /**
@@ -87,7 +104,7 @@ class CartModifier implements StorageListModifierInterface
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
     {
         foreach ($storageList->getItems() as $item) {
-            if ($storageListItem->equals($item)) {
+            if ($this->cartItemResolver->equals($item, $storageListItem)) {
                 $this->cartItemQuantityModifier->modify(
                     $item,
                     $item->getQuantity() + $storageListItem->getQuantity()
