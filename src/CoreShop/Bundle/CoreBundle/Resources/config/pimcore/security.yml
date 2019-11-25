@@ -10,7 +10,7 @@ security:
 
     firewalls:
         coreshop_frontend:
-            anonymous: lazy
+            anonymous: ~
             provider: coreshop_customer
             pattern: ^/(?!(admin)).*$
             context: shop
