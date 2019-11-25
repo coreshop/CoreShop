@@ -72,7 +72,7 @@
             <hr/>
 
             {% set variants = product.getVariantDifferences(coreshop.localeCode, 'classificationstore', 'classificationStore') %}
-            {# {% set variants = product->getVariantDifferences(coreshop.localeCode); //Use this for bricks %} #}
+            {# Use this for bricks: {% set variants = product.getVariantDifferences(coreshop.localeCode) %} #}
 
             {% if variants %}
                 {% for variant in variants %}
