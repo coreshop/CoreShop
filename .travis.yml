@@ -47,37 +47,37 @@ matrix:
           php: 7.2
           env:
             - PIMCORE_VERSION="~6.0.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.3
           env:
             - PIMCORE_VERSION="~6.0.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="~6.1.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.3
           env:
             - PIMCORE_VERSION="~6.1.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="~6.2.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.3
           env:
             - PIMCORE_VERSION="~6.2.0"
-            - SYMFONY_VERSION="^4.0"
+            - SYMFONY_VERSION="~4.3.0"
 
         - sudo: required
           php: 7.2
