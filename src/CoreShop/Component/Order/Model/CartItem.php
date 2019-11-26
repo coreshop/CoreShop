@@ -412,7 +412,7 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
      */
     protected function recalculateAfterAdjustmentChange()
     {
-        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(true), true);
-        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(false), false);
+        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(null, true), true);
+        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(null, false), false);
     }
 }

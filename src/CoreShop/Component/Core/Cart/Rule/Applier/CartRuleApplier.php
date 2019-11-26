@@ -173,7 +173,8 @@ class CartRuleApplier implements CartRuleApplierInterface
                 AdjustmentInterface::CART_PRICE_RULE,
                 $cartPriceRuleItem->getCartPriceRule()->getName(),
                 $positive ? $amountGross : (-1 * $amountGross),
-                $positive ? $amountNet : (-1 * $amountNet)
+                $positive ? $amountNet : (-1 * $amountNet),
+                true
             ));
         }
 
