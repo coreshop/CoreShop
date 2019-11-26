@@ -4,6 +4,10 @@ set -e
 echo "Validating CoreShop Suite"
 composer validate --strict
 
+if [[ "$PIMCORE_VERSION" != "dev-master" ]];
+    composer validate --strict
+fi
+
 packages="$(find "$(pwd)/src/CoreShop" -mindepth 3 -maxdepth 3 -type f -name composer.json -exec dirname '{}' \;)"
 
 for package in $packages
