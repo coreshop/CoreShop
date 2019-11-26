@@ -61,6 +61,9 @@ class CartModifier implements StorageListModifierInterface
 
             $this->cartItemResolver = new CartItemResolver();
         }
+        else {
+            $this->cartItemResolver = $cartItemResolver;
+        }
     }
 
     /**

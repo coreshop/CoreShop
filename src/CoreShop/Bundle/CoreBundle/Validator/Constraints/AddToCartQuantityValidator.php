@@ -56,6 +56,9 @@ final class AddToCartQuantityValidator extends ConstraintValidator
 
             $this->cartItemResolver = new CartItemResolver();
         }
+        else {
+            $this->cartItemResolver = $cartItemResolver;
+        }
     }
 
     /**
