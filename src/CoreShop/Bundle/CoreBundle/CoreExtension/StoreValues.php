@@ -268,7 +268,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($data as &$storeEntry) {
             if ($storeEntry instanceof ProductStoreValuesInterface) {
                 $storeEntry = $this->getEntityManager()->merge($storeEntry);
-                $storeEntry->setProduct($object);
             }
         }
 
@@ -331,7 +330,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          * @var ProductStoreValuesInterface $storeData
          */
         foreach ($productStoreValues as $storeId => $storeData) {
-            $storeData->setProduct($object);
+            if ($storeData->getProduct() && $storeData->getProduct()->getId() !== $object->getId()) {
+                $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
+                    $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
+                    $storeData
+                );
+                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($storeData);
+                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($storeData));
+
+                //This means that we inherited store values and also changed something, thus we break the inheritance and
+                //give the product its own record
+                if (count($changeSet) > 0) {
+                    $storeData = clone $storeData;
+                    $storeData->setProduct($object);
+                }
+            }
+
+            if (!$storeData->getProduct()) {
+                $storeData->setProduct($object);
+            }
+
             $this->getEntityManager()->persist($storeData);
 
             if ($storeData->getId()) {
