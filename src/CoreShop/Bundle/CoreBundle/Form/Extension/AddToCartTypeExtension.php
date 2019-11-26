@@ -16,6 +16,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
@@ -24,10 +25,11 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->remove('cartItem');
+        $originalCartItem = $builder->get('cartItem');
 
         $builder->add('cartItem', CartItemType::class, [
             'allow_units' => true,
+            'constraints' => $originalCartItem->getOption('constraints')
         ]);
     }
 
