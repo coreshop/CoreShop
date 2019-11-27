@@ -17,7 +17,9 @@ use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
+use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
@@ -30,11 +32,32 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     private $availabilityChecker;
 
     /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
+     * @var StorageListItemResolverInterface
      */
-    public function __construct(AvailabilityCheckerInterface $availabilityChecker)
+    protected $cartItemResolver;
+
+    /**
+     * @param AvailabilityCheckerInterface     $availabilityChecker
+     * @param StorageListItemResolverInterface $cartItemResolver
+     */
+    public function __construct(
+        AvailabilityCheckerInterface $availabilityChecker,
+        StorageListItemResolverInterface $cartItemResolver = null
+    )
     {
         $this->availabilityChecker = $availabilityChecker;
+
+        if (null === $cartItemResolver) {
+            @trigger_error(
+                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
+                E_USER_DEPRECATED
+            );
+
+            $this->cartItemResolver = new CartItemResolver();
+        }
+        else {
+            $this->cartItemResolver = $cartItemResolver;
+        }
     }
 
     /**
@@ -90,7 +113,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if (!$product && $item->equals($cartItem)) {
+            if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {
                 return $item->getDefaultUnitQuantity();
             }
 

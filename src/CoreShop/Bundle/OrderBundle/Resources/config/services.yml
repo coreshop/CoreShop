@@ -39,11 +39,15 @@ services:
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~
 
+    coreshop.cart.item_finder: '@CoreShop\Component\Order\Cart\CartItemResolver'
+    CoreShop\Component\Order\Cart\CartItemResolver:
+
     coreshop.cart.modifier: '@CoreShop\Component\Order\Cart\CartModifier'
     CoreShop\Component\Order\Cart\CartModifier:
         arguments:
             - '@coreshop.cart_item.quantity_modifier'
             - '@event_dispatcher'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
 
     coreshop.order.invoice.processable:
         class: CoreShop\Component\Order\Processable\ProcessableOrderItems
