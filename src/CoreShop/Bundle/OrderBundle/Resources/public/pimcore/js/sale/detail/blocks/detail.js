@@ -67,7 +67,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
 
         if (Ext.isArray(this.sale.details)) {
             Ext.Array.each(this.sale.details, function (row) {
-                if (row.hasOwnProperty('additional_item_data')) {
+                if (row.hasOwnProperty('additional_details')) {
                     hasAdditionalData = true;
                     return false;
                 }
@@ -99,9 +99,10 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
             plugins: hasAdditionalData === true ? [{
                 ptype: 'rowexpander',
                 expandOnDblClick: false,
-                rowBodyTpl: [
-                    '<div class="corehop-order-item-additional-data">{additional_item_data}</div>'
-                ]
+                rowBodyTpl: new Ext.XTemplate(
+                    '<tpl foreach="additional_details">',
+                        '{.}',
+                    '</tpl>')
             }] : [],
             columns: [
                 {
