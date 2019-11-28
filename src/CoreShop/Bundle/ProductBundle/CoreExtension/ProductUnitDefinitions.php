@@ -291,6 +291,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return [];
         }
 
+        if (null === $data) {
+            return [];
+        }
+
         $productUnitDefinition = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
 
         $context = SerializationContext::create();
