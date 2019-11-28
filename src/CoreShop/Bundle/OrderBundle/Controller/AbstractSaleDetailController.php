@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -281,7 +282,9 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
         $event = new GenericEvent($sale, $jsonSale);
 
-        $this->get('event_dispatcher')->dispatch('coreshop.sale.detail.prepare', $event);
+        $this->get('event_dispatcher')->dispatch(Events::SALE_DETAIL_PREPARE, $event);
+
+        $jsonSale = $event->getArguments();
 
         return $jsonSale;
     }
