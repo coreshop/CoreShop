@@ -63,11 +63,75 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
 
     generateItemGrid: function () {
 
+        var _ = this,
+            hasAdditionalData = false;
+
+        if (Ext.isArray(this.sale.details)) {
+            Ext.Array.each(this.sale.details, function (row) {
+                if (row.hasOwnProperty('additional_details')) {
+                    hasAdditionalData = true;
+                    return false;
+                }
+            })
+        }
+
         return {
             xtype: 'grid',
             margin: '0 0 15 0',
             cls: 'coreshop-detail-grid',
             store: this.detailsStore,
+            listeners: {
+                viewready: function (grid) {
+                    if (hasAdditionalData === true) {
+                        var view = grid.getView(),
+                            rowExpander = grid.findPlugin('rowexpander'),
+                            store = grid.getStore(), item;
+                        for (var i = 0; i <= store.getCount(); i++) {
+                            item = store.getAt(i);
+                            if (item) {
+                                rowExpander.toggleRow(i, item);
+                            }
+                        }
+                        // remove toggle icon
+                        view.getHeaderAtIndex(0).hide();
+                    }
+                }
+            },
+            plugins: hasAdditionalData === true ? [{
+                ptype: 'rowexpander',
+                expandOnDblClick: false,
+                rowBodyTpl: new Ext.XTemplate(
+                    '<table style="width: 50%;" class="coreshop-item-additional-details">',
+                        '<tpl for="additional_details">',
+                           '<tr>',
+                                '<tpl foreach=".">',
+                                    '<td>',
+                                        '<span>{[ this.formatData(values) ]}</span>',
+                                    '</td>',
+                                '</tpl>',
+                            '</tr>',
+                        '</tpl>',
+                    '</table>',
+                    {
+                        formatData: function (row) {
+                            var label = null, value = null;
+                            if (row.type === 'string') {
+                                value = row.value;
+                            } else if (row.type === 'price') {
+                                value = coreshop.util.format.currency(_.sale.currency.symbol, row.value)
+                            } else {
+                                value = '--';
+                            }
+
+                            if (row.label !== null) {
+                                label = row.translate_label ? t(row.label) : row.label;
+                            }
+
+                            return label === null ? value : (label + ': ' + value);
+                        }
+                    }
+                )
+            }] : [],
             columns: [
                 {
                     xtype: 'gridcolumn',
