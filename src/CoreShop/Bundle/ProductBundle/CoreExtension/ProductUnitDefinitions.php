@@ -198,8 +198,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
             if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
-                $data = $this->getEntityManager()->merge($data);
                 $data->setProduct($object);
+                $data = $this->getEntityManager()->merge($data);
             }
         }
 
@@ -285,6 +285,10 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if (!$object instanceof ProductInterface) {
+            return [];
+        }
+
+        if (null === $data) {
             return [];
         }
 
