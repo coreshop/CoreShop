@@ -63,11 +63,46 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
 
     generateItemGrid: function () {
 
+        var hasAdditionalData = false;
+
+        if (Ext.isArray(this.sale.details)) {
+            Ext.Array.each(this.sale.details, function (row) {
+                if (row.hasOwnProperty('additional_item_data')) {
+                    hasAdditionalData = true;
+                    return false;
+                }
+            })
+        }
+
         return {
             xtype: 'grid',
             margin: '0 0 15 0',
             cls: 'coreshop-detail-grid',
             store: this.detailsStore,
+            listeners: {
+                viewready: function (grid) {
+                    if (hasAdditionalData === true) {
+                        var view = grid.getView(),
+                            rowExpander = grid.findPlugin('rowexpander'),
+                            store = grid.getStore(), item;
+                        for (var i = 0; i <= store.getCount(); i++) {
+                            item = store.getAt(i);
+                            if (item) {
+                                rowExpander.toggleRow(i, item);
+                            }
+                        }
+                        // remove toggle icon
+                        view.getHeaderAtIndex(0).hide();
+                    }
+                }
+            },
+            plugins: hasAdditionalData === true ? [{
+                ptype: 'rowexpander',
+                expandOnDblClick: false,
+                rowBodyTpl: [
+                    '<div class="corehop-order-item-additional-data">{additional_item_data}</div>'
+                ]
+            }] : [],
             columns: [
                 {
                     xtype: 'gridcolumn',
