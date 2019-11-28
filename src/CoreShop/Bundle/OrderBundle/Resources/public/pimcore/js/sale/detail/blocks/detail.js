@@ -63,7 +63,8 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
 
     generateItemGrid: function () {
 
-        var hasAdditionalData = false;
+        var _ = this,
+            hasAdditionalData = false;
 
         if (Ext.isArray(this.sale.details)) {
             Ext.Array.each(this.sale.details, function (row) {
@@ -100,9 +101,36 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                 ptype: 'rowexpander',
                 expandOnDblClick: false,
                 rowBodyTpl: new Ext.XTemplate(
-                    '<tpl foreach="additional_details">',
-                        '{.}',
-                    '</tpl>')
+                    '<table style="width: 50%;" class="coreshop-item-additional-details">',
+                        '<tpl for="additional_details">',
+                           '<tr>',
+                                '<tpl foreach=".">',
+                                    '<td>',
+                                        '<span>{[ this.formatData(values) ]}</span>',
+                                    '</td>',
+                                '</tpl>',
+                            '</tr>',
+                        '</tpl>',
+                    '</table>',
+                    {
+                        formatData: function (row) {
+                            var label = null, value = null;
+                            if (row.type === 'string') {
+                                value = row.value;
+                            } else if (row.type === 'price') {
+                                value = coreshop.util.format.currency(_.sale.currency.symbol, row.value)
+                            } else {
+                                value = '--';
+                            }
+
+                            if (row.label !== null) {
+                                label = row.translate_label ? t(row.label) : row.label;
+                            }
+
+                            return label === null ? value : (label + ': ' + value);
+                        }
+                    }
+                )
             }] : [],
             columns: [
                 {
