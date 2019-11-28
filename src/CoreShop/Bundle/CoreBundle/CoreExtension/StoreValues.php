@@ -267,6 +267,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
         foreach ($data as &$storeEntry) {
             if ($storeEntry instanceof ProductStoreValuesInterface) {
+                $storeEntry->setProduct($object);
                 $storeEntry = $this->getEntityManager()->merge($storeEntry);
             }
         }
