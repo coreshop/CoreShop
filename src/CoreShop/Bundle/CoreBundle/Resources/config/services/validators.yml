@@ -2,6 +2,7 @@ services:
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailabilityValidator:
         arguments:
             - '@coreshop.inventory.availability_checker'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_availability }
 
@@ -17,6 +18,7 @@ services:
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
         arguments:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_quantity }
 

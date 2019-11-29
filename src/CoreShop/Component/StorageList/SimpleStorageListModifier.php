@@ -22,9 +22,15 @@ class SimpleStorageListModifier implements StorageListModifierInterface
      */
     protected $storageListItemQuantityModifier;
 
+    /**
+     * @var StorageListItemResolverInterface
+     */
+    protected $storageListItemFinder;
+
     public function __construct()
     {
         $this->storageListItemQuantityModifier = new StorageListItemQuantityModifier();
+        $this->storageListItemFinder = new StorageListItemModelEqualsResolver();
     }
 
     /**
@@ -50,7 +56,7 @@ class SimpleStorageListModifier implements StorageListModifierInterface
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
     {
         foreach ($storageList->getItems() as $item) {
-            if ($storageListItem->equals($item)) {
+            if ($this->storageListItemFinder->equals($item, $storageListItem)) {
                 $this->storageListItemQuantityModifier->modify(
                     $item,
                     $item->getQuantity() + $storageListItem->getQuantity()
