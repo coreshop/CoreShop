@@ -10,7 +10,7 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
         unit:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnit
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         conversionRate:
             expose: true
             type: float
@@ -23,9 +23,3 @@ CoreShop\Component\Product\Model\ProductUnitDefinition:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinitions
             groups: [List, Detailed]
-    virtual_properties:
-        unit_id:
-            exp: 'object.getUnit() ? object.getUnit().getId() : null'
-            type: integer
-            serialized_name: unit
-            groups: [Version]

@@ -46,6 +46,12 @@ services:
         tags:
             - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
 
+    CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor:
+        decorates: 'jms_serializer.object_constructor'
+        arguments:
+            - '@jms_serializer.unserialize_object_constructor'
+            - '@CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor.inner'
+
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
         public: false
