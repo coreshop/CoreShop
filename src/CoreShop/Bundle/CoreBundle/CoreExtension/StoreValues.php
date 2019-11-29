@@ -407,9 +407,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $entities = [];
 
         foreach ($data as $storeData) {
+            if (!is_array($storeData)) {
+                continue;
+            }
+
             $context = DeserializationContext::create();
             $context->setSerializeNull(false);
             $context->setGroups(['Version']);
+            $context->setAttribute('unmarshalVersion', true);
 
             $entities[] = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
         }
@@ -426,6 +431,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($entities as $entity) {
             foreach ($currentData as $currentDatum) {
                 if ($currentDatum->getStore()->getId() !== $entity->getStore()->getId()) {
+                    continue;
+                }
+
+                //Wrong deserialization happended
+                if (is_array($currentDatum->getProductUnitDefinitionPrices())) {
                     continue;
                 }
 
@@ -446,6 +456,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
                 foreach ($currentDatum->getProductUnitDefinitionPrices() as $datumUnitPrice) {
                     foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
+                        if (!$entityUnitPrice->getUnitDefinition() ||
+                            !$datumUnitPrice->getUnitDefinition() ||
+                            !$entityUnitPrice->getUnitDefinition()->getUnit() ||
+                            !$datumUnitPrice->getUnitDefinition()->getUnit()) {
+                            continue;
+                        }
+
                         if ($datumUnitPrice->getUnitDefinition()->getUnit()->getId() !== $entityUnitPrice->getUnitDefinition()->getUnit()->getId()) {
                             continue;
                         }
