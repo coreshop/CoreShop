@@ -17,7 +17,7 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             groups: [List, Detailed]
         productUnitDefinitionPrices:
             expose: true
-            type: array<CoreShop\Component\Core\Model\ProductUnitDefinitionPrice>
+            type: ArrayCollection<CoreShop\Component\Core\Model\ProductUnitDefinitionPrice>
             groups: [List, Detailed, Version]
         store:
             expose: true

@@ -16,9 +16,13 @@ use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\ORM\UnitOfWork;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
@@ -158,7 +162,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function marshalVersion($object, $data)
     {
-        return null;
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $context = SerializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+
+        return $this->getSerializer()->toArray($data, $context);
     }
 
     /**
@@ -166,7 +178,120 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function unmarshalVersion($object, $data)
     {
-        return null;
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $context = DeserializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+
+        $unserialized = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
+
+        if (!$unserialized instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $currentData = $this->load($object, ['force' => true]);
+
+        if (!$currentData instanceof ProductUnitDefinitionsInterface) {
+            $unserialized->setProduct($object);
+            $unserialized = $this->getEntityManager()->merge($data);
+
+            return $unserialized;
+        }
+
+        $currentDefaultDefinition = $currentData->getDefaultUnitDefinition();
+        $oldDefaultDefinition = $unserialized->getDefaultUnitDefinition();
+
+        if ($currentDefaultDefinition && $oldDefaultDefinition) {
+            $oldDefaultUnit = $oldDefaultDefinition->getUnit()->getId();
+            $currentUnit = $currentDefaultDefinition->getUnit()->getId();
+
+            $currentDefaultDefinition->setPrecision($oldDefaultDefinition->getPrecision());
+            $currentDefaultDefinition->setConversionRate($oldDefaultDefinition->getConversionRate());
+
+            if ($oldDefaultUnit && $oldDefaultUnit === $currentUnit) {
+                //Same unit, so no change
+            }
+            else {
+                $oldUnitReference = $this->getUnitRepository()->find($oldDefaultUnit);
+
+                if ($oldUnitReference) {
+                    $currentDefaultDefinition->setUnit($oldUnitReference);
+                }
+            }
+        }
+
+        $newAdditionalUnits = [];
+
+        foreach ($unserialized->getUnitDefinitions() as $oldAdditionalUnitDefinition) {
+            if ($unserialized->getDefaultUnitDefinition() && $unserialized->getDefaultUnitDefinition()->getId() === $oldAdditionalUnitDefinition->getId()) {
+                continue;
+            }
+
+            $existingAdditionalDefinition = null;
+
+            foreach ($currentData->getAdditionalUnitDefinitions() as $currentAdditionalUnitDefinition) {
+                if ($currentAdditionalUnitDefinition->getUnit() &&
+                    $oldAdditionalUnitDefinition->getUnit() &&
+                    $currentAdditionalUnitDefinition->getUnit()->getId() === $oldAdditionalUnitDefinition->getUnit()->getId()) {
+                    $existingAdditionalDefinition = $currentAdditionalUnitDefinition;
+                    break;
+                }
+            }
+
+            if ($existingAdditionalDefinition) {
+                $oldUnit = $oldAdditionalUnitDefinition->getUnit()->getId();
+                $currentUnit = $existingAdditionalDefinition->getUnit()->getId();
+
+                $existingAdditionalDefinition->setPrecision($oldAdditionalUnitDefinition->getPrecision());
+                $existingAdditionalDefinition->setConversionRate($oldAdditionalUnitDefinition->getConversionRate());
+
+                if ($oldUnit && $oldUnit !== $currentUnit) {
+                    $oldUnitReference = $this->getUnitRepository()->find($oldUnit);
+
+                    if ($oldUnitReference instanceof ProductUnitInterface) {
+                        $existingAdditionalDefinition->setUnit($oldUnitReference);
+
+                        $newAdditionalUnits[] = $existingAdditionalDefinition;
+                    }
+                }
+
+                continue;
+            }
+
+            if (!$oldAdditionalUnitDefinition->getUnit()) {
+                continue;
+            }
+
+            $oldUnitReference = $this->getUnitRepository()->find($oldAdditionalUnitDefinition->getUnit()->getId());
+
+            if (!$oldUnitReference instanceof ProductUnitInterface) {
+                continue;
+            }
+
+            /**
+             * @var $newUnitDefinition ProductUnitDefinitionInterface
+             */
+            $newUnitDefinition = $this->getProductUnitDefinitionFactory()->createNew();
+
+            $newUnitDefinition->setConversionRate($oldAdditionalUnitDefinition->getConversionRate());
+            $newUnitDefinition->setPrecision($oldAdditionalUnitDefinition->getPrecision());
+            $newUnitDefinition->setUnit($oldUnitReference);
+
+            $newAdditionalUnits[] = $newUnitDefinition;
+        }
+
+        foreach ($currentData->getAdditionalUnitDefinitions() as $additionalUnitDefinition) {
+            $currentData->removeAdditionalUnitDefinition($additionalUnitDefinition);
+        }
+
+        foreach ($newAdditionalUnits as $additionalUnit) {
+            $currentData->addAdditionalUnitDefinition($additionalUnit);
+        }
+
+        return $currentData;
     }
 
     /**
@@ -466,6 +591,22 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     protected function getProductUnitDefinitionsRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit_definitions');
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    protected function getProductUnitDefinitionFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition');
+    }
+
+    /**
+     * @return ProductUnitDefinitionsRepositoryInterface
+     */
+    protected function getUnitRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.product_units');
     }
 
     /**
