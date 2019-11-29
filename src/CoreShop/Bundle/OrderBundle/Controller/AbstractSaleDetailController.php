@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
+use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -28,6 +29,7 @@ use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -277,6 +279,12 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
 
             $jsonSale['priceRule'] = $rules;
         }
+
+        $event = new GenericEvent($sale, $jsonSale);
+
+        $this->get('event_dispatcher')->dispatch(Events::SALE_DETAIL_PREPARE, $event);
+
+        $jsonSale = $event->getArguments();
 
         return $jsonSale;
     }
