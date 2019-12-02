@@ -18,13 +18,16 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
 use CoreShop\Component\Core\Events;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\ORM\Cache\EntityCacheEntry;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
@@ -404,6 +407,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             return null;
         }
 
+        if (!$object instanceof ProductInterface) {
+            return null;
+        }
+
         $entities = [];
 
         foreach ($data as $storeData) {
@@ -453,6 +460,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                 $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UMMARSHAL, $event);
 
                 $currentDatum = $event->getOriginal();
+                $processed = [];
 
                 foreach ($currentDatum->getProductUnitDefinitionPrices() as $datumUnitPrice) {
                     foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
@@ -481,7 +489,48 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                         $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UNIT_DEFINITION_PRICE_UMMARSHAL, $event);
 
                         $datumUnitPrice = $event->getOriginal();
+
+                        $processed[] = $entityUnitPrice;
                     }
+                }
+
+                foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
+                    if (in_array($entityUnitPrice, $processed)) {
+                        continue;
+                    }
+
+                    if (!$entityUnitPrice->getUnitDefinition() ||
+                        !$entityUnitPrice->getUnitDefinition()->getUnit() ||
+                        !$entityUnitPrice->getUnitDefinition()->getUnit()->getId()
+                    ) {
+                        continue;
+                    }
+
+                    $productsUnitDefinition = null;
+
+                    foreach ($object->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
+                        if (!$unitDefinition->getUnit()) {
+                            continue;
+                        }
+
+                        if ($unitDefinition->getUnit()->getId() === $entityUnitPrice->getUnitDefinition()->getUnit()->getId()) {
+                            $productsUnitDefinition = $unitDefinition;
+                            break;
+                        }
+                    }
+
+                    if (null === $productsUnitDefinition) {
+                        continue;
+                    }
+
+                    /**
+                     * @var ProductUnitDefinitionPriceInterface $newUnitPrice
+                     */
+                    $newUnitPrice = $this->getProductUnitPriceFactory()->createNew();
+                    $newUnitPrice->setUnitDefinition($productsUnitDefinition);
+                    $newUnitPrice->setPrice($entityUnitPrice->getPrice());
+
+                    $currentDatum->addProductUnitDefinitionPrice($newUnitPrice);
                 }
             }
         }
@@ -612,10 +661,18 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
         $preview = [];
         foreach ($data as $element) {
-            $preview[] = (string) $element;
+            if (!$element instanceof ProductStoreValuesInterface) {
+                continue;
+            }
+
+            $preview[] = sprintf('Price: %s (Store: %s)', $element->getPrice(), $element->getStore()->getId());
+
+            foreach ($element->getProductUnitDefinitionPrices() as $unitPrice) {
+                $preview[] = sprintf('Price: %s (Unit: %s)', $unitPrice->getPrice(), $unitPrice->getUnitDefinition() ? $unitPrice->getUnitDefinition()->getUnitName() : 'NULL');
+            }
         }
 
-        return join(', ', $preview);
+        return implode(', ', $preview);
     }
 
     /**
@@ -811,6 +868,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     protected function getProductUnitRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit');
+    }
+
+        /**
+     * @return FactoryInterface
+     */
+    protected function getProductUnitPriceFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition_price');
     }
 
     /**
