@@ -42,7 +42,7 @@ class VersionObjectConstructor implements ObjectConstructorInterface
         array $type,
         DeserializationContext $context
     ) {
-        if ($context->getAttribute('unmarshalVersion')) {
+        if ($context->hasAttribute('unmarshalVersion') && $context->getAttribute('unmarshalVersion')) {
             return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
         }
 

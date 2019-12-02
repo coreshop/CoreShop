@@ -185,6 +185,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $context = DeserializationContext::create();
         $context->setSerializeNull(false);
         $context->setGroups(['Version']);
+        $context->setAttribute('unmarshalVersion', true);
 
         $unserialized = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
 
@@ -478,7 +479,13 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return $data;
+        if (!$data instanceof \CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';
+
+        return sprintf('Default Unit: %s, additional units: %d', $defaultUnit, $data->getAdditionalUnitDefinitions()->count());
     }
 
     /**
@@ -610,7 +617,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     protected function getUnitRepository()
     {
-        return \Pimcore::getContainer()->get('coreshop.repository.product_units');
+        return \Pimcore::getContainer()->get('coreshop.repository.product_unit');
     }
 
     /**
