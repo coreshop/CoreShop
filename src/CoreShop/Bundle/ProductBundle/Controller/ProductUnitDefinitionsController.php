@@ -58,6 +58,10 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
+        if ($product instanceof Concrete) {
+            $product = $this->getLatestVersion($product);
+        }
+
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'additional');
         }
@@ -87,5 +91,20 @@ class ProductUnitDefinitionsController extends ResourceController
         }
 
         return $definitions;
+    }
+
+    protected function getLatestVersion(Concrete $object)
+    {
+        $modificationDate = $object->getModificationDate();
+        $latestVersion = $object->getLatestVersion();
+        if ($latestVersion) {
+            $latestObj = $latestVersion->loadData();
+            if ($latestObj instanceof Concrete) {
+                $object = $latestObj;
+                $object->setModificationDate($modificationDate); // set de modification-date from published version to compare it in js-frontend
+            }
+        }
+
+        return $object;
     }
 }

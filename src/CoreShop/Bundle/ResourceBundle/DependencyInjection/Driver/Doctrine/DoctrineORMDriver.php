@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Resource\Factory\RepositoryFactory;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -29,6 +30,13 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
     public function getType()
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
+    }
+
+    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        parent::load($container, $metadata);
+
+        $this->addRepositoryFactory($container, $metadata);
     }
 
     /**
@@ -62,6 +70,43 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
                     $metadata->getServiceId('repository'),
                     $typehintClass,
                     $metadata->getHumanizedName() . ' repository'
+                );
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $repositoryFactoryClassParameterName = sprintf('%s.repository.factory.%s.class', $metadata->getApplicationName(), $metadata->getName());
+        $repositoryFactoryClass = RepositoryFactory::class;
+        $repositoryClass = EntityRepository::class;
+
+        if ($container->hasParameter($repositoryFactoryClassParameterName)) {
+            $repositoryFactoryClass = $container->getParameter($repositoryFactoryClassParameterName);
+        }
+
+        if ($metadata->hasClass('repository')) {
+            $repositoryClass = $metadata->getClass('repository');
+        }
+
+        $definition = new Definition($repositoryFactoryClass);
+        $definition->setPublic(true);
+        $definition->setArguments([
+            $metadata->getClass('model'),
+            $repositoryClass
+        ]);
+
+        $container->setDefinition($metadata->getServiceId('repository.factory'), $definition);
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            foreach (class_implements($repositoryClass) as $typehintClass) {
+                $container->registerAliasForArgument(
+                    $metadata->getServiceId('repository.factory'),
+                    $typehintClass,
+                    $metadata->getHumanizedName() . ' repository factory'
                 );
             }
         }

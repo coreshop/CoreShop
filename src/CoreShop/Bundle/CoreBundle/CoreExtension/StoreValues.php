@@ -12,9 +12,13 @@
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
+use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStoreValuesRepository;
 use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnitDefinitionPriceUnmarshalEvent;
 use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnmarshalEvent;
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
+use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Core\Events;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
@@ -23,18 +27,22 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Doctrine\ORM\Cache\EntityCacheEntry;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Webmozart\Assert\Assert;
 
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
+    use TempEntityManagerTrait;
+
     /**
      * @var string
      */
@@ -277,7 +285,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($data as &$storeEntry) {
             if ($storeEntry instanceof ProductStoreValuesInterface) {
                 $storeEntry->setProduct($object);
-                $storeEntry = $this->getEntityManager()->merge($storeEntry);
             }
         }
 
@@ -334,43 +341,57 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         }
 
         $validStoreValues = [];
+        $allStoreValues = [];
         $availableStoreValues = $this->load($object, ['force' => true]);
 
         /**
-         * @var ProductStoreValuesInterface $storeData
+         * @var ProductStoreValuesInterface $productStoreValue
          */
-        foreach ($productStoreValues as $storeId => $storeData) {
-            if ($storeData->getProduct() && $storeData->getProduct()->getId() !== $object->getId()) {
+        foreach ($productStoreValues as $productStoreValue) {
+            if (!$productStoreValue->getStore()) {
+                continue;
+            }
+
+            $entityMerger = new EntityMerger($this->getEntityManager());
+            $productStoreValue = $entityMerger->merge($productStoreValue);
+
+            if ($productStoreValue->getProduct() && $productStoreValue->getProduct()->getId() !== $object->getId()) {
                 $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
                     $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
-                    $storeData
+                    $productStoreValue
                 );
-                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($storeData);
-                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($storeData));
+                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
+                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($productStoreValue));
 
                 //This means that we inherited store values and also changed something, thus we break the inheritance and
                 //give the product its own record
                 if (count($changeSet) > 0) {
-                    $storeData = clone $storeData;
-                    $storeData->setProduct($object);
+                    $productStoreValue = clone $productStoreValue;
+                    $productStoreValue->setProduct($object);
                 }
             }
 
-            if (!$storeData->getProduct()) {
-                $storeData->setProduct($object);
+            if (!$productStoreValue->getProduct()) {
+                $productStoreValue->setProduct($object);
             }
 
-            $this->getEntityManager()->persist($storeData);
+            $this->getEntityManager()->persist($productStoreValue);
 
-            if ($storeData->getId()) {
-                $validStoreValues[] = $storeData->getId();
+            if ($productStoreValue->getId()) {
+                $validStoreValues[] = $productStoreValue->getId();
             }
+
+            $allStoreValues[] = $productStoreValue;
         }
 
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
-            if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues)) {
+            if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
             }
+        }
+
+        foreach ($allStoreValues as $storeEntity) {
+            $this->getEntityManager()->persist($storeEntity);
         }
 
         $this->getEntityManager()->flush();
@@ -387,6 +408,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
         $storeData = [];
 
+        /** @var ProductStoreValuesInterface $storeValuesEntity */
         foreach ($data as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(false);
@@ -413,6 +435,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
         $entities = [];
 
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+
         foreach ($data as $storeData) {
             if (!is_array($storeData)) {
                 continue;
@@ -421,15 +445,22 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $context = DeserializationContext::create();
             $context->setSerializeNull(false);
             $context->setGroups(['Version']);
-            $context->setAttribute('unmarshalVersion', true);
+            $context->setAttribute('em', $tempEntityManager);
 
-            $entities[] = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
+            $data = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
+
+            $entities[] = $data;
         }
 
-        $currentData = $this->load($object, ['force' => true]);
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $tempStoreValuesRepository = $this->getProductStoreValuesRepositoryFactory()->createNewRepository($tempEntityManager);
 
-        $storeValuesMetadata = $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName());
-        $productUnitDefinitionPriceClassNameMetadata = $this->getEntityManager()->getClassMetadata($this->getProductUnitDefinitionPriceClassName());
+        Assert::isInstanceOf($tempStoreValuesRepository, ProductStoreValuesRepositoryInterface::class);
+
+        $currentData = $tempStoreValuesRepository->findForProduct($object);
+
+        $storeValuesMetadata = $tempEntityManager->getClassMetadata($this->getProductStoreValuesRepository()->getClassName());
+        $productUnitDefinitionPriceClassNameMetadata = $tempEntityManager->getClassMetadata($this->getProductUnitDefinitionPriceClassName());
 
         /**
          * @var ProductStoreValuesInterface $entity
@@ -441,7 +472,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                     continue;
                 }
 
-                //Wrong deserialization happended
+                //Wrong deserialization happened
                 if (is_array($currentDatum->getProductUnitDefinitionPrices())) {
                     continue;
                 }
@@ -476,7 +507,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                         }
 
                         foreach ($productUnitDefinitionPriceClassNameMetadata->getFieldNames() as $fieldName) {
-                            if (in_array($fieldName, ['id'], true)) {
+                            if ('id' === $fieldName) {
                                 continue;
                             }
 
@@ -495,7 +526,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                 }
 
                 foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
-                    if (in_array($entityUnitPrice, $processed)) {
+                    if (in_array($entityUnitPrice, $processed, true)) {
                         continue;
                     }
 
@@ -560,15 +591,18 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        $stores = $this->getStoreRepository()->findAll();
-        $storeValues = $this->getProductStoreValuesRepository()->findForProduct($object);
         $storeData = [];
+        $stores = $this->getStoreRepository()->findAll();
+
+        if(!is_array($data)) {
+            return $storeData;
+        }
 
         if (!$object instanceof ProductInterface) {
             return $storeData;
         }
 
-        foreach ($storeValues as $storeValuesEntity) {
+        foreach ($data as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
             $context->setGroups($params['groups'] ?? ['Default', 'Detailed']);
@@ -608,6 +642,15 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         $errors = [];
         $storeValues = [];
 
+        //We should never miss with the entity here, otherwise we have problems with versions
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $productStoreValuesRepository = $this->getProductStoreValuesRepositoryFactory()->createNewRepository($tempEntityManager);
+
+        /**
+         * @var ProductStoreValuesRepositoryInterface $productStoreValuesRepository
+         */
+        Assert::isInstanceOf($productStoreValuesRepository, ProductStoreValuesRepositoryInterface::class);
+
         foreach ($data as $storeId => $storeData) {
             if ($storeId === 0) {
                 continue;
@@ -617,7 +660,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $storeValuesId = isset($storeData['id']) && is_numeric($storeData['id']) ? $storeData['id'] : null;
 
             if ($storeValuesId !== null) {
-                $storeValuesEntity = $this->getProductStoreValuesRepository()->find($storeValuesId);
+                $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
             }
 
             if (isset($params['clone']) && $storeValuesEntity) {
@@ -661,18 +704,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
         $preview = [];
         foreach ($data as $element) {
-            if (!$element instanceof ProductStoreValuesInterface) {
-                continue;
-            }
-
-            $preview[] = sprintf('Price: %s (Store: %s)', $element->getPrice(), $element->getStore()->getId());
-
-            foreach ($element->getProductUnitDefinitionPrices() as $unitPrice) {
-                $preview[] = sprintf('Price: %s (Unit: %s)', $unitPrice->getPrice(), $unitPrice->getUnitDefinition() ? $unitPrice->getUnitDefinition()->getUnitName() : 'NULL');
-            }
+            $preview[] = (string) $element;
         }
 
-        return implode(', ', $preview);
+        return join(', ', $preview);
     }
 
     /**
@@ -847,6 +882,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
+     * @return StoreRepositoryInterface
+     */
+    protected function getVersionStoreRepository()
+    {
+        return \Pimcore::getContainer()->get('coreshop.version_repository.store');
+    }
+
+    /**
      * @return FactoryInterface
      */
     protected function getFactory()
@@ -863,19 +906,19 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
+     * @return RepositoryFactoryInterface
+     */
+    protected function getProductStoreValuesRepositoryFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.factory.product_store_values');
+    }
+
+    /**
      * @return ProductUnitRepositoryInterface
      */
     protected function getProductUnitRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.product_unit');
-    }
-
-        /**
-     * @return FactoryInterface
-     */
-    protected function getProductUnitPriceFactory()
-    {
-        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition_price');
     }
 
     /**
@@ -891,5 +934,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     protected function getProductUnitDefinitionPriceClassName()
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.product_unit_definition_price.class');
+    }
+
+    /**
+     * @return FactoryInterface
+     */
+    protected function getProductUnitPriceFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition_price');
     }
 }
