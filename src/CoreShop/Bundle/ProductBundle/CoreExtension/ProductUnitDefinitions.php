@@ -12,7 +12,10 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
+use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -21,14 +24,18 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\ORM\UnitOfWork;
+use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use Doctrine\ORM\EntityManager;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Webmozart\Assert\Assert;
 
 class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
+    use TempEntityManagerTrait;
+
     /**
      * @var string
      */
@@ -182,117 +189,20 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return null;
         }
 
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+
         $context = DeserializationContext::create();
         $context->setSerializeNull(false);
         $context->setGroups(['Version']);
-        $context->setAttribute('unmarshalVersion', true);
+        $context->setAttribute('em', $tempEntityManager);
 
-        $unserialized = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
+        $entityData = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
 
-        if (!$unserialized instanceof ProductUnitDefinitionsInterface) {
+        if (!$entityData instanceof ProductUnitDefinitionsInterface) {
             return null;
         }
 
-        $currentData = $this->load($object, ['force' => true]);
-
-        if (!$currentData instanceof ProductUnitDefinitionsInterface) {
-            $unserialized->setProduct($object);
-            $unserialized = $this->getEntityManager()->merge($data);
-
-            return $unserialized;
-        }
-
-        $currentDefaultDefinition = $currentData->getDefaultUnitDefinition();
-        $oldDefaultDefinition = $unserialized->getDefaultUnitDefinition();
-
-        if ($currentDefaultDefinition && $oldDefaultDefinition) {
-            $oldDefaultUnit = $oldDefaultDefinition->getUnit()->getId();
-            $currentUnit = $currentDefaultDefinition->getUnit()->getId();
-
-            $currentDefaultDefinition->setPrecision($oldDefaultDefinition->getPrecision());
-            $currentDefaultDefinition->setConversionRate($oldDefaultDefinition->getConversionRate());
-
-            if ($oldDefaultUnit && $oldDefaultUnit === $currentUnit) {
-                //Same unit, so no change
-            }
-            else {
-                $oldUnitReference = $this->getUnitRepository()->find($oldDefaultUnit);
-
-                if ($oldUnitReference) {
-                    $currentDefaultDefinition->setUnit($oldUnitReference);
-                }
-            }
-        }
-
-        $newAdditionalUnits = [];
-
-        foreach ($unserialized->getUnitDefinitions() as $oldAdditionalUnitDefinition) {
-            if ($unserialized->getDefaultUnitDefinition() && $unserialized->getDefaultUnitDefinition()->getId() === $oldAdditionalUnitDefinition->getId()) {
-                continue;
-            }
-
-            $existingAdditionalDefinition = null;
-
-            foreach ($currentData->getAdditionalUnitDefinitions() as $currentAdditionalUnitDefinition) {
-                if ($currentAdditionalUnitDefinition->getUnit() &&
-                    $oldAdditionalUnitDefinition->getUnit() &&
-                    $currentAdditionalUnitDefinition->getUnit()->getId() === $oldAdditionalUnitDefinition->getUnit()->getId()) {
-                    $existingAdditionalDefinition = $currentAdditionalUnitDefinition;
-                    break;
-                }
-            }
-
-            if ($existingAdditionalDefinition) {
-                $oldUnit = $oldAdditionalUnitDefinition->getUnit()->getId();
-                $currentUnit = $existingAdditionalDefinition->getUnit()->getId();
-
-                $existingAdditionalDefinition->setPrecision($oldAdditionalUnitDefinition->getPrecision());
-                $existingAdditionalDefinition->setConversionRate($oldAdditionalUnitDefinition->getConversionRate());
-
-                if ($oldUnit && $oldUnit !== $currentUnit) {
-                    $oldUnitReference = $this->getUnitRepository()->find($oldUnit);
-
-                    if ($oldUnitReference instanceof ProductUnitInterface) {
-                        $existingAdditionalDefinition->setUnit($oldUnitReference);
-
-                        $newAdditionalUnits[] = $existingAdditionalDefinition;
-                    }
-                }
-
-                continue;
-            }
-
-            if (!$oldAdditionalUnitDefinition->getUnit()) {
-                continue;
-            }
-
-            $oldUnitReference = $this->getUnitRepository()->find($oldAdditionalUnitDefinition->getUnit()->getId());
-
-            if (!$oldUnitReference instanceof ProductUnitInterface) {
-                continue;
-            }
-
-            /**
-             * @var $newUnitDefinition ProductUnitDefinitionInterface
-             */
-            $newUnitDefinition = $this->getProductUnitDefinitionFactory()->createNew();
-
-            $newUnitDefinition->setConversionRate($oldAdditionalUnitDefinition->getConversionRate());
-            $newUnitDefinition->setPrecision($oldAdditionalUnitDefinition->getPrecision());
-            $newUnitDefinition->setUnit($oldUnitReference);
-
-            $newAdditionalUnits[] = $newUnitDefinition;
-        }
-
-        foreach ($currentData->getAdditionalUnitDefinitions() as $additionalUnitDefinition) {
-            $currentData->removeAdditionalUnitDefinition($additionalUnitDefinition);
-        }
-
-        foreach ($newAdditionalUnits as $additionalUnit) {
-            $currentData->addAdditionalUnitDefinition($additionalUnit);
-        }
-
-        return $currentData;
+        return $entityData;
     }
 
     /**
@@ -344,14 +254,6 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $object->markLazyKeyAsLoaded($this->getName());
         }
 
-        if ($data instanceof ProductUnitDefinitionsInterface) {
-            if ($object instanceof ProductInterface) {
-                $data->setProduct($object);
-            }
-
-            $this->getEntityManager()->persist($data);
-        }
-
         return $data;
     }
 
@@ -383,7 +285,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
-            $productUnitDefinitions->setProduct($object);
+            $entityMerger = new EntityMerger($this->getEntityManager());
+            $productUnitDefinitions = $entityMerger->merge($productUnitDefinitions);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
             $this->getEntityManager()->flush($productUnitDefinitions);
@@ -417,17 +320,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return [];
         }
 
-        if (null === $data) {
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
             return [];
         }
-
-        $productUnitDefinition = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
 
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->setGroups(['Default', 'Detailed']);
 
-        return $this->getSerializer()->toArray($productUnitDefinition, $context);
+        return $this->getSerializer()->toArray($data, $context);
     }
 
     /**
@@ -445,8 +346,13 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $unitDefinitionsEntity = null;
         $unitDefinitionsId = isset($data['id']) && is_numeric($data['id']) ? $data['id'] : null;
 
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $tempStoreValuesRepository = $this->getProductUnitDefinitionsRepositoryFactory()->createNewRepository($tempEntityManager);
+
+        Assert::isInstanceOf($tempStoreValuesRepository, ProductUnitDefinitionsRepositoryInterface::class);
+
         if ($unitDefinitionsId !== null) {
-            $unitDefinitionsEntity = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+            $unitDefinitionsEntity = $tempStoreValuesRepository->findOneForProduct($object);
         }
 
         $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
@@ -589,6 +495,14 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     }
 
     /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    private function getVersionEntityManager()
+    {
+        return \Pimcore::getContainer()->get('doctrine.orm.version_entity_manager');
+    }
+
+    /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
     private function getFormFactory()
@@ -605,11 +519,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     }
 
     /**
-     * @return FactoryInterface
+     * @return RepositoryFactoryInterface
      */
-    protected function getProductUnitDefinitionFactory()
+    protected function getProductUnitDefinitionsRepositoryFactory()
     {
-        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definition');
+        return \Pimcore::getContainer()->get('coreshop.repository.factory.product_unit_definitions');
     }
 
     /**

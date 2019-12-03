@@ -61,6 +61,28 @@ abstract class AbstractDoctrineDriver extends AbstractDriver
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function addVersionManager(ContainerBuilder $container, MetadataInterface $metadata)
+    {
+        $alias = new Alias($this->getVersionManagerServiceId($metadata));
+        $alias->setPublic(true);
+
+        $container->setAlias(
+            $metadata->getServiceId('version_manager'),
+            $alias
+        );
+
+        if (method_exists($container, 'registerAliasForArgument')) {
+            $container->registerAliasForArgument(
+                $metadata->getServiceId('version_manager'),
+                ObjectManager::class,
+                $metadata->getHumanizedName() . ' version_manager'
+            );
+        }
+    }
+
+    /**
      * Return the configured object managre name, or NULL if the default
      * manager should be used.
      *
