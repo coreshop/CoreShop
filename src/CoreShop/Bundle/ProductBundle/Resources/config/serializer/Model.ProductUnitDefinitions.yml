@@ -17,5 +17,5 @@ CoreShop\Component\Product\Model\ProductUnitDefinitions:
             groups: [List, Detailed, Version]
         unitDefinitions:
             expose: true
-            type: array<CoreShop\Component\Product\Model\ProductUnitDefinition>
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductUnitDefinition>
             groups: [List, Detailed, Version]

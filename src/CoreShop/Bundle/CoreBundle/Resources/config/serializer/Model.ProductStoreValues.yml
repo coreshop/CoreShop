@@ -6,14 +6,14 @@ CoreShop\Component\Core\Model\ProductStoreValues:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         price:
             expose: true
             type: integer
             groups: [List, Detailed, Version]
         product:
             expose: true
-            type: pimcoreObject
+            type: pimcoreObject<CoreShop\Component\Product\Model\ProductInterface>
             groups: [List, Detailed]
         productUnitDefinitionPrices:
             expose: true
