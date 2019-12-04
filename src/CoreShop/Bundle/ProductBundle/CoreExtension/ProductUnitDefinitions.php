@@ -282,6 +282,9 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $entityMerger = new EntityMerger($this->getEntityManager());
             $productUnitDefinitions = $entityMerger->merge($productUnitDefinitions);
 
+            //Reset Managed Entities cause they might change thru the merge command
+            $object->setObjectVar($this->getName(), $productUnitDefinitions);
+
             $this->getEntityManager()->persist($productUnitDefinitions);
             $this->getEntityManager()->flush($productUnitDefinitions);
         }
