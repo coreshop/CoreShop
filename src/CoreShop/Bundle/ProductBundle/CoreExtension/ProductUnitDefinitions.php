@@ -280,10 +280,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
             $entityMerger = new EntityMerger($this->getEntityManager());
-            $productUnitDefinitions = $entityMerger->merge($productUnitDefinitions);
-
-            //Reset Managed Entities cause they might change thru the merge command
-            $object->setObjectVar($this->getName(), $productUnitDefinitions);
+            $entityMerger->merge($productUnitDefinitions);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
             $this->getEntityManager()->flush($productUnitDefinitions);
