@@ -384,6 +384,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $allStoreValues[] = $productStoreValue;
         }
 
+        unset($productStoreValue);
+
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
