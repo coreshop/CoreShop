@@ -347,7 +347,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         /**
          * @var ProductStoreValuesInterface $productStoreValue
          */
-        foreach ($productStoreValues as $productStoreValue) {
+        foreach ($productStoreValues as &$productStoreValue) {
             if (!$productStoreValue->getStore()) {
                 continue;
             }
@@ -387,12 +387,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
+                $this->getEntityManager()->flush($availableStoreValuesEntity);
             }
         }
 
         foreach ($allStoreValues as $storeEntity) {
             $this->getEntityManager()->persist($storeEntity);
         }
+
+        //Reset Managed Entities cause they might change thru the merge command
+        $object->setObjectVar($this->getName(), $allStoreValues);
 
         $this->getEntityManager()->flush();
     }
