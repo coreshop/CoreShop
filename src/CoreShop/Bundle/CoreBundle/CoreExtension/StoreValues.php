@@ -893,14 +893,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     }
 
     /**
-     * @return StoreRepositoryInterface
-     */
-    protected function getVersionStoreRepository()
-    {
-        return \Pimcore::getContainer()->get('coreshop.version_repository.store');
-    }
-
-    /**
      * @return FactoryInterface
      */
     protected function getFactory()
