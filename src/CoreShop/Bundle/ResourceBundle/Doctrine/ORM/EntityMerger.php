@@ -64,28 +64,15 @@ class EntityMerger
         return $this->doMerge($entity, $visited);
     }
 
-    private function doMerge(ResourceInterface $entity, array &$visited, $prevManagedCopy = null, array $assoc = [])
+    private function doMerge(ResourceInterface $entity, array &$visited)
     {
         $oid = spl_object_hash($entity);
 
         if (isset($visited[$oid])) {
-            $managedCopy = $visited[$oid];
-
-            if ($prevManagedCopy !== null) {
-                $this->updateAssociationWithMergedEntity($entity, $assoc, $prevManagedCopy, $managedCopy);
-            }
-
-            return $managedCopy;
+            return $visited[$oid];
         }
 
         $class = $this->em->getClassMetadata(get_class($entity));
-
-        // First we assume DETACHED, although it can still be NEW but we can avoid
-        // an extra db-roundtrip this way. If it is not MANAGED but has an identity,
-        // we need to fetch it from the db anyway in order to merge.
-        // MANAGED entities are ignored by the merge operation.
-        $managedCopy = $entity;
-        $originalEntity = clone $entity;
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             // Try to look the entity up in the identity map.
@@ -96,8 +83,7 @@ class EntityMerger
                 //We can't create a new entity, we have to use the existing and merge it into the EM
                 //$managedCopy = $this->newInstance($class);
 
-                $this->mergeEntityStateIntoManagedCopy($originalEntity, $managedCopy);
-                $this->em->persist($managedCopy);
+                $this->em->persist($entity);
             } else {
                 $flatId = ($class->containsForeignIdentifier)
                     ? $this->identifierFlattener->flattenIdentifier($class, $id)
@@ -108,7 +94,7 @@ class EntityMerger
                 if ($managedCopy) {
                     // We have the entity in-memory already, just make sure its not removed.
                     if ($this->getEntityState($managedCopy) === UnitOfWork::STATE_REMOVED) {
-                        throw ORMInvalidArgumentException::entityIsRemoved($managedCopy, "merge");
+                        throw ORMInvalidArgumentException::entityIsRemoved($managedCopy, 'merge');
                     }
                 } else {
                     // We need to fetch the managed copy in order to merge.
@@ -129,57 +115,42 @@ class EntityMerger
                     //$managedCopy = $this->newInstance($class);
                     $class->setIdentifierValues($managedCopy, $id);
 
-                    $this->mergeEntityStateIntoManagedCopy($originalEntity, $managedCopy);
+                    $this->mergeEntityStateIntoManagedCopy($entity, $managedCopy);
                     $this->em->persist($managedCopy);
                 } else {
-                    $this->ensureVersionMatch($class, $originalEntity, $managedCopy);
-                    $this->mergeEntityStateIntoManagedCopy($originalEntity, $managedCopy);
+                    $this->ensureVersionMatch($class, $entity, $managedCopy);
+                    $this->mergeEntityStateIntoManagedCopy($entity, $managedCopy);
                 }
             }
 
-            $visited[$oid] = $managedCopy; // mark visited
-
-            if ($class->isChangeTrackingDeferredExplicit()) {
-                //TODO: HOW
-                //$this->scheduleForDirtyCheck($originalEntity);
-            }
-        }
-
-        if ($prevManagedCopy !== null) {
-            $this->updateAssociationWithMergedEntity($originalEntity, $assoc, $prevManagedCopy, $managedCopy);
+            $visited[$oid] = $entity; // mark visited
         }
 
         // Mark the managed copy visited as well
-        $visited[spl_object_hash($managedCopy)] = $managedCopy;
+        $visited[spl_object_hash($entity)] = $entity;
 
-        $this->cascadeMerge($originalEntity, $managedCopy, $visited);
+        $this->cascadeMerge($entity, $visited);
 
-        return $managedCopy;
+        return $entity;
     }
 
     /**
      * Cascades a merge operation to associated entities.
      *
      * @param object $entity
-     * @param object $managedCopy
      * @param array  $visited
      *
      * @return void
      */
-    private function cascadeMerge($entity, $managedCopy, array &$visited)
+    private function cascadeMerge($entity, array &$visited)
     {
         $class = $this->em->getClassMetadata(get_class($entity));
 
-        $associationMappings = array_filter(
-            $class->associationMappings,
-            function ($assoc) { return $assoc['isCascadeMerge']; }
-        );
-
-        foreach ($associationMappings as $assoc) {
+        foreach ($class->associationMappings as $assoc) {
             $relatedEntities = $class->reflFields[$assoc['fieldName']]->getValue($entity);
 
             if ($relatedEntities instanceof Collection) {
-                if ($relatedEntities === $class->reflFields[$assoc['fieldName']]->getValue($managedCopy)) {
+                if ($relatedEntities === $class->reflFields[$assoc['fieldName']]->getValue($entity)) {
                     continue;
                 }
 
@@ -189,10 +160,10 @@ class EntityMerger
                 }
 
                 foreach ($relatedEntities as $relatedEntity) {
-                    $this->doMerge($relatedEntity, $visited, $managedCopy, $assoc);
+                    $this->doMerge($relatedEntity, $visited);
                 }
             } else if ($relatedEntities !== null) {
-                $this->doMerge($relatedEntities, $visited, $managedCopy, $assoc);
+                $this->doMerge($relatedEntities, $visited);
             }
         }
     }
@@ -281,32 +252,18 @@ class EntityMerger
                     }
 
                     if ($managedCol instanceof ArrayCollection) {
+                        $copiedCol = clone $managedCol;
+
                         $managedCol = new PersistentCollection(
                             $this->em,
                             $this->em->getClassMetadata($assoc2['targetEntity']),
-                            $managedCol
+                            $copiedCol
                         );
                         $managedCol->setOwner($managedCopy, $assoc2);
                         $prop->setValue($managedCopy, $managedCol);
                     }
 
-                    if ($assoc2['isCascadeMerge']) {
-                        $managedCol->initialize();
-
-                        // clear and set dirty a managed collection if its not also the same collection to merge from.
-                        if ( ! $managedCol->isEmpty() && $managedCol !== $mergeCol) {
-                            $managedCol->unwrap()->clear();
-                            $managedCol->setDirty(true);
-
-                            if ($assoc2['isOwningSide']
-                                && $assoc2['type'] == ClassMetadata::MANY_TO_MANY
-                                && $class->isChangeTrackingNotify()
-                            ) {
-                                //TODO: HOW?
-                                //$this->scheduleForDirtyCheck($managedCopy);
-                            }
-                        }
-                    }
+                    $managedCol->initialize();
                 }
             }
 
@@ -320,43 +277,6 @@ class EntityMerger
     private function getEntityState($entity, $assume = null)
     {
         return $this->em->getUnitOfWork()->getEntityState($entity, $assume);
-    }
-
-    private function updateAssociationWithMergedEntity(ResourceInterface $entity, array $association, $previousManagedCopy, $managedCopy)
-    {
-        $assocField = $association['fieldName'];
-        $prevClass  = $this->em->getClassMetadata(get_class($previousManagedCopy));
-
-        if ($association['type'] & ClassMetadata::TO_ONE) {
-            $prevClass->reflFields[$assocField]->setValue($previousManagedCopy, $managedCopy);
-
-            return;
-        }
-
-        $value   = $prevClass->reflFields[$assocField]->getValue($previousManagedCopy);
-        $value[] = $managedCopy;
-
-        if ($association['type'] === ClassMetadata::ONE_TO_MANY) {
-            $class = $this->em->getClassMetadata(get_class($entity));
-
-            $class->reflFields[$association['mappedBy']]->setValue($managedCopy, $previousManagedCopy);
-        }
-    }
-
-    /**
-     * @param ClassMetadata $class
-     *
-     * @return \Doctrine\Common\Persistence\ObjectManagerAware|object
-     */
-    private function newInstance($class)
-    {
-        $entity = $class->newInstance();
-
-        if ($entity instanceof \Doctrine\Common\Persistence\ObjectManagerAware) {
-            $entity->injectObjectManager($this->em, $class);
-        }
-
-        return $entity;
     }
 
     /**
