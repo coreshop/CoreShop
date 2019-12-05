@@ -58,9 +58,22 @@ final class VersionContext implements Context
 
         $data = $this->restoreVersion($concrete, $key);
 
+        $this->sharedStorage->set('product-version', $concrete->getLatestVersion(true)->loadData());
+
         $data->save();
 
         $this->sharedStorage->set('product', $data);
+    }
+
+    /**
+     * @Then /^I reset the restored Version$/
+     */
+    public function iResetTheRestoredVersion(Concrete $concrete)
+    {
+        $product = $this->sharedStorage->get('product');
+        $id = $product->getId();
+
+        $this->sharedStorage->set('product', $product::getById($id, true));
     }
 
     protected function restoreVersion(Concrete $concrete, $key)

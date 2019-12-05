@@ -24,3 +24,17 @@ Feature: In order to support Pimcore Versioning, we have to serialize Store Valu
 
     Then I am in store "Germany"
     And the product should be priced at "200"
+
+  Scenario: Restore Version, but don't save it
+     Given I remember the product Version
+     And the products price is 1000 for store "Austria"
+     And the products price is 2000 for store "Germany"
+     And I restore the remembered product Version
+
+     Then I am in store "Austria"
+     And the version should be priced at "1000"
+     And the product should be priced at "100"
+
+     Then I am in store "Germany"
+     And the version should be priced at "2000"
+     And the product should be priced at "200"
