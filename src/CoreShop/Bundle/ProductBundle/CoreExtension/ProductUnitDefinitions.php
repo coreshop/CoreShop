@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
@@ -23,9 +22,8 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;

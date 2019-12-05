@@ -59,7 +59,7 @@ abstract class AbstractDoctrineDriver extends AbstractDriver
             );
         }
     }
-EntityMerger
+
     /**
      * Return the configured object managre name, or NULL if the default
      * manager should be used.
