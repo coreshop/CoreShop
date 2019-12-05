@@ -285,6 +285,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
         foreach ($data as &$storeEntry) {
             if ($storeEntry instanceof ProductStoreValuesInterface) {
                 $storeEntry->setProduct($object);
+
+                // TODO: Remove once we require Pimcore 6.3.3 as min
+                if (!interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface::class)) {
+                    $storeEntry = $this->getEntityManager()->merge($storeEntry);
+                }
             }
         }
 
