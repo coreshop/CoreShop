@@ -234,6 +234,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
             $data->setProduct($object);
+
+            // TODO: Remove once we require Pimcore 6.3.3 as min
+            if (!interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface::class)) {
+                $data = $this->getEntityManager()->merge($data);
+            }
         }
 
         return $data;
