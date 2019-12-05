@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
@@ -23,9 +22,8 @@ use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
@@ -236,8 +234,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             $data->setProduct($object);
 
             // TODO: Remove once we require Pimcore 6.3.3 as min
-            if (!interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface::class)) {
-                $data = $this->getEntityManager()->merge($data);
+            if (!interface_exists(\Pimcore\Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface::class) &&
+                $this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW
+            ) {
+                $entityMerger = new EntityMerger($this->getEntityManager());
+                $entityMerger->merge($data);
             }
         }
 
