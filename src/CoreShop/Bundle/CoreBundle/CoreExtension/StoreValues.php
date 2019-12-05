@@ -470,6 +470,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
          */
         foreach ($entities as $entity) {
             foreach ($currentData as $currentDatum) {
+                if (!$currentDatum->getStore() || !$entity->getStore()) {
+                    continue;
+                }
+
                 if ($currentDatum->getStore()->getId() !== $entity->getStore()->getId()) {
                     continue;
                 }
