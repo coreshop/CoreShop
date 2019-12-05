@@ -182,7 +182,7 @@ class EntityMerger
             return;
         }
 
-        if (! $this->isLoaded($managedCopy)) {
+        if (! $this->isLoaded($managedCopy) && method_exists($managedCopy, '__load')) {
             $managedCopy->__load();
         }
 

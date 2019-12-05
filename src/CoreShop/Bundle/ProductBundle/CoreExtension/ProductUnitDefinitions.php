@@ -495,14 +495,6 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getVersionEntityManager()
-    {
-        return \Pimcore::getContainer()->get('doctrine.orm.version_entity_manager');
-    }
-
-    /**
      * @return \Symfony\Component\Form\FormFactoryInterface
      */
     private function getFormFactory()
