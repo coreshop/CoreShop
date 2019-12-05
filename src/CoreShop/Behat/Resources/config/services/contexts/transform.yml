@@ -204,3 +204,10 @@ services:
             - '@coreshop.repository.product_unit'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.transform.version:
+        class: CoreShop\Behat\Context\Transform\VersionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
