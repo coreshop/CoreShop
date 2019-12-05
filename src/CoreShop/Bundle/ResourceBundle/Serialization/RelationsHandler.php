@@ -89,11 +89,6 @@ class RelationsHandler
         return $objects;
     }
 
-    /**
-     * @param                        $relation
-     * @param EntityManagerInterface $entityManager
-     * @return array|mixed
-     */
     protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
         $metadata = $entityManager->getClassMetadata(get_class($relation));
