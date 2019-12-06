@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\ProductBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -77,7 +79,7 @@ class ProductUnitDefinitionsController extends ResourceController
      */
     protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
     {
-        $definitions = [];
+        $definitions = new ArrayCollection();
 
         if ($product->hasUnitDefinitions()) {
             $productUnitDefinitions = $product->getUnitDefinitions();
@@ -90,7 +92,9 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions;
+        return $definitions->filter(function(ProductUnitDefinitionInterface $unitDefinition) {
+            return null !== $unitDefinition->getId();
+        });
     }
 
     protected function getLatestVersion(Concrete $object)

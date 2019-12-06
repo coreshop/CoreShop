@@ -12,17 +12,11 @@
 
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
-use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStoreValuesRepository;
-use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnitDefinitionPriceUnmarshalEvent;
-use CoreShop\Bundle\CoreBundle\Event\ProductStoreValuesUnmarshalEvent;
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
-use CoreShop\Bundle\ProductBundle\Doctrine\ORM\ProductUnitDefinitionsRepository;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Core\Events;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
-use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
@@ -31,8 +25,6 @@ use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\UnitOfWork;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
@@ -459,125 +451,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $entities[] = $data;
         }
 
-        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
-        $tempStoreValuesRepository = $this->getProductStoreValuesRepositoryFactory()->createNewRepository($tempEntityManager);
-
-        Assert::isInstanceOf($tempStoreValuesRepository, ProductStoreValuesRepositoryInterface::class);
-
-        $currentData = $tempStoreValuesRepository->findForProduct($object);
-
-        $storeValuesMetadata = $tempEntityManager->getClassMetadata($this->getProductStoreValuesRepository()->getClassName());
-        $productUnitDefinitionPriceClassNameMetadata = $tempEntityManager->getClassMetadata($this->getProductUnitDefinitionPriceClassName());
-
-        /**
-         * @var ProductStoreValuesInterface $entity
-         * @var ProductStoreValuesInterface $currentDatum
-         */
-        foreach ($entities as $entity) {
-            foreach ($currentData as $currentDatum) {
-                if (!$currentDatum->getStore() || !$entity->getStore()) {
-                    continue;
-                }
-
-                if ($currentDatum->getStore()->getId() !== $entity->getStore()->getId()) {
-                    continue;
-                }
-
-                //Wrong deserialization happened
-                if (is_array($currentDatum->getProductUnitDefinitionPrices())) {
-                    continue;
-                }
-
-                foreach ($storeValuesMetadata->getFieldNames() as $fieldName) {
-                    if (in_array($fieldName, ['id', 'product'], true)) {
-                        continue;
-                    }
-
-                    $value = $storeValuesMetadata->getFieldValue($entity, $fieldName);
-
-                    $storeValuesMetadata->setFieldValue($currentDatum, $fieldName, $value);
-                }
-
-                $event = new ProductStoreValuesUnmarshalEvent($object, $currentDatum, $entity);
-                $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UMMARSHAL, $event);
-
-                $currentDatum = $event->getOriginal();
-                $processed = [];
-
-                foreach ($currentDatum->getProductUnitDefinitionPrices() as $datumUnitPrice) {
-                    foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
-                        if (!$entityUnitPrice->getUnitDefinition() ||
-                            !$datumUnitPrice->getUnitDefinition() ||
-                            !$entityUnitPrice->getUnitDefinition()->getUnit() ||
-                            !$datumUnitPrice->getUnitDefinition()->getUnit()) {
-                            continue;
-                        }
-
-                        if ($datumUnitPrice->getUnitDefinition()->getUnit()->getId() !== $entityUnitPrice->getUnitDefinition()->getUnit()->getId()) {
-                            continue;
-                        }
-
-                        foreach ($productUnitDefinitionPriceClassNameMetadata->getFieldNames() as $fieldName) {
-                            if ('id' === $fieldName) {
-                                continue;
-                            }
-
-                            $value = $productUnitDefinitionPriceClassNameMetadata->getFieldValue($entityUnitPrice, $fieldName);
-
-                            $productUnitDefinitionPriceClassNameMetadata->setFieldValue($datumUnitPrice, $fieldName, $value);
-                        }
-
-                        $event = new ProductStoreValuesUnitDefinitionPriceUnmarshalEvent($object, $datumUnitPrice, $entityUnitPrice);
-                        $this->getEventDispatcher()->dispatch(Events::PRODUCT_STORE_VALUES_UNIT_DEFINITION_PRICE_UMMARSHAL, $event);
-
-                        $datumUnitPrice = $event->getOriginal();
-
-                        $processed[] = $entityUnitPrice;
-                    }
-                }
-
-                foreach ($entity->getProductUnitDefinitionPrices() as $entityUnitPrice) {
-                    if (in_array($entityUnitPrice, $processed, true)) {
-                        continue;
-                    }
-
-                    if (!$entityUnitPrice->getUnitDefinition() ||
-                        !$entityUnitPrice->getUnitDefinition()->getUnit() ||
-                        !$entityUnitPrice->getUnitDefinition()->getUnit()->getId()
-                    ) {
-                        continue;
-                    }
-
-                    $productsUnitDefinition = null;
-
-                    foreach ($object->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
-                        if (!$unitDefinition->getUnit()) {
-                            continue;
-                        }
-
-                        if ($unitDefinition->getUnit()->getId() === $entityUnitPrice->getUnitDefinition()->getUnit()->getId()) {
-                            $productsUnitDefinition = $unitDefinition;
-                            break;
-                        }
-                    }
-
-                    if (null === $productsUnitDefinition) {
-                        continue;
-                    }
-
-                    /**
-                     * @var ProductUnitDefinitionPriceInterface $newUnitPrice
-                     */
-                    $newUnitPrice = $this->getProductUnitPriceFactory()->createNew();
-                    $newUnitPrice->setUnitDefinition($productsUnitDefinition);
-                    $newUnitPrice->setPrice($entityUnitPrice->getPrice());
-
-                    $currentDatum->addProductUnitDefinitionPrice($newUnitPrice);
-                }
-            }
-        }
-
-        return $currentData;
+        return $entities;
     }
 
     /**
@@ -672,10 +546,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
 
             if ($storeValuesId !== null) {
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
-            }
-
-            if (isset($params['clone']) && $storeValuesEntity) {
-                $storeValuesEntity = clone $storeValuesEntity;
             }
 
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
