@@ -36,7 +36,7 @@
     "symfony/validator": "^3.4 | ^4.0",
     "symfony/yaml": "^3.4 | ^4.0",
     "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.3.4"
   },
   "config": {
     "bin-dir": "bin"
