@@ -59,9 +59,7 @@ class EntityMerger
         $oid = spl_object_hash($entity);
 
         if (isset($visited[$oid])) {
-            $managedCopy = $visited[$oid];
-
-            return $managedCopy;
+            return;
         }
 
         $class = $this->em->getClassMetadata(get_class($entity));
