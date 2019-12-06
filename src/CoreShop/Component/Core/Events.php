@@ -15,8 +15,4 @@ namespace CoreShop\Component\Core;
 final class Events
 {
     const SUPPORTS_PAYMENT_PROVIDER = 'coreshop.payment_provider.supports';
-
-    const PRODUCT_STORE_VALUES_UMMARSHAL = 'coreshop.product_store_values.unmarshal';
-
-    const PRODUCT_STORE_VALUES_UNIT_DEFINITION_PRICE_UMMARSHAL = 'coreshop.product_store_values_unit_definition_price.unmarshal';
 }

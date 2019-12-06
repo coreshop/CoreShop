@@ -13,22 +13,11 @@
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Mapping\Reflection\ReflectionPropertiesGetter;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Doctrine\ORM\PersistentCollection;
-use Doctrine\ORM\Proxy\Proxy;
-use Doctrine\ORM\TransactionRequiredException;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Utility\IdentifierFlattener;
-use function GuzzleHttp\Promise\unwrap;
 
 class EntityMerger
 {
@@ -47,25 +36,25 @@ class EntityMerger
     private $identifierFlattener;
 
     /**
-     * @var ReflectionPropertiesGetter
+     * @param EntityManagerInterface $em
      */
-    private $reflectionPropertiesGetter;
-
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
         $this->identifierFlattener = new IdentifierFlattener($em->getUnitOfWork(), $em->getMetadataFactory());
-        $this->reflectionPropertiesGetter = new ReflectionPropertiesGetter(new RuntimeReflectionService());
     }
 
-    public function merge(ResourceInterface $entity)
+    /**
+     * @param ResourceInterface $entity
+     */
+    public function merge(ResourceInterface $entity): void
     {
         $visited = [];
 
         $this->doMerge($entity, $visited);
     }
 
-    private function doMerge($entity, array &$visited, $prevManagedCopy = null, array $assoc = [])
+    private function doMerge($entity, array &$visited): void
     {
         $oid = spl_object_hash($entity);
 
@@ -106,7 +95,7 @@ class EntityMerger
         $this->cascadeMerge($entity, $visited);
     }
 
-    private function cascadeMerge($entity, array &$visited)
+    private function cascadeMerge($entity, array &$visited): void
     {
         $class = $this->em->getClassMetadata(get_class($entity));
 
@@ -120,11 +109,11 @@ class EntityMerger
                 }
 
                 foreach ($relatedEntities as $relatedEntity) {
-                    $this->doMerge($relatedEntity, $visited, $entity, $assoc);
+                    $this->doMerge($relatedEntity, $visited);
                 }
             } else {
                 if ($relatedEntities !== null) {
-                    $this->doMerge($relatedEntities, $visited, $entity, $assoc);
+                    $this->doMerge($relatedEntities, $visited);
                 }
             }
         }
