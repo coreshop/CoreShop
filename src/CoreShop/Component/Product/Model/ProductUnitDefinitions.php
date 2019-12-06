@@ -192,9 +192,18 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     public function getAdditionalUnitDefinitions()
     {
         $defaultDefinition = $this->getDefaultUnitDefinition();
+
+        if (null === $defaultDefinition->getUnit()) {
+            return new ArrayCollection();
+        }
+
         $additionalDefinitions = $this->getUnitDefinitions()
-            ->filter(function ($precision) use ($defaultDefinition) {
-                return $precision !== $defaultDefinition;
+            ->filter(function (ProductUnitDefinitionInterface $definition) use ($defaultDefinition) {
+                if (null === $definition->getUnit()) {
+                    return false;
+                }
+
+                return $definition->getUnit()->getId() !== $defaultDefinition->getUnit()->getId();
             });
 
         $additionalDefinitionsSorted = new ArrayCollection(array_values($additionalDefinitions->toArray()));

@@ -88,7 +88,7 @@ coreshop.product.unit.builder = Class.create({
                 unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue(),
                 precisionLabel: 'coreshop_product_unit_precision',
                 precisionName: 'defaultUnitDefinition.precision',
-                precisionValue: !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
+                precisionValue: defaultUnitDefinition !== null && !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
             }, true);
 
         return Ext.create('Ext.form.Panel', {
