@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
@@ -66,7 +67,7 @@ class RelationsHandler
         $metadata = $manager->getClassMetadata($className);
 
         if (!is_array($relation)) {
-            return $manager->getReference($metadata->getName(), $relation);
+            return $this->findById($relation, $metadata, $manager);
         }
 
         $single = false;
@@ -78,12 +79,12 @@ class RelationsHandler
         }
 
         if ($single) {
-            return $manager->getReference($className, $relation);
+            return $manager->findById($className, $relation);
         }
 
         $objects = [];
         foreach ($relation as $idSet) {
-            $objects[] = $manager->getReference($className, $idSet);
+            $objects[] = $manager->findById($className, $idSet);
         }
 
         return $objects;
@@ -99,5 +100,10 @@ class RelationsHandler
         }
 
         return $ids;
+    }
+
+    protected function findById($id, ClassMetadata $metadata, EntityManagerInterface $manager)
+    {
+        return $manager->find($metadata->getName(), $id);
     }
 }
