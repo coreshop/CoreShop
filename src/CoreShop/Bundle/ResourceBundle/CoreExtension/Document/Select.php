@@ -113,7 +113,7 @@ class Select extends Tag
      */
     public function isEmpty()
     {
-        return !s$this->resource;
+        return !$this->resource;
     }
 
     /**
