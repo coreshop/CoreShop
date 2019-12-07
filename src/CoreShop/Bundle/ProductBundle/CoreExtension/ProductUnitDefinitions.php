@@ -195,8 +195,14 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $context->setGroups(['Version']);
         $context->setAttribute('em', $tempEntityManager);
 
-        $entityData = $this->getSerializer()->fromArray($data,
-            $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
+        /**
+         * @var ProductUnitDefinitionsInterface $entityData
+         */
+        $entityData = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
+
+        foreach ($entityData->getUnitDefinitions() as $unitDefinition) {
+            $unitDefinition->setProductUnitDefinitions($entityData);
+        }
 
         if (!$entityData instanceof ProductUnitDefinitionsInterface) {
             return null;
