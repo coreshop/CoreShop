@@ -124,6 +124,27 @@ class EntityMerger
                 continue;
             }
 
+            if (!$origData->isInitialized()) {
+                $origData->initialize();
+            }
+
+            if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
+                $newCollection = $origData;
+
+                $this->mergeCollection($origData, $newData, $assoc, static function($foundEntry) use ($newCollection) {
+                    $newCollection->removeElement($foundEntry);
+                }, $visited);
+                $this->mergeCollection($newData, $origData, $assoc, static function($foundEntry) use ($newCollection) {
+                    $newCollection->add($foundEntry);
+                }, $visited);
+
+                $newData = &$newCollection;
+                $newCollection->setOwner($entity, $assoc);
+                $class->reflFields[$assoc['fieldName']]->setValue($entity, $newCollection);
+
+                continue;
+            }
+
             if (!($assoc['type'] & ClassMetadata::TO_MANY &&
                 $assoc['orphanRemoval'] &&
                 $origData->getOwner())) {
@@ -143,25 +164,32 @@ class EntityMerger
                 continue;
             }
 
-            $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
+            $this->mergeCollection($origData, $newData, $assoc, function($foundEntry) {
+                $this->em->getUnitOfWork()->scheduleOrphanRemoval($foundEntry);
+            }, $visited);
+        }
+    }
 
-            foreach ($origData as $origDatum) {
-                $found = false;
-                $origId = $assocClass->getIdentifierValues($origDatum);
+    private function mergeCollection(Collection $from, Collection $to, array $assoc, \closure $notFound, array &$visited)
+    {
+        $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
-                foreach ($newData as $newDatum) {
-                    $newId = $assocClass->getIdentifierValues($newDatum);
+        foreach ($from as $fromEntry) {
+            $found = false;
+            $origId = $assocClass->getIdentifierValues($fromEntry);
 
-                    if ($newId === $origId) {
-                        $found = true;
-                        break;
-                    }
+            foreach ($to as $toEntry) {
+                $newId = $assocClass->getIdentifierValues($toEntry);
+
+                if ($newId === $origId) {
+                    $found = true;
+                    break;
                 }
+            }
 
-                if (!$found) {
-                    $this->doMerge($origDatum, $visited);
-                    $this->em->getUnitOfWork()->scheduleOrphanRemoval($origDatum);
-                }
+            if (!$found) {
+                $this->doMerge($fromEntry, $visited);
+                $notFound($fromEntry);
             }
         }
     }

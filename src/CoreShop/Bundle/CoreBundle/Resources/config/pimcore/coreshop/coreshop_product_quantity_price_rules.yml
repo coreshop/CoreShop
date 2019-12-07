@@ -1,5 +1,8 @@
 core_shop_product_quantity_price_rules:
     resources:
+        product_quantity_price_rule:
+            classes:
+                model: CoreShop\Component\Core\Model\ProductQuantityPriceRule
         product_quantity_price_rule_range:
             classes:
                 model: CoreShop\Component\Core\Model\QuantityRange
