@@ -119,6 +119,14 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     /**
      * {@inheritdoc}
      */
+    public function hasUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
+    {
+        return $this->unitDefinitions->contains($productUnitDefinition);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
     {
         if ($this->unitDefinitions->contains($productUnitDefinition)) {

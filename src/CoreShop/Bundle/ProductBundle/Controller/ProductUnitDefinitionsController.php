@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -61,7 +62,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $product = $repository->find($request->get('productId'));
 
         if ($product instanceof Concrete) {
-            $product = $this->getLatestVersion($product);
+            $product = VersionHelper::getLatestVersion($product);
         }
 
         if ($product instanceof ProductInterface) {
