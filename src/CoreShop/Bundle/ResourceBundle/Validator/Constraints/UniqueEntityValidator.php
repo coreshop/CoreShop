@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -85,6 +86,9 @@ final class UniqueEntityValidator extends ConstraintValidator
             }
         }
 
+        /**
+         * @var Listing $list
+         */
         $list = $entity::getList();
         $list->setCondition(implode(' AND ', $condition), $values);
         $elements = $list->load();
