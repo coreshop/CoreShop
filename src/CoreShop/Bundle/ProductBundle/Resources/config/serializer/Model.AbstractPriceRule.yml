@@ -6,28 +6,24 @@ CoreShop\Component\Product\Model\AbstractPriceRule:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         name:
             expose: true
             type: string
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         active:
             expose: true
             type: boolean
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         priority:
             expose: true
             type: integer
-            groups: [Detailed]
+            groups: [Detailed, Version]
         conditions:
             expose: true
-            type: array
-            groups: [Detailed]
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>
+            groups: [Detailed, Version]
         actions:
             expose: true
-            type: array
-            groups: [Detailed]
-        translations:
-            expose: true
-            type: array
-            groups: [Detailed]
+            type: ArrayCollection<CoreShop\Component\Rule\Model\Action>
+            groups: [Detailed, Version]

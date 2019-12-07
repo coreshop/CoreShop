@@ -1,0 +1,17 @@
+CoreShop\Component\Rule\Model\Action:
+    exclusion_policy: ALL
+    xml_root_name: action
+    properties:
+        id:
+            expose: true
+            type: integer
+            xml_attribute: true
+            groups: [Detailed, Version]
+        type:
+            expose: true
+            type: string
+            groups: [Detailed, Version]
+        configuration:
+            expose: true
+            type: array
+            groups: [Detailed, Version]

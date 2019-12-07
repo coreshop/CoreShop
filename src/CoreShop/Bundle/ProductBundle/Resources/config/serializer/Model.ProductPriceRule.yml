@@ -1,3 +1,8 @@
 CoreShop\Component\Product\Model\ProductPriceRule:
     exclusion_policy: ALL
     xml_root_name: product_price_rule
+    properties:
+        translations:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductPriceRuleTranslation>
+            groups: [Detailed, Version]
