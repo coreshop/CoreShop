@@ -35,12 +35,14 @@ parameters:
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children()/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save()./'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::delete()./'
+        - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion()(.*)/'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Multihref not found/'
         - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
         - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomVersionMarshalInterface not found/'
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
 
