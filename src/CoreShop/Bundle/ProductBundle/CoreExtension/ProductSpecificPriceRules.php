@@ -44,70 +44,6 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     public $height;
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private function getContainer()
-    {
-        return \Pimcore::getContainer();
-    }
-
-    /**
-     * @return ProductSpecificPriceRuleRepositoryInterface
-     */
-    private function getProductSpecificPriceRuleRepository()
-    {
-        return $this->getContainer()->get('coreshop.repository.product_specific_price_rule');
-    }
-
-    /**
-     * @return RepositoryFactoryInterface
-     */
-    private function getProductSpecificPriceRuleRepositoryFactory()
-    {
-        return $this->getContainer()->get('coreshop.repository.factory.product_specific_price_rule');
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
-    {
-        return $this->getContainer()->get('form.factory');
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return \JMS\Serializer\Serializer
-     */
-    private function getSerializer()
-    {
-        return $this->getContainer()->get('jms_serializer');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigActions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.actions');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigConditions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
-    }
-
-    /**
      * @param mixed $object
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -426,5 +362,70 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         return $array;
+    }
+
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer()
+    {
+        return \Pimcore::getContainer();
+    }
+
+    /**
+     * @return ProductSpecificPriceRuleRepositoryInterface
+     */
+    private function getProductSpecificPriceRuleRepository()
+    {
+        return $this->getContainer()->get('coreshop.repository.product_specific_price_rule');
+    }
+
+    /**
+     * @return RepositoryFactoryInterface
+     */
+    private function getProductSpecificPriceRuleRepositoryFactory()
+    {
+        return $this->getContainer()->get('coreshop.repository.factory.product_specific_price_rule');
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormFactoryInterface
+     */
+    private function getFormFactory()
+    {
+        return $this->getContainer()->get('form.factory');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    private function getSerializer()
+    {
+        return $this->getContainer()->get('jms_serializer');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigActions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.actions');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigConditions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
     }
 }
