@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Utility\IdentifierFlattener;
@@ -64,8 +66,7 @@ class EntityMerger
 
         $class = $this->em->getClassMetadata(get_class($entity));
 
-        if ($this->em->getUnitOfWork()->getEntityState($entity,
-                UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
+        if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
             $id = $class->getIdentifierValues($entity);
 
             // If there is no ID, it is actually NEW.
@@ -80,17 +81,71 @@ class EntityMerger
 
                 if ($managedCopy) {
                     $visited[spl_object_hash($managedCopy)] = $managedCopy;
-
-                    $this->em->getUnitOfWork()->removeFromIdentityMap($managedCopy);
+                }
+                else {
+                    $managedCopy = $this->em->find($class->rootEntityName, $flatId);
                 }
 
-                $this->em->getUnitOfWork()->registerManaged($entity, $id, []);
+                if (!$managedCopy) {
+                    $this->em->getUnitOfWork()->persist($entity);
+                }
+                else {
+                    $this->checkAssociations($entity, $managedCopy, $visited);
+
+                    $this->em->getUnitOfWork()->removeFromIdentityMap($managedCopy);
+                    $this->em->getUnitOfWork()->registerManaged($entity, $id, $this->getData($managedCopy));
+                }
             }
         }
 
         $visited[$oid] = $entity; // mark visited
 
         $this->cascadeMerge($entity, $visited);
+    }
+
+    private function checkAssociations($entity, $managedCopy, array &$visited)
+    {
+        $class = $this->em->getClassMetadata(get_class($entity));
+
+        foreach ($class->associationMappings as $assoc) {
+            $origData = $class->reflFields[$assoc['fieldName']]->getValue($managedCopy);
+            $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
+            if (!$origData instanceof PersistentCollection) {
+                continue;
+            }
+
+            if (!($assoc['type'] & ClassMetadata::TO_MANY &&
+                $assoc['orphanRemoval'] &&
+                $origData->getOwner())) {
+                continue;
+            }
+
+            if ($origData === $newData) {
+                continue;
+            }
+
+            $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
+
+            foreach ($origData as $origDatum) {
+                $found = false;
+                $origId = $assocClass->getIdentifierValues($origDatum);
+
+                foreach ($newData as $newDatum) {
+                    $newId = $assocClass->getIdentifierValues($newDatum);
+
+                    if ($newId === $origId) {
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $this->doMerge($origDatum, $visited);
+                    $this->em->getUnitOfWork()->scheduleOrphanRemoval($origDatum);
+                }
+            }
+        }
     }
 
     private function cascadeMerge($entity, array &$visited): void
@@ -115,5 +170,51 @@ class EntityMerger
                 }
             }
         }
+    }
+
+    private function getData($entity)
+    {
+        $actualData = [];
+        $class = $this->em->getClassMetadata(get_class($entity));
+
+        foreach ($class->reflFields as $name => $refProp) {
+            $value = $refProp->getValue($entity);
+
+            if ($class->isCollectionValuedAssociation($name) && $value !== null) {
+                if ($value instanceof PersistentCollection) {
+                    if ($value->getOwner() === $entity) {
+                        continue;
+                    }
+
+                    $value = new ArrayCollection($value->getValues());
+                }
+
+                // If $value is not a Collection then use an ArrayCollection.
+                if ( ! $value instanceof Collection) {
+                    $value = new ArrayCollection($value);
+                }
+
+                $assoc = $class->associationMappings[$name];
+
+                // Inject PersistentCollection
+                $value = new PersistentCollection(
+                    $this->em, $this->em->getClassMetadata($assoc['targetEntity']), $value
+                );
+                $value->setOwner($entity, $assoc);
+                $value->setDirty( ! $value->isEmpty());
+
+                $class->reflFields[$name]->setValue($entity, $value);
+
+                $actualData[$name] = $value;
+
+                continue;
+            }
+
+            if (( ! $class->isIdentifier($name) || ! $class->isIdGeneratorIdentity()) && ($name !== $class->versionField)) {
+                $actualData[$name] = $value;
+            }
+        }
+
+        return $actualData;
     }
 }
