@@ -725,7 +725,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             if ($isUnitDefinitionsSerialized) {
                 $found = false;
 
-                foreach ($unitDefinitions as $unitDefinition) {
+                foreach ($unitDefinitions['unitDefinitions'] as $unitDefinition) {
                     if ($unitDefinition['id'] === $unitDefinitionPrice->getUnitDefinition()->getId()) {
                         $found = true;
                         break;
