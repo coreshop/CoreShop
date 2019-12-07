@@ -12,7 +12,7 @@ CoreShop\Component\Core\Model\QuantityRange:
             groups: [Detailed, Version]
         unitDefinition:
             expose: true
-            type: ArrayCollection<CoreShop\Component\Product\Model\ProductUnitDefinition>
+            type: relation<CoreShop\Component\Product\Model\ProductUnitDefinition>
             groups: [Detailed, Version]
         pseudoPrice:
             expose: true
