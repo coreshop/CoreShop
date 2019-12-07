@@ -164,9 +164,6 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 $document->setKey(Service::getValidKey($properties['key'], 'document'));
                 $document->setProperty('language', $language, 'text', true);
 
-                if (isset($properties['name'])) {
-                    $document->setName($properties['name']);
-                }
                 if (isset($properties['title'])) {
                     $document->setTitle($properties['title']);
                 }

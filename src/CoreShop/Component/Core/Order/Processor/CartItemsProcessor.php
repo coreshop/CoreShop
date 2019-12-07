@@ -105,7 +105,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             // respect item quantity factor
             if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor()) && $product->getItemQuantityFactor() > 1) {
-                $itemPrice = $itemPrice / (int) $product->getItemQuantityFactor();
+                $itemPrice = (int)round($itemPrice / (int) $product->getItemQuantityFactor());
             }
 
             try {
