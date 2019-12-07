@@ -289,11 +289,40 @@ coreshop.product.unit.builder = Class.create({
     },
 
     dispatchUnitDefinitionChangeEvent: function () {
+
+        var values = this.convertDotNotationToObject(this.getValues()),
+            additionalUnitDefinitions = this.getAdditionalUnitDefinitions();
+
+        if (values.hasOwnProperty('additionalUnitDefinitions')) {
+            Ext.Object.each(values.additionalUnitDefinitions, function (index, additionalUnitDefinition) {
+                var unitId = null, id = null;
+                if (additionalUnitDefinition.hasOwnProperty('unit')) {
+                    unitId = additionalUnitDefinition.unit;
+                }
+
+                if (Ext.isArray(additionalUnitDefinitions)) {
+                    Ext.Array.each(additionalUnitDefinitions, function (additionalUnitDefinition) {
+                        if (additionalUnitDefinition.hasOwnProperty('id')
+                            && additionalUnitDefinition.hasOwnProperty('unit')
+                            && Ext.isObject(additionalUnitDefinition.unit)
+                            && additionalUnitDefinition.unit.id === unitId) {
+                            id = additionalUnitDefinition.id;
+                        }
+
+                    }.bind(this));
+                }
+
+                if (id !== null) {
+                    values.additionalUnitDefinitions[index].id = id;
+                }
+            });
+        }
+
         coreshop.broker.fireEvent(
             'pimcore.object.tags.coreShopProductUnitDefinitions.change',
             {
                 objectId: this.objectId,
-                availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())
+                availableUnitDefinitions: values
             }
         );
     },
