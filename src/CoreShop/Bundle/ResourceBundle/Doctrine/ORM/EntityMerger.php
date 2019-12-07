@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Persistence\Proxy;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\PersistentCollection;
@@ -64,6 +65,10 @@ class EntityMerger
             return;
         }
 
+        if ($entity instanceof Proxy && !$entity->__isInitialized()) {
+            $entity->__load();
+        }
+
         $class = $this->em->getClassMetadata(get_class($entity));
 
         if ($this->em->getUnitOfWork()->getEntityState($entity, UnitOfWork::STATE_DETACHED) !== UnitOfWork::STATE_MANAGED) {
@@ -71,6 +76,8 @@ class EntityMerger
 
             // If there is no ID, it is actually NEW.
             if (!$id) {
+                $this->cascadeMerge($entity, $visited);
+
                 $this->em->persist($entity);
             } else {
                 $flatId = ($class->containsForeignIdentifier)
@@ -87,6 +94,8 @@ class EntityMerger
                 }
 
                 if (!$managedCopy) {
+                    $this->cascadeMerge($entity, $visited);
+
                     $this->em->getUnitOfWork()->persist($entity);
                 }
                 else {
@@ -122,6 +131,15 @@ class EntityMerger
             }
 
             if ($origData === $newData) {
+                continue;
+            }
+
+            if (null === $newData) {
+                foreach ($origData as $origDatum) {
+                    $this->doMerge($origDatum, $visited);
+                    $this->em->getUnitOfWork()->scheduleOrphanRemoval($origDatum);
+                }
+
                 continue;
             }
 
