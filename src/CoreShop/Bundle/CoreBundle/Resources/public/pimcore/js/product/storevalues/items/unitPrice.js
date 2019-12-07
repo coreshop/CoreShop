@@ -88,6 +88,8 @@ coreshop.product.storeValues.items.unitPrice = Class.create(coreshop.product.sto
 
         }.bind(this));
 
+        this.builder.dirty = true;
+
         return unitDefinitions;
     },
 
