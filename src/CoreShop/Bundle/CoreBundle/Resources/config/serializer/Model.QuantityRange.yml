@@ -1,0 +1,21 @@
+CoreShop\Component\Core\Model\QuantityRange:
+    exclusion_policy: ALL
+    xml_root_name: coreshop_quantity_range
+    properties:
+        amount:
+            expose: true
+            type: int
+            groups: [Detailed, Version]
+        currency:
+            expose: true
+            type: relation<CoreShop\Component\Core\Model\Currency>
+            groups: [Detailed, Version]
+        unitDefinition:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductUnitDefinition>
+            groups: [Detailed, Version]
+        pseudoPrice:
+            expose: true
+            type: int
+            groups: [Detailed, Version]
+

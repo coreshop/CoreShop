@@ -63,6 +63,10 @@ pimcore.object.tags.coreShopProductQuantityPriceRules = Class.create(pimcore.obj
 
         if (this.isDirty()) {
             this.reloadPriceRuleData(object, task, fieldName);
+
+            for (var i = 0; i < this.panels.length; i++) {
+                this.panels[i].resetDirty();
+            }
         }
 
     },

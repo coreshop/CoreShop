@@ -87,6 +87,12 @@ class VersionObjectConstructor implements ObjectConstructorInterface
             $identifierList[$name] = $data[$dataName];
         }
 
+        foreach ($identifierList as $i => $value) {
+            if (null === $value) {
+                return $this->fallbacksFallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
+            }
+        }
+
         // Entity update, load it from database
         $object = $em->find($metadata->name, $identifierList);
 
