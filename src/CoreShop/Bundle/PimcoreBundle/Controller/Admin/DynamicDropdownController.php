@@ -173,7 +173,7 @@ final class DynamicDropdownController extends AdminController
                      * @var DataObject\Folder $child
                      */
                     $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
-                    if ($request->get('recursive') == 'true') {
+                    if ($request->get('recursive') === 'true') {
                         $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                     }
 
@@ -183,10 +183,10 @@ final class DynamicDropdownController extends AdminController
                     $options[] = [
                         'value' => $child->getId(),
                         'key' => ltrim($path . $this->separator . $key, $this->separator),
-                        'published' => $child->getPublished(),
+                        'published' => $child instanceof DataObject\Concrete ? $child->getPublished() : false,
                     ];
 
-                    if ($request->get('recursive') == 'true') {
+                    if ($request->get('recursive') === 'true') {
                         $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
                     }
 
