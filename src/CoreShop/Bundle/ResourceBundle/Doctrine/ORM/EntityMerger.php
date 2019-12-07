@@ -65,6 +65,8 @@ class EntityMerger
             return;
         }
 
+        $visited[$oid] = $entity; // mark visited
+
         if ($entity instanceof Proxy && !$entity->__isInitialized()) {
             $entity->__load();
         }
@@ -106,8 +108,6 @@ class EntityMerger
                 }
             }
         }
-
-        $visited[$oid] = $entity; // mark visited
 
         $this->cascadeMerge($entity, $visited);
     }
