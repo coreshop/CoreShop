@@ -21,6 +21,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
@@ -410,7 +411,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $context->setSerializeNull(false);
             $context->setGroups(['Version']);
 
-            $storeData[] = $this->getSerializer()->toArray($storeValuesEntity, $context);
+            $serialized = $this->getSerializer()->toArray($storeValuesEntity, $context);
+
+            $storeData[] = $this->clearRemovedUnitDefinitions($storeValuesEntity, $object, $serialized);
         }
 
         return $storeData;
@@ -443,8 +446,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
-            $data = $this->getSerializer()->fromArray($storeData,
-                $this->getProductStoreValuesRepository()->getClassName(), $context);
+            /**
+             * @var ProductStoreValuesInterface $data
+             */
+            $data = $this->getSerializer()->fromArray($storeData, $this->getProductStoreValuesRepository()->getClassName(), $context);
+
+            foreach ($data->getProductUnitDefinitionPrices() as $price) {
+                $price->setProductStoreValues($data);
+            }
 
             $entities[] = $data;
         }
@@ -684,6 +693,70 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
     {
         return is_null($data) || (is_array($data) && count($data) === 0);
     }
+
+    /**
+     * Removes already deleted ProductUnitDefinitions from the serialized StoreValues for Versions. Otherwise, these
+     * Additional Unit Definitions would get restored on unmarshall
+     *
+     * @param ProductStoreValuesInterface $storeValuesEntity
+     * @param Model\DataObject\Concrete $object
+     * @param array $serialized
+     * @return array
+     */
+    protected function clearRemovedUnitDefinitions(
+        ProductStoreValuesInterface $storeValuesEntity,
+        Model\DataObject\Concrete $object,
+        array $serialized
+    ) {
+        if (!$object instanceof ProductInterface || !$object->getUnitDefinitions()) {
+            return $serialized;
+        }
+
+        $unitDefinitions = $object->getUnitDefinitions();
+        $isUnitDefinitionsSerialized = !$unitDefinitions instanceof ProductUnitDefinitionsInterface;
+
+        $toRemove = [];
+
+        foreach ($storeValuesEntity->getProductUnitDefinitionPrices() as $unitDefinitionPrice) {
+            if (null === $unitDefinitionPrice->getUnitDefinition()) {
+                continue;
+            }
+
+            if ($isUnitDefinitionsSerialized) {
+                $found = false;
+
+                foreach ($unitDefinitions as $unitDefinition) {
+                    if ($unitDefinition['id'] === $unitDefinitionPrice->getUnitDefinition()->getId()) {
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if (!$found) {
+                    $toRemove[] = $unitDefinitionPrice->getUnitDefinition()->getId();
+                }
+            } else {
+                if (!$object->getUnitDefinitions()->hasUnitDefinition($unitDefinitionPrice->getUnitDefinition())) {
+                    $toRemove[] = $unitDefinitionPrice->getUnitDefinition()->getId();
+                }
+            }
+        }
+
+        foreach ($toRemove as $unitDefinition) {
+            foreach ($serialized['productUnitDefinitionPrices'] as $index => $unitDefinitionPrice) {
+                if (!isset($unitDefinitionPrice['unitDefinition'])) {
+                    continue;
+                }
+
+                if ($unitDefinitionPrice['unitDefinition']['id'] === $unitDefinition) {
+                    unset($serialized['productUnitDefinitionPrices'][$index]);
+                }
+            }
+        }
+
+        return $serialized;
+    }
+
 
     /**
      * @param mixed $value
