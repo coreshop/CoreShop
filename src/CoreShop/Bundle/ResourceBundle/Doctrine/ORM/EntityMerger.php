@@ -170,7 +170,7 @@ class EntityMerger
         }
     }
 
-    private function mergeCollection(Collection $from, Collection $to, array $assoc, \closure $notFound, array &$visited)
+    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited)
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
