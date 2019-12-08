@@ -79,12 +79,12 @@ class RelationsHandler
         }
 
         if ($single) {
-            return $manager->findById($className, $relation);
+            return $this->findById($relation, $metadata, $manager);
         }
 
         $objects = [];
         foreach ($relation as $idSet) {
-            $objects[] = $manager->findById($className, $idSet);
+            $objects[] = $this->findById($idSet, $metadata, $manager);
         }
 
         return $objects;

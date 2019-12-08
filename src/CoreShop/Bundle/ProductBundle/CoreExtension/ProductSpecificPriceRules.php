@@ -163,7 +163,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
-     * @param       $data
+     * @param array $data
      * @param null  $object
      * @param array $params
      * @return string
