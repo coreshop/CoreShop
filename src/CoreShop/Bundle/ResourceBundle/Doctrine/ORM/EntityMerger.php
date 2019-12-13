@@ -34,7 +34,7 @@ class EntityMerger
     /**
      * The IdentifierFlattener used for manipulating identifiers
      *
-     * @var \Doctrine\ORM\Utility\IdentifierFlattener
+     * @var IdentifierFlattener
      */
     private $identifierFlattener;
 
@@ -57,6 +57,10 @@ class EntityMerger
         $this->doMerge($entity, $visited);
     }
 
+    /**
+     * @param mixed $entity
+     * @param array $visited
+     */
     private function doMerge($entity, array &$visited): void
     {
         $oid = spl_object_hash($entity);
@@ -90,19 +94,15 @@ class EntityMerger
 
                 if ($managedCopy) {
                     $visited[spl_object_hash($managedCopy)] = $managedCopy;
-                }
-                else {
+                } else {
                     $managedCopy = $this->em->find($class->rootEntityName, $flatId);
                 }
 
                 if (!$managedCopy) {
                     $this->cascadeMerge($entity, $visited);
-
                     $this->em->getUnitOfWork()->persist($entity);
-                }
-                else {
+                } else {
                     $this->checkAssociations($entity, $managedCopy, $visited);
-
                     $this->em->getUnitOfWork()->removeFromIdentityMap($managedCopy);
                     $this->em->getUnitOfWork()->registerManaged($entity, $id, $this->getData($managedCopy));
                 }
@@ -112,6 +112,11 @@ class EntityMerger
         $this->cascadeMerge($entity, $visited);
     }
 
+    /**
+     * @param mixed $entity
+     * @param mixed $managedCopy
+     * @param array $visited
+     */
     private function checkAssociations($entity, $managedCopy, array &$visited)
     {
         $class = $this->em->getClassMetadata(get_class($entity));
@@ -131,14 +136,17 @@ class EntityMerger
             if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
                 $newCollection = $origData;
 
-                $this->mergeCollection($origData, $newData, $assoc, static function($foundEntry) use ($newCollection) {
+                $this->mergeCollection($origData, $newData, $assoc, static function ($foundEntry) use ($newCollection) {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);
-                $this->mergeCollection($newData, $origData, $assoc, static function($foundEntry) use ($newCollection) {
+
+                $this->mergeCollection($newData, $origData, $assoc, static function ($foundEntry) use ($newCollection) {
                     $newCollection->add($foundEntry);
                 }, $visited);
 
+                // @todo: check if we really need to build this reference!
                 $newData = &$newCollection;
+
                 $newCollection->setOwner($entity, $assoc);
                 $class->reflFields[$assoc['fieldName']]->setValue($entity, $newCollection);
 
@@ -164,12 +172,19 @@ class EntityMerger
                 continue;
             }
 
-            $this->mergeCollection($origData, $newData, $assoc, function($foundEntry) {
+            $this->mergeCollection($origData, $newData, $assoc, function ($foundEntry) {
                 $this->em->getUnitOfWork()->scheduleOrphanRemoval($foundEntry);
             }, $visited);
         }
     }
 
+    /**
+     * @param Collection $from
+     * @param Collection $to
+     * @param array      $assoc
+     * @param \Closure   $notFound
+     * @param array      $visited
+     */
     private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited)
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
@@ -194,6 +209,10 @@ class EntityMerger
         }
     }
 
+    /**
+     * @param mixed $entity
+     * @param array $visited
+     */
     private function cascadeMerge($entity, array &$visited): void
     {
         $class = $this->em->getClassMetadata(get_class($entity));
@@ -218,6 +237,11 @@ class EntityMerger
         }
     }
 
+    /**
+     * @param mixed $entity
+     *
+     * @return array
+     */
     private function getData($entity)
     {
         $actualData = [];
@@ -236,18 +260,16 @@ class EntityMerger
                 }
 
                 // If $value is not a Collection then use an ArrayCollection.
-                if ( ! $value instanceof Collection) {
+                if (!$value instanceof Collection) {
                     $value = new ArrayCollection($value);
                 }
 
                 $assoc = $class->associationMappings[$name];
 
                 // Inject PersistentCollection
-                $value = new PersistentCollection(
-                    $this->em, $this->em->getClassMetadata($assoc['targetEntity']), $value
-                );
+                $value = new PersistentCollection($this->em, $this->em->getClassMetadata($assoc['targetEntity']), $value);
                 $value->setOwner($entity, $assoc);
-                $value->setDirty( ! $value->isEmpty());
+                $value->setDirty(!$value->isEmpty());
 
                 $class->reflFields[$name]->setValue($entity, $value);
 
@@ -256,7 +278,7 @@ class EntityMerger
                 continue;
             }
 
-            if (( ! $class->isIdentifier($name) || ! $class->isIdGeneratorIdentity()) && ($name !== $class->versionField)) {
+            if ((!$class->isIdentifier($name) || !$class->isIdGeneratorIdentity()) && ($name !== $class->versionField)) {
                 $actualData[$name] = $value;
             }
         }
