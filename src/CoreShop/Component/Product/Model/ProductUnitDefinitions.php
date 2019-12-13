@@ -119,6 +119,14 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     /**
      * {@inheritdoc}
      */
+    public function hasUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
+    {
+        return $this->unitDefinitions->contains($productUnitDefinition);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition)
     {
         if ($this->unitDefinitions->contains($productUnitDefinition)) {
@@ -192,25 +200,23 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
     public function getAdditionalUnitDefinitions()
     {
         $defaultDefinition = $this->getDefaultUnitDefinition();
+
+        if (null === $defaultDefinition->getUnit()) {
+            return new ArrayCollection();
+        }
+
         $additionalDefinitions = $this->getUnitDefinitions()
-            ->filter(function ($precision) use ($defaultDefinition) {
-                return $precision !== $defaultDefinition;
+            ->filter(function (ProductUnitDefinitionInterface $definition) use ($defaultDefinition) {
+                if (null === $definition->getUnit()) {
+                    return false;
+                }
+
+                return $definition->getUnit()->getId() !== $defaultDefinition->getUnit()->getId();
             });
 
         $additionalDefinitionsSorted = new ArrayCollection(array_values($additionalDefinitions->toArray()));
 
         return $additionalDefinitionsSorted;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString()
-    {
-        $defaultUnit = $this->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface
-        && $this->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $this->getDefaultUnitDefinition()->getUnit()->getName() : '--';
-
-        return sprintf('Default Unit: %s, additional units: %d', $defaultUnit, $this->getAdditionalUnitDefinitions()->count());
     }
 
     public function __clone()

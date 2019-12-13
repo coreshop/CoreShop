@@ -12,10 +12,11 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class Money extends Model\DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface
+class Money extends Model\DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -143,6 +144,22 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public function getQueryColumnType()
     {
         return 'bigint(20)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
     }
 
     /**

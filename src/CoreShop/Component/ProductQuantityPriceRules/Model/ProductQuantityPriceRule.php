@@ -17,7 +17,6 @@ use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 use CoreShop\Component\Resource\Model\ToggleableTrait;
-use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -45,15 +44,15 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     /**
      * @var string
      */
-    public $name;
+    protected $name;
 
     /**
      * @var string
      */
-    public $calculationBehaviour;
+    protected $calculationBehaviour;
 
     /**
-     * @var ArrayCollection|RuleInterface[]
+     * @var ArrayCollection|ConditionInterface[]
      */
     protected $conditions;
 
