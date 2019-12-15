@@ -60,3 +60,14 @@ $store = $storeRepository->findById(1);
 $container->get('coreshop.manager.store')->remove($store);
 $container->get('coreshop.manager.store')->flush();
 ```
+
+## Working with stores and pimcore objects
+Note that if you are working with pimcore objects and the coreShopStore fieldtype you can not set the store but instead you have to set the ID of the store.
+```php
+// Fetch Store
+
+$store = $storeRepository->findById(1);
+$customer = \Pimcore\Model\DataObject\CoreShopCustomer::getById(2);
+$customer->setCustomCoreShopStoreField($store->getId());
+
+```
