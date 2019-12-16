@@ -72,7 +72,18 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
         }
 
         if ($store instanceof StoreInterface) {
-            return sprintf('%s%s%s', $this->configurationService->getForStore($this->prefixConfigurationKey, $store), $this->numberGenerator->generate($model), $this->configurationService->getForStore($this->suffixConfigurationKey, $store));
+            $prefix = $this->configurationService->getForStore($this->prefixConfigurationKey, $store);
+            $suffix = $this->configurationService->getForStore($this->suffixConfigurationKey, $store);
+            
+            //Implement some useful replacements
+            $prefix = str_replace('{date}',date('Ymd'),$prefix);
+            $prefix = str_replace('{year}',date('Y'),$prefix);
+            $prefix = str_replace('{month}',date('m'),$prefix);
+            $prefix = str_replace('{day}',date('d'),$prefix);
+            
+            //ToDo: Implement the same replacements for $suffix (use same function for both)
+            
+            return sprintf('%s%s%s', $prefix, $this->numberGenerator->generate($model), $suffix);
         }
 
         return $this->numberGenerator->generate($model);
