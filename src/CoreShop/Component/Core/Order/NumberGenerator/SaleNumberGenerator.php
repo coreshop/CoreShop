@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
+use Symfony\Component\DependencyInjection\ExpressionLanguage;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
@@ -75,13 +76,9 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
             $prefix = $this->configurationService->getForStore($this->prefixConfigurationKey, $store);
             $suffix = $this->configurationService->getForStore($this->suffixConfigurationKey, $store);
             
-            //Implement some useful replacements
-            $prefix = str_replace('{date}',date('Ymd'),$prefix);
-            $prefix = str_replace('{year}',date('Y'),$prefix);
-            $prefix = str_replace('{month}',date('m'),$prefix);
-            $prefix = str_replace('{day}',date('d'),$prefix);
-            
-            //ToDo: Implement the same replacements for $suffix (use same function for both)
+            $expr = new ExpressionLanguage();
+            $prefix = $expr->evaluate($prefix);
+            $suffix = $expr->evaluate($suffix);
             
             return sprintf('%s%s%s', $prefix, $this->numberGenerator->generate($model), $suffix);
         }
