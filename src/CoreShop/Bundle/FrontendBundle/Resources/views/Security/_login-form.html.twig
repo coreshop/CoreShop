@@ -21,8 +21,12 @@
                     {{ form_row(form._password) }}
                     {{ form_row(form._remember_me) }}
 
-                    {% if target is defined  %}
+                    {% if target is defined and target %}
                         <input type="hidden" name="_target_path" value="{{ target }}" />
+                    {% endif %}
+
+                    {% if failure is defined and failure %}
+                        <input type="hidden" name="_failure_path" value="{{ failure }}" />
                     {% endif %}
 
                     <button type="submit" class="btn-success btn submit button">{{ 'coreshop.ui.login'|trans }}</button>
