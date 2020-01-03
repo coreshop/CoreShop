@@ -108,6 +108,9 @@ final class CartItemProcessor implements CartItemProcessorInterface
             $cartItem->setTotal((int) round($itemPrice * $cartItem->getQuantity()), false);
             $cartItem->setTotal((int) round($itemPrice * $cartItem->getQuantity()), true);
 
+            $cartItem->setItemPrice($itemPrice, true);
+            $cartItem->setItemPrice($itemPrice, false);
+
             $cartItem->setItemRetailPrice($itemRetailPrice, false);
             $cartItem->setItemRetailPrice($itemRetailPrice, true);
 

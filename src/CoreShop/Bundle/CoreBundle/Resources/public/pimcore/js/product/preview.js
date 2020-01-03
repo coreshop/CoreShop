@@ -92,7 +92,7 @@ coreshop.core.object.store_preview = Class.create({
             date = new Date();
 
         var url = "/admin/coreshop/preview?id=" + me.object.data.general.o_id + "&time=" + date.getTime() + "&store=" + me.store;
-        url = pimcore.helpers.addCsrfTokenToUrl(url);
+
         try {
             Ext.get(me.frameId).dom.src = url;
         }
