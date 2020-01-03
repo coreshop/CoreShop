@@ -77,6 +77,7 @@ class SecurityController extends FrontendController
             'last_username' => $lastUsername,
             'last_error' => $lastError,
             'target' => $request->get('target', null),
+            'failure' => $request->get('failure', null),
         ]);
     }
 
