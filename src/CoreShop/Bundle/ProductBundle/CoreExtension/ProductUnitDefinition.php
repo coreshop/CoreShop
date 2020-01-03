@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
 use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -19,7 +20,7 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
+class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface, CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -149,6 +150,22 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
     }
 
     /**

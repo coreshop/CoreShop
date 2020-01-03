@@ -10,8 +10,8 @@ CoreShop\Component\Product\Model\ProductUnitDefinitionPrice:
         price:
             expose: true
             type: integer
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         unitDefinition:
             expose: true
             type: CoreShop\Component\Product\Model\ProductUnitDefinition
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]

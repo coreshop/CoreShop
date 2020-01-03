@@ -53,6 +53,11 @@ interface ProductUnitDefinitionsInterface extends ResourceInterface
     public function getUnitDefinitions();
 
     /**
+     * @return bool
+     */
+    public function hasUnitDefinition(ProductUnitDefinitionInterface $unitDefinition);
+
+    /**
      * @param string $identifier
      *
      * @return ProductUnitDefinitionInterface|null

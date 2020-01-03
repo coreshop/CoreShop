@@ -12,11 +12,12 @@
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 
-abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
+abstract class Select extends Model\DataObject\ClassDefinition\Data\Select implements CustomVersionMarshalInterface
 {
     /**
      * @var bool
@@ -32,6 +33,30 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      * @return string
      */
     abstract protected function getModel();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if ($data instanceof ResourceInterface) {
+            return $data->getId();
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        if (null === $data) {
+            return null;
+        }
+        
+        return $this->getRepository()->find($data);
+    }
 
     /**
      * {@inheritdoc}

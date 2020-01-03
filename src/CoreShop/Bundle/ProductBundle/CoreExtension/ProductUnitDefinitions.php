@@ -13,17 +13,26 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
-use Doctrine\ORM\UnitOfWork;
+use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
+use Webmozart\Assert\Assert;
 
-class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface
+class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
 {
+    use TempEntityManagerTrait;
+
     /**
      * @var string
      */
@@ -112,22 +121,23 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function getGetterCode($class)
     {
         $key = $this->getName();
-        $code = '/**' . "\n";
-        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
-        $code .= '*' . "\n";
-        $code .= '* @return null|' . $this->getPhpdocType() . '|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface' . "\n";
-        $code .= '*/' . "\n";
-        $code .= 'public function get' . ucfirst($key) . ' () {' . "\n";
-        $code .= "\t" . '$this->' . $key . ' = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
-        $code .= "\t" . '$data = $this->' . $key . ";\n";
-        $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
-        $code .= "\t\t" . 'try {' . "\n";
-        $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '");' . "\n";
-        $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
-        $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
-        $code .= "\t\t" . '}' . "\n";
-        $code .= "\t" . '}' . "\n";
-        $code .= "\t" . 'return $data;' . "\n";
+        $code = '/**'."\n";
+        $code .= '* Get '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
+                '', $this->getTitle())."\n";
+        $code .= '*'."\n";
+        $code .= '* @return null|'.$this->getPhpdocType().'|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface'."\n";
+        $code .= '*/'."\n";
+        $code .= 'public function get'.ucfirst($key).' () {'."\n";
+        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+        $code .= "\t".'$data = $this->'.$key.";\n";
+        $code .= "\t".'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
+        $code .= "\t\t".'try {'."\n";
+        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'");'."\n";
+        $code .= "\t\t".'} catch (InheritanceParentNotFoundException $e) {'."\n";
+        $code .= "\t\t\t".'// no data from parent available, continue ... '."\n";
+        $code .= "\t\t".'}'."\n";
+        $code .= "\t".'}'."\n";
+        $code .= "\t".'return $data;'."\n";
         $code .= "}\n\n";
 
         return $code;
@@ -136,20 +146,69 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function getSetterCode($class)
     {
         $key = $this->getName();
-        $code = '/**' . "\n";
-        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $key) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
-        $code .= '*' . "\n";
-        $code .= '* @param null|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions' . "\n";
-        $code .= '*' . "\n";
-        $code .= '* @return static' . "\n";
-        $code .= '*/' . "\n";
-        $code .= 'public function set' . ucfirst($key) . ' (\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions = null) {' . "\n";
-        $code .= "\t" . '$this->' . $key . ' = $unitDefinitions;' . "\n";
-        $code .= "\t" . '$this->' . $key . ' = ' . '$this->getClass()->getFieldDefinition("' . $key . '")->preSetData($this, $this->' . $key . ');' . "\n";
-        $code .= "\t" . 'return $this;' . "\n";
+        $code = '/**'."\n";
+        $code .= '* Set '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
+                $this->getTitle())."\n";
+        $code .= '*'."\n";
+        $code .= '* @param null|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions'."\n";
+        $code .= '*'."\n";
+        $code .= '* @return static'."\n";
+        $code .= '*/'."\n";
+        $code .= 'public function set'.ucfirst($key).' (\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions = null) {'."\n";
+        $code .= "\t".'$this->'.$key.' = $unitDefinitions;'."\n";
+        $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
+        $code .= "\t".'return $this;'."\n";
         $code .= "}\n\n";
 
         return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $context = SerializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+
+        return $this->getSerializer()->toArray($data, $context);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+
+        $context = DeserializationContext::create();
+        $context->setSerializeNull(false);
+        $context->setGroups(['Version']);
+        $context->setAttribute('em', $tempEntityManager);
+
+        /**
+         * @var ProductUnitDefinitionsInterface $entityData
+         */
+        $entityData = $this->getSerializer()->fromArray($data, $this->getProductUnitDefinitionsRepository()->getClassName(), $context);
+
+        foreach ($entityData->getUnitDefinitions() as $unitDefinition) {
+            $unitDefinition->setProductUnitDefinitions($entityData);
+        }
+
+        if (!$entityData instanceof ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        return $entityData;
     }
 
     /**
@@ -173,17 +232,14 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         if (!$object->isLazyKeyLoaded($this->getName())) {
             $data = $this->load($object, ['force' => true]);
 
-            $setter = 'set' . ucfirst($this->getName());
+            $setter = 'set'.ucfirst($this->getName());
             if (method_exists($object, $setter)) {
                 $object->$setter($data);
             }
         }
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
-            if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
-                $data = $this->getEntityManager()->merge($data);
-                $data->setProduct($object);
-            }
+            $data->setProduct($object);
         }
 
         return $data;
@@ -196,14 +252,6 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     {
         if ($object instanceof LazyLoadedFieldsInterface) {
             $object->markLazyKeyAsLoaded($this->getName());
-        }
-
-        if ($data instanceof ProductUnitDefinitionsInterface) {
-            if ($object instanceof ProductInterface) {
-                $data->setProduct($object);
-            }
-
-            $this->getEntityManager()->persist($data);
         }
 
         return $data;
@@ -237,7 +285,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $productUnitDefinitions = $object->getObjectVar($this->getName());
 
         if ($productUnitDefinitions instanceof ProductUnitDefinitionsInterface) {
-            $productUnitDefinitions->setProduct($object);
+            $entityMerger = new EntityMerger($this->getEntityManager());
+            $entityMerger->merge($productUnitDefinitions);
 
             $this->getEntityManager()->persist($productUnitDefinitions);
             $this->getEntityManager()->flush($productUnitDefinitions);
@@ -271,15 +320,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
             return [];
         }
 
-        $productUnitDefinition = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+        if (!$data instanceof ProductUnitDefinitionsInterface) {
+            return [];
+        }
 
         $context = SerializationContext::create();
         $context->setSerializeNull(true);
         $context->setGroups(['Default', 'Detailed']);
-        $serializedData = $this->getSerializer()->serialize($productUnitDefinition, 'json', $context);
-        $values = json_decode($serializedData, true);
 
-        return $values;
+        return $this->getSerializer()->toArray($data, $context);
     }
 
     /**
@@ -287,14 +336,23 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
+        if (!is_array($data)) {
+            return null;
+        }
+
         $errors = [];
         $productUnitDefinitionsValues = null;
 
         $unitDefinitionsEntity = null;
         $unitDefinitionsId = isset($data['id']) && is_numeric($data['id']) ? $data['id'] : null;
 
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $tempStoreValuesRepository = $this->getProductUnitDefinitionsRepositoryFactory()->createNewRepository($tempEntityManager);
+
+        Assert::isInstanceOf($tempStoreValuesRepository, ProductUnitDefinitionsRepositoryInterface::class);
+
         if ($unitDefinitionsId !== null) {
-            $unitDefinitionsEntity = $this->getProductUnitDefinitionsRepository()->findOneForProduct($object);
+            $unitDefinitionsEntity = $tempStoreValuesRepository->findOneForProduct($object);
         }
 
         $form = $this->getFormFactory()->createNamed('', ProductUnitDefinitionsType::class, $unitDefinitionsEntity);
@@ -327,7 +385,14 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return $data;
+        if (!$data instanceof \CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface) {
+            return null;
+        }
+
+        $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';
+
+        return sprintf('Default Unit: %s, additional units: %d', $defaultUnit,
+            $data->getAdditionalUnitDefinitions()->count());
     }
 
     /**
@@ -356,7 +421,8 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
         $data = $importValue == '' ? [] : json_decode($importValue, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s', $importValue, json_last_error_msg()));
+            throw new \InvalidArgumentException(sprintf('Error decoding Product Unit Definitions JSON `%s`: %s',
+                $importValue, json_last_error_msg()));
         }
 
         return $data;
@@ -385,11 +451,11 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
      */
     protected function toNumeric($value)
     {
-        if (strpos((string) $value, '.') === false) {
-            return (int) $value;
+        if (strpos((string)$value, '.') === false) {
+            return (int)$value;
         }
 
-        return (float) $value;
+        return (float)$value;
     }
 
     /**
@@ -447,7 +513,15 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     }
 
     /**
-     * @return \JMS\Serializer\SerializerInterface
+     * @return RepositoryFactoryInterface
+     */
+    protected function getProductUnitDefinitionsRepositoryFactory()
+    {
+        return \Pimcore::getContainer()->get('coreshop.repository.factory.product_unit_definitions');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
      */
     private function getSerializer()
     {

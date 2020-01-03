@@ -18,3 +18,4 @@ imports:
     - suites/domain/theme.yml
     - suites/domain/product_quantity_price_rules.yml
     - suites/domain/menu.yml
+    - suites/domain/version.yml

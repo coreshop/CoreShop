@@ -5,4 +5,4 @@ CoreShop\Component\Product\Model\PriceRuleTranslation:
         label:
             expose: true
             type: string
-            groups: [Detailed]
+            groups: [Detailed, Version]

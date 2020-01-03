@@ -5,4 +5,8 @@ CoreShop\Component\Product\Model\ProductSpecificPriceRule:
         inherit:
             expose: true
             type: boolean
-            groups: [Detailed]
+            groups: [Detailed, Version]
+        translations:
+            expose: true
+            type: ArrayCollection<CoreShop\Component\Product\Model\ProductSpecificPriceRuleTranslation>
+            groups: [Detailed, Version]

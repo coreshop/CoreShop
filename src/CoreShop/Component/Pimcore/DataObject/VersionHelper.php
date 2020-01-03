@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
 class VersionHelper
@@ -44,5 +45,18 @@ class VersionHelper
         }
 
         return $result;
+    }
+
+    public static function getLatestVersion(Concrete $object)
+    {
+        $latestVersion = $object->getLatestVersion();
+        if ($latestVersion) {
+            $latestObj = $latestVersion->loadData();
+            if ($latestObj instanceof Concrete) {
+                $object = $latestObj;
+            }
+        }
+
+        return $object;
     }
 }
