@@ -12,12 +12,12 @@
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Model\DataObject\ClassDefinition\Data\Select implements CustomVersionMarshalInterface
+abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface
 {
     /**
      * @var bool
@@ -54,7 +54,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
         if (null === $data) {
             return null;
         }
-        
+
         return $this->getRepository()->find($data);
     }
 

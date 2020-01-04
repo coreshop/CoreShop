@@ -12,11 +12,13 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class Money extends Model\DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, CustomVersionMarshalInterface
+class Money extends Model\DataObject\ClassDefinition\Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.

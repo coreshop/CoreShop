@@ -12,15 +12,13 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
-use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 
-class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface, CustomVersionMarshalInterface
+class ProductUnitDefinition extends Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface, Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -92,12 +90,10 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available

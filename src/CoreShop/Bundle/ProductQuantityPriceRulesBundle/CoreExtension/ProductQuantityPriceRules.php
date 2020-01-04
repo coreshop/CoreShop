@@ -16,7 +16,6 @@ use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRu
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -32,7 +31,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 use function League\Uri\merge_query;
 
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, CustomVersionMarshalInterface
+class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
