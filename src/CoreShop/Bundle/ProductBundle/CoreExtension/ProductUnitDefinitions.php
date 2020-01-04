@@ -181,6 +181,9 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
 
         if ($data instanceof ProductUnitDefinitionsInterface) {
             if ($this->getEntityManager()->getUnitOfWork()->getEntityState($data, UnitOfWork::STATE_NEW) === UnitOfWork::STATE_NEW) {
+                /**
+                 * @var ProductUnitDefinitionsInterface $data
+                 */
                 $data = $this->getEntityManager()->merge($data);
                 $data->setProduct($object);
             }

@@ -2,7 +2,6 @@
 set -e
 
 echo "Validating CoreShop Suite"
-composer validate --strict
 
 if [[ "$PIMCORE_VERSION" != "dev-master" ]];
 then
