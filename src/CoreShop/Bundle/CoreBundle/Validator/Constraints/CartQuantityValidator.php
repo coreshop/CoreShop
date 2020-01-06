@@ -37,22 +37,24 @@ final class CartQuantityValidator extends ConstraintValidator
     }
 
     /**
-     * @param mixed      $cart
+     * @param mixed $cart
      * @param Constraint $constraint
      */
     public function validate($cart, Constraint $constraint): void
     {
         /**
-         * @var CartInterface         $cart
+         * @var CartInterface $cart
          * @var CartQuantityValidator $constraint
          */
         Assert::isInstanceOf($cart, CartInterface::class);
         Assert::isInstanceOf($constraint, CartQuantity::class);
 
         $lowerThenMinimum = false;
+        $higherThenMaximum = false;
         $productsChecked = [];
         $invalidProduct = null;
         $minLimit = 0;
+        $maxLimit = null;
 
         /**
          * @var CartItemInterface $cartItem
@@ -72,6 +74,24 @@ final class CartQuantityValidator extends ConstraintValidator
                 continue;
             }
 
+            if (!is_numeric($product->getMaximumQuantityToOrder())) {
+                continue;
+            }
+
+            $maxLimit = (int)$product->getMaximumQuantityToOrder();
+            $higherThenMaximum = $this->quantityValidatorService->isHigherThenMaxLimit(
+                $maxLimit,
+                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+            );
+
+            $productsChecked[] = $product->getId();
+
+            if ($higherThenMaximum === true) {
+                $invalidProduct = $product;
+
+                break;
+            }
+
             if (!is_numeric($product->getMinimumQuantityToOrder())) {
                 continue;
             }
@@ -82,7 +102,9 @@ final class CartQuantityValidator extends ConstraintValidator
                 $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
             );
 
-            $productsChecked[] = $product->getId();
+            if (!in_array($product->getId(), $productsChecked, true)) {
+                $productsChecked[] = $product->getId();
+            }
 
             if ($lowerThenMinimum === true) {
                 $invalidProduct = $product;
@@ -100,10 +122,20 @@ final class CartQuantityValidator extends ConstraintValidator
                 ]
             );
         }
+
+        if ($higherThenMaximum === true && $invalidProduct instanceof StockableInterface) {
+            $this->context->addViolation(
+                $constraint->messageAboveMaximum,
+                [
+                    '%stockable%' => $invalidProduct->getInventoryName(),
+                    '%limit%' => $maxLimit,
+                ]
+            );
+        }
     }
 
     /**
-     * @param CartInterface     $cart
+     * @param CartInterface $cart
      * @param CartItemInterface $cartItem
      *
      * @return int
