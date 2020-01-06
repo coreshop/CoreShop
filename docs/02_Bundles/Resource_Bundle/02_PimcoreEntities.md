@@ -21,7 +21,7 @@ interface PimcoreEntityInterface extends ResourceInterface
 <?php
 //AppBundle/Model/PimcoreEntity.php
 
-class PimcoreEntity extends AbstractPimcoreModel implements AddressInterface, PimcoreModelInterface {
+class PimcoreEntity extends AbstractPimcoreModel implements PimcoreEntityInterface, PimcoreModelInterface {
     public function getName($language = null) {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
