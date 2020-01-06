@@ -22,6 +22,11 @@ final class CartQuantity extends Constraint
     public $messageBelowMinimum;
 
     /**
+     * @var string
+     */
+    public $messageAboveMaximum;
+
+    /**
      * {@inheritdoc}
      */
     public function validatedBy(): string
