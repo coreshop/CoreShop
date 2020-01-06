@@ -20,6 +20,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -66,7 +67,13 @@ final class IndexCommand extends Command
     {
         $this
             ->setName('coreshop:index')
-            ->setDescription('Reindex all Objects');
+            ->setDescription('Reindex all Objects')
+            ->addArgument(
+                'indices',
+                InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
+                'IDs of Indices which are reindexed',
+                null
+            );
     }
 
     /**
@@ -79,8 +86,39 @@ final class IndexCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $indices = $this->indexRepository->findAll();
-        $classesToUpdate = [];
+        $indices = $classesToUpdate = [];
+        $indexIds = $input->getArgument('indices');
+
+        if (null === $indexIds) {
+            $indices = $this->indexRepository->findAll();
+        } else {
+            foreach ($indexIds as $id) {
+                $index = $this->indexRepository->find($id);
+
+                if (null === $index) {
+                    continue;
+                }
+
+                $indices[] = $index;
+            }
+        }
+
+        if (empty($indices)) {
+            if (null === $indexIds) {
+                $output->writeln('<info>No Indices available, you have to first create an Index.</info>');
+                $this->dispatchInfo('status', 'No Indices available, you have to first create an Index.');
+            } else {
+                $output->writeln(
+                    sprintf('<info>No Indices found for IDs %s</info>', implode(', ', $indexIds))
+                );
+                $this->dispatchInfo(
+                    'status',
+                    sprintf('No Indices found for IDs %s', implode(', ', $indexIds))
+                );
+            }
+
+            return 0;
+        }
 
         /**
          * @var IndexInterface $index
