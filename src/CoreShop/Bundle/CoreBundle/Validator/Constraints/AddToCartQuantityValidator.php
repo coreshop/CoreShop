@@ -92,6 +92,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $minLimit = $purchasable->getMinimumQuantityToOrder();
+        $maxLimit = $purchasable->getMaximumQuantityToOrder();
 
         if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
@@ -99,6 +100,16 @@ final class AddToCartQuantityValidator extends ConstraintValidator
                 [
                     '%stockable%' => $purchasable->getInventoryName(),
                     '%limit%' => $minLimit,
+                ]
+            );
+        }
+
+        if($this->quantityValidatorService->isHigherThenMaxLimit($maxLimit, $quantity)) {
+            $this->context->addViolation(
+                $constraint->messageAboveMaximum,
+                [
+                    '%stockable%' => $purchasable->getInventoryName(),
+                    '%limit%' => $maxLimit,
                 ]
             );
         }
