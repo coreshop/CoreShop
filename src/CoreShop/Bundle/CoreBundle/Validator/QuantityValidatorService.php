@@ -18,4 +18,19 @@ class QuantityValidatorService
 
         return $quantity < $minimumLimit;
     }
+
+    /**
+     * @param mixed $maximumLimit
+     * @param int $quantity
+     *
+     * @return bool
+     */
+    public function isHigherThenMaxLimit($maximumLimit, $quantity)
+    {
+        if(!is_numeric($maximumLimit)) {
+            return false;
+        }
+
+        return $quantity > $maximumLimit;
+    }
 }
