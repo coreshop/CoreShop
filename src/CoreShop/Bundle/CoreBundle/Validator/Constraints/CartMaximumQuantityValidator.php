@@ -91,7 +91,7 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
             }
         }
 
-        if ($higherThenMaximum === true && $invalidProduct instanceof StockableInterface) {
+        if ($invalidProduct instanceof StockableInterface) {
             $this->context->addViolation(
                 $constraint->messageAboveMaximum,
                 [
