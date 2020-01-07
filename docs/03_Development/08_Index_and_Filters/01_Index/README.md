@@ -38,10 +38,10 @@ If you make changes to the index, you need to re-index all of your products. To 
 $ php bin/console coreshop:index
 ```
 
-If you don't want to re-index all of your indices, you can pass the corresponding IDs of the indices separated with a
-space as arguments to the CLI command. The following example will only re-index indices with IDs 1, 2 and 3. If none of
-those indices exist, nothing will be re-indexed.
+If you don't want to re-index all of your indices, you can pass the corresponding IDs or names of the indices separated
+with a space as arguments to the CLI command. The following example will only re-index indices with IDs 1 and 2 and name
+"Products". If none of those indices exist, nothing will be re-indexed.
 
 ```bash
-$ php bin/console coreshop:index 1 2 3
+$ php bin/console coreshop:index 1 2 Products
 ```

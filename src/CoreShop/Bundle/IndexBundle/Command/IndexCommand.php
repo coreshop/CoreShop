@@ -71,7 +71,7 @@ final class IndexCommand extends Command
             ->addArgument(
                 'indices',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-                'IDs of Indices which are reindexed',
+                'IDs or names of Indices which are re-indexed',
                 null
             );
     }
@@ -93,7 +93,11 @@ final class IndexCommand extends Command
             $indices = $this->indexRepository->findAll();
         } else {
             foreach ($indexIds as $id) {
-                $index = $this->indexRepository->find($id);
+                if (is_numeric($id)) {
+                    $index = $this->indexRepository->find($id);
+                } else {
+                    $index = $this->indexRepository->findOneBy(['name' => $id]);
+                }
 
                 if (null === $index) {
                     continue;
@@ -109,11 +113,11 @@ final class IndexCommand extends Command
                 $this->dispatchInfo('status', 'No Indices available, you have to first create an Index.');
             } else {
                 $output->writeln(
-                    sprintf('<info>No Indices found for IDs %s</info>', implode(', ', $indexIds))
+                    sprintf('<info>No Indices found for %s</info>', implode(', ', $indexIds))
                 );
                 $this->dispatchInfo(
                     'status',
-                    sprintf('No Indices found for IDs %s', implode(', ', $indexIds))
+                    sprintf('No Indices found for %s', implode(', ', $indexIds))
                 );
             }
 
