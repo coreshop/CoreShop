@@ -32,8 +32,16 @@ Every field has some properties that needs to be configured
 
 ## Re-Index
 
-If you make changes to the index, you need to re-index all of your products. To do that, there is a cli Command
+If you make changes to the index, you need to re-index all of your products. To do that, there is a CLI command.
 
 ```bash
 $ php bin/console coreshop:index
+```
+
+If you don't want to re-index all of your indices, you can pass the corresponding IDs or names of the indices separated
+with a space as arguments to the CLI command. The following example will only re-index indices with IDs 1 and 2 and name
+"Products". If none of those indices exist, nothing will be re-indexed.
+
+```bash
+$ php bin/console coreshop:index 1 2 Products
 ```
