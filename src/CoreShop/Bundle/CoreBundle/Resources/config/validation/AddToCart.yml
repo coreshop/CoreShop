@@ -1,5 +1,6 @@
 CoreShop\Bundle\OrderBundle\DTO\AddToCart:
     constraints:
         - \CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartAvailability: { message: 'coreshop.cart_item.not_sufficient_stock', groups: ['coreshop'] }
+        - \CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantity: { messageBelowMinimum: 'coreshop.cart_item.quantity_below_min_limit', groups: ['coreshop'] }
         - \CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMinimumQuantity: { messageBelowMinimum: 'coreshop.cart_item.quantity_below_min_limit', groups: ['coreshop'] }
         - \CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMaximumQuantity: { messageAboveMaximum: 'coreshop.cart_item.quantity_above_max_limit', groups: ['coreshop'] }
