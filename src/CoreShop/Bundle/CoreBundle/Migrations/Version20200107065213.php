@@ -64,16 +64,9 @@ class Version20200107065213 extends AbstractPimcoreMigration
 
     /**
      * @param Schema $schema
-     * @throws ClassDefinitionNotFoundException
-     * @throws ClassDefinitionFieldNotFoundException
      */
     public function down(Schema $schema)
     {
-        $productClass = $this->container->getParameter('coreshop.model.product.pimcore_class_name');
-        $classUpdater = new ClassUpdate($productClass);
-        if($classUpdater->hasField('maximumQuantityToOrder')) {
-            $classUpdater->removeField('maximumQuantityToOrder');
-            $classUpdater->save();
-        }
+        // do nothing due to potential data loss
     }
 }
