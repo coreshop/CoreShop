@@ -93,7 +93,7 @@ final class CartMinimumQuantityValidator extends ConstraintValidator
             }
         }
 
-        if ($lowerThenMinimum === true && $invalidProduct instanceof StockableInterface) {
+        if ($invalidProduct instanceof StockableInterface) {
             $this->context->addViolation(
                 $constraint->messageBelowMinimum,
                 [
