@@ -19,7 +19,7 @@ use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
-use Symfony\Component\DependencyInjection\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
@@ -44,17 +44,24 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     private $suffixConfigurationKey;
 
     /**
+     * @var ExpressionLanguage
+     */
+    private $expressionLanguage;
+
+    /**
      * @param NumberGeneratorInterface      $numberGenerator
      * @param ConfigurationServiceInterface $configurationService
      * @param string                        $prefixConfigurationKey
      * @param string                        $suffixConfigurationKey
+     * @param ExpressionLanguage            $expressionLanguage
      */
-    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
+    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey, ExpressionLanguage $expressionLanguage)
     {
         $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
         $this->prefixConfigurationKey = $prefixConfigurationKey;
         $this->suffixConfigurationKey = $suffixConfigurationKey;
+        $this->expressionLanguage = $expressionLanguage;
     }
 
     /**
@@ -75,11 +82,15 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
         if ($store instanceof StoreInterface) {
             $prefix = $this->configurationService->getForStore($this->prefixConfigurationKey, $store);
             $suffix = $this->configurationService->getForStore($this->suffixConfigurationKey, $store);
-            
-            $expr = new ExpressionLanguage();
-            $prefix = $expr->evaluate($prefix);
-            $suffix = $expr->evaluate($suffix);
-            
+
+            $params = [
+                'store' => $store,
+                'model' => $model
+            ];
+
+            $prefix = $this->expressionLanguage->evaluate($prefix, $params);
+            $suffix = $this->expressionLanguage->evaluate($suffix, $params);
+
             return sprintf('%s%s%s', $prefix, $this->numberGenerator->generate($model), $suffix);
         }
 
