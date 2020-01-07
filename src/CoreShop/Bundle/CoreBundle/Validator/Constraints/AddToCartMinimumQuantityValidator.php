@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartMinimumQuantityValidator extends ConstraintValidator
+class AddToCartMinimumQuantityValidator extends ConstraintValidator
 {
     /**
      * @var QuantityValidatorService
