@@ -14,7 +14,6 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
-use Webmozart\Assert\Assert;
 
 class ObjectService implements ObjectServiceInterface
 {
@@ -31,13 +30,6 @@ class ObjectService implements ObjectServiceInterface
      */
     public function copyObject(Concrete $fromObject, Concrete $toObject)
     {
-        /**
-         * @var $fromObject Concrete
-         * @var $toObject   Concrete
-         */
-        Assert::isInstanceOf($fromObject, Concrete::class);
-        Assert::isInstanceOf($toObject, Concrete::class);
-
         //load all in case of lazy loading fields
         $toFd = $toObject->getClass()->getFieldDefinitions();
 
