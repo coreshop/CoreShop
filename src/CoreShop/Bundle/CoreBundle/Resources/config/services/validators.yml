@@ -29,6 +29,13 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_minimum_quantity }
 
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_quantity }
+
     CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMaximumQuantityValidator:
         arguments:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
@@ -40,3 +47,9 @@ services:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_cart_minimum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_quantity }
