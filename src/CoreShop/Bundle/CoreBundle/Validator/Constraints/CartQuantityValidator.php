@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 /**
  * @deprecated CartQuantityValidator is deprecated use CartMinimumQuantityValidator instead
  */
-final class CartQuantityValidator extends ConstraintValidator
+final class CartQuantityValidator extends CartMinimumQuantityValidator
 {
     /**
      * @param QuantityValidatorService $quantityValidatorService
@@ -30,6 +30,7 @@ final class CartQuantityValidator extends ConstraintValidator
             'CartQuantityValidator is deprecated use CartMinimumQuantityValidator instead',
             E_USER_DEPRECATED
         );
+        parent::__construct($quantityValidatorService);
     }
 
     /**
@@ -42,5 +43,6 @@ final class CartQuantityValidator extends ConstraintValidator
             'CartQuantityValidator is deprecated use CartMinimumQuantityValidator instead',
             E_USER_DEPRECATED
         );
+        $this->validate($cart, $constraint);
     }
 }
