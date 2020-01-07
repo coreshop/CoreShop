@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class CartQuantityValidator extends ConstraintValidator
+final class CartMaximumQuantityValidator extends ConstraintValidator
 {
     /**
      * @var QuantityValidatorService
@@ -44,16 +44,14 @@ final class CartQuantityValidator extends ConstraintValidator
     {
         /**
          * @var CartInterface $cart
-         * @var CartQuantityValidator $constraint
+         * @var CartMinimumQuantityValidator $constraint
          */
         Assert::isInstanceOf($cart, CartInterface::class);
-        Assert::isInstanceOf($constraint, CartQuantity::class);
+        Assert::isInstanceOf($constraint, CartMaximumQuantity::class);
 
-        $lowerThenMinimum = false;
         $higherThenMaximum = false;
         $productsChecked = [];
         $invalidProduct = null;
-        $minLimit = 0;
         $maxLimit = null;
 
         /**
@@ -91,36 +89,6 @@ final class CartQuantityValidator extends ConstraintValidator
 
                 break;
             }
-
-            if (!is_numeric($product->getMinimumQuantityToOrder())) {
-                continue;
-            }
-
-            $minLimit = (int) $product->getMinimumQuantityToOrder();
-            $lowerThenMinimum = $this->quantityValidatorService->isLowerThenMinLimit(
-                $minLimit,
-                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
-            );
-
-            if (!in_array($product->getId(), $productsChecked, true)) {
-                $productsChecked[] = $product->getId();
-            }
-
-            if ($lowerThenMinimum === true) {
-                $invalidProduct = $product;
-
-                break;
-            }
-        }
-
-        if ($lowerThenMinimum === true && $invalidProduct instanceof StockableInterface) {
-            $this->context->addViolation(
-                $constraint->messageBelowMinimum,
-                [
-                    '%stockable%' => $invalidProduct->getInventoryName(),
-                    '%limit%' => $minLimit,
-                ]
-            );
         }
 
         if ($higherThenMaximum === true && $invalidProduct instanceof StockableInterface) {
