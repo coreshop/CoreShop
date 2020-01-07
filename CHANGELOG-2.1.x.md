@@ -1,6 +1,9 @@
 # Within 2.1
 
 ## 2.1.0
+ - If you have a custom validation File for *AddToCart* or *Cart*, make sure to use the new 2 MinimumQuantity and MaximumQuantity Constraints. Otherwise it will happen that a validation is triggered twice.
+   
+## 2.1.0
  - Bugs:
    - [ThemeBundle] add missing dependency to pimcore-bundle (https://github.com/coreshop/CoreShop/pull/1138, https://github.com/coreshop/CoreShop/pull/1140)
    - [ResourceBundle] fix naming of parameter sortBy (https://github.com/coreshop/CoreShop/pull/1132)
