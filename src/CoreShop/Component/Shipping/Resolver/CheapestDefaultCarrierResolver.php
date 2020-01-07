@@ -20,7 +20,7 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInterface
 {
     /**
-     * @var CarriersResolver
+     * @var CarriersResolverInterface
      */
     private $carriersResolver;
 

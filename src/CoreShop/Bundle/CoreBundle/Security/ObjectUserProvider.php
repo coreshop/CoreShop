@@ -63,6 +63,9 @@ class ObjectUserProvider implements UserProviderInterface
             throw new UnsupportedUserException();
         }
 
+        /**
+         * @var CustomerInterface $refreshedUser
+         */
         $refreshedUser = $this->customerRepository->find($user->getId());
 
         return $refreshedUser;

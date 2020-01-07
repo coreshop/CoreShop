@@ -113,7 +113,12 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     public function getInstaller()
     {
         if ($this->container->has(Installer::class)) {
-            return $this->container->get(Installer::class);
+            /**
+             * @var Installer $installer
+             */
+            $installer = $this->container->get(Installer::class);
+
+            return $installer;
         }
 
         return null;

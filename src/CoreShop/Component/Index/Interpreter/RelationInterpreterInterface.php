@@ -23,7 +23,7 @@ interface RelationInterpreterInterface extends InterpreterInterface
      * @param IndexColumnInterface $config
      * @param array                $interpreterConfig
      *
-     * @return array|RelationalValueInterface[]
+     * @return array<int, array<string, int|string>>|RelationalValueInterface[]
      */
     public function interpretRelational(
         $value,

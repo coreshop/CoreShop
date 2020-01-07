@@ -81,7 +81,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      *
      * @param string $string
      *
-     * @return string
+     * @return string|null
      */
     private function createHtmlFile($string)
     {

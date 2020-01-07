@@ -29,7 +29,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseTotalTax()
     {
@@ -45,7 +45,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseSubtotalTax()
     {
@@ -61,7 +61,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseShippingTax()
     {
@@ -285,7 +285,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseTotalNet()
     {
@@ -301,7 +301,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseTotalGross()
     {
@@ -317,7 +317,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseSubtotalNet()
     {
@@ -333,7 +333,7 @@ abstract class Sale extends AbstractProposal implements SaleInterface
     }
 
     /**
-     * @return float
+     * @return int
      */
     public function getBaseSubtotalGross()
     {

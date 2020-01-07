@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
@@ -68,6 +69,11 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         $list = $this->getList();
         $list->setCondition($sql, $params);
 
-        return $list->load();
+        /**
+         * @var OrderInterface[] $result
+         */
+        $result = $list->getObjects();
+
+        return $result;
     }
 }

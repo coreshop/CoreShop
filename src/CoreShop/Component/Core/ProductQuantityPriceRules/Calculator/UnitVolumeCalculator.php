@@ -37,10 +37,10 @@ class UnitVolumeCalculator implements CalculatorInterface
     protected $actionRegistry;
 
     /**
-     * @param CalculatorInterface      $inner
+     * @param VolumeCalculator      $inner
      * @param ServiceRegistryInterface $actionRegistry
      */
-    public function __construct(CalculatorInterface $inner, ServiceRegistryInterface $actionRegistry)
+    public function __construct(VolumeCalculator $inner, ServiceRegistryInterface $actionRegistry)
     {
         $this->inner = $inner;
         $this->actionRegistry = $actionRegistry;

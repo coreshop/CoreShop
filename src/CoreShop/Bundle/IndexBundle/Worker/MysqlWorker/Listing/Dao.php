@@ -20,7 +20,7 @@ use Pimcore\Db;
 class Dao
 {
     /**
-     * @var \Pimcore\Db\Connection
+     * @var \Pimcore\Db\ConnectionInterface
      */
     private $database;
 

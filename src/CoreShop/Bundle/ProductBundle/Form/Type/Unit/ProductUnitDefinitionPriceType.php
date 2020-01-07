@@ -65,6 +65,10 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
         /** @var ProductUnitDefinitionPriceInterface $data */
         $data = $event->getData();
 
+        if (!isset($data['price'])) {
+            return;
+        }
+
         if (!is_numeric($data['price'])) {
             $data['price'] = 0;
         } else {

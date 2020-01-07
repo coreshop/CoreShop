@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Currency;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
+use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Resource\Storage\StorageInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -59,10 +60,14 @@ final class CurrencyStorage implements CurrencyStorageInterface
     public function get(StoreInterface $store)
     {
         if ($this->storage->get($this->provideKey($store))) {
-            return $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+            $currency = $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
+
+            if ($currency instanceof CurrencyInterface) {
+                return $currency;
+            }
         }
 
-        return null;
+        throw new CurrencyNotFoundException();
     }
 
     /**

@@ -37,12 +37,12 @@ interface StorageListItemInterface
     public function setProduct($product);
 
     /**
-     * @return float
+     * @return int
      */
     public function getQuantity();
 
     /**
-     * @param float $quantity
+     * @param int $quantity
      */
     public function setQuantity($quantity);
 }

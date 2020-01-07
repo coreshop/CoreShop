@@ -39,7 +39,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public $fieldtype = 'coreShopProductUnitDefinitions';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 
@@ -386,7 +386,7 @@ class ProductUnitDefinitions extends Model\DataObject\ClassDefinition\Data imple
     public function getVersionPreview($data, $object = null, $params = [])
     {
         if (!$data instanceof \CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface) {
-            return null;
+            return '';
         }
 
         $defaultUnit = $data->getDefaultUnitDefinition() instanceof ProductUnitDefinitionInterface && $data->getDefaultUnitDefinition()->getUnit() instanceof ProductUnitInterface ? $data->getDefaultUnitDefinition()->getUnit()->getName() : '--';

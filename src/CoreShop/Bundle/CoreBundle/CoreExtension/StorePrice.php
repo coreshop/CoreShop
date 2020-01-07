@@ -28,7 +28,7 @@ class StorePrice extends Model\DataObject\ClassDefinition\Data implements Model\
     public $fieldtype = 'coreShopStorePrice';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 

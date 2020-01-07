@@ -45,7 +45,7 @@ class ListingFactory implements ListingFactoryInterface
         }
 
         /**
-         * @var WorkerInterface
+         * @var WorkerInterface $worker
          */
         $worker = $this->workerServiceRegistry->get($worker);
 

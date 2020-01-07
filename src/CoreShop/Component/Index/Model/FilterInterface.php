@@ -86,7 +86,7 @@ interface FilterInterface extends ResourceInterface, TimestampableInterface
     public function hasPreCondition(FilterConditionInterface $preCondition);
 
     /**
-     * @return Collection|array
+     * @return Collection|FilterConditionInterface[]
      */
     public function getConditions();
 

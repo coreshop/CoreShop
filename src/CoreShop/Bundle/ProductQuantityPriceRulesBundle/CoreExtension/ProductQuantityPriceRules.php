@@ -58,7 +58,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         Assert::isInstanceOf($object, QuantityRangePriceAwareInterface::class);
 
         if (!$object instanceof Concrete) {
-            return null;
+            return [];
         }
 
         $data = $object->getObjectVar($this->getName());
@@ -166,7 +166,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      * @param null  $object
      * @param array $params
      *
-     * @return ProductQuantityPriceRuleInterface[]
+     * @return array
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -444,7 +444,7 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
      */
     private function getEventDispatcher()
     {
-        return \Pimcore::getEventDispatcher();
+        return \Pimcore::getContainer()->get('event_dispatcher');
     }
 
     /**

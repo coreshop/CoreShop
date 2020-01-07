@@ -26,7 +26,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public $fieldtype = 'coreShopMoney';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 

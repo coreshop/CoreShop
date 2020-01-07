@@ -351,7 +351,13 @@ class IndexController extends ResourceController
         $result['nodeType'] = 'classificationstore';
         $result['childs'] = [];
 
-        foreach ($config->getRelations() as $relation) {
+        $relations = $config->getRelations();
+
+        if (!is_array($relations)) {
+            return $result;
+        }
+
+        foreach ($relations as $relation) {
             if ($relation instanceof DataObject\Classificationstore\KeyGroupRelation) {
                 $keyId = $relation->getKeyId();
 

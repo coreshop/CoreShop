@@ -168,7 +168,7 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
     }
 
     /**
-     * {@inheritdoc}
+     * @return null|int
      */
     public function getDataForEditmode($data, $object = null, $params = array())
     {
@@ -184,7 +184,7 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
      */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
-        return Service::getElementById('object', $data);
+        return DataObject::getById($data);
     }
 
     /**

@@ -14,6 +14,7 @@ namespace CoreShop\Component\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
@@ -46,6 +47,9 @@ final class CarriersResolver implements CarriersResolverInterface
      */
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
     {
+        /**
+         * @var CarrierInterface[] $carriers
+         */
         $carriers = $this->carrierRepository->findAll();
         $availableCarriers = [];
 

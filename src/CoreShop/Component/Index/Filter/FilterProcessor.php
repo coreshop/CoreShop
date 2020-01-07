@@ -17,6 +17,7 @@ use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Webmozart\Assert\Assert;
 
 class FilterProcessor implements FilterProcessorInterface
 {
@@ -90,7 +91,12 @@ class FilterProcessor implements FilterProcessorInterface
      */
     private function getConditionProcessorForCondition(FilterConditionInterface $condition)
     {
-        return $this->userConditionProcessors->get($condition->getType());
+        /**
+         * @var FilterConditionProcessorInterface $processor
+         */
+        $processor = $this->userConditionProcessors->get($condition->getType());
+
+        return $processor;
     }
 
     /**
@@ -100,6 +106,11 @@ class FilterProcessor implements FilterProcessorInterface
      */
     private function getPreConditionProcessorForCondition(FilterConditionInterface $condition)
     {
-        return $this->preConditionProcessors->get($condition->getType());
+        /**
+         * @var FilterConditionProcessorInterface $processor
+         */
+        $processor = $this->preConditionProcessors->get($condition->getType());
+
+        return $processor;
     }
 }

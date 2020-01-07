@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Db\Db;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -40,7 +41,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
     private $newFieldName;
 
     /**
-     * @var \Pimcore\Db\Connection
+     * @var Connection
      */
     private $database;
 
@@ -54,7 +55,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $this->definition = $definition;
         $this->newFieldName = $newFieldName;
         $this->oldFieldName = $oldFieldName;
-        $this->database = Db::get();
+        $this->database = Db::getDoctrineConnection();
     }
 
     /**
@@ -193,6 +194,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         if ($fieldDefinition instanceof Data\Objectbricks) {
             $brickDefinitions = new Objectbrick\Definition\Listing();
+            $brickDefinitions = $brickDefinitions->load();
 
             /**
              * @var Objectbrick\Definition $brickDefinition
@@ -249,7 +251,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
              * @var Data\Localizedfields $localizedFieldDefinition
              */
             $localizedFieldDefinition = $this->definition->getFieldDefinition('localizedfields');
-            $localizedFieldDefinition->fieldDefinitionsCache = null;
+            $localizedFieldDefinition->fieldDefinitionsCache = [];
         } else {
             $fieldDefinitions = $this->definition->getFieldDefinitions();
 

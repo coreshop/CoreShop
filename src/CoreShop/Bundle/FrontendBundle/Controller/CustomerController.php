@@ -373,7 +373,12 @@ class CustomerController extends FrontendController
     protected function getCustomer()
     {
         try {
-            return $this->get('coreshop.context.customer')->getCustomer();
+            /**
+             * @var CustomerInterface $customer
+             */
+            $customer = $this->get('coreshop.context.customer')->getCustomer();
+
+            return $customer;
         } catch (\Exception $ex) {
         }
 

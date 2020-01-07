@@ -61,7 +61,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
 
         $config = $this->configurationRepository->findForKeyAndStore($key, $store);
 
-        if (is_null($config)) {
+        if (null === $config) {
             $config = $this->configurationRepository->findBy(['key' => $key, 'store' => null]);
 
             if (is_array($config) && count($config) > 0) {

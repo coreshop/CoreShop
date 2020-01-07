@@ -52,12 +52,12 @@ class Filter extends AbstractResource implements FilterInterface
     protected $index;
 
     /**
-     * @var Collection|array
+     * @var Collection|FilterConditionInterface[]
      */
     protected $preConditions;
 
     /**
-     * @var Collection|array
+     * @var Collection|FilterConditionInterface[]
      */
     protected $conditions;
 

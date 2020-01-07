@@ -63,7 +63,11 @@ final class InstallerContext implements Context
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:fixtures');
+        $command = $this->application->find('coreshop:install:fixtures');
+
+        Assert::isInstanceOf($command, InstallCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 
@@ -79,7 +83,11 @@ final class InstallerContext implements Context
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:demo');
+        $command = $this->application->find('coreshop:install:demo');
+
+        Assert::isInstanceOf($command, InstallCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 

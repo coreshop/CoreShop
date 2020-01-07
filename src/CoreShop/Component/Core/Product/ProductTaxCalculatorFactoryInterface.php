@@ -22,7 +22,7 @@ interface ProductTaxCalculatorFactoryInterface
      * @param PurchasableInterface $product
      * @param AddressInterface     $address
      *
-     * @return TaxCalculatorInterface
+     * @return TaxCalculatorInterface|null
      */
     public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address);
 }

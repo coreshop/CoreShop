@@ -18,6 +18,7 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -76,7 +77,7 @@ class ProductUnitDefinitionsController extends ResourceController
      * @param ProductInterface $product
      * @param string           $type
      *
-     * @return array
+     * @return Collection
      */
     protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
     {

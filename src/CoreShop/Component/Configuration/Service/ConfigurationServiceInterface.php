@@ -20,7 +20,7 @@ interface ConfigurationServiceInterface
      * @param string $key
      * @param bool   $returnObject
      *
-     * @return ConfigurationInterface
+     * @return ConfigurationInterface|null
      */
     public function get($key, $returnObject = false);
 

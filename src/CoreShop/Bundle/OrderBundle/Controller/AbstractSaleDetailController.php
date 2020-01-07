@@ -392,7 +392,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
     /**
      * @param SaleItemInterface $item
      *
-     * @return array<string,integer|null|string>
+     * @return array
      */
     protected function prepareSaleItem(SaleItemInterface $item)
     {

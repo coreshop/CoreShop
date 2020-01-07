@@ -76,13 +76,4 @@ class Condition implements ConditionInterface
     {
         return $this->configuration;
     }
-
-    public function __clone()
-    {
-        if ($this->id === null) {
-            return;
-        }
-
-        $this->id = null;
-    }
 }

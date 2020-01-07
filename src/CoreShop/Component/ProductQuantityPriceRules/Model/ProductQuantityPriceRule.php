@@ -32,7 +32,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     protected $id;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $product;
 
@@ -291,7 +291,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         $conditions = $this->getConditions();
         $ranges = $this->getRanges();
 
-        $this->id = null;
+        //$this->id = null;
         $this->product = null;
         $this->conditions = new ArrayCollection();
         $this->ranges = new ArrayCollection();

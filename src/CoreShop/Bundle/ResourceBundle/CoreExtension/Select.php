@@ -54,7 +54,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
         if (null === $data) {
             return null;
         }
-        
+
         return $this->getRepository()->find($data);
     }
 
@@ -133,11 +133,11 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -145,7 +145,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -157,11 +157,11 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -169,7 +169,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -177,7 +177,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select imple
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|null
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {

@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Payment\Model\Payment as BasePayment;
+use Webmozart\Assert\Assert;
 
 class Payment extends BasePayment implements PaymentInterface
 {
@@ -34,6 +35,8 @@ class Payment extends BasePayment implements PaymentInterface
      */
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
+        Assert::isInstanceOf($order, OrderInterface::class);
+
         $this->order = $order;
         $this->orderId = $order->getId();
     }

@@ -42,7 +42,7 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
     protected $highlighted = false;
 
     /**
-     * @var ProductQuantityPriceRuleInterface
+     * @var ProductQuantityPriceRuleInterface|null
      */
     protected $rule;
 
@@ -157,6 +157,6 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         }
 
         $this->rule = null;
-        $this->id = null;
+        //$this->id = null;
     }
 }

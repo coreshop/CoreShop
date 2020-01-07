@@ -376,7 +376,7 @@ class CartController extends AbstractSaleController
     /**
      * @param CartItemInterface $item
      *
-     * @return array<string,integer|null|string>
+     * @return array
      */
     protected function prepareCartItem(CartItemInterface $item)
     {

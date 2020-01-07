@@ -26,7 +26,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 
