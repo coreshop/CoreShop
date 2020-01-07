@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-final class AddToCartQuantity extends Constraint
+final class AddToCartMinimumQuantity extends Constraint
 {
     /**
      * @var string
@@ -22,16 +22,11 @@ final class AddToCartQuantity extends Constraint
     public $messageBelowMinimum;
 
     /**
-     * @var string
-     */
-    public $messageAboveMaximum;
-
-    /**
      * {@inheritdoc}
      */
     public function validatedBy(): string
     {
-        return 'coreshop_add_to_cart_quantity';
+        return 'coreshop_add_to_cart_minimum_quantity';
     }
 
     /**
