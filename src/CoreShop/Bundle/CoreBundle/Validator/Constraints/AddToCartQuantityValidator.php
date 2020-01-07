@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * @deprecated AddToCartQuantityValidator is deprecated use AddToCartMinimumQuantityValidator instead
+ * @deprecated AddToCartQuantityValidator has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantityValidator instead
  */
 final class AddToCartQuantityValidator extends AddToCartMinimumQuantityValidator
 {
@@ -32,7 +32,7 @@ final class AddToCartQuantityValidator extends AddToCartMinimumQuantityValidator
     )
     {
         @trigger_error(
-            'AddToCartQuantityValidator is deprecated use AddToCartMinimumQuantityValidator instead',
+            'AddToCartQuantityValidator has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantityValidator instead',
             E_USER_DEPRECATED
         );
 
@@ -46,7 +46,7 @@ final class AddToCartQuantityValidator extends AddToCartMinimumQuantityValidator
     public function validate($addToCartDto, Constraint $constraint): void
     {
         @trigger_error(
-            'AddToCartQuantityValidator is deprecated use AddToCartMinimumQuantityValidator instead',
+            'AddToCartQuantityValidator has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantityValidator instead',
             E_USER_DEPRECATED
         );
 

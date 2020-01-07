@@ -15,7 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * @deprecated AddToCartQuantity is deprecated use AddToCartMinimumQuantity instead
+ * @deprecated AddToCartQuantity has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantity instead
  */
 final class AddToCartQuantity extends Constraint
 {
@@ -30,7 +30,7 @@ final class AddToCartQuantity extends Constraint
     public function validatedBy(): string
     {
         @trigger_error(
-            'Calling AddToCartQuantity is deprecated use AddToCartMinimumQuantity instead',
+            'Calling AddToCartQuantity has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantity instead',
             E_USER_DEPRECATED
         );
         return 'coreshop_add_to_cart_quantity';
@@ -42,7 +42,7 @@ final class AddToCartQuantity extends Constraint
     public function getTargets(): string
     {
         @trigger_error(
-            'Calling AddToCartQuantity is deprecated use AddToCartMinimumQuantity instead',
+            'Calling AddToCartQuantity has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantity instead',
             E_USER_DEPRECATED
         );
         return self::CLASS_CONSTRAINT;
