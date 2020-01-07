@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-final class AddToCartQuantityValidator extends ConstraintValidator
+final class AddToCartMaximumQuantityValidator extends ConstraintValidator
 {
     /**
      * @var QuantityValidatorService
@@ -68,7 +68,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
-        Assert::isInstanceOf($constraint, AddToCartQuantity::class);
+        Assert::isInstanceOf($constraint, AddToCartMaximumQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
@@ -91,18 +91,7 @@ final class AddToCartQuantityValidator extends ConstraintValidator
         $cart = $addToCartDto->getCart();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
-        $minLimit = $purchasable->getMinimumQuantityToOrder();
         $maxLimit = $purchasable->getMaximumQuantityToOrder();
-
-        if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
-            $this->context->addViolation(
-                $constraint->messageBelowMinimum,
-                [
-                    '%stockable%' => $purchasable->getInventoryName(),
-                    '%limit%' => $minLimit,
-                ]
-            );
-        }
 
         if($this->quantityValidatorService->isHigherThenMaxLimit($maxLimit, $quantity)) {
             $this->context->addViolation(
