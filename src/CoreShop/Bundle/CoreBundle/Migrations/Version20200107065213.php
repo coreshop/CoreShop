@@ -3,6 +3,8 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Pimcore\DataObject\ClassUpdate;
+use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
+use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -16,8 +18,8 @@ class Version20200107065213 extends AbstractPimcoreMigration
 
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException
-     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException
+     * @throws ClassDefinitionFieldNotFoundException
+     * @throws ClassDefinitionNotFoundException
      */
     public function up(Schema $schema)
     {
@@ -62,7 +64,8 @@ class Version20200107065213 extends AbstractPimcoreMigration
 
     /**
      * @param Schema $schema
-     * @throws \CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException
+     * @throws ClassDefinitionNotFoundException
+     * @throws ClassDefinitionFieldNotFoundException
      */
     public function down(Schema $schema)
     {
