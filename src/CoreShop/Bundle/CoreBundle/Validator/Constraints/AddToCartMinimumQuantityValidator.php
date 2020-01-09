@@ -67,8 +67,10 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
      */
     public function validate($addToCartDto, Constraint $constraint): void
     {
+        /**
+         * @var AddToCartMinimumQuantity $constraint
+         */
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
-
         //TODO 3.0.0: change to Assert::isInstanceOf($constraint, AddToCartMinimumQuantity::class);
         Assert::isInstanceOfAny($constraint, [AddToCartMinimumQuantity::class, AddToCartQuantity::class]);
 
