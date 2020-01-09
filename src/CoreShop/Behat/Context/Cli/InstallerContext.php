@@ -65,7 +65,7 @@ final class InstallerContext implements Context
         $this->application->add($installCommand);
         $command = $this->application->find('coreshop:install:fixtures');
 
-        Assert::isInstanceOf($command, InstallCommand::class);
+        Assert::isInstanceOf($command, InstallFixturesCommand::class);
 
         $this->command = $command;
         $this->tester = new CommandTester($this->command);
