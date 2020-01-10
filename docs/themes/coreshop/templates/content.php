@@ -6,7 +6,7 @@
  * For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
  * files that are distributed with this source code.
  *
- * @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+ * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */$this->layout('theme::layout/05_page') ?>
 <article class="Page">
@@ -18,14 +18,14 @@
         <span style="float: left; font-size: 10px; color: gray;">
             <?= date('l, F j, Y g:i A', $page['modified_time']); ?>
         </span>
-        <?php 
+        <?php
 } ?>
         <?php if (array_key_exists('edit_on_github', $params['html']) && $params['html']['edit_on_github']) {
     ?>
         <span style="float: right; font-size: 10px; color: gray;">
             <a href="https://github.com/<?= $params['html']['edit_on_github'] ?>/<?= $page['relative_path'] ?>" target="_blank">Edit on GitHub</a>
         </span>
-        <?php 
+        <?php
 } ?>
     </div>
 
