@@ -99,4 +99,14 @@ interface ProductInterface extends BaseProductInterface, IndexableInterface, Pur
      * @param null|int $minimumQuantity
      */
     public function setMinimumQuantityToOrder($minimumQuantity);
+
+    /**
+     * @return null|int
+     */
+    public function getMaximumQuantityToOrder();
+
+    /**
+     * @param null|int $maximumQuantity
+     */
+    public function setMaximumQuantityToOrder($maximumQuantity);
 }
