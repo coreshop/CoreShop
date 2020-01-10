@@ -15,12 +15,38 @@ services:
     coreshop.validator.quantity_validator: '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
     CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService: ~
 
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMaximumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_maximum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartMinimumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+            - '@CoreShop\Component\Order\Cart\CartItemResolver'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_add_to_cart_minimum_quantity }
+
     CoreShop\Bundle\CoreBundle\Validator\Constraints\AddToCartQuantityValidator:
         arguments:
             - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
             - '@CoreShop\Component\Order\Cart\CartItemResolver'
         tags:
             - { name: validator.constraint_validator, alias: coreshop_add_to_cart_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMaximumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_maximum_quantity }
+
+    CoreShop\Bundle\CoreBundle\Validator\Constraints\CartMinimumQuantityValidator:
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService'
+        tags:
+            - { name: validator.constraint_validator, alias: coreshop_cart_minimum_quantity }
 
     CoreShop\Bundle\CoreBundle\Validator\Constraints\CartQuantityValidator:
         arguments:
