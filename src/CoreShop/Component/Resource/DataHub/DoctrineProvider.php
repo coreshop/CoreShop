@@ -117,7 +117,7 @@ class DoctrineProvider
 
         foreach ($entityMetaType->getFieldNames() as $fieldName) {
             $fieldType = $this->mapFieldType($entityMetaType->getTypeOfField($fieldName));
-            $resolverClass = null;
+            
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
             $inputFields[$fieldName] = array(

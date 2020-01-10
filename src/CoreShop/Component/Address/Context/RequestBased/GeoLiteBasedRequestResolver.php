@@ -39,7 +39,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     public function findCountry(Request $request)
     {
         $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
-        $record = null;
 
         if (file_exists($geoDbFile)) {
             try {

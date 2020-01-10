@@ -186,8 +186,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
         $currentCurrency = $cart->getCurrency()->getIsoCode();
         $currency = $cart->getStore()->getCurrency()->getIsoCode();
 
-        $moneyConverter = $this->get('coreshop.currency_converter');
-        $moneyFormatter = $this->get('coreshop.money_formatter');
+        $moneyConverter = $this->get('coreshop.currency_converter');CartRepository
 
         $price = $item->getItemPrice();
         $total = $item->getTotal();

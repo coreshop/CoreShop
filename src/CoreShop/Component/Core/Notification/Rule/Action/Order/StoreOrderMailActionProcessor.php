@@ -37,7 +37,6 @@ class StoreOrderMailActionProcessor implements NotificationRuleProcessorInterfac
      */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
     {
-        $language = null;
         $store = null;
         $mails = $configuration['mails'];
 

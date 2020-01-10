@@ -300,7 +300,7 @@ QUERY;
      */
     protected function handleArrayValues(IndexInterface $index, array $value)
     {
-        return ',' . implode($value, ',') . ',';
+        return ',' . implode(',', $value) . ',';
     }
 
     /**

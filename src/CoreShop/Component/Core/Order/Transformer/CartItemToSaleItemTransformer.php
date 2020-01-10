@@ -46,8 +46,7 @@ final class CartItemToSaleItemTransformer implements ProposalItemTransformerInte
     {
         if ($fromProposalItem instanceof CartItemInterface && $toProposal instanceof SaleItemInterface) {
             $toProposal->setDigitalProduct($fromProposalItem->getDigitalProduct());
-            $toProposal->setObjectId($fromProposalItem->getProduct()->getId());
-            $mainObjectId = null;
+            $toProposal->setObjectId($fromProposalItem->getProduct()->getId());StoreProductUnitDefinitionPriceCalculator
 
             if ($fromProposalItem->getProduct() instanceof ProductInterface) {
                 if ($fromProposalItem->getProduct()->getType() === AbstractObject::OBJECT_TYPE_VARIANT) {

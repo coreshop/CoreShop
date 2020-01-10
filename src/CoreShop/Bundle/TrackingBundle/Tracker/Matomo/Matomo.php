@@ -203,8 +203,6 @@ final class Matomo extends AbstractEcommerceTracker
             return $categories;
         }
 
-        $result = null;
-
         if (is_array($categories)) {
             // add max 5 categories
             $categories = array_slice($categories, 0, 5);

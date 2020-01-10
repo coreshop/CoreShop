@@ -126,7 +126,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $params = [];
 
         $daysTimestamp = Carbon::now();
-        $daysTimestamp->subDay($days);
+        $daysTimestamp->subDays($days);
 
         $conditions[] = 'o_creationDate < ?';
         $params[] = $daysTimestamp->getTimestamp();
