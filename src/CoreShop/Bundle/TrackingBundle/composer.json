@@ -21,7 +21,7 @@
     "php": "^7.2",
     "coreshop/registry": "^2.0",
     "coreshop/tracking": "^2.0",
-    "pimcore/pimcore": "^6.3.4"
+    "pimcore/pimcore": "^6.3.6"
   },
   "config": {
     "bin-dir": "bin"

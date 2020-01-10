@@ -19,8 +19,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomResourcePersistingInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomVersionMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
@@ -30,7 +28,9 @@ use JMS\Serializer\SerializationContext;
 use Pimcore\Model;
 use Webmozart\Assert\Assert;
 
-class StoreValues extends Model\DataObject\ClassDefinition\Data implements CustomResourcePersistingInterface, CustomVersionMarshalInterface
+class StoreValues extends Model\DataObject\ClassDefinition\Data implements
+    Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
+    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
