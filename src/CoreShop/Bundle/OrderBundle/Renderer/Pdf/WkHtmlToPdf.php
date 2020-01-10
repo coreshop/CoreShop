@@ -63,7 +63,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $pdfContent = $this->convert($bodyHtml, $config);
         } catch (\Exception $e) {
             $this->unlinkFile($bodyHtml);
-            $this->unlinkFile($headerHtml);ProductUnitDefinitions
+            $this->unlinkFile($headerHtml);
             $this->unlinkFile($footerHtml);
 
             throw new \Exception('error while converting pdf. message was: ' . $e->getMessage(), 0, $e);
