@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CustomerBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends PimcoreRepository implements CustomerRepositoryInterface
@@ -26,7 +27,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1) {
+        if (count($objects) === 1 && $objects[0] instanceof CustomerInterface) {
             return $objects[0];
         }
 
@@ -42,7 +43,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         $list->setCondition('newsletterToken = ?', [$newsletterToken]);
         $objects = $list->load();
 
-        if (count($objects) === 1) {
+        if (count($objects) === 1 && $objects[0] instanceof CustomerInterface) {
             return $objects[0];
         }
 
@@ -71,11 +72,11 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
 
         $users = $list->getObjects();
 
-        if (count($users) > 0) {
+        if (count($users) > 0 && $users[0] instanceof CustomerInterface) {
             return $users[0];
         }
 
-        return false;
+        return null;
     }
 
     /**

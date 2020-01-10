@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use Doctrine\Common\Collections\Collection;
 
 interface ProductQuantityPriceRuleRangesHelperInterface
 {
@@ -42,7 +43,7 @@ interface ProductQuantityPriceRuleRangesHelperInterface
      *
      * @throws NoRuleFoundException
      *
-     * @return array
+     * @return Collection
      */
     public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context);
 }

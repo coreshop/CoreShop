@@ -19,7 +19,7 @@ interface ConvertCurrencyHelperInterface
      * @param string|null $sourceCurrencyCode
      * @param string|null $targetCurrencyCode
      *
-     * @return string
+     * @return int
      *
      * @throws \InvalidArgumentException
      */

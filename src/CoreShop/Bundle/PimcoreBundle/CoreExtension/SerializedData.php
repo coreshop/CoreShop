@@ -87,7 +87,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * @return string
+     * @return null
      */
     public function getQueryColumnType()
     {
@@ -151,7 +151,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * {@inheritdoc}
+     * @return null
      */
     public function getForCsvExport($object, $params = [])
     {
@@ -166,7 +166,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * {@inheritdoc}
+     * @return null
      */
     public function getFilterCondition($value, $operator, $params = [])
     {

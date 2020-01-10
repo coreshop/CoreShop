@@ -28,6 +28,7 @@ parameters:
         - '/Constant PIMCORE_WEB_ROOT not found./'
         - '/Constant PIMCORE_DEVMODE not found./'
         - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
+        - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
 
         - '/Class LuceneSearchBundle/'
         - '/unknown class LuceneSearchBundle/'

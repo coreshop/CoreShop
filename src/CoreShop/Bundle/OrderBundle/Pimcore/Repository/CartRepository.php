@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -30,7 +31,12 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
         $list->load();
 
-        return $list->getObjects();
+        /**
+         * @var CartInterface[] $carts
+         */
+        $carts = $list->getObjects();
+
+        return $carts;
     }
 
     /**
@@ -42,9 +48,9 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
             return $objects[0];
         }
 
@@ -62,9 +68,9 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setOrder('DESC');
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
             return $objects[0];
         }
 
@@ -80,9 +86,9 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
             return $objects[0];
         }
 
@@ -99,9 +105,9 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setLimit(1);
         $list->load();
 
-        if ($list->getTotalCount() > 0) {
-            $objects = $list->getObjects();
+        $objects = $list->getObjects();
 
+        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
             return $objects[0];
         }
 
@@ -149,6 +155,11 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $list->setCondition($sql, $params);
 
-        return $list->load();
+        /**
+         * @var CartInterface[] $result
+         */
+        $result = $list->getObjects();
+
+        return $result;
     }
 }

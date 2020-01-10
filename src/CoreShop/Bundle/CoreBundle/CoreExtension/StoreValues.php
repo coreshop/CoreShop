@@ -40,7 +40,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     public $fieldtype = 'coreShopStoreValues';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 
@@ -724,6 +724,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             if ($isUnitDefinitionsSerialized) {
                 $found = false;
+
+                if (!isset($unitDefinitions['unitDefinitions']) || !is_iterable($unitDefinitions['unitDefinitions'])) {
+                    continue;
+                }
 
                 foreach ($unitDefinitions['unitDefinitions'] as $unitDefinition) {
                     if ($unitDefinition['id'] === $unitDefinitionPrice->getUnitDefinition()->getId()) {

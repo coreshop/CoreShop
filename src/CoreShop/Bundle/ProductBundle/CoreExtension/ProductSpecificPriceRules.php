@@ -54,7 +54,7 @@ class ProductSpecificPriceRules extends Data implements
         Assert::isInstanceOf($object, ProductInterface::class);
 
         if (!$object instanceof Concrete) {
-            return null;
+            return [];
         }
 
         $data = $object->getObjectVar($this->getName());
@@ -183,7 +183,7 @@ class ProductSpecificPriceRules extends Data implements
      * @param null  $object
      * @param array $params
      *
-     * @return ProductSpecificPriceRuleInterface[]
+     * @return array
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {

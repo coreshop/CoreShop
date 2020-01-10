@@ -14,8 +14,10 @@ namespace CoreShop\Component\Index\Listing;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
+use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Zend\Paginator\Adapter\AdapterInterface;
 use Zend\Paginator\AdapterAggregateInterface;
 
@@ -114,7 +116,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
     /**
      * gets order direction.
      *
-     * @return string
+     * @return OrderInterface|string|null
      */
     public function getOrder();
 
@@ -185,7 +187,7 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      *
      * @param array $options
      *
-     * @return PimcoreModelInterface[]
+     * @return Concrete[]
      */
     public function load(array $options = []);
 

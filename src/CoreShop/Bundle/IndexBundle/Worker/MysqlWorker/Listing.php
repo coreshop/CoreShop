@@ -70,7 +70,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $dao;
 
     /**
-     * @var string
+     * @var OrderInterface|string|null
      */
     protected $order;
 
@@ -361,6 +361,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
         $this->objects = [];
         foreach ($objectRaws as $raw) {
             $object = $this->loadElementById($raw['o_id']);
+
             if ($object instanceof Concrete) {
                 if ($object->getClassName() === $className) {
                     $this->objects[] = $object;

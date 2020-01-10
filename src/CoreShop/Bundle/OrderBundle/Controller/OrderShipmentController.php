@@ -23,6 +23,7 @@ use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
+use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -243,7 +244,7 @@ class OrderShipmentController extends PimcoreController
     }
 
     /**
-     * @return OrderToShipmentTransformer
+     * @return OrderDocumentTransformerInterface
      */
     protected function getOrderToShipmentTransformer()
     {

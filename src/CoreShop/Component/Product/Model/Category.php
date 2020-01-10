@@ -70,7 +70,12 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
      */
     public function getChildCategories()
     {
-        return $this->getChildren();
+        /**
+         * @var CategoryInterface[] $childs
+         */
+        $childs = $this->getChildren();
+
+        return $childs;
     }
 
     /**
@@ -96,6 +101,11 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
             $category = $category->getParent();
         } while ($category instanceof self);
 
-        return array_reverse($hierarchy);
+        /**
+         * @var CategoryInterface[] $hierarchy
+         */
+        $hierarchy = array_reverse($hierarchy);
+
+        return $hierarchy;
     }
 }
