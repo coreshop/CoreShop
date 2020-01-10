@@ -17,13 +17,8 @@ use Symfony\Component\Validator\Constraint;
 /**
  * @deprecated AddToCartQuantity has been deprecated with CoreShop 2.1.1 and will be removed with 3.0, use AddToCartMinimumQuantity instead
  */
-final class AddToCartQuantity extends Constraint
+final class AddToCartQuantity extends AddToCartMinimumQuantity
 {
-    /**
-     * @var string
-     */
-    public $messageBelowMinimum;
-
     /**
      * {@inheritdoc}
      */

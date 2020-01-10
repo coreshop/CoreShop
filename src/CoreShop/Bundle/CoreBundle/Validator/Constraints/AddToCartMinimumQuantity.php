@@ -14,7 +14,12 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-final class AddToCartMinimumQuantity extends Constraint
+/**
+ * TODO 3.0.0: uncomment final
+ * 
+ * @final DO NOT EXTEND, THIS IS TEMPORARY NOT FINAL
+ */
+/*final*/ class AddToCartMinimumQuantity extends Constraint
 {
     /**
      * @var string
