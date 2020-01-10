@@ -5,7 +5,7 @@
   ~ For the full copyright and license information, please view the LICENSE.md and gpl-3.0.txt
   ~ files that are distributed with this source code.
   ~
-  ~ @copyright  Copyright (c) 2015-2019 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
+  ~ @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
   ~ @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
   ~
   -->
@@ -13,7 +13,7 @@
 <!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg xmlns="http://www.w3.org/2000/svg"  version="1.0" id="Layer_1" x="0px" y="0px" viewBox="0 0 48 48" enable-background="new 0 0 48 48" xml:space="preserve"  >
 <g>
-	
+
 		<rect x="34.6" y="28.1" transform="matrix(0.7071 -0.7071 0.7071 0.7071 -15.1544 36.5859)" fill="#616161" width="4" height="17"/>
 	<circle fill="#616161" cx="20" cy="20" r="16"/>
 </g>

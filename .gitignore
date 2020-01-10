@@ -55,3 +55,4 @@ docs/generate-docs.sh
 output/
 tmp/
 phpda.html
+var
