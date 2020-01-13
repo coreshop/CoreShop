@@ -40,7 +40,7 @@ services:
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~
 
     coreshop.cart.item_finder: '@CoreShop\Component\Order\Cart\CartItemResolver'
-    CoreShop\Component\Order\Cart\CartItemResolver:
+    CoreShop\Component\Order\Cart\CartItemResolver: ~
 
     coreshop.cart.modifier: '@CoreShop\Component\Order\Cart\CartModifier'
     CoreShop\Component\Order\Cart\CartModifier:
