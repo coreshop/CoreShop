@@ -8,11 +8,12 @@ use CoreShop\Component\Pimcore\Exception\ClassDefinitionNotFoundException;
 use Doctrine\DBAL\Schema\Schema;
 use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-class Version20200107065213 extends AbstractPimcoreMigration
+class Version20200107065213 extends AbstractPimcoreMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
