@@ -47,7 +47,7 @@ class CarrierFixture extends AbstractFixture implements ContainerAwareInterface,
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getDependencies()
     {
