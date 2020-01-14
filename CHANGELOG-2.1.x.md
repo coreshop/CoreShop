@@ -1,5 +1,27 @@
 # Within 2.1
 
+## 2.1.1
+ - Features:
+    - [CoreBundle] Implement Variant Unit and QPR Solidifier (https://github.com/coreshop/CoreShop/issues/1157)
+    - [AddressBundle] Improve Country Address Formatting (https://github.com/coreshop/CoreShop/pull/1153)
+    - [OrderBundle] properly implement AddMultipleToCart (https://github.com/coreshop/CoreShop/pull/1154)
+    - [IndexBundle] allow to query relations also by relation type (https://github.com/coreshop/CoreShop/pull/1156)
+    - [SEOBundle] add priority to extractors (https://github.com/coreshop/CoreShop/pull/1155)
+    - [QuantityPriceRules] Allow Object Deletion without removing QPR first (https://github.com/coreshop/CoreShop/issues/1160)
+    - [CoreBundle] Improve Unit Definition <=> QPR Dependency (https://github.com/coreshop/CoreShop/pull/1161)
+    - [StorageList] introduce service to resolve if cart-items are equal (https://github.com/coreshop/CoreShop/pull/1188)
+    - [OrderBundle] Allow Item Data per Row in Order Overview (https://github.com/coreshop/CoreShop/pull/1193)
+    - [OrderBundle] add sale-detail event (https://github.com/coreshop/CoreShop/pull/1192)
+    - [IndexBundle] Argument for re-index command (https://github.com/coreshop/CoreShop/pull/1219)
+    - [CoreBundle] Maximum Quantity to Order (https://github.com/coreshop/CoreShop/issues/1209)
+        
+ - Bugs:
+    - [StoreBundle] add missing store dependency (https://github.com/coreshop/CoreShop/pull/1159)
+    - [Install] add dummy migration (https://github.com/coreshop/CoreShop/pull/1172)
+    - [CoreBundle] Remove Store Values after Store has been removed (https://github.com/coreshop/CoreShop/pull/1171)
+    - [Order] Fix Character Length Count in Voucher Code Generator (https://github.com/coreshop/CoreShop/pull/1194/files)
+    - [Order] fix item price for items without tax-rule (https://github.com/coreshop/CoreShop/pull/1200)
+    
 ## 2.1.0
  - If you have a custom validation File for *AddToCart* or *Cart*, make sure to use the new 2 MinimumQuantity and MaximumQuantity Constraints. Otherwise it will happen that a validation is triggered twice.
    
