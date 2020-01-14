@@ -21,6 +21,7 @@
     - [CoreBundle] Remove Store Values after Store has been removed (https://github.com/coreshop/CoreShop/pull/1171)
     - [Order] Fix Character Length Count in Voucher Code Generator (https://github.com/coreshop/CoreShop/pull/1194/files)
     - [Order] fix item price for items without tax-rule (https://github.com/coreshop/CoreShop/pull/1200)
+    - [TRACKING] use single item price in order item extractor (https://github.com/coreshop/CoreShop/pull/1232)
     
 ## 2.1.0
  - If you have a custom validation File for *AddToCart* or *Cart*, make sure to use the new 2 MinimumQuantity and MaximumQuantity Constraints. Otherwise it will happen that a validation is triggered twice.
