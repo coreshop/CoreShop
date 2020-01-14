@@ -44,7 +44,7 @@ class ShippingRuleGroupFixture extends AbstractFixture implements ContainerAware
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getDependencies()
     {
