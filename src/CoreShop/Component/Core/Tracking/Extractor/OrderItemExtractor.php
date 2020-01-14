@@ -57,7 +57,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
             'sku' => $product instanceof ProductInterface ? $product->getSku() : '',
             'name' => $product instanceof PurchasableInterface ? $product->getName() : '',
             'category' => (is_array($categories) && count($categories) > 0) ? $categories[0]->getName() : '',
-            'price' => $object->getTotal() / 100,
+            'price' => $object->getItemPrice() / 100,
             'quantity' => $object->getQuantity(),
             'currency' => $proposal ? $proposal->getCurrency()->getIsoCode() : '',
         ]);
