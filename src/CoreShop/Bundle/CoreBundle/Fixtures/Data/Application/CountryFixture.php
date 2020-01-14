@@ -50,7 +50,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getDependencies()
     {

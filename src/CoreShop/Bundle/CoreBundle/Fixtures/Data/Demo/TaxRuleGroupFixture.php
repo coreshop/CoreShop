@@ -46,7 +46,7 @@ class TaxRuleGroupFixture extends AbstractFixture implements ContainerAwareInter
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getDependencies()
     {

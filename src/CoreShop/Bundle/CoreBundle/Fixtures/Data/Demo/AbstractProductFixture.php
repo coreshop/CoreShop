@@ -43,7 +43,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
     }
 
     /**
-     * {@inheritdoc}
+     * @return string[]
      */
     public function getDependencies()
     {
