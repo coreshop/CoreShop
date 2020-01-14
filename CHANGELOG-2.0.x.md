@@ -1,5 +1,11 @@
 # Within V2
 
+## 2.0.12
+ - Translations:
+   - New Crowdin translations (https://github.com/coreshop/CoreShop/pull/1165)
+ - Tests
+   - [Tests] add conflict for monolog (https://github.com/coreshop/CoreShop/pull/1178)
+
 ## 2.0.11
  - Bugs:
    - [IndexBundle] use doctrine schema-config to create index-table schema (https://github.com/coreshop/CoreShop/pull/1142)
