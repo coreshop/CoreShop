@@ -1,4 +1,4 @@
-Ext.define('CoreShop.store.Currency', {
+Ext.define('CoreShop.currency.Currency', {
     extend: 'CoreShop.resource.ComboBox',
     alias: 'widget.coreshop.currency',
 

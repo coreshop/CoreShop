@@ -10,22 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle;
+namespace CoreShop\Component\Address\Model;
 
-final class Events
+interface DefaultAddressAwareInterface
 {
     /**
-     * Fired before a Sale (Cart, Order, Quote) is passed to the client
+     * @param AddressInterface $address
      */
-    const SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
+    public function setDefaultAddress($address);
 
     /**
-     * Fired when an Admin creates a new Customer via a CoreShop UI
+     * @return AddressInterface
      */
-    const ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
-
-    /**
-     * Fired when an Admin creates a new Address via a CoreShop UI
-     */
-    const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
+    public function getDefaultAddress();
 }
