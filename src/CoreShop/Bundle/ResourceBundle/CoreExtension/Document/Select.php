@@ -142,7 +142,7 @@ class Select extends Tag
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getForWebserviceExport($document = null, $params = [])
     {
