@@ -172,7 +172,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
             $currency = $this->getCurrencyById($data[$this->getName() . '__currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data[$this->getName() . '__value']), $currency);
+                return new \CoreShop\Component\Currency\Model\Money((int)($data[$this->getName() . '__value'] ?? 0), $currency);
             }
         }
 
@@ -210,13 +210,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     /**
      * {@inheritdoc}
      */
-    public function getDataFromEditmode($data, $object = null, $params = [])
+        public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_array($data)) {
             $currency = $this->getCurrencyById($data['currency']);
 
             if (null !== $currency) {
-                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']) * $this->getDecimalFactor(), $currency);
+                return new \CoreShop\Component\Currency\Model\Money($this->toNumeric($data['value']), $currency);
             }
         }
 
@@ -346,17 +346,13 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return \Pimcore::getContainer()->getParameter('coreshop.currency.decimal_factor');
     }
 
-    /**
-     * @param int $value
+        /**
+     * @param mixed $value
      *
-     * @return int
+     * @return float|int
      */
-    protected function toNumeric($value): int
+    protected function toNumeric($value)
     {
-        if (strpos((string) $value, '.') === false) {
-            return (int) $value;
-        }
-
-        return (int) round($value, 0);
+        return (int) round($value * $this->getDecimalFactor());
     }
 }
