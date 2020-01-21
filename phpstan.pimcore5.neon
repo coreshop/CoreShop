@@ -1,0 +1,6 @@
+parameters:
+    autoload_files:
+        - %currentWorkingDirectory%/vendor/pimcore/pimcore/stubs/compatibility-v4.php
+
+includes:
+    - phpstan.neon
