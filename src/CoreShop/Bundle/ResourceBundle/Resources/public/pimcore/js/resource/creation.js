@@ -16,7 +16,8 @@ coreshop.resource.creation = Class.create({
     type: null,
     callback: Ext.emptyFn,
     options: {
-        prefix: ''
+        prefix: '',
+        params: {}
     },
 
     initialize: function (options, callback) {
@@ -62,6 +63,8 @@ coreshop.resource.creation = Class.create({
 
                         btn.setDisabled(true);
                         this.window.setLoading();
+
+                        params = Ext.merge(params, this.options.params);
 
                         Ext.Ajax.request({
                             url: this.url,

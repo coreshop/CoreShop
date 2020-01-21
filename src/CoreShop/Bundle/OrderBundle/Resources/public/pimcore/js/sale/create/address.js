@@ -29,7 +29,7 @@ coreshop.order.sale.create.address = Class.create(coreshop.resource.creation, {
                     fieldLabel: t('coreshop_address_create_country'),
                 },
                 salutation: {
-                    name: 'address.salutation',
+                    name: this.options.prefix + 'salutation',
                     fieldLabel: t('coreshop_address_create_salutation'),
                 },
             }, {

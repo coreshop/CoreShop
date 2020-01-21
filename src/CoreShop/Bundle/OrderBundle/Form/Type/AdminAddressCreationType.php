@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
+use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +26,7 @@ class AdminAddressCreationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customer', PimcoreResourceSelectionType::class, [
+            ->add('customer', CustomerSelectionType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => ['coreshop']]),
                 ],
