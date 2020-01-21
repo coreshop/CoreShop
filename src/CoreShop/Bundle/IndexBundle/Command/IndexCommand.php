@@ -89,7 +89,7 @@ final class IndexCommand extends Command
         $indices = $classesToUpdate = [];
         $indexIds = $input->getArgument('indices');
 
-        if (null === $indexIds) {
+        if (empty($indexIds)) {
             $indices = $this->indexRepository->findAll();
         } else {
             foreach ($indexIds as $id) {
