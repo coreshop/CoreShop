@@ -5,8 +5,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     symfony:
-        #container_xml_path: var/cache/dev/appDevDebugProjectContainer.xml
-        container_xml_path: var/cache/behat/appBehatAppKernelBehatDebugContainer.xml
+        container_xml_path: var/cache/dev/appDevDebugProjectContainer.xml
 
     excludes_analyse:
         # Makes PHPStan crash
