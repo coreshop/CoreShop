@@ -151,7 +151,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                     }
                 }
 
-                if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
+                if (!is_array($fieldDefinition->getQueryColumnType())) {
                     if ($fieldDefinition->getQueryColumnType()) {
                         $columnRenames[$queryTable][$key] = $this->newFieldName;
                     }
@@ -160,7 +160,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         }
 
         foreach ($storeTables as $storeTable) {
-            if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface ) {
+            if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
                 if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
                     foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
                         $columnName = $key.'__'.$fkey;
@@ -170,7 +170,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                     }
                 }
 
-                if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
+                if (!is_array($fieldDefinition->getColumnType())) {
                     if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
                         $columnRenames[$storeTable][$key] = $this->newFieldName;
                     }
