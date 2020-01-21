@@ -5,9 +5,4 @@ echo "RUNNING PHPSTAN"
 
 bin/console cache:warmup --env=dev
 
-if [[ "$PIMCORE_VERSION" == "~5.8" ]];
-then
-    vendor/bin/phpstan analyse -c phpstan.pimcore5.neon src -l 2
-else
-    vendor/bin/phpstan analyse -c phpstan.neon src -l 2
-fi
+vendor/bin/phpstan analyse -c phpstan.neon src -l 2
