@@ -1,7 +1,6 @@
 parameters:
     autoload_files:
         - %currentWorkingDirectory%/vendor/pimcore/pimcore/lib/helper-functions.php
-        - %currentWorkingDirectory%/vendor/pimcore/pimcore/stubs/compatibility-v4.php
 
     reportUnmatchedIgnoredErrors: false
 
@@ -36,6 +35,7 @@ parameters:
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children()/'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::save()./'
         - '/Call to an undefined method Pimcore\\Model\\(.*)::delete()./'
+        - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
@@ -47,3 +47,8 @@ parameters:
 
         # BC Breaks that will be resolved with 3.0
         - '/Method CoreShop\\Bundle\\ThemeBundle\\Service\\ThemeResolverInterface::resolveTheme()/'
+
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-webmozart-assert/extension.neon

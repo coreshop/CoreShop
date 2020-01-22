@@ -83,6 +83,11 @@ class Select extends Tag
         return null;
     }
 
+    public function isEmpty()
+    {
+        return !$this->getResourceObject() instanceof ResourceInterface;
+    }
+
     /**
      * {@inheritdoc}
      */
