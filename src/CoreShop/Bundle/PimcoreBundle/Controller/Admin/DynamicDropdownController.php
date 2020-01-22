@@ -164,8 +164,10 @@ final class DynamicDropdownController extends AdminController
             }
         }
 
+        /**
+         * @var DataObject\Concrete $child
+         */
         foreach ($children as $child) {
-            /** @var DataObject\Concrete $child */
             $class = get_class($child);
             switch ($class) {
                 case DataObject\Folder::class:

@@ -141,6 +141,10 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $columnRenames = [];
 
         foreach ($queryTables as $queryTable) {
+            if (!method_exists($fieldDefinition, 'getQueryColumnType')) {
+                continue;
+            }
+
             if (is_array($fieldDefinition->getQueryColumnType())) {
                 foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
                     $columnName = $key . '__' . $fkey;
@@ -149,8 +153,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                     $columnRenames[$queryTable][$columnName] = $newColumnName;
                 }
             }
-
-            if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
+            else {
                 if ($fieldDefinition->getQueryColumnType()) {
                     $columnRenames[$queryTable][$key] = $this->newFieldName;
                 }
@@ -158,6 +161,10 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         }
 
         foreach ($storeTables as $storeTable) {
+            if (!method_exists($fieldDefinition, 'getColumnType')) {
+                continue;
+            }
+
             if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
                 foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
                     $columnName = $key . '__' . $fkey;
@@ -166,9 +173,8 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                     $columnRenames[$storeTable][$columnName] = $newColumnName;
                 }
             }
-
-            if (!is_array($fieldDefinition->getQueryColumnType()) && !is_array($fieldDefinition->getColumnType())) {
-                if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+            else {
+                if ($fieldDefinition->getColumnType()) {
                     $columnRenames[$storeTable][$key] = $this->newFieldName;
                 }
             }
