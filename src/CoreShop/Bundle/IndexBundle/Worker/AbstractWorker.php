@@ -303,7 +303,6 @@ abstract class AbstractWorker implements WorkerInterface
     {
         $getter = $column->getGetter();
         $getterClass = $this->getterServiceRegistry->get($getter);
-        $value = null;
 
         Assert::isInstanceOf($getterClass, GetterInterface::class);
 
