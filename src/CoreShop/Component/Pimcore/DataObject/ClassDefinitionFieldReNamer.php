@@ -141,41 +141,39 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $columnRenames = [];
 
         foreach ($queryTables as $queryTable) {
-            if (!method_exists($fieldDefinition, 'getQueryColumnType')) {
-                continue;
-            }
+            if ($fieldDefinition instanceof Data\QueryResourcePersistenceAwareInterface) {
+                if (is_array($fieldDefinition->getQueryColumnType())) {
+                    foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-            if (is_array($fieldDefinition->getQueryColumnType())) {
-                foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
-
-                    $columnRenames[$queryTable][$columnName] = $newColumnName;
+                        $columnRenames[$queryTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
-            else {
-                if ($fieldDefinition->getQueryColumnType()) {
-                    $columnRenames[$queryTable][$key] = $this->newFieldName;
+
+                if (!is_array($fieldDefinition->getQueryColumnType())) {
+                    if ($fieldDefinition->getQueryColumnType()) {
+                        $columnRenames[$queryTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }
 
         foreach ($storeTables as $storeTable) {
-            if (!method_exists($fieldDefinition, 'getColumnType')) {
-                continue;
-            }
+            if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
+                if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
+                    foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-            if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
-                foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
-
-                    $columnRenames[$storeTable][$columnName] = $newColumnName;
+                        $columnRenames[$storeTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
-            else {
-                if ($fieldDefinition->getColumnType()) {
-                    $columnRenames[$storeTable][$key] = $this->newFieldName;
+
+                if (!is_array($fieldDefinition->getColumnType())) {
+                    if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+                        $columnRenames[$storeTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }

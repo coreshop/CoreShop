@@ -35,8 +35,6 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
-        $price = null;
-
         if (!isset($context['unitDefinition']) || !$context['unitDefinition'] instanceof ProductUnitDefinitionInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }

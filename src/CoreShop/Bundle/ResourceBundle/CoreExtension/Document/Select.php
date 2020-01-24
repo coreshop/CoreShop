@@ -120,14 +120,6 @@ class Select extends Tag
     /**
      * {@inheritdoc}
      */
-    public function isEmpty()
-    {
-        return !$this->resource;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
@@ -142,7 +134,7 @@ class Select extends Tag
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getForWebserviceExport($document = null, $params = [])
     {
