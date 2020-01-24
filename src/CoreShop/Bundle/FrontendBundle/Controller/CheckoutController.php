@@ -315,7 +315,7 @@ class CheckoutController extends FrontendController
         ]);
     }
 
-    private function addEventFlash(string $type, string $message = null, array $parameters = [])
+    protected function addEventFlash(string $type, string $message = null, array $parameters = [])
     {
         if (!$message) {
             return;
