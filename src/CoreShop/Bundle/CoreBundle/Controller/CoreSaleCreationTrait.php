@@ -78,13 +78,8 @@ trait CoreSaleCreationTrait
             $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice(
                 $carrier,
                 $cart,
-            $cart->getShippingAddress()
-                );
-            $priceConverted = $this->get('coreshop.currency_converter')->convert(
-                $price,
-                $currentCurrency,
-            $cart->getCurrency()->getIsoCode()
-                );
+                $cart->getShippingAddress()
+            );
 
             $result[] = [
                 'id' => $carrier->getId(),
