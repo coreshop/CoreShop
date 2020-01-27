@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -84,7 +85,7 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     {
         try {
             return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
-        } catch (NoPurchasableRetailPriceFoundException $ex) {
+        } catch (NoPurchasableDiscountPriceFoundException $ex) {
         }
 
         return 0;
