@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
-use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
@@ -51,7 +50,7 @@ class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscount
         }
 
         if (null === $price) {
-            throw new NoPurchasableRetailPriceFoundException(__CLASS__);
+            throw new NoPurchasableDiscountPriceFoundException(__CLASS__);
         }
 
         return $price;
