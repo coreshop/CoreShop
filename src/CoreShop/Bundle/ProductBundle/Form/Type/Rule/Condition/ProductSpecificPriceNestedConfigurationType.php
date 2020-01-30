@@ -43,7 +43,7 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
 
         $builder
             ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class, [
-                'constraints' => [new Valid($this->validationGroups)]
+                'constraints' => [new Valid(['groups' => $this->validationGroups])]
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
