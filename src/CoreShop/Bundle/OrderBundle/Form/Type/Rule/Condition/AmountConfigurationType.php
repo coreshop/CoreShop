@@ -22,6 +22,19 @@ use Symfony\Component\Validator\Constraints\Type;
 final class AmountConfigurationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -29,16 +42,16 @@ final class AmountConfigurationType extends AbstractType
         $builder
             ->add('minAmount', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new GreaterThan(['value' => 0, 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('maxAmount', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new GreaterThan(['value' => 0, 'groups' => $this->validationGroups]),
                 ],
             ]);
     }

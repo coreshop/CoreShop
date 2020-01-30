@@ -21,6 +21,19 @@ use Symfony\Component\Validator\Constraints\Type;
 final class FilterConditionRangeType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -29,17 +42,17 @@ final class FilterConditionRangeType extends AbstractType
             ->add('field', TextType::class)
             ->add('preSelectMin', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('preSelectMax', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('stepCount', NumberType::class, [
                 'constraints' => [
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ]);
     }

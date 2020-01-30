@@ -73,7 +73,7 @@ final class CarrierType extends AbstractResourceType
 
         $builder
             ->add('carrier', CarrierChoiceType::class, [
-                'constraints' => [new Valid(), new NotBlank(['groups' => ['coreshop']])],
+                'constraints' => [new Valid(), new NotBlank(['groups' => $this->validationGroups])],
                 'expanded' => true,
                 'label' => 'coreshop.ui.carrier',
                 'choices' => $options['carriers'],

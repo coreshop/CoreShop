@@ -6,6 +6,14 @@ parameters:
     coreshop.form.type.shipping_rule.rule.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.rule_action.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.rule_condition.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.common.shipping_rule.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.addition_amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.action.addition_percent.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.condition.amount.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.condition.dimension.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.condition.weight.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.condition.nested.validation_groups: [coreshop]
+    coreshop.form.type.shipping_rule.condition.postcode.validation_groups: [coreshop]
 
 services:
     _defaults:
@@ -92,5 +100,53 @@ services:
     CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionChoiceType:
         arguments:
             - '%coreshop.shipping_rule.conditions%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.common.shipping_rule.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\AdditionAmountActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.addition_amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.action.addition_percent.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.condition.amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.condition.dimension.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.condition.nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.condition.postcode.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType:
+        arguments:
+            - '%coreshop.form.type.shipping_rule.condition.weight.validation_groups%'
         tags:
             - { name: form.type }
