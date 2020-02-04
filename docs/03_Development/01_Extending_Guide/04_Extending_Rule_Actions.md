@@ -96,10 +96,11 @@ coreshop.product.pricerule.actions.custom = Class.create(coreshop.rules.actions.
 });
 
 ```
-Don't forget to run the following command afterwards to deploy it if needed:
+
+Don't forget to run the following command afterwards to deploy it if needed. If you're using the latest symfony structure, omit the `web`.
 ```
-bin/console assets:install
-``` 
+bin/console assets:install web
+```
 
 
 
