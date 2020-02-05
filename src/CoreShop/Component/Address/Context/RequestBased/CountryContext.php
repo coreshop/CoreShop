@@ -31,6 +31,11 @@ final class CountryContext implements CountryContextInterface
     private $requestStack;
 
     /**
+     * @var CountryInterface
+     */
+    private $country = null;
+
+    /**
      * @param RequestResolverInterface $requestResolver
      * @param RequestStack             $requestStack
      */
@@ -46,7 +51,13 @@ final class CountryContext implements CountryContextInterface
     public function getCountry()
     {
         try {
-            return $this->getCountryForRequest($this->getMasterRequest());
+            $request = $this->getMasterRequest();
+
+            if (null !== $this->country) {
+                return $this->country;
+            }
+
+            return $this->country = $this->getCountryForRequest($request);
         } catch (\UnexpectedValueException $exception) {
             throw new CountryNotFoundException($exception);
         }
