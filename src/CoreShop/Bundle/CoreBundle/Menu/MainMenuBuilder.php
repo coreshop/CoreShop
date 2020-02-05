@@ -152,6 +152,31 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('function', 'tax_rule_group')
             ->setExtra('order', 70);
 
+        $customersMenu = $menuItem
+            ->addChild('coreshop_customer')
+            ->setLabel('coreshop_customer')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer')
+            ->setAttribute('container', true)
+            ->setExtra('order', 55);
+
+        $customersMenu
+            ->addChild('coreshop_customers')
+            ->setLabel('coreshop_customers')
+            ->setAttribute('permission', 'coreshop_permission_customer_list')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customers')
+            ->setAttribute('resource', 'coreshop.customer')
+            ->setAttribute('function', 'customers')
+            ->setExtra('order', 10);
+
+        $customersMenu
+            ->addChild('coreshop_customer_groups')
+            ->setLabel('coreshop_customer_groups')
+            ->setAttribute('permission', 'coreshop_permission_customer_group_list')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer_groups')
+            ->setAttribute('resource', 'coreshop.customer')
+            ->setAttribute('function', 'customer_groups')
+            ->setExtra('order', 20);
+
         $ordersMenu = $menuItem
             ->addChild('coreshop_order')
             ->setLabel('coreshop_order')

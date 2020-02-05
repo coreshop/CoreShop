@@ -14,6 +14,10 @@ pimcore.registerNS('coreshop.order.quote.list');
 coreshop.order.quote.list = Class.create(coreshop.order.sale.list, {
     type: 'quote',
 
+    url: {
+        folder: '/admin/coreshop/quote/get-folder-configuration'
+    },
+
     setupContextMenuPlugin: function () {
         this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
             'coreshop_quote',

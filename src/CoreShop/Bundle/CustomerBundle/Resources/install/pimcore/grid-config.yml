@@ -1,0 +1,786 @@
+grid_config:
+    customer_en:
+        name: 'Customer Overview'
+        class: coreshop.customer
+        data:
+            language: de
+            pageSize: 25
+            sortinfo: false
+            classId: '12'
+            columns:
+                id:
+                    name: id
+                    position: 1
+                    hidden: false
+                    width: 40
+                    fieldConfig:
+                        key: id
+                        label: ID
+                        type: system
+                "#5e399f0ae9157":
+                    name: "#5e399f0ae9157"
+                    position: 2
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Salutation
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Salutation (salutation)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: salutation
+                                    dataType: input
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9157"
+                    isOperator: true
+                "#5e399f0ae9159":
+                    name: "#5e399f0ae9159"
+                    position: 3
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Firstname
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Firstname (firstname)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: firstname
+                                    dataType: firstname
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9159"
+                    isOperator: true
+                "#5e399f0ae915a":
+                    name: "#5e399f0ae915a"
+                    position: 4
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Lastname
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Lastname (lastname)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: lastname
+                                    dataType: lastname
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915a"
+                    isOperator: true
+                "#5e399f0ae915b":
+                    name: "#5e399f0ae915b"
+                    position: 5
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: E-Mail
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Email (email)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: email
+                                    dataType: email
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915b"
+                    isOperator: true
+                "#5e399f0ae915c":
+                    name: "#5e399f0ae915c"
+                    position: 6
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: NL Active
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Newsletter Active (newsletterActive)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: newsletterActive
+                                    dataType: newsletterActive
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915c"
+                    isOperator: true
+                "#5e399f0ae915d":
+                    name: "#5e399f0ae915d"
+                    position: 7
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: NL Confirmed
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Newsletter Confirmed (newsletterConfirmed)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: newsletterConfirmed
+                                    dataType: newsletterConfirmed
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915d"
+                    isOperator: true
+                "#5e399f0ae915e":
+                    name: "#5e399f0ae915e"
+                    position: 8
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Gender
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Gender (gender)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: gender
+                                    dataType: gender
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915e"
+                    isOperator: true
+                "#5e399f0ae915f":
+                    name: "#5e399f0ae915f"
+                    position: 9
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Locale
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Locale (localeCode)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: localeCode
+                                    dataType: input
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915f"
+                    isOperator: true
+                "#5e399f0ae9160":
+                    name: "#5e399f0ae9160"
+                    position: 10
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Addresses
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Addresses (addresses)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: addresses
+                                    dataType: manyToManyRelation
+                                    childs: []
+                            attribute: street
+                            param1: ''
+                            isArrayType: true
+                            forwardAttribute: street
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9160"
+                    isOperator: true
+                "#5e399f0ae9161":
+                    name: "#5e399f0ae9161"
+                    position: 11
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Address
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Default Address
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Default Address (defaultAddress)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: defaultAddress
+                                            dataType: manyToOneRelation
+                                            childs: []
+                                    attribute: street
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                                -   label: Number
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Default Address (defaultAddress)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: defaultAddress
+                                            dataType: manyToOneRelation
+                                            childs: []
+                                    attribute: number
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                            glue: " "
+                        key: "#5e399f0ae9161"
+                    isOperator: true
+                "#5e39a1e53b225":
+                    name: "#5e39a1e53b225"
+                    position: 11
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Groups
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Groups
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Customer Groups (customerGroups)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: customerGroups
+                                            dataType: manyToManyRelation
+                                            childs: []
+                                    attribute: name
+                                    param1: ''
+                                    isArrayType: true
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                            glue: ", "
+                        key: "#5e39a1e53b225"
+                    isOperator: true
+            onlyDirectChildren: false
+            pimcore_version: dev-master
+            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47
+
+    customer_de:
+        name: 'Kunden Übersicht'
+        class: coreshop.customer
+        data:
+            language: de
+            pageSize: 25
+            sortinfo: false
+            classId: '12'
+            columns:
+                id:
+                    name: id
+                    position: 1
+                    hidden: false
+                    width: 40
+                    fieldConfig:
+                        key: id
+                        label: ID
+                        type: system
+                "#5e399f0ae9157":
+                    name: "#5e399f0ae9157"
+                    position: 2
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Anrede
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Anrede
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: salutation
+                                    dataType: input
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9157"
+                    isOperator: true
+                "#5e399f0ae9159":
+                    name: "#5e399f0ae9159"
+                    position: 3
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Vorname
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Vorname
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: firstname
+                                    dataType: firstname
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9159"
+                    isOperator: true
+                "#5e399f0ae915a":
+                    name: "#5e399f0ae915a"
+                    position: 4
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Nachname
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Nachname
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: lastname
+                                    dataType: lastname
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915a"
+                    isOperator: true
+                "#5e399f0ae915b":
+                    name: "#5e399f0ae915b"
+                    position: 5
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: E-Mail
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Email (email)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: email
+                                    dataType: email
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915b"
+                    isOperator: true
+                "#5e399f0ae915c":
+                    name: "#5e399f0ae915c"
+                    position: 6
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: NL Aktiv
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Newsletter Active (newsletterActive)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: newsletterActive
+                                    dataType: newsletterActive
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915c"
+                    isOperator: true
+                "#5e399f0ae915d":
+                    name: "#5e399f0ae915d"
+                    position: 7
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: NL Bestätigt
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Newsletter Confirmed (newsletterConfirmed)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: newsletterConfirmed
+                                    dataType: newsletterConfirmed
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915d"
+                    isOperator: true
+                "#5e399f0ae915e":
+                    name: "#5e399f0ae915e"
+                    position: 8
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Geschlecht
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Gender (gender)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: gender
+                                    dataType: gender
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915e"
+                    isOperator: true
+                "#5e399f0ae915f":
+                    name: "#5e399f0ae915f"
+                    position: 9
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Sprache
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Locale (localeCode)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: localeCode
+                                    dataType: input
+                                    childs: []
+                            attribute: ''
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae915f"
+                    isOperator: true
+                "#5e399f0ae9160":
+                    name: "#5e399f0ae9160"
+                    position: 10
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Adressen
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Addresses (addresses)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: addresses
+                                    dataType: manyToManyRelation
+                                    childs: []
+                            attribute: street
+                            param1: ''
+                            isArrayType: true
+                            forwardAttribute: street
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e399f0ae9160"
+                    isOperator: true
+                "#5e399f0ae9161":
+                    name: "#5e399f0ae9161"
+                    position: 11
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Adresse
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Default Address
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Default Address (defaultAddress)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: defaultAddress
+                                            dataType: manyToOneRelation
+                                            childs: []
+                                    attribute: street
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                                -   label: Number
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Default Address (defaultAddress)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: defaultAddress
+                                            dataType: manyToOneRelation
+                                            childs: []
+                                    attribute: number
+                                    param1: ''
+                                    isArrayType: false
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                            glue: " "
+                        key: "#5e399f0ae9161"
+                    isOperator: true
+                "#5e39a1e53b225":
+                    name: "#5e39a1e53b225"
+                    position: 11
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Gruppen
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Groups
+                                    type: operator
+                                    class: AnyGetter
+                                    childs:
+                                        -   label: Customer Groups (customerGroups)
+                                            type: value
+                                            class: DefaultValue
+                                            attribute: customerGroups
+                                            dataType: manyToManyRelation
+                                            childs: []
+                                    attribute: name
+                                    param1: ''
+                                    isArrayType: true
+                                    forwardAttribute: ''
+                                    forwardParam1: ''
+                                    returnLastResult: false
+                            glue: ", "
+                        key: "#5e39a1e53b225"
+                    isOperator: true
+            onlyDirectChildren: false
+
+    customer_group_en:
+        name: 'Customer Group Overview'
+        class: coreshop.customer_group
+        data:
+            language: de
+            pageSize: 25
+            sortinfo: false
+            classId: '11'
+            columns:
+                "#5e39a078aa0ec":
+                    name: "#5e39a078aa0ec"
+                    position: 1
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Name
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Name (name)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: name
+                                    dataType: input
+                                    childs: []
+                            attribute: name
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e39a078aa0ec"
+                    isOperator: true
+                "#5e39a078aa0ee":
+                    name: "#5e39a078aa0ee"
+                    position: 2
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Roles
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Roles (roles)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: roles
+                                    dataType: multiselect
+                                    childs: []
+                            glue: ", "
+                        key: "#5e39a078aa0ee"
+                    isOperator: true
+            onlyDirectChildren: false
+            pimcore_version: dev-master
+            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47
+
+    customer_group_de:
+        name: 'Kunden Gruppen Übersicht'
+        class: coreshop.customer_group
+        data:
+            language: de
+            pageSize: 25
+            sortinfo: false
+            classId: '11'
+            columns:
+                "#5e39a078aa0ec":
+                    name: "#5e39a078aa0ec"
+                    position: 1
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Name
+                            type: operator
+                            class: AnyGetter
+                            childs:
+                                -   label: Name (name)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: name
+                                    dataType: input
+                                    childs: []
+                            attribute: name
+                            param1: ''
+                            isArrayType: false
+                            forwardAttribute: ''
+                            forwardParam1: ''
+                            returnLastResult: false
+                        key: "#5e39a078aa0ec"
+                    isOperator: true
+                "#5e39a078aa0ee":
+                    name: "#5e39a078aa0ee"
+                    position: 2
+                    hidden: false
+                    width: 200
+                    fieldConfig:
+                        isOperator: true
+                        attributes:
+                            label: Rollen
+                            type: operator
+                            class: Concatenator
+                            childs:
+                                -   label: Roles (roles)
+                                    type: value
+                                    class: DefaultValue
+                                    attribute: roles
+                                    dataType: multiselect
+                                    childs: []
+                            glue: ", "
+                        key: "#5e39a078aa0ee"
+                    isOperator: true
+            onlyDirectChildren: false
+            pimcore_version: dev-master
+            pimcore_revision: 6c4d88cb49291736418dcbf89a9b4ba03d6b8d47

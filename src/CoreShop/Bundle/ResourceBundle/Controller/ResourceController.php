@@ -16,8 +16,10 @@ use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -231,6 +233,45 @@ class ResourceController extends AdminController
         }
 
         return $this->viewHandler->handle(['success' => false]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function folderConfigurationAction()
+    {
+        $this->isGrantedOr403();
+
+        $repo = $this->repository;
+
+        if (!$repo instanceof PimcoreRepositoryInterface ) {
+            throw new \InvalidArgumentException('Only Supported with Pimcore Repositories');
+        }
+
+        $name = null;
+        $folderId = null;
+
+        $folderPath = $this->metadata->getParameter('path');
+
+        if (is_array($folderPath)) {
+            $folderPath = reset($folderPath);
+        }
+
+        $customerClassDefinition = DataObject\ClassDefinition::getById($repo->getClassId());
+
+        $folder = DataObject::getByPath('/'.$folderPath);
+
+        if ($folder instanceof DataObject\Folder) {
+            $folderId = $folder->getId();
+        }
+
+        if ($customerClassDefinition instanceof DataObject\ClassDefinition) {
+            $name = $customerClassDefinition->getName();
+        }
+
+        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
 
     /**

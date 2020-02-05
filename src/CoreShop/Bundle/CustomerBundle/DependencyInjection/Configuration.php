@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection;
 
 use CoreShop\Bundle\CustomerBundle\Pimcore\Repository\CustomerRepository;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -85,6 +86,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCustomer')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(CustomerRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopCustomerBundle/Resources/install/pimcore/classes/CoreShopCustomer.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
@@ -103,6 +105,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopCustomerGroup')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CustomerGroupInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopCustomerBundle/Resources/install/pimcore/classes/CoreShopCustomerGroup.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
@@ -140,6 +143,13 @@ final class Configuration implements ConfigurationInterface
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue([
+                            'customer_list',
+                            'customer_group_list'
+                        ])
+                    ->end()
                     ->arrayNode('install')
                         ->addDefaultsIfNotSet()
                         ->children()
@@ -147,6 +157,11 @@ final class Configuration implements ConfigurationInterface
                                 ->treatNullLike([])
                                 ->scalarPrototype()->end()
                                 ->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
+                            ->arrayNode('grid_config')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopCustomerBundle/Resources/install/pimcore/grid-config.yml'])
                             ->end()
                         ->end()
                     ->end()

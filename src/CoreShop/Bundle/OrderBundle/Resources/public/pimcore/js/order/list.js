@@ -14,6 +14,10 @@ pimcore.registerNS('coreshop.order.order.list');
 coreshop.order.order.list = Class.create(coreshop.order.sale.list, {
     type: 'order',
 
+    url: {
+        folder: '/admin/coreshop/order/get-folder-configuration'
+    },
+
     setupContextMenuPlugin: function () {
         this.contextMenuPlugin = new coreshop.pimcore.plugin.grid(
             'coreshop_order',
