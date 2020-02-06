@@ -42,6 +42,13 @@ services:
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
+    coreshop.context.country.cached: '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext'
+    CoreShop\Component\Address\Context\RequestBased\CachedCountryContext:
+        decorates: coreshop.context.country
+        decoration_priority: 255
+        arguments:
+            - '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext.inner'
+
     coreshop.address.formatter: '@CoreShop\Component\Address\Formatter\AddressFormatter'
     CoreShop\Component\Address\Formatter\AddressFormatterInterface: '@CoreShop\Component\Address\Formatter\AddressFormatter'
     CoreShop\Component\Address\Formatter\AddressFormatter:
