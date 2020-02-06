@@ -16,39 +16,35 @@ use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use GeoIp2\Database\Reader;
+use Pimcore\Cache\Core\CoreHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
-
-    /**
-     * @var string
-     */
-    private $sessionKeyName;
-
     /**
      * @var CountryRepositoryInterface
      */
     private $countryRepository;
 
     /**
-     * @param SessionInterface           $session
-     * @param string                     $sessionKeyName
-     * @param CountryRepositoryInterface $countryRepository
+     * @var CoreHandlerInterface
      */
-    public function __construct(
-        SessionInterface $session,
-        string $sessionKeyName,
-        CountryRepositoryInterface $countryRepository
-    ) {
-        $this->session = $session;
-        $this->sessionKeyName = $sessionKeyName;
+    private $cache;
+
+    /**
+     * @var string
+     */
+    private $geoDbFile;
+
+    /**
+     * @param CountryRepositoryInterface $countryRepository
+     * @param CoreHandlerInterface       $cache
+     */
+    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache)
+    {
         $this->countryRepository = $countryRepository;
+        $this->cache = $cache;
+        $this->geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
     }
 
     /**
@@ -56,6 +52,10 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
+        if (!file_exists($this->geoDbFile)) {
+            throw new CountryNotFoundException();
+        }
+
         $record = null;
         $isoCode = null;
         $clientIp = $request->getClientIp();
@@ -64,43 +64,31 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             throw new CountryNotFoundException();
         }
 
-        $countryIsoCode = $this->guessCountryBySession($clientIp);
+        $cacheKey = md5($clientIp);
 
-        if (is_null($countryIsoCode)) {
-            $countryIsoCode = $this->guessCountryByGeoLite($clientIp);
+        if ($countryIsoCode = $this->cache->getItem($cacheKey)) {
+            $country = $this->countryRepository->findByCode($countryIsoCode);
+
+            if ($country) {
+                return $country;
+            }
         }
 
-        if (is_null($countryIsoCode)) {
+        $countryIsoCode = $this->guessCountryByGeoLite($clientIp);
+
+        if ($countryIsoCode === null) {
             throw new CountryNotFoundException();
         }
 
         $country = $this->countryRepository->findByCode($countryIsoCode);
+
         if (!$country instanceof CountryInterface) {
             throw new CountryNotFoundException();
         }
 
-        $this->storeData($country, $clientIp);
+        $this->cache->save($cacheKey, $countryIsoCode);
 
         return $country;
-    }
-
-    /**
-     * @param string $clientIp
-     *
-     * @return string|null
-     */
-    private function guessCountryBySession($clientIp)
-    {
-        $isoCode = null;
-        $clientIpHash = md5($clientIp);
-        $sessionKey = sprintf('%s.%s', $this->sessionKeyName, $clientIpHash);
-
-        if ($this->session->has($sessionKey)) {
-            $isoCode = $this->session->get($sessionKey);
-        }
-
-        return $isoCode;
-
     }
 
     /**
@@ -111,14 +99,9 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     private function guessCountryByGeoLite($clientIp)
     {
         $isoCode = null;
-        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
-
-        if (!file_exists($geoDbFile)) {
-            return null;
-        }
 
         try {
-            $reader = new Reader($geoDbFile);
+            $reader = new Reader($this->geoDbFile);
             $record = $reader->city($clientIp);
             $isoCode = $record->country->isoCode;
         } catch (\Exception $e) {
@@ -126,18 +109,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         }
 
         return $isoCode;
-    }
-
-    /**
-     * @param CountryInterface $country
-     * @param string           $clientIp
-     */
-    private function storeData(CountryInterface $country, $clientIp)
-    {
-        $clientIpHash = md5($clientIp);
-        $sessionKey = sprintf('%s.%s', $this->sessionKeyName, $clientIpHash);
-
-        $this->session->set($sessionKey, $country->getIsoCode());
     }
 
     /**
@@ -158,7 +129,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         ];
 
         $longIp = ip2long($clientIp);
-        if ($longIp != -1) {
+        if ($longIp !== -1) {
             foreach ($privateAddresses as $priAddr) {
                 list($start, $end) = explode('|', $priAddr);
 
