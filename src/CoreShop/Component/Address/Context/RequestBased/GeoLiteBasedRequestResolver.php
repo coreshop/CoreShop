@@ -69,7 +69,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         if ($countryIsoCode = $this->cache->getItem($cacheKey)) {
             $country = $this->countryRepository->findByCode($countryIsoCode);
 
-            if ($country) {
+            if ($country instanceof CountryInterface) {
                 return $country;
             }
         }
