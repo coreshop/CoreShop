@@ -44,7 +44,7 @@ services:
 
     coreshop.context.country.cached: '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext'
     CoreShop\Component\Address\Context\RequestBased\CachedCountryContext:
-        decorates: coreshop.context.country
+        decorates: coreshop.context.country.request_based.resolver.composite
         decoration_priority: 255
         arguments:
             - '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext.inner'
