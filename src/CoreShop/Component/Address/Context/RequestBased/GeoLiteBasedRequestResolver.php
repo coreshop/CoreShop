@@ -98,17 +98,15 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private function guessCountryByGeoLite($clientIp)
     {
-        $isoCode = null;
-
         try {
             $reader = new Reader($this->geoDbFile);
             $record = $reader->city($clientIp);
-            $isoCode = $record->country->isoCode;
+            return $record->country->isoCode;
         } catch (\Exception $e) {
             //If something goes wrong, ignore the exception and throw a CountryNotFoundException
         }
 
-        return $isoCode;
+        return null;
     }
 
     /**
