@@ -86,7 +86,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             throw new CountryNotFoundException();
         }
 
-        $this->cache->save($cacheKey, $countryIsoCode);
+        $this->cache->save($cacheKey, $countryIsoCode, [], 24*60*60);
 
         return $country;
     }

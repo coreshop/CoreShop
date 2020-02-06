@@ -43,8 +43,6 @@ final class CachedCountryContext implements RequestResolverInterface
     {
         if (null === $this->country) {
             $this->country = $this->inner->findCountry($request);
-
-            return $this->country;
         }
 
         return $this->country;
