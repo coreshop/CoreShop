@@ -16,8 +16,9 @@ use CoreShop\Component\Order\Model\CartInterface as BaseCartInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\User\Model\UserAwareInterface;
 
-interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
+interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAwareInterface, PaymentSettingsAwareInterface, UserAwareInterface
 {
     /**
      * @return bool

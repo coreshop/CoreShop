@@ -29,10 +29,4 @@ services:
     CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.customer.request_based.resolver.token_based: '@CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver'
-    CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver:
-        public: false
-        arguments:
-            - '@security.token_storage'
-        tags:
-            - { name: coreshop.context.customer.request_based.resolver }
+

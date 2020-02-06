@@ -263,7 +263,7 @@ services:
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\CustomerListener:
         parent: CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener
         tags:
-            - { name: kernel.event_listener, event: coreshop.customer.request_password_reset, method: applyPasswordRequestResetRule }
+            - { name: kernel.event_listener, event: coreshop.user.request_password_reset, method: applyPasswordRequestResetRule }
             - { name: kernel.event_listener, event: coreshop.customer.register, method: applyRegisterCustomerRule }
             - { name: kernel.event_listener, event: coreshop.customer.request_newsletter_confirm, method: applyNewsletterConfirmRequestRule }
             - { name: kernel.event_listener, event: coreshop.customer.newsletter_confirm_post, method: applyNewsletterConfirmed }

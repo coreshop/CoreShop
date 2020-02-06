@@ -25,65 +25,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class RegistrationService implements RegistrationServiceInterface
 {
     /**
-     * @var CustomerRepositoryInterface
+     * @var CustomerManagerInterface
      */
-    private $customerRepository;
+    private $customerManager;
 
     /**
-     * @var ObjectServiceInterface
+     * @param CustomerManagerInterface $customerManager
      */
-    private $objectService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var LocaleContextInterface
-     */
-    private $localeContext;
-
-    /**
-     * @var string
-     */
-    private $customerFolder;
-
-    /**
-     * @var string
-     */
-    private $guestFolder;
-
-    /**
-     * @var string
-     */
-    private $addressFolder;
-
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface      $objectService
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param LocaleContextInterface      $localeContext
-     * @param string                      $customerFolder
-     * @param string                      $guestFolder
-     * @param string                      $addressFolder
-     */
-    public function __construct(
-        CustomerRepositoryInterface $customerRepository,
-        ObjectServiceInterface $objectService,
-        EventDispatcherInterface $eventDispatcher,
-        LocaleContextInterface $localeContext,
-        $customerFolder,
-        $guestFolder,
-        $addressFolder
-    ) {
-        $this->customerRepository = $customerRepository;
-        $this->objectService = $objectService;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->localeContext = $localeContext;
-        $this->customerFolder = $customerFolder;
-        $this->guestFolder = $guestFolder;
-        $this->addressFolder = $addressFolder;
+    public function __construct(CustomerManagerInterface $customerManager)
+    {
+        $this->customerManager = $customerManager;
     }
 
     /**
@@ -95,41 +46,9 @@ final class RegistrationService implements RegistrationServiceInterface
         $formData,
         $isGuest = false
     ) {
-        $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
+        trigger_error(sprintf('Class %s has been deprecated with 2.1.0 in favor of %s and will be removed with 2.2.0', self::class, CustomerManagerInterface::class), E_USER_DEPRECATED);
 
-        if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
-            throw new CustomerAlreadyExistsException();
-        }
-
-        $customer->setPublished(true);
-        $customer->setParent($this->objectService->createFolderByPath(sprintf(
-            '/%s/%s',
-            ($isGuest ? $this->guestFolder : $this->customerFolder),
-            mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
-        )));
-        $customer->setKey(File::getValidFilename($customer->getEmail()));
-        $customer->setKey(Service::getUniqueKey($customer));
-        $customer->setIsGuest($isGuest);
-        $customer->setLocaleCode($this->localeContext->getLocaleCode());
-        $customer->save();
-
-        $address->setPublished(true);
-        $address->setKey(uniqid());
-        $address->setParent($this->objectService->createFolderByPath(sprintf(
-            '/%s/%s',
-            $customer->getFullPath(),
-            $this->addressFolder
-        )));
-        $address->save();
-
-        $customer->setDefaultAddress($address);
-        $customer->addAddress($address);
-
-        $this->eventDispatcher->dispatch(
-            'coreshop.customer.register',
-            new CustomerRegistrationEvent($customer, $formData)
-        );
-
-        $customer->save();
+        $customer->setAddresses([$address]);
+        $this->customerManager->persistCustomer($customer);
     }
 }

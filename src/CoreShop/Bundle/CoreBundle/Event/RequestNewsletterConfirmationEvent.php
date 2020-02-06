@@ -12,15 +12,15 @@
 
 namespace CoreShop\Bundle\CoreBundle\Event;
 
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\UserInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {
     /**
-     * @var CustomerInterface
+     * @var UserInterface
      */
-    private $customer;
+    private $user;
 
     /**
      * @var string
@@ -28,21 +28,21 @@ final class RequestNewsletterConfirmationEvent extends Event
     private $confirmLink;
 
     /**
-     * @param CustomerInterface $customer
+     * @param UserInterface     $user
      * @param string            $confirmLink
      */
-    public function __construct(CustomerInterface $customer, $confirmLink)
+    public function __construct(UserInterface $user, $confirmLink)
     {
-        $this->customer = $customer;
+        $this->user = $user;
         $this->confirmLink = $confirmLink;
     }
 
     /**
-     * @return CustomerInterface
+     * @return UserInterface
      */
-    public function getCustomer()
+    public function getUser()
     {
-        return $this->customer;
+        return $this->user;
     }
 
     /**

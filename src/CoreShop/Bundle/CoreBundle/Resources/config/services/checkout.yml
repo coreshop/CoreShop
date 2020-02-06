@@ -28,9 +28,9 @@ services:
     coreshop.checkout.step.customer: '@CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep'
     CoreShop\Bundle\CoreBundle\Checkout\Step\CustomerCheckoutStep:
         arguments:
-            - '@coreshop.context.customer'
             - '@form.factory'
-            - '@coreshop.customer.registration_service'
+            - '@coreshop.customer.manager'
+            - '@coreshop.context.locale'
 
     coreshop.checkout.step.address: '@CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep'
     CoreShop\Bundle\CoreBundle\Checkout\Step\AddressCheckoutStep:

@@ -90,7 +90,12 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     public function commitStep(CartInterface $cart, Request $request)
     {
-        $customer = $this->getCustomer();
+        $customer = $cart->getCustomer();
+
+        if (!$customer instanceof CustomerInterface) {
+            throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
+        }
+
         $form = $this->createForm($request, $cart, $customer);
 
         if ($form->isSubmitted()) {
@@ -113,28 +118,16 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
-        $customer = $this->getCustomer();
-
-        return [
-            'form' => $this->createForm($request, $cart, $customer)->createView(),
-            'hasShippableItems' => $cart->hasShippableItems(),
-        ];
-    }
-
-    /**
-     * @return CustomerInterface
-     *
-     * @throws CheckoutException
-     */
-    private function getCustomer()
-    {
-        $customer = $this->tokenStorage->getToken()->getUser();
+        $customer = $cart->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
             throw new CheckoutException(sprintf('Customer needs to implement CustomerInterface, %s given', (is_string($customer) ? $customer : get_class($customer))), 'coreshop.ui.error.coreshop_checkout_internal_error');
         }
 
-        return $customer;
+        return [
+            'form' => $this->createForm($request, $cart, $customer)->createView(),
+            'hasShippableItems' => $cart->hasShippableItems(),
+        ];
     }
 
     /**

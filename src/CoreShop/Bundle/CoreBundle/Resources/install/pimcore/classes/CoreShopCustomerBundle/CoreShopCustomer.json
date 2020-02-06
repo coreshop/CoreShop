@@ -132,27 +132,6 @@
                                 "visibleSearch": true
                             },
                             {
-                                "fieldtype": "password",
-                                "width": "",
-                                "algorithm": "md5",
-                                "salt": "",
-                                "saltlocation": "back",
-                                "name": "password",
-                                "title": "Password",
-                                "tooltip": "",
-                                "mandatory": false,
-                                "noteditable": false,
-                                "index": false,
-                                "locked": false,
-                                "style": "",
-                                "permissions": null,
-                                "datatype": "data",
-                                "relationType": false,
-                                "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
-                            },
-                            {
                                 "fieldtype": "newsletterActive",
                                 "defaultValue": 0,
                                 "name": "newsletterActive",
@@ -210,24 +189,6 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "checkbox",
-                                "defaultValue": 0,
-                                "name": "isGuest",
-                                "title": "Is Guest",
-                                "tooltip": "",
-                                "mandatory": false,
-                                "noteditable": false,
-                                "index": false,
-                                "locked": false,
-                                "style": "",
-                                "permissions": null,
-                                "datatype": "data",
-                                "relationType": false,
-                                "invisible": false,
-                                "visibleGridView": true,
-                                "visibleSearch": true
-                            },
-                            {
                                 "fieldtype": "gender",
                                 "options": [
                                     {
@@ -261,25 +222,6 @@
                                 "invisible": false,
                                 "visibleGridView": true,
                                 "visibleSearch": true
-                            },
-                            {
-                                "fieldtype": "input",
-                                "columnLength": 190,
-                                "regex": "",
-                                "name": "passwordResetHash",
-                                "title": "Reset Password Hash",
-                                "tooltip": "",
-                                "mandatory": false,
-                                "noteditable": true,
-                                "index": false,
-                                "locked": false,
-                                "style": "",
-                                "permissions": null,
-                                "datatype": "data",
-                                "relationType": false,
-                                "invisible": true,
-                                "visibleGridView": false,
-                                "visibleSearch": false
                             },
                             {
                                 "fieldtype": "input",

@@ -21,7 +21,16 @@
                 <div class="col-sm-12">
                     <div class="card card-smart">
                         <div class="card-body">
-                            {{ form(form, {'method': 'POST'}) }}
+                            {{ form_start(form, {'method': 'POST'}) }}
+
+                                {{ form_row(form.gender) }}
+                                {{ form_row(form.firstname) }}
+                                {{ form_row(form.lastname) }}
+                                {{ form_row(form.email) }}
+                                {{ form_row(form.user.plainPassword) }}
+                                {{ form_row(form.address) }}
+
+                            {{ form_end(form, {'method': 'POST'}) }}
                         </div>
                     </div>
                 </div>

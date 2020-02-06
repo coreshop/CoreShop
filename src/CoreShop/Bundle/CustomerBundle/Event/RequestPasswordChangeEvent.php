@@ -15,6 +15,9 @@ namespace CoreShop\Bundle\CustomerBundle\Event;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * @deprecated Deprecated since 2.2.0 and will be removed with 3.0.0. Has been replaced with UserBundle
+ */
 final class RequestPasswordChangeEvent extends Event
 {
     /**

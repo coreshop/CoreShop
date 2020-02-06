@@ -15,6 +15,9 @@ namespace CoreShop\Bundle\CoreBundle\Customer;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 
+/**
+ * @deprecated This class is deprecated since 2.2.0 in favor of CustomerManagerInterface and will be removed with 3.0.0. Please don't use anymore.
+ */
 interface RegistrationServiceInterface
 {
     /**

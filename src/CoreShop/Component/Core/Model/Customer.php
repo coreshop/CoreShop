@@ -23,6 +23,22 @@ class Customer extends BaseCustomer implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function getUser()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUser($user)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDefaultAddress()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

@@ -1,6 +1,14 @@
+parameters:
+    coreshop.form.type.customer_registration.validation_groups: [coreshop]
+    coreshop.form.type.customer_guest.validation_groups: [coreshop]
+
 services:
     _defaults:
         public: true
+
+    CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper:
+        arguments:
+            - '@property_accessor'
 
     CoreShop\Bundle\CoreBundle\Form\Extension\StoreTypeExtension:
         tags:
@@ -45,10 +53,27 @@ services:
             - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
+        arguments:
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.form.type.customer_registration.validation_groups%'
+            - '@CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper'
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\CoreBundle\Form\Type\UserRegistrationType:
+        arguments:
+            - '%coreshop.model.user.class%'
         tags:
             - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType:
+        arguments:
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.form.type.customer_guest.validation_groups%'
+            - '@CoreShop\Bundle\CoreBundle\Form\DataMapper\CustomerDataMapper'
+            - '@coreshop.repository.customer'
+            - '@coreshop.factory.customer'
         tags:
             - { name: form.type }
 

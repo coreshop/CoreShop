@@ -21,6 +21,25 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
+    public function findOneByEmail($email)
+    {
+        $list = $this->getList();
+
+        $list->setCondition('email = ?', [$email]);
+        $list->load();
+
+        $users = $list->getObjects();
+
+        if (count($users) > 0 && $users[0] instanceof CustomerInterface) {
+            return $users[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByResetToken($resetToken)
     {
         $list = $this->getList();
@@ -59,12 +78,11 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
 
         $conditions = ['email = ?'];
         $conditionsValues = [$email];
-        $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
-            $conditions[] = '(isGuest = ? OR isGuest IS NULL)';
+            $conditions[] = 'user__id IS NOT NULL';
         } else {
-            $conditions[] = 'isGuest = ?';
+            $conditions[] = 'user__id IS NULL';
         }
 
         $list->setCondition(implode(' AND ', $conditions), $conditionsValues);

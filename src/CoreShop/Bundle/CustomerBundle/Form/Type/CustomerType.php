@@ -68,23 +68,11 @@ class CustomerType extends AbstractResourceType
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
             ]);
 
-        if (!$options['guest'] && $options['allow_password_field']) {
-            $builder
-                ->add('password', RepeatedType::class, [
-                    'type' => PasswordType::class,
-                    'invalid_message' => 'coreshop.form.customer.password.must_match',
-                    'first_options' => ['label' => 'coreshop.form.customer.password'],
-                    'second_options' => ['label' => 'coreshop.form.customer.password_repeat'],
-                ]);
-        }
-
-        if (!$options['guest']) {
-            $builder
-                ->add('newsletterActive', CheckboxType::class, [
-                    'label' => 'coreshop.form.customer.newsletter.subscribe',
-                    'required' => false,
-                ]);
-        }
+        $builder
+            ->add('newsletterActive', CheckboxType::class, [
+                'label' => 'coreshop.form.customer.newsletter.subscribe',
+                'required' => false,
+            ]);
     }
 
     /**
@@ -94,21 +82,7 @@ class CustomerType extends AbstractResourceType
     {
         parent::configureOptions($resolver);
 
-        $resolver->setDefault('guest', false);
-        $resolver->setDefault('allow_password_field', false);
         $resolver->setDefault('customer', false);
-        $resolver->setDefaults(array(
-            'validation_groups' => function (FormInterface $form) {
-                $isGuest = $form->getConfig()->getOption('guest');
-                $validationGroups = $this->validationGroups;
-
-                if ($isGuest) {
-                    return $this->guestValidationGroups;
-                }
-
-                return $validationGroups;
-            },
-        ));
     }
 
     /**

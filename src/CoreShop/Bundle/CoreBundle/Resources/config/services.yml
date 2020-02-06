@@ -51,13 +51,13 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory.inner'
 
-    coreshop.security.customer.user_provider: '@CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider'
+    coreshop.security.user_provider: '@CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider'
     CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider:
         arguments:
-            - '@coreshop.repository.customer'
-            - '%coreshop.model.customer.class%'
+            - '@coreshop.repository.user'
+            - '%coreshop.model.user.class%'
 
-    coreshop.security.customer.password_encoder_factory:
+    coreshop.security.user.password_encoder_factory:
         class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory
         arguments:
             - Pimcore\Security\Encoder\PasswordFieldEncoder

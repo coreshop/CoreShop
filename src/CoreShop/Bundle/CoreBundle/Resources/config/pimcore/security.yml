@@ -1,24 +1,24 @@
 pimcore:
     security:
         encoder_factories:
-            '%coreshop.model.customer.class%': coreshop.security.customer.password_encoder_factory
+            '%coreshop.model.user.class%': coreshop.security.user.password_encoder_factory
 
 security:
     providers:
-        coreshop_customer:
-            id: coreshop.security.customer.user_provider
+        coreshop_user:
+            id: coreshop.security.user_provider
 
     firewalls:
         coreshop_frontend:
             anonymous: ~
-            provider: coreshop_customer
+            provider: coreshop_user
             pattern: ^/(?!(admin)).*$
             context: shop
             logout_on_user_change: true
             form_login:
                 login_path: coreshop_login
                 check_path: coreshop_login_check
-                provider: coreshop_customer
+                provider: coreshop_user
                 failure_path: coreshop_login
                 default_target_path: coreshop_index
                 use_forward: false

@@ -9,12 +9,17 @@ services:
     CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface: '@CoreShop\Bundle\CoreBundle\Customer\RegistrationService'
     CoreShop\Bundle\CoreBundle\Customer\RegistrationService:
         arguments:
-            - '@coreshop.repository.customer'
+            - '@CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface'
+
+    coreshop.customer.manager: '@CoreShop\Bundle\CoreBundle\Customer\CustomerManager'
+    CoreShop\Bundle\CoreBundle\Customer\CustomerManagerInterface: '@CoreShop\Bundle\CoreBundle\Customer\CustomerManager'
+    CoreShop\Bundle\CoreBundle\Customer\CustomerManager:
+        arguments:
             - '@coreshop.object_service'
             - '@event_dispatcher'
-            - '@coreshop.context.locale'
             - '%coreshop.folder.customer%'
             - '%coreshop.folder.guest%'
+            - '%coreshop.folder.user%'
             - '%coreshop.folder.address%'
 
     coreshop.customer.login_service: '@CoreShop\Bundle\CoreBundle\Customer\CustomerLoginService'

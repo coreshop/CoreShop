@@ -16,6 +16,9 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\ClassDefinition\DynamicOptionsProvider\MultiSelectOptionsProviderInterface;
 use Psr\Container\ContainerInterface;
 
+/**
+ * @deprecated Deprecated since 2.2.0 and will be removed with 3.0.0. Has been replaced with UserBundle
+ */
 class RoleOptionsProvider implements MultiSelectOptionsProviderInterface
 {
     /**

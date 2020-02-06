@@ -60,3 +60,10 @@ services:
             - '@coreshop.context.country'
         tags:
             - { name: 'coreshop.context.currency' }
+
+    CoreShop\Component\Core\Context\TokenBasedCustomerContext:
+        public: false
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: coreshop.context.customer, priority: 10 }

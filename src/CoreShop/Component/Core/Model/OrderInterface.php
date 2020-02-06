@@ -15,7 +15,8 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Order\Model\OrderInterface as BaseOrderInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Shipping\Model\CarrierAwareInterface;
+use CoreShop\Component\User\Model\UserAwareInterface;
 
-interface OrderInterface extends BaseOrderInterface, SaleInterface, CarrierAwareInterface, PaymentSettingsAwareInterface
+interface OrderInterface extends BaseOrderInterface, SaleInterface, CarrierAwareInterface, PaymentSettingsAwareInterface, UserAwareInterface
 {
 }

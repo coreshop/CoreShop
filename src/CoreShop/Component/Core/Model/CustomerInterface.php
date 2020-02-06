@@ -15,8 +15,9 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
+use CoreShop\Component\User\Model\UserAwareInterface;
 
-interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
+interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface, UserAwareInterface
 {
     /**
      * @return AddressInterface

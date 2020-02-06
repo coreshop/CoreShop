@@ -57,9 +57,19 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * Find Customer by Email.
      *
+     *
      * @param string $email
      *
      * @return CustomerInterface|null
      */
     public function findCustomerByEmail($email);
+
+    /**
+     * Find Customer by Email.
+     *
+     * @param string $email
+     *
+     * @return CustomerInterface|null
+     */
+    public function findOneByEmail($email);
 }
