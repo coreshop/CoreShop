@@ -3,6 +3,9 @@ imports:
     - { resource: 'services/profiler.yml' }
     - { resource: 'services/pimcore.yml' }
 
+parameters:
+    coreshop.session.country.geoip: 'coreshop.country.geoip'
+
 services:
     _defaults:
         public: true
@@ -37,6 +40,8 @@ services:
     CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver:
         public: false
         arguments:
+            - '@session'
+            - '%coreshop.session.country.geoip%'
             - '@coreshop.repository.country'
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
