@@ -14,7 +14,7 @@ namespace CoreShop\Component\Cart\Cart;
 
 use CoreShop\Component\Order\Model\CartInterface;
 
-class CartContextResolver implements CartContextResolverInterface
+final class CartContextResolver implements CartContextResolverInterface
 {
     public function resolveCartContext(CartInterface $cart)
     {

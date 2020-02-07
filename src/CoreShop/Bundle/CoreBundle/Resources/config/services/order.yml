@@ -127,4 +127,4 @@ services:
     CoreShop\Component\Core\Cart\CartContextResolver:
         decorates: 'CoreShop\Component\Cart\Cart\CartContextResolver'
         arguments:
-            - 'CoreShop\Component\Core\Cart\CartContextResolver.inner'
+            - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'

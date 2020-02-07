@@ -17,7 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
 
-class CartContextResolver implements CartContextResolverInterface
+final class CartContextResolver implements CartContextResolverInterface
 {
     /**
      * @var CartContextResolverInterface

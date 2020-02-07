@@ -52,7 +52,7 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
     {
         if (null === $this->cartContextResolver) {
             @trigger_error(
-                'Using CartItemsWholesaleProcessor without a CarContextResolverInterpreter is deprecated since 2.1.2 and will be removed with 3.0.0',
+                'Using CartItemsWholesaleProcessor without a CartContextResolverInterface is deprecated since 2.1.2 and will be removed with 3.0.0',
                 E_USER_DEPRECATED
             );
 
