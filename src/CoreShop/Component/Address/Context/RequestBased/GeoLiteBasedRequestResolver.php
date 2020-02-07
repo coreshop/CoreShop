@@ -64,7 +64,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             throw new CountryNotFoundException();
         }
 
-        $cacheKey = md5($clientIp);
+        $cacheKey = sprintf('geo_lite_ip_%s', md5($clientIp));
 
         if ($countryIsoCode = $this->cache->getItem($cacheKey)) {
             $country = $this->countryRepository->findByCode($countryIsoCode);
