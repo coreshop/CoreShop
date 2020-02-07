@@ -16,5 +16,9 @@ use CoreShop\Component\Order\Model\CartInterface;
 
 interface CartContextResolverInterface
 {
+    /**
+     * @param CartInterface $cart
+     * @return array
+     */
     public function resolveCartContext(CartInterface $cart);
 }
