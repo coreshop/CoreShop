@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use GeoIp2\Database\Reader;
+use Pimcore\Cache\Core\CoreHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
@@ -26,11 +27,24 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     private $countryRepository;
 
     /**
-     * @param CountryRepositoryInterface $countryRepository
+     * @var CoreHandlerInterface
      */
-    public function __construct(CountryRepositoryInterface $countryRepository)
+    private $cache;
+
+    /**
+     * @var string
+     */
+    private $geoDbFile;
+
+    /**
+     * @param CountryRepositoryInterface $countryRepository
+     * @param CoreHandlerInterface       $cache
+     */
+    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache)
     {
         $this->countryRepository = $countryRepository;
+        $this->cache = $cache;
+        $this->geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
     }
 
     /**
@@ -38,29 +52,61 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
+        if (!file_exists($this->geoDbFile)) {
+            throw new CountryNotFoundException();
+        }
 
-        if (file_exists($geoDbFile)) {
-            try {
-                $reader = new Reader($geoDbFile);
+        $record = null;
+        $isoCode = null;
+        $clientIp = $request->getClientIp();
 
-                $clientIp = $request->getClientIp();
+        if ($this->checkIfIpIsPrivate($clientIp)) {
+            throw new CountryNotFoundException();
+        }
 
-                if (!$this->checkIfIpIsPrivate($clientIp)) {
-                    $record = $reader->city($clientIp);
+        $cacheKey = sprintf('geo_lite_ip_%s', md5($clientIp));
 
-                    $country = $this->countryRepository->findByCode($record->country->isoCode);
+        if ($countryIsoCode = $this->cache->getItem($cacheKey)) {
+            $country = $this->countryRepository->findByCode($countryIsoCode);
 
-                    if ($country instanceof CountryInterface) {
-                        return $country;
-                    }
-                }
-            } catch (\Exception $e) {
-                //If something goes wrong, ignore the exception and throw a CountryNotFoundException
+            if ($country instanceof CountryInterface) {
+                return $country;
             }
         }
 
-        throw new CountryNotFoundException();
+        $countryIsoCode = $this->guessCountryByGeoLite($clientIp);
+
+        if ($countryIsoCode === null) {
+            throw new CountryNotFoundException();
+        }
+
+        $country = $this->countryRepository->findByCode($countryIsoCode);
+
+        if (!$country instanceof CountryInterface) {
+            throw new CountryNotFoundException();
+        }
+
+        $this->cache->save($cacheKey, $countryIsoCode, [], 24*60*60);
+
+        return $country;
+    }
+
+    /**
+     * @param string $clientIp
+     *
+     * @return string|null
+     */
+    private function guessCountryByGeoLite($clientIp)
+    {
+        try {
+            $reader = new Reader($this->geoDbFile);
+            $record = $reader->city($clientIp);
+            return $record->country->isoCode;
+        } catch (\Exception $e) {
+            //If something goes wrong, ignore the exception and throw a CountryNotFoundException
+        }
+
+        return null;
     }
 
     /**
@@ -72,7 +118,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private function checkIfIpIsPrivate($clientIp)
     {
-        $priAddrs = [
+        $privateAddresses = [
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
@@ -81,8 +127,8 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         ];
 
         $longIp = ip2long($clientIp);
-        if ($longIp != -1) {
-            foreach ($priAddrs as $priAddr) {
+        if ($longIp !== -1) {
+            foreach ($privateAddresses as $priAddr) {
                 list($start, $end) = explode('|', $priAddr);
 
                 // IF IS PRIVATE
