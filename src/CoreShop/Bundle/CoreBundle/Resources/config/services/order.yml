@@ -123,3 +123,8 @@ services:
     coreshop.core.cart_item.quantity_modifier: '@CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier'
     CoreShop\Component\Core\Order\Modifier\CartItemQuantityModifier:
         decorates: coreshop.cart_item.quantity_modifier
+
+    CoreShop\Component\Core\Cart\CartContextResolver:
+        decorates: 'CoreShop\Component\Cart\Cart\CartContextResolver'
+        arguments:
+            - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'

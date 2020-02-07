@@ -45,3 +45,6 @@ services:
             - '%coreshop.session.cart%'
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Component\Cart\Cart\CartContextResolverInterface: '@CoreShop\Component\Cart\Cart\CartContextResolver'
+    CoreShop\Component\Cart\Cart\CartContextResolver: ~
