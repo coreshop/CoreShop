@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type\Worker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -33,7 +34,10 @@ final class MysqlWorkerTableIndexType extends AbstractType
                     TableIndex::TABLE_INDEX_TYPE_UNIQUE,
                 ],
             ])
-            ->add('columns', TextType::class);
+            ->add('columns', CollectionType::class, [
+                'allow_delete' => true,
+                'allow_add' => true
+            ]);
     }
 
     /**
