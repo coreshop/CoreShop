@@ -39,6 +39,7 @@ services:
         arguments:
             - '@coreshop.repository.country'
             - '@pimcore.cache.core.handler'
+            - '%pimcore.geoip.db_file%'
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 

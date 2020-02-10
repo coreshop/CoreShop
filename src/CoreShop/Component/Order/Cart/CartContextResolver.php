@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Cart\Cart;
+namespace CoreShop\Component\Order\Cart;
 
 use CoreShop\Component\Order\Model\CartInterface;
 
