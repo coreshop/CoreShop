@@ -52,24 +52,32 @@ final class CountryContext implements Context
     private $fixedCountryContext;
 
     /**
+     * @var string
+     */
+    private $kernelRootDirectory;
+
+    /**
      * @param SharedStorageInterface     $sharedStorage
      * @param ObjectManager              $objectManager
      * @param FactoryInterface           $countryFactory
      * @param CountryRepositoryInterface $countryRepository
      * @param FixedCountryContext        $fixedCountryContext
+     * @param string                     $kernelRootDirectory
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $countryFactory,
         CountryRepositoryInterface $countryRepository,
-        FixedCountryContext $fixedCountryContext
+        FixedCountryContext $fixedCountryContext,
+        string $kernelRootDirectory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->countryFactory = $countryFactory;
         $this->countryRepository = $countryRepository;
         $this->fixedCountryContext = $fixedCountryContext;
+        $this->kernelRootDirectory = $kernelRootDirectory;
     }
 
     /**
@@ -147,13 +155,11 @@ final class CountryContext implements Context
      */
     public function iDownloadedTheGeoLite2DB()
     {
-        $rootDir = PIMCORE_PROJECT_ROOT;
-
         $cmd = sprintf(
             '%s/etc/geoipupdate/geoipupdate -f %s/etc/geoipupdate/GeoIP.conf -d %s/var/config/',
-            $rootDir,
-            $rootDir,
-            $rootDir
+            $this->kernelRootDirectory,
+            $this->kernelRootDirectory,
+            $this->kernelRootDirectory
         );
 
         Console::exec($cmd);
