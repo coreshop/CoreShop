@@ -112,6 +112,7 @@ services:
             - '@coreshop.repository.country'
             - '@coreshop.context.country'
             - '@coreshop.address.formatter'
+            - '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
         tags:
             - { name: fob.context_service }
 

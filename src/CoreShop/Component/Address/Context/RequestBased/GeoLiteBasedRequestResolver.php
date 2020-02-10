@@ -37,14 +37,21 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     private $geoDbFile;
 
     /**
+     * @var string
+     */
+    private $geoDbFallbackFile;
+
+    /**
      * @param CountryRepositoryInterface $countryRepository
      * @param CoreHandlerInterface       $cache
+     * @param string                     $geoDbFile
      */
-    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache)
+    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache, string $geoDbFile = null)
     {
         $this->countryRepository = $countryRepository;
         $this->cache = $cache;
-        $this->geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
+        $this->geoDbFile = $geoDbFile;
+        $this->geoDbFallbackFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
     }
 
     /**
@@ -52,7 +59,18 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        if (!file_exists($this->geoDbFile)) {
+        $geoDbFileLocation = $this->geoDbFile;
+
+        if (!file_exists($geoDbFileLocation)) {
+            @trigger_error(
+                'You are still using the default search path for the MaxMind GEO DB File. Pimcore introduced a new parameter for the file, use that instead.',
+                E_USER_DEPRECATED
+            );
+
+            $geoDbFileLocation = $this->geoDbFallbackFile;
+        }
+
+        if (!file_exists($geoDbFileLocation)) {
             throw new CountryNotFoundException();
         }
 
@@ -66,7 +84,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 
         $cacheKey = sprintf('geo_lite_ip_%s', md5($clientIp));
 
-        if ($countryIsoCode = $this->cache->getItem($cacheKey)) {
+        if ($countryIsoCode = $this->cache->load($cacheKey)) {
             $country = $this->countryRepository->findByCode($countryIsoCode);
 
             if ($country instanceof CountryInterface) {
@@ -74,7 +92,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             }
         }
 
-        $countryIsoCode = $this->guessCountryByGeoLite($clientIp);
+        $countryIsoCode = $this->guessCountryByGeoLite($clientIp, $geoDbFileLocation);
 
         if ($countryIsoCode === null) {
             throw new CountryNotFoundException();
@@ -93,13 +111,14 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 
     /**
      * @param string $clientIp
+     * @param string $geoDbFileLocation
      *
      * @return string|null
      */
-    private function guessCountryByGeoLite($clientIp)
+    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation)
     {
         try {
-            $reader = new Reader($this->geoDbFile);
+            $reader = new Reader($geoDbFileLocation);
             $record = $reader->city($clientIp);
             return $record->country->isoCode;
         } catch (\Exception $e) {

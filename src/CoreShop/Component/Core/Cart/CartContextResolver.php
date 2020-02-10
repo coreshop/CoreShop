@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Cart;
 
-use CoreShop\Component\Cart\Cart\CartContextResolverInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
