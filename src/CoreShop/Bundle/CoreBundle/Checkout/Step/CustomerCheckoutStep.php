@@ -22,9 +22,8 @@ use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
@@ -44,12 +43,11 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
      */
     private $registrationService;
 
-    /**
-     * @param CustomerContextInterface     $customerContext
-     * @param FormFactoryInterface         $formFactory
-     * @param RegistrationServiceInterface $registrationService
-     */
-    public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory, RegistrationServiceInterface $registrationService)
+    public function __construct(
+        CustomerContextInterface $customerContext,
+        FormFactoryInterface $formFactory,
+        RegistrationServiceInterface $registrationService
+    )
     {
         $this->customerContext = $customerContext;
         $this->formFactory = $formFactory;
@@ -67,7 +65,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart)
     {
         return true;
     }
@@ -75,7 +73,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart)
     {
         if (!$cart->hasItems()) {
             return false;
@@ -95,7 +93,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request)
     {
         $form = $this->createForm($request);
 
@@ -130,24 +128,18 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request)
     {
         return [
             'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return FormInterface
-     */
     private function createForm(Request $request)
     {
         $view = $this->formFactory->createNamed('guest', GuestRegistrationType::class);
 
-        $handledView = $view->handleRequest($request);
 
-        return $handledView;
+        return $view->handleRequest($request);
     }
 }

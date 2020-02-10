@@ -12,18 +12,18 @@
 
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface AddToCartInterface
 {
     /**
-     * @return CartInterface
+     * @return OrderInterface
      */
     public function getCart();
 
     /**
-     * @return CartItemInterface
+     * @return OrderItemInterface
      */
     public function getCartItem();
 }

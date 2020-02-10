@@ -17,7 +17,7 @@ use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
@@ -73,7 +73,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applyDiscount(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
     }
@@ -81,7 +81,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applySurcharge(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applySurcharge(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
     }
@@ -89,7 +89,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
+    protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
     {
         $totalAmount = [];
 
@@ -191,5 +191,3 @@ class CartRuleApplier implements CartRuleApplierInterface
         );
     }
 }
-
-class_alias(CartRuleApplier::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier');

@@ -16,7 +16,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
@@ -58,7 +58,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $store = $cart->getStore();
 
@@ -66,6 +66,8 @@ final class CartItemTaxProcessor implements CartProcessorInterface
          * @var StoreInterface $store
          */
         Assert::isInstanceOf($store, StoreInterface::class);
+
+        $totalTaxes = 0;
 
         /**
          * @var CartItemInterface $item

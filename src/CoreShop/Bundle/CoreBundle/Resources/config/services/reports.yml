@@ -61,7 +61,6 @@ services:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
             - '@coreshop.repository.order'
-            - '@coreshop.repository.cart'
         tags:
             - { name: coreshop.report, type: carts }
             - { name: coreshop.portlet, type: order_cart }
@@ -71,7 +70,7 @@ services:
         arguments:
             - '@coreshop.repository.store'
             - '@doctrine.dbal.default_connection'
-            - '@coreshop.repository.cart'
+            - '@coreshop.repository.order'
             - '@coreshop.repository.customer'
             - '@coreshop.context.locale'
         tags:

@@ -10,15 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Cart;
+namespace CoreShop\Component\Order;
 
-use CoreShop\Component\Order\Model\OrderInterface;
-
-interface CartContextResolverInterface
+final class OrderSaleStates
 {
-    /**
-     * @param OrderInterface $cart
-     * @return array
-     */
-    public function resolveCartContext(OrderInterface $cart): array;
+    const STATE_CART = 'cart';
+    const STATE_ORDER = 'order';
+    const STATE_QUOTE = 'quote';
 }

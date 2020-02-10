@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -65,7 +65,7 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $priceRuleItems = $cart->getPriceRuleItems();
 

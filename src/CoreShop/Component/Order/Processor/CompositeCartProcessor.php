@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeCartProcessor implements CartProcessorInterface
@@ -39,7 +39,7 @@ final class CompositeCartProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         foreach ($this->cartProcessors as $cartProcessor) {
             $cartProcessor->process($cart);

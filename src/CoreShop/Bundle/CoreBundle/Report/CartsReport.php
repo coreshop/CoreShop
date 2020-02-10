@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -43,27 +44,14 @@ class CartsReport implements ReportInterface, PortletInterface
      */
     private $orderRepository;
 
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $cartRepository;
-
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param PimcoreRepositoryInterface $orderRepository,
-     * @param PimcoreRepositoryInterface $cartRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
-        PimcoreRepositoryInterface $orderRepository,
-        PimcoreRepositoryInterface $cartRepository
+        PimcoreRepositoryInterface $orderRepository
     ) {
         $this->storeRepository = $storeRepository;
         $this->db = $db;
         $this->orderRepository = $orderRepository;
-        $this->cartRepository = $cartRepository;
     }
 
     /**
@@ -100,9 +88,8 @@ class CartsReport implements ReportInterface, PortletInterface
         $toTimestamp = $to->getTimestamp();
 
         $orderClassId = $this->orderRepository->getClassId();
-        $cartClassId = $this->cartRepository->getClassId();
 
-        if (is_null($storeId)) {
+        if ($storeId === null) {
             return [];
         }
 
@@ -124,15 +111,15 @@ class CartsReport implements ReportInterface, PortletInterface
                     COUNT(*) as orderCount,
                     DATE(FROM_UNIXTIME(orderDate)) as orderDateTimestamp
                   FROM object_query_$orderClassId AS orders
-                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp
+                  WHERE store = $storeId AND orderDate > $fromTimestamp AND orderDate < $toTimestamp and orders.saleState === '".OrderSaleStates::STATE_ORDER."'
                   GROUP BY DATE(FROM_UNIXTIME(orderDate))
                 ) as ordersQuery
                 $join OUTER JOIN (
                   SELECT
                     COUNT(*) as cartCount,
                     DATE(FROM_UNIXTIME(o_creationDate)) as cartDateTimestamp
-                  FROM object_$cartClassId AS carts
-                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp
+                  FROM object_$orderClassId AS carts
+                  WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp and carts-saleState === '".OrderSaleStates::STATE_CART."'
                   GROUP BY DATE(FROM_UNIXTIME(o_creationDate))
                 ) as cartsQuery ON cartsQuery.cartDateTimestamp = ordersQuery.orderDateTimestamp
             ";

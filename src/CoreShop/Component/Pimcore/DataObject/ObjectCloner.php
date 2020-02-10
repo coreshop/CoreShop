@@ -28,6 +28,7 @@ final class ObjectCloner implements ObjectClonerInterface
         $newObject->setId(null);
         $newObject->setParent($parent);
         $newObject->setKey($key);
+        $newObject->setProperty('original_ref', 'object', $object);
         $newObject->save();
 
         return $newObject;

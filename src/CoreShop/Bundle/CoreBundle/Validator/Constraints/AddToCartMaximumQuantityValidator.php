@@ -14,8 +14,8 @@ namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\CartItemResolver;
@@ -84,8 +84,8 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
         }
 
         /**
-         * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
+         * @var OrderInterface      $cart
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $addToCartDto->getCartItem();
         $cart = $addToCartDto->getCart();
@@ -104,19 +104,13 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {

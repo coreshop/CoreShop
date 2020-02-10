@@ -16,7 +16,8 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -48,12 +49,6 @@ final class CartItemsProcessor implements CartProcessorInterface
      */
     private $cartItemProcessor;
 
-    /**
-     * @param PurchasableCalculatorInterface     $productPriceCalculator
-     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
-     * @param CartItemProcessorInterface         $cartItemProcessor
-     * @param CartContextResolverInterface       $cartContextResolver
-     */
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
@@ -69,7 +64,7 @@ final class CartItemsProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         if (null === $this->cartContextResolver) {
             @trigger_error(
@@ -95,8 +90,11 @@ final class CartItemsProcessor implements CartProcessorInterface
             $context = $this->cartContextResolver->resolveCartContext($cart);
         }
 
+        $subtotalGross = 0;
+        $subtotalNet = 0;
+
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getIsGiftItem()) {
@@ -149,6 +147,12 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context
             );
+
+            $subtotalGross += $item->getTotal(true);
+            $subtotalNet += $item->getTotal(false);
         }
+
+        $cart->setSubtotal($subtotalGross, true);
+        $cart->setSubtotal($subtotalNet, false);
     }
 }

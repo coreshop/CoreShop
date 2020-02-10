@@ -12,18 +12,18 @@
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 interface CartPriceRuleProcessorInterface
 {
     /**
-     * @param CartInterface                          $cart
+     * @param OrderInterface                         $cart
      * @param CartPriceRuleInterface                 $cartPriceRule
      * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
      *
      * @return bool
      */
-    public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
+    public function process(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool;
 }

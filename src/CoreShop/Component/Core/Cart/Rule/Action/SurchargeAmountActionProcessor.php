@@ -18,7 +18,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use Webmozart\Assert\Assert;
 
@@ -57,7 +57,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $discount = $this->getDiscount($cart, $configuration);
 
@@ -73,7 +73,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }
@@ -81,7 +81,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(CartInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
@@ -108,7 +108,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
      *
      * @return int
      */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    protected function getApplicableAmount($cartAmount, $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

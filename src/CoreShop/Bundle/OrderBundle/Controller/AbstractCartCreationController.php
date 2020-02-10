@@ -52,7 +52,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
      */
     public function salePreviewAction(Request $request)
     {
-        $cart = $this->get('coreshop.factory.cart')->createNew();
+        $cart = $this->get('coreshop.factory.order')->createNew();
         $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
             'customer' => $request->get('customer'),
         ]);
@@ -80,7 +80,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
     {
         $this->isGrantedOr403();
 
-        $cart = $this->get('coreshop.factory.cart')->createNew();
+        $cart = $this->get('coreshop.factory.order')->createNew();
         $form = $this->get('form.factory')->createNamed('', CartCreationType::class, $cart, [
             'customer' => $request->get('customer'),
         ]);

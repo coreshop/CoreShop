@@ -12,10 +12,133 @@
 
 namespace CoreShop\Component\Order\Model;
 
-interface OrderItemInterface extends SaleItemInterface
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+
+interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface, BaseAdjustableInterface, StorageListItemInterface
 {
     /**
-     * @return OrderInterface
+     * @return PurchasableInterface
      */
-    public function getOrder();
+    public function getProduct();
+
+    /**
+     * @param int  $total
+     * @param bool $withTax
+     */
+    public function setTotal($total, $withTax = true);
+
+    /**
+     * @param PurchasableInterface $product
+     */
+    public function setProduct($product);
+
+    /**
+     * @return float
+     */
+    public function getQuantity();
+
+    /**
+     * @param float $quantity
+     */
+    public function setQuantity($quantity);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getItemPrice($withTax = true);
+
+    /**
+     * @param int  $itemPrice
+     * @param bool $withTax
+     */
+    public function setItemPrice($itemPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getItemRetailPrice($withTax = true);
+
+    /**
+     * @param int  $itemRetailPrice
+     * @param bool $withTax
+     */
+    public function setItemRetailPrice($itemRetailPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getItemDiscountPrice($withTax = true);
+
+    /**
+     * @param int  $itemDiscountPrice
+     * @param bool $withTax
+     */
+    public function setItemDiscountPrice($itemDiscountPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getItemDiscount($withTax = true);
+
+    /**
+     * @param int  $itemDiscount
+     * @param bool $withTax
+     */
+    public function setItemDiscount($itemDiscount, $withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getItemWholesalePrice();
+
+    /**
+     * @param int $itemWholesalePrice
+     */
+    public function setItemWholesalePrice($itemWholesalePrice);
+
+    /**
+     * @return int
+     */
+    public function getItemTax();
+
+    /**
+     * @param int $itemTax
+     */
+    public function setItemTax($itemTax);
+
+    /**
+     * @return int
+     */
+    public function getTotalTax();
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getTotal($withTax = true);
+
+    /**
+     * @return bool
+     */
+    public function getIsGiftItem();
+
+    /**
+     * @return mixed
+     */
+    public function getTaxes();
+
+    /**
+     * @param mixed $taxes
+     */
+    public function setTaxes($taxes);
 }

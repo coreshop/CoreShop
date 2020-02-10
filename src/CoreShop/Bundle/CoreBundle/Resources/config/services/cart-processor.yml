@@ -79,3 +79,7 @@ services:
             - '@coreshop.taxation.factory.tax_calculator'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
+
+    CoreShop\Component\Core\Order\Processor\CartTotalProcessor:
+        tags:
+            - { name: coreshop.cart_processor, priority: 100 }

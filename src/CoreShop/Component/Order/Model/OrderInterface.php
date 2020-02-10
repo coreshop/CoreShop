@@ -12,81 +12,229 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use Carbon\Carbon;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerAwareInterface;
+use CoreShop\Component\Locale\Model\LocaleAwareInterface;
 use CoreShop\Component\Payment\Model\PayableInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
+use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
-interface OrderInterface extends SaleInterface, PayableInterface
+interface OrderInterface extends
+    PimcoreModelInterface,
+    CurrencyAwareInterface,
+    StoreAwareInterface,
+    LocaleAwareInterface,
+    AdjustableInterface,
+    CustomerAwareInterface,
+    PayableInterface,
+    StorageListInterface
 {
-    /**
-     * @return string
-     */
-    public function getOrderState();
-
-    /**
-     * @param string $orderState
-     */
-    public function setOrderState($orderState);
 
     /**
      * @return string
      */
-    public function getShippingState();
+    public function getSaleState();
 
     /**
-     * @param string $shippingState
+     * @param string $saleState
      */
-    public function setShippingState($shippingState);
+    public function setSaleState($saleState);
 
     /**
-     * @return string
+     * @return CurrencyInterface
      */
-    public function getInvoiceState();
+    public function getCurrency();
 
     /**
-     * @param string $invoiceState
+     * @param CurrencyInterface $currency
+     *
+     * @return mixed
      */
-    public function setInvoiceState($invoiceState);
+    public function setCurrency($currency);
 
     /**
-     * @return string
+     * @param bool $withTax
+     *
+     * @return int
      */
-    public function getPaymentState();
+    public function getTotal($withTax = true);
 
     /**
-     * @param string $paymentState
+     * @return int
      */
-    public function setPaymentState($paymentState);
+    public function getTotalTax();
 
     /**
-     * @return Carbon
+     * @param bool $withTax
+     *
+     * @return int
      */
-    public function getOrderDate();
+    public function getSubtotal($withTax = true);
 
     /**
-     * @param Carbon $orderDate
+     * @param int  $subtotal
+     * @param bool $withTax
+     * @return mixed
      */
-    public function setOrderDate($orderDate);
+    public function setSubtotal($subtotal, $withTax = true);
 
     /**
-     * @return string
+     * @return int
      */
-    public function getOrderNumber();
+    public function getSubtotalTax();
 
     /**
-     * @param string $orderNumber
+     * @param bool $withTax
+     *
+     * @return int
      */
-    public function setOrderNumber($orderNumber);
+    public function getDiscount($withTax = true);
 
     /**
-     * @return string
+     * @return ProposalItemInterface[]
      */
-    public function getToken();
+    public function getItems();
 
     /**
-     * @param string $token
+     * @param ProposalItemInterface[] $items
      */
-    public function setToken($token);
+    public function setItems($items);
+
+    /**
+     * @return bool
+     */
+    public function hasItems();
+
+    /**
+     * @param ProposalItemInterface $item
+     */
+    public function addItem($item);
+
+    /**
+     * @param ProposalItemInterface $item
+     */
+    public function removeItem($item);
+
+    /**
+     * @param ProposalItemInterface $item
+     *
+     * @return bool
+     */
+    public function hasItem($item);
+
+    /**
+     * @return AddressInterface|null
+     */
+    public function getShippingAddress();
+
+    /**
+     * @param AddressInterface $shippingAddress
+     */
+    public function setShippingAddress($shippingAddress);
+
+    /**
+     * @return AddressInterface|null
+     */
+    public function getInvoiceAddress();
+
+    /**
+     * @param AddressInterface $invoiceAddress
+     */
+    public function setInvoiceAddress($invoiceAddress);
+
+    /**
+     * @return Fieldcollection
+     */
+    public function getTaxes();
+
+    /**
+     * @param Fieldcollection $taxes
+     */
+    public function setTaxes($taxes);
+
+    /**
+     * @return string|null
+     */
+    public function getComment();
+
+    /**
+     * @param string $comment
+     */
+    public function setComment($comment);
+
+    /**
+     * @return \Pimcore\Model\DataObject\Objectbrick|null
+     */
+    public function getAdditionalData();
+
+    /**
+     * @param \Pimcore\Model\DataObject\Objectbrick $additionalData
+     */
+    public function setAdditionalData($additionalData);
+
+    /**
+     * @return array
+     */
+    public function getPriceRuleItems();
+
+    /**
+     * @param array $priceRuleItems
+     */
+    public function setPriceRuleItems($priceRuleItems);
+
+    /**
+     * @return array
+     */
+    public function getPriceRules();
+
+    /**
+     * @return bool
+     */
+    public function hasPriceRules();
+
+    /**
+     * @param ProposalCartPriceRuleItemInterface $priceRule
+     */
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
+
+    /**
+     * @param ProposalCartPriceRuleItemInterface $priceRule
+     */
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule);
+
+    /**
+     * @param ProposalCartPriceRuleItemInterface $priceRule
+     *
+     * @return bool
+     */
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule);
+
+    /**
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return bool
+     */
+    public function hasCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    );
+
+    /**
+     * @param CartPriceRuleInterface                 $cartPriceRule
+     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
+     *
+     * @return ProposalCartPriceRuleItemInterface|null
+     */
+    public function getPriceRuleByCartPriceRule(
+        CartPriceRuleInterface $cartPriceRule,
+        CartPriceRuleVoucherCodeInterface $voucherCode = null
+    );
 
     /**
      * @return PaymentProviderInterface

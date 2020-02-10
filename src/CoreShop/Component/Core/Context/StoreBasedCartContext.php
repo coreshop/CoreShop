@@ -12,13 +12,13 @@
 
 namespace CoreShop\Component\Core\Context;
 
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class StoreBasedCartContext implements CartContextInterface
@@ -34,7 +34,7 @@ final class StoreBasedCartContext implements CartContextInterface
     private $shopperContext;
 
     /**
-     * @var CartInterface|null
+     * @var OrderInterface|null
      */
     private $cart;
 
@@ -51,13 +51,12 @@ final class StoreBasedCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         if (null !== $this->cart) {
             return $this->cart;
         }
 
-        /** @var CartInterface $cart */
         $cart = $this->cartContext->getCart();
 
         try {
@@ -85,10 +84,10 @@ final class StoreBasedCartContext implements CartContextInterface
     }
 
     /**
-     * @param CartInterface     $cart
+     * @param OrderInterface    $cart
      * @param CustomerInterface $customer
      */
-    private function setCustomerAndAddressOnCart(CartInterface $cart, CustomerInterface $customer)
+    private function setCustomerAndAddressOnCart(OrderInterface $cart, CustomerInterface $customer)
     {
         $cart->setCustomer($customer);
 

@@ -17,7 +17,7 @@ use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
@@ -40,11 +40,6 @@ final class CartTaxProcessor implements CartProcessorInterface
      */
     private $taxCalculationFactory;
 
-    /**
-     * @param TaxCollectorInterface         $taxCollector
-     * @param AddressProviderInterface      $defaultAddressProvider
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
@@ -58,7 +53,7 @@ final class CartTaxProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->setTaxes(null);
 
@@ -79,14 +74,14 @@ final class CartTaxProcessor implements CartProcessorInterface
     }
 
     /**
-     * @param CartInterface $cart
-     * @param array         $usedTaxes
+     * @param OrderInterface $cart
+     * @param array          $usedTaxes
      *
      * @return array
      */
-    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    private function collectionShippingTaxes(OrderInterface $cart, array $usedTaxes = [])
     {
-        if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             return $usedTaxes;
         }
 

@@ -15,7 +15,6 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
@@ -86,7 +85,7 @@ final class OrderContext implements Context
     /**
      * @Given /^I create an order from (my cart)$/
      */
-    public function transformCartToOrder(CartInterface $cart)
+    public function transformCartToOrder(OrderInterface $cart)
     {
         $cart->setStore($this->storeContext->getStore());
 

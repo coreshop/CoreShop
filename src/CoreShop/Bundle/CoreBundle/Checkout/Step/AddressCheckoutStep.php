@@ -19,7 +19,7 @@ use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -42,11 +42,6 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
      */
     private $cartManager;
 
-    /**
-     * @param FormFactoryInterface  $formFactory
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface  $cartManager
-     */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage,
@@ -68,7 +63,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(OrderInterface $cart)
     {
         return false;
     }
@@ -76,9 +71,9 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart)
+    public function validate(OrderInterface $cart)
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         return $cart->hasItems()
             && ($cart->hasShippableItems() === false || $cart->getShippingAddress() instanceof AddressInterface)
@@ -88,7 +83,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request)
     {
         $customer = $this->getCustomer();
         $form = $this->createForm($request, $cart, $customer);
@@ -109,9 +104,9 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request)
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         $customer = $this->getCustomer();
 
@@ -137,16 +132,9 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         return $customer;
     }
 
-    /**
-     * @param Request           $request
-     * @param CartInterface     $cart
-     * @param CustomerInterface $customer
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
+    private function createForm(Request $request, OrderInterface $cart, CustomerInterface $customer)
     {
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         $options = [
             'customer' => $customer,

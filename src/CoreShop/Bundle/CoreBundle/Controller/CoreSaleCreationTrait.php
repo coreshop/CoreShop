@@ -16,7 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 trait CoreSaleCreationTrait
@@ -26,7 +26,7 @@ trait CoreSaleCreationTrait
      */
     protected $viewHandler;
 
-    protected function prepareCartItem(CartInterface $cart, CartItemInterface $item)
+    protected function prepareCartItem(OrderInterface $cart, CartItemInterface $item)
     {
         $itemFlat = parent::prepareCartItem($cart, $item);
 
@@ -51,7 +51,7 @@ trait CoreSaleCreationTrait
         return $itemFlat;
     }
 
-    protected function getCartDetails(CartInterface $cart)
+    protected function getCartDetails(OrderInterface $cart)
     {
         $cartDetails = parent::getCartDetails($cart);
 
@@ -60,7 +60,7 @@ trait CoreSaleCreationTrait
         return $cartDetails;
     }
 
-    public function getCarrierDetails(CartInterface $cart)
+    public function getCarrierDetails(OrderInterface $cart)
     {
         if (null === $cart->getShippingAddress()) {
             return [];
@@ -91,12 +91,12 @@ trait CoreSaleCreationTrait
         return $result;
     }
 
-    protected function getCartSummary(CartInterface $cart)
+    protected function getCartSummary(OrderInterface $cart)
     {
         /**
-         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
          */
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
         $result = parent::getCartSummary($cart);
 

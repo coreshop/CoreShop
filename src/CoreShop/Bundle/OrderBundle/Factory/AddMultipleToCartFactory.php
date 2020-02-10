@@ -32,7 +32,7 @@ class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithMultipleAddToCarts(array $addToCarts)
+    public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface
     {
         $class = new $this->addMultipleToCartClass($addToCarts);
 

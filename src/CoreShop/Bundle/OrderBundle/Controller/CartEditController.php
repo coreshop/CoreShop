@@ -27,7 +27,7 @@ class CartEditController extends AbstractSaleController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $this->get('coreshop.repository.cart')->find($cartId);
+        $cart = $this->get('coreshop.repository.order')->find($cartId);
 
         if (!$cart instanceof CartInterface) {
             return $this->viewHandler->handle(
@@ -70,7 +70,7 @@ class CartEditController extends AbstractSaleController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $this->get('coreshop.repository.cart')->find($cartId);
+        $cart = $this->get('coreshop.repository.order')->find($cartId);
 
         if (!$cart instanceof CartInterface) {
             return $this->viewHandler->handle(
@@ -92,7 +92,7 @@ class CartEditController extends AbstractSaleController
                 ]);
             }
 
-            $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product, $quantity);
+            $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product, $quantity);
 
             $commands[] = $this->createAddToCart($cart, $cartItem);
         }
@@ -141,7 +141,7 @@ class CartEditController extends AbstractSaleController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $this->get('coreshop.repository.cart')->find($cartId);
+        $cart = $this->get('coreshop.repository.order')->find($cartId);
 
         if (!$cart instanceof CartInterface) {
             return $this->viewHandler->handle(

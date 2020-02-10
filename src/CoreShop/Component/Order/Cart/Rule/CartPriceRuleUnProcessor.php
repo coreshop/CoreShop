@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -40,7 +40,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function unProcess(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
 

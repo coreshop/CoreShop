@@ -12,12 +12,12 @@
 
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartProcessorInterface
 {
     /**
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      */
-    public function process(CartInterface $cart);
+    public function process(OrderInterface $cart): void;
 }

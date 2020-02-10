@@ -14,8 +14,6 @@ namespace CoreShop\Bundle\OrderBundle\Factory;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 
 interface AddMultipleToCartFactoryInterface
 {
@@ -24,5 +22,5 @@ interface AddMultipleToCartFactoryInterface
      *
      * @return AddMultipleToCartInterface
      */
-    public function createWithMultipleAddToCarts(array $addToCarts);
+    public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface;
 }

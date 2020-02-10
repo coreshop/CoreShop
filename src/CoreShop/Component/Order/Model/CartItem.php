@@ -21,6 +21,36 @@ use Pimcore\Model\DataObject\Fieldcollection;
 class CartItem extends AbstractPimcoreModel implements CartItemInterface
 {
     use AdjustableTrait;
+    use BaseAdjustableTrait;
+
+    /**
+     * @return CartInterface
+     */
+    public function getCart()
+    {
+        /**
+         * @var CartInterface $cart
+         */
+        $cart = $this->getParent();
+
+        return $cart;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTotalTax()
+    {
+        return $this->getTotal(true) - $this->getTotal(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotalTax()
+    {
+        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
+    }
 
     /**
      * {@inheritdoc}
@@ -114,41 +144,6 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
     public function setItemDiscount($itemDiscount, $withTax = true)
     {
         return $withTax ? $this->setItemDiscountGross($itemDiscount) : $this->setItemDiscountNet($itemDiscount);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalTax()
-    {
-        if (!$this->getTaxes() instanceof Fieldcollection) {
-            return 0;
-        }
-
-        $totalTax = 0;
-
-        foreach ($this->getTaxes()->getItems() as $taxItem) {
-            if (!$taxItem instanceof TaxItemInterface) {
-                continue;
-            }
-
-            $totalTax += $taxItem->getAmount();
-        }
-
-        return $totalTax;
-    }
-
-    /**
-     * @return CartInterface
-     */
-    public function getCart()
-    {
-        /**
-         * @var CartInterface
-         */
-        $cart = $this->getParent();
-
-        return $cart;
     }
 
     /**
@@ -407,12 +402,178 @@ class CartItem extends AbstractPimcoreModel implements CartItemInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+     /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotal($withTax = true)
+    {
+        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseTotal($total, $withTax = true)
+    {
+        return $withTax ? $this->setBaseTotalGross($total) : $this->setBaseTotalNet($total);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemPriceNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemPriceNet($itemPriceNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemPriceGross($itemPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemRetailPriceNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemRetailPriceNet($itemPriceNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemRetailPriceGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemRetailPriceGross($itemPriceGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemWholesalePrice()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemWholesalePrice($wholesalePrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseItemTax()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseItemTax($itemTax)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTaxes()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseTaxes($taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotalNet()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseTotalNet($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBaseTotalGross()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBaseTotalGross($total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function recalculateAfterAdjustmentChange()
     {
-        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(null, true), true);
-        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(null, false), false);
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function recalculateBaseAfterAdjustmentChange()
+    {
     }
 }

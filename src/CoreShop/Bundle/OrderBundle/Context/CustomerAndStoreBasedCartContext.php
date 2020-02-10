@@ -16,7 +16,8 @@ use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Pimcore\Http\RequestHelper;
@@ -34,7 +35,7 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
     private $storeContext;
 
     /**
-     * @var CartRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $cartRepository;
 
@@ -43,16 +44,10 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
      */
     private $pimcoreRequestHelper;
 
-    /**
-     * @param CustomerContextInterface $customerContext
-     * @param StoreContextInterface    $storeContext
-     * @param CartRepositoryInterface  $cartRepository
-     * @param RequestHelper            $pimcoreRequestHelper
-     */
     public function __construct(
         CustomerContextInterface $customerContext,
         StoreContextInterface $storeContext,
-        CartRepositoryInterface $cartRepository,
+        OrderRepositoryInterface $cartRepository,
         RequestHelper $pimcoreRequestHelper
     ) {
         $this->customerContext = $customerContext;
@@ -64,7 +59,7 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         if ($this->pimcoreRequestHelper->hasMasterRequest()) {
             if ($this->pimcoreRequestHelper->getMasterRequest()->get('_route') !== 'coreshop_login_check') {

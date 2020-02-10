@@ -14,10 +14,10 @@ namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
-use CoreShop\Component\Order\Factory\CartItemFactoryInterface;
+use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface;
@@ -31,7 +31,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     private $productRepository;
 
     /**
-     * @var CartItemFactoryInterface
+     * @var OrderItemFactoryInterface
      */
     private $cartItemFactory;
 
@@ -40,14 +40,9 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
      */
     private $adjustmentFactory;
 
-    /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param CartItemFactoryInterface   $cartItemFactory
-     * @param AdjustmentFactoryInterface $adjustmentFactory
-     */
     public function __construct(
         ProductRepositoryInterface $productRepository,
-        CartItemFactoryInterface $cartItemFactory,
+        OrderItemFactoryInterface $cartItemFactory,
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->productRepository = $productRepository;
@@ -58,7 +53,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -105,7 +100,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -137,10 +132,10 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     }
 
     /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
+     * @param OrderInterface     $cart
+     * @param OrderItemInterface $cartItem
      */
-    private function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
+    private function removeCartItem(OrderInterface $cart, OrderItemInterface $cartItem): void
     {
         $cart->removeItem($cartItem);
         $cartItem->delete();
@@ -151,7 +146,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
      *
      * @return string
      */
-    private function getKey(ActionInterface $action)
+    private function getKey(ActionInterface $action): string
     {
         return sprintf('%s_%s', AdjustmentInterface::CART_PRICE_RULE, $action->getId());
     }

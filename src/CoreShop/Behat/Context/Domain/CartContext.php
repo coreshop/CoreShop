@@ -15,7 +15,7 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\CartItem;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -288,9 +288,9 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartInterface $cart
+         * @var OrderInterface $cart
          */
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         Assert::eq(
             $kg,
@@ -310,7 +310,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         Assert::eq(
             $shipping,
@@ -330,7 +330,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         Assert::eq(
             $shipping,
@@ -347,7 +347,7 @@ final class CartContext implements Context
      * @Then /^the (carts) shipping tax rate should be "([^"]+)"$/
      * @Then /^the (loaded carts) shipping tax rate should be "([^"]+)"$/
      */
-    public function cartShippingTaxRateShouldBe(CartInterface $cart, $shippingTaxRate)
+    public function cartShippingTaxRateShouldBe(OrderInterface $cart, $shippingTaxRate)
     {
         Assert::eq(
             $shippingTaxRate,
@@ -367,7 +367,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         Assert::eq(
             $carrier->getId(),
@@ -387,7 +387,7 @@ final class CartContext implements Context
     {
         $cart = $this->cartContext->getCart();
 
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
 
         Assert::null(
             $cart->getCarrier(),
@@ -430,7 +430,7 @@ final class CartContext implements Context
     /**
      * @Then /^there should be no product in (my cart)$/
      */
-    public function thereShouldBeNoProductInMyCart(CartInterface $cart)
+    public function thereShouldBeNoProductInMyCart(OrderInterface $cart)
     {
         Assert::eq(
             count($cart->getItems()),
@@ -445,7 +445,7 @@ final class CartContext implements Context
     /**
      * @Then /^the first item in (my cart) should have (unit "([^"]+)")$/
      */
-    public function theFirstItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    public function theFirstItemInMyCartShouldHaveUnit(OrderInterface $cart, ProductUnitInterface $unit)
     {
         Assert::minCount(
             $cart->getItems(),
@@ -477,7 +477,7 @@ final class CartContext implements Context
     /**
      * @Then /^the second item in (my cart) should have (unit "([^"]+)")$/
      */
-    public function theSecondItemInMyCartShouldHaveUnit(CartInterface $cart, ProductUnitInterface $unit)
+    public function theSecondItemInMyCartShouldHaveUnit(OrderInterface $cart, ProductUnitInterface $unit)
     {
         Assert::minCount(
             $cart->getItems(),

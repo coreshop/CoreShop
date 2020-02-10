@@ -75,7 +75,7 @@ services:
     CoreShop\Bundle\OrderBundle\Expiration\CartExpiration:
         shared: false
         arguments:
-             - '@coreshop.repository.cart'
+             - '@coreshop.repository.order'
 
     coreshop.order.expire: '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
     CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration:
@@ -104,6 +104,13 @@ services:
         public: false
         arguments:
             - '@CoreShop\Component\Order\Factory\CartItemFactory.inner'
+
+    CoreShop\Component\Order\Factory\OrderItemFactory:
+        decorates: coreshop.factory.order_item
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@CoreShop\Component\Order\Factory\OrderItemFactory.inner'
 
     coreshop.factory.add_to_cart: '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory'
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory:

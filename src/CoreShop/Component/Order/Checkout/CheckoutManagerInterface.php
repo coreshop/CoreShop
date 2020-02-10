@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutManagerInterface
@@ -72,20 +72,20 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface        $cart
      *
      * @return mixed
      */
-    public function validateStep(CheckoutStepInterface $step, CartInterface $cart);
+    public function validateStep(CheckoutStepInterface $step, OrderInterface $cart);
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface        $cart
      * @param Request               $request
      *
      * @return mixed
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
+    public function prepareStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request);
 
     /**
      * @param string $identifier
@@ -96,10 +96,10 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface        $cart
      * @param Request               $request
      *
      * @return mixed
      */
-    public function commitStep(CheckoutStepInterface $step, CartInterface $cart, Request $request);
+    public function commitStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request);
 }

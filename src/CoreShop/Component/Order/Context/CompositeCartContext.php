@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Order\Context;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
@@ -38,7 +39,7 @@ final class CompositeCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         foreach ($this->cartContexts as $cartContext) {
             try {

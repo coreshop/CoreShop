@@ -12,14 +12,12 @@
 
 namespace CoreShop\Component\Order\Manager;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartManagerInterface
 {
     /**
-     * @param CartInterface $cart
-     *
-     * @return mixed
+     * @param OrderInterface $cart
      */
-    public function persistCart(CartInterface $cart);
+    public function persistCart(OrderInterface $cart): void;
 }

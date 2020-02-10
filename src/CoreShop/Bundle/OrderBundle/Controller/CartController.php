@@ -430,7 +430,7 @@ class CartController extends AbstractSaleController
      */
     protected function getRepository()
     {
-        return $this->get('coreshop.repository.cart');
+        return $this->get('coreshop.repository.order');
     }
 
     /**

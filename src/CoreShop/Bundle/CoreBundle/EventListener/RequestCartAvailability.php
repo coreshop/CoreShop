@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -83,7 +83,6 @@ final class RequestCartAvailability
             return;
         }
 
-        /** @var CartInterface $cart */
         $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {

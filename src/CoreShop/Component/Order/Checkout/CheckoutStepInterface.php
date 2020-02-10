@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutStepInterface
@@ -25,38 +25,38 @@ interface CheckoutStepInterface
     /**
      * Determines if this step should be forward if valid.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return bool
      */
-    public function doAutoForward(CartInterface $cart);
+    public function doAutoForward(OrderInterface $cart);
 
     /**
      * Check if Checkout Step is valid.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return bool
      */
-    public function validate(CartInterface $cart);
+    public function validate(OrderInterface $cart);
 
     /**
      * Commit Step from Request (validate form or whatever).
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      * @param Request       $request
      *
      * @throws CheckoutException
      */
-    public function commitStep(CartInterface $cart, Request $request);
+    public function commitStep(OrderInterface $cart, Request $request);
 
     /**
      * Prepare Checkout Step.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      * @param Request       $request
      *
      * @return array $params for the view
      */
-    public function prepareStep(CartInterface $cart, Request $request);
+    public function prepareStep(OrderInterface $cart, Request $request);
 }

@@ -21,6 +21,7 @@ use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 
@@ -193,7 +194,7 @@ class ShopperContext implements ShopperContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
     }

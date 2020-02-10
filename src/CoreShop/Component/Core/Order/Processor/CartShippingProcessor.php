@@ -15,11 +15,11 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface as CoreCartInterface;
+use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
 use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
@@ -52,13 +52,6 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     private $adjustmentFactory;
 
-    /**
-     * @param TaxedShippingCalculatorInterface   $carrierPriceCalculator
-     * @param ShippableCarrierValidatorInterface $carrierValidator
-     * @param DefaultCarrierResolverInterface    $defaultCarrierResolver
-     * @param AddressProviderInterface           $defaultAddressProvider
-     * @param AdjustmentFactoryInterface         $adjustmentFactory
-     */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
@@ -76,9 +69,9 @@ final class CartShippingProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
-        if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             return;
         }
 
@@ -115,12 +108,12 @@ final class CartShippingProcessor implements CartProcessorInterface
     }
 
     /**
-     * @param CartInterface    $cart
+     * @param OrderInterface    $cart
      * @param AddressInterface $address
      */
-    private function resolveDefaultCarrier(CartInterface $cart, AddressInterface $address)
+    private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address)
     {
-        if (!$cart instanceof CoreCartInterface) {
+        if (!$cart instanceof CoreOrderInterface) {
             return;
         }
 

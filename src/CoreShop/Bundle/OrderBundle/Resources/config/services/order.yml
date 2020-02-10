@@ -79,3 +79,12 @@ services:
             - '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Component\Order\Committer\OrderCommitterInterface: '@CoreShop\Component\Order\Committer\OrderCommitter'
+    CoreShop\Component\Order\Committer\OrderCommitter:
+        arguments:
+            - '@coreshop.cart.manager'
+            - '@coreshop.object_service'
+            - '@coreshop.order.number_generator.default'
+            - '@coreshop.object_cloner'
+            - '%coreshop.folder.order%'

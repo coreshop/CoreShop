@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
@@ -53,7 +53,7 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $eligibleRules = $this->cartPriceRuleRepository->findNonVoucherRules();
 

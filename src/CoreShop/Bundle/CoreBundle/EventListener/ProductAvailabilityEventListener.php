@@ -12,9 +12,8 @@
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
@@ -139,14 +138,14 @@ final class ProductAvailabilityEventListener
      */
     private function informCarts($cartItems)
     {
-        /** @var CartItemInterface $cartItem */
+        /** @var OrderItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {
             $cart = $cartItem->getCart();
-            if (!$cart instanceof CartInterface) {
+            if (!$cart instanceof OrderInterface) {
                 continue;
             }
 
-            if ($cart->getOrder() instanceof OrderInterface) {
+            if ($cart->getState() === 'cart') {
                 continue;
             }
 

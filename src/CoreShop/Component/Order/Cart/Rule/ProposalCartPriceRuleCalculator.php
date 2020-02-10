@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -47,7 +47,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
     /**
      * {@inheritdoc}
      */
-    public function calculatePriceRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
         $existingPriceRule = null !== $priceRuleItem;
@@ -86,7 +86,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
                 $cart->removePriceRule($priceRuleItem);
             }
 
-            return false;
+            return null;
         }
 
         if (!$existingPriceRule) {

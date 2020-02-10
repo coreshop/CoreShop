@@ -14,19 +14,19 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\CartController as BaseCartController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class CartController extends BaseCartController
 {
     /**
      * {@inheritdoc}
      */
-    protected function prepareSale(CartInterface $sale)
+    protected function prepareSale(OrderInterface $sale)
     {
         $order = parent::prepareSale($sale);
 
-        if ($sale instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if ($sale instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
             $order['shipping'] = $sale->getShipping();
         }
@@ -37,11 +37,11 @@ class CartController extends BaseCartController
     /**
      * {@inheritdoc}
      */
-    protected function getDetails(CartInterface $sale)
+    protected function getDetails(OrderInterface $sale)
     {
         $order = parent::getDetails($sale);
 
-        if ($sale instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if ($sale instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             $order['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
                 'weight' => $sale->getWeight(),
@@ -58,11 +58,11 @@ class CartController extends BaseCartController
         return $order;
     }
 
-    protected function getSummary(CartInterface $cart)
+    protected function getSummary(OrderInterface $cart)
     {
         $summary = parent::getSummary($cart);
 
-        if ($cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if ($cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             if ($cart->getShipping() > 0) {
                 $summary[] = [
                     'key' => 'shipping',
@@ -80,11 +80,11 @@ class CartController extends BaseCartController
     }
 
     /**
-     * @param CartItemInterface $item
+     * @param OrderItemInterface $item
      *
      * @return array
      */
-    protected function prepareSaleItem(CartItemInterface $item)
+    protected function prepareSaleItem(OrderItemInterface $item)
     {
         $itemData = parent::prepareCartItem($item);
 

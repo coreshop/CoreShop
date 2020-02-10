@@ -19,6 +19,7 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\CheckoutEvents;
+use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
 use Payum\Core\Payum;
@@ -175,13 +176,14 @@ class CheckoutController extends FrontendController
      */
     public function doCheckoutAction(Request $request)
     {
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $cart = $this->getCart();
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
          *
          * what are we doing here?
-         *  1. Create Order
+         *  1. Commit Order (eg. change state)
          *  2. Use Payum and redirect to Payment Provider
          *  3. PayumBundle takes care about payment stuff
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
@@ -222,8 +224,10 @@ class CheckoutController extends FrontendController
         /**
          * If everything is valid, we continue with Order-Creation.
          */
-        $order = $this->getOrderFactory()->createNew();
-        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+
+        $order = $this->getCart();
+        $this->getOrderCommitter()->commitOrder($order);
+
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
@@ -337,7 +341,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Model\CartInterface
+     * @return \CoreShop\Component\Order\Model\OrderInterface
      */
     protected function getCart()
     {
@@ -366,6 +370,14 @@ class CheckoutController extends FrontendController
     protected function getCartToOrderTransformer()
     {
         return $this->get('coreshop.order.transformer.cart_to_order');
+    }
+
+    /**
+     * @return OrderCommitterInterface
+     */
+    protected function getOrderCommitter()
+    {
+        return $this->get(OrderCommitterInterface::class);
     }
 
     /**

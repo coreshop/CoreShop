@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistry;
 use Psr\Container\ContainerInterface;
 use Webmozart\Assert\Assert;
@@ -39,7 +39,7 @@ final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInter
         $this->priorityMap = $priorityMap;
     }
 
-    public function createCheckoutManager(CartInterface $cart)
+    public function createCheckoutManager(OrderInterface $cart): CheckoutManagerInterface
     {
         $serviceRegistry = new PrioritizedServiceRegistry(CheckoutStepInterface::class, 'checkout-manager-steps');
 

@@ -13,7 +13,53 @@
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderItemInterface as BaseOrderItemInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
-interface OrderItemInterface extends BaseOrderItemInterface, SaleItemInterface
+interface OrderItemInterface extends BaseOrderItemInterface, ShippableItemInterface
 {
+    /**
+     * @return bool
+     */
+    public function getDigitalProduct();
+
+    /**
+     * @param bool $digitalProduct
+     */
+    public function setDigitalProduct($digitalProduct);
+
+    /**
+     * @return null|ProductUnitDefinitionInterface
+     */
+    public function getUnitDefinition();
+
+    /**
+     * @param ProductUnitDefinitionInterface $productUnitDefinition
+     */
+    public function setUnitDefinition($productUnitDefinition);
+
+    /**
+     * @return bool
+     */
+    public function hasUnitDefinition();
+
+    /**
+     * @return int
+     */
+    public function getDefaultUnitQuantity();
+
+    /**
+     * @param int $defaultUnitQuantity
+     */
+    public function setDefaultUnitQuantity($defaultUnitQuantity);
+
+    /**
+     * @return float
+     */
+    public function getItemWeight();
+
+    /**
+     * @return float
+     */
+    public function getTotalWeight();
 }

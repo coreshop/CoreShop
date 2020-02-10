@@ -16,7 +16,7 @@ use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Templating\Helper\Helper;
@@ -126,26 +126,29 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         return $this->$getter($cart, $stepIdentifier, $checkoutManager);
     }
 
-    /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
-     * @param CheckoutManagerInterface $checkoutManager
-     *
-     * @return mixed
-     */
-    protected function getCurrentStepIdentifier($cart, $stepIdentifier, $checkoutManager)
+    protected function getPreviousStepIdentifier(OrderInterface $cart, $stepIdentifier, CheckoutManagerInterface $checkoutManager)
+    {
+        $identifier = null;
+        $request = $this->requestStack->getMasterRequest();
+        $previousIdentifier = $request->get('stepIdentifier');
+
+        if (null !== $previousIdentifier) {
+            if ($checkoutManager->hasPreviousStep($previousIdentifier)) {
+                $step = $checkoutManager->getPreviousStep($previousIdentifier);
+                return $step->getIdentifier();
+            }
+        }
+
+        return null;
+    }
+
+
+    protected function getCurrentStepIdentifier(OrderInterface $cart, $stepIdentifier, CheckoutManagerInterface $checkoutManager)
     {
         return $stepIdentifier;
     }
 
-    /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
-     * @param CheckoutManagerInterface $checkoutManager
-     *
-     * @return mixed
-     */
-    protected function getFirstStepIdentifier($cart, $stepIdentifier, $checkoutManager)
+    protected function getFirstStepIdentifier(OrderInterface $cart, $stepIdentifier, CheckoutManagerInterface $checkoutManager)
     {
         $steps = $checkoutManager->getSteps();
 
@@ -153,7 +156,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
+     * @param OrderInterface            $cart
      * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      *
@@ -167,29 +170,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param CartInterface            $cart
-     * @param string                   $stepIdentifier
-     * @param CheckoutManagerInterface $checkoutManager
-     *
-     * @return mixed
-     */
-    protected function getPreviousStepIdentifier($cart, $stepIdentifier, $checkoutManager)
-    {
-        $identifier = null;
-        $request = $this->requestStack->getMasterRequest();
-        $stepIdentifier = $request->get('stepIdentifier');
-        if (!is_null($stepIdentifier)) {
-            if ($checkoutManager->hasPreviousStep($stepIdentifier)) {
-                $step = $checkoutManager->getPreviousStep($stepIdentifier);
-                $identifier = $step->getIdentifier();
-            }
-        }
-
-        return $identifier;
-    }
-
-    /**
-     * @param CartInterface            $cart
+     * @param OrderInterface           $cart
      * @param string                   $stepIdentifier
      * @param CheckoutManagerInterface $checkoutManager
      *
@@ -198,7 +179,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     protected function getNextStepIdentifier($cart, $stepIdentifier, $checkoutManager)
     {
         $identifier = null;
-        if (!is_null($stepIdentifier)) {
+        if ($stepIdentifier !== null) {
             if ($checkoutManager->hasNextStep($stepIdentifier)) {
                 $step = $checkoutManager->getNextStep($stepIdentifier);
                 $identifier = $step->getIdentifier();

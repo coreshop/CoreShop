@@ -13,12 +13,12 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartAdjustmentClearer implements CartProcessorInterface
 {
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::CART_PRICE_RULE);
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);

@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -49,7 +49,7 @@ final class CartItemType extends AbstractResourceType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
 
-            if (!$data instanceof CartItemInterface) {
+            if (!$data instanceof OrderItemInterface) {
                 return;
             }
 

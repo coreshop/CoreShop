@@ -10,15 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Cart;
+namespace CoreShop\Component\Order\Committer;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 
-interface CartContextResolverInterface
+interface OrderCommitterInterface
 {
-    /**
-     * @param OrderInterface $cart
-     * @return array
-     */
-    public function resolveCartContext(OrderInterface $cart): array;
+    public function commitOrder(OrderInterface $order): void;
 }

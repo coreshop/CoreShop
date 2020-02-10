@@ -15,7 +15,7 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
@@ -99,7 +99,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be valid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be valid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -113,7 +113,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be invalid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be invalid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -126,7 +126,7 @@ final class ShippingContext implements Context
     /**
      * @Then /^shipping for (my cart) with (carrier "[^"]+") should be priced at "([^"]+)"$/
      */
-    public function shippingShouldBePriced(CartInterface $cart, CarrierInterface $carrier, int $price)
+    public function shippingShouldBePriced(OrderInterface $cart, CarrierInterface $carrier, int $price)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -136,7 +136,7 @@ final class ShippingContext implements Context
     /**
      * @Then /^the (carrier "[^"]+") should be valid for (my cart)$/
      */
-    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, CartInterface $cart)
+    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, OrderInterface $cart)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 

@@ -16,7 +16,7 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
@@ -112,7 +112,7 @@ final class CartBlamerListener
     }
 
     /**
-     * @return CartInterface
+     * @return OrderInterface
      */
     private function getCart()
     {

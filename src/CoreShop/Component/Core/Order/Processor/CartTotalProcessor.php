@@ -10,15 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Cart;
+namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
-interface CartContextResolverInterface
+final class CartTotalProcessor implements CartProcessorInterface
 {
     /**
-     * @param OrderInterface $cart
-     * @return array
+     * {@inheritdoc}
      */
-    public function resolveCartContext(OrderInterface $cart): array;
+    public function process(OrderInterface $cart): void
+    {
+        $cart->setTotal($cart->getSubtotal(false) + $cart->getAdjustmentsTotal(null, false), false);
+        $cart->setTotal($cart->getSubtotal(true) + $cart->getAdjustmentsTotal(null, true), true);
+    }
 }

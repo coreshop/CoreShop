@@ -17,7 +17,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
-class CartItemFactory implements CartItemFactoryInterface
+class OrderItemFactory implements OrderItemFactoryInterface
 {
     /**
      * @var FactoryInterface

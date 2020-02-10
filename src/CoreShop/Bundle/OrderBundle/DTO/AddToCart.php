@@ -12,26 +12,26 @@
 
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCart implements AddToCartInterface
 {
     /**
-     * @var CartInterface
+     * @var OrderInterface
      */
     private $cart;
 
     /**
-     * @var CartItemInterface
+     * @var OrderItemInterface
      */
     private $cartItem;
 
     /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
+     * @param OrderInterface     $cart
+     * @param OrderItemInterface $cartItem
      */
-    public function __construct(CartInterface $cart, CartItemInterface $cartItem)
+    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem)
     {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
@@ -40,15 +40,15 @@ class AddToCart implements AddToCartInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         return $this->cart;
     }
 
     /**
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      */
-    public function setCart(CartInterface $cart)
+    public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;
     }
@@ -56,15 +56,15 @@ class AddToCart implements AddToCartInterface
     /**
      * {@inheritdoc}
      */
-    public function getCartItem()
+    public function getCartItem(): OrderItemInterface
     {
         return $this->cartItem;
     }
 
     /**
-     * @param CartItemInterface $cartItem
+     * @param OrderItemInterface $cartItem
      */
-    public function setCartItem(CartItemInterface $cartItem)
+    public function setCartItem(OrderItemInterface $cartItem)
     {
         $this->cartItem = $cartItem;
     }

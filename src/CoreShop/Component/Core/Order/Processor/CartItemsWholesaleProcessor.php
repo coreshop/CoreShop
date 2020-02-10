@@ -17,7 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Exception\NoPurchasableWholesalePriceFoundException;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Webmozart\Assert\Assert;
 
@@ -48,7 +48,7 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         if (null === $this->cartContextResolver) {
             @trigger_error(

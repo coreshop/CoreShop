@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
@@ -54,7 +54,7 @@ final class CartManager implements CartManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function persistCart(CartInterface $cart)
+    public function persistCart(OrderInterface $cart): void
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
@@ -68,7 +68,7 @@ final class CartManager implements CartManagerInterface
             }
 
             /**
-             * @var CartItemInterface $item
+             * @var OrderItemInterface $item
              */
             foreach ($tempItems as $index => $item) {
                 $item->setParent($cart);
@@ -79,7 +79,7 @@ final class CartManager implements CartManagerInterface
             $this->cartProcessor->process($cart);
 
             /**
-             * @var CartItemInterface $cartItem
+             * @var OrderItemInterface $cartItem
              */
             foreach ($cart->getItems() as $cartItem) {
                 $cartItem->save();

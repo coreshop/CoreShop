@@ -21,8 +21,8 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
@@ -90,7 +90,7 @@ class CartController extends FrontendController
             $this->getCartManager()->persistCart($cart);
         } else {
             if ($cart->getId()) {
-                $cart = $this->get('coreshop.repository.cart')->forceFind($cart->getId());
+                $cart = $this->get('coreshop.repository.order')->forceFind($cart->getId());
             }
         }
 
@@ -171,7 +171,7 @@ class CartController extends FrontendController
             return $this->redirect($redirect);
         }
 
-        $cartItem = $this->get('coreshop.factory.cart_item')->createWithPurchasable($product);
+        $cartItem = $this->get('coreshop.factory.order_item')->createWithPurchasable($product);
 
         $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
@@ -246,7 +246,7 @@ class CartController extends FrontendController
     {
         $cartItem = $this->get('coreshop.repository.cart_item')->find($request->get('cartItem'));
 
-        if (!$cartItem instanceof CartItemInterface) {
+        if (!$cartItem instanceof OrderItemInterface) {
             return $this->redirectToRoute('coreshop_index');
         }
 
@@ -302,12 +302,12 @@ class CartController extends FrontendController
     }
 
     /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
+     * @param OrderInterface     $cart
+     * @param OrderItemInterface $cartItem
      *
      * @return AddToCartInterface
      */
-    protected function createAddToCart(CartInterface $cart, CartItemInterface $cartItem)
+    protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem)
     {
         return $this->get('coreshop.factory.add_to_cart')->createWithCartAndCartItem($cart, $cartItem);
     }
@@ -358,7 +358,7 @@ class CartController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Model\CartInterface
+     * @return \CoreShop\Component\Order\Model\OrderInterface
      */
     protected function getCart()
     {
@@ -382,11 +382,11 @@ class CartController extends FrontendController
     }
 
     /**
-     * @param CartItemInterface $cartItem
+     * @param OrderItemInterface $cartItem
      *
      * @return ConstraintViolationListInterface
      */
-    private function getCartItemErrors(CartItemInterface $cartItem)
+    private function getCartItemErrors(OrderItemInterface $cartItem)
     {
         return $this
             ->get('validator')
