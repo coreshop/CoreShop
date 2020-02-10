@@ -12,10 +12,10 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Cart\Cart\CartContextResolverInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -124,7 +124,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             // respect item quantity factor
             if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor()) && $product->getItemQuantityFactor() > 1) {
-                $itemPrice = $itemPrice / (int) $product->getItemQuantityFactor();
+                $itemPrice = $itemPrice / (int)$product->getItemQuantityFactor();
             }
 
             if ($product instanceof QuantityRangePriceAwareInterface) {

@@ -22,6 +22,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pimcore\Tool\Console;
 
 final class CountryContext implements Context
 {
@@ -139,6 +140,23 @@ final class CountryContext implements Context
         $country->setAddressFormat(str_replace("'", '"', $format));
 
         $this->saveCountry($country);
+    }
+
+    /**
+     * @Given /^I downloaded the GeoLite2 DB$/
+     */
+    public function iDownloadedTheGeoLite2DB()
+    {
+        $rootDir = PIMCORE_PROJECT_ROOT;
+
+        $cmd = sprintf(
+            '%s/etc/geoipupdate/geoipupdate -f %s/etc/geoipupdate/GeoIP.conf -d %s/var/config/',
+            $rootDir,
+            $rootDir,
+            $rootDir
+        );
+
+        Console::exec($cmd);
     }
 
     /**
