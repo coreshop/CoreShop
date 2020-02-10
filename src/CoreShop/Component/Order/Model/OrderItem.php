@@ -190,16 +190,24 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     }
 
     /**
-     * @return CartInterface
+     * @return OrderInterface
      */
     public function getCart()
     {
         /**
-         * @var CartInterface
+         * @var OrderInterface $cart
          */
         $cart = $this->getParent();
 
         return $cart;
+    }
+
+    /**
+     * @return OrderInterface
+     */
+    public function getOrder()
+    {
+        return $this->getCart();
     }
 
     /**

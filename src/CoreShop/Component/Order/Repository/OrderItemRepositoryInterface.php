@@ -10,29 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Shipping\Model;
+namespace CoreShop\Component\Order\Repository;
 
-interface ShippableInterface
+use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+
+interface OrderItemRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * @return ShippableItemInterface[]
-     */
-    public function getItems();
-
-    /**
-     * @return float
-     */
-    public function getWeight();
-
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getSubtotal($withTax = true);
+    public function findOrderItemsByProductId($productId);
 }

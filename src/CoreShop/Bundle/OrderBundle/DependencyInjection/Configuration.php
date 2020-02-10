@@ -30,6 +30,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleType;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\CartItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderInvoiceRepository;
+use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderItemRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderRepository;
 use CoreShop\Bundle\OrderBundle\Pimcore\Repository\OrderShipmentRepository;
 use CoreShop\Bundle\OrderBundle\Controller\CartEditController;
@@ -275,7 +276,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopOrderItem')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->cannotBeEmpty()->end()
+                                        ->scalarNode('repository')->defaultValue(OrderItemRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopOrderBundle/Resources/install/pimcore/classes/CoreShopOrderItem.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()
                                     ->end()

@@ -79,7 +79,7 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
             throw new CartNotFoundException('CoreShop was not able to find the cart, as there is no logged in user.');
         }
 
-        $cart = $this->cartRepository->findLatestByStoreAndCustomer($store, $customer);
+        $cart = $this->cartRepository->findLatestCartByStoreAndCustomer($store, $customer);
         if (null === $cart) {
             throw new CartNotFoundException('CoreShop was not able to find the cart for currently logged in user.');
         }

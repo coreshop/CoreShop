@@ -15,7 +15,7 @@ namespace CoreShop\Behat\Context\Transform;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartContext implements Context
 {
@@ -25,7 +25,7 @@ final class CartContext implements Context
     private $sharedStorage;
 
     /**
-     * @var CartRepositoryInterface
+     * @var OrderRepositoryInterface
      */
     private $cartRepository;
 
@@ -34,14 +34,9 @@ final class CartContext implements Context
      */
     private $cartContext;
 
-    /**
-     * @param SharedStorageInterface  $sharedStorage
-     * @param CartRepositoryInterface $cartRepository
-     * @param CartContextInterface    $cartContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        CartRepositoryInterface $cartRepository,
+        OrderRepositoryInterface $cartRepository,
         CartContextInterface $cartContext
     ) {
         $this->sharedStorage = $sharedStorage;

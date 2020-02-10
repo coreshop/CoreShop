@@ -10,16 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Order\Committer;
+namespace CoreShop\Component\Core\Order\Committer;
 
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 
 class OrderCommitter implements OrderCommitterInterface
 {
@@ -33,17 +37,27 @@ class OrderCommitter implements OrderCommitterInterface
      */
     protected $objectService;
 
-     /**
+    /**
      * @var NumberGeneratorInterface
      */
     protected $numberGenerator;
 
-     /**
+    /**
      * @var ObjectClonerInterface
      */
     protected $objectCloner;
 
-     /**
+    /**
+     * @var ItemKeyTransformerInterface
+     */
+    protected $keyTransformer;
+
+    /**
+     * @var StateMachineApplierInterface
+     */
+    private $stateMachineApplier;
+
+    /**
      * @var string
      */
     protected $orderFolderPath;
@@ -53,30 +67,35 @@ class OrderCommitter implements OrderCommitterInterface
         ObjectServiceInterface $objectService,
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
+        ItemKeyTransformerInterface $keyTransformer,
+        StateMachineApplierInterface $stateMachineApplier,
         string $orderFolderPath
     ) {
         $this->cartManager = $cartManager;
         $this->objectService = $objectService;
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
+        $this->keyTransformer = $keyTransformer;
+        $this->stateMachineApplier = $stateMachineApplier;
         $this->orderFolderPath = $orderFolderPath;
     }
 
     public function commitOrder(OrderInterface $order): void
     {
-        $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath, date('Y/m/d')));
+        $orderFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->orderFolderPath,
+            date('Y/m/d')));
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
         $order->setKey($orderNumber);
-        $order->setOrderNumber($orderNumber);
         $order->setSaleState(OrderSaleStates::STATE_ORDER);
 
         /**
          * @var AddressInterface $shippingAddress
          */
         $shippingAddress = $this->objectCloner->cloneObject(
-            method_exists($order, 'hasShippableItems') && $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress(),
+            method_exists($order,
+                'hasShippableItems') && $order->hasShippableItems() === false ? $order->getInvoiceAddress() : $order->getShippingAddress(),
             $this->objectService->createFolderByPath(sprintf('%s/addresses', $order->getFullPath())),
             'shipping'
         );
@@ -96,6 +115,11 @@ class OrderCommitter implements OrderCommitterInterface
 
         $order->setShippingAddress($shippingAddress);
         $order->setInvoiceAddress($invoiceAddress);
+
+        $order->setOrderNumber($orderNumber);
+        $order->setKey($this->keyTransformer->transform($order));
+
+        $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CREATE);
 
         $this->cartManager->persistCart($order);
     }

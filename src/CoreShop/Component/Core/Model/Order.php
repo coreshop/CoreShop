@@ -22,24 +22,6 @@ abstract class Order extends BaseOrder implements OrderInterface
     use SaleTrait;
     use CarrierAwareTrait;
 
-     use CarrierAwareTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        $weight = 0;
-
-        foreach ($this->getItems() as $item) {
-            if ($item instanceof CartItemInterface) {
-                $weight += $item->getTotalWeight();
-            }
-        }
-
-        return $weight;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -72,6 +54,23 @@ abstract class Order extends BaseOrder implements OrderInterface
         }
 
         return $shippable;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWeight()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setWeight($weight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**

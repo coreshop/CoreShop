@@ -141,4 +141,68 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
      * @param mixed $taxes
      */
     public function setTaxes($taxes);
+
+    /**
+     * @param int $baseItemWholesalePrice
+     */
+    public function setBaseItemWholesalePrice($baseItemWholesalePrice);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseItemPrice($withTax = true);
+
+    /**
+     * @param int  $itemPrice
+     * @param bool $withTax
+     */
+    public function setBaseItemPrice($itemPrice, $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseItemRetailPrice($withTax = true);
+
+    /**
+     * @param int  $itemRetailPrice
+     * @param bool $withTax
+     */
+    public function setBaseItemRetailPrice($itemRetailPrice, $withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getBaseItemTax();
+
+    /**
+     * @param int $itemTax
+     */
+    public function setBaseItemTax($itemTax);
+
+    /**
+     * @return mixed
+     */
+    public function getBaseTaxes();
+
+    /**
+     * @param mixed $taxes
+     */
+    public function setBaseTaxes($taxes);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseTotal($withTax = true);
+
+    /**
+     * @param int  $total
+     * @param bool $withTax
+     */
+    public function setBaseTotal($total, $withTax = true);
 }

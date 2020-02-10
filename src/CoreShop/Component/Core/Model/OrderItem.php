@@ -22,6 +22,14 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
     /**
      * {@inheritdoc}
      */
+    public function getWeight()
+    {
+        return $this->getTotalWeight();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDigitalProduct()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -56,7 +64,15 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
      */
     public function getTotalWeight()
     {
-        return $this->getItemWeight() * $this->getQuantity();
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTotalWeight($totalWeight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
@@ -64,8 +80,17 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
      */
     public function getItemWeight()
     {
-        return $this->getWeight();
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setItemWeight($itemWeight)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
 
     /**
      * {@inheritdoc}
@@ -89,14 +114,6 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
     public function getDepth()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getDepth() : 0;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWeight() : 0;
     }
 
     /**
@@ -138,7 +155,7 @@ abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
             return $coreEquals;
         }
 
-        if (!$storageListItem instanceof CartItemInterface) {
+        if (!$storageListItem instanceof OrderItemInterface) {
             return $coreEquals;
         }
 

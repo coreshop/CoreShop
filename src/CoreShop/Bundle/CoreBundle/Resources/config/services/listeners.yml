@@ -40,7 +40,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\ProductAvailabilityEventListener:
         arguments:
-            - '@coreshop.repository.cart_item'
+            - '@coreshop.repository.order_item'
             - '@Pimcore\Model\Factory'
         tags:
             - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: preUpdateListener }

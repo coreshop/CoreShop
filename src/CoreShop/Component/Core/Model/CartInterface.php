@@ -30,6 +30,11 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
     public function getWeight();
 
     /**
+     * @return float
+     */
+    public function setWeight($weight);
+
+    /**
      * @param bool $withTax
      *
      * @return int

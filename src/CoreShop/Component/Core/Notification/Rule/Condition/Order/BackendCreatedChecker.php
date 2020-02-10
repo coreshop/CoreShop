@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Core\Notification\Rule\Condition\Order;
 
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\SaleInterface;
 use Webmozart\Assert\Assert;
 
 class BackendCreatedChecker extends AbstractConditionChecker
@@ -24,9 +24,9 @@ class BackendCreatedChecker extends AbstractConditionChecker
     public function isNotificationRuleValid($subject, $params, array $configuration)
     {
         /**
-         * @var $subject SaleInterface
+         * @var $subject OrderInterface
          */
-        Assert::isInstanceOf($subject, SaleInterface::class);
+        Assert::isInstanceOf($subject, OrderInterface::class);
 
         if ($configuration['backendCreated']) {
             return $subject->getBackendCreated();

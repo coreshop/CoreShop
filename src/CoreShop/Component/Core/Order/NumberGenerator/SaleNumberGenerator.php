@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Order\NumberGenerator;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
@@ -63,7 +63,7 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     {
         $store = null;
 
-        if ($model instanceof SaleInterface) {
+        if ($model instanceof OrderInterface) {
             $store = $model->getStore();
         } elseif ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();

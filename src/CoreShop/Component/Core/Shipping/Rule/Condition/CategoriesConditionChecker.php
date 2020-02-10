@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -41,7 +41,7 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
      */
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
     {
-        if (!$shippable instanceof CartInterface) {
+        if (!$shippable instanceof OrderInterface) {
             return false;
         }
 

@@ -30,6 +30,7 @@ interface OrderInterface extends
     StoreAwareInterface,
     LocaleAwareInterface,
     AdjustableInterface,
+    BaseAdjustableInterface,
     CustomerAwareInterface,
     PayableInterface,
     StorageListInterface
@@ -56,6 +57,18 @@ interface OrderInterface extends
      * @return mixed
      */
     public function setCurrency($currency);
+
+    /**
+     * @return CurrencyInterface
+     */
+    public function getBaseCurrency();
+
+    /**
+     * @param CurrencyInterface $currency
+     *
+     * @return mixed
+     */
+    public function setBaseCurrency($currency);
 
     /**
      * @param bool $withTax
@@ -96,12 +109,12 @@ interface OrderInterface extends
     public function getDiscount($withTax = true);
 
     /**
-     * @return ProposalItemInterface[]
+     * @return OrderItemInterface[]
      */
     public function getItems();
 
     /**
-     * @param ProposalItemInterface[] $items
+     * @param OrderItemInterface[] $items
      */
     public function setItems($items);
 
@@ -111,21 +124,61 @@ interface OrderInterface extends
     public function hasItems();
 
     /**
-     * @param ProposalItemInterface $item
+     * @param OrderItemInterface $item
      */
     public function addItem($item);
 
     /**
-     * @param ProposalItemInterface $item
+     * @param OrderItemInterface $item
      */
     public function removeItem($item);
 
     /**
-     * @param ProposalItemInterface $item
+     * @param OrderItemInterface $item
      *
      * @return bool
      */
     public function hasItem($item);
+
+    /**
+     * @param int  $subtotal
+     * @param bool $withTax
+     */
+    public function setBaseSubtotal($subtotal, $withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getBaseSubtotalTax();
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseDiscount($withTax = true);
+
+    /**
+     * @return Fieldcollection
+     */
+    public function getBaseTaxes();
+
+    /**
+     * @param Fieldcollection $taxes
+     */
+    public function setBaseTaxes($taxes);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseShipping($withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getBaseShippingTax();
 
     /**
      * @return AddressInterface|null

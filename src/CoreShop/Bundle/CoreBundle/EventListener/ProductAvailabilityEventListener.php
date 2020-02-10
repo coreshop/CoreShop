@@ -15,7 +15,9 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Concrete;
@@ -24,7 +26,7 @@ use Pimcore\Model\FactoryInterface;
 final class ProductAvailabilityEventListener
 {
     /**
-     * @var CartItemRepositoryInterface
+     * @var OrderItemRepositoryInterface
      */
     private $cartItemRepository;
 
@@ -39,11 +41,11 @@ final class ProductAvailabilityEventListener
     private $productIdsToCheck = [];
 
     /**
-     * @param CartItemRepositoryInterface $cartItemRepository
-     * @param FactoryInterface            $pimcoreModelFactory
+     * @param OrderItemRepositoryInterface $cartItemRepository
+     * @param FactoryInterface             $pimcoreModelFactory
      */
     public function __construct(
-        CartItemRepositoryInterface $cartItemRepository,
+        OrderItemRepositoryInterface $cartItemRepository,
         FactoryInterface $pimcoreModelFactory
     ) {
         $this->cartItemRepository = $cartItemRepository;
@@ -104,7 +106,7 @@ final class ProductAvailabilityEventListener
 
         unset($this->productIdsToCheck[$object->getId()]);
 
-        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
+        $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
         if (count($cartItems) === 0) {
             return;
@@ -124,7 +126,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        $cartItems = $this->cartItemRepository->findCartItemsByProductId($object->getId());
+        $cartItems = $this->cartItemRepository->findOrderItemsByProductId($object->getId());
 
         if (count($cartItems) === 0) {
             return;
@@ -145,7 +147,7 @@ final class ProductAvailabilityEventListener
                 continue;
             }
 
-            if ($cart->getState() === 'cart') {
+            if ($cart->getSaleState() !== OrderSaleStates::STATE_CART) {
                 continue;
             }
 

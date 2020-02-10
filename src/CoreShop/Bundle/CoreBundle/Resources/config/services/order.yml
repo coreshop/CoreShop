@@ -128,3 +128,14 @@ services:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
         arguments:
             - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'
+
+    CoreShop\Component\Order\Committer\OrderCommitterInterface: '@CoreShop\Component\Core\Order\Committer\OrderCommitter'
+    CoreShop\Component\Core\Order\Committer\OrderCommitter:
+        arguments:
+            - '@coreshop.cart.manager'
+            - '@coreshop.object_service'
+            - '@coreshop.order.number_generator.default'
+            - '@coreshop.object_cloner'
+            - '@coreshop.core.key_transformer'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+            - '%coreshop.folder.order%'
