@@ -1,5 +1,9 @@
 # Within 2.1
 
+## 2.1.3
+ - Bugs:
+    - [Address, Order, Core] fix release (https://github.com/coreshop/CoreShop/pull/1269)
+
 ## 2.1.2
  - Features:
     - [FrontendBundle] Change function from private to protected (https://github.com/coreshop/CoreShop/pull/1248)
