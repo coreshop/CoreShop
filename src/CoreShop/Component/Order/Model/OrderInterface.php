@@ -78,6 +78,12 @@ interface OrderInterface extends
     public function getTotal($withTax = true);
 
     /**
+     * @param int  $total
+     * @param bool $withTax
+     */
+    public function setTotal($total, $withTax = true);
+
+    /**
      * @return int
      */
     public function getTotalTax();

@@ -12,30 +12,6 @@ services:
         tags:
             - {name: form.type}
 
-    coreshop.core.order.transformer.cart_to_order:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_order
-        decoration_priority: 10
-        arguments:
-            - '@coreshop.core.order.transformer.cart_to_order.inner'
-
-    coreshop.core.order.transformer.cart_to_quote:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_quote
-        arguments:
-            - '@coreshop.core.order.transformer.cart_to_quote.inner'
-
-    coreshop.core.order.transformer.cart_item_to_order_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_order_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_order_item.inner'
-
-    coreshop.core.order.transformer.cart_item_to_quote_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_quote_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
 
     coreshop.core.order.transformer.order_to_shipment:
         class: CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer

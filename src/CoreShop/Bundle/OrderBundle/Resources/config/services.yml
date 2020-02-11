@@ -97,14 +97,6 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
 
-    coreshop.custom_factory.cart_item: '@CoreShop\Component\Order\Factory\CartItemFactory'
-    CoreShop\Component\Order\Factory\CartItemFactory:
-        decorates: coreshop.factory.cart_item
-        decoration_priority: 256
-        public: false
-        arguments:
-            - '@CoreShop\Component\Order\Factory\CartItemFactory.inner'
-
     CoreShop\Component\Order\Factory\OrderItemFactory:
         decorates: coreshop.factory.order_item
         decoration_priority: 256
