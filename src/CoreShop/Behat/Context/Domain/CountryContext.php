@@ -15,11 +15,13 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Context\CountryContextInterface;
+use CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
@@ -45,21 +47,29 @@ final class CountryContext implements Context
     private $addressFormatter;
 
     /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param CountryRepositoryInterface $countryRepository
-     * @param CountryContextInterface    $countryContext
-     * @param AddressFormatterInterface  $addressFormatter
+     * @var GeoLiteBasedRequestResolver
+     */
+    private $geoLiteResolver;
+
+    /**
+     * @param SharedStorageInterface      $sharedStorage
+     * @param CountryRepositoryInterface  $countryRepository
+     * @param CountryContextInterface     $countryContext
+     * @param AddressFormatterInterface   $addressFormatter
+     * @param GeoLiteBasedRequestResolver $geoLiteResolver
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CountryRepositoryInterface $countryRepository,
         CountryContextInterface $countryContext,
-        AddressFormatterInterface $addressFormatter
+        AddressFormatterInterface $addressFormatter,
+        GeoLiteBasedRequestResolver $geoLiteResolver
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->countryRepository = $countryRepository;
         $this->countryContext = $countryContext;
         $this->addressFormatter = $addressFormatter;
+        $this->geoLiteResolver = $geoLiteResolver;
     }
 
     /**
@@ -84,7 +94,8 @@ final class CountryContext implements Context
         Assert::eq(
             $country->getCurrency()->getId(),
             $currency->getId(),
-            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(), $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
+            sprintf('%s country should use currency %s but uses %s instead.', $country->getName(),
+                $currency->getIsoCode(), $country->getCurrency()->getIsoCode())
         );
     }
 
@@ -124,5 +135,27 @@ final class CountryContext implements Context
                 $actualFormattedAddress
             )
         );
+    }
+
+    /**
+     * @Then /^when I check the geo-lite resolver with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
+     * @Then /^when I check the geo-lite resolver again with IP-Address "([^"]+)" we should be in country "([^"]+)"$/
+     */
+    public function whenIcheckTheGeoLiteResolver($ipAddress, $countryIso)
+    {
+        $request = Request::create(
+            'localhost',
+            'GET',
+            [],
+            [],
+            [],
+            [
+                'REMOTE_ADDR' => $ipAddress
+            ]
+        );
+
+        $country = $this->geoLiteResolver->findCountry($request);
+
+        Assert::eq($country ? $country->getIsoCode() : null, $countryIso);
     }
 }

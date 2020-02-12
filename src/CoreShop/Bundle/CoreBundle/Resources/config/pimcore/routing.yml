@@ -67,3 +67,16 @@ coreshop_admin_purchsable_variant_unit_solidifier_apply:
     path: /%coreshop.admin.route.base%/product-variant-solidifier/apply/{objectId}
     methods: [PUT]
     defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:applyAction}
+
+
+coreshop_admin_product:
+    type: coreshop.resources
+    resource: |
+      alias: coreshop.product
+      no_default_routes: true
+      additional_routes:
+        config:
+          path: remove-store-values
+          action: removeStoreValues
+          methods:
+            - POST

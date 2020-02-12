@@ -17,7 +17,6 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     productUnitDefinitionsStore: null,
 
     initialize: function (data, fieldConfig) {
-
         this.defaultValue = null;
         this.storeValuesBuilder = {};
 
@@ -190,7 +189,6 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
         }
 
         Ext.Object.each(pimcore.globalmanager.get('coreshop_stores').getRange(), function (index, store) {
-
             var data, valuesBuilder, formPanel = new Ext.Panel({
                 xtype: 'panel',
                 border: false,
@@ -199,7 +197,8 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
                 deferredRender: true,
                 hideMode: 'offsets',
                 iconCls: 'coreshop_icon_store',
-                title: store.get('name')
+                title: store.get('name'),
+                items: []
             });
 
             if (this.fieldConfig.labelWidth) {
@@ -208,6 +207,42 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
 
             data = this.data.hasOwnProperty(store.getId()) ? this.data[store.getId()] : null;
             valuesBuilder = new coreshop.product.storeValues.builder(this.fieldConfig, store, data, this.productUnitDefinitionsStore, this.object.id);
+
+            if (data && data.hasOwnProperty('inherited') && !data.inherited) {
+                formPanel.add({
+                    xtype: 'button',
+                    text: t('coreshop_restore_inheritance'),
+                    iconCls: 'pimcore_icon_delete',
+                    handler: function() {
+                        Ext.Msg.confirm(t('coreshop_restore_inheritance'), t('coreshop_restore_inheritance_message'), function (btn) {
+                            if (btn === 'yes') {
+                                this.component.setLoading(true);
+
+                                Ext.Ajax.request({
+                                    url: '/admin/coreshop/products/remove-store-values',
+                                    method: 'post',
+                                    params: {id: this.object.id, storeValuesId: data.values.id},
+                                    ignoreErrors: true,
+                                    success: function (response) {
+                                        // maybe object is already gone due manual reload
+                                        if(this.component.destroyed === true) {
+                                            return;
+                                        }
+
+                                        this.component.setLoading(false);
+
+                                        pimcore.globalmanager.get('object_' + this.object.id).reload();
+
+                                    }.bind(this),
+                                    failure: function () {
+                                        this.component.setLoading(false);
+                                    }.bind(this),
+                                });
+                            }
+                        }.bind(this));
+                    }.bind(this)
+                });
+            }
 
             formPanel.add([valuesBuilder.getForm()]);
             tabPanel.add([formPanel]);

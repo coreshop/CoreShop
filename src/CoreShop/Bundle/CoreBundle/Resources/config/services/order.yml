@@ -125,6 +125,6 @@ services:
         decorates: coreshop.cart_item.quantity_modifier
 
     CoreShop\Component\Core\Cart\CartContextResolver:
-        decorates: 'CoreShop\Component\Cart\Cart\CartContextResolver'
+        decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
         arguments:
             - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'

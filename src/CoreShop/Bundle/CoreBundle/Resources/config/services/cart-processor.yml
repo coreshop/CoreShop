@@ -19,7 +19,7 @@ services:
             - '@coreshop.order.purchasable.calculator'
             - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
             - '@coreshop.cart_item.processor'
-            - '@CoreShop\Component\Cart\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: coreshop.cart_processor, priority: 600 }
 
@@ -27,7 +27,7 @@ services:
     CoreShop\Component\Core\Order\Processor\CartItemsWholesaleProcessor:
         arguments:
             - '@coreshop.order.purchasable.wholesale_price_calculator'
-            - '@CoreShop\Component\Cart\Cart\CartContextResolverInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: coreshop.cart_processor, priority: 575 }
 
