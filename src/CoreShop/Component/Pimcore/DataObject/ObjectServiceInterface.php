@@ -13,16 +13,16 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Element\ElementInterface;
+use Pimcore\Model\DataObject\Folder;
 
 interface ObjectServiceInterface
 {
     /**
      * @param string $path
      *
-     * @return ElementInterface
+     * @return Folder
      */
-    public function createFolderByPath($path);
+    public function createFolderByPath($path): Folder;
 
     /**
      * Copy all fields from $from to $to.
@@ -30,7 +30,7 @@ interface ObjectServiceInterface
      * @param Concrete $fromObject
      * @param Concrete $toObject
      *
-     * @return mixed
+     * @return Concrete
      */
-    public function copyObject(Concrete $fromObject, Concrete $toObject);
+    public function copyObject(Concrete $fromObject, Concrete $toObject): Concrete;
 }

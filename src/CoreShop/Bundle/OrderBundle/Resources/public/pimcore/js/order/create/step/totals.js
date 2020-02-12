@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step.totals');
-coreshop.order.sale.create.step.totals = Class.create(coreshop.order.sale.create.abstractStep, {
+pimcore.registerNS('coreshop.order.order.create.step.totals');
+coreshop.order.order.create.step.totals = Class.create(coreshop.order.order.create.abstractStep, {
     totalStore: null,
 
     initStep: function () {

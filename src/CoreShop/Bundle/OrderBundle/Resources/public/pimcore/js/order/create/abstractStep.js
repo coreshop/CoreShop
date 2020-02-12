@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step');
-pimcore.registerNS('coreshop.order.sale.create.abstractStep');
-coreshop.order.sale.create.abstractStep = Class.create({
+pimcore.registerNS('coreshop.order.order.create.step');
+pimcore.registerNS('coreshop.order.order.create.abstractStep');
+coreshop.order.order.create.abstractStep = Class.create({
     eventManager: null,
     creationPanel: null,
 

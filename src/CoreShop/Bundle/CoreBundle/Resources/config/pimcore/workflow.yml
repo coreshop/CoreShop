@@ -23,5 +23,9 @@ core_shop_workflow:
                 after:
                     commit_order:
                         on: ['order']
-                        do: ['@CoreShop\Component\Core\Order\Committer\OrderCommitter', 'commitOrder']
+                        do: ['@CoreShop\Component\Order\Committer\OrderCommitterInterface', 'commitOrder']
+                        args: ['object']
+                    commit_quote:
+                        on: ['quote']
+                        do: ['@CoreShop\Component\Order\Committer\QuoteCommitterInterface', 'commitOrder']
                         args: ['object']

@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step.base');
-coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.abstractStep, {
+pimcore.registerNS('coreshop.order.order.create.step.base');
+coreshop.order.order.create.step.base = Class.create(coreshop.order.order.create.abstractStep, {
     isValid: function () {
         var values = this.getValues();
 

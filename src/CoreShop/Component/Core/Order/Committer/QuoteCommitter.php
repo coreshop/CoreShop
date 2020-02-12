@@ -32,7 +32,7 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use Pimcore\Model\DataObject\Folder;
 
-class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
+class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 {
     /**
      * @var CartManagerInterface
@@ -60,11 +60,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
     protected $keyTransformer;
 
     /**
-     * @var StateMachineApplierInterface
-     */
-    private $stateMachineApplier;
-
-    /**
      * @var string
      */
     protected $orderFolderPath;
@@ -75,7 +70,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
         ItemKeyTransformerInterface $keyTransformer,
-        StateMachineApplierInterface $stateMachineApplier,
         string $orderFolderPath
     ) {
         $this->cartManager = $cartManager;
@@ -83,7 +77,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
         $this->keyTransformer = $keyTransformer;
-        $this->stateMachineApplier = $stateMachineApplier;
         $this->orderFolderPath = $orderFolderPath;
     }
 
@@ -102,14 +95,10 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
-        $order->setSaleState(OrderSaleStates::STATE_ORDER);
+        $order->setSaleState(OrderSaleStates::STATE_QUOTE);
         $order->setOrderDate(Carbon::now());
         $order->setOrderNumber($orderNumber);
         $order->setKey($this->keyTransformer->transform($orderNumber));
-        $order->setOrderState(OrderStates::STATE_INITIALIZED);
-        $order->setShippingState(OrderShipmentStates::STATE_NEW);
-        $order->setPaymentState(OrderPaymentStates::STATE_NEW);
-        $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
 
         $this->cartManager->persistCart($order);
 
@@ -143,7 +132,5 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $order->setInvoiceAddress($invoiceAddress);
 
         $this->cartManager->persistCart($order);
-
-        $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CREATE);
     }
 }

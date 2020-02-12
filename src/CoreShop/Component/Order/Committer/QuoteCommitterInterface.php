@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -7,20 +8,13 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
  */
 
-pimcore.registerNS('coreshop.order.cart.detail.panel');
-coreshop.order.cart.detail.panel = Class.create(coreshop.order.order.detail.panel, {
-    type: 'cart',
+namespace CoreShop\Component\Order\Committer;
 
-    getBlockIdentifier: function () {
-        return coreshop.order.cart.detail.blocks;
-    },
+use CoreShop\Component\Order\Model\OrderInterface;
 
-    getLayout: function($super) {
-        var layout = $super();
-
-        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.o_id);
-    },
-});
+interface QuoteCommitterInterface
+{
+    public function commitOrder(OrderInterface $order): void;
+}

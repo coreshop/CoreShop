@@ -105,6 +105,7 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'
 
+
     CoreShop\Component\Order\Committer\OrderCommitterInterface: '@CoreShop\Component\Core\Order\Committer\OrderCommitter'
     CoreShop\Component\Core\Order\Committer\OrderCommitter:
         arguments:
@@ -115,3 +116,13 @@ services:
             - '@coreshop.core.key_transformer'
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
             - '%coreshop.folder.order%'
+
+    CoreShop\Component\Order\Committer\QuoteCommitterInterface: '@CoreShop\Component\Core\Order\Committer\QuoteCommitter'
+    CoreShop\Component\Core\Order\Committer\QuoteCommitter:
+        arguments:
+            - '@coreshop.cart.manager'
+            - '@coreshop.object_service'
+            - '@coreshop.quote.number_generator.default'
+            - '@coreshop.object_cloner'
+            - '@coreshop.core.key_transformer'
+            - '%coreshop.folder.quote%'

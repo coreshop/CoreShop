@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step.address');
-coreshop.order.sale.create.step.address = Class.create(coreshop.order.sale.create.abstractStep, {
+pimcore.registerNS('coreshop.order.order.create.step.address');
+coreshop.order.order.create.step.address = Class.create(coreshop.order.order.create.abstractStep, {
     addressStore: null,
 
     initStep: function () {

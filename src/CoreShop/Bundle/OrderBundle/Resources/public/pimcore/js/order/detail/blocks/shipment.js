@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.shipment');
-coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.shipment');
+coreshop.order.order.detail.blocks.shipment = Class.create(coreshop.order.order.detail.abstractBlock, {
     initBlock: function () {
         var me = this;
 

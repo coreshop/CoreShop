@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.header');
-coreshop.order.sale.detail.blocks.header = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.quote.detail.blocks.header');
+coreshop.order.quote.detail.blocks.header = Class.create(coreshop.order.order.detail.abstractBlock, {
     datePanel: null,
     totalPanel: null,
     productPanel: null,

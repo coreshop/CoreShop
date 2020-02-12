@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step.payment');
-coreshop.order.sale.create.step.payment = Class.create(coreshop.order.sale.create.abstractStep, {
+pimcore.registerNS('coreshop.order.order.create.step.payment');
+coreshop.order.order.create.step.payment = Class.create(coreshop.order.order.create.abstractStep, {
 
     isValid: function () {
         return this.getValues().paymentProvider;

@@ -173,15 +173,17 @@ class OrderController extends PimcoreController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    public function getFolderConfigurationAction(): Response
+    public function getFolderConfigurationAction(Request $request): Response
     {
         $this->isGrantedOr403();
 
         $name = null;
         $folderId = null;
 
+        $type = $request->get('saleType', 'order');
+
         $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = $this->getParameter('coreshop.folder.order');
+        $folderPath = $this->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
 interface ObjectClonerInterface
@@ -19,11 +20,12 @@ interface ObjectClonerInterface
     /**
      * Clones an object and returns it unsaved.
      *
-     * @param Concrete $object
-     * @param Concrete $parent
-     * @param string   $key
+     * @param Concrete       $object
+     * @param AbstractObject $parent
+     * @param string         $key
+     * @param bool           $save
      *
      * @return Concrete
      */
-    public function cloneObject(Concrete $object, $parent, $key);
+    public function cloneObject(Concrete $object, AbstractObject $parent, string $key, bool $save = true): Concrete;
 }

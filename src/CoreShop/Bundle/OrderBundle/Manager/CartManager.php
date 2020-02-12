@@ -30,25 +30,26 @@ final class CartManager implements CartManagerInterface
      * @var string
      */
     private $cartFolderPath;
+    /**
+     * @var string
+     */
+    private $cartItemFolderPath;
 
     /**
      * @var CartProcessorInterface
      */
     private $cartProcessor;
 
-    /**
-     * @param CartProcessorInterface $cartProcessor
-     * @param ObjectServiceInterface $objectService
-     * @param string                 $cartFolderPath
-     */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         ObjectServiceInterface $objectService,
-        $cartFolderPath
+        string $cartFolderPath,
+        string $cartItemFolderPath
     ) {
         $this->cartProcessor = $cartProcessor;
         $this->objectService = $objectService;
         $this->cartFolderPath = $cartFolderPath;
+        $this->cartItemFolderPath = $cartItemFolderPath;
     }
 
     /**
@@ -63,7 +64,11 @@ final class CartManager implements CartManagerInterface
 
             if (!$cart->getId()) {
                 $cart->setItems([]);
-                $cart->setParent($cartsFolder);
+
+                if (!$cart->getParent()) {
+                    $cart->setParent($cartsFolder);
+                }
+
                 $cart->save();
             }
 
@@ -71,7 +76,12 @@ final class CartManager implements CartManagerInterface
              * @var OrderItemInterface $item
              */
             foreach ($tempItems as $index => $item) {
-                $item->setParent($cart);
+                $item->setParent(
+                    $this->objectService->createFolderByPath(
+                        sprintf('%s/%s', $cart->getFullPath(), $this->cartItemFolderPath)
+                    )
+                );
+                $item->setPublished(true);
                 $item->setKey($index+1);
                 $item->save();
             }

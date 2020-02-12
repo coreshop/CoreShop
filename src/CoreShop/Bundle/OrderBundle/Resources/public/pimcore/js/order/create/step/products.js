@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.create.step.products');
-coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.create.abstractStep, {
+pimcore.registerNS('coreshop.order.order.create.step.products');
+coreshop.order.order.create.step.products = Class.create(coreshop.order.order.create.abstractStep, {
 
     products: [],
 

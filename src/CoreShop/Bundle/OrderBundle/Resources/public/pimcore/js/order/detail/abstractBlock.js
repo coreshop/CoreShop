@@ -10,9 +10,9 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks');
-pimcore.registerNS('coreshop.order.sale.detail.abstractBlock');
-coreshop.order.sale.detail.abstractBlock = Class.create({
+pimcore.registerNS('coreshop.order.order.detail.blocks');
+pimcore.registerNS('coreshop.order.order.detail.abstractBlock');
+coreshop.order.order.detail.abstractBlock = Class.create({
     eventManager: null,
     panel: null,
     sale: null,

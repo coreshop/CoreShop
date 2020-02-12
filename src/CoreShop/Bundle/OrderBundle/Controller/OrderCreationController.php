@@ -125,19 +125,6 @@ class OrderCreationController extends PimcoreController
 
             $cart = $handledForm->getData();
 
-            //TODO: Should be moved to a Factory and the Form uses that?
-            $cart->setKey(uniqid());
-            $cart->setPublished(true);
-
-            foreach ($cart->getItems() as $item) {
-                if ($item instanceof Concrete) {
-                    $item->setKey(uniqid());
-                    $item->setPublished(true);
-                }
-            }
-
-            $cartManager->persistCart($cart);
-
             $workflow = $manager->get($cart, OrderSaleTransitions::IDENTIFIER);
 
             if (!$workflow->can($cart, $type)) {

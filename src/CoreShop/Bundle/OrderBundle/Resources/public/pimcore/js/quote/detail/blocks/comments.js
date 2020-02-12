@@ -10,17 +10,7 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.cart.detail.panel');
-coreshop.order.cart.detail.panel = Class.create(coreshop.order.order.detail.panel, {
-    type: 'cart',
+pimcore.registerNS('coreshop.order.quote.detail.blocks.comments');
+coreshop.order.quote.detail.blocks.comments = Class.create(coreshop.order.order.detail.blocks.comments, {
 
-    getBlockIdentifier: function () {
-        return coreshop.order.cart.detail.blocks;
-    },
-
-    getLayout: function($super) {
-        var layout = $super();
-
-        layout.setTitle(t('coreshop_' + this.type) + ': ' + this.sale.o_id);
-    },
 });
