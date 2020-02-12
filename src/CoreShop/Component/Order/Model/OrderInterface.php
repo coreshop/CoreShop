@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -45,6 +46,26 @@ interface OrderInterface extends
      * @param string $saleState
      */
     public function setSaleState($saleState);
+
+    /**
+     * @return Carbon
+     */
+    public function getOrderDate();
+
+    /**
+     * @param Carbon $orderDate
+     */
+    public function setOrderDate($orderDate);
+
+    /**
+     * @return string
+     */
+    public function getOrderNumber();
+
+    /**
+     * @param string $orderNumber
+     */
+    public function setOrderNumber($orderNumber);
 
     /**
      * @return CurrencyInterface

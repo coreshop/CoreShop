@@ -29,7 +29,7 @@ coreshop.order.cart.list = Class.create(coreshop.order.sale.list, {
             function (id) {
                 this.open(id);
             }.bind(this),
-            [coreshop.class_map.coreshop.cart],
+            [coreshop.class_map.coreshop.order],
             this.getGridPaginator()
         );
     },

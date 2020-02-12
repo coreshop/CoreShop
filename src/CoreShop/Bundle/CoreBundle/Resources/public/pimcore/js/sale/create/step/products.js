@@ -18,7 +18,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
         panel.on('beforeedit', function (editor, context) {
             var combo = editor.editor.form.findField('unitDefinition');
 
-            if (context.record.get('units').length > 0) {
+            if (context.record.get('units') && context.record.get('units').length > 0) {
                 combo.enable();
                 combo.getStore().removeAll();
                 combo.getStore().loadRawData(context.record.get('units'));
@@ -36,7 +36,7 @@ coreshop.order.sale.create.step.products = Class.create(coreshop.order.sale.crea
     onRowEditingFinished: function($super, editor, context, eOpts) {
         var combo = editor.editor.form.findField('unitDefinition');
 
-        if (context.record.get('units').length > 0) {
+        if (context.record.get('units') && context.record.get('units').length > 0) {
             var record = combo.getStore().getById(combo.getValue());
 
             if (record) {

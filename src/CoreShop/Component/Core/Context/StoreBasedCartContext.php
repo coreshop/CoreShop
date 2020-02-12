@@ -64,7 +64,6 @@ final class StoreBasedCartContext implements CartContextInterface
             $store = $this->shopperContext->getStore();
 
             $cart->setStore($store);
-            $cart->setBaseCurrency($store->getCurrency());
             $cart->setCurrency($store->getCurrency());
             $cart->setLocaleCode($this->shopperContext->getLocaleCode());
         } catch (StoreNotFoundException $exception) {

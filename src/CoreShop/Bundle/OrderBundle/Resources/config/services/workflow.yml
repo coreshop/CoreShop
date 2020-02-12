@@ -73,6 +73,17 @@ services:
         arguments:
             - shippingState
 
+    coreshop.state_machine.marking_store.order_sales_type_pimcore_marking_store:
+        class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
+        arguments:
+            - '@coreshop.state_machine.marking_store.single_state.order_sales_type_state'
+            - false
+
+    coreshop.state_machine.marking_store.single_state.order_sales_type_state:
+        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        arguments:
+            - saleState
+
     coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
         class: CoreShop\Bundle\WorkflowBundle\MarkingStore\PimcorePersistentMarkingStore
         arguments:

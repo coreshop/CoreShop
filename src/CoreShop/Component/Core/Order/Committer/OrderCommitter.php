@@ -12,18 +12,24 @@
 
 namespace CoreShop\Component\Core\Order\Committer;
 
+use Carbon\Carbon;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
+use CoreShop\Component\Order\OrderInvoiceStates;
+use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\OrderShipmentStates;
+use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use Pimcore\Model\DataObject\Folder;
 
 class OrderCommitter implements OrderCommitterInterface
 {
@@ -87,8 +93,15 @@ class OrderCommitter implements OrderCommitterInterface
         $orderNumber = $this->numberGenerator->generate($order);
 
         $order->setParent($orderFolder);
-        $order->setKey($orderNumber);
         $order->setSaleState(OrderSaleStates::STATE_ORDER);
+        $order->setOrderDate(Carbon::now());
+        $order->setOrderNumber($orderNumber);
+        $order->setKey($this->keyTransformer->transform($orderNumber));
+        $order->setOrderState(OrderStates::STATE_INITIALIZED);
+        $order->setShippingState(OrderShipmentStates::STATE_NEW);
+        $order->setPaymentState(OrderPaymentStates::STATE_NEW);
+        $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
+        $order->save();
 
         /**
          * @var AddressInterface $shippingAddress
@@ -115,12 +128,13 @@ class OrderCommitter implements OrderCommitterInterface
 
         $order->setShippingAddress($shippingAddress);
         $order->setInvoiceAddress($invoiceAddress);
-
-        $order->setOrderNumber($orderNumber);
-        $order->setKey($this->keyTransformer->transform($order));
+//
+//        $itemsFolder = $this->objectService->createFolderByPath(sprintf('%s/items', $order->getFullPath()));
+//
+//        foreach ($order->getItems() as $i => $item) {
+//            $item->setParent($itemsFolder);
+//        }
 
         $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CREATE);
-
-        $this->cartManager->persistCart($order);
     }
 }

@@ -72,6 +72,7 @@ final class CartManager implements CartManagerInterface
              */
             foreach ($tempItems as $index => $item) {
                 $item->setParent($cart);
+                $item->setKey($index+1);
                 $item->save();
             }
 

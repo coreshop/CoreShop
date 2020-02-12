@@ -1,0 +1,21 @@
+services:
+    CoreShop\Bundle\OrderBundle\Controller\OrderController:
+        abstract: true
+        calls:
+            - ['setEventDispatcher', ['@debug.event_dispatcher']]
+            - ['setObjectNoteService', ['@CoreShop\Component\Pimcore\DataObject\NoteServiceInterface']]
+            - ['setAddressFormatter', ['@CoreShop\Component\Address\Formatter\AddressFormatterInterface']]
+            - ['setSerializer', ['@jms_serializer.serializer']]
+            - ['setWorkflowStateManager', ['@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface']]
+            - ['setInvoiceProcessableHelper', ['@coreshop.order.invoice.processable']]
+            - ['setShipmentProcessableHelper', ['@coreshop.order.shipment.processable']]
+            - ['setOrderInvoiceRepository', ['@coreshop.repository.order_invoice']]
+            - ['setOrderShipmentRepository', ['@coreshop.repository.order_shipment']]
+            - ['setPaymentRepository', ['@coreshop.repository.payment']]
+
+    CoreShop\Bundle\OrderBundle\Controller\OrderCreationController:
+        abstract: true
+        calls:
+            - ['setAddressFormatter', ['@CoreShop\Component\Address\Formatter\AddressFormatterInterface']]
+            - ['setCurrencyConverter', ['@CoreShop\Component\Currency\Converter\CurrencyConverterInterface']]
+

@@ -18,6 +18,7 @@ imports:
     - { resource: "services/payment.yml" }
     - { resource: "services/forms.yml" }
     - { resource: "services/checkout_listener.yml" }
+    - { resource: "services/controller.yml" }
 
 services:
     _defaults:

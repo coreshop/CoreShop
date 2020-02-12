@@ -28,7 +28,7 @@ coreshop.order.sale.create.panel = Class.create({
             me.layout.setLoading(true);
 
             Ext.Ajax.request({
-                url: '/admin/coreshop/' + me.type + '-creation/preview',
+                url: '/admin/coreshop/order-creation/preview',
                 method: 'post',
                 jsonData: me.getPreviewValues(),
                 callback: function (request, success, response) {
@@ -230,7 +230,8 @@ coreshop.order.sale.create.panel = Class.create({
 
     getValues: function () {
         var values = {
-            customer: this.customerId
+            customer: this.customerId,
+            saleType: this.type
         };
 
         Ext.Object.each(this.steps, function (key, value) {
@@ -242,7 +243,8 @@ coreshop.order.sale.create.panel = Class.create({
 
     getPreviewValues: function () {
         var values = {
-            customer: this.customerId
+            customer: this.customerId,
+            saleType: this.type
         };
 
         Ext.Object.each(this.steps, function (key, value) {
@@ -274,7 +276,7 @@ coreshop.order.sale.create.panel = Class.create({
         this.layout.setLoading(t('coreshop_creating_' + this.type));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/' + this.type + '-creation/create',
+            url: '/admin/coreshop/order-creation/create',
             method: 'post',
             jsonData: this.getValues(),
             callback: function (request, success, response) {

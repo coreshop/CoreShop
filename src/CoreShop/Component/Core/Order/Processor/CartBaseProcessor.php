@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
@@ -36,6 +37,8 @@ final class CartBaseProcessor implements CartProcessorInterface
     public function process(OrderInterface $cart): void
     {
         $cart->removeBaseAdjustmentsRecursively();
+
+        $cart->setBaseCurrency($cart->getStore()->getCurrency());
 
         foreach ([true, false] as $withTax) {
             $cart->setBaseSubtotal($this->convert($cart->getSubtotal($withTax), $cart), $withTax);
@@ -108,6 +111,10 @@ final class CartBaseProcessor implements CartProcessorInterface
     {
         if (null === $value) {
             return 0;
+        }
+
+        if (!$cart->getBaseCurrency() instanceof CurrencyInterface) {
+            return $value;
         }
 
         return $this->currencyConverter->convert(

@@ -10,11 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\CoreBundle\Controller;
+namespace CoreShop\Component\Order;
 
-use CoreShop\Bundle\OrderBundle\Controller\CartCreationController as BaseCartCreationController;
-
-class CartCreationController extends BaseCartCreationController
+final class OrderSaleTransitions
 {
-    use CoreSaleCreationTrait;
+    const IDENTIFIER = 'coreshop_order_sales_type';
+
+    const TRANSITION_ORDER = 'order';
+    const TRANSITION_CART = 'cart';
+    const TRANSITION_QUOTE = 'quote';
 }

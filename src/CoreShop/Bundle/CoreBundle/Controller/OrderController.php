@@ -14,22 +14,23 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
-use CoreShop\Component\Order\Model\SaleItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
 
 class OrderController extends BaseOrderController
 {
     /**
      * {@inheritdoc}
      */
-    protected function prepareSale(SaleInterface $sale)
+    protected function prepareSale(OrderInterface $sale): array
     {
         $order = parent::prepareSale($sale);
 
-        if ($sale instanceof OrderInterface) {
+        if ($sale instanceof CoreOrderInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
+            $order['shipping'] = $sale->getShipping();
         }
 
         return $order;
@@ -38,31 +39,30 @@ class OrderController extends BaseOrderController
     /**
      * {@inheritdoc}
      */
-    protected function getDetails(SaleInterface $sale)
+    protected function getDetails(OrderInterface $sale): array
     {
-        $order = parent::getDetails($sale);
+        $json = parent::getDetails($sale);
 
-        if ($sale instanceof OrderInterface) {
-            $order['shippingPayment'] = [
+        if ($sale instanceof CoreOrderInterface) {
+            $json['shippingPayment'] = [
                 'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];
+
+            $json['carrierInfo'] = [
+                'name' => $sale->getCarrier()->getTitle(),
+            ];
         }
 
-        return $order;
+        return $json;
     }
 
-    /**
-     * @param SaleItemInterface $item
-     *
-     * @return array
-     */
-    protected function prepareSaleItem(SaleItemInterface $item)
+    protected function prepareSaleItem(OrderItemInterface $item): array
     {
         $itemData = parent::prepareSaleItem($item);
 
-        if (!$item instanceof OrderItemInterface) {
+        if (!$item instanceof CoreOrderItemInterface) {
             return $itemData;
         }
 

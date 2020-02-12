@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -22,6 +23,7 @@ use CoreShop\Component\Order\CheckoutEvents;
 use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
+use CoreShop\Component\Order\OrderSaleTransitions;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -224,9 +226,11 @@ class CheckoutController extends FrontendController
         /**
          * If everything is valid, we continue with Order-Creation.
          */
-
         $order = $this->getCart();
-        $this->getOrderCommitter()->commitOrder($order);
+
+        $workflow = $this->get(StateMachineManagerInterface::class)->get(OrderSaleTransitions::IDENTIFIER, $order);
+
+        $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
 
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
@@ -354,38 +358,6 @@ class CheckoutController extends FrontendController
     protected function getCartContext()
     {
         return $this->get('coreshop.context.cart');
-    }
-
-    /**
-     * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
-     */
-    protected function getCartManager()
-    {
-        return $this->get('coreshop.cart.manager');
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Transformer\ProposalTransformerInterface
-     */
-    protected function getCartToOrderTransformer()
-    {
-        return $this->get('coreshop.order.transformer.cart_to_order');
-    }
-
-    /**
-     * @return OrderCommitterInterface
-     */
-    protected function getOrderCommitter()
-    {
-        return $this->get(OrderCommitterInterface::class);
-    }
-
-    /**
-     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
-     */
-    protected function getOrderFactory()
-    {
-        return $this->get('coreshop.factory.order');
     }
 
     /**

@@ -26,11 +26,14 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     private $originMarkingStore;
 
     /**
-     * @param MarkingStoreInterface $originMarkingStore origin marking store
+     * @var bool
      */
-    public function __construct(MarkingStoreInterface $originMarkingStore)
+    private $persistDirectly ;
+
+    public function __construct(MarkingStoreInterface $originMarkingStore, bool $persistDirectly = true)
     {
         $this->originMarkingStore = $originMarkingStore;
+        $this->persistDirectly = $persistDirectly;
     }
 
     /**
@@ -47,8 +50,11 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking)
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        if ($subject instanceof Concrete) {
-            $subject->save();
+
+        if ($this->persistDirectly) {
+            if ($subject instanceof Concrete) {
+                $subject->save();
+            }
         }
     }
 }
