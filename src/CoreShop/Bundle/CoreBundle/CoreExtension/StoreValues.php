@@ -408,6 +408,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements Custo
                 'name' => $storeValuesEntity->getStore()->getName(),
                 'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
                 'values' => $values,
+                'inherited' => false
             ];
         }
 
