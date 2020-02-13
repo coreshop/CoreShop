@@ -87,6 +87,16 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
     public function setLogo($logo);
 
     /**
+     * @return bool
+     */
+    public function getCartBasedTaxation();
+
+    /**
+     * @param bool $cartBasedTaxation
+     */
+    public function setCartBasedTaxation($cartBasedTaxation);
+
+    /**
      * @return Collection|ShippingRuleGroupInterface[]
      */
     public function getShippingRules();

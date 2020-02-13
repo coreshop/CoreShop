@@ -23,6 +23,9 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: pimcoreAsset
             groups: [Detailed]
+        cartBasedTaxation:
+            column: cartBasedTaxation
+            type: boolean
         shippingRules:
             expose: true
             type: array

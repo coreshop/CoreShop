@@ -1,6 +1,8 @@
 CoreShop\Component\Shipping\Model\Carrier:
     properties:
-      identifier:
-          - NotBlank: { groups: [coreshop] }
-      isFree:
-          - Type: { type: boolean }
+        identifier:
+            - NotBlank: { groups: [coreshop] }
+        isFree:
+            - Type: { type: boolean }
+        cartBasedTaxation:
+            - Type: { type: boolean }
