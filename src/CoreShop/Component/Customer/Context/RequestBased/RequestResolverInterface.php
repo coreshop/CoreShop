@@ -20,7 +20,7 @@ interface RequestResolverInterface
     /**
      * @param Request $request
      *
-     * @return CustomerInterface|null
+     * @return CustomerInterface
      */
-    public function findCustomer(Request $request);
+    public function findCustomer(Request $request): CustomerInterface;
 }

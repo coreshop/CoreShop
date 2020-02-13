@@ -41,11 +41,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private $geoDbFallbackFile;
 
-    /**
-     * @param CountryRepositoryInterface $countryRepository
-     * @param CoreHandlerInterface       $cache
-     * @param string                     $geoDbFile
-     */
     public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache, string $geoDbFile = null)
     {
         $this->countryRepository = $countryRepository;
@@ -57,7 +52,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCountry(Request $request)
+    public function findCountry(Request $request): CountryInterface
     {
         $geoDbFileLocation = $this->geoDbFile;
 
@@ -115,7 +110,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      *
      * @return string|null
      */
-    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation)
+    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation): ?string
     {
         try {
             $reader = new Reader($geoDbFileLocation);
@@ -135,7 +130,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      *
      * @return bool
      */
-    private function checkIfIpIsPrivate($clientIp)
+    private function checkIfIpIsPrivate($clientIp): bool
     {
         $privateAddresses = [
             '10.0.0.0|10.255.255.255', // single class A network

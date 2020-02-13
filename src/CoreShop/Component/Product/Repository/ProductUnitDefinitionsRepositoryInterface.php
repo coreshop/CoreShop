@@ -23,5 +23,5 @@ interface ProductUnitDefinitionsRepositoryInterface extends RepositoryInterface
      *
      * @return ProductUnitDefinitionsInterface
      */
-    public function findOneForProduct(ProductInterface $product);
+    public function findOneForProduct(ProductInterface $product): ?ProductUnitDefinitionsInterface;
 }

@@ -24,7 +24,7 @@ final class AmountConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('minAmount', MoneyType::class, [
@@ -46,7 +46,7 @@ final class AmountConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_condition_amount';
     }

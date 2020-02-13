@@ -22,5 +22,5 @@ interface ProductUnitRepositoryInterface extends RepositoryInterface
      *
      * @return ProductUnitInterface|null
      */
-    public function findByName(string $name);
+    public function findByName(string $name): ?ProductUnitInterface;
 }

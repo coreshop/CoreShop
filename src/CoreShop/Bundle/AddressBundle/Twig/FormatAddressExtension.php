@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    /**
-     * @var FormatAddressHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param FormatAddressHelperInterface $helper
-     */
     public function __construct(FormatAddressHelperInterface $helper)
     {
         $this->helper = $helper;

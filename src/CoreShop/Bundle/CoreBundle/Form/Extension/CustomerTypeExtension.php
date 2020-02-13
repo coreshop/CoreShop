@@ -24,7 +24,7 @@ final class CustomerTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('salutation', SalutationChoiceType::class, [
                 'label' => 'coreshop.form.customer.salutation',
@@ -41,7 +41,7 @@ final class CustomerTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 

@@ -23,7 +23,7 @@ final class ImageExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof SEOImageAwareInterface &&
             $object->getImage() instanceof Image;
@@ -32,7 +32,7 @@ final class ImageExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, SEOImageAwareInterface::class);
 

@@ -21,7 +21,7 @@ class ObjectIdSumInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $sum = 0;
         if (is_array($value)) {

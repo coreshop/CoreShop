@@ -22,7 +22,7 @@ final class AddToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('cartItem', CartItemType::class, [
             'constraints' => [new Valid(['groups' => $this->validationGroups])]
@@ -32,7 +32,7 @@ final class AddToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -44,7 +44,7 @@ final class AddToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string
+    public function getBlockPrefix(): string: string
     {
         return 'coreshop_add_to_cart';
     }

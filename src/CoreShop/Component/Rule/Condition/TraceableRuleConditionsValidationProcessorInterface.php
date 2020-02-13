@@ -14,8 +14,5 @@ namespace CoreShop\Component\Rule\Condition;
 
 interface TraceableRuleConditionsValidationProcessorInterface extends RuleConditionsValidationProcessorInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getValidatedConditions();
+    public function getValidatedConditions(): array;
 }

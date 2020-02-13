@@ -23,5 +23,5 @@ interface ValidRulesFetcherInterface
      *
      * @return RuleInterface[]
      */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context);
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array;
 }

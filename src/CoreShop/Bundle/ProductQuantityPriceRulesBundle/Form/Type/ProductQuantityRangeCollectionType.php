@@ -21,7 +21,7 @@ class ProductQuantityRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -37,7 +37,7 @@ class ProductQuantityRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return CollectionType::class;
     }
@@ -45,7 +45,7 @@ class ProductQuantityRangeCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rules_range_collection';
     }

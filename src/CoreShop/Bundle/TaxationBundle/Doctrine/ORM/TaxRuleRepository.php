@@ -21,27 +21,7 @@ class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
-    {
-        return $this->createQueryBuilder('o');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getByGroupId($taxRuleGroupId)
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.taxRuleGroup = :taxRuleGroupId')
-            ->setParameter('taxRuleGroupId', $taxRuleGroupId)
-            ->getQuery()
-            ->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByGroup(TaxRuleGroupInterface $group)
+    public function findByGroup(TaxRuleGroupInterface $group): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.taxRuleGroup = :taxRuleGroup')

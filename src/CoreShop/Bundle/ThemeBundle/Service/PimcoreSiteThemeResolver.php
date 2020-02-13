@@ -16,35 +16,8 @@ use Pimcore\Model\Site;
 
 final class PimcoreSiteThemeResolver implements ThemeResolverInterface
 {
-    /**
-     * @var ActiveThemeInterface
-     */
-    private $activeTheme;
-
-    /**
-     * @param ActiveThemeInterface $activeTheme
-     */
-    public function __construct(
-        ActiveThemeInterface $activeTheme
-    ) {
-        $this->activeTheme = $activeTheme;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
+    public function resolveTheme(ActiveThemeInterface $activeTheme): void
     {
-        if (\func_num_args() === 0) {
-            trigger_error(
-                'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-            $activeTheme = $this->activeTheme;
-        } else {
-            $activeTheme = func_get_arg(0);
-        }
-
         $themes = [];
         $list = new Site\Listing();
         $list->load();

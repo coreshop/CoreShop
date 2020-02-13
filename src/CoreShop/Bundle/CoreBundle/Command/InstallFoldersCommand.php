@@ -44,7 +44,7 @@ final class InstallFoldersCommand extends AbstractInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:folders')

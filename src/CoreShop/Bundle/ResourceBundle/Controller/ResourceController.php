@@ -20,61 +20,21 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ResourceController extends AdminController
 {
-    /**
-     * @var string
-     */
     protected $permission;
-
-    /**
-     * @var RepositoryInterface
-     */
     protected $repository;
-
-    /**
-     * @var MetadataInterface
-     */
     protected $metadata;
-
-    /**
-     * @var FactoryInterface
-     */
     protected $factory;
-
-    /**
-     * @var ObjectManager
-     */
     protected $manager;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var ResourceFormFactoryInterface
-     */
     protected $resourceFormFactory;
-
-    /**
-     * @var ErrorSerializer
-     */
     protected $formErrorSerializer;
 
-    /**
-     * @param MetadataInterface            $metadata
-     * @param RepositoryInterface          $repository
-     * @param FactoryInterface             $factory
-     * @param ObjectManager                $manager
-     * @param ViewHandler                  $viewHandler
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param ResourceFormFactoryInterface $resourceFormFactory
-     * @param ErrorSerializer              $formErrorSerializer
-     */
     public function __construct(
         MetadataInterface $metadata,
         RepositoryInterface $repository,
@@ -99,7 +59,7 @@ class ResourceController extends AdminController
     /**
      * @throws AccessDeniedException
      */
-    protected function isGrantedOr403()
+    protected function isGrantedOr403(): void
     {
         if ($this->metadata->hasParameter('permission')) {
             $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
@@ -113,24 +73,14 @@ class ResourceController extends AdminController
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(Request $request): Response
     {
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function getAction(Request $request)
+    public function getAction(Request $request): Response
     {
         $this->isGrantedOr403();
 
@@ -139,12 +89,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request)
+    public function saveAction(Request $request): Response
     {
         $this->isGrantedOr403();
 
@@ -171,12 +116,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function addAction(Request $request)
+    public function addAction(Request $request): Response
     {
         $this->isGrantedOr403();
 
@@ -206,12 +146,7 @@ class ResourceController extends AdminController
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request): Response
     {
         $this->isGrantedOr403();
 
@@ -233,14 +168,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return ResourceInterface
-     *
-     * @throws NotFoundHttpException
-     */
-    protected function findOr404($id)
+    protected function findOr404(int $id): ResourceInterface
     {
         $model = $this->repository->find($id);
 

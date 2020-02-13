@@ -45,7 +45,7 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
     /**
      * @return ElementInterface
      */
-    public function getParent();
+    public function getParent(): string;
 
     /**
      * @return mixed

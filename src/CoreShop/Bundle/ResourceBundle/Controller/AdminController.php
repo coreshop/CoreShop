@@ -14,14 +14,8 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
-    /**
-     * @var ViewHandlerInterface
-     */
     protected $viewHandler;
 
-    /**
-     * @param ViewHandlerInterface $viewHandler
-     */
     public function __construct(ViewHandlerInterface $viewHandler)
     {
         $this->viewHandler = $viewHandler;

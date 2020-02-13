@@ -14,11 +14,7 @@ namespace CoreShop\Component\Index\Condition;
 
 class NotMatchCondition extends CompareCondition
 {
-    /**
-     * @param string $fieldName
-     * @param string $value
-     */
-    public function __construct($fieldName, $value)
+    public function __construct(string $fieldName, string $value)
     {
         parent::__construct($fieldName, '<>', $value);
     }

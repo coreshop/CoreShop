@@ -36,7 +36,7 @@ interface CalculatorInterface
         float $quantity,
         int $originalPrice,
         array $context
-    );
+    ): int;
 
     /**
      * @param QuantityRangeInterface           $range
@@ -53,5 +53,5 @@ interface CalculatorInterface
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    );
+    ): int;
 }

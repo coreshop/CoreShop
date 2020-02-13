@@ -18,12 +18,5 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierShippingRuleCheckerInterface
 {
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     *
-     * @return mixed
-     */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address);
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool;
 }

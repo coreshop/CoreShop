@@ -19,14 +19,8 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     protected $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
@@ -35,8 +29,11 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
-    {
+    public function isShippingRuleValid(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address
+    ): bool {
         $shippingRules = $carrier->getShippingRules();
 
         if (count($shippingRules) === 0) {
@@ -52,7 +49,9 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 
             if ($isValid === false && $rule->getStopPropagation() === true) {
                 return false;
-            } elseif ($isValid === true) {
+            }
+
+            if ($isValid === true) {
                 return $rule;
             }
         }

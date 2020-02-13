@@ -20,7 +20,7 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     /**
      * {@inheritdoc}
      */
-    public function findByTitle($title, $locale)
+    public function findByTitle(string $title, string $locale): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')
@@ -38,7 +38,7 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
     /**
      * {@inheritdoc}
      */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = true')

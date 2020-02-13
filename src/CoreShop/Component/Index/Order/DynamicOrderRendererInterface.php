@@ -27,11 +27,5 @@ interface DynamicOrderRendererInterface
      */
     public function render(WorkerInterface $worker, OrderInterface $order, string $prefix = null);
 
-    /**
-     * @param WorkerInterface $worker
-     * @param OrderInterface  $order
-     *
-     * @return bool
-     */
-    public function supports(WorkerInterface $worker, OrderInterface $order);
+    public function supports(WorkerInterface $worker, OrderInterface $order): bool;
 }

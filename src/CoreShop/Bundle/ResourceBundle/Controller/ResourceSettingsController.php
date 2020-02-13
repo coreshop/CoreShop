@@ -15,15 +15,11 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use Pimcore\Model\Element\AbstractElement;
 use Pimcore\Model\Element\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ResourceSettingsController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getNicePathAction(Request $request)
+    public function getNicePathAction(Request $request): Response
     {
         $targets = $this->decodeJson($request->get('targets'));
         $result = [];
@@ -39,10 +35,7 @@ class ResourceSettingsController extends AdminController
         return $this->viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
-    /**
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+    public function getConfigAction(): Response
     {
         $config = [
             'classMap' => [],

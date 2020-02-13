@@ -18,24 +18,10 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierPriceActionProcessorInterface
 {
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     * @param array              $configuration
-     *
-     * @return mixed
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration);
-
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     * @param int                $price
-     * @param array              $configuration
-     *
-     * @return mixed
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration);
+    public function getPrice(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $configuration
+    ): int;
 }

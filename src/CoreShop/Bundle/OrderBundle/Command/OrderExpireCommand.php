@@ -45,7 +45,7 @@ final class OrderExpireCommand extends Command
     /**
      * configure command.
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:cart:expire')

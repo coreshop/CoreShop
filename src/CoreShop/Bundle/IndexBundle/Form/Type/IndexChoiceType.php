@@ -20,14 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $indexRepository;
 
-    /**
-     * @param RepositoryInterface $indexRepository
-     */
     public function __construct(RepositoryInterface $indexRepository)
     {
         $this->indexRepository = $indexRepository;
@@ -36,7 +30,7 @@ final class IndexChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -52,7 +46,7 @@ final class IndexChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -60,7 +54,7 @@ final class IndexChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_choice';
     }

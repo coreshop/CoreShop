@@ -33,7 +33,7 @@ class HistoryRepository implements HistoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getHistory(DataObject\Concrete $object)
+    public function getHistory(DataObject\Concrete $object): array
     {
         $noteList = new Note\Listing();
         $noteList->addConditionParam('type = ?', $this->noteIdentifier);

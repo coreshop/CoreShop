@@ -19,14 +19,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class RuleCollector extends DataCollector
 {
-    /**
-     * @var TraceableRuleConditionsValidationProcessorInterface[]
-     */
     private $validationProcessors;
 
-    /**
-     * @param TraceableRuleConditionsValidationProcessorInterface[] $validationProcessors
-     */
     public function __construct(array $validationProcessors)
     {
         $this->validationProcessors = $validationProcessors;
@@ -35,7 +29,7 @@ final class RuleCollector extends DataCollector
     /**
      * @return array
      */
-    public function getProcessedConditions()
+    public function getProcessedConditions(): array
     {
         return $this->data['processedConditions'];
     }
@@ -43,7 +37,7 @@ final class RuleCollector extends DataCollector
     /**
      * @return array
      */
-    public function getProcessedRules()
+    public function getProcessedRules(): array
     {
         return $this->data['processedRules'];
     }
@@ -51,7 +45,7 @@ final class RuleCollector extends DataCollector
     /**
      * @return mixed
      */
-    public function getTypes()
+    public function getTypes(): array
     {
         return $this->data['processedTypes'];
     }
@@ -59,7 +53,7 @@ final class RuleCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         $processedConditions = [];
         $processedRules = [];
@@ -90,7 +84,7 @@ final class RuleCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -98,7 +92,7 @@ final class RuleCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.rule_collector';
     }

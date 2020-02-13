@@ -49,7 +49,7 @@ class ConfigurationService implements ConfigurationServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function get($key, $returnObject = false)
+    public function get(string $key, bool $returnObject = false): ?ConfigurationInterface
     {
         $config = $this->configurationRepository->findByKey($key);
 
@@ -63,7 +63,7 @@ class ConfigurationService implements ConfigurationServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function set($key, $data)
+    public function set(string $key, $data): ConfigurationInterface
     {
         $config = $this->get($key, true);
 
@@ -75,12 +75,14 @@ class ConfigurationService implements ConfigurationServiceInterface
         $config->setData($data);
         $this->entityManager->persist($config);
         $this->entityManager->flush();
+
+        return $data;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function remove($key)
+    public function remove(string $key)
     {
         $config = $this->get($key, true);
 

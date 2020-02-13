@@ -23,10 +23,10 @@ interface PaymentProviderRepositoryInterface extends RepositoryInterface
      *
      * @return PaymentProviderInterface[]
      */
-    public function findByTitle($title, $locale);
+    public function findByTitle(string $title, string $locale): array;
 
     /**
      * @return PaymentProviderInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 }

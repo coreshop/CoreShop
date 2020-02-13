@@ -17,11 +17,5 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface ValidRulesFetcherInterface
 {
-    /**
-     * @param ProductInterface $product
-     * @param array            $context
-     *
-     * @return RuleInterface[]
-     */
-    public function getValidRules(ProductInterface $product, array $context);
+    public function getValidRules(ProductInterface $product, array $context): array;
 }

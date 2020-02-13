@@ -20,7 +20,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TaxRateType extends AbstractResourceType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('translations', ResourceTranslationsType::class, [
@@ -30,7 +33,10 @@ class TaxRateType extends AbstractResourceType
             ->add('active', CheckboxType::class);
     }
 
-    public function getBlockPrefix()
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rate';
     }

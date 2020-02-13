@@ -25,5 +25,5 @@ interface RendererInterface
      *
      * @return mixed
      */
-    public function render(ConditionInterface $condition, $prefix = null);
+    public function render(ConditionInterface $condition, string $prefix = null);
 }

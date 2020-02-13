@@ -21,5 +21,5 @@ interface StateHistoryLoggerInterface
      * @param Concrete $object
      * @param Event    $event
      */
-    public function log(Concrete $object, Event $event);
+    public function log(Concrete $object, Event $event): void;
 }

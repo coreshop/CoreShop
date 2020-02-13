@@ -65,7 +65,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
@@ -127,7 +127,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['prototypes'] = [];
 
@@ -140,7 +140,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -191,7 +191,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_payment';
     }

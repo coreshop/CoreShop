@@ -19,18 +19,9 @@ use CoreShop\Component\Taxation\Model\TaxRuleInterface;
 interface TaxRuleRepositoryInterface extends RepositoryInterface
 {
     /**
-     * @param int $groupId
-     *
-     * @return TaxRuleInterface[]
-     *
-     * @deprecated getByGroupId is deprecated since 2.0.0 and will be removed in 2.1.0. Please use findByGroup instead
-     */
-    public function getByGroupId($groupId);
-
-    /**
      * @param TaxRuleGroupInterface $group
      *
      * @return TaxRuleInterface[]
      */
-    public function findByGroup(TaxRuleGroupInterface $group);
+    public function findByGroup(TaxRuleGroupInterface $group): array;
 }

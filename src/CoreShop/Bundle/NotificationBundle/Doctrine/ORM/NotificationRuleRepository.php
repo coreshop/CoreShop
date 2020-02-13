@@ -20,7 +20,7 @@ class NotificationRuleRepository extends RuleRepository implements NotificationR
     /**
      * {@inheritdoc}
      */
-    public function findForType($type)
+    public function findForType($type): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.type = :type')

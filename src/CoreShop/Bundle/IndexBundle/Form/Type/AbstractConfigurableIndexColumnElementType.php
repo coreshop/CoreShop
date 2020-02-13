@@ -22,15 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 abstract class AbstractConfigurableIndexColumnElementType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $formTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -40,7 +34,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -83,7 +77,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -96,7 +90,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
      * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('configuration', $configurationType, [
             'label' => false,
@@ -109,7 +103,7 @@ abstract class AbstractConfigurableIndexColumnElementType extends AbstractResour
      *
      * @return string|null
      */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getObjectType()) {
             return $data->getObjectType();

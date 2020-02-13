@@ -25,7 +25,7 @@ interface DynamicRendererInterface
      *
      * @return mixed
      */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null);
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);
 
     /**
      * @param WorkerInterface    $worker
@@ -33,5 +33,5 @@ interface DynamicRendererInterface
      *
      * @return bool
      */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition);
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool;
 }

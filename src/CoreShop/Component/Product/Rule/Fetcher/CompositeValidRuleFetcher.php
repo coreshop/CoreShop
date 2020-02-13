@@ -33,7 +33,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product, array $context)
+    public function getValidRules(ProductInterface $product, array $context): array
     {
         $rules = [];
 

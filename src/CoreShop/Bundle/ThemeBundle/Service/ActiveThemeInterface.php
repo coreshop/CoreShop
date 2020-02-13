@@ -17,40 +17,40 @@ interface ActiveThemeInterface
     /**
      * @param string $activeTheme
      */
-    public function setActiveTheme($activeTheme);
+    public function setActiveTheme($activeTheme): void;
 
     /**
      * @return string
      */
-    public function getActiveTheme();
+    public function getActiveTheme(): ?string;
 
     /**
      * @return array
      */
-    public function getThemes();
+    public function getThemes(): array;
 
     /**
      * @param array $themes
      */
-    public function setThemes(array $themes);
+    public function setThemes(array $themes): void;
 
     /**
      * @param string $theme
      */
-    public function addTheme($theme);
+    public function addTheme($theme): void;
 
     /**
      * @param array $themes
      */
-    public function addThemes(array $themes);
+    public function addThemes(array $themes): void;
 
     /**
      * @param string $theme
      */
-    public function removeTheme($theme);
+    public function removeTheme($theme): void;
 
     /**
      * @param array $themes
      */
-    public function removeThemes(array $themes);
+    public function removeThemes(array $themes): void;
 }

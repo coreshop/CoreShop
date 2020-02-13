@@ -20,7 +20,7 @@ final class InstallResourcesCommand extends AbstractInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:resources')

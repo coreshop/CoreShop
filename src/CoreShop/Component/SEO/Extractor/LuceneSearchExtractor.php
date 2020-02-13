@@ -35,14 +35,14 @@ final class LuceneSearchExtractor implements ExtractorInterface
         $this->crawlerState = $crawlerState;
     }
 
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof LuceneSearchAwareInterface ||
             $object instanceof LuceneSearchCategoriesAwareInterface ||
             $object instanceof AbstractElement;
     }
 
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         if (!class_exists(CrawlerState::class)) {
             throw new \LogicException(

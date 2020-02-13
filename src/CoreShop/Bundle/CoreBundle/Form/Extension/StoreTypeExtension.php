@@ -23,7 +23,7 @@ final class StoreTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('baseCountry', CountryChoiceType::class);
         $builder->add('useGrossPrice', CheckboxType::class);

@@ -18,7 +18,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TaxRuleType extends AbstractResourceType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('taxRate', TaxRateChoiceType::class, [
@@ -34,7 +37,7 @@ class TaxRuleType extends AbstractResourceType
             ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rule';
     }

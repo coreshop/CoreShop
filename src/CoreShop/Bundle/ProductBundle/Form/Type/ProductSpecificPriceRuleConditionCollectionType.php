@@ -17,7 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductSpecificPriceRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -27,7 +30,7 @@ class ProductSpecificPriceRuleConditionCollectionType extends RuleConditionColle
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_specific_price_rule_condition_collection';
     }

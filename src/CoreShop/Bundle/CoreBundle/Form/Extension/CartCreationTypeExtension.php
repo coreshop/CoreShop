@@ -22,7 +22,7 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('shippingAddress', AddressChoiceType::class, [
             'customer' => $options['customer'],

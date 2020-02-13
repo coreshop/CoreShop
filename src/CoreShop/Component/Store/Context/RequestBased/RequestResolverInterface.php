@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -20,7 +21,8 @@ interface RequestResolverInterface
     /**
      * @param Request $request
      *
-     * @return StoreInterface|null
+     * @return StoreInterface
+     * @throws StoreNotFoundException
      */
-    public function findStore(Request $request);
+    public function findStore(Request $request): StoreInterface;
 }

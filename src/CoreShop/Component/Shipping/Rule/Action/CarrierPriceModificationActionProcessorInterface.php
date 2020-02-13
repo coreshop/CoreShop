@@ -16,13 +16,13 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-class DiscountPercentActionProcessor implements CarrierPriceModificationActionProcessorInterface
+interface CarrierPriceModificationActionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration): int
-    {
-        return (int) round(-1 * ($price * ($configuration['percent'] / 100)));
-    }
+    public function getModification(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        int $price,
+        array $configuration
+    ): int;
 }

@@ -20,20 +20,9 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CarriersResolver implements CarriersResolverInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
     private $shippableCarrierValidator;
 
-    /**
-     * @param RepositoryInterface                $carrierRepository
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     */
     public function __construct(
         RepositoryInterface $carrierRepository,
         ShippableCarrierValidatorInterface $shippableCarrierValidator
@@ -45,7 +34,7 @@ final class CarriersResolver implements CarriersResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         /**
          * @var CarrierInterface[] $carriers

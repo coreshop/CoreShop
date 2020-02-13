@@ -24,7 +24,7 @@ interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
      *
      * @return ConditionInterface[]
      */
-    public function preConditionQuery(IndexInterface $index);
+    public function preConditionQuery(IndexInterface $index): array;
 
     /**
      * @param IndexInterface $index
@@ -32,5 +32,5 @@ interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
      *
      * @return array
      */
-    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder);
+    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder): array;
 }

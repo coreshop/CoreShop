@@ -28,7 +28,7 @@ interface QuantityReferenceDetectorInterface
      *
      * @return ProductQuantityPriceRuleInterface
      */
-    public function detectRule(QuantityRangePriceAwareInterface $subject, array $context);
+    public function detectRule(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface;
 
     /**
      * @param QuantityRangePriceAwareInterface $subject
@@ -40,7 +40,7 @@ interface QuantityReferenceDetectorInterface
      *
      * @return int
      */
-    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context);
+    public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context): int;
 
     /**
      * @param QuantityRangePriceAwareInterface $subject
@@ -52,5 +52,5 @@ interface QuantityReferenceDetectorInterface
      *
      * @return int
      */
-    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context);
+    public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context): int;
 }

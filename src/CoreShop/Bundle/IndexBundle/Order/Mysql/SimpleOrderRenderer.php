@@ -36,7 +36,7 @@ class SimpleOrderRenderer extends AbstractMysqlDynamicRenderer
     /**
      * {@inheritdoc}
      */
-    public function supports(WorkerInterface $worker, OrderInterface $order)
+    public function supports(WorkerInterface $worker, OrderInterface $order): bool
     {
         return $worker instanceof MysqlWorker && $order instanceof SimpleOrder;
     }

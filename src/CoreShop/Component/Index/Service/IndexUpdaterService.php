@@ -22,20 +22,9 @@ use Psr\Log\InvalidArgumentException;
 
 final class IndexUpdaterService implements IndexUpdaterServiceInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $indexRepository;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerServiceRegistry;
 
-    /**
-     * @param RepositoryInterface      $indexRepository
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->indexRepository = $indexRepository;
@@ -45,7 +34,7 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateIndices($subject)
+    public function updateIndices($subject): void
     {
         $this->operationOnIndex($subject, 'update');
     }
@@ -53,16 +42,16 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function removeIndices($subject)
+    public function removeIndices($subject): void
     {
         $this->operationOnIndex($subject, 'remove');
     }
 
     /**
-     * @param string $subject
+     * @param IndexableInterface $subject
      * @param string $operation
      */
-    private function operationOnIndex($subject, $operation = 'update')
+    private function operationOnIndex(IndexableInterface $subject, string $operation = 'update'): void
     {
         $indices = $this->indexRepository->findAll();
 
@@ -75,9 +64,6 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
                 continue;
             }
 
-            /**
-             * @var IndexableInterface $subject
-             */
             $worker = $index->getWorker();
 
             if (!$this->workerServiceRegistry->has($worker)) {
@@ -97,22 +83,8 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
         }
     }
 
-    /**
-     * @param IndexInterface $index
-     * @param mixed          $subject
-     *
-     * @return bool
-     */
-    private function isEligible($index, $subject)
+    private function isEligible(IndexInterface $index, IndexableInterface $subject): bool
     {
-        if (!$index instanceof IndexInterface) {
-            return false;
-        }
-
-        if (!$subject instanceof IndexableInterface) {
-            return false;
-        }
-
         if (!$subject instanceof Concrete) {
             return false;
         }

@@ -18,14 +18,8 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class RuleApplier implements RuleApplierInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $actionServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $actionServiceRegistry)
     {
         $this->actionServiceRegistry = $actionServiceRegistry;
@@ -34,7 +28,7 @@ class RuleApplier implements RuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyRule(NotificationRuleInterface $rule, $subject, $params)
+    public function applyRule(NotificationRuleInterface $rule, $subject, array $params): void
     {
         foreach ($rule->getActions() as $action) {
             $processor = $this->actionServiceRegistry->get($action->getType());

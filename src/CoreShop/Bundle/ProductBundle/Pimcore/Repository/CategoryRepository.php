@@ -21,7 +21,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     /**
      * {@inheritdoc}
      */
-    public function findFirstLevel()
+    public function findFirstLevel(): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id is null');
@@ -32,7 +32,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     /**
      * {@inheritdoc}
      */
-    public function findChildCategories(CategoryInterface $category)
+    public function findChildCategories(CategoryInterface $category): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id = ?', [$category->getId()]);

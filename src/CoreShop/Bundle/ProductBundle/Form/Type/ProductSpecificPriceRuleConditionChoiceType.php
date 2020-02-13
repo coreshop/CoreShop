@@ -19,7 +19,7 @@ class ProductSpecificPriceRuleConditionChoiceType extends RuleConditionChoiceTyp
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_specific_price_rule_action_condition_choice';
     }

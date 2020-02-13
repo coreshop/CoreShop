@@ -23,7 +23,7 @@ final class CarrierTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('taxRule', TaxRuleGroupChoiceType::class);
         $builder->add('stores', StoreChoiceType::class, [

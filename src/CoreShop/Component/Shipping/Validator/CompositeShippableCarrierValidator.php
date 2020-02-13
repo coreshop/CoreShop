@@ -19,9 +19,6 @@ use Zend\Stdlib\PriorityQueue;
 
 class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInterface
 {
-    /**
-     * @var PriorityQueue|ShippableCarrierValidatorInterface[]
-     */
     private $shippableCarrierValidator;
 
     public function __construct()
@@ -29,11 +26,7 @@ class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInt
         $this->shippableCarrierValidator = new PriorityQueue();
     }
 
-    /**
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     * @param int                                $priority
-     */
-    public function addValidator(ShippableCarrierValidatorInterface $shippableCarrierValidator, $priority = 0)
+    public function addValidator(ShippableCarrierValidatorInterface $shippableCarrierValidator, int $priority = 0): void
     {
         $this->shippableCarrierValidator->insert($shippableCarrierValidator, $priority);
     }
@@ -41,7 +34,7 @@ class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInt
     /**
      * {@inheritdoc}
      */
-    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
+    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool
     {
         foreach ($this->shippableCarrierValidator as $shippableCarrierValidator) {
             $isValid = $shippableCarrierValidator->isCarrierValid($carrier, $shippable, $address);

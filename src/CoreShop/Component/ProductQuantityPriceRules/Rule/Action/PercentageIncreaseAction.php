@@ -20,7 +20,7 @@ class PercentageIncreaseAction implements ProductQuantityPriceRuleActionInterfac
     /**
      * {@inheritdoc}
      */
-    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context)
+    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
         return $realItemPrice + ((int) round(($range->getPercentage() / 100) * $realItemPrice));
     }

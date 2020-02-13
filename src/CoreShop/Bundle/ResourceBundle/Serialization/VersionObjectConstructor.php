@@ -28,10 +28,6 @@ class VersionObjectConstructor implements ObjectConstructorInterface
     private $fallbackConstructor;
     private $fallbacksFallbackConstructor;
 
-    /**
-     * @param ObjectConstructorInterface $fallbackConstructor
-     * @param ObjectConstructorInterface $fallbacksFallbackConstructor
-     */
     public function __construct(ObjectConstructorInterface $fallbackConstructor, ObjectConstructorInterface $fallbacksFallbackConstructor)
     {
         $this->fallbackConstructor = $fallbackConstructor;

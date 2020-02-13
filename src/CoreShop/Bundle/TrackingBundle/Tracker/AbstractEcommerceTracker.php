@@ -56,7 +56,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled()
+    public function isEnabled(): void
     {
         return $this->enabled;
     }
@@ -64,7 +64,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function setEnabled($enabled)
+    public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
     }
@@ -72,7 +72,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * @param array $options
      */
-    protected function processOptions(array $options)
+    protected function processOptions(array $options): void
     {
         $this->templatePrefix = $options['template_prefix'];
         $this->templateExtension = $options['template_extension'];
@@ -81,7 +81,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired(['template_prefix', 'template_extension']);
         $resolver->setDefaults(
@@ -99,7 +99,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
      *
      * @return string
      */
-    protected function getTemplatePath(string $name)
+    protected function getTemplatePath(string $name): string
     {
         return sprintf(
             '%s/%s.js.%s',
@@ -115,7 +115,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
      *
      * @return string
      */
-    protected function renderTemplate(string $name, array $parameters)
+    protected function renderTemplate(string $name, array $parameters): string
     {
         return $this->templatingEngine->render(
             $this->getTemplatePath($name),
@@ -131,7 +131,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
      *
      * @return array
      */
-    protected function filterNullValues(array $data, array $protectedKeys = [])
+    protected function filterNullValues(array $data, array $protectedKeys = []): array
     {
         $result = [];
         foreach ($data as $key => $value) {

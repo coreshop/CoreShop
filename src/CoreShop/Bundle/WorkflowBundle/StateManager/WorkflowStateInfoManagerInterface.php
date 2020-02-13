@@ -18,28 +18,13 @@ use Pimcore\Model\Element\Note;
 interface WorkflowStateInfoManagerInterface
 {
     /**
-     * @param DataObject $object
+     * @param DataObject\Concrete $object
      *
      * @return Note[]
      */
-    public function getStateHistory($object);
+    public function getStateHistory(DataObject\Concrete $object): array;
 
-    /**
-     * @param string $workflowName
-     * @param string $value
-     * @param bool   $forFrontend
-     *
-     * @return array
-     */
-    public function getStateInfo($workflowName, $value, $forFrontend = true);
+    public function getStateInfo(string $workflowName, string $value, bool $forFrontend = true): array;
 
-    /**
-     * @param mixed  $subject
-     * @param string $workflowName
-     * @param array  $transitions
-     * @param bool   $forFrontend
-     *
-     * @return mixed
-     */
-    public function parseTransitions($subject, $workflowName, $transitions = [], $forFrontend = true);
+    public function parseTransitions($subject, string $workflowName, array $transitions = [], bool $forFrontend = true);
 }

@@ -17,13 +17,5 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 interface ProductQuantityPriceRuleActionInterface
 {
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $realItemPrice
-     * @param array                            $context
-     *
-     * @return int
-     */
-    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context);
+    public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int;
 }

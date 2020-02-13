@@ -21,7 +21,7 @@ final class TimespanConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('dateTo', NumberType::class)
@@ -31,7 +31,7 @@ final class TimespanConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_timespan';
     }

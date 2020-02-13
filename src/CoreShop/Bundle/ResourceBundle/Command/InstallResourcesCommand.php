@@ -22,14 +22,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends Command
 {
-    /**
-     * @var ResourceInstallerInterface
-     */
     protected $resourceInstaller;
 
-    /**
-     * @param ResourceInstallerInterface $resourceInstaller
-     */
     public function __construct(ResourceInstallerInterface $resourceInstaller)
     {
         $this->resourceInstaller = $resourceInstaller;
@@ -40,7 +34,7 @@ final class InstallResourcesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:resources:install')
@@ -60,7 +54,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /**
          * @var Application $application

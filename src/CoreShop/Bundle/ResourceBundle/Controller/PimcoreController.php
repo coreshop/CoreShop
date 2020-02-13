@@ -19,27 +19,10 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
 {
-    /**
-     * @var MetadataInterface
-     */
     protected $metadata;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     protected $repository;
-
-    /**
-     * @var FactoryInterface
-     */
     protected $factory;
 
-    /**
-     * @param MetadataInterface          $metadata
-     * @param PimcoreRepositoryInterface $repository
-     * @param FactoryInterface           $factory
-     * @param ViewHandlerInterface       $viewHandler
-     */
     public function __construct(
         MetadataInterface $metadata,
         PimcoreRepositoryInterface $repository,
@@ -56,7 +39,7 @@ class PimcoreController extends AdminController
     /**
      * @throws AccessDeniedException
      */
-    protected function isGrantedOr403()
+    protected function isGrantedOr403(): void
     {
         if ($this->getPermission()) {
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
@@ -72,7 +55,7 @@ class PimcoreController extends AdminController
     /**
      * @return string
      */
-    protected function getPermission()
+    protected function getPermission(): string
     {
         return '';
     }

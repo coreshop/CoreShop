@@ -16,26 +16,9 @@ use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 
 interface ConfigurationServiceInterface
 {
-    /**
-     * @param string $key
-     * @param bool   $returnObject
-     *
-     * @return ConfigurationInterface|null
-     */
-    public function get($key, $returnObject = false);
+    public function get(string $key, bool $returnObject = false): ?ConfigurationInterface;
 
-    /**
-     * @param string $key
-     * @param mixed  $data
-     *
-     * @return ConfigurationInterface
-     */
-    public function set($key, $data);
+    public function set(string $key, $data): ConfigurationInterface;
 
-    /**
-     * @param string $key
-     *
-     * @return ConfigurationInterface
-     */
-    public function remove($key);
+    public function remove(string $key);
 }

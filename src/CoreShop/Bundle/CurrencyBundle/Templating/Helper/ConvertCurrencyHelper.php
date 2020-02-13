@@ -17,14 +17,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class ConvertCurrencyHelper extends Helper implements ConvertCurrencyHelperInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
 
-    /**
-     * @param CurrencyConverterInterface $currencyConverter
-     */
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
@@ -33,7 +27,7 @@ class ConvertCurrencyHelper extends Helper implements ConvertCurrencyHelperInter
     /**
      * {@inheritdoc}
      */
-    public function convertAmount($amount, $sourceCurrencyCode, $targetCurrencyCode)
+    public function convertAmount(int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int
     {
         return $this->currencyConverter->convert($amount, $sourceCurrencyCode, $targetCurrencyCode);
     }
@@ -41,7 +35,7 @@ class ConvertCurrencyHelper extends Helper implements ConvertCurrencyHelperInter
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_currency_converter';
     }

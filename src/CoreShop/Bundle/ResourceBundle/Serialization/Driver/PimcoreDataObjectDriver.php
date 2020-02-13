@@ -16,14 +16,8 @@ use Metadata\Driver\DriverInterface;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    /**
-     * @var DriverInterface
-     */
     protected $decorated;
 
-    /**
-     * @param DriverInterface $decorated
-     */
     public function __construct(DriverInterface $decorated)
     {
         $this->decorated = $decorated;
