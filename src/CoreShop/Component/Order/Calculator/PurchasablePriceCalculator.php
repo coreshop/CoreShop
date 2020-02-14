@@ -18,26 +18,10 @@ use CoreShop\Component\Product\Exception\NoRetailPriceFoundException;
 
 final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInterface
 {
-    /**
-     * @var PurchasableRetailPriceCalculatorInterface
-     */
     private $purchasableRetailPriceCalculator;
-
-    /**
-     * @var PurchasableDiscountPriceCalculatorInterface
-     */
     private $purchasableDiscountPriceCalculator;
-
-    /**
-     * @var PurchasableDiscountCalculatorInterface
-     */
     private $purchasableDiscountCalculator;
 
-    /**
-     * @param PurchasableRetailPriceCalculatorInterface   $purchasableRetailPriceCalculator
-     * @param PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator
-     * @param PurchasableDiscountCalculatorInterface      $purchasableDiscountCalculator
-     */
     public function __construct(
         PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
         PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator,
@@ -51,7 +35,7 @@ final class PurchasablePriceCalculator implements PurchasablePriceCalculatorInte
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         $price = 0;
 

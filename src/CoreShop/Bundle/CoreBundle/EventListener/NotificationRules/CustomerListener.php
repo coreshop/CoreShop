@@ -23,10 +23,7 @@ use Webmozart\Assert\Assert;
 
 final class CustomerListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @param RequestPasswordChangeEvent $event
-     */
-    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event)
+    public function applyPasswordRequestResetRule(RequestPasswordChangeEvent $event): void
     {
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
@@ -47,10 +44,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $event->getCustomer(), $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyRegisterCustomerRule(GenericEvent $event)
+    public function applyRegisterCustomerRule(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
@@ -74,10 +68,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
-    /**
-     * @param RequestNewsletterConfirmationEvent $event
-     */
-    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event)
+    public function applyNewsletterConfirmRequestRule(RequestNewsletterConfirmationEvent $event): void
     {
         Assert::isInstanceOf($event->getCustomer(), CustomerInterface::class);
 
@@ -122,10 +113,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyNewsletterConfirmed(GenericEvent $event)
+    public function applyNewsletterConfirmed(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 
@@ -149,12 +137,7 @@ final class CustomerListener extends AbstractNotificationRuleListener
         $this->rulesProcessor->applyRules('user', $user, $params);
     }
 
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return array
-     */
-    private function prepareCustomerParameters(CustomerInterface $customer)
+    private function prepareCustomerParameters(CustomerInterface $customer): array
     {
         return [
             '_locale' => $this->shopperContext->getLocaleCode(),

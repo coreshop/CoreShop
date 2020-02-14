@@ -20,24 +20,14 @@ use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface;
+use CoreShop\Component\Shipping\Rule\Action\CarrierPriceModificationActionProcessorInterface;
 use Webmozart\Assert\Assert;
 
-class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterface
+class DiscountAmountActionProcessor implements CarrierPriceModificationActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
@@ -47,15 +37,7 @@ class DiscountAmountActionProcessor implements CarrierPriceActionProcessorInterf
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration): int
     {
         $amount = $configuration['amount'];
 

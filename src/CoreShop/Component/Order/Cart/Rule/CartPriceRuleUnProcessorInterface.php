@@ -25,5 +25,5 @@ interface CartPriceRuleUnProcessorInterface
      *
      * @return mixed
      */
-    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null);
+    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool;
 }

@@ -20,26 +20,10 @@ use Webmozart\Assert\Assert;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
-    /**
-     * @var string
-     */
     private $type;
-
-    /**
-     * @var string
-     */
     private $routeName;
-
-    /**
-     * @var UrlGeneratorInterface
-     */
     private $urlGenerator;
 
-    /**
-     * @param string                $type
-     * @param string                $routeName
-     * @param UrlGeneratorInterface $urlGenerator
-     */
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
     {
         $this->type = $type;

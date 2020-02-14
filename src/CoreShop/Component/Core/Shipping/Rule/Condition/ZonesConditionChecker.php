@@ -24,8 +24,12 @@ class ZonesConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
+    public function isShippingRuleValid(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $configuration
+    ): bool {
         $country = $address->getCountry();
 
         if (!$country instanceof CountryInterface) {

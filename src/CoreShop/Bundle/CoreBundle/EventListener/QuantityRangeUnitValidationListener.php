@@ -22,25 +22,14 @@ use Pimcore\Model\Element\ValidationException;
 
 final class QuantityRangeUnitValidationListener
 {
-    /**
-     * @var RepositoryInterface
-     */
     protected $productUnitDefinitionRepository;
 
-    /**
-     * @param RepositoryInterface $productUnitDefinitionRepository
-     */
     public function __construct(RepositoryInterface $productUnitDefinitionRepository)
     {
         $this->productUnitDefinitionRepository = $productUnitDefinitionRepository;
     }
 
-    /**
-     * @param ProductQuantityPriceRuleValidationEvent $event
-     *
-     * @throws ValidationException
-     */
-    public function validate(ProductQuantityPriceRuleValidationEvent $event)
+    public function validate(ProductQuantityPriceRuleValidationEvent $event): void
     {
         $object = $event->getObject();
         $data = $event->getData();
@@ -63,13 +52,7 @@ final class QuantityRangeUnitValidationListener
         }
     }
 
-    /**
-     * @param array            $rule
-     * @param ProductInterface $product
-     *
-     * @throws ValidationException
-     */
-    protected function validateRule(array $rule, ProductInterface $product)
+    protected function validateRule(array $rule, ProductInterface $product): void
     {
         if (!isset($rule['ranges']) || !is_array($rule['ranges'])) {
             return;

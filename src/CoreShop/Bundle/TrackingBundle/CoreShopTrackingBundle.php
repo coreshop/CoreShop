@@ -22,7 +22,7 @@ final class CoreShopTrackingBundle extends Bundle
     /**
      * @param ContainerBuilder $container
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new TrackerPass());
         $container->addCompilerPass(new TrackingExtractorPass());

@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class ValidPriceRulesExtension extends AbstractExtension
 {
-    /**
-     * @var ValidPriceRulesHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param ValidPriceRulesHelperInterface $helper
-     */
     public function __construct(ValidPriceRulesHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class ValidPriceRulesExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_product_price_rules', [$this->helper, 'getValidRules']),

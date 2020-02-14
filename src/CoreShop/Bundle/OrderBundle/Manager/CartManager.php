@@ -21,30 +21,14 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 
 final class CartManager implements CartManagerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
     private $objectService;
-
-    /**
-     * @var string
-     */
     private $cartFolderPath;
-
-    /**
-     * @var CartProcessorInterface
-     */
     private $cartProcessor;
 
-    /**
-     * @param CartProcessorInterface $cartProcessor
-     * @param ObjectServiceInterface $objectService
-     * @param string                 $cartFolderPath
-     */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         ObjectServiceInterface $objectService,
-        $cartFolderPath
+        string $cartFolderPath
     ) {
         $this->cartProcessor = $cartProcessor;
         $this->objectService = $objectService;
@@ -54,7 +38,7 @@ final class CartManager implements CartManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function persistCart(CartInterface $cart)
+    public function persistCart(CartInterface $cart): void
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 

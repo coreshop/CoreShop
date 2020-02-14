@@ -18,11 +18,8 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface TaxCalculatorFactoryInterface
 {
-    /**
-     * @param AddressInterface      $address
-     * @param TaxRuleGroupInterface $taxRuleGroup
-     *
-     * @return TaxCalculatorInterface
-     */
-    public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address);
+    public function getTaxCalculatorForAddress(
+        TaxRuleGroupInterface $taxRuleGroup,
+        AddressInterface $address
+    ): TaxCalculatorInterface;
 }

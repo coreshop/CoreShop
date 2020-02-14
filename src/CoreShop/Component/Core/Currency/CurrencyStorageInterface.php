@@ -22,7 +22,7 @@ interface CurrencyStorageInterface
      * @param StoreInterface    $store
      * @param CurrencyInterface $currency
      */
-    public function set(StoreInterface $store, CurrencyInterface $currency);
+    public function set(StoreInterface $store, CurrencyInterface $currency): void;
 
     /**
      * @param StoreInterface $store
@@ -31,5 +31,5 @@ interface CurrencyStorageInterface
      *
      * @throws CurrencyNotFoundException
      */
-    public function get(StoreInterface $store);
+    public function get(StoreInterface $store): CurrencyInterface;
 }

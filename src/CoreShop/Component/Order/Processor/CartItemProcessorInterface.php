@@ -16,14 +16,6 @@ use CoreShop\Component\Order\Model\CartItemInterface;
 
 interface CartItemProcessorInterface
 {
-    /**
-     * @param CartItemInterface $cartItem
-     * @param int               $itemPrice
-     * @param int               $itemRetailPrice
-     * @param int               $itemDiscountPrice
-     * @param int               $itemDiscount
-     * @param array             $context
-     */
     public function processCartItem(
         CartItemInterface $cartItem,
         int $itemPrice,
@@ -31,5 +23,5 @@ interface CartItemProcessorInterface
         int $itemDiscountPrice,
         int $itemDiscount,
         array $context
-    );
+    ): void;
 }

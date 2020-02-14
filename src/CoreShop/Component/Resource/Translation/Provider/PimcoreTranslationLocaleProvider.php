@@ -19,7 +19,7 @@ final class PimcoreTranslationLocaleProvider implements TranslationLocaleProvide
     /**
      * {@inheritdoc}
      */
-    public function getDefinedLocalesCodes()
+    public function getDefinedLocalesCodes(): array
     {
         return Tool::getValidLanguages();
     }
@@ -27,7 +27,7 @@ final class PimcoreTranslationLocaleProvider implements TranslationLocaleProvide
     /**
      * {@inheritdoc}
      */
-    public function getDefaultLocaleCode()
+    public function getDefaultLocaleCode(): string
     {
         return Tool::getDefaultLanguage();
     }

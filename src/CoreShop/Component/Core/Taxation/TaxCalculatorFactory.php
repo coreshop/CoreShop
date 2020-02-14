@@ -20,26 +20,25 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    /**
-     * @var TaxRuleRepositoryInterface
-     */
     private $taxRuleRepository;
 
-    /**
-     * @param TaxRuleRepositoryInterface $taxRuleRepository
-     */
-    public function __construct(
-        TaxRuleRepositoryInterface $taxRuleRepository
-    ) {
+    public function __construct(TaxRuleRepositoryInterface $taxRuleRepository)
+    {
         $this->taxRuleRepository = $taxRuleRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
-    {
-        $taxRules = $this->taxRuleRepository->findForCountryAndState($taxRuleGroup, $address->getCountry(), $address->getState());
+    public function getTaxCalculatorForAddress(
+        TaxRuleGroupInterface $taxRuleGroup,
+        AddressInterface $address
+    ): TaxCalculatorInterface {
+        $taxRules = $this->taxRuleRepository->findForCountryAndState(
+            $taxRuleGroup,
+            $address->getCountry(),
+            $address->getState()
+        );
         $taxRates = [];
         $firstRow = true;
         $behavior = TaxRulesTaxCalculator::COMBINE_METHOD;

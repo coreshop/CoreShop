@@ -20,14 +20,8 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoreMailActionProcessor implements NotificationRuleProcessorInterface
 {
-    /**
-     * @var MailActionProcessor
-     */
     protected $mailActionProcessor;
 
-    /**
-     * @param MailActionProcessor $mailActionProcessor
-     */
     public function __construct(MailActionProcessor $mailActionProcessor)
     {
         $this->mailActionProcessor = $mailActionProcessor;
@@ -36,7 +30,7 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
+    public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         $store = null;
         $mails = $configuration['mails'];

@@ -21,21 +21,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     */
-    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
+    public function __construct(CustomerRepositoryInterface $customerRepository, string $className)
     {
         $this->customerRepository = $customerRepository;
         $this->className = $className;

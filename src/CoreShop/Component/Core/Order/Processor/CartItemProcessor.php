@@ -22,20 +22,9 @@ use Webmozart\Assert\Assert;
 
 final class CartItemProcessor implements CartItemProcessorInterface
 {
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $taxCalculator;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
 
-    /**
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculator
-     * @param AddressProviderInterface             $defaultAddressProvider
-     */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $taxCalculator,
         AddressProviderInterface $defaultAddressProvider
@@ -47,7 +36,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context)
+    public function processCartItem(CartItemInterface $cartItem, int $itemPrice, int $itemRetailPrice, int $itemDiscountPrice, int $itemDiscount, array $context): void
     {
         /**
          * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem

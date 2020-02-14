@@ -67,7 +67,7 @@ class Country extends AbstractResource implements CountryInterface
      */
     public function __toString()
     {
-        return $this->getName();
+        return (string)$this->getName();
     }
 
     /**

@@ -15,13 +15,16 @@ namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 use CoreShop\Bundle\TaxationBundle\Doctrine\ORM\TaxRuleRepository as BaseTaxRuleRepository;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Repository\TaxRuleRepositoryInterface;
+use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class TaxRuleRepository extends BaseTaxRuleRepository implements TaxRuleRepositoryInterface
 {
-    public function findForCountryAndState(TaxRuleGroupInterface $taxRuleGroup, CountryInterface $country = null, StateInterface $state = null)
-    {
+    public function findForCountryAndState(
+        TaxRuleGroupInterface $taxRuleGroup,
+        CountryInterface $country = null,
+        StateInterface $state = null
+    ): array {
         return $this->createQueryBuilder('o')
             ->andWhere('o.taxRuleGroup = :taxRuleGroup')
             ->andWhere('(o.country = :country OR o.country IS NULL)')

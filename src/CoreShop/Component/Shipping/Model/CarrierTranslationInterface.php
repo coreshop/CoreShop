@@ -30,7 +30,7 @@ interface CarrierTranslationInterface extends ResourceInterface, TimestampableIn
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * @param string $description

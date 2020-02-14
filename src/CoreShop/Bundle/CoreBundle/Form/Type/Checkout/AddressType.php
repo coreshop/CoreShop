@@ -26,18 +26,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AddressType extends AbstractResourceType
 {
-    /**
-     * @var AddressFormatterInterface
-     */
     private $addressFormatHelper;
 
-    /**
-     * @param string                    $dataClass           FQCN
-     * @param string[]                  $validationGroups
-     * @param AddressFormatterInterface $addressFormatHelper
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
         AddressFormatterInterface $addressFormatHelper
     ) {

@@ -34,7 +34,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->runCommands(['coreshop:resources:install' => ['--application-name coreshop']], $output, false, true);
 

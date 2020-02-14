@@ -28,37 +28,16 @@ use Webmozart\Assert\Assert;
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CartContextResolverInterface
-     */
     private $cartContextResolver;
-
-    /**
-     * @var PurchasableCalculatorInterface
-     */
     private $productPriceCalculator;
-
-    /**
-     * @var QuantityReferenceDetectorInterface
-     */
     private $quantityReferenceDetector;
-
-    /**
-     * @var CartItemProcessorInterface
-     */
     private $cartItemProcessor;
 
-    /**
-     * @param PurchasableCalculatorInterface     $productPriceCalculator
-     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
-     * @param CartItemProcessorInterface         $cartItemProcessor
-     * @param CartContextResolverInterface       $cartContextResolver
-     */
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
         CartItemProcessorInterface $cartItemProcessor,
-        CartContextResolverInterface $cartContextResolver = null
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->productPriceCalculator = $productPriceCalculator;
         $this->quantityReferenceDetector = $quantityReferenceDetector;
@@ -69,31 +48,9 @@ final class CartItemsProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(CartInterface $cart): void
     {
-        if (null === $this->cartContextResolver) {
-            @trigger_error(
-                'Using CartItemsProcessor without a CartContextResolverInterface is deprecated since 2.1.2 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $store = $cart->getStore();
-
-            /**
-             * @var StoreInterface $store
-             */
-            Assert::isInstanceOf($store, StoreInterface::class);
-
-            $context = [
-                'store' => $store,
-                'customer' => $cart->getCustomer() ?: null,
-                'currency' => $cart->getCurrency(),
-                'country' => $store->getBaseCountry(),
-                'cart' => $cart,
-            ];
-        } else {
-            $context = $this->cartContextResolver->resolveCartContext($cart);
-        }
+        $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
          * @var CartItemInterface $item

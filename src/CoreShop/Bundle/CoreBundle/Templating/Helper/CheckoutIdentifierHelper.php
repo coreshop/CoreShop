@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerInterface;
+use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -23,32 +24,11 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelperInterface
 {
-    /**
-     * @var RequestStack
-     */
     private $requestStack;
-
-    /**
-     * @var LinkGeneratorInterface
-     */
     protected $linkGenerator;
-
-    /**
-     * @var CheckoutManagerFactoryInterface
-     */
     protected $checkoutManagerFactory;
-
-    /**
-     * @var CartContextInterface
-     */
     protected $cartContext;
 
-    /**
-     * @param RequestStack                    $requestStack
-     * @param LinkGeneratorInterface          $linkGenerator
-     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     * @param CartContextInterface            $cartContext
-     */
     public function __construct(
         RequestStack $requestStack,
         LinkGeneratorInterface $linkGenerator,
@@ -62,11 +42,9 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * Get all Steps of Checkout (cart is always first step here).
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getSteps()
+    public function getSteps(): array
     {
         $cart = $this->cartContext->getCart();
         $request = $this->requestStack->getMasterRequest();
@@ -105,11 +83,9 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     }
 
     /**
-     * @param string $type
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function getStep($type = '')
+    public function getStep(string $type = ''): CheckoutStepInterface
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 
@@ -178,7 +154,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         $identifier = null;
         $request = $this->requestStack->getMasterRequest();
         $stepIdentifier = $request->get('stepIdentifier');
-        if (!is_null($stepIdentifier)) {
+        if (null !== $stepIdentifier) {
             if ($checkoutManager->hasPreviousStep($stepIdentifier)) {
                 $step = $checkoutManager->getPreviousStep($stepIdentifier);
                 $identifier = $step->getIdentifier();
@@ -198,7 +174,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     protected function getNextStepIdentifier($cart, $stepIdentifier, $checkoutManager)
     {
         $identifier = null;
-        if (!is_null($stepIdentifier)) {
+        if (null !== $stepIdentifier) {
             if ($checkoutManager->hasNextStep($stepIdentifier)) {
                 $step = $checkoutManager->getNextStep($stepIdentifier);
                 $identifier = $step->getIdentifier();

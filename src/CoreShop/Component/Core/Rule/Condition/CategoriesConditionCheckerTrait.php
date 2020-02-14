@@ -18,27 +18,14 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 trait CategoriesConditionCheckerTrait
 {
-    /**
-     * @var CategoryRepositoryInterface
-     */
     private $categoryRepository;
 
-    /**
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
 
-    /**
-     * @param array          $categories
-     * @param StoreInterface $store
-     * @param bool           $recursive
-     *
-     * @return array
-     */
-    protected function getCategoriesToCheck($categories, StoreInterface $store, $recursive)
+    protected function getCategoriesToCheck(array $categories, StoreInterface $store, bool $recursive): array
     {
         $categoryIdsToCheck = $categories;
 

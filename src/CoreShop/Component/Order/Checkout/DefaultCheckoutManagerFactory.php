@@ -19,27 +19,16 @@ use Webmozart\Assert\Assert;
 
 final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
     private $steps;
-
-    /**
-     * @var array
-     */
     private $priorityMap;
 
-    /**
-     * @param ContainerInterface $steps
-     * @param array              $priorityMap
-     */
     public function __construct(ContainerInterface $steps, array $priorityMap)
     {
         $this->steps = $steps;
         $this->priorityMap = $priorityMap;
     }
 
-    public function createCheckoutManager(CartInterface $cart)
+    public function createCheckoutManager(CartInterface $cart): CheckoutManagerInterface
     {
         $serviceRegistry = new PrioritizedServiceRegistry(CheckoutStepInterface::class, 'checkout-manager-steps');
 

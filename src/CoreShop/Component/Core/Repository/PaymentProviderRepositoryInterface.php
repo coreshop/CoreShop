@@ -23,5 +23,5 @@ interface PaymentProviderRepositoryInterface extends BasePaymentProviderReposito
      *
      * @return PaymentProviderInterface[]
      */
-    public function findActiveForStore(StoreInterface $store);
+    public function findActiveForStore(StoreInterface $store): array;
 }

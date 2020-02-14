@@ -18,14 +18,7 @@ use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    /**
-     * @var OrderDocumentRendererInterface
-     */
     private $decoratedService;
-
-    /**
-     * @var string
-     */
     private $environment;
 
     /**
@@ -41,7 +34,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
+    public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         // if in dev mode, do not store document
         if ($this->environment === 'dev') {

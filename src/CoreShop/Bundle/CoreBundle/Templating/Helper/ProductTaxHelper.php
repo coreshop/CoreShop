@@ -21,40 +21,16 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
 {
-    /**
-     * @var ProductPriceHelperInterface
-     */
     private $priceHelper;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var DefaultTaxAddressProviderInterface
-     */
     private $defaultAddressProvider;
 
-    /**
-     * @param ProductPriceHelperInterface          $priceHelper
-     * @param ShopperContextInterface              $shopperContext
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param DefaultTaxAddressProviderInterface   $defaultAddressProvider
-     */
     public function __construct(
         ProductPriceHelperInterface $priceHelper,
-        ShopperContextInterface $shopperContext,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
         DefaultTaxAddressProviderInterface $defaultAddressProvider
     ) {
         $this->priceHelper = $priceHelper;
-        $this->shopperContext = $shopperContext;
         $this->taxCalculatorFactory = $taxCalculatorFactory;
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
@@ -62,46 +38,32 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxAmount(PurchasableInterface $product, array $context = [])
+    public function getTaxAmount(PurchasableInterface $product, array $context = []): int
     {
-        if (empty($context)) {
-            $context = $this->shopperContext->getContext();
-
-            @trigger_error(
-                'Calling getTaxAmount without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
-                E_USER_DEPRECATED
-            );
-        }
-
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTaxesAmount($this->priceHelper->getPrice($product, false, $context));
         }
+
+        return 0;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTaxRate(PurchasableInterface $product, array $context = [])
+    public function getTaxRate(PurchasableInterface $product, array $context = []): float
     {
-        if (empty($context)) {
-            $context = $this->shopperContext->getContext();
-
-            @trigger_error(
-                'Calling getTaxRate without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
-                E_USER_DEPRECATED
-            );
-        }
-
         $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator($product, $this->defaultAddressProvider->getAddress($context));
 
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTotalRate();
         }
+
+        return 0;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_product_tax';
     }

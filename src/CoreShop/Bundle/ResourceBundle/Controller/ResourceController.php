@@ -73,14 +73,14 @@ class ResourceController extends AdminController
         }
     }
 
-    public function listAction(Request $request): Response
+    public function listAction(Request $request)
     {
         $data = $this->repository->findAll();
 
         return $this->viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getAction(Request $request): Response
+    public function getAction(Request $request)
     {
         $this->isGrantedOr403();
 
@@ -89,7 +89,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
 
-    public function saveAction(Request $request): Response
+    public function saveAction(Request $request)
     {
         $this->isGrantedOr403();
 
@@ -116,7 +116,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
-    public function addAction(Request $request): Response
+    public function addAction(Request $request)
     {
         $this->isGrantedOr403();
 
@@ -146,7 +146,7 @@ class ResourceController extends AdminController
         }
     }
 
-    public function deleteAction(Request $request): Response
+    public function deleteAction(Request $request)
     {
         $this->isGrantedOr403();
 
@@ -168,7 +168,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    protected function findOr404(int $id): ResourceInterface
+    protected function findOr404(int $id)
     {
         $model = $this->repository->find($id);
 

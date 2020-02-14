@@ -32,5 +32,5 @@ interface MysqlIndexQueryExtensionInterface extends IndexExtensionInterface
      *
      * @return array
      */
-    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder): array;
+    public function addJoins(IndexInterface $index, QueryBuilder $queryBuilder): void;
 }

@@ -21,7 +21,7 @@ class ConfigurationRepository extends BaseConfigurationRepository implements Con
     /**
      * {@inheritdoc}
      */
-    public function findForKeyAndStore($key, StoreInterface $store)
+    public function findForKeyAndStore($key, StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.key = :configKey')

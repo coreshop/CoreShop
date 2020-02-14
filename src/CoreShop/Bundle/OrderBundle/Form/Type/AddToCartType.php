@@ -44,7 +44,7 @@ final class AddToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix(): string: string
+    public function getBlockPrefix(): string
     {
         return 'coreshop_add_to_cart';
     }

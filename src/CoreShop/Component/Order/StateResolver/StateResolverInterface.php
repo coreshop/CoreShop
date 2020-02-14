@@ -16,10 +16,5 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 interface StateResolverInterface
 {
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed
-     */
-    public function resolve(OrderInterface $order);
+    public function resolve(OrderInterface $order): void;
 }

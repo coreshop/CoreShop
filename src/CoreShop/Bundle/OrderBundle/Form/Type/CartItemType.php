@@ -21,16 +21,8 @@ use Symfony\Component\Form\FormEvents;
 
 final class CartItemType extends AbstractResourceType
 {
-    /**
-     * @var DataMapperInterface
-     */
     private $dataMapper;
 
-    /**
-     * @param string              $dataClass
-     * @param array               $validationGroups
-     * @param DataMapperInterface $dataMapper
-     */
     public function __construct(
         string $dataClass,
         array $validationGroups,

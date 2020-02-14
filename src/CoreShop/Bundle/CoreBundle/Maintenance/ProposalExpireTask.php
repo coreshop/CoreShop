@@ -18,38 +18,12 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class ProposalExpireTask implements TaskInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var ProposalExpirationInterface
-     */
     private $proposalExpiration;
-
-    /**
-     * @var string
-     */
     private $type;
-
-    /**
-     * @var int
-     */
     private $days;
-
-    /**
-     * @var array
-     */
     private $params;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     * @param ProposalExpirationInterface   $proposalExpiration
-     * @param string                        $type
-     * @param int                           $days
-     * @param array                         $params
-     */
     public function __construct(
         ConfigurationServiceInterface $configurationService,
         ProposalExpirationInterface $proposalExpiration,
@@ -64,7 +38,7 @@ final class ProposalExpireTask implements TaskInterface
         $this->params = $params;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $lastMaintenance = $this->configurationService->get(sprintf('system.%s.expire.last_run', $this->type));
 

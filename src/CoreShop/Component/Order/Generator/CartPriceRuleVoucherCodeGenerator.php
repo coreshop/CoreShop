@@ -19,32 +19,17 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 class CartPriceRuleVoucherCodeGenerator
 {
     const FORMAT_ALPHANUMERIC = 'alphanumeric';
-
     const FORMAT_ALPHABETIC = 'alphabetic';
-
     const FORMAT_NUMERIC = 'numeric';
 
-    /**
-     * @var FactoryInterface
-     */
     private $voucherCodeFactory;
 
-    /**
-     * @param FactoryInterface $voucherCodeFactory
-     */
     public function __construct(FactoryInterface $voucherCodeFactory)
     {
         $this->voucherCodeFactory = $voucherCodeFactory;
     }
 
-    /**
-     * Generates Voucher Codes.
-     *
-     * @param CartPriceRuleVoucherGeneratorInterface $generator
-     *
-     * @return CartPriceRuleVoucherCodeInterface[]
-     */
-    public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator)
+    public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator): array
     {
         $generatedVouchers = [];
 
@@ -88,22 +73,14 @@ class CartPriceRuleVoucherCodeGenerator
         return $generatedVouchers;
     }
 
-    /**
-     * Generates a code.
-     *
-     * @param int $letters
-     * @param int $length
-     *
-     * @return string
-     */
-    protected static function generateCode($letters, $length)
+    protected static function generateCode(int $letters, int $length): string
     {
-        srand((float) microtime() * 1000000);
+        mt_srand((float) microtime() * 1000000);
         $i = 0;
         $code = '';
 
         while ($i < $length) {
-            $num = rand() % (strlen($letters));
+            $num = mt_rand() % (strlen($letters));
             $tmp = substr($letters, $num, 1);
             $code = $code . $tmp;
             $i++;

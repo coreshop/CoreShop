@@ -25,26 +25,10 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
-
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculationFactory;
 
-    /**
-     * @param TaxCollectorInterface         $taxCollector
-     * @param AddressProviderInterface      $defaultAddressProvider
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
@@ -58,7 +42,7 @@ final class CartTaxProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(CartInterface $cart): void
     {
         $cart->setTaxes(null);
 
@@ -78,13 +62,7 @@ final class CartTaxProcessor implements CartProcessorInterface
         $cart->setTaxes($fieldCollection);
     }
 
-    /**
-     * @param CartInterface $cart
-     * @param array         $usedTaxes
-     *
-     * @return array
-     */
-    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = []): array
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return $usedTaxes;

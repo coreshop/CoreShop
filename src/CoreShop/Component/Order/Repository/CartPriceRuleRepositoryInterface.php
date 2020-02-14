@@ -12,12 +12,13 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 interface CartPriceRuleRepositoryInterface extends RuleRepositoryInterface
 {
     /**
-     * @return mixed
+     * @return CartPriceRuleInterface[]
      */
-    public function findNonVoucherRules();
+    public function findNonVoucherRules(): array;
 }

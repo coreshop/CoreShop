@@ -59,5 +59,5 @@ interface IndexableInterface
     /**
      * @return mixed
      */
-    public function getParent(): string;
+    public function getParent();
 }

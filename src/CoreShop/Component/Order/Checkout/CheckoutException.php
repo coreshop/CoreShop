@@ -14,15 +14,9 @@ namespace CoreShop\Component\Order\Checkout;
 
 class CheckoutException extends \RuntimeException
 {
-    /**
-     * @var string
-     */
     private $translatableText;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($reason, $translatableText)
+    public function __construct(string $reason, string $translatableText)
     {
         parent::__construct($reason);
 
@@ -32,7 +26,7 @@ class CheckoutException extends \RuntimeException
     /**
      * @return string
      */
-    public function getTranslatableText()
+    public function getTranslatableText(): string
     {
         return $this->translatableText;
     }
@@ -40,7 +34,7 @@ class CheckoutException extends \RuntimeException
     /**
      * @param string $translatableText
      */
-    public function setTranslatableText($translatableText)
+    public function setTranslatableText(string $translatableText): void
     {
         $this->translatableText = $translatableText;
     }

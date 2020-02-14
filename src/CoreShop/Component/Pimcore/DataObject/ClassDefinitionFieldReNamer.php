@@ -25,24 +25,9 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    /**
-     * @var ClassDefinition
-     */
     private $definition;
-
-    /**
-     * @var string
-     */
     private $oldFieldName;
-
-    /**
-     * @var string
-     */
     private $newFieldName;
-
-    /**
-     * @var Connection
-     */
     private $database;
 
     /**
@@ -61,7 +46,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
     /**
      * {@inheritdoc}
      */
-    public function rename()
+    public function rename(): void
     {
         $queries = $this->getRenameQueries();
 
@@ -103,7 +88,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
      *
      * @throws \Exception
      */
-    protected function getRenameQueries()
+    protected function getRenameQueries(): array
     {
         $fieldDefinition = $this->definition->getFieldDefinition($this->oldFieldName);
         $isLocalizedField = false;

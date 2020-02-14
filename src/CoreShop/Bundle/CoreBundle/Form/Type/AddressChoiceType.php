@@ -22,14 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressChoiceType extends AbstractType
 {
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $customerRepository;
 
-    /**
-     * @param PimcoreRepositoryInterface $customerRepository
-     */
     public function __construct(PimcoreRepositoryInterface $customerRepository)
     {
         $this->customerRepository = $customerRepository;

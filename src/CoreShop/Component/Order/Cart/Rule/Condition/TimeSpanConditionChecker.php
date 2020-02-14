@@ -22,7 +22,7 @@ class TimeSpanConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);
         $dateTo = Carbon::createFromTimestamp($configuration['dateTo'] / 1000);

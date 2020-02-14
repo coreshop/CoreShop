@@ -18,23 +18,14 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class ProductUpdateEventListener
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     */
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function storeConfigurationThatProductChanged(DataObjectEvent $event)
+    public function storeConfigurationThatProductChanged(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 

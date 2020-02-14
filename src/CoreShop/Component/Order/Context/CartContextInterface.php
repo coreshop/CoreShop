@@ -21,5 +21,5 @@ interface CartContextInterface
      *
      * @throws CartNotFoundException
      */
-    public function getCart();
+    public function getCart(): CartInterface;
 }

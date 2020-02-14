@@ -16,6 +16,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use CoreShop\Component\Resource\Model\TranslationInterface;
+use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -32,10 +33,10 @@ final class ORMTranslatableListener implements EventSubscriber
 
     public function __construct(
         RegistryInterface $resourceMetadataRegistry,
-        ContainerInterface $container
+        TranslatableEntityLocaleAssigner $translatableEntityLocaleAssigner
     ) {
         $this->resourceMetadataRegistry = $resourceMetadataRegistry;
-        $this->translatableEntityLocaleAssigner = $container->get('coreshop.translatable_entity_locale_assigner');
+        $this->translatableEntityLocaleAssigner = $translatableEntityLocaleAssigner;
     }
 
     public function getSubscribedEvents(): array

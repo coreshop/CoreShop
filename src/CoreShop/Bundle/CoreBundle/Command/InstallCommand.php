@@ -24,9 +24,6 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
-    /**
-     * @var array
-     */
     private $commands = [
         [
             'command' => 'resources',
@@ -42,28 +39,10 @@ final class InstallCommand extends AbstractInstallCommand
         ],
     ];
 
-    /**
-     * @var Installer
-     */
     private $installer;
-
-    /**
-     * @var MigrationManager
-     */
     private $migrationManager;
-
-    /**
-     * @var Bundle
-     */
     private $bundle;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     * @param Installer               $installer
-     * @param MigrationManager        $migrationManager
-     * @param Bundle                  $bundle
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
@@ -95,7 +74,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
 
@@ -151,7 +130,7 @@ EOT
     /**
      * @return string
      */
-    private function getCoreShopLogo()
+    private function getCoreShopLogo(): string
     {
         return '<fg=red>                                          
                                        %%%%%%%%%%                                    

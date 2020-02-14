@@ -56,7 +56,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function isEnabled(): void
+    public function isEnabled(): bool
     {
         return $this->enabled;
     }

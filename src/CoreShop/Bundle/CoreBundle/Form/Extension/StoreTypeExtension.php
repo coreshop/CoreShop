@@ -36,7 +36,7 @@ final class StoreTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return StoreType::class;
     }
@@ -44,7 +44,7 @@ final class StoreTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [StoreType::class];
     }

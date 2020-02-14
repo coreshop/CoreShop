@@ -22,5 +22,5 @@ interface PurchasableWholesalePriceCalculatorInterface
      *
      * @return int
      */
-    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context);
+    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int;
 }

@@ -21,11 +21,7 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     */
-    public function modify(StorageListItemInterface $item, float $targetQuantity)
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
          * @var CartItemInterface $item
@@ -43,13 +39,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
     }
 
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     *
-     * @return float
-     */
-    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity)
+    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity): float
     {
         if (!$item instanceof CartItemInterface) {
             return $targetQuantity;
@@ -79,12 +69,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         return $targetQuantity;
     }
 
-    /**
-     * @param CartItemInterface $cartItem
-     *
-     * @return int|null
-     */
-    protected function getScale(CartItemInterface $cartItem)
+    protected function getScale(CartItemInterface $cartItem): ?int
     {
         $productUnitDefinition = $cartItem->getUnitDefinition();
         if (!$productUnitDefinition instanceof ProductUnitDefinitionInterface) {

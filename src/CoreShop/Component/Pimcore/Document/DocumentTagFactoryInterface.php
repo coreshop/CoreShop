@@ -22,5 +22,5 @@ interface DocumentTagFactoryInterface
      *
      * @return TagInterface
      */
-    public function create($type, $params);
+    public function create(string $type, array $params): TagInterface;
 }

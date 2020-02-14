@@ -21,7 +21,7 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
     /**
      * {@inheritdoc}
      */
-    public function getDocuments(OrderInterface $order)
+    public function getDocuments(OrderInterface $order): array
     {
         return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
     }
@@ -29,7 +29,7 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
     /**
      * {@inheritdoc}
      */
-    public function getDocumentsInState(OrderInterface $order, $state)
+    public function getDocumentsInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();
         $list->setCondition('order__id = ? AND state = ?', [$order->getId(), $state]);
@@ -40,7 +40,7 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
     /**
      * {@inheritdoc}
      */
-    public function getDocumentsNotInState(OrderInterface $order, $state)
+    public function getDocumentsNotInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();
         $list->setCondition('order__id = ? AND state <> ?', [$order->getId(), $state]);

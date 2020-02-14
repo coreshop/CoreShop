@@ -21,14 +21,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class OrderStateHelper extends Helper implements OrderStateHelperInterface
 {
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
     private $workflowStateManager;
 
-    /**
-     * @param WorkflowStateInfoManagerInterface $workflowStateManager
-     */
     public function __construct(WorkflowStateInfoManagerInterface $workflowStateManager)
     {
         $this->workflowStateManager = $workflowStateManager;
@@ -37,7 +31,7 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getOrderState(OrderInterface $order)
+    public function getOrderState(OrderInterface $order): array
     {
         $orderState = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), true);
         $paymentState = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), true);
@@ -72,7 +66,7 @@ class OrderStateHelper extends Helper implements OrderStateHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_order_state';
     }

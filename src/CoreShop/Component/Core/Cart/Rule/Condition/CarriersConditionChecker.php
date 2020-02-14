@@ -24,7 +24,7 @@ final class CarriersConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         /**
          * @var $cart \CoreShop\Component\Core\Model\CartInterface

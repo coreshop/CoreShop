@@ -24,12 +24,12 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
      *
      * @return ProductInterface[]
      */
-    public function findLatestByStore(StoreInterface $store, $count = 8);
+    public function findLatestByStore(StoreInterface $store, int $count = 8): array;
 
     /**
      * @param array $options
      *
      * @return ProductInterface[]
      */
-    public function getProducts($options = []);
+    public function getProducts(array $options = []);
 }

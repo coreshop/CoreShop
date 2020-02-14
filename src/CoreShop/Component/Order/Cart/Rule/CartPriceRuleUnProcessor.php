@@ -40,7 +40,7 @@ class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function unProcess(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);
 

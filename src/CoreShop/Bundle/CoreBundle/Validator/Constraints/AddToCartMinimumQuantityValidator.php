@@ -27,44 +27,18 @@ use Webmozart\Assert\Assert;
 
 class AddToCartMinimumQuantityValidator extends ConstraintValidator
 {
-    /**
-     * @var QuantityValidatorService
-     */
     private $quantityValidatorService;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param QuantityValidatorService         $quantityValidatorService
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         QuantityValidatorService $quantityValidatorService,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->quantityValidatorService = $quantityValidatorService;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
@@ -104,13 +78,7 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = 0;

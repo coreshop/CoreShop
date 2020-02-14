@@ -20,14 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartPriceRuleChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $cartPriceRuleRepository;
 
-    /**
-     * @param RepositoryInterface $cartPriceRuleRepository
-     */
     public function __construct(RepositoryInterface $cartPriceRuleRepository)
     {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;

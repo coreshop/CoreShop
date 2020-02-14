@@ -12,18 +12,13 @@
 
 namespace CoreShop\Component\Order\Context;
 
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class CartContext implements CartContextInterface
 {
-    /**
-     * @var FactoryInterface
-     */
     private $cartFactory;
 
-    /**
-     * @param FactoryInterface $cartFactory
-     */
     public function __construct(FactoryInterface $cartFactory)
     {
         $this->cartFactory = $cartFactory;
@@ -32,7 +27,7 @@ final class CartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): CartInterface
     {
         $cart = $this->cartFactory->createNew();
         $cart->setKey(uniqid());

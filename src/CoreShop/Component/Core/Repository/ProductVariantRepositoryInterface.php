@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Repository;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Repository\ProductRepositoryInterface as BaseProductRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Pimcore\Model\DataObject\Listing;
 
 interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterface
 {
@@ -24,13 +25,13 @@ interface ProductVariantRepositoryInterface extends BaseProductRepositoryInterfa
      *
      * @return ProductInterface[]
      */
-    public function findAllVariants(ProductInterface $product, $recursive = true);
+    public function findAllVariants(ProductInterface $product, bool $recursive = true): array;
 
     /**
      * @param ProductInterface $product
      * @param StoreInterface   $store
      *
-     * @return array
+     * @return array|Listing
      */
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store);
 }

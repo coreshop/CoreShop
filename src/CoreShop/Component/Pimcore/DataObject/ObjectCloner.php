@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Service;
 
@@ -20,7 +21,7 @@ final class ObjectCloner implements ObjectClonerInterface
     /**
      * {@inheritdoc}
      */
-    public function cloneObject(Concrete $object, $parent, $key)
+    public function cloneObject(Concrete $object, AbstractObject $parent, string $key): Concrete
     {
         Service::loadAllObjectFields($object);
 

@@ -18,14 +18,8 @@ use Twig\TwigFunction;
 
 final class ConfigurationExtension extends AbstractExtension
 {
-    /**
-     * @var ConfigurationHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param ConfigurationHelperInterface $helper
-     */
     public function __construct(ConfigurationHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class ConfigurationExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_configuration', [$this->helper, 'getConfiguration']),

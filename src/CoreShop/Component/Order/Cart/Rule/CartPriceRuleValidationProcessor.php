@@ -37,9 +37,9 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
     /**
      * {@inheritdoc}
      */
-    public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
-        if ($cartPriceRule->getIsVoucherRule() && null === $voucherCode) {
+        if (null === $voucherCode && $cartPriceRule->getIsVoucherRule()) {
             return false;
         }
 
@@ -52,7 +52,7 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool
     {
         return $this->ruleConditionsValidationProcessor->isValid(
             $subject,

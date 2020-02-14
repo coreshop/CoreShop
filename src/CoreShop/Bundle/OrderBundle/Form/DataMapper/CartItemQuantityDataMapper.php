@@ -20,20 +20,9 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
     private $cartItemQuantityModifier;
-
-    /**
-     * @var DataMapperInterface
-     */
     private $propertyPathDataMapper;
 
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param DataMapperInterface                      $propertyPathDataMapper
-     */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         DataMapperInterface $propertyPathDataMapper

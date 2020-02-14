@@ -24,7 +24,7 @@ final class CustomerGroupsConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (!$cart->getCustomer() instanceof CustomerInterface) {
             return false;

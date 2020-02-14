@@ -25,7 +25,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CartInterface[]
      */
-    public function findForCustomer(CustomerInterface $customer);
+    public function findForCustomer(CustomerInterface $customer): array;
 
     /**
      * @param CustomerInterface $customer
@@ -33,7 +33,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CartInterface|null
      */
-    public function findNamedForCustomer(CustomerInterface $customer, $name);
+    public function findNamedForCustomer(CustomerInterface $customer, $name): ?CartInterface;
 
     /**
      * @param StoreInterface    $store
@@ -41,21 +41,21 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CartInterface|null
      */
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer);
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?CartInterface;
 
     /**
      * @param int $id
      *
      * @return CartInterface|null
      */
-    public function findCartById($id);
+    public function findCartById($id): ?CartInterface;
 
     /**
      * @param OrderInterface $order
      *
      * @return CartInterface|null
      */
-    public function findCartByOrder(OrderInterface $order);
+    public function findCartByOrder(OrderInterface $order): ?CartInterface;
 
     /**
      * @param int  $days
@@ -64,5 +64,5 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return CartInterface[]
      */
-    public function findExpiredCarts($days, $anonymous, $customer);
+    public function findExpiredCarts($days, $anonymous, $customer): array;
 }

@@ -18,32 +18,11 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class MailEvent extends GenericEvent
 {
-    /**
-     * @var Email
-     */
     protected $emailDocument;
-
-    /**
-     * @var Mail
-     */
     protected $mail;
-
-    /**
-     * @var array
-     */
     protected $params;
-
-    /**
-     * @var bool
-     */
     protected $shouldSendMail = true;
 
-    /**
-     * @param mixed $subject
-     * @param Email $emailDocument
-     * @param Mail  $mail
-     * @param array $params
-     */
     public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
     {
         parent::__construct($subject);
@@ -56,7 +35,7 @@ final class MailEvent extends GenericEvent
     /**
      * @return Email
      */
-    public function getEmailDocument()
+    public function getEmailDocument(): Email
     {
         return $this->emailDocument;
     }
@@ -64,7 +43,7 @@ final class MailEvent extends GenericEvent
     /**
      * @return Mail
      */
-    public function getMail()
+    public function getMail(): Mail
     {
         return $this->mail;
     }
@@ -72,7 +51,7 @@ final class MailEvent extends GenericEvent
     /**
      * @return array
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
@@ -80,7 +59,7 @@ final class MailEvent extends GenericEvent
     /**
      * @return bool
      */
-    public function getShouldSendMail()
+    public function getShouldSendMail(): bool
     {
         return $this->shouldSendMail;
     }
@@ -88,7 +67,7 @@ final class MailEvent extends GenericEvent
     /**
      * @param bool $shouldSendMail
      */
-    public function setShouldSendMail($shouldSendMail)
+    public function setShouldSendMail(bool $shouldSendMail): void
     {
         $this->shouldSendMail = $shouldSendMail;
     }

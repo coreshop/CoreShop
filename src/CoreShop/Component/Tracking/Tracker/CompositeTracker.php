@@ -60,7 +60,7 @@ class CompositeTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, int $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
@@ -71,7 +71,7 @@ class CompositeTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);

@@ -37,7 +37,7 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
         return $reflClass->implementsInterface(ResourceInterface::class);
     }
 
-    protected function getReflectionService(): RuntimeReflectionService
+    protected function getReflectionService()
     {
         if ($this->reflectionService === null) {
             $this->reflectionService = new RuntimeReflectionService();

@@ -24,5 +24,5 @@ interface ConfigurationRepositoryInterface extends BaseConfigurationRepositoryIn
      *
      * @return ConfigurationInterface[]
      */
-    public function findForKeyAndStore($key, StoreInterface $store);
+    public function findForKeyAndStore($key, StoreInterface $store): array;
 }

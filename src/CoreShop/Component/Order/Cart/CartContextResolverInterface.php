@@ -20,5 +20,5 @@ interface CartContextResolverInterface
      * @param CartInterface $cart
      * @return array
      */
-    public function resolveCartContext(CartInterface $cart);
+    public function resolveCartContext(CartInterface $cart): array;
 }

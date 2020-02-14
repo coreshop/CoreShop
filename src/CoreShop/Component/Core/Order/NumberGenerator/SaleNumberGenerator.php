@@ -22,33 +22,17 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
-    /**
-     * @var NumberGeneratorInterface
-     */
     private $numberGenerator;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var string
-     */
     private $prefixConfigurationKey;
-
-    /**
-     * @var string
-     */
     private $suffixConfigurationKey;
 
-    /**
-     * @param NumberGeneratorInterface      $numberGenerator
-     * @param ConfigurationServiceInterface $configurationService
-     * @param string                        $prefixConfigurationKey
-     * @param string                        $suffixConfigurationKey
-     */
-    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
+    public function __construct(
+        NumberGeneratorInterface $numberGenerator,
+        ConfigurationServiceInterface $configurationService,
+        string $prefixConfigurationKey,
+        string $suffixConfigurationKey
+    )
     {
         $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
@@ -59,7 +43,7 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ResourceInterface $model)
+    public function generate(ResourceInterface $model): string
     {
         $store = null;
 

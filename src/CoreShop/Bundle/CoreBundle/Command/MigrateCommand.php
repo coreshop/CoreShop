@@ -37,7 +37,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();
         $application->setCatchExceptions(false);

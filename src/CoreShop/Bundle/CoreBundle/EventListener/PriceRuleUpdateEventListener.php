@@ -19,23 +19,14 @@ use Webmozart\Assert\Assert;
 
 final class PriceRuleUpdateEventListener
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     */
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * @param ResourceControllerEvent $event
-     */
-    public function storeConfigurationThatPriceRulesChanged(ResourceControllerEvent $event)
+    public function storeConfigurationThatPriceRulesChanged(ResourceControllerEvent $event): void
     {
         //coreshop.cart_price_rule.post_save
         //coreshop.product_price_rule.post_save

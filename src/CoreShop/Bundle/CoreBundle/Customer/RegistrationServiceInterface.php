@@ -17,13 +17,5 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface RegistrationServiceInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     * @param array             $formData
-     * @param bool              $isGuest
-     *
-     * @return mixed
-     */
-    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false);
+    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, array $formData, bool $isGuest = false): void;
 }

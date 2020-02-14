@@ -24,17 +24,17 @@ interface DefinitionFieldReNamerInterface
     /**
      * Executes the renaming.
      */
-    public function rename();
+    public function rename(): voidy;
 
     /**
      * @return string
      */
-    public function getOldFieldName();
+    public function getOldFieldName(): string;
 
     /**
      * @return string
      */
-    public function getNewFieldName();
+    public function getNewFieldName(): string;
 
     /**
      * @return ClassDefinition|Fieldcollection\Definition|Objectbrick\Definition

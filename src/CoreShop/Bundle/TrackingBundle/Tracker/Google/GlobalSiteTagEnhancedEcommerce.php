@@ -129,7 +129,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         if ($this->isGoogleTagMode() === false) {
             return;

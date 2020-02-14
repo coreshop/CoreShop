@@ -34,7 +34,7 @@ final class Migrate
      * @throws ClassDefinitionAlreadyExistsException
      * @throws ClassDefinitionNotFoundException
      */
-    public static function migrateClass($fromClass, $toClass, $options = [])
+    public static function migrateClass(string $fromClass, string $toClass, array $options = []): ClassDefinition
     {
         $newClassDefinition = ClassDefinition::getByName($toClass);
 
@@ -128,7 +128,7 @@ final class Migrate
      *
      * @throws \Exception
      */
-    public static function migrateData($oldPimcoreClass, $newPimcoreClass)
+    public static function migrateData(string $oldPimcoreClass, string $newPimcoreClass): void
     {
         $oldClassDefinition = ClassDefinition::getByName($oldPimcoreClass);
         $newClassDefinition = ClassDefinition::getByName($newPimcoreClass);

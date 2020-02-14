@@ -14,11 +14,5 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 interface GridConfigInstallerInterface
 {
-    /**
-     * @param array  $config
-     * @param string $name
-     * @param string $class
-     * @param bool   $overwrite
-     */
-    public function installGridConfig($config, $name, $class, $overwrite = false);
+    public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void;
 }

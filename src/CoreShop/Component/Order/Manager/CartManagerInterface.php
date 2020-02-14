@@ -18,8 +18,6 @@ interface CartManagerInterface
 {
     /**
      * @param CartInterface $cart
-     *
-     * @return mixed
      */
-    public function persistCart(CartInterface $cart);
+    public function persistCart(CartInterface $cart): void;
 }

@@ -18,11 +18,5 @@ use CoreShop\Component\Order\Model\CartItemInterface;
 
 interface AddToCartFactoryInterface
 {
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return AddToCartInterface
-     */
-    public function createWithCartAndCartItem(CartInterface $cart, CartItemInterface $cartItem);
+    public function createWithCartAndCartItem(CartInterface $cart, CartItemInterface $cartItem): AddToCartInterface;
 }

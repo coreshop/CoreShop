@@ -20,14 +20,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class MailProcessor implements MailProcessorInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -36,7 +30,7 @@ final class MailProcessor implements MailProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = [])
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool
     {
         $mailHasBeenSent = false;
 

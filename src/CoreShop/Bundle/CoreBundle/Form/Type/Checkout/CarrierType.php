@@ -28,24 +28,9 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class CarrierType extends AbstractResourceType
 {
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
     private $taxedShippingCalculator;
-
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
 
     public function __construct(

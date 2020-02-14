@@ -51,7 +51,6 @@ services:
     CoreShop\Bundle\CoreBundle\Checkout\Step\PaymentCheckoutStep:
         arguments:
             - '@form.factory'
-            - '@coreshop.context.store'
             - '@coreshop.cart.manager'
 
     coreshop.checkout.step.summary: '@CoreShop\Bundle\CoreBundle\Checkout\Step\SummaryCheckoutStep'

@@ -26,7 +26,7 @@ interface CartPriceRuleActionProcessorInterface
      *
      * @return bool
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem);
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 
     /**
      * Remove Rule from Cart.
@@ -37,5 +37,5 @@ interface CartPriceRuleActionProcessorInterface
      *
      * @return bool
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem);
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool;
 }

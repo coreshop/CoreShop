@@ -17,7 +17,7 @@ use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 
 class CartItemResolver implements StorageListItemResolverInterface
 {
-    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB)
+    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB): bool
     {
         return $itemA->equals($itemB);
     }

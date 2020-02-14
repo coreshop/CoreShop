@@ -30,7 +30,7 @@ final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return OrderShipmentCreationType::class;
     }
@@ -38,7 +38,7 @@ final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [OrderShipmentCreationType::class];
     }

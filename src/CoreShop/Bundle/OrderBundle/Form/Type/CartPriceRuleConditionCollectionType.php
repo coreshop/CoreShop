@@ -17,6 +17,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CartPriceRuleConditionCollectionType extends RuleConditionCollectionType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);

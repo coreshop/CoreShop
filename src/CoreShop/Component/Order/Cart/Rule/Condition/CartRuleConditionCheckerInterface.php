@@ -27,5 +27,5 @@ interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
      *
      * @return bool
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration);
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool;
 }

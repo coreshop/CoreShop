@@ -23,10 +23,10 @@ interface RepositoryInterface extends ObjectRepository
     /**
      * @param ResourceInterface $resource
      */
-    public function add(ResourceInterface $resource);
+    public function add(ResourceInterface $resource): void;
 
     /**
      * @param ResourceInterface $resource
      */
-    public function remove(ResourceInterface $resource);
+    public function remove(ResourceInterface $resource): void;
 }

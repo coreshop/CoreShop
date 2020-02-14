@@ -22,17 +22,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CurrencyCollector extends DataCollector
 {
-    /**
-     * @var CurrencyContextInterface
-     */
     private $currencyContext;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyContextInterface    $currencyContext
-     * @param StoreContextInterface       $storeContext
-     * @param bool                        $currencyChangeSupport
-     */
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
         CurrencyContextInterface $currencyContext,
@@ -52,26 +43,17 @@ final class CurrencyCollector extends DataCollector
         }
     }
 
-    /**
-     * @return CurrencyInterface
-     */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         return $this->data['currency'];
     }
 
-    /**
-     * @return CurrencyInterface[]
-     */
-    public function getCurrencies()
+    public function getCurrencies(): array
     {
         return $this->data['currencies'];
     }
 
-    /**
-     * @return bool
-     */
-    public function isCurrencyChangeSupported()
+    public function isCurrencyChangeSupported(): bool
     {
         return $this->data['currency_change_support'];
     }
@@ -79,7 +61,7 @@ final class CurrencyCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         try {
             $this->data['currency'] = $this->currencyContext->getCurrency();
@@ -91,7 +73,7 @@ final class CurrencyCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -99,7 +81,7 @@ final class CurrencyCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.currency_collector';
     }

@@ -20,14 +20,8 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param AdjustmentFactoryInterface $adjustmentFactory
-     */
     public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
     {
         $this->adjustmentFactory = $adjustmentFactory;
@@ -36,7 +30,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
 
@@ -58,7 +52,7 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }

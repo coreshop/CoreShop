@@ -19,9 +19,9 @@ class ProductUnitDefinitionsCloner implements ProductClonerInterface
     /**
      * {@inheritDoc}
      */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false)
+    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
-        if ($product->hasUnitDefinitions() === true && $resetExistingData === false) {
+        if ($resetExistingData === false && $product->hasUnitDefinitions() === true) {
             return;
         }
 

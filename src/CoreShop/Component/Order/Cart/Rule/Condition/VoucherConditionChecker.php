@@ -21,14 +21,8 @@ use Webmozart\Assert\Assert;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $voucherCodeRepository;
 
-    /**
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     */
     public function __construct(CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->voucherCodeRepository = $voucherCodeRepository;
@@ -37,7 +31,7 @@ class VoucherConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (null === $voucher) {
             return false;

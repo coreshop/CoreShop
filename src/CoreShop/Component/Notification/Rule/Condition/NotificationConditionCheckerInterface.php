@@ -12,10 +12,9 @@
 
 namespace CoreShop\Component\Notification\Rule\Condition;
 
-use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface NotificationConditionCheckerInterface extends ConditionCheckerInterface
 {
-    public function isNotificationRuleValid(ResourceInterface $subject, array $params, array $configuration): bool;
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool;
 }

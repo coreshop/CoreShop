@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Core\Product;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -20,30 +21,17 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterface
 {
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
 
-    /**
-     * @var PimcoreFactoryInterface
-     */
-    private $addressFactory;
-
-    /**
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param PimcoreFactoryInterface       $addressFactory
-     */
-    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory, PimcoreFactoryInterface $addressFactory)
+    public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
         $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->addressFactory = $addressFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address)
+    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface
     {
         $taxRuleGroup = $product->getTaxRule();
 

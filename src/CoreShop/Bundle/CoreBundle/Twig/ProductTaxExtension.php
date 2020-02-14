@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class ProductTaxExtension extends AbstractExtension
 {
-    /**
-     * @var ProductTaxHelperInterface
-     */
     private $productTaxHelper;
 
-    /**
-     * @param ProductTaxHelperInterface $productTaxHelper
-     */
     public function __construct(ProductTaxHelperInterface $productTaxHelper)
     {
         $this->productTaxHelper = $productTaxHelper;
@@ -34,7 +28,7 @@ final class ProductTaxExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_product_tax_amount', [$this->productTaxHelper, 'getTaxAmount']),

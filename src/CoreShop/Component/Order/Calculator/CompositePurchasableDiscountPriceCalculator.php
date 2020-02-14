@@ -18,14 +18,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscountPriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $discountPriceCalculators;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $discountPriceCalculators
-     */
     public function __construct(PrioritizedServiceRegistryInterface $discountPriceCalculators)
     {
         $this->discountPriceCalculators = $discountPriceCalculators;
@@ -34,7 +28,7 @@ class CompositePurchasableDiscountPriceCalculator implements PurchasableDiscount
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
+    public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int
     {
         $price = null;
 
