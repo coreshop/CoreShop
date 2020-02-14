@@ -26,7 +26,7 @@ interface SEOMetadataInterface
      *
      * @return string
      */
-    public function getMetaDescription(): string;
+    public function getMetaDescription(): ?string;
 
     /**
      * Sets the original URL for content that has several URLs.
@@ -43,7 +43,7 @@ interface SEOMetadataInterface
      *
      * @return string
      */
-    public function getOriginalUrl(): string;
+    public function getOriginalUrl(): ?string;
 
     /**
      * Sets the title.
@@ -57,7 +57,7 @@ interface SEOMetadataInterface
      *
      * @return string
      */
-    public function getTitle(): string;
+    public function getTitle(): ?string;
 
     /**
      * @param array $extraProperties

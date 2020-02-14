@@ -25,5 +25,5 @@ interface StoreRepositoryInterface extends RepositoryInterface
 
     public function findOneBySite(int $siteId): ?StoreInterface;
 
-    public function findStandard(): StoreInterface;
+    public function findStandard(): ?StoreInterface;
 }

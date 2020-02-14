@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Model\Site;
@@ -35,6 +36,12 @@ final class SiteBasedRequestResolver implements RequestResolverInterface
             return $this->storeRepository->findOneBySite(Site::getCurrentSite()->getId());
         }
 
-        return $this->storeRepository->findStandard();
+        $defaultStore = $this->storeRepository->findStandard();
+
+        if (null === $defaultStore) {
+            throw new StoreNotFoundException();
+        }
+
+        return $defaultStore;
     }
 }

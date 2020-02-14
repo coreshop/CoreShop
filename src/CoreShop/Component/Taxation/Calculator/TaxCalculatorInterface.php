@@ -92,7 +92,7 @@ interface TaxCalculatorInterface
      *
      * @return float
      */
-    public function getTotalRate(): int;
+    public function getTotalRate(): float;
 
     /**
      * @return TaxRateInterface[]

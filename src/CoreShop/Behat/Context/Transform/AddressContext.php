@@ -18,26 +18,11 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 final class AddressContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
 
-    /**
-     * @var PimcoreRepositoryInterface
-     */
-    private $addressRepository;
-
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param PimcoreRepositoryInterface $addressRepository
-     */
-    public function __construct(
-        SharedStorageInterface $sharedStorage,
-        PimcoreRepositoryInterface $addressRepository
-    ) {
+    public function __construct(SharedStorageInterface $sharedStorage)
+    {
         $this->sharedStorage = $sharedStorage;
-        $this->addressRepository = $addressRepository;
     }
 
     /**

@@ -22,7 +22,6 @@ services:
             - '@coreshop.form_registry.product_specific_price_rule.conditions'
             - '@coreshop.form_registry.product_specific_price_rule.actions'
             - '@coreshop.factory.product_specific_price_rule'
-            - '@coreshop.repository.product_specific_price_rule'
         tags:
             - { name: fob.context_service }
 
@@ -32,7 +31,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.store'
-            - '@coreshop.repository.store'
             - '@coreshop.factory.currency'
             - '@coreshop.factory.country'
             - '@coreshop.context.store.fixed'
@@ -44,7 +42,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.category'
-            - '@coreshop.repository.category'
         tags:
             - { name: fob.context_service }
 
@@ -76,7 +73,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.customer'
-            - '@coreshop.repository.customer'
             - '@coreshop.context.customer.fixed'
             - '@coreshop.factory.address'
         tags:
@@ -109,7 +105,6 @@ services:
             - '@coreshop.form_registry.product_price_rule.conditions'
             - '@coreshop.form_registry.product_price_rule.actions'
             - '@coreshop.factory.product_price_rule'
-            - '@coreshop.repository.product_price_rule'
         tags:
             - { name: fob.context_service }
 
@@ -119,7 +114,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.exchange_rate'
-            - '@coreshop.repository.exchange_rate'
         tags:
             - { name: fob.context_service }
 
@@ -129,7 +123,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.tax_rate'
-            - '@coreshop.repository.tax_rate'
         tags:
             - { name: fob.context_service }
 
@@ -140,7 +133,6 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.tax_rule_group'
             - '@coreshop.factory.tax_rule'
-            - '@coreshop.repository.tax_rule_group'
         tags:
             - { name: fob.context_service }
 
@@ -165,7 +157,6 @@ services:
             - '@form.factory'
             - '@coreshop.form_registry.shipping_rule.conditions'
             - '@coreshop.form_registry.shipping_rule.actions'
-            - '@coreshop.repository.carrier'
             - '@coreshop.factory.carrier'
             - '@coreshop.factory.shipping_rule'
             - '@coreshop.factory.shipping_rule_group'
@@ -188,7 +179,6 @@ services:
             - '@coreshop.behat.class_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.index'
-            - '@coreshop.repository.index'
             - '@coreshop.registry.index.worker'
             - '@coreshop.factory.index_column'
         tags:
@@ -198,10 +188,8 @@ services:
         class: CoreShop\Behat\Context\Setup\FilterContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.behat.class_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.filter'
-            - '@coreshop.repository.filter'
             - '@coreshop.factory.filter_condition'
         tags:
             - { name: fob.context_service }
@@ -221,7 +209,6 @@ services:
             - '@coreshop.context.store'
             - '@coreshop.order.transformer.cart_to_order'
             - '@coreshop.factory.order'
-            - '@coreshop.repository.payment'
             - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
@@ -232,7 +219,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.order.transformer.order_to_shipment'
             - '@coreshop.factory.order_shipment'
-            - '@coreshop.repository.order_shipment'
             - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
@@ -243,7 +229,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.order.transformer.order_to_invoice'
             - '@coreshop.factory.order_invoice'
-            - '@coreshop.repository.order_invoice'
             - '@coreshop.state_machine_applier'
         tags:
             - { name: fob.context_service }
@@ -271,7 +256,6 @@ services:
         class: CoreShop\Behat\Context\Setup\ManufacturerContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@pimcore.dao.object_manager'
             - '@coreshop.factory.manufacturer'
         tags:
             - { name: fob.context_service }
@@ -292,7 +276,6 @@ services:
             - '@coreshop.form_registry.cart_price_rule.conditions'
             - '@coreshop.form_registry.cart_price_rule.actions'
             - '@coreshop.factory.cart_price_rule'
-            - '@coreshop.repository.cart_price_rule'
             - '@coreshop.repository.cart_price_rule_voucher_code'
             - '@coreshop.cart_price_rule.processor'
             - '@coreshop.cart.manager'

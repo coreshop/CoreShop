@@ -51,7 +51,7 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalRate(): int
+    public function getTotalRate(): float
     {
         $taxes = 0;
         if ($this->computationMethod === self::ONE_AFTER_ANOTHER_METHOD) {

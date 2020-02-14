@@ -24,24 +24,9 @@ use Webmozart\Assert\Assert;
 
 final class InstallerContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var Application
-     */
     private $application;
-
-    /**
-     * @var CommandTester
-     */
     private $tester;
-
-    /**
-     * @var AbstractInstallCommand
-     */
     private $command;
 
     /**

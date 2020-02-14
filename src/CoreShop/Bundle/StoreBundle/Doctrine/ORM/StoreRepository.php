@@ -44,7 +44,7 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findStandard(): StoreInterface
+    public function findStandard(): ?StoreInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isDefault = true')

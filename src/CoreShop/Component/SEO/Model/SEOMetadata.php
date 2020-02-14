@@ -102,7 +102,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetaDescription(): string
+    public function getMetaDescription(): ?string
     {
         return $this->metaDescription;
     }
@@ -118,7 +118,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetaKeywords(): string
+    public function getMetaKeywords(): ?string
     {
         return $this->metaKeywords;
     }
@@ -134,7 +134,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getOriginalUrl(): string
+    public function getOriginalUrl(): ?string
     {
         return $this->originalUrl;
     }
@@ -150,7 +150,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }

@@ -12,8 +12,6 @@
 
 namespace CoreShop\Component\Configuration\Service;
 
-use CoreShop\Component\Configuration\Model\ConfigurationInterface;
-
 interface ConfigurationServiceInterface
 {
     /**
@@ -23,7 +21,7 @@ interface ConfigurationServiceInterface
      */
     public function get(string $key, bool $returnObject = false);
 
-    public function set(string $key, $data): ConfigurationInterface;
+    public function set(string $key, $data): void;
 
     public function remove(string $key);
 }

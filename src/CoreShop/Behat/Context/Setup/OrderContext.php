@@ -29,57 +29,23 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class OrderContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
-
-    /**
-     * @var ProposalTransformerInterface
-     */
     private $orderTransformer;
-
-    /**
-     * @var FactoryInterface
-     */
     private $orderFactory;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
-    private $paymentRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
 
-    /**
-     * @param SharedStorageInterface       $sharedStorage
-     * @param StoreContextInterface        $storeContext
-     * @param ProposalTransformerInterface $orderTransformer
-     * @param FactoryInterface             $orderFactory
-     * @param PaymentRepositoryInterface   $paymentRepository
-     * @param StateMachineApplier          $stateMachineApplier
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         StoreContextInterface $storeContext,
         ProposalTransformerInterface $orderTransformer,
         FactoryInterface $orderFactory,
-        PaymentRepositoryInterface $paymentRepository,
         StateMachineApplier $stateMachineApplier
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->storeContext = $storeContext;
         $this->orderTransformer = $orderTransformer;
         $this->orderFactory = $orderFactory;
-        $this->paymentRepository = $paymentRepository;
         $this->stateMachineApplier = $stateMachineApplier;
     }
 

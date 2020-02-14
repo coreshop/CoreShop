@@ -26,7 +26,7 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value): float
+    public function transform($value)
     {
         if (null === $value) {
             return null;
@@ -38,7 +38,7 @@ class MoneyToIntegerTransformer implements DataTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function reverseTransform($value): int
+    public function reverseTransform($value)
     {
         if (null === $value) {
             return null;

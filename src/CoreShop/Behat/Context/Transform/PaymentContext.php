@@ -19,20 +19,9 @@ use Webmozart\Assert\Assert;
 
 final class PaymentContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var PaymentProviderRepositoryInterface
-     */
     private $paymentProviderRepository;
 
-    /**
-     * @param SharedStorageInterface             $sharedStorage
-     * @param PaymentProviderRepositoryInterface $paymentProviderRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         PaymentProviderRepositoryInterface $paymentProviderRepository

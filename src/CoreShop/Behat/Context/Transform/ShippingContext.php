@@ -21,26 +21,10 @@ use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $shippingRuleRepository;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage,
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param RepositoryInterface        $shippingRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,

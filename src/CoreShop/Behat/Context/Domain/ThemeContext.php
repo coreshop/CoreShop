@@ -20,28 +20,10 @@ use Webmozart\Assert\Assert;
 
 final class ThemeContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ThemeResolverInterface
-     */
     private $themeResolver;
-
-    /**
-     * @var ActiveThemeInterface
-     */
     private $activeTheme;
 
-    /**
-     * ThemeContext constructor.
-     *
-     * @param SharedStorageInterface $sharedStorage
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveThemeInterface   $activeTheme
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ThemeResolverInterface $themeResolver,

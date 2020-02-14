@@ -34,7 +34,7 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
         CarrierInterface $carrier,
         ShippableInterface $shippable,
         AddressInterface $address
-    ): ShippingRuleGroupInterface {
+    ): ?ShippingRuleGroupInterface {
         $shippingRules = $carrier->getShippingRules();
 
         if (count($shippingRules) === 0) {
