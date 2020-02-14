@@ -500,7 +500,7 @@
         ],
         "locked": false
     },
-    "icon": null,
+    "icon": "/bundles/coreshopcustomer/pimcore/img/company.svg",
     "previewUrl": null,
     "group": "CoreShop",
     "propertyVisibility": {

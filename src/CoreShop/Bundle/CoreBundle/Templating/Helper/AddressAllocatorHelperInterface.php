@@ -23,4 +23,12 @@ interface AddressAllocatorHelperInterface
      * @return AddressInterface[]
      */
     public function allocateAddresses(CustomerInterface $address);
+
+    /**
+     * @param CustomerInterface $customer
+     * @param AddressInterface  $address
+     *
+     * @return bool
+     */
+    public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address);
 }

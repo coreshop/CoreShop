@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Core\Customer\Allocator;
 
+use CoreShop\Component\Address\Model\AddressesAwareInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 
@@ -43,5 +45,17 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
         // @todo: throw exception?
 
         return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address)
+    {
+        if (!$customer instanceof AddressesAwareInterface) {
+            return false;
+        }
+
+        return $customer->hasAddress($address);
     }
 }

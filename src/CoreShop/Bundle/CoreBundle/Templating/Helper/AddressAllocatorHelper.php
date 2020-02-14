@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\Templating\Helper\Helper;
@@ -37,6 +38,14 @@ class AddressAllocatorHelper extends Helper implements AddressAllocatorHelperInt
     public function allocateAddresses(CustomerInterface $customer)
     {
         return $this->customerAddressAllocator->allocateForCustomer($customer);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address)
+    {
+        return $this->customerAddressAllocator->isOwnerOfAddress($customer, $address);
     }
 
     /**

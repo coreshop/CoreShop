@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\Twig;
 use CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigTest;
 
 final class AddressAllocatorExtension extends AbstractExtension
 {
@@ -31,13 +32,19 @@ final class AddressAllocatorExtension extends AbstractExtension
         $this->helper = $helper;
     }
 
+    public function getTests()
+    {
+        return [
+            new TwigTest('coreshop_address_owner_of', [$this->helper, 'isOwnerOfAddress'])
+        ];
+    }
     /**
      * {@inheritdoc}
      */
     public function getFilters()
     {
         return [
-            new TwigFilter('allocate_valid_addresses', [$this->helper, 'allocateAddresses']),
+            new TwigFilter('coreshop_allocate_valid_addresses', [$this->helper, 'allocateAddresses']),
         ];
     }
 }

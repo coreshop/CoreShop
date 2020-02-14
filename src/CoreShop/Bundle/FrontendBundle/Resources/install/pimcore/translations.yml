@@ -149,6 +149,12 @@ translations:
           en: 'Customer'
           de: 'Kunde'
 
+  coreshop.ui.company_address:
+      languages:
+          de_CH: 'Unternehmensadresse'
+          en: 'Company address'
+          de: 'Unternehmensadresse'
+
   coreshop.ui.date:
       languages:
           de_CH: 'Datum'

@@ -20,22 +20,25 @@
 
     <section class="addresses-area">
         <div class="row mb-4">
-            {% for address in customer|allocate_valid_addresses %}
-            <div class="col-6">
-                <div class="card card-smart">
-                    <div class="card-body">
-                        {{ address|coreshop_format_address }}
-                        <br/>
-                        <br/>
-                        <a href="{{ coreshop_path(address, 'coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-success">
-                            {{ 'coreshop.ui.edit'|trans }}
-                        </a>
-                        <a href="{{ coreshop_path(address, 'coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-danger">
-                            {{ 'coreshop.ui.delete'|trans }}
-                        </a>
+            {% for address in customer|coreshop_allocate_valid_addresses %}
+                <div class="col-6">
+                    <div class="card card-smart">
+                        <div class="card-body">
+                            {% if customer is not coreshop_address_owner_of(address) %}
+                                <span class="badge badge badge-secondary float-right">{{ 'coreshop.ui.company_address'|trans }}</span>
+                            {% endif %}
+                            {{ address|coreshop_format_address }}
+                            <br/>
+                            <br/>
+                            <a href="{{ coreshop_path(address, 'coreshop_customer_address_edit', {name: address.getStreet, address: address.getId}) }}" class="btn btn-success">
+                                {{ 'coreshop.ui.edit'|trans }}
+                            </a>
+                            <a href="{{ coreshop_path(address, 'coreshop_customer_address_delete', {address: address.getId}) }}" class="btn btn-danger">
+                                {{ 'coreshop.ui.delete'|trans }}
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
         <div class="row">
