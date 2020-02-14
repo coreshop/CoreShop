@@ -12,16 +12,7 @@
 
 namespace CoreShop\Component\Shipping\Rule\Action;
 
-use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
-use CoreShop\Component\Shipping\Model\ShippableInterface;
-
-interface CarrierPriceActionProcessorInterface extends CarrierActionProcessorInterface
+interface CarrierActionProcessorInterface
 {
-    public function getPrice(
-        CarrierInterface $carrier,
-        ShippableInterface $shippable,
-        AddressInterface $address,
-        array $configuration
-    ): int;
+
 }

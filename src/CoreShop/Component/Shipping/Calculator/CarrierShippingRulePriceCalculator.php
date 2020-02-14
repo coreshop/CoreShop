@@ -41,7 +41,7 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
          * get the first valid one, and process it for the price.
          */
-        $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
+        $shippingRuleGroup = $this->carrierShippingRuleChecker->findValidShippingRule($carrier, $shippable, $address);
 
         if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
             $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $shippable, $address);

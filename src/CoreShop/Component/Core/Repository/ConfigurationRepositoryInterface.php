@@ -18,11 +18,5 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 interface ConfigurationRepositoryInterface extends BaseConfigurationRepositoryInterface
 {
-    /**
-     * @param string         $key
-     * @param StoreInterface $store
-     *
-     * @return ConfigurationInterface[]
-     */
-    public function findForKeyAndStore($key, StoreInterface $store): array;
+    public function findForKeyAndStore(string $key, StoreInterface $store): ?ConfigurationInterface;
 }

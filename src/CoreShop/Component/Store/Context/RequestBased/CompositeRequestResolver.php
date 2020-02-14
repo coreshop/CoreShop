@@ -38,7 +38,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {
             try {
-                $store = $requestResolver->findStore($request);
+                return $requestResolver->findStore($request);
             }
             catch (StoreNotFoundException $ex) {
                 //Ignore and continue

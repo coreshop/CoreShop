@@ -16,7 +16,7 @@ services:
     coreshop.registry.shipping_rule.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface
+            - CoreShop\Component\Shipping\Rule\Action\CarrierActionProcessorInterface
             - shipping-rule-action
         tags:
             - { name: coreshop.registry, type_hint: shippingRuleActions }

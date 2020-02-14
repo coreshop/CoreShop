@@ -16,7 +16,12 @@ use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 
 interface ConfigurationServiceInterface
 {
-    public function get(string $key, bool $returnObject = false): ?ConfigurationInterface;
+    /**
+     * @param string $key
+     * @param bool   $returnObject
+     * @return mixed
+     */
+    public function get(string $key, bool $returnObject = false);
 
     public function set(string $key, $data): ConfigurationInterface;
 

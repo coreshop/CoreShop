@@ -16,7 +16,7 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface LinkGeneratorHelperInterface extends HelperInterface
 {
-    public function getPath($nameOrObject, array $params, bool $relative = false): string;
+    public function getPath($nameOrObject, $params, $relative = false): string;
 
-    public function getUrl($nameOrObject, array $parameters = array(), bool $schemeRelative = false): string;
+    public function getUrl($nameOrObject, $params = array(), $schemeRelative = false): string;
 }

@@ -49,7 +49,7 @@ class ConfigurationService implements ConfigurationServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function get(string $key, bool $returnObject = false): ?ConfigurationInterface
+    public function get(string $key, bool $returnObject = false)
     {
         $config = $this->configurationRepository->findByKey($key);
 

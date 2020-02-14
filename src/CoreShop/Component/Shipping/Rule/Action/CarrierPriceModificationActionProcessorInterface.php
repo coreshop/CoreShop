@@ -16,7 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-interface CarrierPriceModificationActionProcessorInterface
+interface CarrierPriceModificationActionProcessorInterface extends CarrierActionProcessorInterface
 {
     public function getModification(
         CarrierInterface $carrier,

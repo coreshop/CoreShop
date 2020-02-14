@@ -51,7 +51,12 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
         $stepIdentifier = $request->get('stepIdentifier');
         $requestAttributes = $request->attributes;
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
-        $currentStep = $checkoutManager->getCurrentStepIndex($stepIdentifier);
+        $currentStep = 0;
+
+        if ($stepIdentifier) {
+            $currentStep = $checkoutManager->getCurrentStepIndex($stepIdentifier);
+        }
+
         $checkoutSteps = $checkoutManager->getSteps();
 
         //always add cart to checkout
@@ -85,7 +90,7 @@ class CheckoutIdentifierHelper extends Helper implements CheckoutIdentifierHelpe
     /**
      * {@inheritdoc}
      */
-    public function getStep(string $type = ''): CheckoutStepInterface
+    public function getStep(string $type = '')
     {
         $validGuesser = ['get_first', 'get_previous', 'get_current', 'get_next', 'get_last'];
 

@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
@@ -29,15 +30,15 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(
+    public function findValidShippingRule(
         CarrierInterface $carrier,
         ShippableInterface $shippable,
         AddressInterface $address
-    ): bool {
+    ): ShippingRuleGroupInterface {
         $shippingRules = $carrier->getShippingRules();
 
         if (count($shippingRules) === 0) {
-            return true;
+            return null;
         }
 
         foreach ($shippingRules as $rule) {
@@ -48,7 +49,7 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
             ]);
 
             if ($isValid === false && $rule->getStopPropagation() === true) {
-                return false;
+                return null;
             }
 
             if ($isValid === true) {
@@ -56,6 +57,6 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
             }
         }
 
-        return false;
+        return null;
     }
 }

@@ -43,7 +43,7 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
         } elseif (array_key_exists('store', $context)) {
             $country = $context['store']->getBaseCountry();
         } else {
-            throw new CountryNotFoundException('No country has been found');
+            throw new CountryNotFoundException();
         }
 
         $address->setCountry($country);

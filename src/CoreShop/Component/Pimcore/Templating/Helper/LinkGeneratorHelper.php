@@ -29,7 +29,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath($routeNameOrObject/*, $routeName*/, array $params = [], bool $relative = false): string
+    public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
@@ -44,7 +44,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getUrl($routeNameOrObject/*, $routeName*/, array $params = [], bool $schemeRelative = false): string
+    public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 

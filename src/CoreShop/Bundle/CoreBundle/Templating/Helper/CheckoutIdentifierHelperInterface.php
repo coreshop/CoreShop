@@ -19,5 +19,5 @@ interface CheckoutIdentifierHelperInterface extends HelperInterface
 {
     public function getSteps(): array;
 
-    public function getStep(string $type = ''): CheckoutStepInterface;
+    public function getStep(string $type = '');
 }

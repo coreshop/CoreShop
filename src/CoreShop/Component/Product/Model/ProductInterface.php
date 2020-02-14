@@ -106,22 +106,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     public function setEan($ean);
 
     /**
-     * @return ProductInterface
-     */
-    public function getVariantMaster();
-
-    /**
-     * Get all Variants Differences.
-     *
-     * @param string $language
-     * @param string $type
-     * @param string $field
-     *
-     * @return array|bool
-     */
-    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
-
-    /**
      * @param string $language
      *
      * @return string
