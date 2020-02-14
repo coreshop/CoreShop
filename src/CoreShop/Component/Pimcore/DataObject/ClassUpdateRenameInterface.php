@@ -17,9 +17,5 @@ namespace CoreShop\Component\Pimcore\DataObject;
  */
 interface ClassUpdateRenameInterface
 {
-    /**
-     * @param string $fieldName
-     * @param string $newFieldName
-     */
-    public function renameField($fieldName, $newFieldName);
+    public function renameField(string $fieldName, string $newFieldName): void;
 }

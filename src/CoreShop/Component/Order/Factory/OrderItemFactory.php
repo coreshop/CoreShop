@@ -19,14 +19,8 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class OrderItemFactory implements OrderItemFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
     private $cartItemFactory;
 
-    /**
-     * @param FactoryInterface $cartItemFactory
-     */
     public function __construct(FactoryInterface $cartItemFactory)
     {
         $this->cartItemFactory = $cartItemFactory;
@@ -43,7 +37,7 @@ class OrderItemFactory implements OrderItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, $quantity = 1): OrderItemInterface
+    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());
@@ -60,7 +54,7 @@ class OrderItemFactory implements OrderItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1): OrderItemInterface
+    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());

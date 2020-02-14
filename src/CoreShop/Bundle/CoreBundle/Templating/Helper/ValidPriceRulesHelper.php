@@ -19,40 +19,18 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class ValidPriceRulesHelper extends Helper implements ValidPriceRulesHelperInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
     protected $validPriceRulesFetcher;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    protected $shopperContext;
-
-    /**
-     * @param ValidRulesFetcherInterface $validPriceRulesFetcher
-     * @param ShopperContextInterface    $shopperContext
-     */
-    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher, ShopperContextInterface $shopperContext)
+    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher)
     {
         $this->validPriceRulesFetcher = $validPriceRulesFetcher;
-        $this->shopperContext = $shopperContext;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product, array $context = [])
+    public function getValidRules(ProductInterface $product, array $context = []): array
     {
-        if (empty($context)) {
-            $context = $this->shopperContext->getContext();
-
-            @trigger_error(
-                'Calling getValidRules without a context is deprecated since 2.1.0 and will be removed with 2.2.0',
-                E_USER_DEPRECATED
-            );
-        }
-
         return $this->validPriceRulesFetcher->getValidRules($product, $context);
     }
 

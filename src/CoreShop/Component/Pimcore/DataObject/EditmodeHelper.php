@@ -17,7 +17,7 @@ use Pimcore\Model\DataObject;
 
 class EditmodeHelper
 {
-    public function getDataForObject(DataObject\Concrete $object, $objectFromVersion = false)
+    public function getDataForObject(DataObject\Concrete $object, bool $objectFromVersion = false): array
     {
         $dataObjectController = new DataObjectController();
         $trackerReflector = new \ReflectionClass(DataObjectController::class);

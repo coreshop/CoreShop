@@ -20,14 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartPriceRuleChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $cartPriceRuleRepository;
 
-    /**
-     * @param RepositoryInterface $cartPriceRuleRepository
-     */
     public function __construct(RepositoryInterface $cartPriceRuleRepository)
     {
         $this->cartPriceRuleRepository = $cartPriceRuleRepository;
@@ -36,7 +30,7 @@ final class CartPriceRuleChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -53,7 +47,7 @@ final class CartPriceRuleChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -61,7 +55,7 @@ final class CartPriceRuleChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_choice';
     }

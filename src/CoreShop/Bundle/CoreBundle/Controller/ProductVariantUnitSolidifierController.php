@@ -20,24 +20,16 @@ use CoreShop\Component\Resource\Model\AbstractObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Pimcore\Model\DataObject;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductVariantUnitSolidifierController extends AdminController
 {
     const STATUS_ERROR_NO_VARIANTS = 'error_no_variants';
-
     const STATUS_ERROR_NO_UNIT_DEFINITIONS = 'error_nno_unit_definitions';
-
     const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
-
     const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
 
-    /**
-     * @param Request $request
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function checkStatusAction(Request $request, $objectId)
+    public function checkStatusAction(Request $request, int $objectId): Response
     {
         /** @var DataObject\Concrete $object */
         $object = $this->getProductRepository()->find($objectId);
@@ -74,13 +66,7 @@ class ProductVariantUnitSolidifierController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function applyAction(Request $request, $objectId)
+    public function applyAction(Request $request, int $objectId): Response
     {
         $success = true;
         $message = null;
@@ -143,26 +129,17 @@ class ProductVariantUnitSolidifierController extends AdminController
 
     }
 
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): ProductRepositoryInterface
     {
         return $this->get('coreshop.repository.product');
     }
 
-    /**
-     * @return ProductClonerInterface
-     */
-    protected function getQuantityPriceRulesCloner()
+    protected function getQuantityPriceRulesCloner(): ProductClonerInterface
     {
         return $this->get('coreshop.product.cloner.quantity_price_rules');
     }
 
-    /**
-     * @return ProductClonerInterface
-     */
-    protected function getUnitDefinitionsCloner()
+    protected function getUnitDefinitionsCloner(): ProductClonerInterface
     {
         return $this->get('coreshop.product.cloner.unit_definitions');
     }

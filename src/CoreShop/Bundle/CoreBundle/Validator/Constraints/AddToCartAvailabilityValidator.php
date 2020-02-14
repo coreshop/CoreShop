@@ -17,7 +17,6 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,44 +25,18 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
     private $availabilityChecker;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param AvailabilityCheckerInterface     $availabilityChecker
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->availabilityChecker = $availabilityChecker;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);

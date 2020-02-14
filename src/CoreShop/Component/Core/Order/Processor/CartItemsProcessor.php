@@ -13,11 +13,9 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -25,35 +23,19 @@ use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetec
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
-use Webmozart\Assert\Assert;
 
 final class CartItemsProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CartContextResolverInterface
-     */
     private $cartContextResolver;
-
-    /**
-     * @var PurchasableCalculatorInterface
-     */
     private $productPriceCalculator;
-
-    /**
-     * @var QuantityReferenceDetectorInterface
-     */
     private $quantityReferenceDetector;
-
-    /**
-     * @var CartItemProcessorInterface
-     */
     private $cartItemProcessor;
 
     public function __construct(
         PurchasableCalculatorInterface $productPriceCalculator,
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
         CartItemProcessorInterface $cartItemProcessor,
-        CartContextResolverInterface $cartContextResolver = null
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->productPriceCalculator = $productPriceCalculator;
         $this->quantityReferenceDetector = $quantityReferenceDetector;
@@ -66,35 +48,10 @@ final class CartItemsProcessor implements CartProcessorInterface
      */
     public function process(OrderInterface $cart): void
     {
-        if (null === $this->cartContextResolver) {
-            @trigger_error(
-                'Using CartItemsProcessor without a CartContextResolverInterface is deprecated since 2.1.2 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $store = $cart->getStore();
-
-            /**
-             * @var StoreInterface $store
-             */
-            Assert::isInstanceOf($store, StoreInterface::class);
-
-            $context = [
-                'store' => $store,
-                'customer' => $cart->getCustomer() ?: null,
-                'currency' => $cart->getCurrency(),
-                'country' => $store->getBaseCountry(),
-                'cart' => $cart,
-            ];
-        } else {
-            $context = $this->cartContextResolver->resolveCartContext($cart);
-        }
-
-        $subtotalGross = 0;
-        $subtotalNet = 0;
+        $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
-         * @var OrderItemInterface $item
+         * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getIsGiftItem()) {
@@ -122,7 +79,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
             // respect item quantity factor
             if ($product instanceof ProductInterface && is_numeric($product->getItemQuantityFactor()) && $product->getItemQuantityFactor() > 1) {
-                $itemPrice = (int)round($itemPrice / (int) $product->getItemQuantityFactor());
+                $itemPrice = (int)round($itemPrice / (int)$product->getItemQuantityFactor());
             }
 
             if ($product instanceof QuantityRangePriceAwareInterface) {
@@ -147,12 +104,6 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context
             );
-
-            $subtotalGross += $item->getTotal(true);
-            $subtotalNet += $item->getTotal(false);
         }
-
-        $cart->setSubtotal($subtotalGross, true);
-        $cart->setSubtotal($subtotalNet, false);
     }
 }

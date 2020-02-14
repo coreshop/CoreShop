@@ -24,7 +24,7 @@ abstract class AbstractConditionChecker implements CartRuleConditionCheckerInter
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = []): bool
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         Assert::isInstanceOf($subject, OrderInterface::class);
         Assert::keyExists($params, 'cartPriceRule');

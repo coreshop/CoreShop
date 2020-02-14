@@ -17,7 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexColumnCollectionType extends AbstractConfigurationCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -27,7 +30,7 @@ final class IndexColumnCollectionType extends AbstractConfigurationCollectionTyp
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_column_collection';
     }

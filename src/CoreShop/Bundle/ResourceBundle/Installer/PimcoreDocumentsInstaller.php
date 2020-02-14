@@ -25,14 +25,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -41,7 +35,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',

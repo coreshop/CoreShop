@@ -23,5 +23,5 @@ interface PaymentRepositoryInterface extends RepositoryInterface
      *
      * @return PaymentInterface[]
      */
-    public function findForPayable(PayableInterface $payable);
+    public function findForPayable(PayableInterface $payable): array;
 }

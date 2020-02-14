@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ConfigurationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 use CoreShop\Component\Configuration\Repository\ConfigurationRepositoryInterface;
 
 class ConfigurationRepository extends EntityRepository implements ConfigurationRepositoryInterface
@@ -20,7 +21,7 @@ class ConfigurationRepository extends EntityRepository implements ConfigurationR
     /**
      * {@inheritdoc}
      */
-    public function findByKey($key)
+    public function findByKey(string $key): ?ConfigurationInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.key = :key')

@@ -24,49 +24,20 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 final class OrderShipmentContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var OrderDocumentTransformerInterface
-     */
     private $shipmentTransformer;
-
-    /**
-     * @var FactoryInterface
-     */
     private $orderShipmentFactory;
-
-    /**
-     * @var OrderDocumentRepositoryInterface
-     */
-    private $orderShipmentRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
 
-    /**
-     * @param SharedStorageInterface            $sharedStorage
-     * @param OrderDocumentTransformerInterface $shipmentTransformer
-     * @param FactoryInterface                  $orderShipmentFactory
-     * @param OrderDocumentRepositoryInterface  $orderShipmentRepository
-     * @param StateMachineApplier               $stateMachineApplier
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         OrderDocumentTransformerInterface $shipmentTransformer,
         FactoryInterface $orderShipmentFactory,
-        OrderDocumentRepositoryInterface $orderShipmentRepository,
         StateMachineApplier $stateMachineApplier
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->shipmentTransformer = $shipmentTransformer;
         $this->orderShipmentFactory = $orderShipmentFactory;
-        $this->orderShipmentRepository = $orderShipmentRepository;
         $this->stateMachineApplier = $stateMachineApplier;
     }
 

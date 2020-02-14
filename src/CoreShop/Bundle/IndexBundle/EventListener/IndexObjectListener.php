@@ -22,28 +22,16 @@ use Pimcore\Model\DataObject\ClassDefinition;
 
 final class IndexObjectListener
 {
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
     private $indexUpdaterService;
 
-    /**
-     * @var array
-     */
     private $validObjectTypes = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
 
-    /**
-     * @param IndexUpdaterServiceInterface $indexUpdaterService
-     */
     public function __construct(IndexUpdaterServiceInterface $indexUpdaterService)
     {
         $this->indexUpdaterService = $indexUpdaterService;
     }
 
-    /**
-     * @param ElementEventInterface $event
-     */
-    public function onPostUpdate(ElementEventInterface $event)
+    public function onPostUpdate(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();
@@ -63,10 +51,7 @@ final class IndexObjectListener
         }
     }
 
-    /**
-     * @param AbstractObject $object
-     */
-    private function updateInheritableChildren(AbstractObject $object)
+    private function updateInheritableChildren(AbstractObject $object): void
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;
@@ -84,10 +69,7 @@ final class IndexObjectListener
         }
     }
 
-    /**
-     * @param ElementEventInterface $event
-     */
-    public function onPostDelete(ElementEventInterface $event)
+    public function onPostDelete(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();

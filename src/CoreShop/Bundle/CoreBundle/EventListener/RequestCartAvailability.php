@@ -22,32 +22,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartAvailability
 {
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var RequestHelper
-     */
     private $pimcoreRequestHelper;
-
-    /**
-     * @var Session
-     */
     private $session;
 
-    /**
-     * @param CartManagerInterface    $cartManager
-     * @param ShopperContextInterface $shopperContext
-     * @param RequestHelper           $pimcoreRequestHelper
-     * @param Session                 $session
-     */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
@@ -60,12 +39,7 @@ final class RequestCartAvailability
         $this->session = $session;
     }
 
-    /**
-     * Check if Cart needs a recalculation because of changed items from system.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function checkCartAvailability(GetResponseEvent $event)
+    public function checkCartAvailability(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

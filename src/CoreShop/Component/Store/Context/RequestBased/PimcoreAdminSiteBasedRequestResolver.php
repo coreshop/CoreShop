@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Store\Context\RequestBased;
 
+use CoreShop\Component\Store\Context\StoreNotFoundException;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Document;
@@ -21,26 +23,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var StoreRepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var RequestHelper
-     */
     private $requestHelper;
-
-    /**
-     * @var Service
-     */
     private $documentService;
 
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param RequestHelper            $requestHelper
-     * @param Service                  $documentService
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         RequestHelper $requestHelper,
@@ -54,7 +40,7 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
     /**
      * {@inheritdoc}
      */
-    public function findStore(Request $request)
+    public function findStore(Request $request): StoreInterface
     {
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
             $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
@@ -76,6 +62,6 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
             }
         }
 
-        return null;
+        throw new StoreNotFoundException();
     }
 }

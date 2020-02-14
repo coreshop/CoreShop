@@ -28,9 +28,6 @@ class ProductsConditionChecker extends AbstractConditionChecker
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param ProductVariantRepositoryInterface $productRepository
-     */
     public function __construct(ProductVariantRepositoryInterface $productRepository)
     {
         $this->__traitConstruct($productRepository);
@@ -39,13 +36,18 @@ class ProductsConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
+    public function isShippingRuleValid(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $configuration
+    ): bool {
         if (!$shippable instanceof StoreAwareInterface) {
             return false;
         }
 
-        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $shippable->getStore(), $configuration['include_variants'] ?: false);
+        $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $shippable->getStore(),
+            $configuration['include_variants'] ?: false);
 
         $cartItems = $shippable->getItems();
 

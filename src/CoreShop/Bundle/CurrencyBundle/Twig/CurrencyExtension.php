@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class CurrencyExtension extends AbstractExtension
 {
-    /**
-     * @var CurrencyHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param CurrencyHelperInterface $helper
-     */
     public function __construct(CurrencyHelperInterface $helper)
     {
         $this->helper = $helper;

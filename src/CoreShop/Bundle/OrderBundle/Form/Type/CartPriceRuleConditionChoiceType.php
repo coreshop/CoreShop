@@ -19,7 +19,7 @@ class CartPriceRuleConditionChoiceType extends RuleConditionChoiceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_action_condition_choice';
     }

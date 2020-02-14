@@ -24,7 +24,7 @@ final class FixedCountryContext implements CountryContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         if ($this->country instanceof CountryInterface) {
             return $this->country;
@@ -36,7 +36,7 @@ final class FixedCountryContext implements CountryContextInterface
     /**
      * @param CountryInterface $country
      */
-    public function setCountry(CountryInterface $country)
+    public function setCountry(CountryInterface $country): void
     {
         $this->country = $country;
     }

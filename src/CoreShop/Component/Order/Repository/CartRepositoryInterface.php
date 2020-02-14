@@ -47,7 +47,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderInterface|null
      */
-    public function findCartById($id);
+    public function findCartById($id): ?OrderInterface;
 
     /**
      * @param int  $days
@@ -56,5 +56,5 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderInterface[]
      */
-    public function findExpiredCarts(int $days, bool $anonymous, bool $customer);
+    public function findExpiredCarts($days, $anonymous, $customer): array;
 }

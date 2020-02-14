@@ -17,10 +17,5 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface ConfigurationRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $key
-     *
-     * @return ConfigurationInterface
-     */
-    public function findByKey($key);
+    public function findByKey(string $key): ?ConfigurationInterface;
 }

@@ -21,19 +21,12 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
 
     public function __construct(
@@ -47,7 +40,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'payment';
     }
@@ -55,7 +48,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function isRequired(OrderInterface $cart)
+    public function isRequired(OrderInterface $cart): bool
     {
         return $cart->getTotal() > 0;
     }
@@ -63,7 +56,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(OrderInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
@@ -71,7 +64,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function validate(OrderInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         return $cart->hasItems() && $cart->getPaymentProvider() instanceof PaymentProviderInterface;
     }
@@ -79,7 +72,7 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function commitStep(OrderInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
 
@@ -101,14 +94,14 @@ class PaymentCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(OrderInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
             'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
-    private function createForm(Request $request, OrderInterface $cart)
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('', PaymentType::class, $cart, [
             'payment_subject' => $cart,

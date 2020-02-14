@@ -22,7 +22,7 @@ class CodeTracker
     /**
      * @param mixed $block
      */
-    public function addCodePart($block)
+    public function addCodePart($block): void
     {
         $this->blocks[] = $block;
     }
@@ -30,7 +30,7 @@ class CodeTracker
     /**
      * @return array
      */
-    public function getBlocks()
+    public function getBlocks(): array
     {
         return $this->blocks;
     }

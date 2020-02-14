@@ -18,20 +18,9 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
     private $cartPriceRuleValidator;
-
-    /**
-     * @var ProposalCartPriceRuleCalculatorInterface
-     */
     private $proposalCartPriceRuleCalculator;
 
-    /**
-     * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
-     */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator

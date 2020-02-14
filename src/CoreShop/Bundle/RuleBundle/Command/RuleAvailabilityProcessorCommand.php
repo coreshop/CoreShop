@@ -19,14 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class RuleAvailabilityProcessorCommand extends Command
 {
-    /**
-     * @var RuleAvailabilityProcessorInterface
-     */
     protected $ruleAvailabilityProcessor;
 
-    /**
-     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
-     */
     public function __construct(RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor)
     {
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
@@ -34,25 +28,14 @@ final class RuleAvailabilityProcessorCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:rules:check-availability')
             ->setDescription('Check for outdated / invalid rules and disable them.');
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->ruleAvailabilityProcessor->process();
 

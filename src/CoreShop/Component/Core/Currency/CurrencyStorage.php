@@ -20,20 +20,9 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class CurrencyStorage implements CurrencyStorageInterface
 {
-    /**
-     * @var StorageInterface
-     */
     private $storage;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     private $currencyRepository;
 
-    /**
-     * @param StorageInterface            $storage
-     * @param CurrencyRepositoryInterface $currencyRepository
-     */
     public function __construct(StorageInterface $storage, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->storage = $storage;
@@ -43,7 +32,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function set(StoreInterface $store, CurrencyInterface $currency)
+    public function set(StoreInterface $store, CurrencyInterface $currency): void
     {
         if ($this->isBaseCurrency($currency, $store) || !$this->isAvailableCurrency($currency, $store)) {
             $this->storage->remove($this->provideKey($store));
@@ -57,7 +46,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
     /**
      * {@inheritdoc}
      */
-    public function get(StoreInterface $store)
+    public function get(StoreInterface $store): CurrencyInterface
     {
         if ($this->storage->get($this->provideKey($store))) {
             $currency = $this->currencyRepository->find($this->storage->get($this->provideKey($store)));
@@ -70,21 +59,13 @@ final class CurrencyStorage implements CurrencyStorageInterface
         throw new CurrencyNotFoundException();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    private function provideKey(StoreInterface $store)
+    private function provideKey(StoreInterface $store): string
     {
         return '_currency_' . $store->getId();
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
-     *
-     * @return bool
-     */
-    private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store)
+
+    private function isBaseCurrency(CurrencyInterface $currency, StoreInterface $store): bool
     {
         if ($store instanceof \CoreShop\Component\Core\Model\StoreInterface) {
             return $store->getCurrency()->getId() === $currency->getId();
@@ -93,17 +74,11 @@ final class CurrencyStorage implements CurrencyStorageInterface
         return false;
     }
 
-    /**
-     * @param CurrencyInterface $currency
-     * @param StoreInterface    $store
-     *
-     * @return bool
-     */
-    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store)
+    private function isAvailableCurrency(CurrencyInterface $currency, StoreInterface $store): bool
     {
         return in_array($currency->getIsoCode(), array_map(function (CurrencyInterface $currency) {
             return $currency->getIsoCode();
-        }, $this->getCurrenciesForStore($store)));
+        }, $this->getCurrenciesForStore($store)), true);
     }
 
     /**
@@ -111,7 +86,7 @@ final class CurrencyStorage implements CurrencyStorageInterface
      *
      * @return CurrencyInterface[]
      */
-    private function getCurrenciesForStore(StoreInterface $store)
+    private function getCurrenciesForStore(StoreInterface $store): array
     {
         return $this->currencyRepository->findActiveForStore($store);
     }

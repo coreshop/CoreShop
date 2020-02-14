@@ -19,12 +19,12 @@ interface RuleAvailabilityAssessorInterface
     /**
      * @return RuleInterface[]
      */
-    public function getRules();
+    public function getRules(): array;
 
     /**
      * @param RuleInterface $rule
      *
      * @return bool
      */
-    public function isValid(RuleInterface $rule);
+    public function isValid(RuleInterface $rule): bool;
 }

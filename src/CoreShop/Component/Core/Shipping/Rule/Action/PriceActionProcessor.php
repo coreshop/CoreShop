@@ -24,20 +24,9 @@ use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements CarrierPriceActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
@@ -47,7 +36,7 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): int
     {
         $price = $configuration['price'];
 
@@ -60,13 +49,5 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
         }
 
         return $price;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
-    {
-        return 0;
     }
 }

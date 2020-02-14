@@ -17,10 +17,12 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class OrderRenderer implements OrderRendererInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $registry;
+
+    public function __construct(ServiceRegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
 
     /**
      * {@inheritdoc}
@@ -39,13 +41,5 @@ final class OrderRenderer implements OrderRendererInterface
         throw new \InvalidArgumentException(
             sprintf('No Renderer found for order with type %s', get_class($condition))
         );
-    }
-
-    /**
-     * @param ServiceRegistryInterface $registry
-     */
-    public function __construct(ServiceRegistryInterface $registry)
-    {
-        $this->registry = $registry;
     }
 }

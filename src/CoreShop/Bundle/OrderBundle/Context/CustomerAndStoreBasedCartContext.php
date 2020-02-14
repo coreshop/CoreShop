@@ -24,24 +24,9 @@ use Pimcore\Http\RequestHelper;
 
 final class CustomerAndStoreBasedCartContext implements CartContextInterface
 {
-    /**
-     * @var CustomerContextInterface
-     */
     private $customerContext;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $cartRepository;
-
-    /**
-     * @var RequestHelper
-     */
     private $pimcoreRequestHelper;
 
     public function __construct(

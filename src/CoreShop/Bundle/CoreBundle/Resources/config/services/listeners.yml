@@ -77,3 +77,7 @@ services:
             - '@coreshop.repository.product_unit_definition'
         tags:
             - { name: kernel.event_listener, event: coreshop.product_quantity_price_rules.data_validation, method: validate }
+
+    CoreShop\Bundle\CoreBundle\EventListener\ProductStoreValuesAdminGetListener:
+        tags:
+            - { name: kernel.event_subscriber }

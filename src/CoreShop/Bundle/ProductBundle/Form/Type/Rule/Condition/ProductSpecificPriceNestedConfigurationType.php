@@ -23,7 +23,7 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -44,7 +44,7 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_nested';
     }

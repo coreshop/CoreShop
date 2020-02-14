@@ -26,38 +26,12 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var RegistryInterface
-     */
     private $metaDataRegistry;
-
-    /**
-     * @var GridConfigInstallerInterface
-     */
     private $gridConfigInstaller;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var PimcoreClassInstallerInterface
-     */
     private $pimcoreClassInstaller;
 
-    /**
-     * @param KernelInterface                $kernel
-     * @param RegistryInterface              $metaDataRegistry
-     * @param ObjectManager                  $objectManager
-     * @param GridConfigInstallerInterface   $gridConfigInstaller
-     * @param PimcoreClassInstallerInterface $classInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         RegistryInterface $metaDataRegistry,
@@ -75,7 +49,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';
 
@@ -120,12 +94,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         }
     }
 
-    /**
-     * @param string $classIdentifier
-     *
-     * @return string
-     */
-    private function findClassId($classIdentifier)
+    private function findClassId(string $classIdentifier): string
     {
         $metadata = $this->metaDataRegistry->get($classIdentifier);
 

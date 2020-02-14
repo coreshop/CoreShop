@@ -24,29 +24,15 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var CarriersResolverInterface
-     */
     private $carriersResolver;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
     private $shippableCarrierValidator;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
 
     public function __construct(
@@ -64,7 +50,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'shipping';
     }
@@ -72,7 +58,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function isRequired(OrderInterface $cart)
+    public function isRequired(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
@@ -82,7 +68,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(OrderInterface $cart)
+    public function doAutoForward(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
@@ -92,7 +78,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function validate(OrderInterface $cart)
+    public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
@@ -106,7 +92,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function commitStep(OrderInterface $cart, Request $request)
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $this->getCarriers($cart), $cart);
 
@@ -117,9 +103,9 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $this->cartManager->persistCart($cart);
 
                 return true;
-            } else {
-                throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
             }
+
+            throw new CheckoutException('Shipping Form is invalid', 'coreshop.ui.error.coreshop_checkout_shipping_form_invalid');
         }
 
         return false;
@@ -128,7 +114,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(OrderInterface $cart, Request $request)
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         //Get Carriers
         $carriers = $this->getCarriers($cart);
@@ -139,12 +125,18 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         ];
     }
 
-    private function getCarriers(OrderInterface $cart)
+    /**
+     * @param OrderInterface $cart
+     *
+     * @return CarrierInterface[]
+     */
+    private function getCarriers(OrderInterface $cart): array
     {
         return $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
+
     }
 
-    private function createForm(Request $request, $carriers, OrderInterface $cart)
+    private function createForm(Request $request, array$carriers, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
             'carriers' => $carriers,

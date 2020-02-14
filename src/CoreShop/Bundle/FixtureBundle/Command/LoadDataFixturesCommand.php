@@ -56,7 +56,7 @@ class LoadDataFixturesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName(static::COMMAND_NAME)
             ->setDescription('Load data fixtures.')

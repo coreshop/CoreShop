@@ -20,14 +20,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class ValidAddressIdentifierValidator extends ConstraintValidator
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $addressIdentifierRepository;
 
-    /**
-     * @param RepositoryInterface $addressIdentifierRepository
-     */
     public function __construct(RepositoryInterface $addressIdentifierRepository)
     {
         $this->addressIdentifierRepository = $addressIdentifierRepository;
@@ -36,7 +30,7 @@ final class ValidAddressIdentifierValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidAddressIdentifier) {
             throw new UnexpectedTypeException($constraint, ValidAddressIdentifier::class);

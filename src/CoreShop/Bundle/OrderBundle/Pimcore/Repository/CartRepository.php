@@ -93,30 +93,30 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         return null;
     }
-//
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function findCartByOrder(OrderInterface $order)
-//    {
-//        $list = $this->getList();
-//        $list->setCondition('order__id = ? ', [$order->getId()]);
-//        $list->setLimit(1);
-//        $list->load();
-//
-//        $objects = $list->getObjects();
-//
-//        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
-//            return $objects[0];
-//        }
-//
-//        return null;
-//    }
 
     /**
      * {@inheritdoc}
      */
-    public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array
+    public function findCartByOrder(OrderInterface $order): ?OrderInterface
+    {
+        $list = $this->getList();
+        $list->setCondition('order__id = ? ', [$order->getId()]);
+        $list->setLimit(1);
+        $list->load();
+
+        $objects = $list->getObjects();
+
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
+            return $objects[0];
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findExpiredCarts($days, $anonymous, $customer): array
     {
         $list = $this->getList();
 

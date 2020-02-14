@@ -25,19 +25,8 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
     private $productRepository;
-
-    /**
-     * @var OrderItemFactoryInterface
-     */
     private $cartItemFactory;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
     public function __construct(
@@ -131,21 +120,12 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         return true;
     }
 
-    /**
-     * @param OrderInterface     $cart
-     * @param OrderItemInterface $cartItem
-     */
     private function removeCartItem(OrderInterface $cart, OrderItemInterface $cartItem): void
     {
         $cart->removeItem($cartItem);
         $cartItem->delete();
     }
 
-    /**
-     * @param ActionInterface $action
-     *
-     * @return string
-     */
     private function getKey(ActionInterface $action): string
     {
         return sprintf('%s_%s', AdjustmentInterface::CART_PRICE_RULE, $action->getId());

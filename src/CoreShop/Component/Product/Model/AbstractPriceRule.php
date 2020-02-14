@@ -62,7 +62,7 @@ abstract class AbstractPriceRule implements PriceRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }

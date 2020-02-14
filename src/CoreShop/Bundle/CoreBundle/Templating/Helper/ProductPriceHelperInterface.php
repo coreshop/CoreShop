@@ -17,39 +17,11 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface ProductPriceHelperInterface extends HelperInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     * @param bool                 $withTax
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getPrice(PurchasableInterface $product, $withTax = true, array $context = []);
+    public function getPrice(PurchasableInterface $product, bool $withTax = true, array $context = []): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param bool                 $withTax
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getRetailPrice(PurchasableInterface $product, $withTax = true, array $context = []);
+    public function getRetailPrice(PurchasableInterface $product, bool $withTax = true, array $context = []): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param bool                 $withTax
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getDiscountPrice(PurchasableInterface $product, $withTax = true, array $context = []);
+    public function getDiscountPrice(PurchasableInterface $product, bool $withTax = true, array $context = []): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param bool                 $withTax
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getDiscount(PurchasableInterface $product, $withTax = true, array $context = []);
+    public function getDiscount(PurchasableInterface $product, bool $withTax = true, array $context = []): int;
 }

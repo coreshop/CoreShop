@@ -18,15 +18,9 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCartFactory implements AddToCartFactoryInterface
 {
-    /**
-     * @var string
-     */
     protected $addToCartClass;
 
-    /**
-     * @param string $addToCartClass
-     */
-    public function __construct($addToCartClass)
+    public function __construct(string $addToCartClass)
     {
         $this->addToCartClass = $addToCartClass;
     }

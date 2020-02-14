@@ -23,5 +23,5 @@ interface OptionalCheckoutStepInterface
      *
      * @return bool
      */
-    public function isRequired(OrderInterface $cart);
+    public function isRequired(OrderInterface $cart): bool;
 }

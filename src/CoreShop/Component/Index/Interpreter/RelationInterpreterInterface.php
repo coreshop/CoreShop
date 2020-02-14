@@ -29,6 +29,6 @@ interface RelationInterpreterInterface extends InterpreterInterface
         $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
+        array $interpreterConfig = []
     );
 }

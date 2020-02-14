@@ -26,24 +26,9 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class OrderContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
-
-    /**
-     * @var OrderCommitterInterface
-     */
     private $orderCommitter;
 
     public function __construct(

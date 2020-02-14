@@ -25,7 +25,7 @@ class UnpublishedHelper
      *
      * @return mixed
      */
-    public static function hideUnpublished(\Closure $function, $hide = false)
+    public static function hideUnpublished(\Closure $function, bool $hide = false)
     {
         $backup = Concrete::getHideUnpublished();
 

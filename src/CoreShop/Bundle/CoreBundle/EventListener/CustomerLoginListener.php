@@ -17,23 +17,14 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 
 final class CustomerLoginListener
 {
-    /**
-     * @var CustomerLoginServiceInterface
-     */
     private $customerLoginService;
 
-    /**
-     * @param CustomerLoginServiceInterface $customerLoginService
-     */
     public function __construct(CustomerLoginServiceInterface $customerLoginService)
     {
         $this->customerLoginService = $customerLoginService;
     }
 
-    /**
-     * @param CustomerRegistrationEvent $customerRegistrationEvent
-     */
-    public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent)
+    public function onCustomerRegister(CustomerRegistrationEvent $customerRegistrationEvent): void
     {
         $this->customerLoginService->loginCustomer($customerRegistrationEvent->getCustomer());
     }

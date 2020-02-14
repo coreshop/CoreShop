@@ -21,7 +21,7 @@ class CarriersChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         if ($subject instanceof OrderInterface) {
             if ($subject->getCarrier() instanceof CarrierInterface) {

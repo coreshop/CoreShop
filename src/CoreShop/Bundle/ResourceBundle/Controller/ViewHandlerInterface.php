@@ -12,13 +12,9 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 interface ViewHandlerInterface
 {
-    /**
-     * @param mixed $data
-     * @param array $options
-     *
-     * @return mixed
-     */
-    public function handle($data, $options = []);
+    public function handle($data, array $options = []): JsonResponse;
 }

@@ -25,26 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $productTaxFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
 
-    /**
-     * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
-     * @param TaxCollectorInterface                $taxCollector
-     * @param AddressProviderInterface             $defaultAddressProvider
-     */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector,
@@ -67,23 +51,24 @@ final class CartItemTaxProcessor implements CartProcessorInterface
          */
         Assert::isInstanceOf($store, StoreInterface::class);
 
-        $totalTaxes = 0;
-
         /**
          * @var CartItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(), $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
+            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(),
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
             $fieldCollection = new Fieldcollection();
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($store->getUseGrossPrice()) {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, $item->getTotal(true)));
+                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator,
+                        $item->getTotal(true)));
 
                     $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
                 } else {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $item->getTotal(false)));
+                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator,
+                        $item->getTotal(false)));
 
                     $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
                 }

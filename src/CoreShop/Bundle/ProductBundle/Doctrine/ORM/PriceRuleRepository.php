@@ -20,7 +20,7 @@ class PriceRuleRepository extends RuleRepository implements PriceRuleRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')

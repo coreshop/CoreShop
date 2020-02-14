@@ -21,17 +21,9 @@ interface StoreRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
-    /**
-     * @param int $siteId
-     *
-     * @return StoreInterface
-     */
-    public function findOneBySite($siteId);
+    public function findOneBySite(int $siteId): ?StoreInterface;
 
-    /**
-     * @return StoreInterface
-     */
-    public function findStandard();
+    public function findStandard(): ?StoreInterface;
 }

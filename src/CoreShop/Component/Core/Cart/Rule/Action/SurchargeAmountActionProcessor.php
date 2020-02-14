@@ -24,26 +24,10 @@ use Webmozart\Assert\Assert;
 
 class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
-
-    /**
-     * @var CartRuleApplierInterface
-     */
     protected $cartRuleApplier;
 
-    /**
-     * @param CurrencyConverterInterface  $moneyConverter
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CartRuleApplierInterface    $cartRuleApplier
-     */
     public function __construct(
         CurrencyConverterInterface $moneyConverter,
         CurrencyRepositoryInterface $currencyRepository,
@@ -78,9 +62,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
@@ -102,13 +83,7 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
     }
 
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount): int
+    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

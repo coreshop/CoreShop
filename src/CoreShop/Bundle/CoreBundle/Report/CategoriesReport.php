@@ -25,55 +25,15 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategoriesReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeService;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $categoryRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderItemRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeService
-     * @param PimcoreRepositoryInterface $orderRepository     ,
-     * @param PimcoreRepositoryInterface $categoryRepository  ,
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -95,7 +55,7 @@ class CategoriesReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -114,7 +74,7 @@ class CategoriesReport implements ReportInterface
         $orderItemClassId = $this->orderItemRepository->getClassId();
         $locale = $this->localeService->getLocaleCode();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -167,9 +127,9 @@ class CategoriesReport implements ReportInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

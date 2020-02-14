@@ -30,32 +30,11 @@ use Webmozart\Assert\Assert;
 
 final class FilterContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $filterRepository;
-
-    /**
-     * @var FilteredListingFactoryInterface
-     */
     private $filterListFactory;
-
-    /**
-     * @var FilterProcessorInterface
-     */
     private $filterProcessor;
 
-    /**
-     * @param SharedStorageInterface          $sharedStorage
-     * @param RepositoryInterface             $filterRepository
-     * @param FilteredListingFactoryInterface $filterListFactory
-     * @param FilterProcessorInterface        $filterProcessor
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         RepositoryInterface $filterRepository,

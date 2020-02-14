@@ -17,14 +17,8 @@ use Pimcore\Tool;
 
 class PimcoreLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var LocaleServiceInterface
-     */
     private $pimcoreLocaleService;
 
-    /**
-     * @param LocaleServiceInterface $pimcoreLocaleService
-     */
     public function __construct(LocaleServiceInterface $pimcoreLocaleService)
     {
         $this->pimcoreLocaleService = $pimcoreLocaleService;
@@ -33,7 +27,7 @@ class PimcoreLocaleContext implements LocaleContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         $pimcoreLocale = $this->pimcoreLocaleService->findLocale();
 

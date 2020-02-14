@@ -19,13 +19,5 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
-    /**
-     * @param OrderInterface                          $cart
-     * @param CartPriceRuleInterface                 $cartPriceRule
-     * @param CartPriceRuleVoucherCodeInterface|null $voucher
-     * @param array                                  $configuration
-     *
-     * @return bool
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool;
 }

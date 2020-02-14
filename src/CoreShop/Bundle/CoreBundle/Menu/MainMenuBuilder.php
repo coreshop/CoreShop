@@ -18,7 +18,7 @@ use Knp\Menu\ItemInterface;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type)
+    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([

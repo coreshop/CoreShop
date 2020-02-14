@@ -18,18 +18,10 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface ProductQuantityPriceRuleRangesPriceHelperInterface extends HelperInterface
 {
-    /**
-     * @param QuantityRangeInterface $range
-     * @param ProductInterface       $product
-     * @param array                  $context
-     * @param bool                   $withTax
-     *
-     * @return mixed
-     */
     public function getQuantityPriceRuleRangePrice(
         QuantityRangeInterface $range,
         ProductInterface $product,
         array $context,
         bool $withTax = true
-    );
+    ): int;
 }

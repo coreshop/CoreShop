@@ -22,5 +22,5 @@ interface HistoryRepositoryInterface
      *
      * @return Note[]
      */
-    public function getHistory(DataObject\Concrete $object);
+    public function getHistory(DataObject\Concrete $object): array;
 }

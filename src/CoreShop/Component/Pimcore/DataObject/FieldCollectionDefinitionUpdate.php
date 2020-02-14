@@ -18,23 +18,12 @@ use Pimcore\Model\DataObject;
 class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
 {
     /**
-     * @var string
-     */
-    private $fieldCollectionKey;
-
-    /**
      * @var DataObject\Fieldcollection\Definition
      */
     private $fieldCollectionDefinition;
 
-    /**
-     * @param string $fieldCollectionKey
-     *
-     * @throws ClassDefinitionNotFoundException
-     */
-    public function __construct($fieldCollectionKey)
+    public function __construct(string $fieldCollectionKey)
     {
-        $this->fieldCollectionKey = $fieldCollectionKey;
         $this->fieldCollectionDefinition = DataObject\Fieldcollection\Definition::getByKey($fieldCollectionKey);
 
         if (is_null($this->fieldCollectionDefinition)) {
@@ -48,8 +37,8 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
     /**
      * {@inheritdoc}
      */
-    public function save()
+    public function save(): bool
     {
-        return DataObject\ClassDefinition\Service::importFieldCollectionFromJson($this->fieldCollectionDefinition, json_encode($this->jsonDefinition), true);
+        return null !== DataObject\ClassDefinition\Service::importFieldCollectionFromJson($this->fieldCollectionDefinition, json_encode($this->jsonDefinition), true);
     }
 }

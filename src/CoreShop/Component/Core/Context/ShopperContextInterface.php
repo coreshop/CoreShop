@@ -24,30 +24,30 @@ interface ShopperContextInterface extends StoreContextInterface, CurrencyContext
     /**
      * @return array
      */
-    public function getContext();
+    public function getContext(): array;
 
     /**
      * @return bool
      */
-    public function hasStore();
+    public function hasStore(): bool;
 
     /**
      * @return bool
      */
-    public function hasCurrency();
+    public function hasCurrency(): bool;
 
     /**
      * @return bool
      */
-    public function hasLocaleCode();
+    public function hasLocaleCode(): bool;
 
     /**
      * @return bool
      */
-    public function hasCountry();
+    public function hasCountry(): bool;
 
     /**
      * @return bool
      */
-    public function hasCustomer();
+    public function hasCustomer(): bool;
 }

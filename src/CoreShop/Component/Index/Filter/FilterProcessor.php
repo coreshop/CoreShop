@@ -46,7 +46,7 @@ class FilterProcessor implements FilterProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag)
+    public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array
     {
         $currentFilter = [];
         $conditions = $filter->getConditions();
@@ -70,7 +70,7 @@ class FilterProcessor implements FilterProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter): array
     {
         $conditions = $filter->getConditions();
         $preparedConditions = [];
@@ -84,12 +84,7 @@ class FilterProcessor implements FilterProcessorInterface
         return $preparedConditions;
     }
 
-    /**
-     * @param FilterConditionInterface $condition
-     *
-     * @return FilterConditionProcessorInterface
-     */
-    private function getConditionProcessorForCondition(FilterConditionInterface $condition)
+    private function getConditionProcessorForCondition(FilterConditionInterface $condition): FilterConditionProcessorInterface
     {
         /**
          * @var FilterConditionProcessorInterface $processor
@@ -99,12 +94,7 @@ class FilterProcessor implements FilterProcessorInterface
         return $processor;
     }
 
-    /**
-     * @param FilterConditionInterface $condition
-     *
-     * @return FilterConditionProcessorInterface
-     */
-    private function getPreConditionProcessorForCondition(FilterConditionInterface $condition)
+    private function getPreConditionProcessorForCondition(FilterConditionInterface $condition): FilterConditionProcessorInterface
     {
         /**
          * @var FilterConditionProcessorInterface $processor

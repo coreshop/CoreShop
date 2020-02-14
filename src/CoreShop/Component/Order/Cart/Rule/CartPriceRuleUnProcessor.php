@@ -23,14 +23,8 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $actionServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $actionServiceRegistry
-     */
     public function __construct(
         ServiceRegistryInterface $actionServiceRegistry
     ) {

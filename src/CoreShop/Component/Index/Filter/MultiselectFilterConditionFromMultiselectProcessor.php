@@ -26,7 +26,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
     /**
      * {@inheritdoc}
      */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
         $rawValues = $list->getGroupByValues($field, true);
@@ -64,7 +64,7 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
     /**
      * {@inheritdoc}
      */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
         $values = $parameterBag->get($field);

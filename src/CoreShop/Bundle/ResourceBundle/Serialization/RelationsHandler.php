@@ -20,14 +20,8 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $manager;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;

@@ -20,20 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class CustomerContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CustomerContextInterface
-     */
     private $customerContext;
 
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param CustomerContextInterface $customerContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CustomerContextInterface $customerContext

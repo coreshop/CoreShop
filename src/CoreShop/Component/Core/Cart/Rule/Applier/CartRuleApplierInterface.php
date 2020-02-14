@@ -17,29 +17,17 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 interface CartRuleApplierInterface
 {
-    /**
-     * @param OrderInterface                     $cart
-     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
-     * @param int                                $discount
-     * @param bool                               $withTax
-     */
     public function applyDiscount(
         OrderInterface $cart,
         ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
-        $withTax = false
+        bool $withTax = false
     ): void;
 
-    /**
-     * @param OrderInterface                     $cart
-     * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
-     * @param int                                $discount
-     * @param bool                               $withTax
-     */
     public function applySurcharge(
         OrderInterface $cart,
         ProposalCartPriceRuleItemInterface $cartPriceRuleItem,
         int $discount,
-        $withTax = false
+        bool $withTax = false
     ): void;
 }

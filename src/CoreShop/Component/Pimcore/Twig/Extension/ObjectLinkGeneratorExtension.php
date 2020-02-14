@@ -19,20 +19,14 @@ use Twig\TwigFunction;
 
 final class ObjectLinkGeneratorExtension extends AbstractExtension
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $objectLinkGenerator;
 
-    /**
-     * @param LinkGeneratorInterface $objectLinkGenerator
-     */
     public function __construct(LinkGeneratorInterface $objectLinkGenerator)
     {
         $this->objectLinkGenerator = $objectLinkGenerator;
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('object_link', function (Concrete $object, array $params = []) {

@@ -16,21 +16,16 @@ use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
-use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use Doctrine\Common\Collections\Collection;
+use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Pimcore\Model\DataObject;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductValidationController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function validateUnitDefinitionDeletionAction(Request $request)
+    public function validateUnitDefinitionDeletionAction(Request $request): Response
     {
         $message = null;
         $success = true;
@@ -41,7 +36,7 @@ class ProductValidationController extends AdminController
         if (is_null($unitDefinitionId)) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid unit definition id.', $unitDefinitionId)
+                'message' => sprintf('%s is not a valid unit definition id.', $unitDefinitionId),
             ]);
         }
 
@@ -51,7 +46,7 @@ class ProductValidationController extends AdminController
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
                 'success' => false,
-                'message' => sprintf('%s is not a valid product', $objectId)
+                'message' => sprintf('%s is not a valid product', $objectId),
             ]);
         }
 
@@ -61,7 +56,7 @@ class ProductValidationController extends AdminController
             return new JsonResponse([
                 'success' => $success,
                 'message' => $message,
-                'status'  => $status
+                'status' => $status,
             ]);
         }
 
@@ -82,7 +77,7 @@ class ProductValidationController extends AdminController
                     continue;
                 }
 
-                if ((int) $unitDefinitionId === $range->getUnitDefinition()->getId()) {
+                if ((int)$unitDefinitionId === $range->getUnitDefinition()->getId()) {
                     $status = 'locked';
                     break 2;
                 }
@@ -92,14 +87,11 @@ class ProductValidationController extends AdminController
         return new JsonResponse([
             'success' => $success,
             'message' => $message,
-            'status'  => $status
+            'status' => $status,
         ]);
     }
 
-    /**
-     * @return StackRepository
-     */
-    protected function getProductRepository()
+    protected function getProductRepository(): StackRepository
     {
         return $this->get('coreshop.repository.stack.product');
     }

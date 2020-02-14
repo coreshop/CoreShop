@@ -18,23 +18,14 @@ use Webmozart\Assert\Assert;
 
 final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var string
-     */
     private $type;
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * @param Event $event
-     */
-    public function applyDocumentWorkflowTransitionCompleted(Event $event)
+    public function applyDocumentWorkflowTransitionCompleted(Event $event): void
     {
         $subject = $event->getSubject();
 

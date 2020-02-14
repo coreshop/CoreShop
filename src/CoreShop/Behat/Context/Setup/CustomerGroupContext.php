@@ -21,20 +21,9 @@ use Pimcore\Model\DataObject\Folder;
 
 final class CustomerGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $customerGroupFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $customerGroupFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerGroupFactory

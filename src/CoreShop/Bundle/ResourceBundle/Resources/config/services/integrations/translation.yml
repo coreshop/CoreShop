@@ -9,7 +9,7 @@ services:
     CoreShop\Bundle\ResourceBundle\EventListener\ORMTranslatableListener:
         arguments:
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
-            - '@service_container'
+            - '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface'
         tags:
             - { name: doctrine.event_subscriber, connection: default, priority: 99 }
 

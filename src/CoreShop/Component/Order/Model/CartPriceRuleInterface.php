@@ -34,7 +34,7 @@ interface CartPriceRuleInterface extends RuleInterface, TranslatableInterface
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * @param string $description

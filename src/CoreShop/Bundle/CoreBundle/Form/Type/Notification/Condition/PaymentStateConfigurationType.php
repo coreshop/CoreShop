@@ -21,7 +21,7 @@ final class PaymentStateConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('paymentState', TextType::class, [
@@ -31,7 +31,7 @@ final class PaymentStateConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_condition_payment_state';
     }

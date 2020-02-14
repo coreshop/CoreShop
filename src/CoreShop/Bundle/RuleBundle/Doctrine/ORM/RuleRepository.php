@@ -20,7 +20,7 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')
@@ -31,7 +31,7 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findWithConditionOfType($conditionType)
+    public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.conditions', 'condition')
@@ -44,7 +44,7 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function findWithActionOfType($actionType)
+    public function findWithActionOfType($actionType): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.actions', 'action')

@@ -18,5 +18,5 @@ interface ProposalExpirationInterface
      * @param int   $days
      * @param array $params
      */
-    public function expire($days, $params = []);
+    public function expire(int $days, array $params = []): void;
 }

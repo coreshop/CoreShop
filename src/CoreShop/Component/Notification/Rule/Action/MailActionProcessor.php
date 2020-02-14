@@ -19,14 +19,8 @@ use Pimcore\Model\Document;
 
 class MailActionProcessor implements NotificationRuleProcessorInterface
 {
-    /**
-     * @var MailProcessorInterface
-     */
     protected $mailProcessor;
 
-    /**
-     * @param MailProcessorInterface $mailProcessor
-     */
     public function __construct(MailProcessorInterface $mailProcessor)
     {
         $this->mailProcessor = $mailProcessor;
@@ -35,7 +29,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = [])
+    public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         $language = null;
         $mails = $configuration['mails'];
@@ -44,7 +38,7 @@ class MailActionProcessor implements NotificationRuleProcessorInterface
             $language = $params['_locale'];
         }
 
-        if (is_null($language)) {
+        if (null === $language) {
             throw new \Exception('MailActionProcessor: Language is not set.');
         }
 

@@ -25,5 +25,5 @@ interface ProductDiscountPriceCalculatorInterface
      *
      * @return int
      */
-    public function getDiscountPrice(ProductInterface $subject, array $context);
+    public function getDiscountPrice(ProductInterface $subject, array $context): int;
 }

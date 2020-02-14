@@ -13,14 +13,16 @@
 namespace CoreShop\Bundle\AddressBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class CountryRepository extends EntityRepository implements CountryRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
+    public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
@@ -28,7 +30,7 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findByName($name, $locale)
+    public function findByName(string $name, string $locale): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')
@@ -45,7 +47,7 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function findByCode($code)
+    public function findByCode($code): ?CountryInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isoCode= :isoCode')

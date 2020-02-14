@@ -21,7 +21,7 @@ class ObjectService implements ObjectServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function createFolderByPath($path): Folder
+    public function createFolderByPath(string $path): Folder
     {
         return Service::createFolderByPath($path);
     }
@@ -29,7 +29,7 @@ class ObjectService implements ObjectServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function copyObject(Concrete $fromObject, Concrete $toObject): Concrete
+    public function copyObject(Concrete $fromObject, Concrete $toObject): void
     {
         //load all in case of lazy loading fields
         $toFd = $toObject->getClass()->getFieldDefinitions();

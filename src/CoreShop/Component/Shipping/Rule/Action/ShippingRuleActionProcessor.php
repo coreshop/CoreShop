@@ -19,24 +19,15 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
-class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterface
+class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterface, CarrierPriceModificationActionProcessorInterface
 {
-    /**
-     * @var ShippingRuleActionProcessorInterface
-     */
     protected $shippingRuleProcessor;
-
-    /**
-     * @var RepositoryInterface
-     */
     protected $shippingRuleRepository;
 
-    /**
-     * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
-     * @param RepositoryInterface                  $shippingRuleRepository
-     */
-    public function __construct(ShippingRuleActionProcessorInterface $shippingRuleProcessor, RepositoryInterface $shippingRuleRepository)
-    {
+    public function __construct(
+        ShippingRuleActionProcessorInterface $shippingRuleProcessor,
+        RepositoryInterface $shippingRuleRepository
+    ) {
         $this->shippingRuleProcessor = $shippingRuleProcessor;
         $this->shippingRuleRepository = $shippingRuleRepository;
     }
@@ -44,22 +35,31 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
+    public function getPrice(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $configuration
+    ): int {
         $shippingRule = $this->shippingRuleRepository->find($configuration['shippingRule']);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
             return $this->shippingRuleProcessor->getPrice($shippingRule, $carrier, $shippable, $address);
         }
 
-        return false;
+        return 0;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
-    {
+    public function getModification(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        int $price,
+        array $configuration
+    ): int {
         $shippingRule = $this->shippingRuleRepository->find($configuration['shippingRule']);
 
         if ($shippingRule instanceof ShippingRuleInterface) {

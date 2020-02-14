@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Resource\Pimcore;
 
 use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
+use Pimcore\Model\Document\Tag\TagInterface;
 
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
@@ -46,15 +47,14 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create($type, $params)
+    public function create(string $type, array $params): TagInterface
     {
         array_unshift($params, $type);
         array_unshift($params, $this->nameProperty);
         array_unshift($params, $this->repositoryName);
 
         $className = $this->class;
-        $instance = new $className(...$params);
 
-        return $instance;
+        return new $className(...$params);
     }
 }

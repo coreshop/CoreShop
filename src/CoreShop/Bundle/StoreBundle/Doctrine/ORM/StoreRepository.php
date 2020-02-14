@@ -13,14 +13,16 @@
 namespace CoreShop\Bundle\StoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class StoreRepository extends EntityRepository implements StoreRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
+    public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
@@ -28,7 +30,7 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findOneBySite($siteId)
+    public function findOneBySite(int $siteId): ?StoreInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.siteId = :siteId')
@@ -42,7 +44,7 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function findStandard()
+    public function findStandard(): ?StoreInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isDefault = true')

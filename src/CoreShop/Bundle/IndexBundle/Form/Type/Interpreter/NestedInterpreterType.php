@@ -20,7 +20,7 @@ final class NestedInterpreterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('interpreters', InterpreterCollectionType::class);
@@ -29,7 +29,7 @@ final class NestedInterpreterType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_interpreter_nested';
     }

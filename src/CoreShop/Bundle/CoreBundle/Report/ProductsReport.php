@@ -27,55 +27,15 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ProductsReport implements ReportInterface, ExportReportInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var StackRepository
-     */
     private $productStackRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderItemRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository,
-     * @param PimcoreRepositoryInterface $orderItemRepository
-     * @param StackRepository            $productStackRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -97,7 +57,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -193,7 +153,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         return array_values($productSales);
     }
 
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -207,9 +167,9 @@ class ProductsReport implements ReportInterface, ExportReportInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

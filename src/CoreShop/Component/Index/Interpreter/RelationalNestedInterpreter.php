@@ -31,7 +31,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $this->assert($interpreterConfig);
 
@@ -47,7 +47,7 @@ class RelationalNestedInterpreter implements RelationInterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $this->assert($interpreterConfig);
 

@@ -25,7 +25,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -35,7 +35,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - SEO';
     }
@@ -43,7 +43,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - SEO Bundle';
     }
@@ -51,7 +51,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/seo-bundle'])) {
             return 'coreshop/seo-bundle';

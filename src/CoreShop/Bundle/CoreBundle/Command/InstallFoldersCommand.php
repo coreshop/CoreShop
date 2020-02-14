@@ -21,16 +21,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallFoldersCommand extends AbstractInstallCommand
 {
-    /**
-     * @var FolderInstallerProvider
-     */
     protected $folderInstaller;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     * @param FolderInstallerProvider $folderInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
@@ -44,7 +36,7 @@ final class InstallFoldersCommand extends AbstractInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:folders')
@@ -58,7 +50,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(

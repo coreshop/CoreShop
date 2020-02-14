@@ -20,7 +20,7 @@ interface CartPriceRuleActionProcessorInterface
     /**
      * Apply Rule to Cart.
      *
-     * @param OrderInterface                     $cart
+     * @param OrderInterface                      $cart
      * @param array                              $configuration
      * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *
@@ -31,7 +31,7 @@ interface CartPriceRuleActionProcessorInterface
     /**
      * Remove Rule from Cart.
      *
-     * @param OrderInterface                     $cart
+     * @param OrderInterface                      $cart
      * @param array                              $configuration
      * @param ProposalCartPriceRuleItemInterface $cartPriceRuleItem
      *

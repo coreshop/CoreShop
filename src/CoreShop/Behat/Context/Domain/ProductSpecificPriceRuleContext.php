@@ -22,26 +22,10 @@ use Webmozart\Assert\Assert;
 
 final class ProductSpecificPriceRuleContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
 
-    /**
-     * @param SharedStorageInterface           $sharedStorage
-     * @param ShopperContextInterface          $shopperContext
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,

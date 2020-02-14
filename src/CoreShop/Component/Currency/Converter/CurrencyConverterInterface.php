@@ -14,12 +14,5 @@ namespace CoreShop\Component\Currency\Converter;
 
 interface CurrencyConverterInterface
 {
-    /**
-     * @param int    $value
-     * @param string $fromCurrencyCode
-     * @param string $toCurrencyCode
-     *
-     * @return int
-     */
-    public function convert($value, $fromCurrencyCode, $toCurrencyCode);
+    public function convert(int $value, string $fromCurrencyCode, string $toCurrencyCode): int;
 }

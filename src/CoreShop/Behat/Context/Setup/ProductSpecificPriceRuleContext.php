@@ -48,58 +48,21 @@ final class ProductSpecificPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $actionFormTypeRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productSpecificPriceRuleFactory;
-
-    /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
-     */
     private $productSpecificPriceRuleRepository;
 
-    /**
-     * @param SharedStorageInterface                      $sharedStorage
-     * @param ObjectManager                               $objectManager
-     * @param FormFactoryInterface                        $formFactory
-     * @param FormTypeRegistryInterface                   $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface                   $actionFormTypeRegistry
-     * @param FactoryInterface                            $productSpecificPriceRuleFactory
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productSpecificPriceRuleFactory,
-        ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
+        FactoryInterface $productSpecificPriceRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
@@ -107,7 +70,6 @@ final class ProductSpecificPriceRuleContext implements Context
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->productSpecificPriceRuleFactory = $productSpecificPriceRuleFactory;
-        $this->productSpecificPriceRuleRepository = $productSpecificPriceRuleRepository;
     }
 
     /**

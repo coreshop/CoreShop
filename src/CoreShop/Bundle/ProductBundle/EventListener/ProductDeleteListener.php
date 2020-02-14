@@ -20,20 +20,9 @@ use Pimcore\Event\Model\ElementEventInterface;
 
 final class ProductDeleteListener
 {
-    /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
-     */
     private $repository;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @param ProductSpecificPriceRuleRepositoryInterface $repository
-     * @param EntityManagerInterface                      $entityManager
-     */
     public function __construct(
         ProductSpecificPriceRuleRepositoryInterface $repository,
         EntityManagerInterface $entityManager
@@ -45,7 +34,7 @@ final class ProductDeleteListener
     /**
      * @param ElementEventInterface $event
      */
-    public function onPostDelete(ElementEventInterface $event)
+    public function onPostDelete(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();

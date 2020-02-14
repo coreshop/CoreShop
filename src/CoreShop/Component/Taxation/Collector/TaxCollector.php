@@ -45,10 +45,10 @@ class TaxCollector implements TaxCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmount($price, true);
+            $taxesAmount = $taxCalculator->getTaxesAmountAsArray($price);
 
             if (is_array($taxesAmount)) {
                 foreach ($taxesAmount as $id => $amount) {
@@ -63,10 +63,10 @@ class TaxCollector implements TaxCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = [])
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $taxesAmount = $taxCalculator->getTaxesAmountFromGross($price, true);
+            $taxesAmount = $taxCalculator->getTaxesAmountFromGrossAsArray($price);
 
             if (is_array($taxesAmount)) {
                 foreach ($taxesAmount as $id => $amount) {
@@ -81,7 +81,7 @@ class TaxCollector implements TaxCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function mergeTaxes(array $taxes1, array $taxes2)
+    public function mergeTaxes(array $taxes1, array $taxes2): array
     {
         foreach ($taxes1 as $id => $tax) {
             $this->addTaxToArray($id, $tax->getAmount(), $taxes2);

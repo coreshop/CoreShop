@@ -21,23 +21,14 @@ use Webmozart\Assert\Assert;
 
 final class OrderCommentsListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function setOrderRepository(OrderRepositoryInterface $orderRepository)
     {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyOrderCommentAddedNotifications(GenericEvent $event)
+    public function applyOrderCommentAddedNotifications(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), Note::class);
 

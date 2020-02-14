@@ -21,14 +21,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcessorInterface
 {
-    /**
-     * @var RuleConditionsValidationProcessorInterface
-     */
     private $ruleConditionsValidationProcessor;
 
-    /**
-     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
-     */
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
@@ -52,7 +46,7 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool
     {
         return $this->ruleConditionsValidationProcessor->isValid(
             $subject,

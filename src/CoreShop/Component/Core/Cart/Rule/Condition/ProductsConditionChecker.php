@@ -26,9 +26,6 @@ final class ProductsConditionChecker extends AbstractConditionChecker
         ProductVariantsCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param ProductVariantRepositoryInterface $productRepository
-     */
     public function __construct(ProductVariantRepositoryInterface $productRepository)
     {
         $this->__traitConstruct($productRepository);

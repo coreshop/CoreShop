@@ -20,30 +20,16 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
 {
-    /**
-     * @var array
-     */
     private $callbackConfig;
-
-    /**
-     * @var ContainerInterface
-     */
     protected $container;
 
-    /**
-     * @param array              $callbackConfig
-     * @param ContainerInterface $container
-     */
     public function __construct(array $callbackConfig, ContainerInterface $container)
     {
         $this->callbackConfig = $callbackConfig;
         $this->container = $container;
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             'workflow.enter' => ['onTransitionEnter'],
@@ -51,10 +37,7 @@ class WorkflowListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param Event $event
-     */
-    public function onTransitionEnter(Event $event)
+    public function onTransitionEnter(Event $event): void
     {
         if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
             return;
@@ -71,10 +54,7 @@ class WorkflowListener implements EventSubscriberInterface
         $this->applyTransition($transitionName, $event, $beforeActions);
     }
 
-    /**
-     * @param Event $event
-     */
-    public function onTransitionCompleted(Event $event)
+    public function onTransitionCompleted(Event $event): void
     {
         if (!isset($this->callbackConfig[$event->getWorkflowName()])) {
             return;
@@ -91,12 +71,7 @@ class WorkflowListener implements EventSubscriberInterface
         $this->applyTransition($transitionName, $event, $afterActions);
     }
 
-    /**
-     * @param string $transitionName
-     * @param Event  $event
-     * @param array  $actions
-     */
-    public function applyTransition($transitionName, Event $event, $actions)
+    public function applyTransition(string $transitionName, Event $event, array $actions): void
     {
         foreach ($actions as $callback) {
             if (!in_array($transitionName, $callback['on'])) {
@@ -113,14 +88,7 @@ class WorkflowListener implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @param Event $event
-     * @param array $callable
-     * @param array $callableArgs
-     *
-     * @return mixed
-     */
-    public function call(Event $event, array $callable, $callableArgs = [])
+    public function call(Event $event, array $callable, array $callableArgs = []): void
     {
         if (is_array($callable)
             && is_string($callable[0])
@@ -153,12 +121,7 @@ class WorkflowListener implements EventSubscriberInterface
         call_user_func_array($callable, $args);
     }
 
-    /**
-     * @param array $callbacks
-     *
-     * @return array
-     */
-    protected function setCallbacksPriority(array $callbacks)
+    protected function setCallbacksPriority(array $callbacks): array
     {
         uasort($callbacks, function ($a, $b) {
             if ($a['priority'] === $b['priority']) {

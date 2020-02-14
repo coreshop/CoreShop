@@ -330,16 +330,16 @@ abstract class AbstractWorker implements WorkerInterface
 
         if ($interpreterClass instanceof LocalizedInterpreterInterface) {
             foreach (Tool::getValidLanguages() as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig());
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig() ?? []);
             }
             //reset value here, we only populate localized values here
             $value = null;
             $isLocalizedValue = true;
         } elseif ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig());
+            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig());
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }

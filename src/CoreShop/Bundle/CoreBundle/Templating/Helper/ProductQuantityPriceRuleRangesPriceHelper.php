@@ -26,38 +26,12 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements ProductQuantityPriceRuleRangesPriceHelperInterface
 {
-    /**
-     * @var QuantityReferenceDetectorInterface
-     */
     protected $quantityReferenceDetector;
-
-    /**
-     * @var PurchasableCalculatorInterface
-     */
     protected $purchasableCalculator;
-
-    /**
-     * @var DefaultTaxAddressProviderInterface
-     */
     private $defaultTaxAddressProvider;
-
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var TaxApplicatorInterface
-     */
     private $taxApplicator;
 
-    /**
-     * @param QuantityReferenceDetectorInterface   $quantityReferenceDetector
-     * @param PurchasableCalculatorInterface       $purchasableCalculator
-     * @param DefaultTaxAddressProviderInterface   $defaultTaxAddressProvider
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxApplicatorInterface               $taxApplicator
-     */
     public function __construct(
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
         PurchasableCalculatorInterface $purchasableCalculator,
@@ -80,7 +54,7 @@ class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements Produc
         ProductInterface $product,
         array $context,
         bool $withTax = true
-    ) {
+    ): int {
         $realItemPrice = $this->purchasableCalculator->getPrice($product, $context);
         $price = $this->quantityReferenceDetector->detectRangePrice($product, $range, $realItemPrice, $context);
 
@@ -93,23 +67,12 @@ class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements Produc
         return $price;
     }
 
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     *
-     * @return TaxCalculatorInterface
-     */
-    protected function getTaxCalculator(PurchasableInterface $product, array $context)
+    protected function getTaxCalculator(PurchasableInterface $product, array $context): ?TaxCalculatorInterface
     {
         return $this->taxCalculatorFactory->getTaxCalculator($product, $this->getDefaultAddress($context));
     }
 
-    /**
-     * @param array $context
-     *
-     * @return AddressInterface|null
-     */
-    protected function getDefaultAddress($context)
+    protected function getDefaultAddress(array $context): ?AddressInterface
     {
         return $this->defaultTaxAddressProvider->getAddress($context);
     }
@@ -117,7 +80,7 @@ class ProductQuantityPriceRuleRangesPriceHelper extends Helper implements Produc
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_product_quantity_price_rule_ranges_price_helper';
     }

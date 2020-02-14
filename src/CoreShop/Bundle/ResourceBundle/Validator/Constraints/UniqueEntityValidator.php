@@ -22,12 +22,11 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    /**
-     * @param Concrete   $entity
-     * @param Constraint $constraint
-     */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
+        /**
+         * @var Concrete $entity
+         */
         Assert::isInstanceOf($entity, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {

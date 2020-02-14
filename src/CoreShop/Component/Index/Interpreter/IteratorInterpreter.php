@@ -35,7 +35,7 @@ final class IteratorInterpreter implements InterpreterInterface
     /**
      * {@inheritdoc}
      */
-    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, $interpreterConfig = [])
+    public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');
 

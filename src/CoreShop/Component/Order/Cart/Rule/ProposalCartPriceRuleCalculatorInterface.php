@@ -19,12 +19,5 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 interface ProposalCartPriceRuleCalculatorInterface
 {
-    /**
-     * @param OrderInterface                         $cart
-     * @param CartPriceRuleInterface                 $cartPriceRule
-     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
-     *
-     * @return ProposalCartPriceRuleItemInterface|null
-     */
     public function calculatePriceRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): ?ProposalCartPriceRuleItemInterface;
 }

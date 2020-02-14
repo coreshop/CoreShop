@@ -23,23 +23,13 @@ use Webmozart\Assert\Assert;
 
 class CartMinimumQuantityValidator extends ConstraintValidator
 {
-    /**
-     * @var QuantityValidatorService
-     */
     private $quantityValidatorService;
 
-    /**
-     * @param QuantityValidatorService $quantityValidatorService
-     */
     public function __construct(QuantityValidatorService $quantityValidatorService)
     {
         $this->quantityValidatorService = $quantityValidatorService;
     }
 
-    /**
-     * @param mixed $cart
-     * @param Constraint $constraint
-     */
     public function validate($cart, Constraint $constraint): void
     {
         /**

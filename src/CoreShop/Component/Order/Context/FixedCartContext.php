@@ -16,10 +16,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 final class FixedCartContext implements CartContextInterface
 {
-    /**
-     * @var OrderInterface
-     */
-    private $cart = null;
+    private $cart ;
 
     /**
      * {@inheritdoc}
@@ -33,9 +30,6 @@ final class FixedCartContext implements CartContextInterface
         throw new CartNotFoundException();
     }
 
-    /**
-     * @param OrderInterface $cart
-     */
     public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;

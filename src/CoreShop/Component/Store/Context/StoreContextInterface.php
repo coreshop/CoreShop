@@ -21,5 +21,5 @@ interface StoreContextInterface
      *
      * @throws StoreNotFoundException
      */
-    public function getStore();
+    public function getStore(): StoreInterface;
 }

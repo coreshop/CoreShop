@@ -17,30 +17,30 @@ interface RegistryInterface
     /**
      * @return MetadataInterface[]
      */
-    public function getAll();
+    public function getAll(): array;
 
     /**
      * @param string $alias
      *
      * @return MetadataInterface
      */
-    public function get($alias);
+    public function get($alias): MetadataInterface;
 
     /**
      * @param string $className
      *
      * @return MetadataInterface
      */
-    public function getByClass($className);
+    public function getByClass($className): MetadataInterface;
 
     /**
      * @param MetadataInterface $metadata
      */
-    public function add(MetadataInterface $metadata);
+    public function add(MetadataInterface $metadata): void;
 
     /**
      * @param string $alias
      * @param array  $configuration
      */
-    public function addFromAliasAndConfiguration($alias, array $configuration);
+    public function addFromAliasAndConfiguration($alias, array $configuration): void;
 }

@@ -21,26 +21,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CoreShopSetupContext implements Context
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var NotificationRuleListenerInterface
-     */
     private $notificationRuleListener;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param EntityManagerInterface            $entityManager
-     * @param NotificationRuleListenerInterface $notificationRuleListener
-     * @param EventDispatcherInterface          $eventDispatcher
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         NotificationRuleListenerInterface $notificationRuleListener,

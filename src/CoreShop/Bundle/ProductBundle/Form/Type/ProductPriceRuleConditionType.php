@@ -20,7 +20,7 @@ final class ProductPriceRuleConditionType extends RuleConditionType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
 
@@ -35,7 +35,7 @@ final class ProductPriceRuleConditionType extends RuleConditionType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_condition';
     }

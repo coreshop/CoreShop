@@ -20,7 +20,7 @@ class CartPriceRuleRepository extends RuleRepository implements CartPriceRuleRep
     /**
      * {@inheritdoc}
      */
-    public function findNonVoucherRules()
+    public function findNonVoucherRules(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.isVoucherRule = :isVoucherRule')

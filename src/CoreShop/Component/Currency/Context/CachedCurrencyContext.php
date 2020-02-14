@@ -33,10 +33,6 @@ final class CachedCurrencyContext implements CurrencyContextInterface
      */
     private $requestStack;
 
-    /**
-     * @param CurrencyContextInterface $inner
-     * @param RequestStack             $requestStack
-     */
     public function __construct(CurrencyContextInterface $inner, RequestStack $requestStack)
     {
         $this->inner = $inner;
@@ -46,7 +42,7 @@ final class CachedCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {
             if (null === $this->currency) {

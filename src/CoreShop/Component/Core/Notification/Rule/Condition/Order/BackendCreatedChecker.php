@@ -21,7 +21,7 @@ class BackendCreatedChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         /**
          * @var $subject OrderInterface

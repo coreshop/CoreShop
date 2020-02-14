@@ -55,7 +55,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -82,7 +82,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Index';
     }
@@ -90,7 +90,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Index Bundle';
     }
@@ -98,7 +98,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
             return 'coreshop/index-bundle';

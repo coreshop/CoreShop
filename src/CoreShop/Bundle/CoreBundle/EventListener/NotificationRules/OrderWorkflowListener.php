@@ -18,10 +18,7 @@ use Symfony\Component\Workflow\Event\Event;
 
 final class OrderWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @param Event $event
-     */
-    public function applyOrderWorkflowRule(Event $event)
+    public function applyOrderWorkflowRule(Event $event): void
     {
         $order = $event->getSubject();
 

@@ -15,7 +15,6 @@ namespace CoreShop\Component\Order\Repository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Store\Model\StoreInterface;
 
 interface OrderRepositoryInterface extends PimcoreRepositoryInterface
 {
@@ -24,50 +23,19 @@ interface OrderRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderInterface[]
      */
-    public function findCartByCustomer(CustomerInterface $customer): array;
-
-    /**
-     * @param int $id
-     *
-     * @return OrderInterface|null
-     */
-    public function findByCartId(int $id): ?OrderInterface;
-
-     /**
-     * @param StoreInterface    $store
-     * @param CustomerInterface $customer
-     *
-     * @return OrderInterface|null
-     */
-    public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
-
-    /**
-     * @param int  $days
-     * @param bool $anonymous
-     * @param bool $customer
-     *
-     * @return OrderInterface[]
-     */
-    public function findExpiredCarts(int $days, bool $anonymous, bool $customer);
-
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return OrderInterface[]
-     */
-    public function findByCustomer(CustomerInterface $customer);
+    public function findByCustomer(CustomerInterface $customer): array;
 
     /**
      * @param CustomerInterface $customer
      *
      * @return bool
      */
-    public function hasCustomerOrders(CustomerInterface $customer);
+    public function hasCustomerOrders(CustomerInterface $customer): bool;
 
     /**
      * @param int $days
      *
      * @return OrderInterface[]
      */
-    public function findExpiredOrders($days);
+    public function findExpiredOrders(int $days): array;
 }

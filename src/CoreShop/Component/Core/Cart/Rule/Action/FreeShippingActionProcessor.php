@@ -20,14 +20,8 @@ use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param AdjustmentFactoryInterface $adjustmentFactory
-     */
     public function __construct(AdjustmentFactoryInterface $adjustmentFactory)
     {
         $this->adjustmentFactory = $adjustmentFactory;

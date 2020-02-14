@@ -178,7 +178,6 @@ services:
         lazy: true
         arguments:
             - '@coreshop.product.rules.fetcher'
-            - '@coreshop.context.shopper'
         tags:
             - { name: templating.helper, alias: coreshop_product_price_rules }
 

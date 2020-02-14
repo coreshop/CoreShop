@@ -22,8 +22,12 @@ final class CustomersConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         if (!array_key_exists('customer', $params) || !$params['customer'] instanceof CustomerInterface) {
             return false;
         }

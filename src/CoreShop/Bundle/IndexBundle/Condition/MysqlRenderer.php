@@ -43,7 +43,7 @@ class MysqlRenderer implements RendererInterface
         );
     }
 
-    public function render(ConditionInterface $condition, $prefix = null)
+    public function render(ConditionInterface $condition, string $prefix = null)
     {
         return $this->renderer->render($this->mysqlWorker, $condition, $prefix);
     }

@@ -23,37 +23,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CarriersReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param RepositoryInterface        $carrierRepository
-     * @param PimcoreRepositoryInterface $orderRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -69,7 +44,7 @@ class CarriersReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -80,7 +55,7 @@ class CarriersReport implements ReportInterface
         $fromTimestamp = $from->getTimestamp();
         $toTimestamp = $to->getTimestamp();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -127,9 +102,9 @@ class CarriersReport implements ReportInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

@@ -17,14 +17,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class FormatMoneyHelper extends Helper implements FormatMoneyHelperInterface
 {
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
 
-    /**
-     * @param MoneyFormatterInterface $moneyFormatter
-     */
     public function __construct(MoneyFormatterInterface $moneyFormatter)
     {
         $this->moneyFormatter = $moneyFormatter;
@@ -33,7 +27,7 @@ class FormatMoneyHelper extends Helper implements FormatMoneyHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAmount($amount, $currencyCode, $localeCode)
+    public function formatAmount(int $amount, string $currencyCode, string $localeCode): string
     {
         return $this->moneyFormatter->format($amount, $currencyCode, $localeCode);
     }
@@ -41,7 +35,7 @@ class FormatMoneyHelper extends Helper implements FormatMoneyHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_format_money';
     }

@@ -12,13 +12,15 @@
 
 namespace CoreShop\Bundle\AddressBundle\Templating\Helper;
 
+use CoreShop\Component\Address\Model\AddressInterface;
+
 interface FormatAddressHelperInterface
 {
     /**
-     * @param string $address
+     * @param AddressInterface $address
      * @param bool   $asHtml
      *
      * @return string
      */
-    public function formatAddress($address, $asHtml = true);
+    public function formatAddress(AddressInterface $address, bool $asHtml = true): string;
 }

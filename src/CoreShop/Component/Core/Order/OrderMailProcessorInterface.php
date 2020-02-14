@@ -17,12 +17,5 @@ use Pimcore\Model\Document\Email;
 
 interface OrderMailProcessorInterface
 {
-    /**
-     * @param Email          $emailDocument
-     * @param OrderInterface $order
-     * @param bool           $sendInvoices
-     * @param bool           $sendShipments
-     * @param array          $params
-     */
-    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = []);
+    public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool;
 }

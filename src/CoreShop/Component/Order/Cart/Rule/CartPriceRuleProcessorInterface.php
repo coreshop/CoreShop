@@ -18,12 +18,5 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 interface CartPriceRuleProcessorInterface
 {
-    /**
-     * @param OrderInterface                         $cart
-     * @param CartPriceRuleInterface                 $cartPriceRule
-     * @param CartPriceRuleVoucherCodeInterface|null $voucherCode
-     *
-     * @return bool
-     */
     public function process(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool;
 }

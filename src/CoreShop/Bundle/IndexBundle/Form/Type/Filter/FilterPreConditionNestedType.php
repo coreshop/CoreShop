@@ -23,7 +23,7 @@ final class FilterPreConditionNestedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('conditions', FilterPreConditionCollectionType::class);
@@ -42,7 +42,7 @@ final class FilterPreConditionNestedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_pre_condition_type_nested';
     }

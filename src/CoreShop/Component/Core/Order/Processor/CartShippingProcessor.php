@@ -13,47 +13,24 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
-use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
-use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
     private $carrierPriceCalculator;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
     private $carrierValidator;
-
-    /**
-     * @var DefaultCarrierResolverInterface
-     */
     private $defaultCarrierResolver;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
     public function __construct(
@@ -75,27 +52,9 @@ final class CartShippingProcessor implements CartProcessorInterface
      */
     public function process(OrderInterface $cart): void
     {
-        if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
+        if (!$cart instanceof CoreOrderInterface) {
             return;
         }
-
-        $totalWeight = 0;
-
-        /**
-         * @var OrderItemInterface $item
-         */
-        foreach ($cart->getItems() as $item) {
-            $product = $item->getProduct();
-
-            if ($product instanceof ProductInterface) {
-                $item->setItemWeight($product->getWeight());
-                $item->setTotalWeight($item->getQuantity() * $product->getWeight());
-
-                $totalWeight += $item->getWeight();
-            }
-        }
-
-        $cart->setWeight($totalWeight);
 
         if (!$cart->hasShippableItems()) {
             $cart->setCarrier(null);
@@ -126,11 +85,12 @@ final class CartShippingProcessor implements CartProcessorInterface
         $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, true);
         $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, false);
 
-        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::SHIPPING, '', $priceWithTax, $priceWithoutTax));
+        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::SHIPPING, '', $priceWithTax,
+            $priceWithoutTax));
     }
 
     /**
-     * @param OrderInterface    $cart
+     * @param OrderInterface   $cart
      * @param AddressInterface $address
      */
     private function resolveDefaultCarrier(OrderInterface $cart, AddressInterface $address)

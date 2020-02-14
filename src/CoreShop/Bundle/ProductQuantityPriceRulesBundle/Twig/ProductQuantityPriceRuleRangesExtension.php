@@ -18,14 +18,8 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
 {
-    /**
-     * @var ProductQuantityPriceRuleRangesHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param ProductQuantityPriceRuleRangesHelperInterface $helper
-     */
     public function __construct(ProductQuantityPriceRuleRangesHelperInterface $helper)
     {
         $this->helper = $helper;

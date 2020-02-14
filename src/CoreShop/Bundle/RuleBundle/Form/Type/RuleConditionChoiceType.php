@@ -28,14 +28,20 @@ class RuleConditionChoiceType extends AbstractType
         $this->conditions = $conditions;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->conditions),
         ]);
     }
 
-    public function getParent()
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -43,7 +49,7 @@ class RuleConditionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_action_condition_choice';
     }

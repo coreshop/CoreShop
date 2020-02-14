@@ -22,20 +22,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $getterTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $interpreterTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, FormTypeRegistryInterface $getterTypeRegistry, FormTypeRegistryInterface $interpreterTypeRegistry)
+    public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, FormTypeRegistryInterface $getterTypeRegistry, FormTypeRegistryInterface $interpreterTypeRegistry)
     {
         parent::__construct($dataClass, $validationGroups, $formTypeRegistry);
 
@@ -46,7 +36,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
 
@@ -128,7 +118,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
      * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addGetterConfigurationFields(FormInterface $form, $configurationType)
+    protected function addGetterConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('getterConfig', $configurationType);
     }
@@ -137,7 +127,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
      * @param FormInterface $form
      * @param string        $configurationType
      */
-    protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType)
+    protected function addInterpreterConfigurationFields(FormInterface $form, $configurationType): void
     {
         $form->add('interpreterConfig', $configurationType);
     }
@@ -148,7 +138,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
      *
      * @return string|null
      */
-    protected function getGetterRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getGetterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getGetter()) {
             return $data->getGetter();
@@ -163,7 +153,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
      *
      * @return string|null
      */
-    protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getInterpreterRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if (null !== $data && null !== $data->getInterpreter()) {
             return $data->getInterpreter();
@@ -175,7 +165,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_column';
     }

@@ -22,38 +22,13 @@ class ResourceControllerEvent extends GenericEvent
     const TYPE_INFO = 'info';
     const TYPE_SUCCESS = 'success';
 
-    /**
-     * @var string
-     */
     private $messageType = '';
-
-    /**
-     * @var string
-     */
     private $message = '';
-
-    /**
-     * @var array
-     */
     private $messageParameters = [];
-
-    /**
-     * @var int
-     */
     private $errorCode = 500;
-
-    /**
-     * @var Response
-     */
     private $response;
 
-    /**
-     * @param string $message
-     * @param string $type
-     * @param array  $parameters
-     * @param int    $errorCode
-     */
-    public function stop($message, $type = self::TYPE_ERROR, $parameters = [], $errorCode = 500)
+    public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500)
     {
         $this->messageType = $type;
         $this->message = $message;
@@ -63,98 +38,62 @@ class ResourceControllerEvent extends GenericEvent
         $this->stopPropagation();
     }
 
-    /**
-     * @return bool
-     */
-    public function isStopped()
+    public function isStopped(): bool
     {
         return $this->isPropagationStopped();
     }
 
-    /**
-     * @return string
-     */
-    public function getMessageType()
+    public function getMessageType(): string
     {
         return $this->messageType;
     }
 
-    /**
-     * @param string $messageType Should be one of ResourceEvent's TYPE constants
-     */
-    public function setMessageType($messageType)
+    public function setMessageType($messageType): void
     {
         $this->messageType = $messageType;
     }
 
-    /**
-     * @return string
-     */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    /**
-     * @param string $message
-     */
-    public function setMessage($message)
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
 
-    /**
-     * @return array
-     */
-    public function getMessageParameters()
+    public function getMessageParameters(): array
     {
         return $this->messageParameters;
     }
 
-    /**
-     * @param array $messageParameters
-     */
-    public function setMessageParameters(array $messageParameters)
+    public function setMessageParameters(array $messageParameters): void
     {
         $this->messageParameters = $messageParameters;
     }
 
-    /**
-     * @return int
-     */
-    public function getErrorCode()
+    public function getErrorCode(): int
     {
         return $this->errorCode;
     }
 
-    /**
-     * @param int $errorCode
-     */
-    public function setErrorCode($errorCode)
+    public function setErrorCode(int $errorCode): void
     {
         $this->errorCode = $errorCode;
     }
 
-    /**
-     * @param Response $response
-     */
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): void
     {
         $this->response = $response;
     }
 
-    /**
-     * @return bool
-     */
-    public function hasResponse()
+    public function hasResponse(): bool
     {
         return null !== $this->response;
     }
 
-    /**
-     * @return Response
-     */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }

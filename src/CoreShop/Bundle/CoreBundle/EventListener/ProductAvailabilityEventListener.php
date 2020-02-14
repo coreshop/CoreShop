@@ -25,25 +25,10 @@ use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    /**
-     * @var OrderItemRepositoryInterface
-     */
     private $cartItemRepository;
-
-    /**
-     * @var FactoryInterface
-     */
     private $pimcoreModelFactory;
-
-    /**
-     * @var int[]
-     */
     private $productIdsToCheck = [];
 
-    /**
-     * @param OrderItemRepositoryInterface $cartItemRepository
-     * @param FactoryInterface             $pimcoreModelFactory
-     */
     public function __construct(
         OrderItemRepositoryInterface $cartItemRepository,
         FactoryInterface $pimcoreModelFactory
@@ -52,10 +37,7 @@ final class ProductAvailabilityEventListener
         $this->pimcoreModelFactory = $pimcoreModelFactory;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function preUpdateListener(DataObjectEvent $event)
+    public function preUpdateListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -89,10 +71,7 @@ final class ProductAvailabilityEventListener
         $this->productIdsToCheck[$object->getId()] = $object->getId();
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function postUpdateListener(DataObjectEvent $event)
+    public function postUpdateListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -115,10 +94,7 @@ final class ProductAvailabilityEventListener
         $this->informCarts($cartItems);
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function postDeleteListener(DataObjectEvent $event)
+    public function postDeleteListener(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -135,10 +111,7 @@ final class ProductAvailabilityEventListener
         $this->informCarts($cartItems);
     }
 
-    /**
-     * @param array $cartItems
-     */
-    private function informCarts($cartItems)
+    private function informCarts(array $cartItems): void
     {
         /** @var OrderItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {

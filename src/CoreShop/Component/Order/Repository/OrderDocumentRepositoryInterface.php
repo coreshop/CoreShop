@@ -23,7 +23,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocuments(OrderInterface $order);
+    public function getDocuments(OrderInterface $order): array;
 
     /**
      * @param OrderInterface $order
@@ -31,7 +31,7 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocumentsInState(OrderInterface $order, $state);
+    public function getDocumentsInState(OrderInterface $order, string $state): array;
 
     /**
      * @param OrderInterface $order
@@ -39,5 +39,5 @@ interface OrderDocumentRepositoryInterface extends PimcoreRepositoryInterface
      *
      * @return OrderDocumentInterface[]
      */
-    public function getDocumentsNotInState(OrderInterface $order, $state);
+    public function getDocumentsNotInState(OrderInterface $order, string $state): array;
 }

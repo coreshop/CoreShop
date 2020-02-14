@@ -20,65 +20,33 @@ use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
-use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
-use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
-
-    /**
-     * @var FactoryInterface
-     */
     private $addressFactory;
-
-    /**
-     * @var CarrierPriceCalculatorInterface
-     */
     private $carrierPriceCalculator;
+    private $shippingRuleValidator;
 
-    /**
-     * @var CarrierShippingRuleCheckerInterface
-     */
-    private $carrierShippingRuleChecker;
-
-    /**
-     * @param SharedStorageInterface              $sharedStorage
-     * @param CarrierRepositoryInterface          $carrierRepository
-     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
-     * @param FactoryInterface                    $addressFactory
-     * @param CarrierPriceCalculatorInterface     $carrierPriceCalculator
-     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+        ShippableCarrierValidatorInterface $shippingRuleValidator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->addressFactory = $addressFactory;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
+        $this->shippingRuleValidator = $shippingRuleValidator;
     }
 
     /**
@@ -130,7 +98,7 @@ final class ShippingContext implements Context
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        Assert::same((int) $price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
     }
 
     /**
@@ -140,11 +108,7 @@ final class ShippingContext implements Context
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        $ruleResult = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
-
-        if ($ruleResult instanceof ShippingRuleGroupInterface) {
-            $ruleResult = true;
-        }
+        $ruleResult = $this->shippingRuleValidator->isCarrierValid($carrier, $cart, $address);
 
         Assert::true(
             $ruleResult,

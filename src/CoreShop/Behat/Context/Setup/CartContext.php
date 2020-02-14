@@ -33,50 +33,12 @@ use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CartContextInterface
-     */
     private $cartContext;
-
-    /**
-     * @var StorageListModifierInterface
-     */
     private $cartModifier;
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
-
-    /**
-     * @var AddToCartFactoryInterface
-     */
     private $addToCartFactory;
 
-    /**
-     * @var OrderItemFactoryInterface
-     */
-    private $factory;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    /**
-     * @param SharedStorageInterface       $sharedStorage
-     * @param CartContextInterface         $cartContext
-     * @param StorageListModifierInterface $cartModifier
-     * @param CartManagerInterface         $cartManager
-     * @param AddToCartFactoryInterface    $addToCartFactory
-     * @param OrderItemFactoryInterface    $factory
-     * @param FormFactoryInterface         $formFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CartContextInterface $cartContext,
@@ -91,8 +53,6 @@ final class CartContext implements Context
         $this->cartModifier = $cartModifier;
         $this->cartManager = $cartManager;
         $this->addToCartFactory = $addToCartFactory;
-        $this->factory = $factory;
-        $this->formFactory = $formFactory;
     }
 
     /**

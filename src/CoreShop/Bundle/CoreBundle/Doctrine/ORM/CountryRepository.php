@@ -21,7 +21,7 @@ class CountryRepository extends BaseCountryRepository implements CountryReposito
     /**
      * {@inheritdoc}
      */
-    public function findForStore(StoreInterface $store)
+    public function findForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.stores', 's')

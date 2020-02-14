@@ -21,7 +21,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $postcodes = explode(',', $configuration['postcodes']);
 
@@ -44,7 +44,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
      *
      * @return bool
      */
-    private function checkPostCode($postcode, $deliveryPostcode)
+    private function checkPostCode($postcode, $deliveryPostcode): bool
     {
         //Check if postcode has a range
         $deliveryPostcode = str_replace(' ', '', $deliveryPostcode);

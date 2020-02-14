@@ -36,41 +36,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Refactor to do this in a service!
-     */
-    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants')
-    {
-        $master = $this->getVariantMaster();
-
-        if ($master instanceof self) {
-            $differences = VariantHelper::getProductVariations($master, $this, $type, $field, $language);
-
-            return $differences;
-        }
-
-        return false;
-    }
-
-    /**
-     * Return topmost master if object is a variant.
-     *
-     * @return PimcoreModelInterface
-     */
-    public function getVariantMaster()
-    {
-        $master = $this;
-        while ($master->getType() === 'variant') {
-            if ($master->getParent() instanceof self) {
-                $master = $master->getParent();
-            }
-        }
-
-        return $master;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function getSku()
     {

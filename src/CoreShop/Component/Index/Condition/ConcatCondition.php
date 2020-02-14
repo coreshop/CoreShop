@@ -14,77 +14,43 @@ namespace CoreShop\Component\Index\Condition;
 
 class ConcatCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
     private $fieldName;
-
-    /**
-     * @var string
-     */
     private $operator;
-
-    /**
-     * @var array
-     */
     private $conditions;
 
-    /**
-     * @param string $fieldName
-     * @param string $operator
-     * @param array  $conditions
-     */
-    public function __construct($fieldName, string $operator, array $conditions)
+    public function __construct(string $fieldName, string $operator, array $conditions)
     {
         $this->fieldName = $fieldName;
         $this->operator = $operator;
         $this->conditions = $conditions;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
-    public function getOperator()
+    public function getOperator(): string
     {
         return $this->operator;
     }
 
-    /**
-     * @param string $operator
-     */
-    public function setOperator(string $operator)
+    public function setOperator(string $operator): void
     {
         $this->operator = $operator;
     }
 
-    /**
-     * @return array
-     */
-    public function getConditions()
+    public function getConditions(): array
     {
         return $this->conditions;
     }
 
-    /**
-     * @param array $conditions
-     */
-    public function setConditions(array $conditions)
+    public function setConditions(array $conditions): void
     {
         $this->conditions = $conditions;
     }

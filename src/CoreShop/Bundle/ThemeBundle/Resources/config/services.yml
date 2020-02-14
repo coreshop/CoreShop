@@ -22,20 +22,15 @@ services:
     coreshop.theme.resolver.composite: '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
     CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface: '@CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver'
     CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver:
-        arguments:
-            - '@coreshop.theme.active_theme'
         tags:
             - '@coreshop.theme.resolver.registry'
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreSiteThemeResolver:
-        arguments:
-            - '@coreshop.theme.active_theme'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_site, priority: 10 }
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreDocumentPropertyResolver:
         arguments:
-            - '@coreshop.theme.active_theme'
             - '@Pimcore\Http\Request\Resolver\DocumentResolver'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_document_property, priority: 15 }

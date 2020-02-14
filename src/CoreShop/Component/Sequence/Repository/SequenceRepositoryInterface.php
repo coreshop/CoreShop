@@ -13,13 +13,9 @@
 namespace CoreShop\Component\Sequence\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 interface SequenceRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return mixed
-     */
-    public function findForType($type);
+    public function findForType(string $type): ?SequenceInterface;
 }

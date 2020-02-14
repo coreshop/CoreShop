@@ -21,5 +21,5 @@ interface CountryContextInterface
      *
      * @throws CountryNotFoundException
      */
-    public function getCountry();
+    public function getCountry(): CountryInterface;
 }

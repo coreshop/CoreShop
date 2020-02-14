@@ -12,21 +12,12 @@
 
 namespace CoreShop\Bundle\CoreBundle\Templating\Helper;
 
+use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface CheckoutIdentifierHelperInterface extends HelperInterface
 {
-    /**
-     * Get all Steps of Checkout (cart is always first step here).
-     *
-     * @return array
-     */
-    public function getSteps();
+    public function getSteps(): array;
 
-    /**
-     * @param string $type
-     *
-     * @return mixed
-     */
-    public function getStep($type = '');
+    public function getStep(string $type = '');
 }

@@ -21,14 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreResourceSelectionType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     protected $repository;
 
-    /**
-     * @param RepositoryInterface $repository
-     */
     public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
@@ -37,7 +31,7 @@ class PimcoreResourceSelectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new PimcoreResourceDataTransformer($this->repository));
     }
@@ -45,7 +39,7 @@ class PimcoreResourceSelectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberType::class;
     }
@@ -53,7 +47,7 @@ class PimcoreResourceSelectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,

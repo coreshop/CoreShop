@@ -22,11 +22,7 @@ use Webmozart\Assert\Assert;
 
 class CartItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     */
-    public function modify(StorageListItemInterface $item, float $targetQuantity)
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         /**
          * @var OrderItemInterface $item
@@ -44,13 +40,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
         }
     }
 
-    /**
-     * @param StorageListItemInterface $item
-     * @param float                    $targetQuantity
-     *
-     * @return float
-     */
-    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity)
+    public function roundQuantity(StorageListItemInterface $item, float $targetQuantity): float
     {
         if (!$item instanceof OrderItemInterface) {
             return $targetQuantity;

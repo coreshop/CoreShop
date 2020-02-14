@@ -21,12 +21,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class ReportsController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getReportDataAction(Request $request)
+    public function getReportDataAction(Request $request): Response
     {
         $report = $request->get('report');
         $reportRegistry = $this->get('coreshop.registry.reports');
@@ -44,13 +39,8 @@ class ReportsController extends AdminController
             'total' => $report->getTotal(),
         ]);
     }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function exportReportCsvAction(Request $request)
+    
+    public function exportReportCsvAction(Request $request): Response
     {
         $reportType = $request->get('report');
         $reportRegistry = $this->get('coreshop.registry.reports');

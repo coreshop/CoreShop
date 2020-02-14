@@ -20,14 +20,8 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $voucherCodeRepository;
 
-    /**
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     */
     public function __construct(CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->voucherCodeRepository = $voucherCodeRepository;

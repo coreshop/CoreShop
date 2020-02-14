@@ -21,17 +21,17 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
     /**
      * @return CurrencyInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 
     /**
      * @param string $currencyCode
      *
      * @return CurrencyInterface
      */
-    public function getByCode($currencyCode);
+    public function getByCode(string $currencyCode): ?CurrencyInterface;
 }

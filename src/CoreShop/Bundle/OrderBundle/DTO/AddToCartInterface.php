@@ -20,10 +20,10 @@ interface AddToCartInterface
     /**
      * @return OrderInterface
      */
-    public function getCart();
+    public function getCart(): OrderInterface;
 
     /**
      * @return OrderItemInterface
      */
-    public function getCartItem();
+    public function getCartItem(): OrderItemInterface;
 }

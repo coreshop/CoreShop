@@ -22,22 +22,13 @@ use Webmozart\Assert\Assert;
 
 final class CartStockAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
     private $availabilityChecker;
 
-    /**
-     * @param AvailabilityCheckerInterface $availabilityChecker
-     */
     public function __construct(AvailabilityCheckerInterface $availabilityChecker)
     {
         $this->availabilityChecker = $availabilityChecker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($cart, Constraint $constraint): void
     {
         /**
@@ -87,7 +78,7 @@ final class CartStockAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();

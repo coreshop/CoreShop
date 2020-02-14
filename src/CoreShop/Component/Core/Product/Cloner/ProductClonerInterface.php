@@ -16,13 +16,5 @@ use CoreShop\Component\Core\Model\ProductInterface;
 
 interface ProductClonerInterface
 {
-    /**
-     * @param ProductInterface $product
-     * @param ProductInterface $referenceProduct
-     * @param bool             $resetExistingData
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false);
+    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void;
 }

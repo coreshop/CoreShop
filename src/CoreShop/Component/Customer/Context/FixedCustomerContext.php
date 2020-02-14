@@ -19,12 +19,9 @@ final class FixedCustomerContext implements CustomerContextInterface
     /**
      * @var CustomerInterface
      */
-    private $customer = null;
+    private $customer;
 
-    /**
-     * @param CustomerInterface $customer
-     */
-    public function setCustomer($customer)
+    public function setCustomer(CustomerInterface $customer)
     {
         $this->customer = $customer;
     }
@@ -32,7 +29,7 @@ final class FixedCustomerContext implements CustomerContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         if ($this->customer instanceof CustomerInterface) {
             return $this->customer;

@@ -16,28 +16,14 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 
 final class CartManager implements CartManagerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
     private $objectService;
-
-    /**
-     * @var string
-     */
     private $cartFolderPath;
-    /**
-     * @var string
-     */
     private $cartItemFolderPath;
-
-    /**
-     * @var CartProcessorInterface
-     */
     private $cartProcessor;
 
     public function __construct(

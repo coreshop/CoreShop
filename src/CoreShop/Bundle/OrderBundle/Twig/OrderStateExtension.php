@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class OrderStateExtension extends AbstractExtension
 {
-    /**
-     * @var OrderStateHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param OrderStateHelperInterface $helper
-     */
     public function __construct(OrderStateHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class OrderStateExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_order_state', [$this->helper, 'getOrderState']),

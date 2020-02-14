@@ -12,9 +12,14 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface CartItemRepositoryInterface extends PimcoreRepositoryInterface
 {
-    public function findCartItemsByProductId($productId);
+    /**
+     * @param int $productId
+     * @return CartItemInterface[]
+     */
+    public function findCartItemsByProductId(int $productId): array;
 }

@@ -28,26 +28,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexCommand extends Command
 {
-    /**
-     * @var RepositoryInterface
-     */
     protected $indexRepository;
-
-    /**
-     * @var IndexUpdaterServiceInterface
-     */
     protected $indexUpdater;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     protected $eventDispatcher;
 
-    /**
-     * @param RepositoryInterface          $indexRepository
-     * @param IndexUpdaterServiceInterface $indexUpdater
-     * @param EventDispatcherInterface     $eventDispatcher
-     */
     public function __construct(
         RepositoryInterface $indexRepository,
         IndexUpdaterServiceInterface $indexUpdater,
@@ -60,10 +44,7 @@ final class IndexCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:index')
@@ -76,15 +57,7 @@ final class IndexCommand extends Command
             );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $indices = $classesToUpdate = [];
         $indexIds = $input->getArgument('indices');
@@ -204,11 +177,7 @@ final class IndexCommand extends Command
         return 0;
     }
 
-    /**
-     * @param string $type
-     * @param string $info
-     */
-    private function dispatchInfo(string $type, string $info)
+    private function dispatchInfo(string $type, string $info): void
     {
         $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
     }

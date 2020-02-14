@@ -18,14 +18,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class ConfigurationHelper extends Helper implements ConfigurationHelperInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationService
-     */
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;

@@ -18,14 +18,8 @@ use Webmozart\Assert\Assert;
 
 final class ZoneContext implements Context
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $zoneRepository;
 
-    /**
-     * @param RepositoryInterface $zoneRepository
-     */
     public function __construct(RepositoryInterface $zoneRepository)
     {
         $this->zoneRepository = $zoneRepository;

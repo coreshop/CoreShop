@@ -21,23 +21,10 @@ use Symfony\Component\Form\FormEvents;
 
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
-    /**
-     * @var int
-     */
     protected $decimalFactor;
-
-    /**
-     * @var int
-     */
     protected $decimalPrecision;
 
-    /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     * @param int    $decimalFactor
-     * @param int    $decimalPrecision
-     */
-    public function __construct($dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
+    public function __construct(string $dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -48,7 +35,7 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
 
@@ -81,7 +68,7 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_price';
     }

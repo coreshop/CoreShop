@@ -22,5 +22,5 @@ interface PdfRendererInterface
      *
      * @return string
      */
-    public function fromString($string, $header = '', $footer = '', $config = []);
+    public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string;
 }

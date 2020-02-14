@@ -20,26 +20,10 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
 final class CartRuleAutoProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CartPriceRuleRepositoryInterface
-     */
     private $cartPriceRuleRepository;
-
-    /**
-     * @var CartPriceRuleProcessorInterface
-     */
     private $cartPriceRuleProcessor;
-
-    /**
-     * @var CartPriceRuleUnProcessorInterface
-     */
     private $cartPriceRuleUnProcessor;
 
-    /**
-     * @param CartPriceRuleRepositoryInterface  $cartPriceRuleRepository
-     * @param CartPriceRuleProcessorInterface   $cartPriceRuleProcessor
-     * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-     */
     public function __construct(
         CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor,

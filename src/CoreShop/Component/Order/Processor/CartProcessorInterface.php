@@ -16,8 +16,5 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartProcessorInterface
 {
-    /**
-     * @param OrderInterface $cart
-     */
     public function process(OrderInterface $cart): void;
 }

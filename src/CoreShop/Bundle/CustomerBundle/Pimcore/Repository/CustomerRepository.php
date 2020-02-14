@@ -21,7 +21,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findByResetToken($resetToken)
+    public function findByResetToken(string $resetToken): ?CustomerInterface
     {
         $list = $this->getList();
         $list->setCondition('passwordResetHash = ?', [$resetToken]);
@@ -37,7 +37,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findByNewsletterToken($newsletterToken)
+    public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface
     {
         $list = $this->getList();
         $list->setCondition('newsletterToken = ?', [$newsletterToken]);
@@ -53,7 +53,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findUniqueByEmail($email, $isGuest)
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface
     {
         $list = $this->getList();
 
@@ -82,7 +82,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findGuestByEmail($email)
+    public function findGuestByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, true);
     }
@@ -90,7 +90,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findCustomerByEmail($email)
+    public function findCustomerByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, false);
     }

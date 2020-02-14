@@ -24,7 +24,7 @@ final class ValidAddressIdentifier extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'coreshop_address_valid_identifier';
     }
@@ -32,7 +32,7 @@ final class ValidAddressIdentifier extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }
