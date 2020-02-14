@@ -36,15 +36,18 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
     /**
      * {@inheritDoc}
      */
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer)
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true)
     {
         if ($customer->getAddressAccessType() !== CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
             return null;
         }
 
+        $ownKey = $useTranslationKeys ? 'coreshop.form.customer.address_affiliation.own' : 'Own';
+        $companyKey = $useTranslationKeys ? 'coreshop.form.customer.address_affiliation.company' : 'Company';
+
         return [
-            'Own'     => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
-            'Company' => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY,
+            $ownKey     => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN,
+            $companyKey => CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_COMPANY,
         ];
     }
 

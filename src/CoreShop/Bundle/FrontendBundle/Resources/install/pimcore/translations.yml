@@ -1019,6 +1019,24 @@ translations:
           en: 'Error confirming your e-mail address.'
           de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
 
+  coreshop.form.customer.address_affiliation:
+      languages:
+          de_CH: 'Adresszugehörigkeit'
+          en: 'Address Affiliation'
+          de: 'Adresszugehörigkeit'
+
+  coreshop.form.customer.address_affiliation.own:
+      languages:
+          de_CH: 'Eigene'
+          en: 'Own'
+          de: 'Eigene'
+
+  coreshop.form.customer.address_affiliation.company:
+      languages:
+          de_CH: 'Unternehmen'
+          en: 'Company'
+          de: 'Unternehmen'
+
   coreshop.form.customer.salutation:
       languages:
           de_CH: 'Anrede'

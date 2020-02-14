@@ -19,10 +19,11 @@ interface AddressAssignmentManagerInterface
 {
     /**
      * @param CustomerInterface $customer
+     * @param bool              $useTranslationKeys
      *
      * @return array|null
      */
-    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer);
+    public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true);
 
     /**
      * @param CustomerInterface $customer

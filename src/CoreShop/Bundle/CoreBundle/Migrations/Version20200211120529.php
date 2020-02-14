@@ -109,6 +109,9 @@ class Version20200211120529 extends AbstractPimcoreMigration implements Containe
         $this->writeMessage('Update Admin Translations');
         $this->container->get('coreshop.resource.installer.admin_translations')->installResources(new NullOutput(), 'coreshop');
 
+        $this->writeMessage('Update Website Translations');
+        $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
+
         $this->writeMessage('Update Permissions');
         $table = $schema->getTable('users_permission_definitions');
 
