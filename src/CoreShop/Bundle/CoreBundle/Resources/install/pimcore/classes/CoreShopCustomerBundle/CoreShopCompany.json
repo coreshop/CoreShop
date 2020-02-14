@@ -1,5 +1,4 @@
 {
-    "id": "19",
     "description": null,
     "parentClass": "CoreShop\\Component\\Core\\Model\\Company",
     "listingParentClass": null,
@@ -135,7 +134,7 @@
         ],
         "locked": false
     },
-    "icon": null,
+    "icon": "\/bundles\/coreshopcustomer\/pimcore\/img\/company.svg",
     "previewUrl": null,
     "group": "CoreShop",
     "linkGeneratorReference": null,
