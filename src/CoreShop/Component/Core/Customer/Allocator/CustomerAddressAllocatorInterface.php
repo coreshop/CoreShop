@@ -28,6 +28,7 @@ interface CustomerAddressAllocatorInterface
      * @param CustomerInterface $customer
      *
      * @return AddressInterface[]
+     * @throws \Exception
      */
     public function allocateForCustomer(CustomerInterface $customer);
 

@@ -35,13 +35,25 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
         }
 
         $types = [
-            ['value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY, 'key' => 'Own Only']
+            [
+                'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY,
+                'key'   => 'coreshop.admin.company.address_access.own_only'
+            ]
         ];
 
-        if ($object->getCompany() instanceof CompanyInterface) {
-            $types[] = ['value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY, 'key' => 'Company Only'];
-            $types[] = ['value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY, 'key' => 'Own & Company'];
+        if (!$object->getCompany() instanceof CompanyInterface) {
+            return $types;
         }
+
+        $types[] = [
+            'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY,
+            'key'   => 'coreshop.admin.company.address_access.company_only'
+        ];
+
+        $types[] = [
+            'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY,
+            'key'   => 'coreshop.admin.company.address_access.own_and_company'
+        ];
 
         return $types;
     }

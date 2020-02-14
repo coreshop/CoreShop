@@ -42,9 +42,7 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
             return array_merge($customer->getAddresses(), $customer->getCompany()->getAddresses());
         }
 
-        // @todo: throw exception?
-
-        return [];
+        throw new \Exception(sprintf('Cannot allocate addresses for customer %d with access type "%s"', $customer->getId(), $addressAccessType));
     }
 
     /**
