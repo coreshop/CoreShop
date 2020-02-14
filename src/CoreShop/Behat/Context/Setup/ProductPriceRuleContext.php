@@ -63,8 +63,7 @@ final class ProductPriceRuleContext implements Context
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productPriceRuleFactory,
-        ProductPriceRuleRepositoryInterface $productPriceRuleRepository
+        FactoryInterface $productPriceRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
