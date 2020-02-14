@@ -38,6 +38,12 @@ services:
         tags:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onCustomerRegister }
 
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerCompanyRelationListener:
+        arguments:
+            - '@coreshop.repository.customer'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: onCompanyDelete }
+
     CoreShop\Component\Core\Customer\Address\AddressAccessOptionsProvider: ~
 
     CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface: '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator'

@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Core\Customer;
 
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use Exception;
@@ -56,4 +57,13 @@ interface CustomerTransformHelperInterface
      * @throws ValidationException
      */
     public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions);
+
+    /**
+     * @param AddressInterface $address
+     * @param ElementInterface $newHolder
+     * @param bool             $removeOldRelations
+     *
+     * @return AddressInterface
+     */
+    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, $removeOldRelations = true);
 }

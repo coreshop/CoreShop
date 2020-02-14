@@ -12,14 +12,19 @@
 
 namespace CoreShop\Component\Core\Customer;
 
+use CoreShop\Component\Address\Model\AddressesAwareInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Pimcore\File;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Dependency;
 use Pimcore\Model\Element\ElementInterface;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Element\ValidationException;
@@ -119,14 +124,14 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         )));
 
         $company->setKey(File::getValidFilename($company->getName()));
-        $company->setKey(\Pimcore\Model\DataObject\Service::getUniqueKey($company));
+        $company->setKey(DataObject\Service::getUniqueKey($company));
 
         if ($company instanceof AbstractObject) {
             $company->setChildrenSortBy('index');
         }
 
         try {
-            $company->save();
+            $this->forceSave($company);
         } catch (\Throwable $e) {
             throw new ValidationException($e->getMessage());
         }
@@ -151,6 +156,41 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, $removeOldRelations = true)
+    {
+        $path = $newHolder->getFullPath();
+        $newParent = $this->getEntityAddressFolderPath($path);
+
+        if (!$newHolder instanceof AddressesAwareInterface) {
+            return $address;
+        }
+
+        // no affiliation has changed, return
+        if ($this->isNewEntity($address) === false && $address->getParent()->getId() === $newParent->getId()) {
+            return $address;
+        }
+
+        // set new or changed parent
+        $address->setParent($newParent);
+        $address->setKey($this->getSaveKeyForMoving($address, $newParent));
+
+        // remove old relations
+        if ($removeOldRelations === true) {
+            $this->removeAddressRelations($address);
+        }
+
+        $this->forceSave($address, false);
+
+        $newHolder->addAddress($address);
+
+        $this->forceSave($newHolder);
+
+        return $address;
+    }
+
+    /**
      * @param CustomerInterface $customer
      * @param CompanyInterface  $company
      * @param array             $options
@@ -164,33 +204,62 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         $customer->setCompany($company);
         $customer->setAddressAccessType($options['addressAccessType']);
 
+        // @todo: fire pre event
+
         if ($options['addressAssignmentType'] === 'move') {
-
-            $newPath = sprintf('/%s/%s', $company->getFullPath(), $this->addressFolder);
-            $parent = $this->objectService->createFolderByPath($newPath);
-
             foreach ($customer->getAddresses() as $address) {
-
-                $address->setParent($parent);
-                $address->setKey($this->getSaveKeyForMoving($address, $parent));
-                $address->save();
-
-                $customer->removeAddress($address);
-                $company->addAddress($address);
+                $this->moveAddressToNewAddressStack($address, $company);
             }
-
-            if ($company instanceof Concrete) {
-                $company->setOmitMandatoryCheck(true);
-            }
-
-            $company->save();
         }
 
-        if ($customer instanceof Concrete) {
-            $customer->setOmitMandatoryCheck(true);
+        $this->forceSave($customer);
+
+        // @todo: fire post event
+    }
+
+    /**
+     * @param AddressInterface $address
+     */
+    protected function removeAddressRelations(AddressInterface $address)
+    {
+        // no need to search for dependencies: address is new.
+        if ($this->isNewEntity($address)) {
+            return;
         }
 
-        $customer->save();
+        $dependenciesObjects = [];
+        $dependenciesResult = Dependency::getBySourceId($address->getId(), 'object');
+
+        foreach ($dependenciesResult->getRequiredBy() as $r) {
+            if ($r['type'] === 'object') {
+                $object = DataObject::getById($r['id']);
+                if ($object instanceof AddressesAwareInterface) {
+                    $dependenciesObjects[] = $object;
+                }
+            }
+        }
+
+        /** @var AddressesAwareInterface $dependenciesObject */
+        foreach ($dependenciesObjects as $dependenciesObject) {
+            $save = false;
+            if ($dependenciesObject->hasAddress($address)) {
+                $save = true;
+                $dependenciesObject->removeAddress($address);
+            }
+
+            if ($dependenciesObject instanceof CustomerInterface) {
+                if ($dependenciesObject->getDefaultAddress() instanceof AddressInterface) {
+                    if ($dependenciesObject->getDefaultAddress()->getId() === $address->getId()) {
+                        $save = true;
+                        $dependenciesObject->setDefaultAddress(null);
+                    }
+                }
+            }
+
+            if ($save === true) {
+                $this->forceSave($dependenciesObject);
+            }
+        }
     }
 
     /**
@@ -215,6 +284,31 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         ]);
 
         return $resolver;
+    }
+
+    /**
+     * @param ElementInterface $element
+     * @param bool             $useVersioning
+     */
+    protected function forceSave(ElementInterface $element, $useVersioning = true)
+    {
+        if ($element instanceof Concrete) {
+            $element->setOmitMandatoryCheck(true);
+        }
+
+        VersionHelper::useVersioning(function () use ($element) {
+            $element->save();
+        }, $useVersioning);
+    }
+
+    /**
+     * @param ElementInterface $element
+     *
+     * @return bool
+     */
+    protected function isNewEntity(ElementInterface $element)
+    {
+        return is_null($element->getId()) || $element->getId() === 0;
     }
 
 }

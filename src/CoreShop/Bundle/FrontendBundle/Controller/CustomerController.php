@@ -185,8 +185,6 @@ class CustomerController extends FrontendController
 
                 $address = $addressAssignmentManager->allocateAddressByAffiliation($customer, $address, $addressAffiliation);
 
-                $address->save();
-
                 $this->fireEvent($request, $address, sprintf('%s.%s.%s_post', 'coreshop', 'address', $eventType));
                 $this->addFlash('success', $this->get('translator')->trans(sprintf('coreshop.ui.customer.address_successfully_%s', $eventType === 'add' ? 'added' : 'updated')));
 
