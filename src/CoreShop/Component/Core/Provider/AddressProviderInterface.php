@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface AddressProviderInterface
 {

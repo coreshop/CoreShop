@@ -12,9 +12,14 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 
 interface OrderItemRepositoryInterface extends PimcoreRepositoryInterface
 {
-    public function findOrderItemsByProductId($productId);
+    /**
+     * @param int $productId
+     * @return OrderItemInterface[]
+     */
+    public function findOrderItemsByProductId(int $productId): array;
 }

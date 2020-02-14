@@ -12,11 +12,11 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Exception\NoPurchasableWholesalePriceFoundException;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartItemsWholesaleProcessor implements CartProcessorInterface
@@ -40,7 +40,7 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

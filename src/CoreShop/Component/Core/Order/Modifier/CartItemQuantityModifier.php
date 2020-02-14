@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Order\Modifier;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;

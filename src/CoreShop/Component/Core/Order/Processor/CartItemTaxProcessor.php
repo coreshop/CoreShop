@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
@@ -52,7 +52,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
         Assert::isInstanceOf($store, StoreInterface::class);
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(),

@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartItemProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use Webmozart\Assert\Assert;
@@ -37,7 +37,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
      * {@inheritdoc}
      */
     public function processCartItem(
-        CartItemInterface $cartItem,
+        OrderItemInterface $cartItem,
         int $itemPrice,
         int $itemRetailPrice,
         int $itemDiscountPrice,
@@ -45,9 +45,9 @@ final class CartItemProcessor implements CartItemProcessorInterface
         array $context
     ): void {
         /**
-         * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+         * @var \CoreShop\Component\Core\Model\OrderItemInterface $cartItem
          */
-        Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\CartItemInterface::class);
+        Assert::isInstanceOf($cartItem, \CoreShop\Component\Core\Model\OrderItemInterface::class);
 
         $product = $cartItem->getProduct();
         $cart = $context['cart'];

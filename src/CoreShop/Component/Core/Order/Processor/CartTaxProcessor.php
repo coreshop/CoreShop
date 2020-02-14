@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\Carrier;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -49,7 +49,7 @@ final class CartTaxProcessor implements CartProcessorInterface
         $usedTaxes = [];
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [],

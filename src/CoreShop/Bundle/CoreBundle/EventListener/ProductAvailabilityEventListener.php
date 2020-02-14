@@ -115,7 +115,7 @@ final class ProductAvailabilityEventListener
     {
         /** @var OrderItemInterface $cartItem */
         foreach ($cartItems as $cartItem) {
-            $cart = $cartItem->getCart();
+            $cart = $cartItem->getOrder();
             if (!$cart instanceof OrderInterface) {
                 continue;
             }

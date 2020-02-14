@@ -250,7 +250,7 @@ class CartController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        if ($cartItem->getCart()->getId() !== $this->getCart()->getId()) {
+        if ($cartItem->getOrder()->getId() !== $this->getCart()->getId()) {
             return $this->redirectToRoute('coreshop_index');
         }
 

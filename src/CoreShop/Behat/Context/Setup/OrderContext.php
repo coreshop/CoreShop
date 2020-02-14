@@ -18,6 +18,7 @@ use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
+use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Payment\Model\PaymentInterface;
@@ -50,7 +51,7 @@ final class OrderContext implements Context
     {
         $cart->setStore($this->storeContext->getStore());
 
-        $this->orderCommitter->commitOrder($cart);
+        $this->stateMachineApplier->apply($cart, OrderSaleTransitions::IDENTIFIER, OrderSaleTransitions::TRANSITION_ORDER);
 
         $this->sharedStorage->set('order', $cart);
     }

@@ -13,22 +13,22 @@
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
 use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -38,6 +38,8 @@ final class CartContext implements Context
     private $cartModifier;
     private $cartManager;
     private $addToCartFactory;
+    private $factory;
+    private $formFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -53,6 +55,8 @@ final class CartContext implements Context
         $this->cartModifier = $cartModifier;
         $this->cartManager = $cartManager;
         $this->addToCartFactory = $addToCartFactory;
+        $this->factory = $factory;
+        $this->formFactory = $formFactory;
     }
 
     /**

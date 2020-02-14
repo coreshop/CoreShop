@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -50,8 +50,11 @@ final class CartItemsProcessor implements CartProcessorInterface
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
+        $subtotalGross = 0;
+        $subtotalNet = 0;
+
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getIsGiftItem()) {
@@ -104,6 +107,12 @@ final class CartItemsProcessor implements CartProcessorInterface
                 $itemDiscount,
                 $context
             );
+
+            $subtotalGross += $item->getTotal(true);
+            $subtotalNet += $item->getTotal(false);
         }
+
+        $cart->setSubtotal($subtotalGross, true);
+        $cart->setSubtotal($subtotalNet, false);
     }
 }

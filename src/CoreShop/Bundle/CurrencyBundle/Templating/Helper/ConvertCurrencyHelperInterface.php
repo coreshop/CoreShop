@@ -23,5 +23,5 @@ interface ConvertCurrencyHelperInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function convertAmount(int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int;
+    public function convertAmount(?int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int;
 }

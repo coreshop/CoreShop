@@ -12,7 +12,6 @@ use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Order\Cart\CartModifier;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -162,13 +161,13 @@ class OrderEditController extends PimcoreController
         $cartItemId = $request->get('cartItem');
         $cartItem = $orderItemRepository->find($cartItemId);
 
-        if (!$cartItem instanceof CartItemInterface) {
+        if (!$cartItem instanceof OrderItemInterface) {
             return $this->viewHandler->handle(
                 ['success' => false, 'message' => "Order Item with ID '$cartItemId' not found"]
             );
         }
 
-        if ($cartItem->getCart()->getId() !== $cart->getId()) {
+        if ($cartItem->getOrder()->getId() !== $cart->getId()) {
             return $this->viewHandler->handle(
                 ['success' => false, 'message' => 'Not allowed']
             );

@@ -16,8 +16,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\CartItem;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
@@ -100,7 +99,7 @@ final class CartContext implements Context
     public function theProductShouldBeInMyCart(ProductInterface $product)
     {
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = null;
 
@@ -131,7 +130,7 @@ final class CartContext implements Context
     public function theProductShouldBeInMyCartAsGift(ProductInterface $product)
     {
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = null;
 

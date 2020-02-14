@@ -20,7 +20,7 @@ class OrderItemRepository extends PimcoreRepository implements OrderItemReposito
     /**
      * {@inheritdoc}
      */
-    public function findOrderItemsByProductId($productId)
+    public function findOrderItemsByProductId(int $productId): array
     {
         $list = $this->getList();
         $list->setCondition('product__id = ?', [$productId]);

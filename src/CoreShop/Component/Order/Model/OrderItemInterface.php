@@ -18,6 +18,11 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface, BaseAdjustableInterface, StorageListItemInterface
 {
     /**
+     * @return OrderInterface
+     */
+    public function getOrder();
+
+    /**
      * @return PurchasableInterface
      */
     public function getProduct();
