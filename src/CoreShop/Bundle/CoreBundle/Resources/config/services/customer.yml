@@ -37,3 +37,38 @@ services:
             - '@coreshop.customer.login_service'
         tags:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: onCustomerRegister }
+
+    CoreShop\Component\Core\Customer\Address\AddressAccessOptionsProvider: ~
+
+    CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface: '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator'
+    CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator:
+        public: false
+
+    CoreShop\Component\Core\Customer\CustomerTransformHelperInterface: '@CoreShop\Component\Core\Customer\CustomerTransformHelper'
+    CoreShop\Component\Core\Customer\CustomerTransformHelper:
+        public: false
+        arguments:
+            - '@coreshop.factory.company'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
+            - '%coreshop.folder.company%'
+            - '%coreshop.folder.address%'
+
+    CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface: '@CoreShop\Component\Core\Customer\Address\AddressAssignmentManager'
+    CoreShop\Component\Core\Customer\Address\AddressAssignmentManager:
+        arguments:
+            - '@CoreShop\Component\Core\Customer\CustomerTransformHelperInterface'
+
+    CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelper'
+    CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelper:
+        arguments:
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
+        lazy: true
+        tags:
+            - { name: templating.helper, alias: coreshop_format_address }
+
+    CoreShop\Bundle\CoreBundle\Twig\AddressAllocatorExtension:
+        public: false
+        arguments:
+            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface'
+        tags:
+            - { name: twig.extension }

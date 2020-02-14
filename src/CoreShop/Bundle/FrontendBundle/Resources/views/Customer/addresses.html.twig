@@ -20,7 +20,7 @@
 
     <section class="addresses-area">
         <div class="row mb-4">
-            {% for address in customer.getAddresses %}
+            {% for address in customer|allocate_valid_addresses %}
             <div class="col-6">
                 <div class="card card-smart">
                     <div class="card-body">

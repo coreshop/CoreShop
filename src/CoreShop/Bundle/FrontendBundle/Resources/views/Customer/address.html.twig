@@ -28,7 +28,10 @@
                             {{ form_start(form) }}
                                 {{ form_errors(form) }}
 
-                                {{ form_row(form.company) }}
+                                {% if form.addressAffiliation is defined %}
+                                    {{ form_row(form.addressAffiliation) }}
+                                {% endif %}
+
                                 {{ form_row(form.salutation) }}
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}

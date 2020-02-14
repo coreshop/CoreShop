@@ -64,6 +64,10 @@ services:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType }
 
+    CoreShop\Bundle\CoreBundle\Form\Extension\AddressTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\AddressType }
+
     CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension:
         tags:
             - { name: form.type_extension, extended_type: CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType }

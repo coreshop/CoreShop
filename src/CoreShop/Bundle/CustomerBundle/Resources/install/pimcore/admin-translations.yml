@@ -3,7 +3,10 @@ translations:
         languages:
             en: 'Customer'
             de: 'Kunde'
-
+    CoreShopCompany:
+        languages:
+            en: 'Company'
+            de: 'Unternehmen'
     CoreShopCustomerGroup:
         languages:
             en: 'Customer Group'
