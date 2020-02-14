@@ -116,11 +116,11 @@ class Version20200211120529 extends AbstractPimcoreMigration implements Containe
         $table = $schema->getTable('users_permission_definitions');
 
         if ($table->hasColumn('category')) {
-            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_customer_to_company_assign_to_new\', \'\');');
-            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_customer_to_company_assign_to_existing\', \'\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_ctc_assign_to_new\', \'\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`, `category`) VALUES (\'coreshop_permission_ctc_assign_to_existing\', \'\');');
         } else {
-            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_customer_to_company_assign_to_new\');');
-            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_customer_to_company_assign_to_existing\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_ctc_assign_to_new\');');
+            $this->addSql('INSERT INTO `users_permission_definitions` (`key`) VALUES (\'coreshop_permission_ctc_assign_to_existing\');');
         }
 
     }

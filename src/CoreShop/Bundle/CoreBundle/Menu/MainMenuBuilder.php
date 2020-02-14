@@ -282,7 +282,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $customersMenu
             ->addChild('coreshop_customer_to_company_assign_to_new')
             ->setLabel('coreshop_customer_to_company_assign_to_new')
-            ->setAttribute('permission', 'coreshop_permission_customer_to_company_assign_to_new')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_new')
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_new')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_new')
@@ -291,7 +291,7 @@ class MainMenuBuilder implements MenuBuilderInterface
         $customersMenu
             ->addChild('coreshop_customer_to_company_assign_to_existing')
             ->setLabel('coreshop_customer_to_company_assign_to_existing')
-            ->setAttribute('permission', 'coreshop_permission_customer_to_company_assign_to_existing')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_existing')
             ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_existing')
             ->setAttribute('resource', 'coreshop.core')
             ->setAttribute('function', 'customer_to_company_assign_to_existing')

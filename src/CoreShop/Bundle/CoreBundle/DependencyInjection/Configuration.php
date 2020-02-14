@@ -116,7 +116,7 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                     ->scalarNode('permissions')
                         ->cannotBeOverwritten()
-                        ->defaultValue(['customer_to_company_assign_to_new', 'customer_to_company_assign_to_existing'])
+                        ->defaultValue(['ctc_assign_to_new', 'ctc_assign_to_existing'])
                     ->end()
                     ->arrayNode('editmode_js')
                         ->useAttributeAsKey('name')
