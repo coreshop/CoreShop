@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Customer\Allocator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface CustomerAddressAllocatorInterface
 {

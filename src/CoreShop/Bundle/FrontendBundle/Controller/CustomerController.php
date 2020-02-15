@@ -353,7 +353,9 @@ class CustomerController extends FrontendController
     protected function getCustomer()
     {
         try {
-            /**@var CustomerInterface $customer */
+            /**
+             * @var CustomerInterface $customer
+             */
             $customer = $this->get('coreshop.context.customer')->getCustomer();
 
             return $customer;
@@ -368,7 +370,7 @@ class CustomerController extends FrontendController
      * @todo: move this to a resource controller event
      *
      * @param Request $request
-     * @param         $object
+     * @param mixed   $object
      * @param string  $eventName
      */
     protected function fireEvent(Request $request, $object, string $eventName)

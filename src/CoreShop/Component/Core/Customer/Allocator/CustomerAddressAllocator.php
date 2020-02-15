@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Customer\Allocator;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CompanyInterface;
-use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class CustomerAddressAllocator implements CustomerAddressAllocatorInterface
 {
@@ -26,20 +26,22 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
     {
         $addressAccessType = $customer->getAddressAccessType();
 
-        if (is_null($addressAccessType) || $addressAccessType === self::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
+        if ($addressAccessType === null || $addressAccessType === self::ADDRESS_ACCESS_TYPE_OWN_ONLY) {
             return $customer->getAddresses();
         }
 
-        if (!$customer->getCompany() instanceof CompanyInterface) {
+        $company = $customer->getCompany();
+
+        if (!$company instanceof CompanyInterface) {
             return $customer->getAddresses();
         }
 
         if ($addressAccessType === self::ADDRESS_ACCESS_TYPE_COMPANY_ONLY) {
-            return $customer->getCompany()->getAddresses();
+            return $company->getAddresses();
         }
 
         if ($addressAccessType === self::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
-            return array_merge($customer->getAddresses(), $customer->getCompany()->getAddresses());
+            return array_merge($customer->getAddresses(), $company->getAddresses());
         }
 
         throw new \Exception(sprintf('Cannot allocate addresses for customer %d with access type "%s"', $customer->getId(), $addressAccessType));

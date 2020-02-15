@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use Exception;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\Element\ElementInterface;
 use Pimcore\Model\Element\ValidationException;
 
@@ -25,7 +26,7 @@ interface CustomerTransformHelperInterface
     /**
      * @param string $rootPath
      *
-     * @return Concrete
+     * @return Folder
      */
     public function getEntityAddressFolderPath(string $rootPath);
 

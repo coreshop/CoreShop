@@ -75,7 +75,12 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
      */
     public function getEntityAddressFolderPath(string $rootPath)
     {
-        return $this->objectService->createFolderByPath(sprintf('%s/%s', $rootPath, $this->addressFolder));
+        /**
+         * @var DataObject\Folder $folder
+         */
+        $folder = $this->objectService->createFolderByPath(sprintf('%s/%s', $rootPath, $this->addressFolder));
+
+        return $folder;
     }
 
     /**

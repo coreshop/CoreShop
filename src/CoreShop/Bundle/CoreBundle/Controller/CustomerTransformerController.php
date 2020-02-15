@@ -64,7 +64,7 @@ class CustomerTransformerController extends AdminController
      * @param string  $type
      * @param int     $objectId
      *
-     * @return mixed
+     * @return JsonResponse
      */
     public function getEntityDetailsAction(Request $request, string $type, $objectId)
     {
@@ -124,11 +124,23 @@ class CustomerTransformerController extends AdminController
         if (!$customer instanceof CustomerInterface) {
             $error = true;
             $message = 'Invalid Customer Object. Please choose a valid customer.';
+
+            return $this->json([
+                'success' => !$error,
+                'message' => $message,
+                'data'    => $data
+            ]);
         }
 
         if ($companyId !== null && !$company instanceof CompanyInterface) {
             $error = true;
             $message = 'Invalid Company Object. Please choose a valid company.';
+
+            return $this->json([
+                'success' => !$error,
+                'message' => $message,
+                'data'    => $data
+            ]);
         }
 
         if ($customer->getCompany() instanceof CompanyInterface) {
@@ -208,7 +220,7 @@ class CustomerTransformerController extends AdminController
 
     /**
      * @param Request $request
-     * @param         $customerId
+     * @param int $customerId
      *
      * @return JsonResponse
      */

@@ -59,8 +59,8 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data  $fieldDefinition
      *
      * @return mixed
      */
@@ -70,8 +70,8 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
     }
 
     /**
-     * @param $context         array
-     * @param $fieldDefinition Data
+     * @param array $context
+     * @param Data $fieldDefinition
      *
      * @return bool
      */
