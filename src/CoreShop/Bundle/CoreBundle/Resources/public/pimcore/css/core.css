@@ -14,8 +14,6 @@
     fill: #cd1017;
 }
 
-
-
 .icon-coreshop-shop:before { content: '\e800'; } /* '' */
 
 .coreshop_icon_logo {
@@ -49,6 +47,18 @@ body.pimcore_version_6 .coreshop_nav_icon_logo {
 
 body.pimcore_version_6 .coreshop_nav_icon_localization {
     background: url(../img//collaboration_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_customer {
+    background: url(../img/customer_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_customer_to_company_assign_to_new {
+    background: url(../img/customer_to_company_assign_to_new_white.svg) center center no-repeat !important;
+}
+
+body.pimcore_version_6 .coreshop_nav_icon_customer_to_company_assign_to_existing {
+    background: url(../img/customer_to_company_assign_to_existing_white.svg) center center no-repeat !important;
 }
 
 .coreshop_settings_inherited {

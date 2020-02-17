@@ -3,8 +3,26 @@ translations:
         languages:
             en: 'Customer'
             de: 'Kunde'
-
+    CoreShopCompany:
+        languages:
+            en: 'Company'
+            de: 'Unternehmen'
     CoreShopCustomerGroup:
         languages:
             en: 'Customer Group'
             de: 'Kundengruppe'
+
+    coreshop.admin.company.address_access.own_only:
+        languages:
+            en: 'Own Only'
+            de: 'Nur eigene'
+
+    coreshop.admin.company.address_access.company_only:
+        languages:
+            en: 'Company Only'
+            de: 'Nur Unternehmen'
+
+    coreshop.admin.company.address_access.own_and_company:
+        languages:
+            en: 'Own & Company'
+            de: 'Eigene & Unternehmen'

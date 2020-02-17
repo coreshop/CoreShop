@@ -23,6 +23,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             coreshop.helpers.showAbout();
         } else if (item === 'settings') {
             this.openSettings();
+        } else if (item === 'customer_to_company_assign_to_new') {
+            this.openAssignCustomerToNewCompany();
+        } else if (item === 'customer_to_company_assign_to_existing') {
+            this.openAssignCustomerToExistingCompany();
         }
     },
 
@@ -85,6 +89,22 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             pimcore.globalmanager.get('coreshop_settings').activate();
         } catch (e) {
             pimcore.globalmanager.add('coreshop_settings', new coreshop.core.settings());
+        }
+    },
+
+    openAssignCustomerToNewCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_new_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_new_company_assignment', new coreshop.core.customer.customerToCompanyTransformer());
+        }
+    },
+
+    openAssignCustomerToExistingCompany: function () {
+        try {
+            pimcore.globalmanager.get('coreshop_customer_to_existing_company_assignment').activate();
+        } catch (e) {
+            pimcore.globalmanager.add('coreshop_customer_to_existing_company_assignment', new coreshop.core.customer.customerToCompanyAssigner());
         }
     },
 

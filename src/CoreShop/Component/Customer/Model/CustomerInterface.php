@@ -54,6 +54,16 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function setLastname($lastname);
 
     /**
+     *  @return CompanyInterface
+     */
+    public function getCompany();
+
+    /**
+     * @param CompanyInterface $company
+     */
+    public function setCompany($company);
+
+    /**
      * @return string
      */
     public function getGender();

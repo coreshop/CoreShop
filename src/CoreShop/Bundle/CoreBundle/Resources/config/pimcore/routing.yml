@@ -68,7 +68,6 @@ coreshop_admin_purchsable_variant_unit_solidifier_apply:
     methods: [PUT]
     defaults:  { _controller: coreshop.admin_controller.product_variant_unit_solidifer:applyAction}
 
-
 coreshop_admin_product:
     type: coreshop.resources
     resource: |
@@ -80,3 +79,29 @@ coreshop_admin_product:
           action: removeStoreValues
           methods:
             - POST
+
+##### CUSTOMER TRANSFORMER
+coreshop_admin_customer_company_modifier_get_entity_details:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/get-entity-details/{type}/{objectId}
+    methods: [GET]
+    defaults: { _controller: coreshop.admin_controller.customer_transformer:getEntityDetailsAction}
+
+coreshop_admin_customer_company_modifier_validate_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/validate-assignment/{customerId}/{companyId}
+    methods: [GET]
+    defaults: { _controller: coreshop.admin_controller.customer_transformer:validateAssignmentAction, companyId: null}
+
+coreshop_admin_customer_company_modifier_dispatch_existing_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-existing-assignment/{customerId}/{companyId}
+    methods: [POST]
+    defaults: { _controller: coreshop.admin_controller.customer_transformer:dispatchExistingAssignmentAction}
+
+coreshop_admin_customer_company_modifier_dispatch_new_assignment:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/dispatch-new-assignment/{customerId}
+    methods: [POST]
+    defaults: { _controller: coreshop.admin_controller.customer_transformer:dispatchNewAssignmentAction}
+
+coreshop_admin_customer_company_name_duplication_check:
+    path: /%coreshop.admin.route.base%/customer-company-modifier/duplication-name-check
+    methods: [GET]
+    defaults: { _controller: coreshop.admin_controller.customer_transformer:checkForNameDuplicatesAction}
