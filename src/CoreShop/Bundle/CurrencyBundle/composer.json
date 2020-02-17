@@ -21,7 +21,7 @@
     "php": "^7.2",
     "coreshop/currency": "^2.0",
     "coreshop/resource-bundle": "^2.0",
-    "pimcore/pimcore": "^6.3.6"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
