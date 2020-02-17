@@ -38,11 +38,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
         $this->processable = $processable;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed|void
-     */
     public function resolve(OrderInterface $order): void
     {
         if ($order->getShippingState() === OrderShipmentStates::STATE_SHIPPED) {
@@ -60,12 +55,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $shipmentState
-     *
-     * @return int
-     */
     private function countOrderShipmentsInState(OrderInterface $order, string $shipmentState): int
     {
         $shipments = $this->orderShipmentRepository->getDocuments($order);
@@ -81,13 +70,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
         return $items;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $shipmentState
-     * @param string         $orderShippingState
-     *
-     * @return bool
-     */
     private function allShipmentsInStateButOrderStateNotUpdated(
         OrderInterface $order,
         string $shipmentState,
@@ -101,11 +83,6 @@ final class OrderShippingStateResolver implements StateResolverInterface
             $this->processable->isFullyProcessed($order);
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function isPartiallyShippedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $shipmentInShippedStateAmount = $this->countOrderShipmentsInState($order, ShipmentStates::STATE_SHIPPED);

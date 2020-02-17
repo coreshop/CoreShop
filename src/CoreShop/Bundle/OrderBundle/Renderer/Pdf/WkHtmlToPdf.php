@@ -91,7 +91,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
     /**
      * @param string $string
      *
-     * @return mixed|null|string|string[]
+     * @return string
      */
     private function replaceUrls($string): string
     {

@@ -19,7 +19,7 @@ interface NumberGeneratorInterface
     /**
      * @param ResourceInterface $model
      *
-     * @return int
+     * @return string
      */
     public function generate(ResourceInterface $model): string;
 }

@@ -24,7 +24,7 @@ interface DefinitionFieldReNamerInterface
     /**
      * Executes the renaming.
      */
-    public function rename(): voidy;
+    public function rename(): void;
 
     /**
      * @return string

@@ -31,6 +31,7 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use Pimcore\Model\DataObject\Folder;
+use Webmozart\Assert\Assert;
 
 class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
 {
@@ -85,6 +86,8 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         /**
          * @var \CoreShop\Component\Core\Model\OrderInterface $order
          */
+        Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
+
         $orderFolder = $this->objectService->createFolderByPath(
             sprintf(
                 '%s/%s',

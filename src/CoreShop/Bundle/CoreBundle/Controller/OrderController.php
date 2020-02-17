@@ -58,10 +58,35 @@ class OrderController extends BaseOrderController
         return $json;
     }
 
+    protected function getSummary(OrderInterface $order): array
+    {
+        $summary = parent::getSummary($order);
+
+        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface) {
+            if ($order->getShipping() > 0) {
+                $summary[] = [
+                    'key' => 'shipping',
+                    'value' => $order->getShipping(),
+                ];
+
+                $summary[] = [
+                    'key' => 'shipping_tax',
+                    'value' => $order->getShippingTax(),
+                ];
+            }
+        }
+
+        return $summary;
+    }
+
+
     protected function prepareSaleItem(OrderItemInterface $item): array
     {
         $itemData = parent::prepareSaleItem($item);
 
+        /**
+         * @var CoreOrderItemInterface $item
+         */
         if (!$item instanceof CoreOrderItemInterface) {
             return $itemData;
         }
@@ -70,7 +95,7 @@ class OrderController extends BaseOrderController
             return $itemData;
         }
 
-        $itemData['unit'] = $item->hasUnit() ? $item->getUnit()->getFullLabel() : $item->getUnitIdentifier();
+        $itemData['unit'] = $item->hasUnitDefinition() ? $item->getUnitDefinition()->getUnit()->getFullLabel() : $item->getUnitIdentifier();
 
         return $itemData;
     }

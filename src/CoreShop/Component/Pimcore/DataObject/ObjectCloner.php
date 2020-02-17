@@ -21,7 +21,7 @@ final class ObjectCloner implements ObjectClonerInterface
     /**
      * {@inheritdoc}
      */
-    public function cloneObject(Concrete $object, AbstractObject $parent, string $key): Concrete
+    public function cloneObject(Concrete $object, AbstractObject $parent, string $key, bool $saveDirectly = true): Concrete
     {
         Service::loadAllObjectFields($object);
 
@@ -29,7 +29,10 @@ final class ObjectCloner implements ObjectClonerInterface
         $newObject->setId(null);
         $newObject->setParent($parent);
         $newObject->setKey($key);
-        $newObject->save();
+
+        if ($saveDirectly) {
+            $newObject->save();
+        }
 
         return $newObject;
     }

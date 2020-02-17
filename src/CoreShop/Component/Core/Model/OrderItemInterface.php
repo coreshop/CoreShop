@@ -29,6 +29,16 @@ interface OrderItemInterface extends BaseOrderItemInterface, ShippableItemInterf
     public function setDigitalProduct($digitalProduct);
 
     /**
+     * @return string
+     */
+    public function getUnitIdentifier();
+
+    /**
+     * @param string $unitIdentifier
+     */
+    public function setUnitIdentifier($unitIdentifier);
+
+    /**
      * @return null|ProductUnitDefinitionInterface
      */
     public function getUnitDefinition();

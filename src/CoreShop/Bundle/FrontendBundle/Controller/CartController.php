@@ -244,7 +244,7 @@ class CartController extends FrontendController
      */
     public function removeItemAction(Request $request)
     {
-        $cartItem = $this->get('coreshop.repository.cart_item')->find($request->get('cartItem'));
+        $cartItem = $this->get('coreshop.repository.order_item')->find($request->get('cartItem'));
 
         if (!$cartItem instanceof OrderItemInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -289,19 +289,6 @@ class CartController extends FrontendController
     }
 
     /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function createQuoteAction(Request $request)
-    {
-        $quote = $this->getQuoteFactory()->createNew();
-        $quote = $this->getCartToQuoteTransformer()->transform($this->getCart(), $quote);
-
-        return $this->redirectToRoute('coreshop_quote_detail', ['quote' => $quote->getId()]);
-    }
-
-    /**
      * @param OrderInterface     $cart
      * @param OrderItemInterface $cartItem
      *
@@ -310,19 +297,6 @@ class CartController extends FrontendController
     protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem)
     {
         return $this->get('coreshop.factory.add_to_cart')->createWithCartAndCartItem($cart, $cartItem);
-    }
-
-    /**
-     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
-     */
-    protected function getQuoteFactory()
-    {
-        return $this->get('coreshop.factory.quote');
-    }
-
-    protected function getCartToQuoteTransformer()
-    {
-        return $this->get('coreshop.order.transformer.cart_to_quote');
     }
 
     /**

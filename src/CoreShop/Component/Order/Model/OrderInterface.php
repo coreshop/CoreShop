@@ -36,6 +36,25 @@ interface OrderInterface extends
     PayableInterface,
     StorageListInterface
 {
+    /**
+     * @return string
+     */
+    public function getToken();
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token);
+
+    /**
+     * @return bool
+     */
+    public function getBackendCreated();
+
+    /**
+     * @param bool $backendCreated
+     */
+    public function setBackendCreated($backendCreated);
 
     /**
      * @return string
@@ -46,6 +65,46 @@ interface OrderInterface extends
      * @param string $saleState
      */
     public function setSaleState($saleState);
+
+    /**
+     * @return string
+     */
+    public function getOrderState();
+
+    /**
+     * @param string $orderState
+     */
+    public function setOrderState($orderState);
+
+    /**
+     * @return string
+     */
+    public function getShippingState();
+
+    /**
+     * @param string $shippingState
+     */
+    public function setShippingState($shippingState);
+
+    /**
+     * @return string
+     */
+    public function getInvoiceState();
+
+    /**
+     * @param string $invoiceState
+     */
+    public function setInvoiceState($invoiceState);
+
+    /**
+     * @return string
+     */
+    public function getPaymentState();
+
+    /**
+     * @param string $paymentState
+     */
+    public function setPaymentState($paymentState);
 
     /**
      * @return Carbon
@@ -166,6 +225,17 @@ interface OrderInterface extends
      * @return bool
      */
     public function hasItem($item);
+
+    /**
+     * @param int  $total
+     * @param bool $withTax
+     */
+    public function setBaseTotal($total, $withTax = true);
+
+    /**
+     * @return int
+     */
+    public function getBaseTotal();
 
     /**
      * @param int  $subtotal

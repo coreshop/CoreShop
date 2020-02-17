@@ -28,6 +28,17 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
     public function getProduct();
 
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * @param string      $name
+     * @param string|null $language
+     */
+    public function setName($name, $language = null);
+
+    /**
      * @param bool $withTax
      *
      * @return int
@@ -40,7 +51,7 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
      */
     public function setTotal($total, $withTax = true);
 
-        /**
+    /**
      * @return bool
      */
     public function getIsGiftItem();

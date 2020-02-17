@@ -442,7 +442,7 @@ final class CartContext implements Context
         );
 
         /**
-         * @var CartItem $item
+         * @var OrderItemInterface $item
          */
         $item = $cart->getItems()[0];
 
@@ -474,7 +474,7 @@ final class CartContext implements Context
         );
 
         /**
-         * @var CartItem $item
+         * @var OrderItemInterface $item
          */
         $item = $cart->getItems()[1];
 

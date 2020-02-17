@@ -25,10 +25,17 @@ class OrderCreationController extends BaseOrderCreationController
     {
         $itemFlat = parent::prepareCartItem($cart, $item);
 
-        $units = [];
+        /**
+         * @var \CoreShop\Component\Core\Model\OrderItemInterface $item
+         */
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
+        Assert::isInstanceOf($item, \CoreShop\Component\Core\Model\OrderItemInterface::class);
 
-        if ($item->getProduct() instanceof ProductInterface && $item->getProduct()->hasUnitDefinitions()) {
-            foreach ($item->getProduct()->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
+        $units = [];
+        $product = $item->getProduct();
+
+        if ($product instanceof ProductInterface && $product->hasUnitDefinitions()) {
+            foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
                 $units[] = [
                     'id' => $unitDefinition->getId(),
                     'name' => $unitDefinition->getUnitName(),

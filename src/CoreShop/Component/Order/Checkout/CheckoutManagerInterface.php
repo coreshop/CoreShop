@@ -33,14 +33,14 @@ interface CheckoutManagerInterface
      *
      * @return CheckoutStepInterface|null
      */
-    public function getStep(string $identifier): CheckoutStepInterface;
+    public function getStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface|null
      */
-    public function getNextStep(string $identifier): CheckoutStepInterface;
+    public function getNextStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
@@ -54,7 +54,7 @@ interface CheckoutManagerInterface
      *
      * @return CheckoutStepInterface|null
      */
-    public function getPreviousStep(string $identifier): CheckoutStepInterface;
+    public function getPreviousStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier

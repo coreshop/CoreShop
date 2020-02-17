@@ -146,7 +146,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         foreach ($storeTables as $storeTable) {
             if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
-                if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
+                if ($fieldDefinition instanceof Data && !$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
                     foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
                         $columnName = $key.'__'.$fkey;
                         $newColumnName = $key.'__'.$this->newFieldName;
@@ -156,7 +156,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                 }
 
                 if (!is_array($fieldDefinition->getColumnType())) {
-                    if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+                    if ($fieldDefinition instanceof Data && $fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
                         $columnRenames[$storeTable][$key] = $this->newFieldName;
                     }
                 }

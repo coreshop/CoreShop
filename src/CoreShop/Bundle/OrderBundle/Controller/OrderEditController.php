@@ -11,6 +11,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\EditCartType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Order\Cart\CartModifier;
+use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -70,7 +71,7 @@ class OrderEditController extends PimcoreController
         Request $request,
         OrderRepositoryInterface $orderRepository,
         RepositoryInterface $purchasableStackRepository,
-        FactoryInterface $orderItemFactory,
+        OrderItemFactoryInterface $orderItemFactory,
         AddToCartFactoryInterface $addToCartFactory,
         AddMultipleToCartFactoryInterface $addMultipleToCartFactory,
         FormFactoryInterface $formFactory,

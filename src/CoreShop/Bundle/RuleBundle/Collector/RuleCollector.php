@@ -26,33 +26,21 @@ final class RuleCollector extends DataCollector
         $this->validationProcessors = $validationProcessors;
     }
 
-    /**
-     * @return array
-     */
     public function getProcessedConditions(): array
     {
         return $this->data['processedConditions'];
     }
 
-    /**
-     * @return array
-     */
     public function getProcessedRules(): array
     {
         return $this->data['processedRules'];
     }
 
-    /**
-     * @return mixed
-     */
     public function getTypes(): array
     {
         return $this->data['processedTypes'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         $processedConditions = [];
@@ -81,17 +69,11 @@ final class RuleCollector extends DataCollector
         $this->data['processedConditions'] = $processedConditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.rule_collector';

@@ -172,7 +172,7 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return Response
      *
      * @throws \Exception
      */

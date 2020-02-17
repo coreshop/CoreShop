@@ -106,7 +106,11 @@ class CheckoutManager implements CheckoutManagerInterface
      */
     public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool
     {
-        return $step->validate($cart);
+        if ($step instanceof ValidationCheckoutStepInterface) {
+            return $step->validate($cart);
+        }
+
+        return true;
     }
 
     /**

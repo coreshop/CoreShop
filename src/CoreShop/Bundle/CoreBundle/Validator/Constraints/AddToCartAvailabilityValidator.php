@@ -51,6 +51,9 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
             return;
         }
 
+        /**
+         * @var OrderItemInterface $cartItem
+         */
         $cartItem = $addToCartDto->getCartItem();
         $cart = $addToCartDto->getCart();
 

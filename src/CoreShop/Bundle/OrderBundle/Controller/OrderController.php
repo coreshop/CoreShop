@@ -37,7 +37,7 @@ use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
-use JMS\Serializer\SerializerInterface;
+use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
@@ -65,7 +65,7 @@ class OrderController extends PimcoreController
     protected $addressFormatter;
 
     /**
-     * @var SerializerInterface
+     * @var ArrayTransformerInterface
      */
     protected $serializer;
 
@@ -295,7 +295,6 @@ class OrderController extends PimcoreController
             'lang' => $order->getLocaleCode(),
             'discount' => $order->getDiscount(),
             'subtotal' => $order->getSubtotal(),
-            'shipping' => $order->getShipping(),
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
             'currency' => $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency()),
@@ -362,7 +361,7 @@ class OrderController extends PimcoreController
         $jsonSale['currency'] = $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency());
         $jsonSale['store'] = $order->getStore() instanceof StoreInterface ? $this->getStore($order->getStore()) : null;
 
-        if ($jsonSale['items'] === null) {
+        if (!isset($jsonSale['items'])) {
             $jsonSale['items'] = [];
         }
 
@@ -525,18 +524,6 @@ class OrderController extends PimcoreController
             $summary[] = [
                 'key' => $order->getDiscount() < 0 ? 'discount' : 'surcharge',
                 'value' => $order->getDiscount(),
-            ];
-        }
-
-        if ($order->getShipping() > 0) {
-            $summary[] = [
-                'key' => 'shipping',
-                'value' => $order->getShipping(),
-            ];
-
-            $summary[] = [
-                'key' => 'shipping_tax',
-                'value' => $order->getShippingTax(),
             ];
         }
 
@@ -707,7 +694,7 @@ class OrderController extends PimcoreController
         $this->addressFormatter = $addressFormatter;
     }
 
-    public function setSerializer(SerializerInterface $serializer): void
+    public function setSerializer(ArrayTransformerInterface $serializer): void
     {
         $this->serializer = $serializer;
     }

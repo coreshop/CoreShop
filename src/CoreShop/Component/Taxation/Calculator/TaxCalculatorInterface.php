@@ -56,7 +56,7 @@ interface TaxCalculatorInterface
      *
      * @param int  $price
      *
-     * @return int|array $taxes_amount
+     * @return int $taxes_amount
      */
     public function getTaxesAmountFromGross(int $price): int;
 
@@ -78,7 +78,7 @@ interface TaxCalculatorInterface
      */
     public function getTaxesAmount(int $price): int;
 
-        /**
+    /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
      * @param int  $price

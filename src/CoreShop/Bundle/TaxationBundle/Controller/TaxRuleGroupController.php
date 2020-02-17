@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\TaxationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,7 @@ class TaxRuleGroupController extends ResourceController
         return $this->viewHandler->handle($data);
     }
 
-    protected function getTaxRulesRepository(): array
+    protected function getTaxRulesRepository(): TaxRuleRepositoryInterface
     {
         return $this->get('coreshop.repository.tax_rule');
     }
