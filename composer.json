@@ -102,8 +102,6 @@
     "phpstan/phpstan-shim": "^0.10",
     "phpstan/phpstan-symfony": "^0.10",
     "phpstan/phpstan-webmozart-assert": "^0.10",
-    "phpunit/phpunit": "^6",
-    "symfony/phpunit-bridge": "^3",
     "symplify/easy-coding-standard": "^4.3.0"
   },
   "conflict": {
