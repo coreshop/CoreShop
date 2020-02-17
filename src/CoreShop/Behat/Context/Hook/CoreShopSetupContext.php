@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\NotificationRuleListenerInterface;
+use CoreShop\Behat\Service\Setup;
 use CoreShop\Bundle\NotificationBundle\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -44,7 +45,7 @@ final class CoreShopSetupContext implements Context
             return;
         }
 
-        \CoreShop\Test\Setup::setupCoreShop();
+        Setup::setupCoreShop();
     }
 
     /**
