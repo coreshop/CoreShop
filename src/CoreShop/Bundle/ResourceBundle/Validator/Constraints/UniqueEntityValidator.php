@@ -36,11 +36,12 @@ final class UniqueEntityValidator extends ConstraintValidator
     protected $container;
 
     /**
+     * @param ExpressionLanguage $expressionLanguage
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {
-        $this->expressionLanguage = new ExpressionLanguage();
+        $this->expressionLanguage = $expressionLanguage;
         $this->container = $container;
     }
 
