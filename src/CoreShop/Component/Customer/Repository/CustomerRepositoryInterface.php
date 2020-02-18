@@ -39,8 +39,8 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      * Find Customer by Identifier.
      *
      * @param string $identifier
-     * @param        $value
-     * @param        $isGuest
+     * @param string $value
+     * @param bool   $isGuest
      *
      * @return mixed
      */

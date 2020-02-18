@@ -68,10 +68,18 @@ final class CustomerSecurityValidationListener
         }
 
         $identifierValue = $this->loginIdentifier === 'email' ? $object->getEmail() : $object->getUsername();
-        $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $identifierValue, false);
 
-        if ($customer instanceof CustomerInterface) {
-            throw new ValidationException(sprintf('%s "%s" is already used. Please use another one.', ucfirst($this->loginIdentifier), $identifierValue));
+        $listing = $this->customerRepository->getList();
+        $listing->setUnpublished(true);
+        $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);
+        $listing->addConditionParam('o_id != ?', $object->getId());
+
+        $objects = $listing->getObjects();
+
+        if (count($objects) === 0) {
+            return;
         }
+
+        throw new ValidationException(sprintf('%s "%s" is already used. Please use another one.', ucfirst($this->loginIdentifier), $identifierValue));
     }
 }
