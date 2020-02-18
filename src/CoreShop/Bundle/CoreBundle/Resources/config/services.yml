@@ -57,6 +57,7 @@ services:
         arguments:
             - '@coreshop.repository.customer'
             - '%coreshop.model.customer.class%'
+            - '%coreshop.customer.security.login_identifier%'
 
     coreshop.security.customer.password_encoder_factory:
         class: Pimcore\Security\Encoder\Factory\UserAwareEncoderFactory

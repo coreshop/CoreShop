@@ -36,6 +36,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
+                ->enumNode('login_identifier')->values(['email', 'username'])->defaultValue('email')->end()
             ->end();
 
         $this->addStack($rootNode);

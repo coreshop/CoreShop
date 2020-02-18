@@ -1151,6 +1151,12 @@ translations:
           en: 'Username'
           de: 'Benutzername'
 
+  coreshop.form.login.email:
+      languages:
+          de_CH: 'E-Mail-Adresse'
+          en: 'Email'
+          de: 'E-Mail-Adresse'
+
   coreshop.form.login.password:
       languages:
           de_CH: 'Passwort'
