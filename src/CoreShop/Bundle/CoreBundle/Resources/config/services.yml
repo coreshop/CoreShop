@@ -2,6 +2,7 @@ imports:
     - { resource: "services/context.yml" }
     - { resource: "services/storage.yml" }
     - { resource: "services/form.yml" }
+    - { resource: "services/form_extension.yml" }
     - { resource: "services/checkout.yml" }
     - { resource: "services/listeners.yml" }
     - { resource: "services/product.yml" }
