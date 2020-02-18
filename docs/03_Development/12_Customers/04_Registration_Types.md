@@ -29,6 +29,6 @@ core_shop_customer:
 CoreShop comes with a preinstalled constraints which will tell your customer, if an email address or username - depending on your settings - is valid or not.
 
 ### Backend / API
-Plus, if you're going to update a customer by API or Backend, coreshop also checks if you're customer entity has unique data.
+Plus, if you're going to update a customer by API or Backend, coreshop also checks if your customer entity has unique data.
 
 > Note: Both checks only applies to non-guests entities!
