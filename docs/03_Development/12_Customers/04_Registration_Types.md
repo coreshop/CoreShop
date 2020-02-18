@@ -31,4 +31,5 @@ CoreShop comes with a preinstalled constraint which will tell your customer, if 
 ### Backend / API
 Plus, if you're going to update a customer by API or Backend, coreshop also checks if your customer entity has unique data.
 
-> Note: Both checks only applies to non-guests entities!
+> Note: Both checks only apply to non-guest entities!
+
