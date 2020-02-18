@@ -97,7 +97,7 @@ class Version20200211120529 extends AbstractPimcoreMigration implements Containe
         }
 
         if (!$classUpdater->hasField('addressAccessType')) {
-            $classUpdater->insertFieldBefore('addresses', $addressAccessTypeField);
+            $classUpdater->insertFieldAfter('addresses', $addressAccessTypeField);
             $saveClass = true;
         }
 
