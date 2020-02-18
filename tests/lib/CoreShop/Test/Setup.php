@@ -56,29 +56,15 @@ class Setup
             $connection->connect();
         }
 
-        //Prior 5.5
-        if (@class_exists('\Pimcore\Model\Tool\Setup')) {
-            $setup = new \Pimcore\Model\Tool\Setup();
-            $setup->database();
+        $installer = new \Pimcore\Bundle\InstallBundle\Installer(
+            \Pimcore::getContainer()->get('monolog.logger.pimcore'),
+            \Pimcore::getContainer()->get('event_dispatcher')
+        );
 
-            $setup->contents(
-                [
-                    'username' => 'admin',
-                    'password' => microtime(),
-                ]
-            );
-        }
-        else {
-            $installer = new \Pimcore\Bundle\InstallBundle\Installer(
-                \Pimcore::getContainer()->get('monolog.logger.pimcore'),
-                \Pimcore::getContainer()->get('event_dispatcher')
-            );
-
-            $installer->setupDatabase([
-                'username' => 'admin',
-                'password' => microtime(),
-            ]);
-        }
+        $installer->setupDatabase([
+            'username' => 'admin',
+            'password' => microtime(),
+        ]);
 
         static::$pimcoreSetupDone = true;
     }

@@ -12,8 +12,26 @@
 
 namespace CoreShop\Component\Pimcore\Db;
 
+use Doctrine\DBAL\Connection;
+use Webmozart\Assert\Assert;
+
 final class Db extends \Pimcore\Db
 {
+    /**
+     * @return Connection
+     */
+    public static function getDoctrineConnection()
+    {
+        /**
+         * @var Connection $connection
+         */
+        $connection = self::getConnection();
+
+        Assert::isInstanceOf($connection, Connection::class);
+
+        return $connection;
+    }
+
     /**
      * @param string $table
      *

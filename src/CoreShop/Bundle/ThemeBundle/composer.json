@@ -22,7 +22,7 @@
     "coreshop/registry": "^2.0",
     "coreshop/pimcore-bundle": "^2.1",
     "liip/theme-bundle": "^1.4",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
@@ -36,7 +36,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

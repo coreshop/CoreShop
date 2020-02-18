@@ -13,6 +13,7 @@
 namespace CoreShop\Behat\Context\Cli;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
@@ -39,7 +40,7 @@ final class InstallerContext implements Context
     private $tester;
 
     /**
-     * @var InstallCommand
+     * @var AbstractInstallCommand
      */
     private $command;
 
@@ -63,7 +64,11 @@ final class InstallerContext implements Context
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:fixtures');
+        $command = $this->application->find('coreshop:install:fixtures');
+
+        Assert::isInstanceOf($command, InstallFixturesCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 
@@ -79,7 +84,11 @@ final class InstallerContext implements Context
 
         $this->application = new Application($this->kernel);
         $this->application->add($installCommand);
-        $this->command = $this->application->find('coreshop:install:demo');
+        $command = $this->application->find('coreshop:install:demo');
+
+        Assert::isInstanceOf($command, InstallDemoCommand::class);
+
+        $this->command = $command;
         $this->tester = new CommandTester($this->command);
     }
 

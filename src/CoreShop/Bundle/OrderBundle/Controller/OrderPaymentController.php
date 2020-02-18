@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
@@ -147,7 +148,7 @@ class OrderPaymentController extends PimcoreController
     }
 
     /**
-     * @return PaymentRepositoryInterface
+     * @return PaymentProviderRepositoryInterface
      */
     private function getPaymentProviderRepository()
     {

@@ -12,14 +12,18 @@
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\QueryResourcePersistenceAwareInterface;
-use CoreShop\Component\Pimcore\BCLayer\ResourcePersistenceAwareInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
 
-class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInterface, QueryResourcePersistenceAwareInterface
+class ProductUnitDefinition extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.
@@ -91,12 +95,10 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
      */
     public function preGetData($object, $params = [])
     {
-        //TODO: Remove once CoreShop requires min Pimcore 5.5
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
 
         if ($data instanceof ResourceInterface) {
             //Reload from Database, but only if available
@@ -149,6 +151,38 @@ class ProductUnitDefinition extends Data implements ResourcePersistenceAwareInte
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**

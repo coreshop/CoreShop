@@ -32,7 +32,7 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
     /**
      * @param bool $withTax
      *
-     * @return float
+     * @return int
      */
     public function getShipping($withTax = true);
 

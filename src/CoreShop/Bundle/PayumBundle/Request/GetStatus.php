@@ -18,6 +18,11 @@ use Payum\Core\Request\BaseGetStatus;
 class GetStatus extends BaseGetStatus
 {
     /**
+     * @var string
+     */
+    protected $status;
+
+    /**
      * {@inheritdoc}
      */
     public function markNew()

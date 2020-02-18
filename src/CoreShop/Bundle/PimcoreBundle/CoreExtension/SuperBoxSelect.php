@@ -160,7 +160,7 @@ class SuperBoxSelect extends ManyToManyRelation
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|null
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -175,6 +175,6 @@ class SuperBoxSelect extends ManyToManyRelation
             return implode(',', $return);
         }
 
-        return false;
+        return null;
     }
 }

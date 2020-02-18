@@ -15,6 +15,7 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInterface
 {
@@ -49,7 +50,7 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
 
     /**
-     * @return ArrayCollection|ProductUnitDefinitionPriceInterface[]
+     * @return Collection<ProductUnitDefinitionPriceInterface>
      */
     public function getProductUnitDefinitionPrices();
 }

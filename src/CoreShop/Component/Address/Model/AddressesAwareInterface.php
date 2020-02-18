@@ -27,6 +27,11 @@ interface AddressesAwareInterface
     public function hasAddress(AddressInterface $address);
 
     /**
+     * @param AddressInterface $address
+     */
+    public function removeAddress(AddressInterface $address);
+
+    /**
      * @return AddressInterface[]
      */
     public function getAddresses();

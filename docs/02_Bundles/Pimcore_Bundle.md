@@ -119,7 +119,7 @@ final class Configuration implements ConfigurationInterface
 This extension allows you to store SerializedData inside a Pimcore DataObject.
 
 #### Embedded Class
-This extension allows you to embedd other Pimcore Classes into one Pimcore Class.
+This extension allows you to embed other Pimcore Classes into one Pimcore Class.
 
 The data tree looks like this then:
 

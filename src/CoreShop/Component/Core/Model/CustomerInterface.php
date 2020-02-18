@@ -19,6 +19,16 @@ use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface
 interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface
 {
     /**
+     * @return string
+     */
+    public function getAddressAccessType();
+
+    /**
+     * @param string $addressAccessType
+     */
+    public function setAddressAccessType($addressAccessType);
+
+    /**
      * @return AddressInterface
      */
     public function getDefaultAddress();

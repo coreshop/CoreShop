@@ -31,7 +31,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      * @param CustomerInterface $customer
      * @param string            $name
      *
-     * @return CartInterface[]
+     * @return CartInterface|null
      */
     public function findNamedForCustomer(CustomerInterface $customer, $name);
 
@@ -39,7 +39,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      * @param StoreInterface    $store
      * @param CustomerInterface $customer
      *
-     * @return CartInterface
+     * @return CartInterface|null
      */
     public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer);
 

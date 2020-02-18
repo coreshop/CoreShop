@@ -28,7 +28,7 @@
     "coreshop/store-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
@@ -42,7 +42,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

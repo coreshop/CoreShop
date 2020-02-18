@@ -35,7 +35,7 @@ final class ProductAvailabilityEventListener
     private $pimcoreModelFactory;
 
     /**
-     * @var PurchasableInterface[]
+     * @var int[]
      */
     private $productIdsToCheck = [];
 
@@ -62,7 +62,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        if (in_array($object->getId(), $this->productIdsToCheck)) {
+        if (in_array($object->getId(), $this->productIdsToCheck, true)) {
             return;
         }
 
@@ -99,7 +99,7 @@ final class ProductAvailabilityEventListener
             return;
         }
 
-        if (!in_array($object->getId(), $this->productIdsToCheck)) {
+        if (!in_array($object->getId(), $this->productIdsToCheck, true)) {
             return;
         }
 

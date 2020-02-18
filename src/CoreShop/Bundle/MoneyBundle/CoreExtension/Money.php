@@ -12,10 +12,15 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-class Money extends Model\DataObject\ClassDefinition\Data implements Data\ResourcePersistenceAwareInterface, Data\QueryResourcePersistenceAwareInterface
+class Money extends Model\DataObject\ClassDefinition\Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.
@@ -25,7 +30,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public $fieldtype = 'coreShopMoney';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 
@@ -143,6 +148,38 @@ class Money extends Model\DataObject\ClassDefinition\Data implements Data\Resour
     public function getQueryColumnType()
     {
         return 'bigint(20)';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        return $this->getDataForEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        return $this->getDataFromEditmode($data, $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**

@@ -152,7 +152,7 @@ class ItemSelector extends ManyToManyRelation
     }
 
     /**
-     * {@inheritdoc}
+     * @return string|null
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -167,7 +167,7 @@ class ItemSelector extends ManyToManyRelation
             return implode(',', $return);
         }
 
-        return false;
+        return null;
     }
 
     /**

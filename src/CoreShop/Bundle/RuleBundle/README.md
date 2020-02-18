@@ -1,4 +1,4 @@
-CoreShop Resource Bundle
+CoreShop Rule Bundle
 ==================
 
 CoreShop

@@ -41,7 +41,7 @@
     "coreshop/core": "^2.0",
     "fzaninotto/faker": "^1.6",
     "rinvex/countries": "^5.0",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
@@ -55,7 +55,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

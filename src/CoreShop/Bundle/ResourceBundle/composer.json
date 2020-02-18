@@ -36,7 +36,7 @@
     "symfony/validator": "^3.4 | ^4.0",
     "symfony/yaml": "^3.4 | ^4.0",
     "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
@@ -50,7 +50,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

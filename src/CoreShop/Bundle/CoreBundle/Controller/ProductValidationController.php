@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
@@ -96,7 +97,7 @@ class ProductValidationController extends AdminController
     }
 
     /**
-     * @return ProductRepositoryInterface
+     * @return StackRepository
      */
     protected function getProductRepository()
     {

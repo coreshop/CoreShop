@@ -89,7 +89,7 @@
     "payum/payum-bundle": "^2.2",
     "payum/sofort": "^1.4",
     "php-http/guzzle6-adapter": "^2.0",
-    "pimcore/pimcore": "^5.8 | ^6.0",
+    "pimcore/pimcore": "^6.5.0",
     "rinvex/countries": "^6.0",
     "stof/doctrine-extensions-bundle": "^1.2",
     "webmozart/assert": "^1.2"
@@ -140,7 +140,7 @@
     "symfony-tests-dir": "tests",
     "symfony-assets-install": "relative",
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

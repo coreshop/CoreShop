@@ -212,7 +212,7 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
             return $previousElements;
         }
 
-        return null;
+        return [];
     }
 
     /**

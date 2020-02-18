@@ -82,7 +82,7 @@ class StackRepository extends PimcoreRepository
      */
     public function getList()
     {
-        $list = DataObject::getList();
+        $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
 
         return $list;

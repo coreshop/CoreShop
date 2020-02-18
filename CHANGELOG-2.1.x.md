@@ -1,5 +1,26 @@
 # Within 2.1
 
+## 2.1.3
+ - Bugs:
+    - [Address, Order, Core] fix release (https://github.com/coreshop/CoreShop/pull/1269)
+
+## 2.1.2
+ - Features:
+    - [FrontendBundle] Change function from private to protected (https://github.com/coreshop/CoreShop/pull/1248)
+    - [Installer] update logo (https://github.com/coreshop/CoreShop/pull/1264)
+    - [Cart] introduce cart-context resolver to allow better extendability of the context used for the cart (https://github.com/coreshop/CoreShop/pull/1267)
+        
+ - Bugs:
+    - [ThemeBundle] fix Undefined index: default_resolvers (https://github.com/coreshop/CoreShop/pull/1235)
+    - [IndexBundle]  $indexIds is always an array, hence the condition is now empty (https://github.com/coreshop/CoreShop/pull/1241)
+    - [Stan] fixes for 2.1 (https://github.com/coreshop/CoreShop/pull/1244)
+    - [CurrencyBundle] fix money-currency type is rounding prices wrong (https://github.com/coreshop/CoreShop/pull/1238)
+    - [CoreBundle] Change repository so that unit definition deletion works with multiple product models (https://github.com/coreshop/CoreShop/pull/1252)
+    - [Order] fix throwing/catching right exceptions in purchasable calculalator (https://github.com/coreshop/CoreShop/pull/1250)
+    - [Core] allow non QuantityPriceRangeAware Products in cart-processor (https://github.com/coreshop/CoreShop/pull/1249)
+    - [IndexBundle] fix index columns form (https://github.com/coreshop/CoreShop/pull/1259)
+    - [Country] don't call the request based resolvers every time (https://github.com/coreshop/CoreShop/pull/1261)
+
 ## 2.1.1
  - Features:
     - [CoreBundle] Implement Variant Unit and QPR Solidifier (https://github.com/coreshop/CoreShop/issues/1157)

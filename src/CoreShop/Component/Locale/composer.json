@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.2",
-    "pimcore/pimcore": "^5.8.0 | ^6.0.0"
+    "pimcore/pimcore": "^6.5.0"
   },
   "config": {
     "bin-dir": "bin"
@@ -33,7 +33,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.1-dev"
+      "dev-master": "2.2-dev"
     }
   }
 }

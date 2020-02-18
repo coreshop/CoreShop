@@ -12,9 +12,11 @@
 
 pimcore.registerNS('coreshop.rules.action');
 coreshop.rules.action = Class.create({
+    dirty: false,
 
     initialize: function (actions) {
         this.actions = actions;
+        this.dirty = false;
     },
 
     getLayout: function () {
@@ -51,6 +53,10 @@ coreshop.rules.action = Class.create({
         return this.actionsContainer;
     },
 
+    setDirty: function(dirty) {
+        this.dirty = dirty;
+    },
+
     destroy: function () {
         if (this.actionsContainer) {
             this.actionsContainer.destroy();
@@ -63,6 +69,8 @@ coreshop.rules.action = Class.create({
 
         this.actionsContainer.add(item.getLayout());
         this.actionsContainer.updateLayout();
+
+        this.setDirty(true);
     },
 
     getActionClassItem: function (type) {
@@ -134,6 +142,10 @@ coreshop.rules.action = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.actionsContainer.items) {
             var actions = this.actionsContainer.items.getRange();
             for (var i = 0; i < actions.length; i++) {

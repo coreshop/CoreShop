@@ -11,10 +11,12 @@
  */
 
 pimcore.registerNS('coreshop.rules.condition');
-
 coreshop.rules.condition = Class.create({
+    dirty: false,
+
     initialize: function (conditions) {
         this.conditions = conditions;
+        this.dirty = false;
     },
 
     getLayout: function () {
@@ -50,6 +52,10 @@ coreshop.rules.condition = Class.create({
         });
 
         return this.conditionsContainer;
+    },
+
+    setDirty: function(dirty) {
+        this.dirty = dirty;
     },
 
     destroy: function () {
@@ -88,6 +94,7 @@ coreshop.rules.condition = Class.create({
 
         this.conditionsContainer.add(item.getLayout());
         this.conditionsContainer.updateLayout();
+        this.setDirty(true);
     },
 
     getConditionsData: function () {
@@ -143,6 +150,10 @@ coreshop.rules.condition = Class.create({
     },
 
     isDirty: function () {
+        if (this.dirty) {
+            return true;
+        }
+
         if (this.conditionsContainer.items) {
             var conditions = this.conditionsContainer.items.getRange();
             for (var i = 0; i < conditions.length; i++) {

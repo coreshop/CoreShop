@@ -23,7 +23,7 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
      * @param StoreInterface|null $store
      * @param bool                $returnObject
      *
-     * @return ConfigurationInterface|string
+     * @return ConfigurationInterface|mixed|null
      */
     public function getForStore($key, StoreInterface $store = null, $returnObject = false);
 

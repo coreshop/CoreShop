@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 final class CustomerLoginService implements CustomerLoginServiceInterface
 {
     /**
-     * @var TokenStorage
+     * @var TokenStorageInterface
      */
     private $securityTokenStorage;
 

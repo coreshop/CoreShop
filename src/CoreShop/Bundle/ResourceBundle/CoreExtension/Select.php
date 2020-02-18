@@ -12,11 +12,13 @@
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
+abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
 {
     /**
      * @var bool
@@ -32,6 +34,46 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
      * @return string
      */
     abstract protected function getModel();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if ($data instanceof ResourceInterface) {
+            return $data->getId();
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        if (null === $data) {
+            return null;
+        }
+
+        return $this->getRepository()->find($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
 
     /**
      * {@inheritdoc}
@@ -108,11 +150,11 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -120,7 +162,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -132,11 +174,11 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (is_a($data, $this->getModel())) {
+        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -144,7 +186,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritdoc}
+     * @return int|null
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -152,7 +194,7 @@ abstract class Select extends Model\DataObject\ClassDefinition\Data\Select
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|null
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {

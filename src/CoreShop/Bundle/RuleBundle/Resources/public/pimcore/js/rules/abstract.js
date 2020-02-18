@@ -166,6 +166,7 @@ coreshop.rules.abstract = Class.create({
             '->', {
                 iconCls: 'pimcore_icon_delete',
                 handler: function (index, parent, container, namespace) {
+                    parent.setDirty(true);
                     container.remove(Ext.getCmp(index));
                 }.bind(window, index, parent, container, namespace),
                 xtype: 'button'

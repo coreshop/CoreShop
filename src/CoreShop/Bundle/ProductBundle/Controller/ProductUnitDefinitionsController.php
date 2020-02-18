@@ -14,7 +14,11 @@ namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -58,6 +62,10 @@ class ProductUnitDefinitionsController extends ResourceController
         /** @var ProductInterface $product */
         $product = $repository->find($request->get('productId'));
 
+        if ($product instanceof Concrete) {
+            $product = VersionHelper::getLatestVersion($product);
+        }
+
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'additional');
         }
@@ -69,11 +77,11 @@ class ProductUnitDefinitionsController extends ResourceController
      * @param ProductInterface $product
      * @param string           $type
      *
-     * @return array
+     * @return Collection
      */
     protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
     {
-        $definitions = [];
+        $definitions = new ArrayCollection();
 
         if ($product->hasUnitDefinitions()) {
             $productUnitDefinitions = $product->getUnitDefinitions();
@@ -86,6 +94,23 @@ class ProductUnitDefinitionsController extends ResourceController
             }
         }
 
-        return $definitions;
+        return $definitions->filter(function(ProductUnitDefinitionInterface $unitDefinition) {
+            return null !== $unitDefinition->getId();
+        });
+    }
+
+    protected function getLatestVersion(Concrete $object)
+    {
+        $modificationDate = $object->getModificationDate();
+        $latestVersion = $object->getLatestVersion();
+        if ($latestVersion) {
+            $latestObj = $latestVersion->loadData();
+            if ($latestObj instanceof Concrete) {
+                $object = $latestObj;
+                $object->setModificationDate($modificationDate); // set de modification-date from published version to compare it in js-frontend
+            }
+        }
+
+        return $object;
     }
 }

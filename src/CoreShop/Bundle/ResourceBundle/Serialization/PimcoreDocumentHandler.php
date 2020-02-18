@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use JMS\Serializer\Context;
+use JMS\Serializer\JsonDeserializationVisitor;
 use JMS\Serializer\JsonSerializationVisitor;
 use Pimcore\Model\Document;
 
@@ -25,5 +26,28 @@ class PimcoreDocumentHandler
         }
 
         return null;
+    }
+
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
+    {
+        $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
+
+        if (is_array($relation)) {
+            $result = [];
+
+            foreach ($relation as $rel) {
+                $obj = Document::getById($rel);
+
+                if ($obj instanceof $className) {
+                    $result[] = $obj;
+                }
+            }
+
+            return $result;
+        }
+
+        $obj = Document::getById($relation);
+
+        return $obj instanceof $className ? $obj : null;
     }
 }

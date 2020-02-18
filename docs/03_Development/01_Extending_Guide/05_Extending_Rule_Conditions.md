@@ -86,8 +86,13 @@ coreshop.product.pricerule.conditions.custom = Class.create(coreshop.rules.condi
         return this.form;
     }
 });
-
 ```
+
+Don't forget to run the following command afterwards to deploy it if needed. If you're using the latest symfony structure, omit the `web`.
+```
+bin/console assets:install web
+```
+
 
 ## Registering the Custom Condition to the Container and load the Javascript File
 We now need to create our Service Definition for our Custom Condition:

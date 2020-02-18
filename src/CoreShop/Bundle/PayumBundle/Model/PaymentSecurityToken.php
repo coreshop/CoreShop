@@ -53,7 +53,7 @@ class PaymentSecurityToken implements ResourceInterface, TokenInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getId()
     {

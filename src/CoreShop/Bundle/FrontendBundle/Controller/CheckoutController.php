@@ -361,7 +361,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Transformer\CartToOrderTransformer
+     * @return \CoreShop\Component\Order\Transformer\ProposalTransformerInterface
      */
     protected function getCartToOrderTransformer()
     {

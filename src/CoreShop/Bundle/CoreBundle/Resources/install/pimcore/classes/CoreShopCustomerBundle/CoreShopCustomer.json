@@ -112,6 +112,42 @@
                                 "visibleSearch": true
                             },
                             {
+                                "fieldtype": "manyToOneRelation",
+                                "width": "",
+                                "assetUploadPath": "",
+                                "relationType": true,
+                                "queryColumnType": {
+                                    "id": "int(11)",
+                                    "type": "enum(\"document\",\"asset\",\"object\")"
+                                },
+                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
+                                "objectsAllowed": true,
+                                "assetsAllowed": false,
+                                "assetTypes": [],
+                                "documentsAllowed": false,
+                                "documentTypes": [],
+                                "lazyLoading": true,
+                                "classes": [
+                                    {
+                                        "classes": "CoreShopCompany"
+                                    }
+                                ],
+                                "pathFormatterClass": "",
+                                "name": "company",
+                                "title": "Company",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
                                 "fieldtype": "email",
                                 "width": null,
                                 "columnLength": 190,
@@ -320,6 +356,33 @@
                         "datatype": "layout",
                         "permissions": null,
                         "childs": [
+                            {
+                                "fieldtype": "select",
+                                "options": null,
+                                "width": "",
+                                "defaultValue": "",
+                                "optionsProviderClass": "@CoreShop\\Component\\Core\\Customer\\Address\\AddressAccessOptionsProvider",
+                                "optionsProviderData": "",
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "dynamicOptions": false,
+                                "name": "addressAccessType",
+                                "title": "Address Access Type",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": false,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
                             {
                                 "fieldtype": "multihref",
                                 "relationType": true,

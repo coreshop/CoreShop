@@ -77,7 +77,11 @@ class Select extends Tag
     public function getResourceObject()
     {
         if ($this->resource) {
-            return $this->getRepository()->find($this->resource);
+            $object = $this->getRepository()->find($this->resource);
+
+            if ($object instanceof ResourceInterface) {
+                return $object;
+            }
         }
 
         return null;
@@ -130,7 +134,7 @@ class Select extends Tag
     }
 
     /**
-     * {@inheritdoc}
+     * @return array
      */
     public function getForWebserviceExport($document = null, $params = [])
     {
@@ -166,6 +170,12 @@ class Select extends Tag
      */
     private function getRepository()
     {
-        return \Pimcore::getContainer()->get($this->repositoryName);
+        $repo = \Pimcore::getContainer()->get($this->repositoryName);
+
+        if (!$repo instanceof RepositoryInterface) {
+            throw new \InvalidArgumentException(sprintf('Repository with Identifier %s not found or not public', $this->repositoryName));
+        }
+
+        return $repo;
     }
 }

@@ -61,6 +61,10 @@ final class ProductUnitContext implements Context
         $unit = $this->productUnitFactory->createNew();
 
         $unit->setName($name);
+        $unit->setFullLabel($name, 'en');
+        $unit->setFullPluralLabel($name, 'en');
+        $unit->setShortLabel($name, 'en');
+        $unit->setShortPluralLabel($name, 'en');
 
         $this->objectManager->persist($unit);
         $this->objectManager->flush();

@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
 {
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getId()
     {

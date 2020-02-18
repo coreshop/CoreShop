@@ -13,17 +13,27 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
+use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
+use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
-class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersistingInterface
+class ProductSpecificPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
+    use TempEntityManagerTrait;
+
     /**
      * Static type of this element.
      *
@@ -37,62 +47,6 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     public $height;
 
     /**
-     * @return \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private function getContainer()
-    {
-        return \Pimcore::getContainer();
-    }
-
-    /**
-     * @return ProductSpecificPriceRuleRepositoryInterface
-     */
-    private function getProductSpecificPriceRuleRepository()
-    {
-        return $this->getContainer()->get('coreshop.repository.product_specific_price_rule');
-    }
-
-    /**
-     * @return \Symfony\Component\Form\FormFactoryInterface
-     */
-    private function getFormFactory()
-    {
-        return $this->getContainer()->get('form.factory');
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    /**
-     * @return \JMS\Serializer\SerializerInterface
-     */
-    private function getSerializer()
-    {
-        return $this->getContainer()->get('jms_serializer');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigActions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.actions');
-    }
-
-    /**
-     * @return array
-     */
-    private function getConfigConditions()
-    {
-        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
-    }
-
-    /**
      * @param mixed $object
      *
      * @return ProductSpecificPriceRuleInterface[]
@@ -102,7 +56,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
         Assert::isInstanceOf($object, ProductInterface::class);
 
         if (!$object instanceof Concrete) {
-            return null;
+            return [];
         }
 
         $data = $object->getObjectVar($this->getName());
@@ -160,15 +114,98 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function marshalVersion($object, $data)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $serialized = [];
+
+        foreach ($data as $datum) {
+            $context = SerializationContext::create();
+            $context->setSerializeNull(true);
+            $context->setGroups(['Version']);
+
+            $serialized[] = $this->getSerializer()->toArray($datum, $context);
+        }
+
+        return $serialized;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalVersion($object, $data)
+    {
+        if (!is_array($data)) {
+            return null;
+        }
+
+        $entities = [];
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+
+        foreach ($data as $storeData) {
+            if (!is_array($storeData)) {
+                continue;
+            }
+
+            $context = DeserializationContext::create();
+            $context->setSerializeNull(false);
+            $context->setGroups(['Version']);
+            $context->setAttribute('em', $tempEntityManager);
+
+            $data = $this->getSerializer()->fromArray($storeData, $this->getProductSpecificPriceRuleRepository()->getClassName(), $context);
+
+            $entities[] = $data;
+        }
+
+        return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
+    /**
+     * @param array $data
+     * @param null  $object
+     * @param array $params
+     * @return string
+     */
+    public function getVersionPreview($data, $object = null, $params = [])
+    {
+        if (!is_array($data)) {
+            return 'empty';
+        }
+
+        return sprintf('Rules: %s', count($data));
+    }
+
+    /**
      * @param mixed $data
      * @param null  $object
      * @param array $params
      *
-     * @return ProductSpecificPriceRuleInterface[]
+     * @return array
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        $data = [
+        $result = [
             'actions' => array_keys($this->getConfigActions()),
             'conditions' => array_keys($this->getConfigConditions()),
             'rules' => [],
@@ -181,12 +218,12 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
             $context->setSerializeNull(true);
             $context->setGroups(['Default', 'Detailed']);
 
-            $serializedData = $this->getSerializer()->serialize($prices, 'json', $context);
+            $serializedData = $this->getSerializer()->toArray($prices, $context);
 
-            $data['rules'] = json_decode($serializedData, true);
+            $result['rules'] = $serializedData;
         }
 
-        return $data;
+        return $result;
     }
 
     /**
@@ -201,6 +238,9 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
         $prices = [];
         $errors = [];
 
+        $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
+        $specificPriceRuleRepository = $this->getProductSpecificPriceRuleRepositoryFactory()->createNewRepository($tempEntityManager);
+
         if ($data && $object instanceof Concrete) {
             foreach ($data as $dataRow) {
                 $ruleId = isset($dataRow['id']) && is_numeric($dataRow['id']) ? $dataRow['id'] : null;
@@ -208,7 +248,7 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
                 $storedRule = null;
 
                 if ($ruleId !== null) {
-                    $storedRule = $this->getProductSpecificPriceRuleRepository()->find($ruleId);
+                    $storedRule = $specificPriceRuleRepository->find($ruleId);
                 }
 
                 $form = $this->getFormFactory()->createNamed('', ProductSpecificPriceRuleType::class, $storedRule);
@@ -247,16 +287,19 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
         if ($object instanceof ProductInterface) {
             $existingPriceRules = $object->getObjectVar($this->getName());
 
+            $entityMerger = new EntityMerger($this->getEntityManager());
+
             $all = $this->load($object, ['force' => true]);
             $founds = [];
 
             if (is_array($existingPriceRules)) {
                 foreach ($existingPriceRules as $price) {
                     if ($price instanceof ProductSpecificPriceRuleInterface) {
+                        $entityMerger->merge($price);
+
                         $price->setProduct($object->getId());
 
                         $this->getEntityManager()->persist($price);
-                        $this->getEntityManager()->flush();
 
                         $founds[] = $price->getId();
                     }
@@ -338,5 +381,70 @@ class ProductSpecificPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         return $array;
+    }
+
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    private function getContainer()
+    {
+        return \Pimcore::getContainer();
+    }
+
+    /**
+     * @return ProductSpecificPriceRuleRepositoryInterface
+     */
+    private function getProductSpecificPriceRuleRepository()
+    {
+        return $this->getContainer()->get('coreshop.repository.product_specific_price_rule');
+    }
+
+    /**
+     * @return RepositoryFactoryInterface
+     */
+    private function getProductSpecificPriceRuleRepositoryFactory()
+    {
+        return $this->getContainer()->get('coreshop.repository.factory.product_specific_price_rule');
+    }
+
+    /**
+     * @return \Symfony\Component\Form\FormFactoryInterface
+     */
+    private function getFormFactory()
+    {
+        return $this->getContainer()->get('form.factory');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
+    }
+
+    /**
+     * @return \JMS\Serializer\Serializer
+     */
+    private function getSerializer()
+    {
+        return $this->getContainer()->get('jms_serializer');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigActions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.actions');
+    }
+
+    /**
+     * @return array
+     */
+    private function getConfigConditions()
+    {
+        return $this->getContainer()->getParameter('coreshop.product_specific_price_rule.conditions');
     }
 }

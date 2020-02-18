@@ -13,6 +13,7 @@
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Db\Db;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Fieldcollection;
@@ -40,7 +41,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
     private $newFieldName;
 
     /**
-     * @var \Pimcore\Db\Connection
+     * @var Connection
      */
     private $database;
 
@@ -54,7 +55,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $this->definition = $definition;
         $this->newFieldName = $newFieldName;
         $this->oldFieldName = $oldFieldName;
-        $this->database = Db::get();
+        $this->database = Db::getDoctrineConnection();
     }
 
     /**
@@ -140,41 +141,39 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $columnRenames = [];
 
         foreach ($queryTables as $queryTable) {
-            if (!method_exists($fieldDefinition, 'getQueryColumnType')) {
-                continue;
-            }
+            if ($fieldDefinition instanceof Data\QueryResourcePersistenceAwareInterface) {
+                if (is_array($fieldDefinition->getQueryColumnType())) {
+                    foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-            if (is_array($fieldDefinition->getQueryColumnType())) {
-                foreach ($fieldDefinition->getQueryColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
-
-                    $columnRenames[$queryTable][$columnName] = $newColumnName;
+                        $columnRenames[$queryTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
-            else {
-                if ($fieldDefinition->getQueryColumnType()) {
-                    $columnRenames[$queryTable][$key] = $this->newFieldName;
+
+                if (!is_array($fieldDefinition->getQueryColumnType())) {
+                    if ($fieldDefinition->getQueryColumnType()) {
+                        $columnRenames[$queryTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }
 
         foreach ($storeTables as $storeTable) {
-            if (!method_exists($fieldDefinition, 'getColumnType')) {
-                continue;
-            }
+            if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
+                if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
+                    foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
+                        $columnName = $key.'__'.$fkey;
+                        $newColumnName = $key.'__'.$this->newFieldName;
 
-            if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
-                foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
-                    $columnName = $key . '__' . $fkey;
-                    $newColumnName = $key . '__' . $this->newFieldName;
-
-                    $columnRenames[$storeTable][$columnName] = $newColumnName;
+                        $columnRenames[$storeTable][$columnName] = $newColumnName;
+                    }
                 }
-            }
-            else {
-                if ($fieldDefinition->getColumnType()) {
-                    $columnRenames[$storeTable][$key] = $this->newFieldName;
+
+                if (!is_array($fieldDefinition->getColumnType())) {
+                    if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+                        $columnRenames[$storeTable][$key] = $this->newFieldName;
+                    }
                 }
             }
         }
@@ -199,6 +198,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         if ($fieldDefinition instanceof Data\Objectbricks) {
             $brickDefinitions = new Objectbrick\Definition\Listing();
+            $brickDefinitions = $brickDefinitions->load();
 
             /**
              * @var Objectbrick\Definition $brickDefinition
@@ -255,7 +255,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
              * @var Data\Localizedfields $localizedFieldDefinition
              */
             $localizedFieldDefinition = $this->definition->getFieldDefinition('localizedfields');
-            $localizedFieldDefinition->fieldDefinitionsCache = null;
+            $localizedFieldDefinition->fieldDefinitionsCache = [];
         } else {
             $fieldDefinitions = $this->definition->getFieldDefinitions();
 

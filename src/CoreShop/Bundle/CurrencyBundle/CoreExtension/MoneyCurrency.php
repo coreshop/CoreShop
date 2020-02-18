@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
 use Pimcore\Model;
+use Pimcore\Model\DataObject\Concrete;
 
 class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Model\DataObject\ClassDefinition\Data\ResourcePersistenceAwareInterface, Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
@@ -26,7 +27,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     public $fieldtype = 'coreShopMoneyCurrency';
 
     /**
-     * @var float
+     * @var int
      */
     public $width;
 
@@ -123,11 +124,10 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
 
     public function preGetData($object, $params = [])
     {
-        if (method_exists($object, 'getObjectVar')) {
-            $data = $object->getObjectVar($this->getName());
-        } else {
-            $data = $object->{$this->getName()};
-        }
+        /**
+         * @var Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
 
         if ($data instanceof Money) {
             if ($data->getCurrency()) {

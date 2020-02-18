@@ -75,6 +75,7 @@ final class ProductContext implements Context
      * @Then /^the (product "[^"]+") should be priced at "([^"]+)"$/
      * @Then /^the (product) should be priced at "([^"]+)"$/
      * @Then /^the (variant) should be priced at "([^"]+)"$/
+     * @Then /^the (version) should be priced at "([^"]+)"$/
      */
     public function productShouldBePriced(ProductInterface $product, int $price)
     {

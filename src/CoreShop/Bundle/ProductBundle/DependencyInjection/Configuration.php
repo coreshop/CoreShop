@@ -266,6 +266,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('model')->defaultValue('Pimcore\Model\DataObject\CoreShopProduct')->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(PimcoreFactory::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->defaultValue(ProductRepository::class)->cannotBeEmpty()->end()
                                         ->scalarNode('install_file')->defaultValue('@CoreShopProductBundle/Resources/install/pimcore/classes/CoreShopProduct.json')->end()
                                         ->scalarNode('type')->defaultValue(CoreShopResourceBundle::PIMCORE_MODEL_TYPE_OBJECT)->cannotBeOverwritten(true)->end()

@@ -1,5 +1,5 @@
 imports:
-    - { resource: "services/form.yml" }
+    - { resource: services/form.yml }
 
 services:
     _defaults:

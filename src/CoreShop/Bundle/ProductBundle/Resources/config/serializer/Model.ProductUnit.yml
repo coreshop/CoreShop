@@ -6,7 +6,7 @@ CoreShop\Component\Product\Model\ProductUnit:
             expose: true
             type: integer
             xml_attribute: true
-            groups: [List, Detailed]
+            groups: [List, Detailed, Version]
         name:
             expose: true
             type: string

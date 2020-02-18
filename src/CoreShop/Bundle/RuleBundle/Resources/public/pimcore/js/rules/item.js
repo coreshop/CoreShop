@@ -51,6 +51,16 @@ coreshop.rules.item = Class.create(coreshop.resource.item, {
         return items;
     },
 
+    resetDirty: function() {
+        if (this.actions) {
+            this.actions.setDirty(false);
+        }
+
+        if (this.conditions) {
+            this.conditions.setDirty(false);
+        }
+    },
+
     getSaveData: function () {
         saveData = this.settingsForm.getForm().getFieldValues();
         saveData['conditions'] = this.conditions.getConditionsData();

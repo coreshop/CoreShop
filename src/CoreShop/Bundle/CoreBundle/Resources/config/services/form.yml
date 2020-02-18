@@ -44,6 +44,12 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action\DiscountAmountActionConfigurationType:
         arguments:
             - '%coreshop.form.type.shipping_rule.action.discount_amount.validation_groups%'
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\AddressTypeExtension:
+        tags:
+            - { name: form.type_extension, extended_type: CoreShop\Bundle\AddressBundle\Form\Type\AddressType }
+
+    CoreShop\Bundle\CoreBundle\Form\Extension\CartCreationTypeExtension:
         tags:
             - { name: form.type }
 

@@ -75,6 +75,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function getCompany()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCompany($company)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGender()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

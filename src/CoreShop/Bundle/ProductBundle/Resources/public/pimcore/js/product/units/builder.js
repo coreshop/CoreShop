@@ -88,7 +88,7 @@ coreshop.product.unit.builder = Class.create({
                 unitValue: defaultUnitDefinition !== null ? defaultUnitDefinition.unit.id : this.getDefaultUnitStoreValue(),
                 precisionLabel: 'coreshop_product_unit_precision',
                 precisionName: 'defaultUnitDefinition.precision',
-                precisionValue: hasId && !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
+                precisionValue: defaultUnitDefinition !== null && !isNaN(defaultUnitDefinition.precision) ? defaultUnitDefinition.precision : 0,
             }, true);
 
         return Ext.create('Ext.form.Panel', {
@@ -164,7 +164,7 @@ coreshop.product.unit.builder = Class.create({
     },
 
     getAdditionalUnitDefinitions: function () {
-        var defaultUnit = this.getDefaultUnitDefinition(),
+        var defaultUnitDefinition = this.getDefaultUnitDefinition(),
             unitDefinitions = this.getDataValue('unitDefinitions'),
             additionalUnits = [];
 
@@ -172,9 +172,9 @@ coreshop.product.unit.builder = Class.create({
             return [];
         }
 
-        Ext.Array.each(unitDefinitions, function (unit) {
-            if (unit['id'] !== defaultUnit['id']) {
-                additionalUnits.push(unit);
+        Ext.Array.each(unitDefinitions, function (unitDefinition) {
+            if (unitDefinition.hasOwnProperty('unit') && unitDefinition.unit.id !== defaultUnitDefinition.unit.id) {
+                additionalUnits.push(unitDefinition);
             }
         });
 
@@ -289,11 +289,40 @@ coreshop.product.unit.builder = Class.create({
     },
 
     dispatchUnitDefinitionChangeEvent: function () {
+
+        var values = this.convertDotNotationToObject(this.getValues()),
+            additionalUnitDefinitions = this.getAdditionalUnitDefinitions();
+
+        if (values.hasOwnProperty('additionalUnitDefinitions')) {
+            Ext.Object.each(values.additionalUnitDefinitions, function (index, additionalUnitDefinition) {
+                var unitId = null, id = null;
+                if (additionalUnitDefinition.hasOwnProperty('unit')) {
+                    unitId = additionalUnitDefinition.unit;
+                }
+
+                if (Ext.isArray(additionalUnitDefinitions)) {
+                    Ext.Array.each(additionalUnitDefinitions, function (additionalUnitDefinition) {
+                        if (additionalUnitDefinition.hasOwnProperty('id')
+                            && additionalUnitDefinition.hasOwnProperty('unit')
+                            && Ext.isObject(additionalUnitDefinition.unit)
+                            && additionalUnitDefinition.unit.id === unitId) {
+                            id = additionalUnitDefinition.id;
+                        }
+
+                    }.bind(this));
+                }
+
+                if (id !== null) {
+                    values.additionalUnitDefinitions[index].id = id;
+                }
+            });
+        }
+
         coreshop.broker.fireEvent(
             'pimcore.object.tags.coreShopProductUnitDefinitions.change',
             {
                 objectId: this.objectId,
-                availableUnitDefinitions: this.convertDotNotationToObject(this.getValues())
+                availableUnitDefinitions: values
             }
         );
     },

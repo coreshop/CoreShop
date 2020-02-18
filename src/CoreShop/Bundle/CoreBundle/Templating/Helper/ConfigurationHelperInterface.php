@@ -21,7 +21,7 @@ interface ConfigurationHelperInterface extends HelperInterface
      * @param string         $name
      * @param StoreInterface $store
      *
-     * @return array
+     * @return mixed
      */
     public function getConfiguration($name, StoreInterface $store = null);
 }

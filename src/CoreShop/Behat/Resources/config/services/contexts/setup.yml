@@ -56,6 +56,7 @@ services:
             - '@coreshop.factory.country'
             - '@coreshop.repository.country'
             - '@coreshop.context.country.fixed'
+            - '%kernel.project_dir%'
         tags:
             - { name: fob.context_service }
 
@@ -317,5 +318,19 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.product_unit'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.version:
+        class: CoreShop\Behat\Context\Setup\VersionContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.recycle_bin:
+        class: CoreShop\Behat\Context\Setup\RecycleBinContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }

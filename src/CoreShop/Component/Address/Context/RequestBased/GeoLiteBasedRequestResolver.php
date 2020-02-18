@@ -16,6 +16,7 @@ use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use GeoIp2\Database\Reader;
+use Pimcore\Cache\Core\CoreHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
@@ -26,11 +27,31 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     private $countryRepository;
 
     /**
-     * @param CountryRepositoryInterface $countryRepository
+     * @var CoreHandlerInterface
      */
-    public function __construct(CountryRepositoryInterface $countryRepository)
+    private $cache;
+
+    /**
+     * @var string
+     */
+    private $geoDbFile;
+
+    /**
+     * @var string
+     */
+    private $geoDbFallbackFile;
+
+    /**
+     * @param CountryRepositoryInterface $countryRepository
+     * @param CoreHandlerInterface       $cache
+     * @param string                     $geoDbFile
+     */
+    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache, string $geoDbFile = null)
     {
         $this->countryRepository = $countryRepository;
+        $this->cache = $cache;
+        $this->geoDbFile = $geoDbFile;
+        $this->geoDbFallbackFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
     }
 
     /**
@@ -38,30 +59,73 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     public function findCountry(Request $request)
     {
-        $geoDbFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
+        $geoDbFileLocation = $this->geoDbFile;
+
+        if (!file_exists($geoDbFileLocation)) {
+            @trigger_error(
+                'You are still using the default search path for the MaxMind GEO DB File. Pimcore introduced a new parameter for the file, use that instead.',
+                E_USER_DEPRECATED
+            );
+
+            $geoDbFileLocation = $this->geoDbFallbackFile;
+        }
+
+        if (!file_exists($geoDbFileLocation)) {
+            throw new CountryNotFoundException();
+        }
+
         $record = null;
+        $isoCode = null;
+        $clientIp = $request->getClientIp();
 
-        if (file_exists($geoDbFile)) {
-            try {
-                $reader = new Reader($geoDbFile);
+        if ($this->checkIfIpIsPrivate($clientIp)) {
+            throw new CountryNotFoundException();
+        }
 
-                $clientIp = $request->getClientIp();
+        $cacheKey = sprintf('geo_lite_ip_%s', md5($clientIp));
 
-                if (!$this->checkIfIpIsPrivate($clientIp)) {
-                    $record = $reader->city($clientIp);
+        if ($countryIsoCode = $this->cache->load($cacheKey)) {
+            $country = $this->countryRepository->findByCode($countryIsoCode);
 
-                    $country = $this->countryRepository->findByCode($record->country->isoCode);
-
-                    if ($country instanceof CountryInterface) {
-                        return $country;
-                    }
-                }
-            } catch (\Exception $e) {
-                //If something goes wrong, ignore the exception and throw a CountryNotFoundException
+            if ($country instanceof CountryInterface) {
+                return $country;
             }
         }
 
-        throw new CountryNotFoundException();
+        $countryIsoCode = $this->guessCountryByGeoLite($clientIp, $geoDbFileLocation);
+
+        if ($countryIsoCode === null) {
+            throw new CountryNotFoundException();
+        }
+
+        $country = $this->countryRepository->findByCode($countryIsoCode);
+
+        if (!$country instanceof CountryInterface) {
+            throw new CountryNotFoundException();
+        }
+
+        $this->cache->save($cacheKey, $countryIsoCode, [], 24*60*60);
+
+        return $country;
+    }
+
+    /**
+     * @param string $clientIp
+     * @param string $geoDbFileLocation
+     *
+     * @return string|null
+     */
+    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation)
+    {
+        try {
+            $reader = new Reader($geoDbFileLocation);
+            $record = $reader->city($clientIp);
+            return $record->country->isoCode;
+        } catch (\Exception $e) {
+            //If something goes wrong, ignore the exception and throw a CountryNotFoundException
+        }
+
+        return null;
     }
 
     /**
@@ -73,7 +137,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private function checkIfIpIsPrivate($clientIp)
     {
-        $priAddrs = [
+        $privateAddresses = [
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
@@ -82,8 +146,8 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         ];
 
         $longIp = ip2long($clientIp);
-        if ($longIp != -1) {
-            foreach ($priAddrs as $priAddr) {
+        if ($longIp !== -1) {
+            foreach ($privateAddresses as $priAddr) {
                 list($start, $end) = explode('|', $priAddr);
 
                 // IF IS PRIVATE
