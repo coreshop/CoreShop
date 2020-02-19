@@ -123,6 +123,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function getUsername()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPassword()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -242,14 +258,6 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         $roles[] = static::CORESHOP_ROLE_DEFAULT;
 
         return array_unique($roles);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
-    {
-        return $this->getEmail();
     }
 
     /**

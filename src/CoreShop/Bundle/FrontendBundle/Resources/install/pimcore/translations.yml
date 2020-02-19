@@ -1067,6 +1067,12 @@ translations:
           en: 'Last Name'
           de: 'Nachname'
 
+  coreshop.form.customer.username:
+      languages:
+          de_CH: 'Benutzername'
+          en: 'Username'
+          de: 'Benutzername'
+
   coreshop.form.customer.email:
       languages:
           de_CH: 'E-Mail-Adresse'
@@ -1150,6 +1156,12 @@ translations:
           de_CH: 'Benutzername'
           en: 'Username'
           de: 'Benutzername'
+
+  coreshop.form.login.email:
+      languages:
+          de_CH: 'E-Mail-Adresse'
+          en: 'Email'
+          de: 'E-Mail-Adresse'
 
   coreshop.form.login.password:
       languages:

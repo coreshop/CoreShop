@@ -42,6 +42,8 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
             $this->registerStack('coreshop', $config['stack'], $container);
         }
 
+        $container->setParameter('coreshop.customer.security.login_identifier', $config['login_identifier']);
+
         $loader->load('services.yml');
 
         $container

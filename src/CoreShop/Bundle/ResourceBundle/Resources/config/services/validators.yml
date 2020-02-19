@@ -3,5 +3,8 @@ services:
         public: true
 
     CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntityValidator:
+        arguments:
+            - '@coreshop.expression_language'
+            - '@service_container'
         tags:
             - { name: validator.constraint_validator, alias: coreshop.unique_entity }

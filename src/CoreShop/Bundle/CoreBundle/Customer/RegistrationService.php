@@ -61,6 +61,11 @@ final class RegistrationService implements RegistrationServiceInterface
     private $addressFolder;
 
     /**
+     * @var string
+     */
+    private $loginIdentifier;
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param ObjectServiceInterface      $objectService
      * @param EventDispatcherInterface    $eventDispatcher
@@ -68,6 +73,7 @@ final class RegistrationService implements RegistrationServiceInterface
      * @param string                      $customerFolder
      * @param string                      $guestFolder
      * @param string                      $addressFolder
+     * @param string                      $loginIdentifier
      */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -76,7 +82,8 @@ final class RegistrationService implements RegistrationServiceInterface
         LocaleContextInterface $localeContext,
         $customerFolder,
         $guestFolder,
-        $addressFolder
+        $addressFolder,
+        $loginIdentifier
     ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
@@ -85,6 +92,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
         $this->addressFolder = $addressFolder;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
@@ -96,7 +104,8 @@ final class RegistrationService implements RegistrationServiceInterface
         $formData,
         $isGuest = false
     ) {
-        $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
+        $loginIdentifierValue = $this->loginIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
+        $existingCustomer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $loginIdentifierValue, false);
 
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();

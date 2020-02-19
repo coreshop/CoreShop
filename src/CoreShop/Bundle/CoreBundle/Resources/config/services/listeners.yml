@@ -72,6 +72,14 @@ services:
             - { name: kernel.event_listener, event: pimcore.dataobject.preDelete, method: checkCustomerOrdersBeforeDeletion }
             - { name: kernel.event_listener, event: pimcore.dataobject.deleteInfo, method: checkCustomerDeletionAllowed }
 
+    CoreShop\Bundle\CoreBundle\EventListener\CustomerSecurityValidationListener:
+        arguments:
+            - '@coreshop.repository.customer'
+            - '%coreshop.model.customer.class%'
+            - '%coreshop.customer.security.login_identifier%'
+        tags:
+            - { name: kernel.event_listener, event: pimcore.dataobject.preUpdate, method: checkCustomerSecurityDataBeforeUpdate }
+
     CoreShop\Bundle\CoreBundle\EventListener\QuantityRangeUnitValidationListener:
         arguments:
             - '@coreshop.repository.product_unit_definition'

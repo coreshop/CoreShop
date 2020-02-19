@@ -15,15 +15,13 @@ CoreShop\Component\Customer\Model\Customer:
     constraints:
         - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
               groups: ['coreshop']
-              fields: ['email']
+              fields: ['container.getParameter("coreshop.customer.security.login_identifier")']
               values: {isGuest: [false, null]}
-              message: 'coreshop.form.customer.email.unique'
+              message: 'container.getParameter("coreshop.customer.security.login_identifier") == "email" ? "coreshop.form.customer.email.unique" : "coreshop.form.customer.username.unique"'
               allowSameEntity: true
 
         - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
               groups: ['coreshop_customer_guest']
-              fields: ['email']
+              fields: ['container.getParameter("coreshop.customer.security.login_identifier")']
               values: {isGuest: [false, null]}
-              message: 'coreshop.form.guest.email_is_customer'
-
-
+              message: 'container.getParameter("coreshop.customer.security.login_identifier") == "email" ? "coreshop.form.guest.email_is_customer" : "coreshop.form.guest.username_is_customer"'
