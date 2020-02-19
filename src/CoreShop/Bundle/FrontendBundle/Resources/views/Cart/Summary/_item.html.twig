@@ -45,7 +45,7 @@
         {% set retailPrice = item.getItemRetailPrice %}
 
         <span class="price-new">{{ currency.convertAndFormat(price) }}</span>
-        {% if price < discountPrice %}
+        {% if price < retailPrice %}
             <span class="price-old">{{ currency.convertAndFormat(discountPrice) }} {% if discount > 0 %}(-{{ currency.convertAndFormat(discount) }}{% endif %})</span>
         {% endif %}
     </td>
