@@ -47,7 +47,7 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
             ->add('objectKey', TextType::class)
             ->add('columnType', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('getter', IndexColumnGetterChoiceType::class)

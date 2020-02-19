@@ -17,9 +17,23 @@ use CoreShop\Bundle\RuleBundle\Form\Type\Rule\Condition\AbstractNestedConfigurat
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedConfigurationType
 {
+    /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,7 +42,9 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
         parent::buildForm($builder, $options);
 
         $builder
-            ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class);
+            ->add('conditions', ProductSpecificPriceRuleConditionCollectionType::class, [
+                'constraints' => [new Valid(['groups' => $this->validationGroups])]
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
