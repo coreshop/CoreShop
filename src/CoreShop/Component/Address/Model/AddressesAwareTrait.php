@@ -59,6 +59,20 @@ trait AddressesAwareTrait
     /**
      * {@inheritdoc}
      */
+    public function removeAddress(AddressInterface $address)
+    {
+        if (!$this->hasAddress($address)) {
+            return;
+        }
+
+        $this->setAddresses(array_filter($this->getAddresses(), function (AddressInterface $storedAddress) use ($address) {
+            return $storedAddress->getId() !== $address->getId();
+        }));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAddresses()
     {
         return $this->addresses;

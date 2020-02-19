@@ -21,19 +21,34 @@ use Symfony\Component\Form\FormBuilderInterface;
 class CustomerLoginType extends AbstractType
 {
     /**
+     * @var string
+     */
+    protected $loginIdentifier;
+
+    /**
+     * @param string $loginIdentifier
+     */
+    public function __construct($loginIdentifier)
+    {
+        $this->loginIdentifier = $loginIdentifier;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $loginIdentifierLabel = sprintf('coreshop.form.login.%s', $this->loginIdentifier);
+
         $builder
             ->add('_username', TextType::class, [
-                'label' => 'coreshop.form.login.username',
+                'label' => $loginIdentifierLabel,
             ])
             ->add('_password', PasswordType::class, [
                 'label' => 'coreshop.form.login.password',
             ])
             ->add('_remember_me', CheckboxType::class, [
-                'label' => 'coreshop.form.login.remember_me',
+                'label'    => 'coreshop.form.login.remember_me',
                 'required' => false,
             ]);
     }

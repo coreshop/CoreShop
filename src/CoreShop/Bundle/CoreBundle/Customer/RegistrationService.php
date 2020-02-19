@@ -18,6 +18,7 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,6 +32,7 @@ final class RegistrationService implements RegistrationServiceInterface
     private $customerFolder;
     private $guestFolder;
     private $addressFolder;
+    private $loginIdentifier;
 
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -39,7 +41,8 @@ final class RegistrationService implements RegistrationServiceInterface
         LocaleContextInterface $localeContext,
         string $customerFolder,
         string $guestFolder,
-        string $addressFolder
+        string $addressFolder,
+        string $loginIdentifier
     ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
@@ -48,6 +51,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
         $this->addressFolder = $addressFolder;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
@@ -59,7 +63,8 @@ final class RegistrationService implements RegistrationServiceInterface
         array $formData,
         bool $isGuest = false
     ): void {
-        $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
+        $loginIdentifierValue = $this->loginIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
+        $existingCustomer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $loginIdentifierValue, false);
 
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
@@ -75,7 +80,11 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
         $customer->setLocaleCode($this->localeContext->getLocaleCode());
-        $customer->save();
+
+        // save customer without version: the real one comes with the next save!
+        VersionHelper::useVersioning(function () use ($customer) {
+            $customer->save();
+        }, false);
 
         $address->setPublished(true);
         $address->setKey(uniqid());

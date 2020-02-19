@@ -149,6 +149,12 @@ translations:
           en: 'Customer'
           de: 'Kunde'
 
+  coreshop.ui.company_address:
+      languages:
+          de_CH: 'Unternehmensadresse'
+          en: 'Company address'
+          de: 'Unternehmensadresse'
+
   coreshop.ui.date:
       languages:
           de_CH: 'Datum'
@@ -1013,6 +1019,24 @@ translations:
           en: 'Error confirming your e-mail address.'
           de: 'Während der Bestätigung Ihrer E-Mail-Adresse ist ein Fehler aufgetreten.'
 
+  coreshop.form.customer.address_affiliation:
+      languages:
+          de_CH: 'Adresszugehörigkeit'
+          en: 'Address Affiliation'
+          de: 'Adresszugehörigkeit'
+
+  coreshop.form.customer.address_affiliation.own:
+      languages:
+          de_CH: 'Eigene'
+          en: 'Own'
+          de: 'Eigene'
+
+  coreshop.form.customer.address_affiliation.company:
+      languages:
+          de_CH: 'Unternehmen'
+          en: 'Company'
+          de: 'Unternehmen'
+
   coreshop.form.customer.salutation:
       languages:
           de_CH: 'Anrede'
@@ -1042,6 +1066,12 @@ translations:
           de_CH: 'Nachname'
           en: 'Last Name'
           de: 'Nachname'
+
+  coreshop.form.customer.username:
+      languages:
+          de_CH: 'Benutzername'
+          en: 'Username'
+          de: 'Benutzername'
 
   coreshop.form.customer.email:
       languages:
@@ -1126,6 +1156,12 @@ translations:
           de_CH: 'Benutzername'
           en: 'Username'
           de: 'Benutzername'
+
+  coreshop.form.login.email:
+      languages:
+          de_CH: 'E-Mail-Adresse'
+          en: 'Email'
+          de: 'E-Mail-Adresse'
 
   coreshop.form.login.password:
       languages:

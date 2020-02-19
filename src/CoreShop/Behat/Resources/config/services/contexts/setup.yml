@@ -309,3 +309,10 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.recycle_bin:
+        class: CoreShop\Behat\Context\Setup\RecycleBinContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }

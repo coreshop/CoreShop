@@ -20,6 +20,19 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 final class ClassificationStoreGetterFormType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -27,7 +40,7 @@ final class ClassificationStoreGetterFormType extends AbstractType
         $builder
             ->add('classificationStoreField', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ]);
     }

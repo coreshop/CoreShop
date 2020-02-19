@@ -254,3 +254,10 @@ services:
             - '@knp_menu.menu_provider'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.domain.recycle_bin:
+        class: CoreShop\Behat\Context\Domain\RecycleBinContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
