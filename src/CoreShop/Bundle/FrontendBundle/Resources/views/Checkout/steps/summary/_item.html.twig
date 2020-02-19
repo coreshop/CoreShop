@@ -31,15 +31,12 @@
         {% set retailPrice = item.getItemRetailPrice %}
 
         {% if price < retailPrice %}
-            <span class="price-old">
-                {% if discountPrice > 0 %}
-                    {{ currency.convertAndFormat(discountPrice) }}
-                {% endif %}
-
-                {% if discount > 0 %}
-                    (-{{ currency.convertAndFormat(discount) }})
-                {% endif %}
-            </span>
+            {% if discountPrice > 0 %}
+                <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+            {% endif %}
+            {% if discount > 0 %}
+                <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
+            {% endif %}
         {% endif %}
 
         {{ currency.convertAndFormat(price) }}

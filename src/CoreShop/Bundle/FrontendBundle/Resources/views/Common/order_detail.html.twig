@@ -94,15 +94,12 @@
                         <span class="price-new">{{ currency.format(price, order.getCurrency.isoCode) }}</span>
 
                         {% if price < retailPrice %}
-                            <span class="price-old">
-                                {% if discountPrice > 0 %}
-                                    {{ currency.format(discountPrice, order.getCurrency.isoCode) }}
-                                {% endif %}
-
-                                {% if discount > 0 %}
-                                    (-{{ currency.format(discount, order.getCurrency.isoCode) }})
-                                {% endif %}
-                            </span>
+                            {% if discountPrice > 0 %}
+                                <span class="price-old">{{ currency.format(discountPrice, order.getCurrency.isoCode) }}</span>
+                            {% endif %}
+                            {% if discount > 0 %}
+                                <span class="price-discount">(-{{ currency.format(discount, order.getCurrency.isoCode) }})</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td class="text-right cart-item-total-price">
