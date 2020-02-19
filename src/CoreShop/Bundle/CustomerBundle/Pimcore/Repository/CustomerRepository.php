@@ -82,7 +82,7 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findUniqueByEmail(string $email, bool $isGuest)
+    public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface
     {
         return $this->findUniqueByLoginIdentifier('email', $email, $isGuest);
     }
