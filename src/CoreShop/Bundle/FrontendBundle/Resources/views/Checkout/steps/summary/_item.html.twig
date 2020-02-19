@@ -26,10 +26,20 @@
     </td>
     <td class="text-right cart-item-price">
         {% set price = item.getItemPrice %}
+        {% set discount = item.getItemDiscount %}
+        {% set discountPrice = item.getItemDiscountPrice %}
         {% set retailPrice = item.getItemRetailPrice %}
 
-        {% if price != retailPrice %}
-            <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+        {% if price < retailPrice %}
+            <span class="price-old">
+                {% if discountPrice > 0 %}
+                    {{ currency.convertAndFormat(discountPrice) }}
+                {% endif %}
+
+                {% if discount > 0 %}
+                    (-{{ currency.convertAndFormat(discount) }})
+                {% endif %}
+            </span>
         {% endif %}
 
         {{ currency.convertAndFormat(price) }}
