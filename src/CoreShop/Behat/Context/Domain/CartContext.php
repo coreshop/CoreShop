@@ -520,4 +520,167 @@ final class CartContext implements Context
             );
         }
     }
+
+    /**
+     * @Then /^the cart item with (product) should have discount-price with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have discount-price with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveADiscountPriceWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemDiscountPrice(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have discount-price with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have discount-price with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveADiscountPriceWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemDiscountPrice(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have discount with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have discount with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveADiscountWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemDiscount(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have discount with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have discount with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveADiscountWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemDiscount(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have total with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have total with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveATotalWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getTotal(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have total with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have total with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveATotalWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getTotal(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have retail-price with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have retail-price with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveARetailWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemRetailPrice(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have retail-price with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have retail-price with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveARetalWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var CartItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getItemRetailPrice(false),
+            $price
+        );
+    }
+
+    protected function findCartItemByProduct(CartInterface $cart, ProductInterface $product)
+    {
+        foreach ($cart->getItems() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $product->getId()) {
+                return $cartItem;
+            }
+        }
+
+        throw new \Exception('Cart Item not found');
+    }
 }
