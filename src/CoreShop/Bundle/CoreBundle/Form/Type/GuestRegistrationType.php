@@ -22,6 +22,26 @@ use Symfony\Component\Validator\Constraints\Valid;
 class GuestRegistrationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @var string[]
+     */
+    protected $validationGroupsGuest = [];
+
+    /**
+     * @param string[] $validationGroups
+     * @param string[] $validationGroupsGuest
+     */
+    public function __construct(array $validationGroups, array $validationGroupsGuest)
+    {
+        $this->validationGroups = $validationGroups;
+        $this->validationGroupsGuest = $validationGroupsGuest;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -34,7 +54,7 @@ class GuestRegistrationType extends AbstractType
                 ],
                 'guest' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop_customer_guest']]),
+                    new Valid(['groups' => [$this->validationGroupsGuest]]),
                 ],
             ])
             ->add('address', AddressType::class, [
@@ -43,7 +63,7 @@ class GuestRegistrationType extends AbstractType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => [$this->validationGroups]]),
                 ],
             ])
 

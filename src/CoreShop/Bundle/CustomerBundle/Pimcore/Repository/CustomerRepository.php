@@ -53,12 +53,12 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
-    public function findUniqueByEmail($email, $isGuest)
+    public function findUniqueByLoginIdentifier(string $identifier, $value, $isGuest)
     {
         $list = $this->getList();
 
-        $conditions = ['email = ?'];
-        $conditionsValues = [$email];
+        $conditions = [sprintf('%s = ?', $identifier)];
+        $conditionsValues = [$value];
         $conditionsValues[] = $isGuest ? 1 : 0;
 
         if (!$isGuest) {
@@ -82,6 +82,22 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     /**
      * {@inheritdoc}
      */
+    public function findUniqueByEmail($email, $isGuest)
+    {
+        return $this->findUniqueByLoginIdentifier('email', $email, $isGuest);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findUniqueByUsername($username, $isGuest)
+    {
+        return $this->findUniqueByLoginIdentifier('username', $username, $isGuest);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findGuestByEmail($email)
     {
         return $this->findUniqueByEmail($email, true);
@@ -93,5 +109,13 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
     public function findCustomerByEmail($email)
     {
         return $this->findUniqueByEmail($email, false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findCustomerByUsername($username)
+    {
+        return $this->findUniqueByUsername($username, false);
     }
 }

@@ -20,6 +20,19 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 final class BrickGetterFormType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -27,7 +40,7 @@ final class BrickGetterFormType extends AbstractType
         $builder
             ->add('brickField', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ]);
     }

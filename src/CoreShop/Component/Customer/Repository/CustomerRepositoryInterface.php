@@ -36,7 +36,18 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
     public function findByNewsletterToken($newsletterToken);
 
     /**
-     * Find Customer by email.
+     * Find Customer by Identifier.
+     *
+     * @param string $identifier
+     * @param string $value
+     * @param bool   $isGuest
+     *
+     * @return mixed
+     */
+    public function findUniqueByLoginIdentifier(string $identifier, $value, $isGuest);
+
+    /**
+     * Find Customer by Email.
      *
      * @param string $email
      * @param bool   $isGuest
@@ -44,6 +55,16 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      * @return CustomerInterface|null
      */
     public function findUniqueByEmail($email, $isGuest);
+
+    /**
+     * Find Customer by Username.
+     *
+     * @param string $username
+     * @param bool   $isGuest
+     *
+     * @return CustomerInterface|null
+     */
+    public function findUniqueByUsername($username, $isGuest);
 
     /**
      * Find Guest Customer by Email.
@@ -62,4 +83,13 @@ interface CustomerRepositoryInterface extends PimcoreRepositoryInterface
      * @return CustomerInterface|null
      */
     public function findCustomerByEmail($email);
+
+    /**
+     * Find Customer by Username.
+     *
+     * @param string $username
+     *
+     * @return CustomerInterface|null
+     */
+    public function findCustomerByUsername($username);
 }

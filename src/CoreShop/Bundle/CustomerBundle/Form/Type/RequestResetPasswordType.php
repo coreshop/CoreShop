@@ -14,7 +14,9 @@ namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RequestResetPasswordType extends AbstractType
 {
@@ -23,10 +25,12 @@ class RequestResetPasswordType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('email', EmailType::class, [
-                'label' => 'coreshop.form.customer.email',
-            ]);
+        $identifier = $options['reset_identifier'];
+        $typeClass = $identifier === 'email' ? EmailType::class : TextType::class;
+
+        $builder->add($identifier, $typeClass, [
+            'label' => sprintf('coreshop.form.customer.%s', $identifier)
+        ]);
     }
 
     /**
@@ -35,5 +39,15 @@ class RequestResetPasswordType extends AbstractType
     public function getBlockPrefix()
     {
         return 'coreshop_request_reset_password';
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefault('reset_identifier', 'email');
+        $resolver->setAllowedTypes('reset_identifier', 'string');
+        $resolver->setAllowedValues('reset_identifier', ['email', 'username']);
     }
 }

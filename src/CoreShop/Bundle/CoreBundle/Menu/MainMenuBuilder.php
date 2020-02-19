@@ -272,6 +272,31 @@ class MainMenuBuilder implements MenuBuilderInterface
             ->setAttribute('function', 'filter')
             ->setExtra('order', 20);
 
+        $customersMenu = $menuItem
+            ->addChild('coreshop_customer')
+            ->setLabel('coreshop_customer')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer')
+            ->setAttribute('container', true)
+            ->setExtra('order', 81);
+
+        $customersMenu
+            ->addChild('coreshop_customer_to_company_assign_to_new')
+            ->setLabel('coreshop_customer_to_company_assign_to_new')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_new')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_new')
+            ->setAttribute('resource', 'coreshop.core')
+            ->setAttribute('function', 'customer_to_company_assign_to_new')
+            ->setExtra('order', 10);
+
+        $customersMenu
+            ->addChild('coreshop_customer_to_company_assign_to_existing')
+            ->setLabel('coreshop_customer_to_company_assign_to_existing')
+            ->setAttribute('permission', 'coreshop_permission_ctc_assign_to_existing')
+            ->setAttribute('iconCls', 'coreshop_nav_icon_customer_to_company_assign_to_existing')
+            ->setAttribute('resource', 'coreshop.core')
+            ->setAttribute('function', 'customer_to_company_assign_to_existing')
+            ->setExtra('order', 20);
+
         $menuItem->addChild('coreshop_notification_rules')
             ->setLabel('coreshop_notification_rules')
             ->setAttribute('permission', 'coreshop_permission_notification')

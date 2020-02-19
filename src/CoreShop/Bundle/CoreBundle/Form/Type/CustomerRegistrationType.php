@@ -24,6 +24,19 @@ use Symfony\Component\Validator\Constraints\Valid;
 class CustomerRegistrationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -36,7 +49,7 @@ class CustomerRegistrationType extends AbstractType
                 ],
                 'allow_password_field' => true,
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('address', AddressType::class, [
@@ -45,14 +58,14 @@ class CustomerRegistrationType extends AbstractType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => ['coreshop']]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
             ->add('termsAccepted', CheckboxType::class, array(
                 'label' => 'coreshop.form.customer.terms',
                 'mapped' => false,
-                'validation_groups' => ['coreshop'],
-                'constraints' => new IsTrue(['groups' => ['coreshop']]),
+                'validation_groups' => $this->validationGroups,
+                'constraints' => new IsTrue(['groups' => $this->validationGroups]),
             ))
             ->add('submit', SubmitType::class);
     }

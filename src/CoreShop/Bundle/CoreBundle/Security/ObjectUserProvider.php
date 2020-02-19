@@ -32,26 +32,38 @@ class ObjectUserProvider implements UserProviderInterface
     protected $className;
 
     /**
+     * @var string
+     */
+    protected $loginIdentifier;
+
+    /**
      * @param CustomerRepositoryInterface $customerRepository
      * @param string                      $className
+     * @param string                      $loginIdentifier
      */
-    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
+    public function __construct(
+        CustomerRepositoryInterface $customerRepository,
+        $className,
+        $loginIdentifier
+    )
     {
         $this->customerRepository = $customerRepository;
         $this->className = $className;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($emailAddress)
+    public function loadUserByUsername($userNameOrEmailAddress)
     {
-        $customer = $this->customerRepository->findCustomerByEmail($emailAddress);
+        $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $userNameOrEmailAddress, false);
+
         if ($customer instanceof CustomerInterface) {
             return $customer;
         }
 
-        throw new UsernameNotFoundException(sprintf('User with email address %s was not found', $emailAddress));
+        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $userNameOrEmailAddress));
     }
 
     /**

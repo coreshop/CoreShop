@@ -19,6 +19,19 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ObjectPropertyInterpreterFormType extends AbstractType
 {
+     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +40,7 @@ final class ObjectPropertyInterpreterFormType extends AbstractType
         $builder
             ->add('property', TextType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
                 ],
             ]);
     }

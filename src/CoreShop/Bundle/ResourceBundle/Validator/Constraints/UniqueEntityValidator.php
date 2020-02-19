@@ -15,6 +15,9 @@ namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Concrete;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
@@ -22,6 +25,49 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
+    /**
+     * @var ExpressionLanguage
+     */
+    protected $expressionLanguage;
+
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
+     * @param ExpressionLanguage $expressionLanguage
+     * @param ContainerInterface $container
+     */
+    public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
+    {
+        $this->expressionLanguage = $expressionLanguage;
+        $this->container = $container;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    protected function evaluateExpression($value)
+    {
+        if (is_array($value)) {
+            foreach ($value as $i => $item) {
+                $value[$i] = $this->evaluateExpression($item);
+            }
+
+            return $value;
+        }
+
+        try {
+            return $this->expressionLanguage->evaluate($value, ['container' => $this->container,]);
+        } catch (SyntaxError $e) {
+            // do not throw any exception but simple return value instead
+            return $value;
+        }
+    }
+
     /**
      * @param Concrete   $entity
      * @param Constraint $constraint
@@ -38,7 +84,7 @@ final class UniqueEntityValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint->fields, 'array');
         }
 
-        $fields = (array)$constraint->fields;
+        $fields = $this->evaluateExpression((array)$constraint->fields);
 
         if (0 === count($fields)) {
             throw new ConstraintDefinitionException('At least one field has to be specified.');
@@ -108,7 +154,7 @@ final class UniqueEntityValidator extends ConstraintValidator
                 return;
             }
 
-            $this->context->buildViolation($constraint->message)
+            $this->context->buildViolation($this->evaluateExpression($constraint->message))
                 ->atPath($errorPath)
                 ->setParameter('{{ value }}', $criteria[$fields[0]])
                 ->setInvalidValue($criteria[$fields[0]])
