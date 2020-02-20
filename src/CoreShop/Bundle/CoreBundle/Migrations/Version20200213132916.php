@@ -15,7 +15,7 @@ class Version20200213132916 extends AbstractPimcoreMigration
      */
     public function up(Schema $schema)
     {
-        $this->addSql('alter table coreshop_carrier add cartBasedTaxation tinyint(1) not null after logo;');
+        $this->addSql('ALTER TABLE coreshop_carrier ADD taxStrategy VARCHAR(255) DEFAULT NULL AFTER logo;');
     }
 
     /**

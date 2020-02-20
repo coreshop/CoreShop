@@ -4,5 +4,3 @@ CoreShop\Component\Shipping\Model\Carrier:
             - NotBlank: { groups: [coreshop] }
         isFree:
             - Type: { type: boolean }
-        cartBasedTaxation:
-            - Type: { type: boolean }

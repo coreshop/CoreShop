@@ -23,9 +23,10 @@ CoreShop\Component\Shipping\Model\Carrier:
             column: logo
             type: pimcoreAsset
             nullable: true
-        cartBasedTaxation:
-            column: cartBasedTaxation
-            type: boolean
+        taxStrategy:
+            column: taxStrategy
+            type: string
+            nullable: true
         creationDate:
             type: datetime
             gedmo:

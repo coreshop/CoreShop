@@ -53,9 +53,9 @@ class Carrier extends AbstractResource implements CarrierInterface
     private $logo;
 
     /**
-     * @var bool
+     * @var string
      */
-    private $cartBasedTaxation = false;
+    private $taxStrategy;
 
     /**
      * @var Collection|ShippingRuleGroupInterface[]
@@ -176,17 +176,17 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getCartBasedTaxation()
+    public function getTaxStrategy()
     {
-        return $this->cartBasedTaxation;
+        return $this->taxStrategy;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCartBasedTaxation($cartBasedTaxation)
+    public function setTaxStrategy($taxStrategy)
     {
-        $this->cartBasedTaxation = $cartBasedTaxation;
+        $this->taxStrategy = $taxStrategy;
     }
 
     /**
