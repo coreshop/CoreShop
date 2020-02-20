@@ -25,7 +25,42 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
         add: '/admin/coreshop/carriers/add',
         delete: '/admin/coreshop/carriers/delete',
         get: '/admin/coreshop/carriers/get',
-        list: '/admin/coreshop/carriers/list'
+        list: '/admin/coreshop/carriers/list',
+        config: '/admin/coreshop/carriers/get-config'
+    },
+
+    /**
+     * constructor
+     */
+    initialize: function () {
+        this.getConfig();
+
+        this.panels = [];
+    },
+
+    getConfig: function () {
+        this.taxStrategyStore = new Ext.data.JsonStore({
+            data: []
+        });
+
+        pimcore.globalmanager.add('coreshop_shipping_tax_strategies', this.taxStrategyStore);
+
+        Ext.Ajax.request({
+            url: this.url.config,
+            method: 'get',
+            success: function (response) {
+                try {
+                    var res = Ext.decode(response.responseText);
+
+                    this.taxStrategyStore.loadData(res.taxStrategies);
+
+                    // create layout
+                    this.getLayout();
+                } catch (e) {
+                    //pimcore.helpers.showNotification(t('error'), t('coreshop_save_error'), 'error');
+                }
+            }.bind(this)
+        });
     },
 
     getItemClass: function() {

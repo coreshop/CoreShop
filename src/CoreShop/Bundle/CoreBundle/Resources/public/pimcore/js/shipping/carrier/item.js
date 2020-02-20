@@ -24,12 +24,6 @@ coreshop.carrier.item  = Class.create(coreshop.carrier.item, {
                 value: data.stores
             },
             {
-                xtype: 'checkbox',
-                name: 'cartBasedTaxation',
-                fieldLabel: 'Cartbased Taxation',
-                value: parseInt(data.cartBasedTaxation)
-            },
-            {
                 xtype: 'coreshop.taxRuleGroup',
                 value: data.taxRule
             }

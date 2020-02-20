@@ -125,6 +125,16 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                             bodyStyle: 'padding:10px;'
                         },
                         items: langTabs
+                    },
+                    {
+                        xtype: 'combo',
+                        name: 'taxStrategy',
+                        fieldLabel: 'Steuerberechnung',
+                        value: data.taxStrategy,
+                        store: pimcore.globalmanager.get('coreshop_shipping_tax_strategies'),
+                        queryMode: 'local',
+                        displayField: 'name',
+                        valueField: 'name'
                     }
                 ]
             }]
