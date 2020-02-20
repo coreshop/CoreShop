@@ -12,5 +12,8 @@ services:
 
     coreshop.shipping.tax.strategy.cart_items: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems'
     CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems:
+        arguments:
+            - '@coreshop.collector.taxes'
+            - '@coreshop.taxation.factory.tax_calculator'
         tags:
             - { name: coreshop.shipping.tax.strategy, type: cartItems, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
