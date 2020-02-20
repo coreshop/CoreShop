@@ -31,6 +31,7 @@ class CarrierType extends AbstractResourceType
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
             ->add('logo', PimcoreAssetChoiceType::class)
+            ->add('taxStrategy', ShippingTaxStrategyChoiceType::class)
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => CarrierTranslationType::class,

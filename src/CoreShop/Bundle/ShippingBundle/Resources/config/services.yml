@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/form.yml" }
     - { resource: "services/shipping-rules.yml" }
+    - { resource: "services/shipping-taxation.yml" }
     - { resource: "services/pimcore.yml" }
 
 services:
@@ -54,3 +55,8 @@ services:
         arguments:
             - '@coreshop.carrier.resolver'
             - '@coreshop.carrier.price_calculator'
+
+    coreshop.shipping.tax.strategy.fix_tax_rule: '@CoreShop\Component\Shipping\Taxation\FixTaxRule'
+    CoreShop\Component\Shipping\Taxation\FixTaxRule:
+        tags:
+            - { name: coreshop.shipping.tax.strategy, type: fixTaxRule, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType}

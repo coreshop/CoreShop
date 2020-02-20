@@ -1,0 +1,16 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.shipping.tax.strategy.tax_rule: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule'
+    CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule:
+        arguments:
+            - '@coreshop.collector.taxes'
+            - '@coreshop.taxation.factory.tax_calculator'
+        tags:
+            - { name: coreshop.shipping.tax.strategy, type: taxRule, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
+
+    coreshop.shipping.tax.strategy.cart_items: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems'
+    CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems:
+        tags:
+            - { name: coreshop.shipping.tax.strategy, type: cartItems, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
