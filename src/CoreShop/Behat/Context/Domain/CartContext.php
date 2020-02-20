@@ -518,7 +518,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -537,7 +537,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -556,7 +556,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -575,7 +575,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -594,7 +594,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -613,7 +613,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -632,7 +632,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -651,7 +651,7 @@ final class CartContext implements Context
         $cart = $this->cartContext->getCart();
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $this->findCartItemByProduct($cart, $product);
 
@@ -661,7 +661,7 @@ final class CartContext implements Context
         );
     }
 
-    protected function findCartItemByProduct(CartInterface $cart, ProductInterface $product)
+    protected function findCartItemByProduct(OrderInterface $cart, ProductInterface $product)
     {
         foreach ($cart->getItems() as $cartItem) {
             if ($cartItem->getProduct()->getId() === $product->getId()) {
