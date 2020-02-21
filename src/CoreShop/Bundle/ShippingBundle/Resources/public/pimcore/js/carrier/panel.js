@@ -52,6 +52,8 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
                 try {
                     var res = Ext.decode(response.responseText);
 
+                    res.taxStrategies.forEach(element => element.label = t(element.label));
+
                     this.taxStrategyStore.loadData(res.taxStrategies);
 
                     // create layout

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
-use Symfony\Component\HttpFoundation\Request;
 
 class CarrierController extends ResourceController
 {
@@ -15,7 +14,9 @@ class CarrierController extends ResourceController
         $convertTaxStrategies = [];
         foreach ($taxStrategies as $taxStrategy) {
             $convertTaxStrategies[] = [
-                'name' => $taxStrategy,
+                'value' => $taxStrategy,
+                // key length has a maximum
+                'label' => 'coreshop_shipping_tax_strtgy_' . $taxStrategy
             ];
         }
 
