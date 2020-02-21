@@ -1,5 +1,14 @@
 # Within 2.1
 
+## 2.1.4
+ - Feature:
+    - [CoreBundle] allow store-values to be reset and inherit again (https://github.com/coreshop/CoreShop/pull/1273)
+ - Bugs:
+    - [IndexBundle] Change return type of WorkerInterface::getList (https://github.com/coreshop/CoreShop/pull/1280)
+    - [ThemeBundle] fix default theme-resolvers (https://github.com/coreshop/CoreShop/pull/1281)
+    - [Pimcore] make compatible with Pimcore 6.5 (https://github.com/coreshop/CoreShop/pull/1285)
+    - [Core] fix bug where we calculated item-discount and item-discount-prices (https://github.com/coreshop/CoreShop/pull/1293)
+
 ## 2.1.3
  - Bugs:
     - [Address, Order, Core] fix release (https://github.com/coreshop/CoreShop/pull/1269)
