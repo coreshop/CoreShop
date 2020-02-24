@@ -60,7 +60,7 @@ final class IndexObjectListener
 
             $classDefinition = ClassDefinition::getById($object->getClassId());
             if ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants()) {
-                $this->updateInheritableChildren($object);
+                $this->updateInheritableChildren($object, $isVersionEvent);
             }
         }
     }
@@ -82,7 +82,7 @@ final class IndexObjectListener
                 InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
                     $this->indexUpdaterService->updateIndices($child, $isVersionChange);
                 });
-                $this->updateInheritableChildren($child);
+                $this->updateInheritableChildren($child, $isVersionChange);
             }
         }
     }
