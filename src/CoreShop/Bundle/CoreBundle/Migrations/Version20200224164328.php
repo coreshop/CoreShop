@@ -19,7 +19,7 @@ class Version20200224164328 extends AbstractPimcoreMigration
             $table = $schema->getTable('coreshop_payment');
             if ($table->hasColumn('total_amount')) {
                 if (!$table->getColumn('total_amount')->getType() instanceof BigIntType) {
-                    $this->addSql('ALTER TABLE coreshop_payment CHANGE total_amount total_amount BIGINT NOT NULL;');
+                    $this->addSql('ALTER TABLE coreshop_payment CHANGE total_amount total_amount BIGINT DEFAULT NULL;');
                 }
             }
         }
