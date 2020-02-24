@@ -27,6 +27,16 @@ final class AuthorizePaymentAction implements ActionInterface, GatewayAwareInter
 {
     use GatewayAwareTrait;
 
+     /**
+     * @var int
+     */
+    protected $decimalFactor;
+
+    public function __construct(int $decimalFactor)
+    {
+        $this->decimalFactor = $decimalFactor;
+    }
+
     /**
      * {@inheritdoc}
      *
@@ -46,7 +56,8 @@ final class AuthorizePaymentAction implements ActionInterface, GatewayAwareInter
             } catch (RequestNotSupportedException $e) {
                 $payumPayment = new PayumPayment();
                 $payumPayment->setNumber($payment->getNumber());
-                $payumPayment->setTotalAmount($payment->getTotalAmount());
+                //Payum Payment works with ints with a precision of 2
+                $payumPayment->setTotalAmount(100 * round($payment->getTotalAmount() / $this->decimalFactor, 2));
                 $payumPayment->setCurrencyCode($payment->getCurrency()->getIsoCode());
                 $payumPayment->setDescription($payment->getDescription());
                 $payumPayment->setDetails($payment->getDetails());

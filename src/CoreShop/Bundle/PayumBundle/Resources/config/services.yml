@@ -28,11 +28,15 @@ services:
 
     coreshop.payum_action.authorize_payment: '@CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction'
     CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction:
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: payum.action, all: true, alias: coreshop.authorize_payment }
 
     coreshop.payum_action.capture_payment: '@CoreShop\Bundle\PayumBundle\Action\CapturePaymentAction'
     CoreShop\Bundle\PayumBundle\Action\CapturePaymentAction:
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: payum.action, all: true, alias: coreshop.capture_payment }
 
