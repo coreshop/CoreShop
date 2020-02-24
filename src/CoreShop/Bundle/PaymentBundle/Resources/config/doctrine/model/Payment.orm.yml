@@ -21,7 +21,7 @@ CoreShop\Component\Payment\Model\Payment:
             nullable: true
         totalAmount:
             column: total_amount
-            type: integer
+            type: bigint
             nullable: true
         currencyCode:
             column: currency_code

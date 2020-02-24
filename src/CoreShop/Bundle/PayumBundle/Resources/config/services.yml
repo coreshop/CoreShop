@@ -23,10 +23,10 @@ services:
     CoreShop\Bundle\PayumBundle\Action\ConfirmOrderAction:
         arguments:
             - '@coreshop.state_machine_applier'
-            tags:
-                - { name: payum.action, all: true, alias: coreshop.confirm_order }
+        tags:
+            - { name: payum.action, all: true, alias: coreshop.confirm_order }
 
-    coreshop.payum_action.authorize_payment: 'CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction'
+    coreshop.payum_action.authorize_payment: '@CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction'
     CoreShop\Bundle\PayumBundle\Action\AuthorizePaymentAction:
         tags:
             - { name: payum.action, all: true, alias: coreshop.authorize_payment }
