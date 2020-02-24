@@ -18,8 +18,9 @@ interface IndexUpdaterServiceInterface
      * Update all Indices with $subject.
      *
      * @param mixed $subject
+     * @param bool $isVersionChange
      */
-    public function updateIndices($subject);
+    public function updateIndices($subject, bool $isVersionChange = false);
 
     /**
      * Remove all Indices with $subject.

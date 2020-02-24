@@ -656,6 +656,21 @@ final class PimcoreClassContext implements Context
      */
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
     {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->save();
+    }
+
+    /**
+     * @Given /the (object-instance) has following values as version:/
+     */
+    public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table)
+    {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->saveVersion();
+    }
+
+    private function setObjectValuesFromTable(Concrete $object, TableNode $table)
+    {
         $hash = $table->getHash();
 
         foreach ($hash as $row) {
@@ -726,8 +741,6 @@ final class PimcoreClassContext implements Context
                     break;
             }
         }
-
-        $object->save();
     }
 
     /**

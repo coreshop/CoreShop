@@ -111,6 +111,12 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
                                             this.getIndexWorkerConfig(value);
                                         }.bind(this)
                                     }
+                                },
+                                {
+                                    xtype: 'checkbox',
+                                    fieldLabel: t('coreshop_index_last_version'),
+                                    name: 'indexLastVersion',
+                                    checked: this.data.indexLastVersion
                                 }
                             ]
                         }

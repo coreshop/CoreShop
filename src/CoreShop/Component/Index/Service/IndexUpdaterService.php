@@ -45,9 +45,9 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateIndices($subject)
+    public function updateIndices($subject, bool $isVersionEvent = false)
     {
-        $this->operationOnIndex($subject, 'update');
+        $this->operationOnIndex($subject, 'update', $isVersionEvent);
     }
 
     /**
@@ -61,8 +61,9 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * @param string $subject
      * @param string $operation
+     * @param bool $isVersionChange
      */
-    private function operationOnIndex($subject, $operation = 'update')
+    private function operationOnIndex($subject, $operation = 'update', bool $isVersionChange = false)
     {
         $indices = $this->indexRepository->findAll();
 
@@ -72,6 +73,11 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
             }
 
             if (!$this->isEligible($index, $subject)) {
+                continue;
+            }
+
+            //Don't store version changes into the index!
+            if ($isVersionChange && !$index->getIndexLastVersion()) {
                 continue;
             }
 
