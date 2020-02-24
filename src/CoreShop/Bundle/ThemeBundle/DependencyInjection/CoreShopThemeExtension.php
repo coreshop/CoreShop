@@ -33,15 +33,11 @@ class CoreShopThemeExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        if (!isset($config['default_resolvers'])) {
-            $config['default_resolvers'] = [];
-        }
-
-        if (!isset($config['default_resolvers']['pimcore_site'])) {
+        if (false === $config['default_resolvers']['pimcore_site']) {
             $container->removeDefinition(PimcoreSiteThemeResolver::class);
         }
 
-        if (!isset($config['default_resolvers']['pimcore_document_property'])) {
+        if (false === $config['default_resolvers']['pimcore_document_property']) {
             $container->removeDefinition(PimcoreDocumentPropertyResolver::class);
         }
 
