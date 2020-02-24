@@ -1,6 +1,6 @@
 parameters:
-    coreshop.form.type.customer_registratiom_type.validation_groups: [coreshop]
-    coreshop.form.type.guest_registratiom_type.validation_groups: [coreshop_customer]
+    coreshop.form.type.customer_registration_type.validation_groups: [coreshop]
+    coreshop.form.type.guest_registration_type.validation_groups: [coreshop_customer]
     coreshop.form.type.product_price_rule.condition.quantity.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.action.addition_amount.validation_groups: [coreshop]
     coreshop.form.type.shipping_rule.action.discount_amount.validation_groups: [coreshop]
@@ -18,14 +18,14 @@ services:
 
     CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType:
         arguments:
-            - '%coreshop.form.type.customer_registratiom_type.validation_groups%'
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
         tags:
             - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\GuestRegistrationType:
         arguments:
-            - '%coreshop.form.type.customer_registratiom_type.validation_groups'
-            - '%coreshop.form.type.guest_registratiom_type.validation_groups%'
+            - '%coreshop.form.type.customer_registration_type.validation_groups%'
+            - '%coreshop.form.type.guest_registration_type.validation_groups%'
         tags:
             - { name: form.type }
 
