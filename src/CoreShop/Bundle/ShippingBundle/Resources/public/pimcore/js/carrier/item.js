@@ -129,7 +129,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     {
                         xtype: 'combo',
                         name: 'taxStrategy',
-                        fieldLabel: 'Steuerberechnung',
+                        fieldLabel: t('coreshop_shipping_tax_strategy'),
                         value: data.taxStrategy,
                         queryMode: 'local',
                         valueField: 'value',
