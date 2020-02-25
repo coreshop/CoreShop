@@ -48,7 +48,6 @@ final class CartTaxProcessor implements CartProcessorInterface
      * @param TaxCollectorInterface         $taxCollector
      * @param AddressProviderInterface      $defaultAddressProvider
      * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-    //     * @param iterable                      $taxStrategyTaggedServices
      * @param ServiceRegistry               $registry
      */
     public function __construct(
