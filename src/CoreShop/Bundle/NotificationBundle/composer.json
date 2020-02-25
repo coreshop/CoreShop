@@ -1,42 +1,38 @@
 {
-  "name": "coreshop/notification-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Notification Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/notification-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Notification Bundle",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "coreshop/notification": "^3.0",
+        "coreshop/registry": "^3.0",
+        "coreshop/rule-bundle": "^3.0",
+        "pimcore/pimcore": "^6.5.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\NotificationBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "coreshop/notification": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
-    "pimcore/pimcore": "^6.5.0"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\NotificationBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }
