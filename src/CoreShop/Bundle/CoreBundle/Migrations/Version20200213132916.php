@@ -16,6 +16,7 @@ class Version20200213132916 extends AbstractPimcoreMigration
     public function up(Schema $schema)
     {
         $this->addSql('ALTER TABLE coreshop_carrier ADD taxStrategy VARCHAR(255) DEFAULT NULL AFTER logo;');
+        $this->addSql("UPDATE coreshop_carrier SET `taxStrategy` = 'taxRule' WHERE `taxRuleGroupId` IS NOT NULL;");
     }
 
     /**
