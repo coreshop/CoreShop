@@ -24,17 +24,6 @@ services:
     coreshop.form_registry.shipping_rule.actions:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.registry.shipping.tax.strategies:
-        class: CoreShop\Component\Registry\ServiceRegistry
-        arguments:
-            - CoreShop\Component\Shipping\Taxation\ShippingTaxationInterface
-            - shipping-tax-strategy
-        tags:
-            - { name: coreshop.registry, type_hint: shippingTaxStrategies }
-
-    coreshop.form_registry.shipping.tax.strategies:
-        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
-
     # Shipping Rule Processor
     coreshop.shipping_rule.conditions.processor:
         class: CoreShop\Component\Rule\Condition\RuleConditionsValidationProcessor

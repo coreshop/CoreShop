@@ -2,6 +2,17 @@ services:
     _defaults:
         public: true
 
+    coreshop.registry.shipping.tax.strategies:
+        class: CoreShop\Component\Registry\ServiceRegistry
+        arguments:
+            - CoreShop\Component\Shipping\Taxation\ShippingTaxationInterface
+            - shipping-tax-strategy
+        tags:
+            - { name: coreshop.registry, type_hint: shippingTaxStrategies }
+
+    coreshop.form_registry.shipping.tax.strategies:
+        class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
+
     coreshop.shipping.tax.strategy.tax_rule: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule'
     CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule:
         arguments:
