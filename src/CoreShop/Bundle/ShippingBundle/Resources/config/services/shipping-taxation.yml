@@ -15,5 +15,6 @@ services:
         arguments:
             - '@coreshop.collector.taxes'
             - '@coreshop.taxation.factory.tax_calculator'
+            - '@coreshop.proportional_integer_distributor'
         tags:
             - { name: coreshop.shipping.tax.strategy, type: cartItems, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }

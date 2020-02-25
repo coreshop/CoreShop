@@ -6,12 +6,12 @@ namespace CoreShop\Component\Shipping\Taxation;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
+use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
-use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopAdjustment;
 
 class ShippingTaxationCartItems implements ShippingTaxationInterface
 {
@@ -26,16 +26,20 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
     private $taxCalculationFactory;
 
     /**
-     * @param TaxCollectorInterface $taxCollector
-     * @param TaxCalculatorFactoryInterface $taxCalculationFactory
+     * @var ProportionalIntegerDistributorInterface
      */
+    private $distributor;
+
     public function __construct(
         TaxCollectorInterface $taxCollector,
-        TaxCalculatorFactoryInterface $taxCalculationFactory
+        TaxCalculatorFactoryInterface $taxCalculationFactory,
+        ProportionalIntegerDistributorInterface $distributor
     ) {
         $this->taxCollector = $taxCollector;
         $this->taxCalculationFactory = $taxCalculationFactory;
+        $this->distributor = $distributor;
     }
+
     /**
      * @inheritDoc
      */
@@ -44,13 +48,36 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
         CarrierInterface $carrier,
         AddressInterface $address,
         array $usedTaxes
-    ) {
+    ): array {
         $totalAmount = [];
-        $taxRuleGroup = [];
+        $taxRules = [];
+        $this->collectCartItemsTaxRules($cart, $totalAmount, $taxRules);
 
-        /**
-         * @var CartItemInterface $item
-         */
+        if (!$totalAmount || !$taxRules) {
+            return $usedTaxes;
+        }
+
+        /** @var CoreShopAdjustment[] $shippingAdjustments */
+        $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
+        if (!$shippingAdjustments) {
+            return $usedTaxes;
+        }
+
+        $shippingAdjustment = \array_pop($shippingAdjustments);
+        $shippingPrice = $shippingAdjustment->getPimcoreAmountGross();
+
+        $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingPrice);
+
+        $shippingTaxAmount = $this->collectTaxes($address, $taxRules, $distributedAmount, $usedTaxes);
+
+        $this->updateShippingAdjustment($cart, $shippingAdjustment, $shippingTaxAmount);
+
+        return $usedTaxes;
+    }
+
+    private function collectCartItemsTaxRules(CartInterface $cart, array &$totalAmount, array &$taxRules): void
+    {
+        /** @var CartItemInterface $item */
         foreach ($cart->getItems() as $item) {
             if ($item->getDigitalProduct() === true) {
                 continue;
@@ -62,29 +89,21 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
 
             $taxRule = $item->getProduct()->getTaxRule();
 
-            if (!\in_array($taxRule->getId(), $totalAmount, true)) {
+            if (!\array_key_exists($taxRule->getId(), $totalAmount)) {
                 $totalAmount[$taxRule->getId()] = 0;
             }
 
             $totalAmount[$taxRule->getId()] += $item->getTotal(true);
-            $taxRuleGroup[] = $taxRule;
+            $taxRules[] = $taxRule;
         }
+    }
 
-        if (\count($taxRuleGroup) === 0) {
-            return $usedTaxes;
-        }
-
-        $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
-        if (!$shippingAdjustments) {
-            return $usedTaxes;
-        }
-
-        /** @var Fieldcollection\Data\CoreShopAdjustment $shippingAdjustment */
-        $shippingAdjustment = $shippingAdjustments[0];
-        $shippingPrice = $shippingAdjustment->getPimcoreAmountGross();
-        $distributor = new ProportionalIntegerDistributor();
-        $distributedAmount = $distributor->distribute($totalAmount, $shippingPrice);
-
+    private function collectTaxes(
+        AddressInterface $address,
+        array $taxRuleGroup,
+        array $distributedAmount,
+        array &$usedTaxes
+    ): int {
         $shippingTaxAmount = 0;
         foreach ($distributedAmount as $i => $amount) {
             $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRuleGroup[$i], $address);
@@ -98,10 +117,16 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
             $shippingTaxAmount += \array_shift($shippingTax)->getAmount();
         }
 
+        return $shippingTaxAmount;
+    }
+
+    private function updateShippingAdjustment(
+        CartInterface $cart,
+        CoreShopAdjustment $shippingAdjustment,
+        int $shippingTaxAmount
+    ): void {
         $cart->removeAdjustments(AdjustmentInterface::SHIPPING);
         $shippingAdjustment->setPimcoreAmountNet($shippingAdjustment->getPimcoreAmountGross() - $shippingTaxAmount);
         $cart->addAdjustment($shippingAdjustment);
-
-        return $usedTaxes;
     }
 }

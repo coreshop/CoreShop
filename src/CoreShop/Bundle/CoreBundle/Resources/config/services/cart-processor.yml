@@ -77,5 +77,6 @@ services:
             - '@coreshop.collector.taxes'
             - '@coreshop.provider.store_based_default_address_provider'
             - '@coreshop.taxation.factory.tax_calculator'
+            - '@coreshop.registry.shipping.tax.strategies'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
