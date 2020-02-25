@@ -1,3 +1,4 @@
+---
 coreshop_condition_amount_minAmount: 'Min Gesamtwert'
 coreshop_condition_amount_maxAmount: 'Max Gesamtwert'
 coreshop_action_discountAmount_amount: 'Gesamt'
@@ -29,6 +30,4 @@ coreshop_condition_dimension: 'Dimension'
 coreshop_action_additionAmount: 'Aufschlag Menge'
 coreshop_action_additionPercent: 'Aufschlag Prozent'
 coreshop_shipping: 'Versand'
-coreshop_shipping_tax_strategy: 'Steuerberechnung'
-coreshop_shipping_tax_strtgy_taxRule: 'Anhand der Steuerregel'
-coreshop_shipping_tax_strtgy_cartItems: 'Anhand des Warenartikel'
+coreshop_condition_amount_gross: 'Use Gross Value'
