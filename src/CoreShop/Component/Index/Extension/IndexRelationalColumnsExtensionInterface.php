@@ -10,22 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Index\Interpreter;
+namespace CoreShop\Component\Index\Extension;
 
-interface RelationalValueInterface
+use CoreShop\Component\Index\Model\IndexInterface;
+
+interface IndexRelationalColumnsExtensionInterface extends IndexExtensionInterface
 {
-    /**
-     * @return int
-     */
-    public function getDestinationId();
-
-    /**
-     * @return string
-     */
-    public function getType();
-
     /**
      * @return array
      */
-    public function getParams();
+    public function getRelationalColumns();
 }
