@@ -54,6 +54,11 @@ class Data
     public static $product3;
 
     /**
+     * @var ProductInterface
+     */
+    public static $product4;
+
+    /**
      * @var CategoryInterface
      */
     public static $category1;
@@ -71,7 +76,12 @@ class Data
     /**
      * @var TaxRuleGroupInterface
      */
-    public static $taxRuleGroup;
+    public static $taxRuleGroup20;
+
+    /**
+     * @var TaxRuleGroupInterface
+     */
+    public static $taxRuleGroup10;
 
     /**
      * @var AddressInterface
@@ -134,7 +144,7 @@ class Data
         self::$store = $standardStore = self::get('coreshop.repository.store')->findStandard();
 
         self::createGrossStore();
-        self::createTaxRule();
+        self::createTaxRules();
         self::createTestCarrierWeight();
         //self::createTestCarrierPrice();
         self::createTestProduct();
@@ -154,9 +164,9 @@ class Data
     /**
      * Create Test Tax Rules.
      */
-    public static function createTaxRule()
+    public static function createTaxRules()
     {
-        if (!self::$taxRuleGroup instanceof TaxRuleGroupInterface) {
+        if (!self::$taxRuleGroup20 instanceof TaxRuleGroupInterface) {
             $taxRuleGroupFactory = self::get('coreshop.factory.tax_rule_group');
             $taxRuleFactory = self::get('coreshop.factory.tax_rule');
             $taxRateFactory = self::get('coreshop.factory.tax_rate');
@@ -192,7 +202,40 @@ class Data
             $entityManager->persist($taxRule);
             $entityManager->flush();
 
-            self::$taxRuleGroup = $taxRuleGroup;
+            self::$taxRuleGroup20 = $taxRuleGroup;
+        }
+
+        if (!self::$taxRuleGroup10 instanceof TaxRuleGroupInterface) {
+            $taxRuleGroupFactory = self::get('coreshop.factory.tax_rule_group');
+            $taxRuleFactory = self::get('coreshop.factory.tax_rule');
+            $taxRateFactory = self::get('coreshop.factory.tax_rate');
+            $entityManager = self::get('doctrine.orm.entity_manager');
+
+            /** @var TaxRateInterface $taxRate10 */
+            $taxRate10 = $taxRateFactory->createNew();
+            $taxRate10->setRate(10);
+            $taxRate10->setName('10');
+            $taxRate10->setActive(true);
+
+            /** @var TaxRuleGroupInterface $taxRuleGroup10 */
+            $taxRuleGroup10 = $taxRuleGroupFactory->createNew();
+            $taxRuleGroup10->setName('10');
+            $taxRuleGroup10->setActive(true);
+
+            /** @var TaxRuleInterface $taxRule10 */
+            $taxRule10 = $taxRuleFactory->createNew();
+            $taxRule10->setTaxRuleGroup($taxRuleGroup10);
+            $taxRule10->setTaxRate($taxRate10);
+            $taxRule10->setBehavior(TaxCalculatorInterface::DISABLE_METHOD);
+            $taxRule10->setCountry(self::$store->getBaseCountry());
+            $taxRule10->setState(null);
+
+            $entityManager->persist($taxRate10);
+            $entityManager->persist($taxRuleGroup10);
+            $entityManager->persist($taxRule10);
+            $entityManager->flush();
+
+            self::$taxRuleGroup10 = $taxRuleGroup10;
         }
     }
 
@@ -215,7 +258,7 @@ class Data
             $carrier = $carrierFactory->createNew();
             $carrier->setIdentifier('Test-Carrier-Weight');
             $carrier->setTitle('Test-Carrier-Weight', 'en');
-            $carrier->setTaxRule(self::$taxRuleGroup);
+            $carrier->setTaxRule(self::$taxRuleGroup20);
             $carrier->setIsFree(false);
             $carrier->setDescription('TEST', 'en');
             $carrier->addStore(self::$store);
@@ -317,7 +360,7 @@ class Data
             $product1->setWidth(50);
             $product1->setDepth(50);
             $product1->setWeight(50);
-            $product1->setTaxRule(self::$taxRuleGroup);
+            $product1->setTaxRule(self::$taxRuleGroup20);
             $product1->setParent(Service::createFolderByPath('/coreshop/products'));
             $product1->setKey(File::getValidFilename('test1'));
             //$product1->setStore([Shop::getDefaultShop()->getId()]);
@@ -340,7 +383,7 @@ class Data
             $product2->setWidth(500);
             $product2->setDepth(500);
             $product2->setWeight(500);
-            $product2->setTaxRule(self::$taxRuleGroup);
+            $product2->setTaxRule(self::$taxRuleGroup20);
             $product2->setParent(Service::createFolderByPath('/coreshop/products'));
             $product2->setKey(File::getValidFilename('test2'));
             //$product2->setShops([Shop::getDefaultShop()->getId()]);
@@ -362,13 +405,35 @@ class Data
             $product3->setWidth(100);
             $product3->setDepth(100);
             $product3->setWeight(100);
-            $product3->setTaxRule(self::$taxRuleGroup);
+            $product3->setTaxRule(self::$taxRuleGroup20);
             $product3->setParent(Service::createFolderByPath('/coreshop/products'));
             $product3->setKey(File::getValidFilename('test3'));
             //$product3->setShops([Shop::getDefaultShop()->getId()]);
             $product3->save();
 
             self::$product3 = $product3;
+        }
+
+        if (!self::$product4 instanceof ProductInterface) {
+            /**
+             * @var $product4 ProductInterface
+             */
+            $product4 = $productFactory->createNew();
+            $product4->setName('test4');
+            $product4->setWholesalePrice(5000);
+            $product4->setStorePrice(7500, static::$store);
+            $product4->setStorePrice(6250, static::$storeGrossPrices);
+            $product4->setHeight(800);
+            $product4->setWidth(800);
+            $product4->setDepth(800);
+            $product4->setWeight(800);
+            $product4->setTaxRule(self::$taxRuleGroup10);
+            $product4->setParent(Service::createFolderByPath('/coreshop/products'));
+            $product4->setKey(File::getValidFilename('test4'));
+            //$product4->setShops([Shop::getDefaultShop()->getId()]);
+            $product4->save();
+
+            self::$product4 = $product4;
         }
     }
 
@@ -400,6 +465,22 @@ class Data
         self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product1));
         self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product2));
         self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product3));
+
+        $cart->setShippingAddress(self::$address);
+        $cart->setInvoiceAddress(self::$address);
+
+        self::get('coreshop.cart.manager')->persistCart($cart);
+
+        return $cart;
+    }
+
+    public static function createCartWithProductsWithDifferentTaxRules(): CartInterface
+    {
+        $cart = self::createCart();
+        $factory = self::get('coreshop.factory.cart_item');
+
+        self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product1));
+        self::get('coreshop.cart.modifier')->addToList($cart, $factory->createWithPurchasable(self::$product4));
 
         $cart->setShippingAddress(self::$address);
         $cart->setInvoiceAddress(self::$address);

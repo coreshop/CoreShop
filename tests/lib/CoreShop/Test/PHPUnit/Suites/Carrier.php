@@ -14,7 +14,6 @@ namespace CoreShop\Test\PHPUnit\Suites;
 
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
-use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleActionType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\ShippingRuleConditionType;
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -137,7 +136,7 @@ class Carrier extends RuleTest
         $carrier = $this->createResourceWithForm('carrier', CarrierInterface::class, [
             'label' => 'Test',
             'name' => 'Test',
-            'taxRule' => Data::$taxRuleGroup->getId(),
+            'taxRule' => Data::$taxRuleGroup20->getId(),
         ]);
 
         $this->getEntityManager()->persist($carrier);

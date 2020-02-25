@@ -31,7 +31,7 @@ class BatchListing extends Base
             $this->assertTrue($product instanceof ProductInterface);
         }
 
-        $this->assertEquals(3, count($batch));
+        $this->assertEquals(4, count($batch));
     }
 
     public function testAssetBatchListing()
