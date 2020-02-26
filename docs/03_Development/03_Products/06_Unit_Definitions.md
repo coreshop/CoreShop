@@ -3,7 +3,11 @@
 CoreShop uses Pimcore Data Objects to persist Product Information. But, it adds a little wrapper around it to be more
 dynamic and configurable. It uses a Factory and Repository Pattern to do that.
 
-## Create
+
+
+CoreShop > Product > Product Units
+
+## Create Default Unit Definition
 
 If you want to create a new Product, we need to get our Factory Service for that:
 
@@ -37,7 +41,7 @@ $product->save();
 ```
 
 
-## Update
+## Update Default Unit Definition
 
 Update works the same as you are used to in Pimcore
 
@@ -61,7 +65,7 @@ $product->setUnitDefinitions($unitDefinitions);
 $product->save();
 ```
 
-## Delete
+## Delete Unit Definition
 
 Delete works the same as you are used to in Pimcore
 
