@@ -569,6 +569,7 @@ final class ShippingContext implements Context
         $carrier = $this->carrierFactory->createNew();
         $carrier->setIdentifier($name);
         $carrier->setTitle($name, 'en');
+        $carrier->setTaxStrategy('taxRule');
 
         if ($this->sharedStorage->has('store')) {
             $carrier->addStore($this->sharedStorage->get('store'));
