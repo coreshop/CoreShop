@@ -51,7 +51,7 @@ final class CartContext implements Context
 
     /**
      * @Transform /^my cart/
-     * @Transform /^cart(?:|s)/
+     * @Transform /^cart(?:s)/
      */
     public function cart()
     {

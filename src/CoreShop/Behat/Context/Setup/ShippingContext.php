@@ -551,6 +551,14 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (carrier) uses the tax calculation strategy "([^"]+)"$/
+     */
+    public function theCarrierUsedAsTaxCalculationStrategy(CarrierInterface $carrier, string $strategyKey)
+    {
+        $carrier->setTaxStrategy($strategyKey);
+    }
+
+    /**
      * @param string $name
      */
     private function createCarrier($name)
