@@ -27,3 +27,6 @@ CoreShop\Component\Index\Model\Index:
             expose: true
             type: array
             groups: [Detailed]
+        indexLastVersion:
+            type: boolean
+            groups: [Detailed]

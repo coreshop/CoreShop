@@ -84,4 +84,14 @@ interface IndexInterface extends ResourceInterface, TimestampableInterface
      * @param array $configuration
      */
     public function setConfiguration($configuration);
+
+    /**
+     * @return bool
+     */
+    public function getIndexLastVersion();
+
+    /**
+     * @param bool $indexLastVersion
+     */
+    public function setIndexLastVersion($indexLastVersion);
 }

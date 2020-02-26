@@ -23,4 +23,9 @@ interface RelationalValueInterface
      * @return string
      */
     public function getType();
+
+    /**
+     * @return array
+     */
+    public function getParams();
 }

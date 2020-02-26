@@ -265,7 +265,7 @@ abstract class AbstractWorker implements WorkerInterface
      */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
     {
-        if (is_null($value)) {
+        if (null === $value) {
             return [];
         }
 
@@ -280,6 +280,10 @@ abstract class AbstractWorker implements WorkerInterface
             if ($v instanceof RelationalValueInterface) {
                 $relData['dest'] = $v->getDestinationId();
                 $relData['type'] = $v->getType();
+
+                foreach ($v->getParams() as $key => $val) {
+                    $relData[$key] = $val;
+                }
             } elseif (is_array($v) && array_key_exists('dest', $v) && array_key_exists('type', $v)) {
                 $relData['dest'] = $v['dest'];
                 $relData['type'] = $v['type'];

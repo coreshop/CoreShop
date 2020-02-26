@@ -10,22 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Index\Service;
+namespace CoreShop\Component\Index\Extension;
 
-interface IndexUpdaterServiceInterface
+use CoreShop\Component\Index\Model\IndexInterface;
+
+interface IndexRelationalColumnsExtensionInterface extends IndexExtensionInterface
 {
     /**
-     * Update all Indices with $subject.
-     *
-     * @param mixed $subject
-     * @param bool $isVersionChange
+     * @return array
      */
-    public function updateIndices($subject, bool $isVersionChange = false);
-
-    /**
-     * Remove all Indices with $subject.
-     *
-     * @param mixed $subject
-     */
-    public function removeIndices($subject);
+    public function getRelationalColumns();
 }

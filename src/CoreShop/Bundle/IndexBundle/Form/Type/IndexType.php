@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\IndexBundle\Form\Type;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreClassChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -47,7 +48,8 @@ class IndexType extends AbstractResourceType
             ->add('name', TextType::class)
             ->add('worker', IndexWorkerChoiceType::class)
             ->add('class', PimcoreClassChoiceType::class)
-            ->add('columns', IndexColumnCollectionType::class);
+            ->add('columns', IndexColumnCollectionType::class)
+            ->add('indexLastVersion', CheckboxType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {

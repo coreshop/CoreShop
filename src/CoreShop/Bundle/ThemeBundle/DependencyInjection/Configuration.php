@@ -28,6 +28,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->arrayNode('default_resolvers')
+                    ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('pimcore_site')->defaultFalse()->end()
                         ->booleanNode('pimcore_document_property')->defaultFalse()->end()
