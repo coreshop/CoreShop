@@ -131,6 +131,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                         name: 'taxStrategy',
                         fieldLabel: t('coreshop_shipping_tax_strategy'),
                         value: data.taxStrategy,
+                        forceSelection: true,
                         queryMode: 'local',
                         valueField: 'value',
                         displayField: 'label',
