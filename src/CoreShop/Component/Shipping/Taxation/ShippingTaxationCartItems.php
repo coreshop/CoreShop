@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace CoreShop\Component\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\Carrier;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface;
+use CoreShop\Component\Order\Model\Adjustment;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
-use Pimcore\Model\DataObject\Fieldcollection\Data\CoreShopAdjustment;
 
 class ShippingTaxationCartItems implements ShippingTaxationInterface
 {
@@ -45,7 +45,7 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
      */
     public function calculateShippingTax(
         CartInterface $cart,
-        CarrierInterface $carrier,
+        Carrier $carrier,
         AddressInterface $address,
         array $usedTaxes
     ): array {
@@ -57,14 +57,13 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
             return $usedTaxes;
         }
 
-        /** @var CoreShopAdjustment[] $shippingAdjustments */
         $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
         if (!$shippingAdjustments) {
             return $usedTaxes;
         }
 
         $shippingAdjustment = \array_pop($shippingAdjustments);
-        $shippingPrice = $shippingAdjustment->getPimcoreAmountGross();
+        $shippingPrice = $shippingAdjustment->getAmount(true);
 
         $distributedAmount = $this->distributor->distribute(\array_values($totalAmount), $shippingPrice);
 
@@ -122,7 +121,7 @@ class ShippingTaxationCartItems implements ShippingTaxationInterface
 
     private function updateShippingAdjustment(
         CartInterface $cart,
-        CoreShopAdjustment $shippingAdjustment,
+        Adjustment $shippingAdjustment,
         int $shippingTaxAmount
     ): void {
         $cart->removeAdjustments(AdjustmentInterface::SHIPPING);

@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
+use CoreShop\Component\Shipping\Taxation\ShippingTaxationInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
@@ -120,7 +121,9 @@ final class CartTaxProcessor implements CartProcessorInterface
         $shippingTaxStrategy = $carrier->getTaxStrategy() ?? 'fixTaxRule';
 
         if ($this->registry->has($shippingTaxStrategy)) {
-            $this->registry->get($shippingTaxStrategy)->calculateShippingTax($cart, $carrier, $address, $usedTaxes);
+            /** @var ShippingTaxationInterface $taxationService */
+            $taxationService = $this->registry->get($shippingTaxStrategy);
+            $taxationService->calculateShippingTax($cart, $carrier, $address, $usedTaxes);
         }
 
         return $usedTaxes;

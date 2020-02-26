@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\Carrier;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
@@ -40,7 +40,7 @@ class ShippingTaxationTaxRule implements ShippingTaxationInterface
      */
     public function calculateShippingTax(
         CartInterface $cart,
-        CarrierInterface $carrier,
+        Carrier $carrier,
         AddressInterface $address,
         array $usedTaxes
     ) {
