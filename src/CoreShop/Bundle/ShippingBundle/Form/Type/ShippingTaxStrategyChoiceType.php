@@ -12,14 +12,14 @@ class ShippingTaxStrategyChoiceType extends AbstractType
     /**
      * @var array
      */
-    private $stategies;
+    private $strategies;
 
     /**
-     * @param array $stategies
+     * @param array $strategies
      */
-    public function __construct(array $stategies)
+    public function __construct(array $strategies)
     {
-        $this->stategies = $stategies;
+        $this->strategies = $strategies;
     }
 
     /**
@@ -28,7 +28,7 @@ class ShippingTaxStrategyChoiceType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'choices' => array_flip($this->stategies),
+            'choices' => array_flip($this->strategies),
         ]);
     }
 
