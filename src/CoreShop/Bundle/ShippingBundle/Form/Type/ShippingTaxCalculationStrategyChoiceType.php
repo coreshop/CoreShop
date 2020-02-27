@@ -7,7 +7,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ShippingTaxStrategyChoiceType extends AbstractType
+class ShippingTaxCalculationStrategyChoiceType extends AbstractType
 {
     /**
      * @var array
@@ -45,6 +45,6 @@ class ShippingTaxStrategyChoiceType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'coreshop_shipping_tax_strategy';
+        return 'coreshop_shipping_tax_calculation_strategy';
     }
 }

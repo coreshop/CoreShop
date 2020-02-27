@@ -89,12 +89,12 @@ interface CarrierInterface extends ResourceInterface, TimestampableInterface, Tr
     /**
      * @return string|null
      */
-    public function getTaxStrategy();
+    public function getTaxCalculationStrategy();
 
     /**
-     * @param string $taxStrategy
+     * @param string $taxCalculationStrategy
      */
-    public function setTaxStrategy($taxStrategy);
+    public function setTaxCalculationStrategy($taxCalculationStrategy);
 
     /**
      * @return Collection|ShippingRuleGroupInterface[]

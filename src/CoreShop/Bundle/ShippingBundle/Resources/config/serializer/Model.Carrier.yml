@@ -23,7 +23,7 @@ CoreShop\Component\Shipping\Model\Carrier:
             expose: true
             type: pimcoreAsset
             groups: [Detailed]
-        taxStrategy:
+        taxCalculationStrategy:
             expose: true
             type: string
             groups: [Detailed]

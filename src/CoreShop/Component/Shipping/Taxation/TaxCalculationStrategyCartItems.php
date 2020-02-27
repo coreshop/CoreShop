@@ -13,7 +13,7 @@ use CoreShop\Component\Order\Model\Adjustment;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
-class ShippingTaxationCartItems implements ShippingTaxationInterface
+class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
     /**
      * @var TaxCollectorInterface

@@ -151,9 +151,9 @@ services:
         tags:
             - { name: form.type }
 
-    CoreShop\Bundle\ShippingBundle\Form\Type\ShippingTaxStrategyChoiceType:
+    CoreShop\Bundle\ShippingBundle\Form\Type\ShippingTaxCalculationStrategyChoiceType:
         arguments:
-            - '%coreshop.shipping.tax.strategies%'
+            - '%coreshop.shipping.tax_calculation_strategies%'
         tags:
             - { name: form.type }
 

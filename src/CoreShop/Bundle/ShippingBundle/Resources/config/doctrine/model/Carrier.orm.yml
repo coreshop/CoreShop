@@ -23,8 +23,8 @@ CoreShop\Component\Shipping\Model\Carrier:
             column: logo
             type: pimcoreAsset
             nullable: true
-        taxStrategy:
-            column: taxStrategy
+        taxCalculationStrategy:
+            column: taxCalculationStrategy
             type: string
             nullable: true
         creationDate:

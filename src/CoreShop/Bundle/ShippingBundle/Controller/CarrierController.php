@@ -9,21 +9,21 @@ class CarrierController extends ResourceController
 {
     public function getConfigAction()
     {
-        $taxStrategies = $this->getParameter('coreshop.shipping.tax.strategies');
+        $strategies = $this->getParameter('coreshop.shipping.tax_calculation_strategies');
 
-        $convertTaxStrategies = [];
-        foreach ($taxStrategies as $taxStrategy) {
-            $convertTaxStrategies[] = [
-                'value' => $taxStrategy,
+        $convertedStrategies = [];
+        foreach ($strategies as $strategy) {
+            $convertedStrategies[] = [
+                'value' => $strategy,
                 // key length has a maximum
-                'label' => 'coreshop_shipping_tax_strtgy_' . $taxStrategy
+                'label' => 'coreshop_shipping_tax_strtgy_' . $strategy
             ];
         }
 
         return $this->viewHandler->handle(
             [
                 'success' => true,
-                'taxStrategies' => $convertTaxStrategies
+                'taxCalculationStrategies' => $convertedStrategies
             ]
         );
     }

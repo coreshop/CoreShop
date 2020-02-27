@@ -55,7 +55,7 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * @var string
      */
-    private $taxStrategy;
+    private $taxCalculationStrategy;
 
     /**
      * @var Collection|ShippingRuleGroupInterface[]
@@ -176,17 +176,17 @@ class Carrier extends AbstractResource implements CarrierInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxStrategy()
+    public function getTaxCalculationStrategy()
     {
-        return $this->taxStrategy;
+        return $this->taxCalculationStrategy;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setTaxStrategy($taxStrategy)
+    public function setTaxCalculationStrategy($taxCalculationStrategy)
     {
-        $this->taxStrategy = $taxStrategy;
+        $this->taxCalculationStrategy = $taxCalculationStrategy;
     }
 
     /**

@@ -2,30 +2,30 @@ services:
     _defaults:
         public: true
 
-    coreshop.registry.shipping.tax.strategies:
+    coreshop.registry.shipping.tax_calculation_strategies:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Shipping\Taxation\ShippingTaxationInterface
-            - shipping-tax-strategy
+            - CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface
+            - shipping-tax-calculation-strategies
         tags:
-            - { name: coreshop.registry, type_hint: shippingTaxStrategies }
+            - { name: coreshop.registry, type_hint: shippingTaxCalculationStrategies }
 
-    coreshop.form_registry.shipping.tax.strategies:
+    coreshop.form_registry.shipping.tax_calculation_strategies:
         class: CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry
 
-    coreshop.shipping.tax.strategy.tax_rule: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule'
-    CoreShop\Component\Shipping\Taxation\ShippingTaxationTaxRule:
+    coreshop.shipping.tax_calculation_strategy.tax_rule: '@CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyTaxRule'
+    CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyTaxRule:
         arguments:
             - '@coreshop.collector.taxes'
             - '@coreshop.taxation.factory.tax_calculator'
         tags:
-            - { name: coreshop.shipping.tax.strategy, type: taxRule, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
+            - { name: coreshop.shipping.tax_calculation_strategy, type: taxRule, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
 
-    coreshop.shipping.tax.strategy.cart_items: '@CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems'
-    CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems:
+    coreshop.shipping.tax_calculation_strategy.cart_items: '@CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyCartItems'
+    CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyCartItems:
         arguments:
             - '@coreshop.collector.taxes'
             - '@coreshop.taxation.factory.tax_calculator'
             - '@coreshop.proportional_integer_distributor'
         tags:
-            - { name: coreshop.shipping.tax.strategy, type: cartItems, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }
+            - { name: coreshop.shipping.tax_calculation_strategy, type: cartItems, form-type: CoreShop\Bundle\IndexBundle\Form\Type\EmptyConfigurationFormType }

@@ -11,7 +11,7 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
 
-class ShippingTaxationTaxRule implements ShippingTaxationInterface
+class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
 {
     /**
      * @var TaxCollectorInterface

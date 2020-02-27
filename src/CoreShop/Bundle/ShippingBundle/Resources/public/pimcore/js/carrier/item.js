@@ -128,14 +128,14 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                     },
                     {
                         xtype: 'combo',
-                        name: 'taxStrategy',
-                        fieldLabel: t('coreshop_shipping_tax_strategy'),
-                        value: data.taxStrategy,
+                        name: 'taxCalculationStrategy',
+                        fieldLabel: t('coreshop_shipping_tax_calc_strategy'),
+                        value: data.taxCalculationStrategy,
                         forceSelection: true,
                         queryMode: 'local',
                         valueField: 'value',
                         displayField: 'label',
-                        store: pimcore.globalmanager.get('coreshop_shipping_tax_strategies')
+                        store: pimcore.globalmanager.get('coreshop_shipping_tax_calculation_strategies')
                     }
                 ]
             }]

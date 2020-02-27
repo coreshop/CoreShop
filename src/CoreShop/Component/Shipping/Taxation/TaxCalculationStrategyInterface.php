@@ -7,7 +7,7 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\CartInterface;
 
-interface ShippingTaxationInterface
+interface TaxCalculationStrategyInterface
 {
     /**
      * @param CartInterface $cart

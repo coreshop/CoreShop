@@ -39,11 +39,11 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     },
 
     getConfig: function () {
-        this.taxStrategyStore = new Ext.data.JsonStore({
+        this.taxCalculationStrategyStore = new Ext.data.JsonStore({
             data: []
         });
 
-        pimcore.globalmanager.add('coreshop_shipping_tax_strategies', this.taxStrategyStore);
+        pimcore.globalmanager.add('coreshop_shipping_tax_calculation_strategies', this.taxCalculationStrategyStore);
 
         Ext.Ajax.request({
             url: this.url.config,
@@ -52,9 +52,9 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
                 try {
                     var res = Ext.decode(response.responseText);
 
-                    res.taxStrategies.forEach(element => element.label = t(element.label));
+                    res.taxCalculationStrategies.forEach(element => element.label = t(element.label));
 
-                    this.taxStrategyStore.loadData(res.taxStrategies);
+                    this.taxCalculationStrategyStore.loadData(res.taxCalculationStrategies);
 
                     // create layout
                     this.getLayout();
