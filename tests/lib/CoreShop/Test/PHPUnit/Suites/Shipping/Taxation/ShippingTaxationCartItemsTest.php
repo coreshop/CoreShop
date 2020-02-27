@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace CoreShop\Test\PHPUnit\Suites\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\Carrier;
+use CoreShop\Component\Core\Model\Cart;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\Cart;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Shipping\Model\Carrier;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Taxation\ShippingTaxationCartItems;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
@@ -38,7 +37,7 @@ class ShippingTaxationCartItemsTest extends Base
 
         $shippingTaxes = $shippingTaxationCartItems->calculateShippingTax(
             $cart->reveal(),
-            $this->prophesize(CarrierInterface::class)->reveal(),
+            $this->prophesize(Carrier::class)->reveal(),
             $this->prophesize(AddressInterface::class)->reveal(),
             []
         );
@@ -103,7 +102,7 @@ class ShippingTaxationCartItemsTest extends Base
 
         $shippingTaxes = $shippingTaxationCartItems->calculateShippingTax(
             $cart,
-            $this->prophesize(CarrierInterface::class)->reveal(),
+            $this->prophesize(Carrier::class)->reveal(),
             $this->prophesize(AddressInterface::class)->reveal(),
             []
         );
