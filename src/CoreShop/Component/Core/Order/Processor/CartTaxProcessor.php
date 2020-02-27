@@ -36,11 +36,6 @@ final class CartTaxProcessor implements CartProcessorInterface
     private $defaultAddressProvider;
 
     /**
-     * @var TaxCalculatorFactoryInterface
-     */
-    private $taxCalculationFactory;
-
-    /**
      * @var ServiceRegistry
      */
     private $registry;
@@ -48,18 +43,15 @@ final class CartTaxProcessor implements CartProcessorInterface
     /**
      * @param TaxCollectorInterface         $taxCollector
      * @param AddressProviderInterface      $defaultAddressProvider
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
      * @param ServiceRegistry               $registry
      */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
-        TaxCalculatorFactoryInterface $taxCalculatorFactory,
         ServiceRegistry $registry
     ) {
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
-        $this->taxCalculationFactory = $taxCalculatorFactory;
         $this->registry = $registry;
     }
 
