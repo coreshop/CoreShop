@@ -15,6 +15,7 @@ namespace CoreShop\Test\PHPUnit\Suites;
 use CoreShop\Test\Setup;
 use CoreShop\Test\SuiteBase;
 use PHPUnit\Framework\TestSuite;
+use Pimcore\Bootstrap;
 
 class AllTests extends SuiteBase
 {
@@ -29,31 +30,30 @@ class AllTests extends SuiteBase
         $suite = new TestSuite('Models');
 
         $tests = [
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Carrier',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Product',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Cart',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\CartPriceRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Category',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Configuration',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Country',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Currency',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\CustomerGroup',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\NotificationRule',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Order',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Quote',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\OrderInvoice',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\OrderShipment',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Product',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Taxation',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Zone',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\Filter',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\Index',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\SpecificPrice',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Product\\PriceRule',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\ShippingRule',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Shipping\\Taxation\\ShippingTaxationCartItemsTest',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\StorageList',
             '\\CoreShop\\Test\\PHPUnit\\Suites\\Store',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Taxation',
-            '\\CoreShop\\Test\\PHPUnit\\Suites\\Zone',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\Configuration',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\ShippingRule',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\NotificationRule',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\StorageList',
+            '\\CoreShop\\Test\\PHPUnit\\Suites\\BatchListing',
         ];
 
         shuffle($tests);
