@@ -29,7 +29,7 @@
                             <i class="fa fa-heart"></i>
                         </a>
                         {% if coreshop_inventory_is_available(product) %}
-                            {{ render(url('coreshop_cart_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                         {% endif %}
                     </div>
                 </div>

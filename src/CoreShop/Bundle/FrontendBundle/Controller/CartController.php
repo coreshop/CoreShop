@@ -157,6 +157,20 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
+        $isPartial = $request->get('_partial', 0);
+        $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
+        if (0 === $isPartial && $request->isMethod('GET')) {
+            if ($request->isXmlHttpRequest()) {
+                return new JsonResponse([
+                    'success' => false,
+                    'errors' => 'get not allowed',
+                ]);
+            }
+
+            return $this->redirect($redirect);
+        }
+
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
@@ -165,8 +179,6 @@ class CartController extends FrontendController
                     'success' => false,
                 ]);
             }
-
-            $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
 
             return $this->redirect($redirect);
         }
