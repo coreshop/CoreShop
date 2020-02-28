@@ -1,7 +1,3 @@
-# https://docs.coreshop.org/2.1.0/Bundles/Resource_Bundle/CustomEntities.html
-# If you want to add additional routes
-# - Add a new Controller which extends ResourceController
-# - Change the DI Configuration: CoreShop/Bundle/ShippingBundle/DependencyInjection/Configuration.php
 coreshop_admin_carrier:
     type: coreshop.resources
     resource: |
