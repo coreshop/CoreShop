@@ -22,6 +22,8 @@ Feature: Use a different calculation strategy for shipping tax calculation
     And the shipping rule belongs to carrier "Post"
     And the site has a product "Book" priced at 1000
     And the product has the tax rule group "AT10"
+    And the site has a product "Another Book" priced at 1000
+    And the product has the tax rule group "AT10"
     And the site has a product "DVD" priced at 3000
     And the product has the tax rule group "AT20"
 
@@ -30,3 +32,24 @@ Feature: Use a different calculation strategy for shipping tax calculation
     And I add the product "DVD" to my cart
     Then the cart shipping should be "1000" including tax
     And the cart shipping should be "852" excluding tax
+    And the loaded carts shipping tax rate should be "17.37"
+
+  Scenario: Create a new cart, add one product and the correct shipping should be applied
+    And I add the product "Book" to my cart
+    Then the cart shipping should be "1000" including tax
+    And the cart shipping should be "909" excluding tax
+    And the loaded carts shipping tax rate should be "10"
+
+  Scenario: Create a new cart, add two of the same product and the correct shipping should be applied
+    And I add the product "Book" to my cart
+    And I add the product "Book" to my cart
+    Then the cart shipping should be "1000" including tax
+    And the cart shipping should be "909" excluding tax
+    And the loaded carts shipping tax rate should be "10"
+
+  Scenario: Create a new cart, add two products with the same tax-rate and the correct shipping should be applied
+    And I add the product "Book" to my cart
+    And I add the product "Another Book" to my cart
+    Then the cart shipping should be "1000" including tax
+    And the cart shipping should be "909" excluding tax
+    And the loaded carts shipping tax rate should be "10"
