@@ -12,19 +12,15 @@
 
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
-use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Shipping\Model\CarrierInterface;
-use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface as NewTaxedShippingCalculatorInterface;
 
-interface TaxedShippingCalculatorInterface
-{
+if (interface_exists(NewTaxedShippingCalculatorInterface::class)) {
+    @trigger_error('Interface CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface is deprecated since version 2.2.0 and will be removed in 3.0.0. Use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     * @param bool               $withTax
-     *
-     * @return mixed
+     * @deprecated Interface Interface CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface is deprecated since version 2.2.0 and will be removed in 3.0.0. Use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface class instead.
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true);
+    interface TaxedShippingCalculatorInterface
+    {
+    }
 }

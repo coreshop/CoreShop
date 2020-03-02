@@ -112,9 +112,18 @@ final class CartTaxProcessor implements CartProcessorInterface
         $shippingTaxCalculationStrategy = $carrier->getTaxCalculationStrategy() ?? 'taxRule';
 
         if ($this->registry->has($shippingTaxCalculationStrategy)) {
-            /** @var TaxCalculationStrategyInterface $taxCalculationService */
+            /**
+             * @var TaxCalculationStrategyInterface $taxCalculationService
+             */
             $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
-            $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $usedTaxes);
+            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping(false));
+//            $shippable->setShippingTaxRate($taxCalculator->getTotalRate());
+
+            if (1 === count($cartTax)) {
+                $cart->setShippingTaxRate(reset($cartTax)->getRate());
+            }
+
+            $usedTaxes = $this->taxCollector->mergeTaxes($cartTax, $usedTaxes);
         }
 
         return $usedTaxes;

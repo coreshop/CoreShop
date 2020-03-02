@@ -21,6 +21,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                 {
                     xtype: 'coreshop.country',
                     fieldLabel: t('coreshop_base_country'),
+                    name: 'baseCountry',
                     value: this.data.baseCountry,
                     store: {
                         proxy: {

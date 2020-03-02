@@ -10,26 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Shipping\Taxation;
+namespace CoreShop\Component\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
 
-interface TaxCalculationStrategyInterface
+interface TaxedShippingCalculatorInterface
 {
     /**
-     * @param ShippableInterface $shippable
      * @param CarrierInterface   $carrier
+     * @param ShippableInterface $shippable
      * @param AddressInterface   $address
-     * @param int                $shippingAmount
-     * @return TaxItemInterface[]
+     * @param bool               $withTax
+     *
+     * @return int
      */
-    public function calculateShippingTax(
-        ShippableInterface $shippable,
-        CarrierInterface $carrier,
-        AddressInterface $address,
-        int $shippingAmount
-    );
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true);
 }
+
+class_alias(TaxedShippingCalculatorInterface::class, 'CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface');
