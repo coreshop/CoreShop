@@ -1,28 +1,29 @@
 # CoreShop Product Unit Definitions
 
-CoreShop uses Pimcore Data Objects to persist Product Information. But, it adds a little wrapper around it to be more
-dynamic and configurable. It uses a Factory and Repository Pattern to do that.
+CoreShop has a great new feature for product units. E.g. you can sell items "per meter" etc.
 
+First, add some product units in Pimcore > CoreShop > Product > Product Units. Click "Add" and fill all the fields.
 
+Then you can add product-units directly in the product-objects inside Pimcore (take a look at the "Price"-tab). There, you can also add multiple product units (eg: 1 box contains of 12 items - CoreShop will show you different order-possibilities in the add-to-cart section in the webshop)
 
-CoreShop > Product > Product Units
+Using the API for product units:
 
-## Create Default Unit Definition
+## Create Default UnitDefinition
 
 If you want to create a new Product, we need to get our Factory Service for that:
 
 ```php
 /** @var DataObject\CoreShopProduct $product */
-$product = DataObject::getById(761);
+$product = DataObject::getById(1);
 
-$unitRepository = $this->container->get('coreshop.repository.product_unit');
+$unitRepository = $container->get('coreshop.repository.product_unit');
 
 /** @var ProductUnitDefinitionInterface $defaultUnitDefinition */
-$defaultUnitDefinition = $this->container->get('coreshop.factory.product_unit_definition')->createNew();
+$defaultUnitDefinition = $container->get('coreshop.factory.product_unit_definition')->createNew();
 $defaultUnitDefinition->setUnit($unitRepository->findByName('Kubikmeter'));
 
 /** @var ProductUnitDefinitionsInterface $unitDefinitions */
-$unitDefinitions = $this->container->get('coreshop.factory.product_unit_definitions')->createNew();
+$unitDefinitions = $container->get('coreshop.factory.product_unit_definitions')->createNew();
 
 $unitDefinitions->setDefaultUnitDefinition($defaultUnitDefinition);
 $unitDefinitions->setProduct($product);
@@ -32,29 +33,20 @@ $product->setUnitDefinitions($unitDefinitions);
 $product->save();
 ```
 
-No we have our product and we can set all needed values.
-
-If you now want to save it, just call the save function
-
-```php
-$product->save();
-```
 
 
-## Update Default Unit Definition
-
-Update works the same as you are used to in Pimcore
+## Update Default UnitDefinition
 
 ```php
 /** @var DataObject\CoreShopProduct $product */
-$product = DataObject::getById(761);
+$product = DataObject::getById(1);
 
-$unitRepository = $this->container->get('coreshop.repository.product_unit');
+$unitRepository = $container->get('coreshop.repository.product_unit');
 
 $defaultUnitDefinition = $product->getUnitDefinitions()->getDefaultUnitDefinition();
-$defaultUnitDefinition->setUnit($unitRepository->findByName('G'));
+$defaultUnitDefinition->setUnit($unitRepository->findByName('Liter'));
 
-$unitDefinitionsRepository = $this->container->get('coreshop.repository.product_unit_definitions');
+$unitDefinitionsRepository = $container->get('coreshop.repository.product_unit_definitions');
 
 /** @var ProductUnitDefinitions $unitDefinitions */
 $unitDefinitions = $unitDefinitionsRepository->findOneForProduct($product);
@@ -65,15 +57,17 @@ $product->setUnitDefinitions($unitDefinitions);
 $product->save();
 ```
 
-## Delete Unit Definition
 
-Delete works the same as you are used to in Pimcore
+
+## Delete UnitDefinition
+
+Deleting a UnitDefiniton from a product is done by finding the UnitDefinitions for the product in the product_unit_definitions repository and then deleting it.
 
 ```php
 /** @var DataObject\CoreShopProduct $product */
 $product = DataObject::getById(1);
 
-$unitDefinitionsRepository = $this->container->get('coreshop.repository.product_unit_definitions');
+$unitDefinitionsRepository = $container->get('coreshop.repository.product_unit_definitions');
 $item = $unitDefinitionsRepository->findOneForProduct($product);
 
 $unitDefinitionsRepository->remove($item);
