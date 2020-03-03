@@ -205,7 +205,10 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                     }
                 }
 
-                $document->setMissingRequiredEditable(false);
+                if ($document instanceof Document\PageSnippet) {
+                    $document->setMissingRequiredEditable(false);
+                }
+                
                 $document->setPublished(true);
                 $document->save();
 
