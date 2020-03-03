@@ -47,8 +47,8 @@
             </div>
             <div class="col-md-2 text-right">
                 <select class="form-control site-reload" name="perPage">
-                    {% for perPage in perPageAllowed %}
-                        <option value="{{ perPage }}" {% if perPage == perPage %} selected="selected" {% endif %}>{{ perPage }}</option>
+                    {% for perPageList in perPageAllowed %}
+                        <option value="{{ perPageList }}" {% if perPageList == perPage %} selected="selected" {% endif %}>{{ perPageList }}</option>
                     {% endfor %}
                 </select>
             </div>
