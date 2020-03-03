@@ -124,7 +124,12 @@ final class CartTaxProcessor implements CartProcessorInterface
             else {
                 //We'll use the combined tax-rate here. The actual tax-rate is not important here anyway, since we store all detailed tax
                 //information on the cart anyway
-                $cart->setShippingTaxRate(round(100 * $cart->getShippingTax() / $cart->getShipping(false), 2));
+                if (0 === $cart->getShipping(false)) {
+                    $cart->setShippingTaxRate(0);
+                }
+                else {
+                    $cart->setShippingTaxRate(round(100 * $cart->getShippingTax() / $cart->getShipping(false), 2));
+                }
             }
 
             $usedTaxes = $this->taxCollector->mergeTaxes($cartTax, $usedTaxes);
