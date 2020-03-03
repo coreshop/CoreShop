@@ -26,3 +26,4 @@ parameters:
 framework:
     session:
         handler_id: 'Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler'
+        storage_id: 'session.storage.mock_file'

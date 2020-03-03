@@ -23,7 +23,7 @@
     "coreshop/currency-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
-    "pimcore/pimcore": "^6.5.0"
+    "pimcore/pimcore": "^6.5.3"
   },
   "config": {
     "bin-dir": "bin"

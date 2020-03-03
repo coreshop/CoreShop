@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.2",
-    "pimcore/pimcore": "^6.5.0",
+    "pimcore/pimcore": "^6.5.3",
     "knplabs/knp-menu-bundle": "^2.2.0"
   },
   "config": {
