@@ -69,7 +69,14 @@ class CustomerType extends AbstractResourceType
                 'invalid_message' => 'coreshop.form.customer.email.must_match',
                 'first_options' => ['label' => 'coreshop.form.customer.email'],
                 'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
+            ])
+        ;
+
+        if ($options['allow_username']) {
+            $builder->add('username', TextType::class, [
+                'label' => 'coreshop.form.customer.username',
             ]);
+        }
 
         if (!$options['guest'] && $options['allow_password_field']) {
             $builder
@@ -89,14 +96,16 @@ class CustomerType extends AbstractResourceType
                 ]);
         }
 
-        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+        $builder->addEventListener(FormEvents::SUBMIT, static function(FormEvent $event) use ($options) {
             $data = $event->getData();
 
             if (!$data instanceof CustomerInterface) {
                 return;
             }
 
-            $data->setUsername($data->getEmail());
+            if (!$options['allow_username']) {
+                $data->setUsername($data->getEmail());
+            }
 
             $event->setData($data);
         });
@@ -111,6 +120,7 @@ class CustomerType extends AbstractResourceType
 
         $resolver->setDefault('guest', false);
         $resolver->setDefault('allow_password_field', false);
+        $resolver->setDefault('allow_username', false);
         $resolver->setDefault('customer', false);
         $resolver->setDefaults(array(
             'validation_groups' => function (FormInterface $form) {
