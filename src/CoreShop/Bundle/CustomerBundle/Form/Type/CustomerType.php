@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -20,6 +21,8 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,7 +34,7 @@ class CustomerType extends AbstractResourceType
     protected $guestValidationGroups = [];
 
     /**
-     * @param string   $dataClass             FQCN
+     * @param string   $dataClass
      * @param string[] $validationGroups
      * @param string[] $guestValidationGroups
      */
@@ -85,6 +88,18 @@ class CustomerType extends AbstractResourceType
                     'required' => false,
                 ]);
         }
+
+        $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
+            $data = $event->getData();
+
+            if (!$data instanceof CustomerInterface) {
+                return;
+            }
+
+            $data->setUsername($data->getEmail());
+
+            $event->setData($data);
+        });
     }
 
     /**
