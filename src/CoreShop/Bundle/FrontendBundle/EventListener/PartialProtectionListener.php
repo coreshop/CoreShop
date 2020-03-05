@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 /**
- * @deprecated This class is deprecated since 2.2.0 and will be removed with 3.0.0'
+ * @deprecated This class is deprecated since 2.2.0 and will be removed with 3.0.0
  */
 class PartialProtectionListener
 {
