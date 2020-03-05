@@ -14,3 +14,11 @@ services:
 
     coreshop.behat.notification_rule_listener:
         class: CoreShop\Behat\Service\NotificationRuleListener
+
+    CoreShop\Behat\Service\RelationalIndexExtension:
+        tags:
+            - { name: coreshop.index.extension }
+
+    CoreShop\Behat\Service\CustomRelationalIndexInterpreter:
+        tags:
+            - { name: coreshop.index.interpreter, type: custom_relational }

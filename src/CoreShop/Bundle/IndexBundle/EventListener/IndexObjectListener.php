@@ -40,18 +40,20 @@ final class IndexObjectListener
                 return;
             }
 
-            InheritanceHelper::useInheritedValues(function () use ($object) {
-                $this->indexUpdaterService->updateIndices($object);
+            $isVersionEvent = $event->hasArgument('saveVersionOnly') && true === $event->getArgument('saveVersionOnly');
+
+            InheritanceHelper::useInheritedValues(function () use ($object, $isVersionEvent) {
+                $this->indexUpdaterService->updateIndices($object, $isVersionEvent);
             });
 
             $classDefinition = ClassDefinition::getById($object->getClassId());
             if ($classDefinition->getAllowInherit() || $classDefinition->getAllowVariants()) {
-                $this->updateInheritableChildren($object);
+                $this->updateInheritableChildren($object, $isVersionEvent);
             }
         }
     }
 
-    private function updateInheritableChildren(AbstractObject $object): void
+    private function updateInheritableChildren(AbstractObject $object, bool $isVersionChange): void
     {
         if (!$object->hasChildren($this->validObjectTypes)) {
             return;
@@ -61,10 +63,10 @@ final class IndexObjectListener
         /** @var AbstractObject $child */
         foreach ($children as $child) {
             if (get_class($child) === get_class($object)) {
-                InheritanceHelper::useInheritedValues(function () use ($child) {
-                    $this->indexUpdaterService->updateIndices($child);
+                InheritanceHelper::useInheritedValues(function () use ($child, $isVersionChange) {
+                    $this->indexUpdaterService->updateIndices($child, $isVersionChange);
                 });
-                $this->updateInheritableChildren($child);
+                $this->updateInheritableChildren($child, $isVersionChange);
             }
         }
     }

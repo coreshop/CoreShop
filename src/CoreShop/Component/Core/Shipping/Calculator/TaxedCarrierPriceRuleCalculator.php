@@ -13,63 +13,76 @@
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
-use CoreShop\Component\Core\Taxation\TaxApplicatorInterface;
-use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
+use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
-use CoreShop\Component\Store\Model\StoreAwareInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
+use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use Webmozart\Assert\Assert;
 
 final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
     private $carrierPriceCalculator;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private $taxCalculatorStrategyRegistry;
 
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        TaxCalculatorFactoryInterface $taxCalculatorFactory,
-        TaxApplicatorInterface $taxApplicator
+        ServiceRegistryInterface $taxCalculatorStrategyRegistry
     ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->taxCalculatorFactory = $taxCalculatorFactory;
-        $this->taxApplicator = $taxApplicator;
+        $this->taxCalculatorStrategyRegistry = $taxCalculatorStrategyRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, bool $withTax = true): int
     {
+        /**
+         * @var CartInterface $shippable
+         */
+        Assert::isInstanceOf($shippable, CartInterface::class);
+
+        $store = $shippable->getStore();
+
+        /**
+         * @var StoreInterface $store
+         */
+        Assert::isInstanceOf($store, StoreInterface::class);
+
+        $useGrossPrice = $store->getUseGrossPrice();
+
         $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
 
-        if (!$carrier instanceof CoreCarrierInterface) {
+        if ($useGrossPrice && $withTax) {
             return $price;
         }
 
-        $taxCalculator = $this->getTaxCalculator($carrier, $address);
-
-        if ($taxCalculator instanceof TaxCalculatorInterface && $shippable instanceof StoreAwareInterface) {
-            return $this->taxApplicator->applyTax($price, ['store' => $shippable->getStore()], $taxCalculator, $withTax);
+        if (!$useGrossPrice && !$withTax) {
+            return $price;
         }
 
-        return $price;
-    }
+        $shippingTaxCalculationStrategy = $carrier->getTaxCalculationStrategy() ?? 'taxRule';
 
-    /**
-     * {@inheritdoc}
-     */
-    private function getTaxCalculator(CoreCarrierInterface $carrier, AddressInterface $address): ?TaxCalculatorInterface
-    {
-        $taxRuleGroup = $carrier->getTaxRule();
-
-        if ($taxRuleGroup instanceof TaxRuleGroupInterface) {
-            return $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
+        if (!$this->taxCalculatorStrategyRegistry->has($shippingTaxCalculationStrategy)) {
+            throw new \InvalidArgumentException(sprintf('Shipping Tax Calculation Strategy %s not found', $shippingTaxCalculationStrategy));
         }
 
-        return null;
+        /**
+         * @var TaxCalculationStrategyInterface $taxCalculationService
+         */
+        $taxCalculationService = $this->taxCalculatorStrategyRegistry->get($shippingTaxCalculationStrategy);
+        $cartTaxes = $taxCalculationService->calculateShippingTax($shippable, $carrier, $address, $price);
+
+        $cartTax = array_sum(array_map(static function(TaxItemInterface $taxItem) {
+            return $taxItem->getAmount();
+        }, $cartTaxes));
+
+        if ($useGrossPrice) {
+            return $price - $cartTax;
+        }
+
+        return $price + $cartTax;
     }
 }

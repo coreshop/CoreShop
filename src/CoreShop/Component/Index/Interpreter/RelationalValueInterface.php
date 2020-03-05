@@ -17,4 +17,6 @@ interface RelationalValueInterface
     public function getDestinationId(): int;
 
     public function getType(): string;
+
+    public function getParams(): array;
 }

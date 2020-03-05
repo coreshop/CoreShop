@@ -8,11 +8,28 @@ $(document).ready(function () {
         shop.initChangeAddress();
         shop.initCartShipmentCalculator();
         shop.initQuantityValidator();
+        shop.initCategorySelect();
 
         $('#paymentProvider').handlePrototypes({
             'prototypePrefix': 'paymentProvider',
             'containerSelector': '.paymentSettings',
             'selectorAttr': 'data-factory'
+        });
+    };
+
+    shop.initCategorySelect = function () {
+        function updateQueryStringParameter(uri, key, value) {
+            var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+            var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+            if (uri.match(re)) {
+                return uri.replace(re, '$1' + key + "=" + value + '$2');
+            }
+            else {
+                return uri + separator + key + "=" + value;
+            }
+        }
+        $(".site-reload").change(function() {
+            location.href= updateQueryStringParameter( window.location.href, this.name, this.value );
         });
     };
 

@@ -16,11 +16,13 @@ class RelationalValue implements RelationalValueInterface
 {
     protected $destinationId;
     protected $type;
+    protected $params;
 
-    public function __construct(int $destinationId, string $type)
+    public function __construct(int $destinationId, string $type, array $params = [])
     {
         $this->destinationId = $destinationId;
         $this->type = $type;
+        $this->params = $params;
     }
 
     public function getDestinationId(): int
@@ -41,5 +43,15 @@ class RelationalValue implements RelationalValueInterface
     public function setType(string $type): void
     {
         $this->type = $type;
+    }
+
+    public function getParams(): array
+    {
+        return $this->params;
+    }
+
+    public function setParams(array $params): void
+    {
+        $this->params = $params;
     }
 }

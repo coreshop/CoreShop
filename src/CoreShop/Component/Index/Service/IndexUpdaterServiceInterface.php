@@ -16,7 +16,7 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 
 interface IndexUpdaterServiceInterface
 {
-    public function updateIndices(IndexableInterface $subject): void;
+    public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void;
 
     public function removeIndices(IndexableInterface $subject): void;
 }

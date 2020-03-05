@@ -61,6 +61,15 @@ final class IndexContext implements Context
     }
 
     /**
+     * @Given /the (index) allows version changes$/
+     */
+    public function theIndexAllowsVersionChanges(IndexInterface $index)
+    {
+        $index->setIndexLastVersion(true);
+        $this->saveIndex($index);
+    }
+
+    /**
      * @Given /the (index) has following fields:/
      */
     public function theIndexHasFollowingFields(IndexInterface $index, TableNode $table)

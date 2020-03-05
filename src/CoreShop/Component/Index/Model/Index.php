@@ -51,6 +51,11 @@ class Index extends AbstractResource implements IndexInterface
      */
     protected $columns;
 
+    /**
+     * @var bool
+     */
+    protected $indexLastVersion = false;
+
     public function __construct()
     {
         $this->columns = new ArrayCollection();
@@ -172,5 +177,21 @@ class Index extends AbstractResource implements IndexInterface
     public function hasColumn(IndexColumnInterface $column)
     {
         return $this->columns->contains($column);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexLastVersion()
+    {
+        return $this->indexLastVersion;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIndexLastVersion($indexLastVersion)
+    {
+        $this->indexLastVersion = $indexLastVersion;
     }
 }

@@ -34,24 +34,20 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateIndices($subject): void
+    public function updateIndices(IndexableInterface $subject, bool $isVersionEvent = false): void
     {
-        $this->operationOnIndex($subject, 'update');
+        $this->operationOnIndex($subject, 'update', $isVersionEvent);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeIndices($subject): void
+    public function removeIndices(IndexableInterface $subject): void
     {
         $this->operationOnIndex($subject, 'remove');
     }
 
-    /**
-     * @param IndexableInterface $subject
-     * @param string $operation
-     */
-    private function operationOnIndex(IndexableInterface $subject, string $operation = 'update'): void
+    private function operationOnIndex(IndexableInterface $subject, string $operation = 'update', bool $isVersionChange = false): void
     {
         $indices = $this->indexRepository->findAll();
 
@@ -64,6 +60,14 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
                 continue;
             }
 
+            //Don't store version changes into the index!
+            if ($isVersionChange && !$index->getIndexLastVersion()) {
+                continue;
+            }
+
+            /**
+             * @var IndexableInterface $subject
+             */
             $worker = $index->getWorker();
 
             if (!$this->workerServiceRegistry->has($worker)) {
