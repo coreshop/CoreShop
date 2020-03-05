@@ -551,6 +551,14 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the (carrier) uses the tax calculation strategy "([^"]+)"$/
+     */
+    public function theCarrierUsedTheTaxCalculationStrategy(CarrierInterface $carrier, string $strategyKey)
+    {
+        $carrier->setTaxCalculationStrategy($strategyKey);
+    }
+
+    /**
      * @param string $name
      */
     private function createCarrier($name)
@@ -561,6 +569,7 @@ final class ShippingContext implements Context
         $carrier = $this->carrierFactory->createNew();
         $carrier->setIdentifier($name);
         $carrier->setTitle($name, 'en');
+        $carrier->setTaxCalculationStrategy('taxRule');
 
         if ($this->sharedStorage->has('store')) {
             $carrier->addStore($this->sharedStorage->get('store'));

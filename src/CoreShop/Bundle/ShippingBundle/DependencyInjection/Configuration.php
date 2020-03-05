@@ -12,9 +12,9 @@
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
+use CoreShop\Bundle\ShippingBundle\Controller\CarrierController;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
@@ -80,7 +80,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Carrier::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CarrierInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(CarrierController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CarrierType::class)->cannotBeEmpty()->end()

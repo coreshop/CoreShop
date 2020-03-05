@@ -23,6 +23,10 @@ CoreShop\Component\Shipping\Model\Carrier:
             column: logo
             type: pimcoreAsset
             nullable: true
+        taxCalculationStrategy:
+            column: taxCalculationStrategy
+            type: string
+            nullable: true
         creationDate:
             type: datetime
             gedmo:

@@ -1,6 +1,7 @@
 imports:
     - { resource: "services/form.yml" }
     - { resource: "services/shipping-rules.yml" }
+    - { resource: "services/shipping-taxation.yml" }
     - { resource: "services/pimcore.yml" }
 
 services:

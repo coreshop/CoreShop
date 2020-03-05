@@ -74,8 +74,7 @@ services:
         class: CoreShop\Component\Core\Shipping\Calculator\TaxedCarrierPriceRuleCalculator
         arguments:
             - '@coreshop.carrier.price_calculator.default'
-            - '@coreshop.taxation.factory.tax_calculator'
-            - '@coreshop.taxation.tax_applicator'
+            - '@coreshop.registry.shipping.tax_calculation_strategies'
 
     coreshop.carrier.cart.store_based_resolver:
         class: CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery

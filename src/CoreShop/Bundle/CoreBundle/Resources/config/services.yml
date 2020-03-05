@@ -29,6 +29,7 @@ imports:
     - { resource: "services/validators.yml" }
     - { resource: "services/product-store-values.yml" }
     - { resource: "services/menu.yml" }
+    - { resource: "services/shipping-taxation.yml" }
 
 services:
     _defaults:

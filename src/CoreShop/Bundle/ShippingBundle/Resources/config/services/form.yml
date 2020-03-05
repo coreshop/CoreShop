@@ -150,3 +150,10 @@ services:
             - '%coreshop.form.type.shipping_rule.condition.weight.validation_groups%'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\ShippingBundle\Form\Type\ShippingTaxCalculationStrategyChoiceType:
+        arguments:
+            - '%coreshop.shipping.tax_calculation_strategies%'
+        tags:
+            - { name: form.type }
+
