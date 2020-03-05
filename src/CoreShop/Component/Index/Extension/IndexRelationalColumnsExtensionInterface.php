@@ -16,8 +16,5 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 interface IndexRelationalColumnsExtensionInterface extends IndexExtensionInterface
 {
-    /**
-     * @return array
-     */
-    public function getRelationalColumns();
+    public function getRelationalColumns(): array;
 }

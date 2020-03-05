@@ -15,7 +15,6 @@ namespace CoreShop\Component\Core\Order\Processor;
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
@@ -63,7 +62,7 @@ final class CartTaxProcessor implements CartProcessorInterface
         $cart->setTaxes($fieldCollection);
     }
 
-    private function collectShippingTaxes(CartInterface $cart, array $usedTaxes = []): array
+    private function collectShippingTaxes(OrderInterface $cart, array $usedTaxes = []): array
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             return $usedTaxes;

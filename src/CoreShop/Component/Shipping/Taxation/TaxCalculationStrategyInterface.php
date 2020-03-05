@@ -31,5 +31,5 @@ interface TaxCalculationStrategyInterface
         CarrierInterface $carrier,
         AddressInterface $address,
         int $shippingAmount
-    );
+    ): array;
 }

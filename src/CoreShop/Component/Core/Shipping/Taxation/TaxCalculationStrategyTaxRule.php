@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
@@ -57,11 +57,11 @@ class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
         CarrierInterface $carrier,
         AddressInterface $address,
         int $shippingAmountNet
-    ) {
+    ): array {
         /**
-         * @var CartInterface $shippable
+         * @var OrderInterface $shippable
          */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        Assert::isInstanceOf($shippable, OrderInterface::class);
 
         $store = $shippable->getStore();
 

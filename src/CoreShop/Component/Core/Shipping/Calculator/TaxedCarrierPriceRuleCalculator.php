@@ -13,7 +13,7 @@
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
@@ -40,9 +40,9 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, bool $withTax = true): int
     {
         /**
-         * @var CartInterface $shippable
+         * @var OrderInterface $shippable
          */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        Assert::isInstanceOf($shippable, OrderInterface::class);
 
         $store = $shippable->getStore();
 

@@ -18,12 +18,12 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterface
 {
-    public function supports(IndexInterface $index)
+    public function supports(IndexInterface $index): bool
     {
         return $index->getName() === 'relational_extension';
     }
 
-    public function getRelationalColumns()
+    public function getRelationalColumns(): array
     {
         return [
             'custom_col' => IndexColumnInterface::FIELD_TYPE_STRING,
