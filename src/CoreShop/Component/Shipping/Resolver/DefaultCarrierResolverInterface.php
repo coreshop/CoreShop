@@ -21,10 +21,9 @@ interface DefaultCarrierResolverInterface
 {
     /**
      * @param ShippableInterface $shippable
-     *
+     * @param AddressInterface   $address
      * @return CarrierInterface
-     *
      * @throws UnresolvedDefaultCarrierException
      */
-    public function getDefaultCarrier(ShippableInterface $shippable, AddressInterface $address);
+    public function getDefaultCarrier(ShippableInterface $shippable, AddressInterface $address): CarrierInterface;
 }

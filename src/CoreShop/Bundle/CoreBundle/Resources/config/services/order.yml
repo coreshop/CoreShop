@@ -12,30 +12,6 @@ services:
         tags:
             - {name: form.type}
 
-    coreshop.core.order.transformer.cart_to_order:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_order
-        decoration_priority: 10
-        arguments:
-            - '@coreshop.core.order.transformer.cart_to_order.inner'
-
-    coreshop.core.order.transformer.cart_to_quote:
-        class: CoreShop\Component\Core\Order\Transformer\CartToSaleTransformer
-        decorates: coreshop.order.transformer.cart_to_quote
-        arguments:
-            - '@coreshop.core.order.transformer.cart_to_quote.inner'
-
-    coreshop.core.order.transformer.cart_item_to_order_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_order_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_order_item.inner'
-
-    coreshop.core.order.transformer.cart_item_to_quote_item:
-        class: CoreShop\Component\Core\Order\Transformer\CartItemToSaleItemTransformer
-        decorates: coreshop.order.transformer.cart_item_to_quote_item
-        arguments:
-            - '@coreshop.core.order.transformer.cart_item_to_quote_item.inner'
 
     coreshop.core.order.transformer.order_to_shipment:
         class: CoreShop\Component\Core\Order\Transformer\OrderToShipmentTransformer
@@ -128,3 +104,25 @@ services:
         decorates: 'CoreShop\Component\Order\Cart\CartContextResolver'
         arguments:
             - '@CoreShop\Component\Core\Cart\CartContextResolver.inner'
+
+
+    CoreShop\Component\Order\Committer\OrderCommitterInterface: '@CoreShop\Component\Core\Order\Committer\OrderCommitter'
+    CoreShop\Component\Core\Order\Committer\OrderCommitter:
+        arguments:
+            - '@coreshop.cart.manager'
+            - '@coreshop.object_service'
+            - '@coreshop.order.number_generator.default'
+            - '@coreshop.object_cloner'
+            - '@coreshop.core.key_transformer'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+            - '%coreshop.folder.order%'
+
+    CoreShop\Component\Order\Committer\QuoteCommitterInterface: '@CoreShop\Component\Core\Order\Committer\QuoteCommitter'
+    CoreShop\Component\Core\Order\Committer\QuoteCommitter:
+        arguments:
+            - '@coreshop.cart.manager'
+            - '@coreshop.object_service'
+            - '@coreshop.quote.number_generator.default'
+            - '@coreshop.object_cloner'
+            - '@coreshop.core.key_transformer'
+            - '%coreshop.folder.quote%'

@@ -19,10 +19,7 @@ final class Version
     const RELEASE_VERSION = '0';
     const EXTRA_VERSION = 'RC.1';
 
-    /**
-     * @return string
-     */
-    public static function getVersion()
+    public static function getVersion(): string
     {
         $version = sprintf('%s.%s.%s', self::MAJOR_VERSION, self::MINOR_VERSION, self::RELEASE_VERSION);
 

@@ -17,10 +17,11 @@ use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class NotificationRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): Response
     {
         $conditions = [];
         $actions = [];
@@ -70,7 +71,7 @@ class NotificationRuleController extends ResourceController
         ]);
     }
 
-    public function sortAction(Request $request)
+    public function sortAction(Request $request): Response
     {
         /**
          * @var EntityRepository $repository

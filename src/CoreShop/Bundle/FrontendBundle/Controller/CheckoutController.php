@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -19,8 +20,10 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\CheckoutEvents;
+use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
+use CoreShop\Component\Order\OrderSaleTransitions;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -169,19 +172,20 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return Response
      *
      * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
     {
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $cart = $this->getCart();
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
          *
          * what are we doing here?
-         *  1. Create Order
+         *  1. Commit Order (eg. change state)
          *  2. Use Payum and redirect to Payment Provider
          *  3. PayumBundle takes care about payment stuff
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
@@ -222,8 +226,12 @@ class CheckoutController extends FrontendController
         /**
          * If everything is valid, we continue with Order-Creation.
          */
-        $order = $this->getOrderFactory()->createNew();
-        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+        $order = $this->getCart();
+
+        $workflow = $this->get(StateMachineManagerInterface::class)->get(OrderSaleTransitions::IDENTIFIER, $order);
+
+        $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
@@ -337,7 +345,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Model\CartInterface
+     * @return \CoreShop\Component\Order\Model\OrderInterface
      */
     protected function getCart()
     {
@@ -350,30 +358,6 @@ class CheckoutController extends FrontendController
     protected function getCartContext()
     {
         return $this->get('coreshop.context.cart');
-    }
-
-    /**
-     * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
-     */
-    protected function getCartManager()
-    {
-        return $this->get('coreshop.cart.manager');
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Transformer\ProposalTransformerInterface
-     */
-    protected function getCartToOrderTransformer()
-    {
-        return $this->get('coreshop.order.transformer.cart_to_order');
-    }
-
-    /**
-     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
-     */
-    protected function getOrderFactory()
-    {
-        return $this->get('coreshop.factory.order');
     }
 
     /**

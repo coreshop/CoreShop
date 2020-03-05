@@ -27,53 +27,18 @@ use CoreShop\Component\Order\ShipmentStates;
 use Monolog\Logger;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
+use Pimcore\Model\Document\Email;
 
 class OrderMailProcessor implements OrderMailProcessorInterface
 {
-    /**
-     * @var Logger
-     */
     private $logger;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $priceFormatter;
-
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
     private $invoiceRepository;
-
-    /**
-     * @var OrderShipmentRepositoryInterface
-     */
     private $shipmentRepository;
-
-    /**
-     * @var OrderDocumentRendererInterface
-     */
     private $orderDocumentRenderer;
-
-    /**
-     * @var ThemeHelperInterface
-     */
     private $themeHelper;
-
-    /**
-     * @var MailProcessorInterface
-     */
     private $mailProcessor;
 
-    /**
-     * @param Logger                           $logger
-     * @param MoneyFormatterInterface          $priceFormatter
-     * @param OrderInvoiceRepositoryInterface  $invoiceRepository
-     * @param OrderShipmentRepositoryInterface $shipmentRepository
-     * @param OrderDocumentRendererInterface   $orderDocumentRenderer
-     * @param ThemeHelperInterface             $themeHelper
-     * @param MailProcessorInterface           $mailProcessor
-     */
     public function __construct(
         Logger $logger,
         MoneyFormatterInterface $priceFormatter,
@@ -95,7 +60,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = [])
+    public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool
     {
         if (!$emailDocument instanceof Document\Email) {
             return false;

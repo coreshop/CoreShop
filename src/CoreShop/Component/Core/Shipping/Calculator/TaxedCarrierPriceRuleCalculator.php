@@ -25,26 +25,10 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
-    /**
-     * @var CarrierPriceCalculatorInterface
-     */
     private $carrierPriceCalculator;
-
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var TaxApplicatorInterface
-     */
     private $taxApplicator;
 
-    /**
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
-     * @param TaxCalculatorFactoryInterface   $taxCalculatorFactory
-     * @param TaxApplicatorInterface          $taxApplicator
-     */
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
         TaxCalculatorFactoryInterface $taxCalculatorFactory,
@@ -58,7 +42,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     /**
      * {@inheritdoc}
      */
-    public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true)
+    public function getPrice(BaseCarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, bool $withTax = true): int
     {
         $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
 
@@ -78,7 +62,7 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     /**
      * {@inheritdoc}
      */
-    private function getTaxCalculator(CoreCarrierInterface $carrier, AddressInterface $address)
+    private function getTaxCalculator(CoreCarrierInterface $carrier, AddressInterface $address): ?TaxCalculatorInterface
     {
         $taxRuleGroup = $carrier->getTaxRule();
 

@@ -21,16 +21,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallDatabaseCommand extends AbstractInstallCommand
 {
-    /**
-     * @var DatabaseSetupCommandsProviderInterface
-     */
     protected $databaseSetupCommand;
 
-    /**
-     * @param KernelInterface                        $kernel
-     * @param CommandDirectoryChecker                $directoryChecker
-     * @param DatabaseSetupCommandsProviderInterface $databaseSetupCommand
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
@@ -44,7 +36,7 @@ final class InstallDatabaseCommand extends AbstractInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install:database')
@@ -58,7 +50,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(
@@ -70,5 +62,7 @@ EOT
 
         $this->runCommands($commands, $output);
         $outputStyle->newLine();
+
+        return 0;
     }
 }

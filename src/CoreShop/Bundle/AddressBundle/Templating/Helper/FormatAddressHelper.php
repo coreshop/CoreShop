@@ -13,18 +13,13 @@
 namespace CoreShop\Bundle\AddressBundle\Templating\Helper;
 
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
 use Symfony\Component\Templating\Helper\Helper;
 
 class FormatAddressHelper extends Helper implements FormatAddressHelperInterface
 {
-    /**
-     * @var AddressFormatterInterface
-     */
     private $addressFormatter;
 
-    /**
-     * @param AddressFormatterInterface $addressFormatter
-     */
     public function __construct(AddressFormatterInterface $addressFormatter)
     {
         $this->addressFormatter = $addressFormatter;
@@ -33,7 +28,7 @@ class FormatAddressHelper extends Helper implements FormatAddressHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAddress($address, $asHtml = true)
+    public function formatAddress(AddressInterface $address, bool $asHtml = true): string
     {
         return $this->addressFormatter->formatAddress($address, $asHtml);
     }

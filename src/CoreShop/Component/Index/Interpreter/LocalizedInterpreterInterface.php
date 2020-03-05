@@ -27,10 +27,10 @@ interface LocalizedInterpreterInterface extends InterpreterInterface
      * @return mixed
      */
     public function interpretForLanguage(
-        $language,
+        string $language,
         $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
+        array $interpreterConfig = []
     );
 }

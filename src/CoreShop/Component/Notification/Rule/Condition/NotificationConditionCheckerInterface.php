@@ -16,12 +16,5 @@ use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface NotificationConditionCheckerInterface extends ConditionCheckerInterface
 {
-    /**
-     * @param mixed $subject
-     * @param array $params
-     * @param array $configuration
-     *
-     * @return bool
-     */
-    public function isNotificationRuleValid($subject, $params, array $configuration);
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool;
 }

@@ -16,7 +16,7 @@ use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 
 abstract class AbstractSluggableLinkGenerator implements LinkGeneratorInterface
 {
-    protected function slugify($string)
+    protected function slugify($string): string
     {
         return strtolower(
             trim(

@@ -17,14 +17,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
@@ -33,7 +27,7 @@ final class ValidProductQuantityPriceRuleFetcher implements ValidRulesFetcherInt
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context)
+    public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         $validRules = [];
         $rules = $product->getQuantityPriceRules();

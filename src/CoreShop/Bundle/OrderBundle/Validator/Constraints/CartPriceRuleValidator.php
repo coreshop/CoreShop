@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -24,21 +24,13 @@ use Webmozart\Assert\Assert;
 
 final class CartPriceRuleValidator extends ConstraintValidator
 {
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
-
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $voucherCodeRepository;
 
-    /**
-     * @param CartPriceRuleValidationProcessorInterface $ruleValidationProcessor
-     * @param CartPriceRuleVoucherRepositoryInterface   $voucherCodeRepository
-     */
-    public function __construct(CartPriceRuleValidationProcessorInterface $ruleValidationProcessor, CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
+    public function __construct(
+        CartPriceRuleValidationProcessorInterface $ruleValidationProcessor,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+    )
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->voucherCodeRepository = $voucherCodeRepository;
@@ -47,12 +39,12 @@ final class CartPriceRuleValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         /** @var CartPriceRule $constraint */
         Assert::isInstanceOf($constraint, CartPriceRule::class);
 
-        if (!$value instanceof CartInterface) {
+        if (!$value instanceof OrderInterface) {
             return;
         }
 

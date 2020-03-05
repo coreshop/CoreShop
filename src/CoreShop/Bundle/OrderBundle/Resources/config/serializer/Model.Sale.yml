@@ -136,11 +136,6 @@ CoreShop\Component\Order\Model\Sale:
             exp: object.getBaseAdjustments()
             type: array
             groups: [Detailed]
-        saleDate:
-            serialized_name: saleDate
-            exp: object.getSaleDate()
-            type: carbon
-            groups: [Detailed]
         saleNumber:
             serialized_name: saleNumber
             exp: object.getSaleNumber()

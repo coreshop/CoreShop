@@ -18,26 +18,10 @@ use Webmozart\Assert\Assert;
 
 final class SimpleStateChecker extends AbstractConditionChecker
 {
-    /**
-     * @var string
-     */
     private $interface;
-
-    /**
-     * @var string
-     */
     private $stateField;
-
-    /**
-     * @var string
-     */
     private $configurationField;
 
-    /**
-     * @param string $interface
-     * @param string $stateField
-     * @param string $configurationField
-     */
     public function __construct(string $interface, string $stateField, string $configurationField)
     {
         $this->interface = $interface;
@@ -48,7 +32,7 @@ final class SimpleStateChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         Assert::isInstanceOf($subject, $this->interface);
 

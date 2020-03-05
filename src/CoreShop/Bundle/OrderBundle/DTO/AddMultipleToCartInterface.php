@@ -12,9 +12,6 @@
 
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
-
 interface AddMultipleToCartInterface
 {
     /**

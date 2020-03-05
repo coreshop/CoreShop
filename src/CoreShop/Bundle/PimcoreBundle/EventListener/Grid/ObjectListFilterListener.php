@@ -19,14 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ObjectListFilterListener
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $filterServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $filterServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $filterServiceRegistry)
     {
         $this->filterServiceRegistry = $filterServiceRegistry;
@@ -35,7 +29,7 @@ final class ObjectListFilterListener
     /**
      * @param GenericEvent $event
      */
-    public function checkObjectList(GenericEvent $event)
+    public function checkObjectList(GenericEvent $event): void
     {
         $list = $event->getArgument('list');
         $context = $event->getArgument('context');

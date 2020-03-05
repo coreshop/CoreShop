@@ -25,20 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    /**
-     * @var ExpressionLanguage
-     */
     protected $expressionLanguage;
-
-    /**
-     * @var ContainerInterface
-     */
     protected $container;
 
-    /**
-     * @param ExpressionLanguage $expressionLanguage
-     * @param ContainerInterface $container
-     */
     public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {
         $this->expressionLanguage = $expressionLanguage;
@@ -68,12 +57,11 @@ final class UniqueEntityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param Concrete   $entity
-     * @param Constraint $constraint
-     */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
+        /**
+         * @var Concrete $entity
+         */
         Assert::isInstanceOf($entity, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {

@@ -64,5 +64,3 @@ final class ThemeHelper implements ThemeHelperInterface
         }
     }
 }
-
-class_alias(ThemeHelper::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeHelper');

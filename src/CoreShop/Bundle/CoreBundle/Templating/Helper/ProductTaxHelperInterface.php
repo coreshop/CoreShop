@@ -17,19 +17,7 @@ use Symfony\Component\Templating\Helper\HelperInterface;
 
 interface ProductTaxHelperInterface extends HelperInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     *
-     * @return int
-     */
-    public function getTaxAmount(PurchasableInterface $product, array $context = []);
+    public function getTaxAmount(PurchasableInterface $product, array $context = []): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     *
-     * @return float
-     */
-    public function getTaxRate(PurchasableInterface $product, array $context = []);
+    public function getTaxRate(PurchasableInterface $product, array $context = []): float;
 }

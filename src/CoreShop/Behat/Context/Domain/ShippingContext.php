@@ -15,70 +15,38 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
-use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
-use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Webmozart\Assert\Assert;
 
 final class ShippingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     private $ruleValidationProcessor;
-
-    /**
-     * @var FactoryInterface
-     */
     private $addressFactory;
-
-    /**
-     * @var CarrierPriceCalculatorInterface
-     */
     private $carrierPriceCalculator;
+    private $shippingRuleValidator;
 
-    /**
-     * @var CarrierShippingRuleCheckerInterface
-     */
-    private $carrierShippingRuleChecker;
-
-    /**
-     * @param SharedStorageInterface              $sharedStorage
-     * @param CarrierRepositoryInterface          $carrierRepository
-     * @param RuleValidationProcessorInterface    $ruleValidationProcessor
-     * @param FactoryInterface                    $addressFactory
-     * @param CarrierPriceCalculatorInterface     $carrierPriceCalculator
-     * @param CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CarrierRepositoryInterface $carrierRepository,
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker
+        ShippableCarrierValidatorInterface $shippingRuleValidator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
         $this->ruleValidationProcessor = $ruleValidationProcessor;
         $this->addressFactory = $addressFactory;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
-        $this->carrierShippingRuleChecker = $carrierShippingRuleChecker;
+        $this->shippingRuleValidator = $shippingRuleValidator;
     }
 
     /**
@@ -99,7 +67,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be valid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be valid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeValid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -113,7 +81,7 @@ final class ShippingContext implements Context
      * @Then /^the (shipping rule "[^"]+") should be invalid for (my cart) with (carrier "[^"]+")$/
      * @Then /^the (shipping rule) should be invalid for (my cart) with (carrier "[^"]+")$/
      */
-    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, CartInterface $cart, CarrierInterface $carrier)
+    public function theShippingRuleShouldBeInvalid(ShippingRuleInterface $rule, OrderInterface $cart, CarrierInterface $carrier)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
@@ -126,25 +94,21 @@ final class ShippingContext implements Context
     /**
      * @Then /^shipping for (my cart) with (carrier "[^"]+") should be priced at "([^"]+)"$/
      */
-    public function shippingShouldBePriced(CartInterface $cart, CarrierInterface $carrier, int $price)
+    public function shippingShouldBePriced(OrderInterface $cart, CarrierInterface $carrier, int $price)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        Assert::same((int) $price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
     }
 
     /**
      * @Then /^the (carrier "[^"]+") should be valid for (my cart)$/
      */
-    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, CartInterface $cart)
+    public function carrierShouldBeValidForMyCart(CarrierInterface $carrier, OrderInterface $cart)
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        $ruleResult = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $cart, $address);
-
-        if ($ruleResult instanceof ShippingRuleGroupInterface) {
-            $ruleResult = true;
-        }
+        $ruleResult = $this->shippingRuleValidator->isCarrierValid($carrier, $cart, $address);
 
         Assert::true(
             $ruleResult,

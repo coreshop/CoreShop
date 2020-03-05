@@ -16,11 +16,5 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 interface StorageListItemResolverInterface
 {
-    /**
-     * @param StorageListItemInterface $itemA
-     * @param StorageListItemInterface $itemB
-     *
-     * @return StorageListItemInterface
-     */
-    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB);
+    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB): bool;
 }

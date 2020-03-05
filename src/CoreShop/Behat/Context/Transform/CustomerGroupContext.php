@@ -18,14 +18,8 @@ use Webmozart\Assert\Assert;
 
 final class CustomerGroupContext implements Context
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $customerGroupRepository;
 
-    /**
-     * @param RepositoryInterface $customerGroupRepository
-     */
     public function __construct(RepositoryInterface $customerGroupRepository)
     {
         $this->customerGroupRepository = $customerGroupRepository;

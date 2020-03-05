@@ -20,20 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class MenuContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var MenuProviderInterface
-     */
     private $menuProvider;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param MenuProviderInterface  $menuProvider
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         MenuProviderInterface $menuProvider

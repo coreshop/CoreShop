@@ -22,7 +22,7 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
     /**
      * {@inheritdoc}
      */
-    public function findForProduct(ProductInterface $product)
+    public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')
@@ -36,7 +36,7 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
     /**
      * {@inheritdoc}
      */
-    public function findForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')

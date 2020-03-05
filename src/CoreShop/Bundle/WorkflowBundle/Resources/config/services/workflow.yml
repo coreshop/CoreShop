@@ -15,6 +15,7 @@ services:
             - '@workflow.registry'
 
     coreshop.state_machine_applier: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
+    CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface: '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
     CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier:
         arguments:
             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager'

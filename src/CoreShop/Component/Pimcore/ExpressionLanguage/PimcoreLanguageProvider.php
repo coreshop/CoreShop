@@ -20,24 +20,24 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PimcoreLanguageProvider implements ExpressionFunctionProviderInterface
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new ExpressionFunction('object', function ($arg) {
                 return sprintf('\\Pimcore\\Model\\DataObject::getById(%s)', $arg);
-            }, function (array $variables, $value) {
+            }, static function (array $variables, $value) {
                 return DataObject::getById($value);
             }),
 
             new ExpressionFunction('asset', function ($arg) {
                 return sprintf('\\Pimcore\\Model\\Asset::getById(%s)', $arg);
-            }, function (array $variables, $value) {
+            }, static function (array $variables, $value) {
                 return Asset::getById($value);
             }),
 
             new ExpressionFunction('document', function ($arg) {
                 return sprintf('\\Pimcore\\Model\\Document::getById(%s)', $arg);
-            }, function (array $variables, $value) {
+            }, static function (array $variables, $value) {
                 return Document::getById($value);
             }),
         );

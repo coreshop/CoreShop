@@ -21,19 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class IndexConditionContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerRegistry;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
     public function __construct(SharedStorageInterface $sharedStorage, ServiceRegistryInterface $workerRegistry)
     {
         $this->sharedStorage = $sharedStorage;

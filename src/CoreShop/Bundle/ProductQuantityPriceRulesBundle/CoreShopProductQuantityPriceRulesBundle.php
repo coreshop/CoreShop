@@ -31,7 +31,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         ];
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -43,7 +43,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Product Quantity Price Rules';
     }
@@ -51,7 +51,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Product Quantity Price Rules Bundle';
     }

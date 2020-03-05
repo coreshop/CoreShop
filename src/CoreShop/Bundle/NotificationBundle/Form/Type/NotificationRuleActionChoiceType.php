@@ -19,7 +19,7 @@ class NotificationRuleActionChoiceType extends RuleActionChoiceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_rule_action_choice';
     }

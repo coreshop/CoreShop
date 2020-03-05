@@ -19,7 +19,7 @@ class RuleActionType extends AbstractConfigurableRuleElementType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
     }
@@ -27,7 +27,7 @@ class RuleActionType extends AbstractConfigurableRuleElementType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action';
     }

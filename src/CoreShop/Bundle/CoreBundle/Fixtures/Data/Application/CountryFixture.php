@@ -109,6 +109,10 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
+                if (!$country->getCurrency()['iso_4217_code']) {
+                    continue;
+                }
+
                 /**
                  * @var CountryInterface $newCountry
                  */

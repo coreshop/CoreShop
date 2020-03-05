@@ -22,7 +22,7 @@ class ActiveValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($value, Constraint $constraint)
+    public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof Active) {
             throw new UnexpectedTypeException($constraint, __NAMESPACE__ . '\Active');

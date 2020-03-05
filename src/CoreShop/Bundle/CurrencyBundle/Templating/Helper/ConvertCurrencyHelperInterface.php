@@ -15,13 +15,13 @@ namespace CoreShop\Bundle\CurrencyBundle\Templating\Helper;
 interface ConvertCurrencyHelperInterface
 {
     /**
-     * @param int         $amount
-     * @param string|null $sourceCurrencyCode
-     * @param string|null $targetCurrencyCode
+     * @param int    $amount
+     * @param string $sourceCurrencyCode
+     * @param string $targetCurrencyCode
      *
      * @return int
      *
      * @throws \InvalidArgumentException
      */
-    public function convertAmount($amount, $sourceCurrencyCode, $targetCurrencyCode);
+    public function convertAmount(?int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int;
 }

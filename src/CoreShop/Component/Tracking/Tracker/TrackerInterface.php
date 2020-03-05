@@ -14,50 +14,19 @@ namespace CoreShop\Component\Tracking\Tracker;
 
 interface TrackerInterface
 {
-    /**
-     * @return bool
-     */
-    public function isEnabled();
+    public function isEnabled(): bool;
 
-    /**
-     * @param bool $enabled
-     */
-    public function setEnabled($enabled);
+    public function setEnabled(bool $enabled): void;
 
-    /**
-     * @param mixed $product
-     */
-    public function trackProduct($product);
+    public function trackProduct($product): void;
 
-    /**
-     * @param mixed $product
-     */
-    public function trackProductImpression($product);
+    public function trackProductImpression($product): void;
 
-    /**
-     * @param mixed $cart
-     * @param mixed $product
-     * @param int   $quantity
-     */
-    public function trackCartAdd($cart, $product, $quantity = 1);
+    public function trackCartAdd($cart, $product, float $quantity = 1): void;
 
-    /**
-     * @param mixed $cart
-     * @param mixed $product
-     * @param int   $quantity
-     */
-    public function trackCartRemove($cart, $product, $quantity = 1);
+    public function trackCartRemove($cart, $product, float $quantity = 1): void;
 
-    /**
-     * @param mixed $cart
-     * @param null  $stepIdentifier
-     * @param bool  $isFirstStep
-     * @param null  $checkoutOption
-     */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null);
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void;
 
-    /**
-     * @param mixed $order
-     */
-    public function trackCheckoutComplete($order);
+    public function trackCheckoutComplete($order): void;
 }

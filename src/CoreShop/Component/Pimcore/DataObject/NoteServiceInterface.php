@@ -21,9 +21,9 @@ interface NoteServiceInterface
     /**
      * @param int $id
      *
-     * @return Note
+     * @return Note|null
      */
-    public function getNoteById($id);
+    public function getNoteById(int $id): ?Note;
 
     /**
      * @param Concrete $object
@@ -31,22 +31,22 @@ interface NoteServiceInterface
      *
      * @return Note
      */
-    public function createPimcoreNoteInstance(Concrete $object, $noteType);
+    public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note;
 
     /**
      * @param string $noteType
      *
      * @return Note
      */
-    public function createAnonymousNoteInstance($noteType);
+    public function createAnonymousNoteInstance(string $noteType): Note;
 
     /**
      * @param Concrete $object
      * @param string   $noteType
      *
-     * @return mixed
+     * @return Note[]
      */
-    public function getObjectNotes(Concrete $object, $noteType);
+    public function getObjectNotes(Concrete $object, string $noteType): array;
 
     /**
      * @param Note           $note
@@ -54,7 +54,7 @@ interface NoteServiceInterface
      *
      * @return Note
      */
-    public function storeNoteForEmail(Note $note, Document\Email $emailDocument);
+    public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note;
 
     /**
      * @param Note  $note
@@ -62,11 +62,11 @@ interface NoteServiceInterface
      *
      * @return Note
      */
-    public function storeNote(Note $note, $eventParams = []);
+    public function storeNote(Note $note, array $eventParams = []): ?Note;
 
     /**
      * @param int   $noteId
      * @param array $eventParams
      */
-    public function deleteNote($noteId, $eventParams = []);
+    public function deleteNote(int $noteId, array $eventParams = []): void;
 }

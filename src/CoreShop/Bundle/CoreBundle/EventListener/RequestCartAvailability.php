@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -22,32 +22,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartAvailability
 {
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var RequestHelper
-     */
     private $pimcoreRequestHelper;
-
-    /**
-     * @var Session
-     */
     private $session;
 
-    /**
-     * @param CartManagerInterface    $cartManager
-     * @param ShopperContextInterface $shopperContext
-     * @param RequestHelper           $pimcoreRequestHelper
-     * @param Session                 $session
-     */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
@@ -60,12 +39,7 @@ final class RequestCartAvailability
         $this->session = $session;
     }
 
-    /**
-     * Check if Cart needs a recalculation because of changed items from system.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function checkCartAvailability(GetResponseEvent $event)
+    public function checkCartAvailability(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;
@@ -83,7 +57,6 @@ final class RequestCartAvailability
             return;
         }
 
-        /** @var CartInterface $cart */
         $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {

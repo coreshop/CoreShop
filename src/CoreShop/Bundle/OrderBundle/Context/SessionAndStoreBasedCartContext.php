@@ -14,43 +14,23 @@ namespace CoreShop\Bundle\OrderBundle\Context;
 
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionAndStoreBasedCartContext implements CartContextInterface
 {
-    /**
-     * @var SessionInterface
-     */
     private $session;
-
-    /**
-     * @var string
-     */
     private $sessionKeyName;
-
-    /**
-     * @var CartRepositoryInterface
-     */
     private $cartRepository;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param SessionInterface        $session
-     * @param string                  $sessionKeyName
-     * @param CartRepositoryInterface $cartRepository
-     * @param StoreContextInterface   $storeContext
-     */
     public function __construct(
         SessionInterface $session,
         string $sessionKeyName,
-        CartRepositoryInterface $cartRepository,
+        OrderRepositoryInterface $cartRepository,
         StoreContextInterface $storeContext
     ) {
         $this->session = $session;
@@ -62,7 +42,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         try {
             $store = $this->storeContext->getStore();
@@ -74,7 +54,10 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
             throw new CartNotFoundException('CoreShop was not able to find the cart in session');
         }
 
-        $cart = $this->cartRepository->findCartById($this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId())));
+        /**
+         * @var OrderInterface $cart
+         */
+        $cart = $this->cartRepository->findByCartId($this->session->get(sprintf('%s.%s', $this->sessionKeyName, $store->getId())));
 
         if (null === $cart || null === $cart->getStore() || $cart->getStore()->getId() !== $store->getId()) {
             $cart = null;

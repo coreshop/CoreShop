@@ -11,6 +11,6 @@
  */
 
 pimcore.registerNS('coreshop.order.cart.detail.blocks.customer');
-coreshop.order.cart.detail.blocks.customer = Class.create(coreshop.order.sale.detail.blocks.customer, {
+coreshop.order.cart.detail.blocks.customer = Class.create(coreshop.order.order.detail.blocks.customer, {
 
 });

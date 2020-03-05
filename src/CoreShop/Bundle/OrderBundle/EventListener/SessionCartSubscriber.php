@@ -23,27 +23,11 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
     private $pimcoreContext;
-
-    /**
-     * @var CartContextInterface
-     */
     private $cartContext;
-
-    /**
-     * @var string
-     */
     private $sessionKeyName;
 
-    /**
-     * @param PimcoreContextResolver $pimcoreContextResolver
-     * @param CartContextInterface   $cartContext
-     * @param string                 $sessionKeyName
-     */
-    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, $sessionKeyName)
+    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, string $sessionKeyName)
     {
         $this->pimcoreContext = $pimcoreContextResolver;
         $this->cartContext = $cartContext;
@@ -53,7 +37,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::RESPONSE => ['onKernelResponse'],
@@ -63,7 +47,7 @@ final class SessionCartSubscriber implements EventSubscriberInterface
     /**
      * @param FilterResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(FilterResponseEvent $event): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
             return;

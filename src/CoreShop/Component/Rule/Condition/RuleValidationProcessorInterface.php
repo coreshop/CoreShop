@@ -17,12 +17,5 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface RuleValidationProcessorInterface
 {
-    /**
-     * @param ResourceInterface $subject
-     * @param RuleInterface     $rule
-     * @param array             $params
-     *
-     * @return bool
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = []);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool;
 }

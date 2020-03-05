@@ -26,7 +26,7 @@ class VersionHelper
      *
      * @return mixed
      */
-    public static function useVersioning(\Closure $function, $enabled = true)
+    public static function useVersioning(\Closure $function, bool $enabled = true)
     {
         $backup = Version::$disabled;
 
@@ -47,7 +47,7 @@ class VersionHelper
         return $result;
     }
 
-    public static function getLatestVersion(Concrete $object)
+    public static function getLatestVersion(Concrete $object): Concrete
     {
         $latestVersion = $object->getLatestVersion();
         if ($latestVersion) {

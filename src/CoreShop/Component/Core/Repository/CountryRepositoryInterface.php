@@ -23,5 +23,5 @@ interface CountryRepositoryInterface extends BaseCountryRepositoryInterface
      *
      * @return CountryInterface[]
      */
-    public function findForStore(StoreInterface $store);
+    public function findForStore(StoreInterface $store): array;
 }

@@ -37,6 +37,11 @@ class Cart extends BaseCart implements CartInterface
         return $weight;
     }
 
+    public function setWeight($weight)
+    {
+        // TODO: Implement setWeight() method.
+    }
+
     /**
      * {@inheritdoc}
      */

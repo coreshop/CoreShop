@@ -13,6 +13,7 @@
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\Setup;
 
 final class PimcoreSetupContext implements Context
 {
@@ -25,6 +26,6 @@ final class PimcoreSetupContext implements Context
             return;
         }
 
-        \CoreShop\Test\Setup::setupPimcore();
+        Setup::setupPimcore();
     }
 }

@@ -20,27 +20,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CartExpireCommand extends Command
 {
-    /**
-     * @var ProposalExpirationInterface
-     */
     protected $cartExpiration;
-
-    /**
-     * @var int
-     */
     protected $days;
-
-    /**
-     * @var array
-     */
     protected $params;
 
-    /**
-     * @param ProposalExpirationInterface $cartExpiration
-     * @param int                         $days
-     * @param array                       $params
-     */
-    public function __construct(ProposalExpirationInterface $cartExpiration, $days = 0, $params = [])
+    public function __construct(ProposalExpirationInterface $cartExpiration, int $days = 0, array $params = [])
     {
         $this->cartExpiration = $cartExpiration;
         $this->days = $days;
@@ -49,10 +33,7 @@ final class CartExpireCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:cart:expire')
@@ -77,15 +58,7 @@ final class CartExpireCommand extends Command
             );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = $this->days;
         $params = $this->params;

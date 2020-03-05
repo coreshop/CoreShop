@@ -12,14 +12,10 @@
 
 namespace CoreShop\Component\Order\Repository;
 
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $code
-     *
-     * @return mixed
-     */
-    public function findByCode($code);
+    public function findByCode(string $code): CartPriceRuleVoucherCodeInterface;
 }

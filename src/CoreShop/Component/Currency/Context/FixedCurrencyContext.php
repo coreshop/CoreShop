@@ -19,12 +19,9 @@ final class FixedCurrencyContext implements CurrencyContextInterface
     /**
      * @var CurrencyInterface
      */
-    private $currency = null;
+    private $currency;
 
-    /**
-     * @param CurrencyInterface $currency
-     */
-    public function setCurrency($currency)
+    public function setCurrency(CurrencyInterface $currency): void
     {
         $this->currency = $currency;
     }
@@ -32,7 +29,7 @@ final class FixedCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         if ($this->currency instanceof CurrencyInterface) {
             return $this->currency;

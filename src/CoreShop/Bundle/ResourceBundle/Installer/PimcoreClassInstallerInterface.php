@@ -17,15 +17,15 @@ interface PimcoreClassInstallerInterface extends ResourceInstallerInterface
     /**
      * @return array
      */
-    public function getInstalledClasses();
+    public function getInstalledClasses(): array;
 
     /**
      * @return array
      */
-    public function getInstalledCollections();
+    public function getInstalledCollections(): array;
 
     /**
      * @return array
      */
-    public function getInstalledBricks();
+    public function getInstalledBricks(): array;
 }

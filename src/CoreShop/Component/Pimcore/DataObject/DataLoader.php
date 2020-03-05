@@ -20,7 +20,7 @@ class DataLoader implements DataLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
         if (!$data instanceof DataObject\AbstractObject) {
             return [];

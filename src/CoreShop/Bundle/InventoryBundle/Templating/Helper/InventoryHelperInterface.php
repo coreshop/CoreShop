@@ -16,18 +16,7 @@ use CoreShop\Component\Inventory\Model\StockableInterface;
 
 interface InventoryHelperInterface
 {
-    /**
-     * @param StockableInterface $stockable
-     *
-     * @return bool
-     */
-    public function isStockAvailable(StockableInterface $stockable);
+    public function isStockAvailable(StockableInterface $stockable): bool;
 
-    /**
-     * @param StockableInterface $stockable
-     * @param int                $quantity
-     *
-     * @return bool
-     */
-    public function isStockSufficient(StockableInterface $stockable, $quantity);
+    public function isStockSufficient(StockableInterface $stockable, float $quantity): bool;
 }

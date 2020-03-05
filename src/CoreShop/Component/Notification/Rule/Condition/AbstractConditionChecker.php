@@ -21,7 +21,7 @@ abstract class AbstractConditionChecker implements NotificationConditionCheckerI
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         if ($subject instanceof NotificationRuleInterface) {
             throw new \InvalidArgumentException('Notification Rule Condition $subject needs to be an array with values subject and params');

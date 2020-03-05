@@ -21,16 +21,8 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class StoreCollector extends DataCollector
 {
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param StoreContextInterface    $storeContext
-     * @param bool                     $storeChangeSupport
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         StoreContextInterface $storeContext,
@@ -45,10 +37,7 @@ final class StoreCollector extends DataCollector
         ];
     }
 
-    /**
-     * @return StoreInterface
-     */
-    public function getStore()
+    public function getStore(): StoreInterface
     {
         return $this->data['store'];
     }
@@ -56,7 +45,7 @@ final class StoreCollector extends DataCollector
     /**
      * @return StoreInterface[]
      */
-    public function getStores()
+    public function getStores(): array
     {
         return $this->data['stores'];
     }
@@ -64,7 +53,7 @@ final class StoreCollector extends DataCollector
     /**
      * @return bool
      */
-    public function isStoreChangeSupported()
+    public function isStoreChangeSupported(): bool
     {
         return $this->data['store_change_support'];
     }
@@ -72,7 +61,7 @@ final class StoreCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         try {
             $this->data['store'] = $this->storeContext->getStore();
@@ -84,7 +73,7 @@ final class StoreCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -92,7 +81,7 @@ final class StoreCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.store_collector';
     }

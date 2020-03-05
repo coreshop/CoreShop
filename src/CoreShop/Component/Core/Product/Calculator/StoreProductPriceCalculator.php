@@ -23,7 +23,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface

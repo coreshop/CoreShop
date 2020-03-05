@@ -12,6 +12,6 @@
 
 pimcore.registerNS('coreshop.order.cart.create');
 pimcore.registerNS('coreshop.order.cart.create.panel');
-coreshop.order.cart.create.panel = Class.create(coreshop.order.sale.create.panel, {
+coreshop.order.cart.create.panel = Class.create(coreshop.order.order.create.panel, {
     type: 'cart'
 });

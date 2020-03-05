@@ -14,12 +14,5 @@ namespace CoreShop\Component\Product\Rule\Action;
 
 interface ProductDiscountPriceActionProcessorInterface extends ActionProcessorInterface
 {
-    /**
-     * @param mixed $subject
-     * @param array $context
-     * @param array $configuration
-     *
-     * @return mixed
-     */
-    public function getDiscountPrice($subject, array $context, array $configuration);
+    public function getDiscountPrice($subject, array $context, array $configuration): int;
 }

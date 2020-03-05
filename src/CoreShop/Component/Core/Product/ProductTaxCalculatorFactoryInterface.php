@@ -18,11 +18,5 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 interface ProductTaxCalculatorFactoryInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     * @param AddressInterface     $address
-     *
-     * @return TaxCalculatorInterface|null
-     */
-    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address);
+    public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface;
 }

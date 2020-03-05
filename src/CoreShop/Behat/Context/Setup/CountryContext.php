@@ -26,44 +26,13 @@ use Pimcore\Tool\Console;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $countryFactory;
-
-    /**
-     * @var CountryRepositoryInterface
-     */
     private $countryRepository;
-
-    /**
-     * @var FixedCountryContext
-     */
     private $fixedCountryContext;
-
-    /**
-     * @var string
-     */
     private $kernelRootDirectory;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ObjectManager              $objectManager
-     * @param FactoryInterface           $countryFactory
-     * @param CountryRepositoryInterface $countryRepository
-     * @param FixedCountryContext        $fixedCountryContext
-     * @param string                     $kernelRootDirectory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,

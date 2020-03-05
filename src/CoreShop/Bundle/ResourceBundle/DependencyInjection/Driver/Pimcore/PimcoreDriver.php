@@ -21,6 +21,7 @@ use CoreShop\Component\Resource\Factory\PimcoreRepositoryFactory;
 use CoreShop\Component\Resource\Factory\RepositoryFactory;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -83,7 +84,17 @@ final class PimcoreDriver extends AbstractDriver
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, $classValue, $suffix = null)
     {
         $definition = new Definition($classValue);
+
+        $classes = array_merge([$classValue], class_parents($classValue));
+        foreach ($classes as $parent) {
+            if ($container->hasDefinition($parent)) {
+                $definition = new ChildDefinition($parent);
+                break;
+            }
+        }
+
         $definition
+            ->setClass($classValue)
             ->setPublic(true)
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
@@ -91,7 +102,9 @@ final class PimcoreDriver extends AbstractDriver
                 new Reference($metadata->getServiceId('factory')),
                 new Reference('coreshop.resource_controller.view_handler'),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')]);
+            ->addMethodCall('setContainer', [new Reference('service_container')])
+            ->addTag('controller.service_arguments')
+        ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 

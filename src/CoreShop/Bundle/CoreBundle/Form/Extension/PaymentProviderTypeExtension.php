@@ -26,7 +26,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('stores', StoreChoiceType::class, [
@@ -51,7 +51,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return PaymentProviderType::class;
     }
@@ -59,7 +59,7 @@ final class PaymentProviderTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [PaymentProviderType::class];
     }

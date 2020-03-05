@@ -19,17 +19,15 @@ interface StorageListManagerInterface
     /**
      * @return StorageListInterface
      */
-    public function getStorageList();
+    public function getStorageList(): StorageListInterface;
 
     /**
      * @return bool
      */
-    public function hasStorageList();
+    public function hasStorageList(): bool;
 
     /**
      * @param StorageListInterface $storageList
-     *
-     * @return bool
      */
-    public function persist(StorageListInterface $storageList);
+    public function persist(StorageListInterface $storageList): void;
 }

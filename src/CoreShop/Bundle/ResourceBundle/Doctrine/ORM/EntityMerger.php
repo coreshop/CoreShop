@@ -24,23 +24,9 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 
 class EntityMerger
 {
-    /**
-     * The EntityManager that "owns" this UnitOfWork instance.
-     *
-     * @var EntityManagerInterface
-     */
     private $em;
-
-    /**
-     * The IdentifierFlattener used for manipulating identifiers
-     *
-     * @var IdentifierFlattener
-     */
     private $identifierFlattener;
 
-    /**
-     * @param EntityManagerInterface $em
-     */
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
@@ -117,7 +103,7 @@ class EntityMerger
      * @param mixed $managedCopy
      * @param array $visited
      */
-    private function checkAssociations($entity, $managedCopy, array &$visited)
+    private function checkAssociations($entity, $managedCopy, array &$visited): void
     {
         $class = $this->em->getClassMetadata(get_class($entity));
 
@@ -185,7 +171,7 @@ class EntityMerger
      * @param \Closure   $notFound
      * @param array      $visited
      */
-    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited)
+    private function mergeCollection(Collection $from, Collection $to, array $assoc, \Closure $notFound, array &$visited): void
     {
         $assocClass = $this->em->getClassMetadata($assoc['targetEntity']);
 
@@ -242,7 +228,7 @@ class EntityMerger
      *
      * @return array
      */
-    private function getData($entity)
+    private function getData($entity): array
     {
         $actualData = [];
         $class = $this->em->getClassMetadata(get_class($entity));

@@ -23,5 +23,5 @@ interface ExportReportInterface
      *
      * @return array
      */
-    public function getExportReportData(ParameterBag $parameterBag);
+    public function getExportReportData(ParameterBag $parameterBag): array;
 }

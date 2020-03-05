@@ -30,7 +30,7 @@ final class CustomerGroupsConditionChecker extends AbstractConditionChecker
         ShippableInterface $shippable,
         AddressInterface $address,
         array $configuration
-    ) {
+    ): bool {
         if (!$shippable instanceof CustomerAwareInterface) {
             return false;
         }

@@ -22,30 +22,16 @@ use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
 {
-    /**
-     * @var StateMachineManager
-     */
     private $stateMachineManager;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
     private $paymentRepository;
 
-    /**
-     * @param StateMachineManager        $stateMachineManager
-     * @param PaymentRepositoryInterface $paymentRepository
-     */
     public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
     {
         $this->stateMachineManager = $stateMachineManager;
         $this->paymentRepository = $paymentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(OrderInterface $order)
+    public function resolve(OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderPaymentTransitions::IDENTIFIER);
         $targetTransition = $this->getTargetTransition($order);
@@ -55,24 +41,14 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param Workflow       $workflow
-     * @param OrderInterface $subject
-     * @param string         $transition
-     */
-    private function applyTransition(Workflow $workflow, $subject, string $transition)
+    private function applyTransition(Workflow $workflow, OrderInterface $subject, string $transition): void
     {
         if ($workflow->can($subject, $transition)) {
             $workflow->apply($subject, $transition);
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return string|null
-     */
-    private function getTargetTransition(OrderInterface $order)
+    private function getTargetTransition(OrderInterface $order): ?string
     {
         $refundedPaymentTotal = 0;
         $refundedPayments = $this->getPaymentsWithState($order, PaymentInterface::STATE_REFUNDED);
@@ -130,7 +106,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
      *
      * @return PaymentInterface[]
      */
-    private function getPaymentsWithState(OrderInterface $order, string $state)
+    private function getPaymentsWithState(OrderInterface $order, string $state): array
     {
         $payments = $this->paymentRepository->findForPayable($order);
         $filteredPayments = [];

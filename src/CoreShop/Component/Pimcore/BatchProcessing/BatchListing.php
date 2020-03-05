@@ -48,10 +48,6 @@ final class BatchListing implements Iterator, Countable
      */
     private $items = [];
 
-    /**
-     * @param AbstractListing $list
-     * @param int             $batchSize
-     */
     public function __construct(AbstractListing $list, int $batchSize)
     {
         $this->list = $list;

@@ -18,20 +18,9 @@ use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineApplier      $stateMachineApplier
-     */
     public function __construct(OrderRepositoryInterface $orderRepository, StateMachineApplier $stateMachineApplier)
     {
         $this->orderRepository = $orderRepository;
@@ -41,7 +30,7 @@ final class OrderExpiration implements ProposalExpirationInterface
     /**
      * {@inheritdoc}
      */
-    public function expire($days, $params = [])
+    public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {
             return;

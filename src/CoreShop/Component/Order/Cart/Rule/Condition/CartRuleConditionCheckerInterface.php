@@ -12,20 +12,12 @@
 
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
 
 interface CartRuleConditionCheckerInterface extends ConditionCheckerInterface
 {
-    /**
-     * @param CartInterface                          $cart
-     * @param CartPriceRuleInterface                 $cartPriceRule
-     * @param CartPriceRuleVoucherCodeInterface|null $voucher
-     * @param array                                  $configuration
-     *
-     * @return bool
-     */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration);
+    public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool;
 }

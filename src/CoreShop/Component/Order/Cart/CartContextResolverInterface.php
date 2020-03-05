@@ -12,13 +12,9 @@
 
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartContextResolverInterface
 {
-    /**
-     * @param CartInterface $cart
-     * @return array
-     */
-    public function resolveCartContext(CartInterface $cart);
+    public function resolveCartContext(OrderInterface $cart): array;
 }

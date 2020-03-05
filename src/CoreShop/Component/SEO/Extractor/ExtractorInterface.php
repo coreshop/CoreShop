@@ -27,7 +27,7 @@ interface ExtractorInterface
      *
      * @return bool
      */
-    public function supports($object);
+    public function supports($object): bool;
 
     /**
      * Update the metadata with information from this content.
@@ -40,5 +40,5 @@ interface ExtractorInterface
      * @param object               $object
      * @param SEOMetadataInterface $seoMetadata
      */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata);
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void;
 }

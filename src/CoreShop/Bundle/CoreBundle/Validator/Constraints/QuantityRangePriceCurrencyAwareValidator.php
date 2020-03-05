@@ -20,9 +20,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class QuantityRangePriceCurrencyAwareValidator extends ConstraintValidator
 {
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint)
     {
         if (!$constraint instanceof QuantityRangePriceCurrencyAware) {

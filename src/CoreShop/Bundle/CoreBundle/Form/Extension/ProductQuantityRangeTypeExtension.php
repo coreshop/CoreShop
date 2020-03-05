@@ -29,7 +29,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('amount', MoneyType::class, [])
@@ -92,7 +92,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return ProductQuantityRangeType::class;
     }
@@ -100,7 +100,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [ProductQuantityRangeType::class];
     }

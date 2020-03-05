@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 
 final class QuoteListener extends AbstractNotificationRuleListener
 {
-    public function applyRule(GenericEvent $event)
+    public function applyRule(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), QuoteInterface::class);
 

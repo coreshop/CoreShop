@@ -14,5 +14,5 @@ namespace CoreShop\Bundle\RuleBundle\Processor;
 
 interface RuleAvailabilityProcessorInterface
 {
-    public function process();
+    public function process(): void;
 }

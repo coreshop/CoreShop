@@ -18,14 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleActionChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
     private $actions;
 
-    /**
-     * @param array $actions
-     */
     public function __construct(array $actions)
     {
         $this->actions = $actions;
@@ -34,7 +28,7 @@ class RuleActionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->actions),
@@ -44,7 +38,7 @@ class RuleActionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -52,7 +46,7 @@ class RuleActionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action_choice';
     }

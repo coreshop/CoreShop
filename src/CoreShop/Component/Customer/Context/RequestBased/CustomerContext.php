@@ -43,7 +43,7 @@ final class CustomerContext implements CustomerContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         try {
             return $this->getCustomerForRequest($this->getMasterRequest());

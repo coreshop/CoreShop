@@ -7,7 +7,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.context.shopper'
-            - '@coreshop.repository.product'
             - '@coreshop.product.price_calculator'
             - '@coreshop.product.taxed_price_calculator'
         tags:
@@ -101,7 +100,7 @@ services:
             - '@coreshop.shipping_rule.processor'
             - '@coreshop.factory.address'
             - '@coreshop.carrier.price_calculator'
-            - '@coreshop.carrier.shipping_rule.checker'
+            - '@coreshop.shippable_carrier.shipping_rule.validator'
         tags:
             - { name: fob.context_service }
 

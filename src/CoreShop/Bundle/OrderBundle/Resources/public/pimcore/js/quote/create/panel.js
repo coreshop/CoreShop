@@ -12,6 +12,6 @@
 
 pimcore.registerNS('coreshop.order.quote.create');
 pimcore.registerNS('coreshop.order.quote.create.panel');
-coreshop.order.quote.create.panel = Class.create(coreshop.order.sale.create.panel, {
+coreshop.order.quote.create.panel = Class.create(coreshop.order.order.create.panel, {
     type: 'quote'
 });

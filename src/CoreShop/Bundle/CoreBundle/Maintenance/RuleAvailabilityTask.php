@@ -18,20 +18,9 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class RuleAvailabilityTask implements TaskInterface
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var RuleAvailabilityProcessorInterface
-     */
     private $ruleAvailabilityProcessor;
 
-    /**
-     * @param ConfigurationServiceInterface      $configurationService
-     * @param RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
-     */
     public function __construct(
         ConfigurationServiceInterface $configurationService,
         RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor
@@ -40,7 +29,7 @@ final class RuleAvailabilityTask implements TaskInterface
         $this->ruleAvailabilityProcessor = $ruleAvailabilityProcessor;
     }
 
-    public function execute()
+    public function execute(): void
     {
         $lastMaintenance = $this->configurationService->get('system.rule.availability_check.last_run');
 

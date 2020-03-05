@@ -36,7 +36,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -46,7 +46,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Theme';
     }
@@ -54,7 +54,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Theme Bundle';
     }
@@ -62,7 +62,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/theme-bundle'])) {
             return 'coreshop/theme-bundle';

@@ -12,34 +12,21 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Exception\NoPurchasableWholesalePriceFoundException;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use Webmozart\Assert\Assert;
 
 final class CartItemsWholesaleProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CartContextResolverInterface
-     */
     private $cartContextResolver;
-
-    /**
-     * @var PurchasableWholesalePriceCalculatorInterface
-     */
     private $wholesalePriceCalculator;
 
-    /**
-     * @param PurchasableWholesalePriceCalculatorInterface $wholesalePriceCalculator
-     * @param CartContextResolverInterface                 $cartContextResolver
-     */
     public function __construct(
         PurchasableWholesalePriceCalculatorInterface $wholesalePriceCalculator,
-        CartContextResolverInterface $cartContextResolver = null
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->wholesalePriceCalculator = $wholesalePriceCalculator;
         $this->cartContextResolver = $cartContextResolver;
@@ -48,34 +35,12 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
-        if (null === $this->cartContextResolver) {
-            @trigger_error(
-                'Using CartItemsWholesaleProcessor without a CartContextResolverInterface is deprecated since 2.1.2 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $store = $cart->getStore();
-
-            /**
-             * @var StoreInterface $store
-             */
-            Assert::isInstanceOf($store, StoreInterface::class);
-
-            $context = [
-                'store' => $store,
-                'customer' => $cart->getCustomer() ?: null,
-                'currency' => $cart->getCurrency(),
-                'country' => $store->getBaseCountry(),
-                'cart' => $cart,
-            ];
-        } else {
-            $context = $this->cartContextResolver->resolveCartContext($cart);
-        }
+        $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

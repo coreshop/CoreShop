@@ -17,20 +17,9 @@ use Webmozart\Assert\Assert;
 
 final class StateTransitionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var string
-     */
     private $interface;
-
-    /**
-     * @var string
-     */
     private $workflowName;
 
-    /**
-     * @param string $interface
-     * @param string $workflowName
-     */
     public function __construct(string $interface, string $workflowName)
     {
         $this->interface = $interface;
@@ -40,7 +29,7 @@ final class StateTransitionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         Assert::isInstanceOf($subject, $this->interface);
 

@@ -11,7 +11,6 @@ services:
     coreshop.theme.store_resolver: '@CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver'
     CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver:
         arguments:
-            - '@coreshop.theme.active_theme'
             - '@coreshop.context.store'
             - '@coreshop.repository.store'
         tags:

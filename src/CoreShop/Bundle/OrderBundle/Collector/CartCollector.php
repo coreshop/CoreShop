@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Collector;
 
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,26 +22,10 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CartCollector extends DataCollector
 {
-    /**
-     * @var CartContextInterface
-     */
     private $cartContext;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var PimcoreContextResolver
-     */
     private $pimcoreContext;
 
-    /**
-     * @param CartContextInterface   $cartContext
-     * @param LocaleContextInterface $localeContext
-     * @param PimcoreContextResolver $pimcoreContext
-     */
     public function __construct(
         CartContextInterface $cartContext,
         LocaleContextInterface $localeContext,
@@ -58,26 +42,17 @@ final class CartCollector extends DataCollector
         ];
     }
 
-    /**
-     * @return CartInterface
-     */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         return $this->data['cart'];
     }
 
-    /**
-     * @return string
-     */
-    public function getLocale()
+    public function getLocale(): string
     {
         return $this->data['locale'];
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAdmin()
+    public function getAdmin(): bool
     {
         return $this->data['admin'];
     }
@@ -85,7 +60,7 @@ final class CartCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
             $this->data['admin'] = true;
@@ -104,7 +79,7 @@ final class CartCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -112,7 +87,7 @@ final class CartCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.cart_collector';
     }

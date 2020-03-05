@@ -21,7 +21,7 @@ final class DescriptionExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof SEOAwareInterface || method_exists($object, 'getMetaDescription');
     }
@@ -29,7 +29,7 @@ final class DescriptionExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, SEOAwareInterface::class);
 

@@ -16,7 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
@@ -28,24 +28,9 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class CarrierType extends AbstractResourceType
 {
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
     private $taxedShippingCalculator;
-
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
 
     public function __construct(
@@ -67,7 +52,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $cart = $options['cart'];
 
@@ -109,7 +94,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -117,7 +102,7 @@ final class CarrierType extends AbstractResourceType
         $resolver->setDefault('cart', null);
         $resolver->setDefault('show_carrier_price', true);
         $resolver->setDefault('show_carrier_price_with_tax', true);
-        $resolver->setAllowedTypes('cart', [CartInterface::class]);
+        $resolver->setAllowedTypes('cart', [OrderInterface::class]);
         $resolver->setAllowedTypes('carriers', 'array')
             ->setAllowedValues('carriers', function (array $carriers) {
                 // we already know it is an array as types are validated first
@@ -134,7 +119,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_carrier';
     }

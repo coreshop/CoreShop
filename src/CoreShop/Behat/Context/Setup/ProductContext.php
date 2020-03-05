@@ -33,38 +33,12 @@ use Pimcore\Tool;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinitions;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinition;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinitionPriceFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $productFactory
-     * @param FactoryInterface       $productUnitDefinitions
-     * @param FactoryInterface       $productUnitDefinition
-     * @param FactoryInterface       $productUnitDefinitionPriceFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,

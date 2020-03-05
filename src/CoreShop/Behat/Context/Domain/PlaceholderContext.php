@@ -18,14 +18,8 @@ use Webmozart\Assert\Assert;
 
 final class PlaceholderContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage
     ) {

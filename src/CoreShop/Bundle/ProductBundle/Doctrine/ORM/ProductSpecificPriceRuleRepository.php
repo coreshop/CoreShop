@@ -20,7 +20,7 @@ class ProductSpecificPriceRuleRepository extends PriceRuleRepository implements 
     /**
      * {@inheritdoc}
      */
-    public function findForProduct(ProductInterface $product)
+    public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :productId')

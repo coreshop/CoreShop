@@ -13,64 +13,97 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
+use CoreShop\Bundle\OrderBundle\Events;
+use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
+use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
+use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
+use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Order\OrderStates;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
+use CoreShop\Component\Pimcore\DataObject\DataLoader;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Taxation\Model\TaxItemInterface;
+use JMS\Serializer\ArrayTransformerInterface;
+use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
+use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Workflow\StateMachine;
 
-class OrderController extends AbstractSaleDetailController
+class OrderController extends PimcoreController
 {
     /**
-     * @return mixed
-     *
-     * @throws \Exception
+     * @var EventDispatcherInterface
      */
-    public function getFolderConfigurationAction()
-    {
-        $this->isGrantedOr403();
-
-        $name = null;
-        $folderId = null;
-
-        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = $this->getParameter('coreshop.folder.order');
-        $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
-
-        $folder = DataObject::getByPath('/' . $folderPath);
-
-        if ($folder instanceof DataObject\Folder) {
-            $folderId = $folder->getId();
-        }
-
-        if ($orderClassDefinition instanceof DataObject\ClassDefinition) {
-            $name = $orderClassDefinition->getName();
-        }
-
-        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
-    }
+    protected $eventDispatcher;
 
     /**
-     * @param Request $request
-     *
-     * @return bool
-     *
-     * @throws \Exception
+     * @var NoteServiceInterface
      */
-    public function getStatesAction(Request $request)
+    protected $objectNoteService;
+    /**
+     * @var AddressFormatterInterface
+     */
+    protected $addressFormatter;
+
+    /**
+     * @var ArrayTransformerInterface
+     */
+    protected $serializer;
+
+    /**
+     * @var WorkflowStateInfoManagerInterface
+     */
+    protected $workflowStateManager;
+
+    /**
+     * @var ProcessableInterface
+     */
+    protected $invoiceProcessableHelper;
+
+    /**
+     * @var ProcessableInterface
+     */
+    protected $shipmentProcessableHelper;
+
+    /**
+     * @var OrderInvoiceRepositoryInterface
+     */
+    protected $orderInvoiceRepository;
+
+    /**
+     * @var OrderShipmentRepositoryInterface
+     */
+    protected $orderShipmentRepository;
+
+    /**
+     * @var PaymentRepositoryInterface
+     */
+    protected $paymentRepository;
+
+    public function getStatesAction(Request $request): Response
     {
         $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
-        $workflowStateManager = $this->getWorkflowStateManager();
 
         foreach ($identifiers as $identifier) {
             $transitions[$identifier] = [];
@@ -84,7 +117,7 @@ class OrderController extends AbstractSaleDetailController
             $machineTransitions = $stateMachine->getDefinition()->getTransitions();
 
             foreach ($places as $place) {
-                $states[$identifier][] = $workflowStateManager->getStateInfo($identifier, $place, false);
+                $states[$identifier][] = $this->workflowStateManager->getStateInfo($identifier, $place, false);
             }
 
             foreach ($machineTransitions as $transition) {
@@ -115,17 +148,14 @@ class OrderController extends AbstractSaleDetailController
         return $this->viewHandler->handle(['success' => true, 'states' => $states, 'transitions' => $transitions]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return bool
-     *
-     * @throws \Exception
-     */
-    public function updateOrderStateAction(Request $request)
+    public function updateOrderStateAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        StateMachineManagerInterface $stateMachineManager
+    ): Response
     {
         $orderId = $request->get('o_id');
-        $order = $this->getSaleRepository()->find($orderId);
+        $order = $orderRepository->find($orderId);
         $transition = $request->get('transition');
 
         if (!$order instanceof OrderInterface) {
@@ -133,7 +163,7 @@ class OrderController extends AbstractSaleDetailController
         }
 
         //apply state machine
-        $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order');
+        $workflow = $stateMachineManager->get($order, 'coreshop_order');
         if (!$workflow->can($order, $transition)) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
         }
@@ -143,16 +173,420 @@ class OrderController extends AbstractSaleDetailController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return array
-     */
+    public function getFolderConfigurationAction(Request $request): Response
+    {
+        $this->isGrantedOr403();
+
+        $name = null;
+        $folderId = null;
+
+        $type = $request->get('saleType', 'order');
+
+        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = $this->getParameter('coreshop.folder.' . $type);
+        $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
+
+        $folder = DataObject::getByPath('/' . $folderPath);
+
+        if ($folder instanceof DataObject\Folder) {
+            $folderId = $folder->getId();
+        }
+
+        if ($orderClassDefinition instanceof DataObject\ClassDefinition) {
+            $name = $orderClassDefinition->getName();
+        }
+
+        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
+    }
+
+    public function listAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    {
+        $this->isGrantedOr403();
+
+        $list = $orderRepository->getList();
+        $list->setLimit($request->get('limit', 30));
+        $list->setOffset($request->get('page', 1) - 1);
+
+        if ($request->get('filter', null)) {
+            $gridHelper = new GridHelperService();
+
+            $conditionFilters = [];
+            $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'),
+                DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.order.pimcore_class_name')));
+            if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
+                $list->setCondition(implode(' AND ', $conditionFilters));
+            }
+        }
+
+        $sortingSettings = QueryParams::extractSortingSettings($request->request->all());
+
+        $order = 'DESC';
+        $orderKey = 'orderDate';
+
+        if ($sortingSettings['order']) {
+            $order = $sortingSettings['order'];
+        }
+        if ($sortingSettings['orderKey'] !== '') {
+            $orderKey = $sortingSettings['orderKey'];
+        }
+
+        $list->setOrder($order);
+        $list->setOrderKey($orderKey);
+
+        $orders = $list->load();
+        $jsonSales = [];
+
+        foreach ($orders as $order) {
+            $jsonSales[] = $this->prepareSale($order);
+        }
+
+        return $this->viewHandler->handle([
+            'success' => true,
+            'data' => $jsonSales,
+            'count' => count($jsonSales),
+            'total' => $list->getTotalCount(),
+        ]);
+    }
+
+    public function detailAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    {
+        $this->isGrantedOr403();
+
+        $orderId = $request->get('id');
+        $order = $orderRepository->find($orderId);
+
+        if (!$order instanceof OrderInterface) {
+            return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+        }
+
+        $jsonSale = $this->getDetails($order);
+
+        return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
+    }
+
+    public function findOrderAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    {
+        $this->isGrantedOr403();
+
+        $number = $request->get('number');
+
+        if ($number) {
+            $list = $orderRepository->getList();
+            $list->setCondition('orderNumber = ? OR o_id = ?', [$number, $number]);
+
+            $orders = $list->load();
+
+            if (count($orders) > 0) {
+                return $this->viewHandler->handle(['success' => true, 'id' => $orders[0]->getId()]);
+            }
+        }
+
+        return $this->viewHandler->handle(['success' => false]);
+    }
+
+    protected function prepareSale(OrderInterface $order): array
+    {
+        $date = (int)$order->getOrderDate()->getTimestamp();
+
+        $element = [
+            'o_id' => $order->getId(),
+            'saleDate' => $date,
+            'saleNumber' => $order->getOrderNumber(),
+            'lang' => $order->getLocaleCode(),
+            'discount' => $order->getDiscount(),
+            'subtotal' => $order->getSubtotal(),
+            'totalTax' => $order->getTotalTax(),
+            'total' => $order->getTotal(),
+            'currency' => $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency()),
+            'currencyName' => $order->getCurrency() instanceof CurrencyInterface ? $order->getCurrency()->getName() : '',
+            'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname() : '',
+            'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : '',
+            'store' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
+            'orderState' => $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false),
+            'orderPaymentState' => $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false),
+            'orderShippingState' => $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false),
+            'orderInvoiceState' => $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false)
+        ];
+
+        $element = array_merge(
+            $element,
+            $this->prepareAddress($order->getShippingAddress(), 'shipping'),
+            $this->prepareAddress($order->getInvoiceAddress(), 'invoice')
+        );
+
+        return $element;
+    }
+
+    protected function prepareAddress(string $address, string $type): array
+    {
+        $prefix = 'address'.ucfirst($type);
+        $values = [];
+        $fullAddress = [];
+        $classDefinition = DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.address.pimcore_class_name'));
+
+        foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
+            $value = '';
+
+            if ($address instanceof AddressInterface && $address instanceof DataObject\Concrete) {
+                $getter = 'get'.ucfirst($fieldDefinition->getName());
+
+                if (method_exists($address, $getter)) {
+                    $value = $address->$getter();
+
+                    if (method_exists($value, 'getName')) {
+                        $value = $value->getName();
+                    }
+
+                    $fullAddress[] = $value;
+                }
+            }
+
+            $values[$prefix.ucfirst($fieldDefinition->getName())] = $value;
+        }
+
+        if ($address instanceof AddressInterface && $address->getCountry() instanceof \CoreShop\Component\Address\Model\CountryInterface) {
+            $values[$prefix.'All'] = $this->addressFormatter->formatAddress($address, false);
+        }
+
+        return $values;
+    }
+
+    protected function getDetails(OrderInterface $order): array
+    {
+        $jsonSale = $this->serializer->toArray($order);
+
+        $jsonSale['o_id'] = $order->getId();
+        $jsonSale['saleNumber'] = $order->getOrderNumber();
+        $jsonSale['saleDate'] = $order->getOrderDate() ? $order->getOrderDate()->getTimestamp() : null;
+        $jsonSale['currency'] = $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency());
+        $jsonSale['store'] = $order->getStore() instanceof StoreInterface ? $this->getStore($order->getStore()) : null;
+
+        if (!isset($jsonSale['items'])) {
+            $jsonSale['items'] = [];
+        }
+
+        $jsonSale['details'] = $this->getItemDetails($order);
+        $jsonSale['summary'] = $this->getSummary($order);
+        $jsonSale['mailCorrespondence'] = $this->getMailCorrespondence($order);
+
+        $jsonSale['address'] = [
+            'shipping' => $this->getDataForObject($order->getShippingAddress()),
+            'billing' => $this->getDataForObject($order->getInvoiceAddress()),
+        ];
+
+        if ($order->getShippingAddress() instanceof AddressInterface && $order->getShippingAddress()->getCountry() instanceof CountryInterface) {
+            $jsonSale['address']['shipping']['formatted'] = $this->addressFormatter->formatAddress($order->getShippingAddress());
+        } else {
+            $jsonSale['address']['shipping']['formatted'] = '';
+        }
+
+        if ($order->getInvoiceAddress() instanceof AddressInterface && $order->getInvoiceAddress()->getCountry() instanceof CountryInterface) {
+            $jsonSale['address']['billing']['formatted'] = $this->addressFormatter->formatAddress($order->getInvoiceAddress());
+        } else {
+            $jsonSale['address']['billing']['formatted'] = '';
+        }
+
+        $jsonSale['priceRule'] = false;
+
+        if ($order->getPriceRuleItems() instanceof DataObject\Fieldcollection) {
+            $rules = [];
+
+            foreach ($order->getPriceRuleItems()->getItems() as $ruleItem) {
+                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
+                    $rule = $ruleItem->getCartPriceRule();
+
+                    $ruleData = [
+                        'id' => -1,
+                        'name' => '--',
+                        'code' => empty($ruleItem->getVoucherCode()) ? null : $ruleItem->getVoucherCode(),
+                        'discount' => $ruleItem->getDiscount(),
+                    ];
+
+                    if ($rule instanceof CartPriceRuleInterface) {
+                        $ruleData = array_merge($ruleData, [
+                            'id' => $rule->getId(),
+                            'name' => $rule->getName(),
+                        ]);
+                    }
+
+                    $rules[] = $ruleData;
+                }
+            }
+
+            $jsonSale['priceRule'] = $rules;
+        }
+
+        $jsonSale['orderState'] = $this->workflowStateManager->getStateInfo('coreshop_order', $order->getOrderState(), false);
+        $jsonSale['orderPaymentState'] = $this->workflowStateManager->getStateInfo('coreshop_order_payment', $order->getPaymentState(), false);
+        $jsonSale['orderShippingState'] = $this->workflowStateManager->getStateInfo('coreshop_order_shipment', $order->getShippingState(), false);
+        $jsonSale['orderInvoiceState'] = $this->workflowStateManager->getStateInfo('coreshop_order_invoice', $order->getInvoiceState(), false);
+
+        $availableTransitions = $this->workflowStateManager->parseTransitions($order, 'coreshop_order', [
+            'cancel',
+        ], false);
+
+        $jsonSale['availableOrderTransitions'] = $availableTransitions;
+        $jsonSale['statesHistory'] = $this->getStatesHistory($order);
+
+
+        $invoices = $this->getInvoices($order);
+
+        $jsonSale['editable'] = count($invoices) > 0 ? false : true;
+        $jsonSale['invoices'] = $invoices;
+        $jsonSale['payments'] = $this->getPayments($order);
+        $jsonSale['shipments'] = $this->getShipments($order);
+        $jsonSale['paymentCreationAllowed'] = !in_array($order->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
+        $jsonSale['invoiceCreationAllowed'] = $this->invoiceProcessableHelper->isProcessable($order);
+        $jsonSale['shipmentCreationAllowed'] = $this->shipmentProcessableHelper->isProcessable($order);
+
+        $event = new GenericEvent($order, $jsonSale);
+
+        $this->eventDispatcher->dispatch(Events::SALE_DETAIL_PREPARE, $event);
+
+        $jsonSale = $event->getArguments();
+
+        return $jsonSale;
+    }
+
+    protected function getMailCorrespondence(OrderInterface $order): array
+    {
+        $list = [];
+
+        $notes = $this->objectNoteService->getObjectNotes($order, Notes::NOTE_EMAIL);
+
+        foreach ($notes as $note) {
+            $noteElement = [
+                'date' => $note->date,
+                'description' => $note->description,
+            ];
+
+            foreach ($note->data as $key => $noteData) {
+                $noteElement[$key] = $noteData['data'];
+            }
+
+            $list[] = $noteElement;
+        }
+
+        return $list;
+    }
+
+    protected function getInvoices(OrderInterface $order): array
+    {
+        $invoices = $this->orderInvoiceRepository->getDocuments($order);
+        $invoiceArray = [];
+
+        foreach ($invoices as $invoice) {
+            $availableTransitions = $this->workflowStateManager->parseTransitions($invoice, 'coreshop_invoice', [
+                'complete',
+                'cancel',
+            ], false);
+
+            $data = $this->serializer->toArray($invoice);
+
+            $data['stateInfo'] = $this->workflowStateManager->getStateInfo('coreshop_invoice', $invoice->getState(), false);
+            $data['transitions'] = $availableTransitions;
+
+            $invoiceArray[] = $data;
+        }
+
+        return $invoiceArray;
+    }
+
+    protected function getShipments($order)
+    {
+        $shipments = $this->orderShipmentRepository->getDocuments($order);
+        $shipmentArray = [];
+
+        foreach ($shipments as $shipment) {
+
+            $availableTransitions = $this->workflowStateManager->parseTransitions($shipment, 'coreshop_shipment', [
+                'create',
+                'ship',
+                'cancel',
+            ], false);
+
+            $data = $this->serializer->toArray($shipment);
+
+            $data['stateInfo'] = $this->workflowStateManager->getStateInfo('coreshop_shipment', $shipment->getState(), false);
+            $data['transitions'] = $availableTransitions;
+
+            $shipmentArray[] = $data;
+        }
+
+        return $shipmentArray;
+    }
+
+    protected function getSummary(OrderInterface $order): array
+    {
+        $summary = [];
+
+        if ($order->getDiscount() != 0) {
+            $summary[] = [
+                'key' => $order->getDiscount() < 0 ? 'discount' : 'surcharge',
+                'value' => $order->getDiscount(),
+            ];
+        }
+
+        $taxes = $order->getTaxes();
+
+        if (is_array($taxes)) {
+            foreach ($taxes as $tax) {
+                if ($tax instanceof TaxItemInterface) {
+                    $summary[] = [
+                        'key' => 'tax_'.$tax->getName(),
+                        'text' => sprintf('Tax (%s - %s)', $tax->getName(), $tax->getRate()),
+                        'value' => $tax->getAmount(),
+                    ];
+                }
+            }
+        }
+
+        $summary[] = [
+            'key' => 'total_tax',
+            'value' => $order->getTotalTax(),
+        ];
+        $summary[] = [
+            'key' => 'total',
+            'value' => $order->getTotal(),
+        ];
+
+        return $summary;
+    }
+
+    protected function getItemDetails(OrderInterface $order): array
+    {
+        $details = $order->getItems();
+        $items = [];
+
+        foreach ($details as $detail) {
+            if ($detail instanceof OrderItemInterface) {
+                $items[] = $this->prepareSaleItem($detail);
+            }
+        }
+
+        return $items;
+    }
+
+    protected function prepareSaleItem(OrderItemInterface $item): array
+    {
+        return [
+            'o_id' => $item->getId(),
+            'product_name' => $item->getName(),
+            'product_image' => null,
+            //TODO: ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
+            'wholesale_price' => $item->getItemWholesalePrice(),
+            'price_without_tax' => $item->getItemPrice(false),
+            'price' => $item->getItemPrice(true),
+            'quantity' => $item->getQuantity(),
+            'total' => $item->getTotal(),
+            'total_tax' => $item->getTotalTax(),
+        ];
+    }
+
     protected function getStatesHistory(OrderInterface $order)
     {
         //Get History
-        $manager = $this->getWorkflowStateManager();
-        $history = $manager->getStateHistory($order);
+        $history = $this->workflowStateManager->getStateHistory($order);
 
         $statesHistory = [];
 
@@ -177,14 +611,9 @@ class OrderController extends AbstractSaleDetailController
         return $statesHistory;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return array
-     */
     protected function getPayments(OrderInterface $order)
     {
-        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
+        $payments = $this->paymentRepository->findForPayable($order);
         $return = [];
 
         foreach ($payments as $payment) {
@@ -202,7 +631,7 @@ class OrderController extends AbstractSaleDetailController
                 }
             }
 
-            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($payment, 'coreshop_payment', [
+            $availableTransitions = $this->workflowStateManager->parseTransitions($payment, 'coreshop_payment', [
                 'cancel',
                 'complete',
                 'refund',
@@ -215,7 +644,7 @@ class OrderController extends AbstractSaleDetailController
                 'paymentNumber' => $payment->getNumber(),
                 'details' => $details,
                 'amount' => $payment->getTotalAmount(),
-                'stateInfo' => $this->getWorkflowStateManager()->getStateInfo('coreshop_payment', $payment->getState(), false),
+                'stateInfo' => $this->workflowStateManager->getStateInfo('coreshop_payment', $payment->getState(), false),
                 'transitions' => $availableTransitions,
             ];
         }
@@ -223,240 +652,80 @@ class OrderController extends AbstractSaleDetailController
         return $return;
     }
 
-    /**
-     * @param SaleInterface $sale
-     *
-     * @return array
-     */
-    protected function getDetails(SaleInterface $sale)
+    protected function getCurrency(CurrencyInterface $currency): array
     {
-        $order = parent::getDetails($sale);
+        return [
+            'name' => $currency->getName(),
+            'symbol' => $currency->getSymbol(),
+        ];
+    }
 
-        if ($sale instanceof OrderInterface) {
-            $workflowStateManager = $this->getWorkflowStateManager();
-            $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
-            $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
-            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
-            $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
+    protected function getStore(StoreInterface $store): array
+    {
+        return [
+            'id' => $store->getId(),
+            'name' => $store->getName(),
+        ];
+    }
 
-            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($sale, 'coreshop_order', [
-                'cancel',
-            ], false);
+    protected function getDataForObject($data): array
+    {
+        if ($data instanceof DataObject\Concrete) {
+            $dataLoader = new DataLoader();
 
-            $order['availableOrderTransitions'] = $availableTransitions;
-            $order['statesHistory'] = $this->getStatesHistory($sale);
-
-
-            $invoices = $this->getInvoices($sale);
-
-            $order['editable'] = count($invoices) > 0 ? false : true;
-            $order['invoices'] = $invoices;
-            $order['payments'] = $this->getPayments($sale);
-            $order['shipments'] = $this->getShipments($sale);
-            $order['paymentCreationAllowed'] = !in_array($sale->getOrderState(), [OrderStates::STATE_CANCELLED, OrderStates::STATE_COMPLETE]);
-            $order['invoiceCreationAllowed'] = $this->getInvoiceProcessableHelper()->isProcessable($sale);
-            $order['shipmentCreationAllowed'] = $this->getShipmentProcessableHelper()->isProcessable($sale);
+            return $dataLoader->getDataForObject($data);
         }
 
-        $event = new GenericEvent($sale, $order);
-
-        $this->get('event_dispatcher')->dispatch('coreshop.order.prepare_details', $event);
-
-        return $event->getArguments();
+        return [];
     }
 
-    /**
-     * @param SaleInterface $sale
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    protected function prepareSale(SaleInterface $sale)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
-        $order = parent::prepareSale($sale);
-        $workflowStateManager = $this->getWorkflowStateManager();
-
-        if ($sale instanceof OrderInterface) {
-            $order['orderState'] = $workflowStateManager->getStateInfo('coreshop_order', $sale->getOrderState(), false);
-            $order['orderPaymentState'] = $workflowStateManager->getStateInfo('coreshop_order_payment', $sale->getPaymentState(), false);
-            $order['orderShippingState'] = $workflowStateManager->getStateInfo('coreshop_order_shipment', $sale->getShippingState(), false);
-            $order['orderInvoiceState'] = $workflowStateManager->getStateInfo('coreshop_order_invoice', $sale->getInvoiceState(), false);
-        }
-
-        return $order;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return array
-     */
-    protected function getInvoices($order)
+    public function setObjectNoteService(NoteServiceInterface $objectNoteService): void
     {
-        $invoices = $this->getOrderInvoiceRepository()->getDocuments($order);
-        $invoiceArray = [];
-
-        foreach ($invoices as $invoice) {
-            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($invoice, 'coreshop_invoice', [
-                'complete',
-                'cancel',
-            ], false);
-
-            if ($this->useLegacySerialization()) {
-                $data = $this->getDataForObject($invoice);
-
-                foreach ($invoice->getItems() as $index => $item) {
-                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-                }
-            } else {
-                $data = $this->getSerializer()->toArray($invoice);
-            }
-
-            $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_invoice', $invoice->getState(), false);
-            $data['transitions'] = $availableTransitions;
-
-            $invoiceArray[] = $data;
-        }
-
-        return $invoiceArray;
+        $this->objectNoteService = $objectNoteService;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return array
-     */
-    protected function getShipments($order)
+    public function setAddressFormatter(AddressFormatterInterface $addressFormatter): void
     {
-        $shipments = $this->getOrderShipmentRepository()->getDocuments($order);
-        $shipmentArray = [];
-
-        foreach ($shipments as $shipment) {
-
-            $availableTransitions = $this->getWorkflowStateManager()->parseTransitions($shipment, 'coreshop_shipment', [
-                'create',
-                'ship',
-                'cancel',
-            ], false);
-
-            if ($this->useLegacySerialization()) {
-                $data = $this->getDataForObject($shipment);
-
-                foreach ($shipment->getItems() as $index => $item) {
-                    $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
-                }
-            } else {
-                $data = $this->getSerializer()->toArray($shipment);
-            }
-
-            $data['stateInfo'] = $this->getWorkflowStateManager()->getStateInfo('coreshop_shipment', $shipment->getState(), false);
-            $data['transitions'] = $availableTransitions;
-
-            $shipmentArray[] = $data;
-        }
-
-        return $shipmentArray;
+        $this->addressFormatter = $addressFormatter;
     }
 
-    /**
-     * @param SaleInterface $sale
-     *
-     * @return array
-     */
-    protected function getSummary(SaleInterface $sale)
+    public function setSerializer(ArrayTransformerInterface $serializer): void
     {
-        $summary = parent::getSummary($sale);
-
-        return $summary;
+        $this->serializer = $serializer;
     }
 
-    /**
-     * @return ProcessableInterface
-     */
-    protected function getInvoiceProcessableHelper()
+    public function setWorkflowStateManager(WorkflowStateInfoManagerInterface $workflowStateManager): void
     {
-        return $this->get('coreshop.order.invoice.processable');
+        $this->workflowStateManager = $workflowStateManager;
     }
 
-    /**
-     * @return ProcessableInterface
-     */
-    protected function getShipmentProcessableHelper()
+    public function setInvoiceProcessableHelper(ProcessableInterface $invoiceProcessableHelper): void
     {
-        return $this->get('coreshop.order.shipment.processable');
+        $this->invoiceProcessableHelper = $invoiceProcessableHelper;
     }
 
-    /**
-     * @return OrderInvoiceRepositoryInterface
-     */
-    protected function getOrderInvoiceRepository()
+    public function setShipmentProcessableHelper(ProcessableInterface $shipmentProcessableHelper): void
     {
-        return $this->get('coreshop.repository.order_invoice');
+        $this->shipmentProcessableHelper = $shipmentProcessableHelper;
     }
 
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    protected function getOrderShipmentRepository()
+    public function setOrderInvoiceRepository(OrderInvoiceRepositoryInterface $orderInvoiceRepository): void
     {
-        return $this->get('coreshop.repository.order_shipment');
+        $this->orderInvoiceRepository = $orderInvoiceRepository;
     }
 
-    /**
-     * @return WorkflowStateInfoManagerInterface
-     */
-    protected function getWorkflowStateManager()
+    public function setOrderShipmentRepository(OrderShipmentRepositoryInterface $orderShipmentRepository): void
     {
-        return $this->get('coreshop.workflow.state_info_manager');
+        $this->orderShipmentRepository = $orderShipmentRepository;
     }
 
-    /**
-     * @return StateMachineManager
-     */
-    protected function getStateMachineManager()
+    public function setPaymentRepository(PaymentRepositoryInterface $paymentRepository): void
     {
-        return $this->get('coreshop.state_machine_manager');
+        $this->paymentRepository = $paymentRepository;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSaleRepository()
-    {
-        return $this->get('coreshop.repository.order');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSalesList()
-    {
-        return $this->getSaleRepository()->getList();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSaleClassName()
-    {
-        return 'coreshop.model.order.pimcore_class_name';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getOrderKey()
-    {
-        return 'orderDate';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getSaleNumberField()
-    {
-        return 'orderNumber';
-    }
-
 }

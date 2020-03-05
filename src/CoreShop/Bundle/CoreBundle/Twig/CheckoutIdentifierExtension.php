@@ -18,14 +18,8 @@ use Twig\TwigFunction;
 
 final class CheckoutIdentifierExtension extends AbstractExtension
 {
-    /**
-     * @var CheckoutIdentifierHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param CheckoutIdentifierHelperInterface $helper
-     */
     public function __construct(CheckoutIdentifierHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class CheckoutIdentifierExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_checkout_steps', [$this->helper, 'getSteps']),

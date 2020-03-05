@@ -17,14 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CompositeResourceInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $serviceRegistry;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $serviceRegistry
-     */
     public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
     {
         $this->serviceRegistry = $serviceRegistry;
@@ -33,7 +27,7 @@ class CompositeResourceInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         foreach ($this->serviceRegistry->all() as $installer) {
             if ($installer instanceof ResourceInstallerInterface) {

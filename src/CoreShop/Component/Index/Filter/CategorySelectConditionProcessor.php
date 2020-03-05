@@ -24,7 +24,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     /**
      * {@inheritdoc}
      */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];
@@ -74,7 +74,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
     /**
      * {@inheritdoc}
      */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = 'categoryIds';
         $includeSubCategories = $condition->getConfiguration()['includeSubCategories'];

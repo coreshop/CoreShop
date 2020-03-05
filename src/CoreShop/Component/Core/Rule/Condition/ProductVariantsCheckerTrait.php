@@ -18,27 +18,14 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 trait ProductVariantsCheckerTrait
 {
-    /**
-     * @var ProductVariantRepositoryInterface
-     */
     private $productRepository;
 
-    /**
-     * @param ProductVariantRepositoryInterface $productRepository
-     */
     public function __construct(ProductVariantRepositoryInterface $productRepository)
     {
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * @param array          $products
-     * @param StoreInterface $store
-     * @param bool           $includeVariants
-     *
-     * @return array
-     */
-    protected function getProductsToCheck($products, StoreInterface $store, $includeVariants)
+    protected function getProductsToCheck(array $products, StoreInterface $store, bool $includeVariants): array
     {
         $productIdsToCheck = $products;
 

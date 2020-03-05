@@ -20,5 +20,5 @@ interface StorageListItemQuantityModifierInterface
      * @param StorageListItemInterface $item
      * @param float                    $targetQuantity
      */
-    public function modify(StorageListItemInterface $item, float $targetQuantity);
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void;
 }

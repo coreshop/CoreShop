@@ -15,24 +15,14 @@ namespace CoreShop\Component\Shipping\Resolver;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
+use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInterface
 {
-    /**
-     * @var CarriersResolverInterface
-     */
     private $carriersResolver;
-
-    /**
-     * @var CarrierPriceCalculatorInterface
-     */
     private $carrierPriceCalculator;
 
-    /**
-     * @param CarriersResolverInterface       $carriersResolver
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
-     */
     public function __construct(
         CarriersResolverInterface $carriersResolver,
         CarrierPriceCalculatorInterface $carrierPriceCalculator
@@ -44,7 +34,7 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
     /**
      * {@inheritdoc}
      */
-    public function getDefaultCarrier(ShippableInterface $shippable, AddressInterface $address)
+    public function getDefaultCarrier(ShippableInterface $shippable, AddressInterface $address): CarrierInterface
     {
         $carriers = $this->carriersResolver->resolveCarriers($shippable, $address);
 

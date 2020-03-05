@@ -20,7 +20,7 @@ class DiscountPercentActionProcessor implements ProductDiscountActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $price, array $context, array $configuration)
+    public function getDiscount($subject, int $price, array $context, array $configuration): int
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 

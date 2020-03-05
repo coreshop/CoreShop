@@ -20,12 +20,12 @@ interface CategoryRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * @return CategoryInterface[]
      */
-    public function findFirstLevel();
+    public function findFirstLevel(): array;
 
     /**
      * @param CategoryInterface $category
      *
      * @return CategoryInterface[]
      */
-    public function findChildCategories(CategoryInterface $category);
+    public function findChildCategories(CategoryInterface $category): array;
 }

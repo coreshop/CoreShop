@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Cart\Rule\Condition;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
 use CoreShop\Component\Order\Cart\Rule\Condition\AbstractConditionChecker;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -27,9 +27,6 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
         CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->__traitConstruct($categoryRepository);
@@ -38,9 +35,14 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
-    {
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $cart->getStore(), $configuration['recursive'] ?: false);
+    public function isCartRuleValid(
+        OrderInterface $cart,
+        CartPriceRuleInterface $cartPriceRule,
+        ?CartPriceRuleVoucherCodeInterface $voucher,
+        array $configuration
+    ): bool {
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $cart->getStore(),
+            $configuration['recursive'] ?: false);
 
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

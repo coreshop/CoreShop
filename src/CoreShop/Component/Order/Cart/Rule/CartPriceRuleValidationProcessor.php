@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Cart\Rule;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -21,14 +21,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcessorInterface
 {
-    /**
-     * @var RuleConditionsValidationProcessorInterface
-     */
     private $ruleConditionsValidationProcessor;
 
-    /**
-     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
-     */
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
@@ -37,9 +31,9 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
     /**
      * {@inheritdoc}
      */
-    public function isValidCartRule(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function isValidCartRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
-        if ($cartPriceRule->getIsVoucherRule() && null === $voucherCode) {
+        if (null === $voucherCode && $cartPriceRule->getIsVoucherRule()) {
             return false;
         }
 
@@ -52,7 +46,7 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool
     {
         return $this->ruleConditionsValidationProcessor->isValid(
             $subject,

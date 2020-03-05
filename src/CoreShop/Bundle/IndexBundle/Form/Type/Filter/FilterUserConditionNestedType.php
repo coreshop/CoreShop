@@ -37,7 +37,7 @@ final class FilterUserConditionNestedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('conditions', FilterUserConditionCollectionType::class, [
@@ -58,7 +58,7 @@ final class FilterUserConditionNestedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_user_condition_type_nested';
     }

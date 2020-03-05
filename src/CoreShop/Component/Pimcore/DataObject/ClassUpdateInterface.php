@@ -20,7 +20,7 @@ interface ClassUpdateInterface
     /**
      * @param string $className
      */
-    public function __construct($className);
+    public function __construct(string $className);
 
     /**
      * Save Field Definition.
@@ -34,7 +34,7 @@ interface ClassUpdateInterface
      *
      * @param string $property
      *
-     * @return mixed
+     * @return array
      */
     public function getProperty($property);
 

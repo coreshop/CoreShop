@@ -19,32 +19,15 @@ use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
-    /**
-     * @var Environment
-     */
     private $environment;
-
-    /**
-     * @var PimcoreGuard
-     */
     private $guard;
-
-    /**
-     * @var array
-     */
     private $defaultOptions;
 
-    /**
-     * @param Environment  $environment
-     * @param string       $template
-     * @param PimcoreGuard $guard
-     * @param array        $defaultOptions
-     */
     public function __construct(
         Environment $environment,
-        $template,
+        string $template,
         PimcoreGuard $guard,
-        array $defaultOptions = array()
+        array $defaultOptions = []
     ) {
         $this->environment = $environment;
         $this->guard = $guard;
@@ -57,7 +40,7 @@ class JsonRenderer implements RendererInterface
         ), $defaultOptions);
     }
 
-    public function render(ItemInterface $item, array $options = array())
+    public function render(ItemInterface $item, array $options = array()): string
     {
         $options = array_merge($this->defaultOptions, $options);
 
@@ -77,7 +60,7 @@ class JsonRenderer implements RendererInterface
         return $html;
     }
 
-    protected function renderItem(ItemInterface $item)
+    protected function renderItem(ItemInterface $item): array
     {
         return [
             'id' => strtolower($item->getName()),
@@ -86,7 +69,7 @@ class JsonRenderer implements RendererInterface
         ];
     }
 
-    protected function recursiveProcessMenuItems(ItemInterface $item)
+    protected function recursiveProcessMenuItems(ItemInterface $item): array
     {
         $items = [];
 
@@ -108,7 +91,7 @@ class JsonRenderer implements RendererInterface
         return $items;
     }
 
-    public function reorderMenuItems(ItemInterface $menu)
+    public function reorderMenuItems(ItemInterface $menu): void
     {
         $menuOrderArray = array();
         $addLast = array();

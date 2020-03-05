@@ -19,7 +19,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installGridConfig($config, $name, $classId, $overwrite = false)
+    public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
         $list = new GridConfig\Listing();
         $list->addConditionParam('name = ?', $name);
@@ -33,7 +33,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
             return;
         }
 
-        $config['classId'] = $classId;
+        $config['classId'] = $class;
 
         $configDataEncoded = json_encode($config);
         $gridConfig->setName($name);
@@ -41,7 +41,7 @@ class GridConfigInstaller implements GridConfigInstallerInterface
         $gridConfig->setConfig($configDataEncoded);
         $gridConfig->setOwnerId(0);
         $gridConfig->setSearchType('folder');
-        $gridConfig->setClassId($classId);
+        $gridConfig->setClassId($class);
         $gridConfig->save();
     }
 }

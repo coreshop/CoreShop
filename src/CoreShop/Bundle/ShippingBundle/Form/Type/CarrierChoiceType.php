@@ -23,14 +23,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CarrierChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $carrierRepository;
 
-    /**
-     * @param RepositoryInterface $carrierRepository
-     */
     public function __construct(RepositoryInterface $carrierRepository)
     {
         $this->carrierRepository = $carrierRepository;
@@ -39,7 +33,7 @@ final class CarrierChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -60,11 +54,9 @@ final class CarrierChoiceType extends AbstractType
     }
 
     /**
-     * @param FormView      $view
-     * @param FormInterface $form
-     * @param array         $options
+     * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
 
@@ -83,7 +75,7 @@ final class CarrierChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -91,7 +83,7 @@ final class CarrierChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_carrier_choice';
     }

@@ -25,7 +25,7 @@ class InheritanceHelper
      *
      * @return mixed
      */
-    public static function useInheritedValues(\Closure $function, $inheritValues = true)
+    public static function useInheritedValues(\Closure $function, bool $inheritValues = true)
     {
         $backup = DataObject\AbstractObject::getGetInheritedValues();
         DataObject\AbstractObject::setGetInheritedValues($inheritValues);

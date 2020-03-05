@@ -19,20 +19,9 @@ use Webmozart\Assert\Assert;
 
 final class NotificationContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var NotificationRuleListenerInterface
-     */
     private $notificationRuleListener;
 
-    /**
-     * @param SharedStorageInterface            $sharedStorage
-     * @param NotificationRuleListenerInterface $notificationRuleListener
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         NotificationRuleListenerInterface $notificationRuleListener

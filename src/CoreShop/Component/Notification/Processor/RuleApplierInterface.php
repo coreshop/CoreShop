@@ -23,7 +23,7 @@ interface RuleApplierInterface
      * @param mixed                     $subject
      * @param array                     $params
      *
-     * @return mixed
+     * @return void
      */
-    public function applyRule(NotificationRuleInterface $rule, $subject, $params);
+    public function applyRule(NotificationRuleInterface $rule, $subject, array $params): void;
 }

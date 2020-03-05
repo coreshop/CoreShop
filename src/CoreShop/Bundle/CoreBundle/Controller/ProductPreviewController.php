@@ -22,7 +22,7 @@ use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
 {
-    public function previewAction(Request $request)
+    public function previewAction(Request $request): Response
     {
         if (!$request->get('store')) {
             return new Response('No Store selected');

@@ -18,11 +18,5 @@ use Symfony\Component\Form\FormInterface;
 
 interface ResourceFormFactoryInterface
 {
-    /**
-     * @param MetadataInterface $metadata
-     * @param ResourceInterface $resource
-     *
-     * @return FormInterface
-     */
-    public function create(MetadataInterface $metadata, ResourceInterface $resource);
+    public function create(MetadataInterface $metadata, ResourceInterface $resource): FormInterface;
 }

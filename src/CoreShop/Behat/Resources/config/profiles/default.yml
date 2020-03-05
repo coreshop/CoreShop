@@ -7,7 +7,7 @@ default:
 
     extensions:
         FriendsOfBehat\SymfonyExtension:
-            bootstrap: tests/behat-bootstrap.php
+            bootstrap: behat-bootstrap.php
             kernel:
                 path: app/BehatAppKernel.php
                 class: BehatAppKernel

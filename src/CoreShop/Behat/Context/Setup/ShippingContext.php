@@ -58,69 +58,22 @@ final class ShippingContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $actionFormTypeRegistry;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var FactoryInterface
-     */
     private $carrierFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $shippingRuleFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $shippingRuleGroupFactory;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ObjectManager              $objectManager
-     * @param FormFactoryInterface       $formFactory
-     * @param FormTypeRegistryInterface  $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface  $actionFormTypeRegistry
-     * @param CarrierRepositoryInterface $carrierRepository
-     * @param FactoryInterface           $carrierFactory
-     * @param FactoryInterface           $shippingRuleFactory
-     * @param FactoryInterface           $shippingRuleGroupFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        CarrierRepositoryInterface $carrierRepository,
         FactoryInterface $carrierFactory,
         FactoryInterface $shippingRuleFactory,
         FactoryInterface $shippingRuleGroupFactory
@@ -130,7 +83,6 @@ final class ShippingContext implements Context
         $this->formFactory = $formFactory;
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
-        $this->carrierRepository = $carrierRepository;
         $this->carrierFactory = $carrierFactory;
         $this->shippingRuleFactory = $shippingRuleFactory;
         $this->shippingRuleGroupFactory = $shippingRuleGroupFactory;

@@ -17,26 +17,11 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class RuleAvailabilityCheckEvent extends Event
 {
-    /**
-     * @var RuleInterface
-     */
     private $rule;
 
-    /**
-     * @var string
-     */
     private $ruleType;
-
-    /**
-     * @var bool
-     */
     private $available;
 
-    /**
-     * @param RuleInterface $rule
-     * @param string        $ruleType
-     * @param bool          $available
-     */
     public function __construct(RuleInterface $rule, string $ruleType, bool $available)
     {
         $this->rule = $rule;
@@ -44,34 +29,22 @@ final class RuleAvailabilityCheckEvent extends Event
         $this->available = $available;
     }
 
-    /**
-     * @return RuleInterface
-     */
-    public function getRule()
+    public function getRule(): RuleInterface
     {
         return $this->rule;
     }
 
-    /**
-     * @return string
-     */
-    public function getRuleType()
+    public function getRuleType(): string
     {
         return $this->ruleType;
     }
 
-    /**
-     * @return bool
-     */
-    public function isAvailable()
+    public function isAvailable(): bool
     {
         return $this->available;
     }
 
-    /**
-     * @param bool $available
-     */
-    public function setAvailability(bool $available)
+    public function setAvailability(bool $available): void
     {
         $this->available = $available;
     }

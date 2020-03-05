@@ -18,14 +18,8 @@ use Twig\TwigFilter;
 
 final class ProductPriceExtension extends AbstractExtension
 {
-    /**
-     * @var ProductPriceHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param ProductPriceHelperInterface $helper
-     */
     public function __construct(ProductPriceHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class ProductPriceExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_product_price', [$this->helper, 'getPrice'], ['withTax' => ['with_tax']]),

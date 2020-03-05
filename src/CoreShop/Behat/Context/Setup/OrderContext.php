@@ -15,86 +15,45 @@ namespace CoreShop\Behat\Context\Setup;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\OrderInvoiceTransitions;
+use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\OrderTransitions;
-use CoreShop\Component\Order\Transformer\ProposalTransformerInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
-use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class OrderContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
-
-    /**
-     * @var ProposalTransformerInterface
-     */
-    private $orderTransformer;
-
-    /**
-     * @var FactoryInterface
-     */
-    private $orderFactory;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
-    private $paymentRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
+    private $orderCommitter;
 
-    /**
-     * @param SharedStorageInterface       $sharedStorage
-     * @param StoreContextInterface        $storeContext
-     * @param ProposalTransformerInterface $orderTransformer
-     * @param FactoryInterface             $orderFactory
-     * @param PaymentRepositoryInterface   $paymentRepository
-     * @param StateMachineApplier          $stateMachineApplier
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         StoreContextInterface $storeContext,
-        ProposalTransformerInterface $orderTransformer,
-        FactoryInterface $orderFactory,
-        PaymentRepositoryInterface $paymentRepository,
-        StateMachineApplier $stateMachineApplier
+        StateMachineApplier $stateMachineApplier,
+        OrderCommitterInterface $orderCommitter
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->storeContext = $storeContext;
-        $this->orderTransformer = $orderTransformer;
-        $this->orderFactory = $orderFactory;
-        $this->paymentRepository = $paymentRepository;
         $this->stateMachineApplier = $stateMachineApplier;
+        $this->orderCommitter = $orderCommitter;
     }
 
     /**
      * @Given /^I create an order from (my cart)$/
      */
-    public function transformCartToOrder(CartInterface $cart)
+    public function transformCartToOrder(OrderInterface $cart)
     {
         $cart->setStore($this->storeContext->getStore());
 
-        $order = $this->orderFactory->createNew();
+        $this->stateMachineApplier->apply($cart, OrderSaleTransitions::IDENTIFIER, OrderSaleTransitions::TRANSITION_ORDER);
 
-        $order = $this->orderTransformer->transform($cart, $order);
-
-        $this->sharedStorage->set('order', $order);
+        $this->sharedStorage->set('order', $cart);
     }
 
     /**

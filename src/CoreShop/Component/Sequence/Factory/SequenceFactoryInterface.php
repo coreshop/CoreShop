@@ -17,10 +17,5 @@ use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 interface SequenceFactoryInterface extends FactoryInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return SequenceInterface
-     */
-    public function createWithType($type);
+    public function createWithType(string $type): SequenceInterface;
 }

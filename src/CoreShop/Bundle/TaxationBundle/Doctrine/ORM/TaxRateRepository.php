@@ -20,15 +20,7 @@ class TaxRateRepository extends EntityRepository implements TaxRateRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
-    {
-        return $this->createQueryBuilder('o');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByName($name, $locale)
+    public function findByName($name, $locale): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')

@@ -24,5 +24,5 @@ interface CarriersResolverInterface
      *
      * @return CarrierInterface[]
      */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address);
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array;
 }

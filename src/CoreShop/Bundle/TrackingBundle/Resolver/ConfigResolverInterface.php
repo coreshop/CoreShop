@@ -17,7 +17,7 @@ use Pimcore\Config\Config as ConfigObject;
 interface ConfigResolverInterface
 {
     /**
-     * @return bool|ConfigObject
+     * @return ConfigObject|null
      */
-    public function getGoogleConfig();
+    public function getGoogleConfig(): ?ConfigObject;
 }

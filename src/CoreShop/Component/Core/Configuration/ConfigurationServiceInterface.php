@@ -31,16 +31,12 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
      * @param string              $key
      * @param mixed               $data
      * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
      */
-    public function setForStore($key, $data, StoreInterface $store = null);
+    public function setForStore($key, $data, StoreInterface $store = null): void;
 
     /**
      * @param string              $key
      * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
      */
-    public function removeForStore($key, StoreInterface $store = null);
+    public function removeForStore($key, StoreInterface $store = null): void;
 }

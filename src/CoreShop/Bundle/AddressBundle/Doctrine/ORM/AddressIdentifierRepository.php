@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\AddressBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
 
 class AddressIdentifierRepository extends EntityRepository implements AddressIdentifierRepositoryInterface
@@ -20,7 +21,7 @@ class AddressIdentifierRepository extends EntityRepository implements AddressIde
     /**
      * {@inheritdoc}
      */
-    public function findByName($name)
+    public function findByName($name): ?AddressIdentifierInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.name = :name')

@@ -22,5 +22,5 @@ interface NotificationRuleRepositoryInterface extends RuleRepositoryInterface
      *
      * @return NotificationRuleInterface[]
      */
-    public function findForType($type);
+    public function findForType($type): array;
 }

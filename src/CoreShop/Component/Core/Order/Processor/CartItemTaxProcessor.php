@@ -12,11 +12,11 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
@@ -25,26 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $productTaxFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
 
-    /**
-     * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
-     * @param TaxCollectorInterface                $taxCollector
-     * @param AddressProviderInterface             $defaultAddressProvider
-     */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector,
@@ -58,7 +42,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $store = $cart->getStore();
 
@@ -68,20 +52,23 @@ final class CartItemTaxProcessor implements CartProcessorInterface
         Assert::isInstanceOf($store, StoreInterface::class);
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(), $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
+            $taxCalculator = $this->productTaxFactory->getTaxCalculator($item->getProduct(),
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart));
 
             $fieldCollection = new Fieldcollection();
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
                 if ($store->getUseGrossPrice()) {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, $item->getTotal(true)));
+                    $fieldCollection->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator,
+                        $item->getTotal(true)));
 
                     $item->setItemTax($taxCalculator->getTaxesAmountFromGross($item->getItemPrice(true)));
                 } else {
-                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator, $item->getTotal(false)));
+                    $fieldCollection->setItems($this->taxCollector->collectTaxes($taxCalculator,
+                        $item->getTotal(false)));
 
                     $item->setItemTax($taxCalculator->getTaxesAmount($item->getItemPrice(false)));
                 }

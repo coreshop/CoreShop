@@ -21,8 +21,12 @@ final class TaxApplicator implements TaxApplicatorInterface
     /**
      * {@inheritdoc}
      */
-    public function applyTax($price, array $context, TaxCalculatorInterface $taxCalculator, $withTax = true)
-    {
+    public function applyTax(
+        int $price,
+        array $context,
+        TaxCalculatorInterface $taxCalculator,
+        bool $withTax = true
+    ): int {
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
