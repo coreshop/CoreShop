@@ -28,4 +28,4 @@ services:
         arguments:
             - '@coreshop.link_generator'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: checkFragmentRequest }
+            - { name: kernel.event_subscriber }

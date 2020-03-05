@@ -13,14 +13,16 @@
 namespace CoreShop\Bundle\FrontendBundle\EventListener;
 
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  * @deprecated This class is deprecated since 2.2.0 and will be removed with 3.0.0
  */
-class PartialProtectionListener
+class PartialProtectionListener implements EventSubscriberInterface
 {
     const PROTECTED_ROUTES = [
         'coreshop_cart_add'
@@ -40,9 +42,19 @@ class PartialProtectionListener
     }
 
     /**
-     * @param RequestEvent $event
+     * {@inheritdoc}
      */
-    public function checkFragmentRequest(RequestEvent $event)
+    public static function getSubscribedEvents()
+    {
+        return [
+            KernelEvents::REQUEST => 'onKernelRequest',
+        ];
+    }
+
+    /**
+     * @param GetResponseEvent $event
+     */
+    public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
 
@@ -60,10 +72,6 @@ class PartialProtectionListener
 
         $route = $request->attributes->get('_route');
         if (!in_array($route, self::PROTECTED_ROUTES)) {
-            return;
-        }
-
-        if ($request->get('_partial', 0) !== 0) {
             return;
         }
 

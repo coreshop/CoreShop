@@ -44,16 +44,6 @@ routes:
     variables: _locale,product
     priority: 3
 
-  coreshop_partial_cart_add:
-    pattern: "/(\\w+)\\/_partial\\/cart\\/add\\/([0-9]+)$/"
-    reverse: "/%_locale/_partial/cart/add/%product"
-    module: FrontendBundle
-    controller: "@coreshop.frontend.controller.cart"
-    action: addItem
-    variables: _locale,product
-    priority: 3
-    defaults: "_partial=1"
-
   coreshop_cart_remove:
     pattern: "/(\\w+)\\/shop\\/cart\\/remove\\/([0-9]+)$/"
     reverse: "/%_locale/shop/cart/remove/%cartItem"
