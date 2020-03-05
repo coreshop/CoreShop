@@ -30,26 +30,15 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class PaymentType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $formTypeRegistry;
-
-    /**
-     * @var PaymentProviderRepositoryInterface
-     */
     private $paymentProviderRepository;
-
-    /**
-     * @var array
-     */
     private $gatewayFactories;
 
     /**
      * {@inheritdoc}
      */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
         FormTypeRegistryInterface $formTypeRegistry,
         PaymentProviderRepositoryInterface $paymentProviderRepository,
@@ -65,7 +54,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('paymentProvider', PaymentProviderChoiceType::class, [
@@ -127,7 +116,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['prototypes'] = [];
 
@@ -140,28 +129,21 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
         $resolver->setDefault('payment_subject', null);
     }
 
-    /**
-     * @param FormInterface $form
-     * @param string        $configurationType
-     */
-    protected function addConfigurationFields(FormInterface $form, $configurationType)
+    protected function addConfigurationFields(FormInterface $form, string $configurationType): void
     {
         $form->add('paymentSettings', $configurationType, [
             'label' => false,
         ]);
     }
 
-    /**
-     * @param FormInterface $form
-     */
-    protected function removeConfigurationFields(FormInterface $form)
+    protected function removeConfigurationFields(FormInterface $form): void
     {
         if (!$form->has('paymentSettings')) {
             return;
@@ -171,13 +153,7 @@ final class PaymentType extends AbstractResourceType
         $form->remove('paymentSettings');
     }
 
-    /**
-     * @param FormInterface $form
-     * @param mixed         $data
-     *
-     * @return string|null
-     */
-    protected function getRegistryIdentifier(FormInterface $form, $data = null)
+    protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
         if ($data instanceof CartInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
             return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
@@ -191,7 +167,7 @@ final class PaymentType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_payment';
     }

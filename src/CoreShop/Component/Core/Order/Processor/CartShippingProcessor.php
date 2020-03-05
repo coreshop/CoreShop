@@ -27,38 +27,12 @@ use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CartShippingProcessor implements CartProcessorInterface
 {
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
     private $carrierPriceCalculator;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
     private $carrierValidator;
-
-    /**
-     * @var DefaultCarrierResolverInterface
-     */
     private $defaultCarrierResolver;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param TaxedShippingCalculatorInterface   $carrierPriceCalculator
-     * @param ShippableCarrierValidatorInterface $carrierValidator
-     * @param DefaultCarrierResolverInterface    $defaultCarrierResolver
-     * @param AddressProviderInterface           $defaultAddressProvider
-     * @param AdjustmentFactoryInterface         $adjustmentFactory
-     */
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
@@ -76,7 +50,7 @@ final class CartShippingProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(CartInterface $cart): void
     {
         if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
             return;

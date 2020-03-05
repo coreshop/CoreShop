@@ -19,5 +19,5 @@ interface CustomerContextInterface
     /**
      * @return CustomerInterface
      */
-    public function getCustomer();
+    public function getCustomer(): CustomerInterface;
 }

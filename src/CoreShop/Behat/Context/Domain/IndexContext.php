@@ -23,26 +23,10 @@ use Webmozart\Assert\Assert;
 
 final class IndexContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $indexRepository;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param RepositoryInterface    $indexRepository
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         RepositoryInterface $indexRepository,

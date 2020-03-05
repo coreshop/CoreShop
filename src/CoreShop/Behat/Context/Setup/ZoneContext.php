@@ -21,32 +21,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class ZoneContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $zoneFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $zoneRepository;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $zoneFactory
-     * @param RepositoryInterface    $zoneRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,

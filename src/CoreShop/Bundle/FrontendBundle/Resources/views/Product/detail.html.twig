@@ -71,24 +71,6 @@
             </ul>
             <hr/>
 
-            {% set variants = product.getVariantDifferences(coreshop.localeCode, 'classificationstore', 'classificationStore') %}
-            {# {% set variants = product->getVariantDifferences(coreshop.localeCode); //Use this for bricks %} #}
-
-            {% if variants %}
-                {% for variant in variants %}
-                    <h4>{{ variant['variantName'] }}</h4>
-                    <div class="form-group">
-                        <select name="variant" class="form-control selectpicker btn-white">
-                            {% for variantValue in variant['variantValues'] %}
-                                <option data-href="{{ coreshop_path(variant, 'coreshop_product_detail', {name: variant['variantName'], product: variantValue['productId']}) }}"
-                                        value="{{ variantValue['productId'] }}" {% if variantValue['selected'] %} selected="selected" {% endif %}> {{ variantValue['variantName'] }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                {% endfor %}
-                <hr/>
-            {% endif %}
-
             {% if product.hasUnitDefinitions == true %}
                 <div class="unit-prices">
                     {{ product_price.display_product_unit_prices(product) }}
@@ -99,7 +81,7 @@
                     {{ product_price.display_product_price(product) }}
                 </div>
                 <div class="tax">
-                    {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+                    {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context)) }})
                 </div>
             {% endif %}
 

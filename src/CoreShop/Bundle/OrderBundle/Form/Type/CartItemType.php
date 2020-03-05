@@ -21,16 +21,8 @@ use Symfony\Component\Form\FormEvents;
 
 final class CartItemType extends AbstractResourceType
 {
-    /**
-     * @var DataMapperInterface
-     */
     private $dataMapper;
 
-    /**
-     * @param string              $dataClass
-     * @param array               $validationGroups
-     * @param DataMapperInterface $dataMapper
-     */
     public function __construct(
         string $dataClass,
         array $validationGroups,
@@ -44,7 +36,7 @@ final class CartItemType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
@@ -67,7 +59,7 @@ final class CartItemType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_item';
     }

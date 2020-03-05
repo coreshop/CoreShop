@@ -17,15 +17,12 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
-    /**
-     * Get Index Configurations.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+
+    public function getConfigAction(): Response
     {
         return $this->viewHandler->handle(
             [
@@ -36,7 +33,7 @@ class FilterController extends ResourceController
         );
     }
 
-    public function getFieldsForIndexAction(Request $request)
+    public function getFieldsForIndexAction(Request $request): Response
     {
         $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
@@ -56,7 +53,7 @@ class FilterController extends ResourceController
         return $this->viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request)
+    public function getValuesForFilterFieldAction(Request $request): Response
     {
         $index = $this->get('coreshop.repository.index')->find($request->get('index'));
 
@@ -90,7 +87,7 @@ class FilterController extends ResourceController
     /**
      * @return array
      */
-    protected function getPreConditionTypes()
+    protected function getPreConditionTypes(): array
     {
         return $this->getParameter('coreshop.filter.pre_condition_types');
     }
@@ -98,7 +95,7 @@ class FilterController extends ResourceController
     /**
      * @return array
      */
-    protected function getUserConditionTypes()
+    protected function getUserConditionTypes(): array
     {
         return $this->getParameter('coreshop.filter.user_condition_types');
     }

@@ -16,8 +16,8 @@ interface ThemeResolverInterface
 {
     /**
      * Resolve Themes and ActiveTheme and stores it into ActiveThemeInterface $activeTheme.
+     *
+     * @param ActiveThemeInterface $activeTheme
      */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/);
+    public function resolveTheme(ActiveThemeInterface $activeTheme): void;
 }
-
-class_alias(ThemeResolverInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface');

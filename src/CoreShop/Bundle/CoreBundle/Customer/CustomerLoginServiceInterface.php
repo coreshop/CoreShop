@@ -16,8 +16,5 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface CustomerLoginServiceInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     */
-    public function loginCustomer(CustomerInterface $customer);
+    public function loginCustomer(CustomerInterface $customer): void;
 }

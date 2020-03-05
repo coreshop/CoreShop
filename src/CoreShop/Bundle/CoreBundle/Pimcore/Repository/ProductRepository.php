@@ -26,7 +26,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findLatestByStore(StoreInterface $store, $count = 8)
+    public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
@@ -39,7 +39,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findAllVariants(ProductInterface $product, $recursive = true)
+    public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
@@ -56,7 +56,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
         $dao = $list->getDao();
@@ -80,7 +80,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function getProducts($options = [])
+    public function getProducts(array $options = [])
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([

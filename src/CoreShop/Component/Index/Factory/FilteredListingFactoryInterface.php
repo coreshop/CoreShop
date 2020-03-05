@@ -18,11 +18,5 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 interface FilteredListingFactoryInterface
 {
-    /**
-     * @param FilterInterface $filter
-     * @param ParameterBag    $parameterBag
-     *
-     * @return ListingInterface
-     */
-    public function createList(FilterInterface $filter, ParameterBag $parameterBag);
+    public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface;
 }

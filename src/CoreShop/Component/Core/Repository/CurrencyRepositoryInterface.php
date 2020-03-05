@@ -23,5 +23,5 @@ interface CurrencyRepositoryInterface extends BaseCurrencyRepositoryInterface
      *
      * @return CurrencyInterface[]
      */
-    public function findActiveForStore(StoreInterface $store);
+    public function findActiveForStore(StoreInterface $store): array;
 }

@@ -21,14 +21,8 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderItemExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var int
-     */
     protected $decimalFactor;
 
-    /**
-     * @param int $decimalFactor
-     */
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
@@ -37,7 +31,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof ProposalItemInterface;
     }

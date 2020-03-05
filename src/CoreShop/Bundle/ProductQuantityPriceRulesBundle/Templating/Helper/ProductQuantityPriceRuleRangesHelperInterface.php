@@ -25,7 +25,7 @@ interface ProductQuantityPriceRuleRangesHelperInterface
      *
      * @return bool
      */
-    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context);
+    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context): bool;
 
     /**
      * @param QuantityRangePriceAwareInterface $product
@@ -35,7 +35,7 @@ interface ProductQuantityPriceRuleRangesHelperInterface
      *
      * @return ProductQuantityPriceRuleInterface
      */
-    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product, array $context);
+    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product, array $context): ProductQuantityPriceRuleInterface;
 
     /**
      * @param QuantityRangePriceAwareInterface $product
@@ -45,5 +45,5 @@ interface ProductQuantityPriceRuleRangesHelperInterface
      *
      * @return Collection
      */
-    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context);
+    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context): Collection;
 }

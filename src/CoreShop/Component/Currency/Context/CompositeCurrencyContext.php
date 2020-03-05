@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Currency\Context;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeCurrencyContext implements CurrencyContextInterface
@@ -26,11 +27,7 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
         $this->currencyContexts = new PriorityQueue();
     }
 
-    /**
-     * @param CurrencyContextInterface $currencyContext
-     * @param int                      $priority
-     */
-    public function addContext(CurrencyContextInterface $currencyContext, $priority = 0)
+    public function addContext(CurrencyContextInterface $currencyContext, int $priority = 0): void
     {
         $this->currencyContexts->insert($currencyContext, $priority);
     }
@@ -38,7 +35,7 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         $lastException = null;
 

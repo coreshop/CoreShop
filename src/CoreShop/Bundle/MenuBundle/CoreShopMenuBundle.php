@@ -36,7 +36,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -46,7 +46,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Menu';
     }
@@ -54,7 +54,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Menu Bundle';
     }
@@ -62,7 +62,7 @@ final class CoreShopMenuBundle extends AbstractPimcoreBundle implements Dependen
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/menu-bundle'])) {
             return 'coreshop/menu-bundle';

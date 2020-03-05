@@ -24,55 +24,17 @@ use Doctrine\ORM\EntityManagerInterface;
 
 final class StoreContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $storeFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $currencyFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $countryFactory;
-
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var FixedStoreContext
-     */
     private $fixedStoreContext;
 
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param EntityManagerInterface   $entityManager
-     * @param FactoryInterface         $storeFactory
-     * @param StoreRepositoryInterface $storeRepository
-     * @param FactoryInterface         $currencyFactory
-     * @param FactoryInterface         $countryFactory
-     * @param FixedStoreContext        $fixedStoreContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         EntityManagerInterface $entityManager,
         FactoryInterface $storeFactory,
-        StoreRepositoryInterface $storeRepository,
         FactoryInterface $currencyFactory,
         FactoryInterface $countryFactory,
         FixedStoreContext $fixedStoreContext
@@ -80,7 +42,6 @@ final class StoreContext implements Context
         $this->sharedStorage = $sharedStorage;
         $this->entityManager = $entityManager;
         $this->storeFactory = $storeFactory;
-        $this->storeRepository = $storeRepository;
         $this->currencyFactory = $currencyFactory;
         $this->countryFactory = $countryFactory;
         $this->fixedStoreContext = $fixedStoreContext;

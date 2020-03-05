@@ -19,7 +19,7 @@ final class ProductSelectionType extends PimcoreResourceSelectionType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product';
     }

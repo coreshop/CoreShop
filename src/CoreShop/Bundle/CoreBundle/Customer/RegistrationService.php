@@ -25,65 +25,24 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
     private $customerRepository;
-
-    /**
-     * @var ObjectServiceInterface
-     */
     private $objectService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var string
-     */
     private $customerFolder;
-
-    /**
-     * @var string
-     */
     private $guestFolder;
-
-    /**
-     * @var string
-     */
     private $addressFolder;
-
-    /**
-     * @var string
-     */
     private $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface      $objectService
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param LocaleContextInterface      $localeContext
-     * @param string                      $customerFolder
-     * @param string                      $guestFolder
-     * @param string                      $addressFolder
-     * @param string                      $loginIdentifier
-     */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
         LocaleContextInterface $localeContext,
-        $customerFolder,
-        $guestFolder,
-        $addressFolder,
-        $loginIdentifier
+        string $customerFolder,
+        string $guestFolder,
+        string $addressFolder,
+        string $loginIdentifier
     ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
@@ -101,9 +60,9 @@ final class RegistrationService implements RegistrationServiceInterface
     public function registerCustomer(
         CustomerInterface $customer,
         AddressInterface $address,
-        $formData,
-        $isGuest = false
-    ) {
+        array $formData,
+        bool $isGuest = false
+    ): void {
         $loginIdentifierValue = $this->loginIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
         $existingCustomer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $loginIdentifierValue, false);
 

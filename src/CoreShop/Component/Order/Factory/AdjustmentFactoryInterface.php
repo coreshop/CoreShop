@@ -17,14 +17,5 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 interface AdjustmentFactoryInterface extends FactoryInterface
 {
-    /**
-     * @param string $type
-     * @param string $label
-     * @param int    $amountGross
-     * @param int    $amountNet
-     * @param bool   $neutral
-     *
-     * @return AdjustmentInterface
-     */
-    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false);
+    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false): AdjustmentInterface;
 }

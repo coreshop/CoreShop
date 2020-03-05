@@ -18,30 +18,18 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditionsValidationProcessorInterface
 {
-    /**
-     * @var RuleConditionsValidationProcessorInterface
-     */
     private $ruleConditionsValidationProcessor;
+    private $processed = [];
 
-    /**
-     * @var array
-     */
-    private $processed;
-
-    /**
-     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
-     */
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
-
-        $this->processed = array();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->ruleConditionsValidationProcessor->getType();
     }
@@ -49,7 +37,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
         if (!$rule->getActive()) {
             return false;
@@ -78,7 +66,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
     /**
      * {@inheritdoc}
      */
-    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, $params = [])
+    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool
     {
         $isValid = $this->ruleConditionsValidationProcessor->isConditionValid($subject, $rule, $condition, $params);
 
@@ -87,14 +75,13 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         return $isValid;
     }
 
-    /**
-     * @param ResourceInterface       $subject
-     * @param RuleInterface           $rule
-     * @param bool                    $ruleResult
-     * @param ConditionInterface|null $condition
-     * @param bool                    $conditionResult
-     */
-    protected function addProcessedRule(ResourceInterface $subject, RuleInterface $rule, $ruleResult = false, ConditionInterface $condition = null, $conditionResult = false)
+    protected function addProcessedRule(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        $ruleResult = false,
+        ConditionInterface $condition = null,
+        $conditionResult = false
+    ): void
     {
         if (!isset($this->processed[$subject->getId()])) {
             $this->processed[$subject->getId()] = [
@@ -134,10 +121,7 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getValidatedConditions()
+    public function getValidatedConditions(): array
     {
         return $this->processed;
     }

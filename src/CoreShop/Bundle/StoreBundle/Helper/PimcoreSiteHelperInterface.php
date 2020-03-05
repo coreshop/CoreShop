@@ -19,10 +19,10 @@ interface PimcoreSiteHelperInterface
     /**
      * @return bool
      */
-    public function isSiteRequest();
+    public function isSiteRequest(): bool;
 
     /**
      * @return Site
      */
-    public function getCurrentSite();
+    public function getCurrentSite(): Site;
 }

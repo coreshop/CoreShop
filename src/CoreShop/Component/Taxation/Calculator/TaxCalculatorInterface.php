@@ -40,7 +40,7 @@ interface TaxCalculatorInterface
      *
      * @return int
      */
-    public function applyTaxes($price);
+    public function applyTaxes(int $price): int;
 
     /**
      * Compute and remove the taxes to the specified price.
@@ -49,37 +49,53 @@ interface TaxCalculatorInterface
      *
      * @return int
      */
-    public function removeTaxes($price);
+    public function removeTaxes(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
      * @param int  $price
-     * @param bool $asArray
      *
      * @return int|array $taxes_amount
      */
-    public function getTaxesAmountFromGross($price, $asArray = false);
+    public function getTaxesAmountFromGross(int $price): int;
 
     /**
      * Return the tax amount associated to each taxes of the TaxCalculator.
      *
      * @param int  $price
-     * @param bool $asArray
      *
-     * @return int|array $taxes_amount
+     * @return array $taxes_amount
      */
-    public function getTaxesAmount($price, $asArray = false);
+    public function getTaxesAmountFromGrossAsArray(int $price): array;
+
+    /**
+     * Return the tax amount associated to each taxes of the TaxCalculator.
+     *
+     * @param int  $price
+     *
+     * @return int
+     */
+    public function getTaxesAmount(int $price): int;
+
+        /**
+     * Return the tax amount associated to each taxes of the TaxCalculator.
+     *
+     * @param int  $price
+     *
+     * @return array
+     */
+    public function getTaxesAmountAsArray(int $price): array;
 
     /**
      * Compute Total Rate.
      *
      * @return float
      */
-    public function getTotalRate();
+    public function getTotalRate(): float;
 
     /**
      * @return TaxRateInterface[]
      */
-    public function getTaxRates();
+    public function getTaxRates(): array;
 }

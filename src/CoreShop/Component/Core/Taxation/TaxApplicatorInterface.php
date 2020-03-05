@@ -16,15 +16,10 @@ use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 
 interface TaxApplicatorInterface
 {
-    /**
-     * apply taxes on a price.
-     *
-     * @param int                    $price
-     * @param array                  $context
-     * @param TaxCalculatorInterface $taxCalculator
-     * @param bool                   $withTax
-     *
-     * @return mixed
-     */
-    public function applyTax($price, array $context, TaxCalculatorInterface $taxCalculator, $withTax = true);
+    public function applyTax(
+        int $price,
+        array $context,
+        TaxCalculatorInterface $taxCalculator,
+        bool $withTax = true
+    ): int;
 }

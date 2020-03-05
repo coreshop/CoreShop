@@ -17,5 +17,5 @@ interface LocaleContextInterface
     /**
      * @return string
      */
-    public function getLocaleCode();
+    public function getLocaleCode(): string;
 }

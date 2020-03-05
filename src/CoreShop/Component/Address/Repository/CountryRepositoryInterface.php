@@ -21,7 +21,7 @@ interface CountryRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
     /**
      * @param string $name
@@ -29,12 +29,12 @@ interface CountryRepositoryInterface extends RepositoryInterface
      *
      * @return CountryInterface[]
      */
-    public function findByName($name, $locale);
+    public function findByName(string $name, string $locale): array;
 
     /**
      * @param string $code
      *
      * @return CountryInterface
      */
-    public function findByCode($code);
+    public function findByCode($code): ?CountryInterface;
 }

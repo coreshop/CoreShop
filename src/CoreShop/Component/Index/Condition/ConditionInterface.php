@@ -14,8 +14,5 @@ namespace CoreShop\Component\Index\Condition;
 
 interface ConditionInterface
 {
-    /**
-     * @return string
-     */
-    public function getFieldName();
+    public function getFieldName(): string;
 }

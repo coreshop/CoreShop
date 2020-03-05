@@ -15,29 +15,14 @@ namespace CoreShop\Bundle\MenuBundle;
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 
 class Builder
 {
-    /**
-     * @var FactoryInterface
-     */
     protected $factory;
-
-    /**
-     * @var string
-     */
     protected $type;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     protected $registry;
 
-    /**
-     * @param FactoryInterface         $factory
-     * @param string                   $type
-     * @param ServiceRegistryInterface $registry
-     */
     public function __construct(FactoryInterface $factory, string $type, ServiceRegistryInterface $registry)
     {
         $this->factory = $factory;
@@ -45,7 +30,7 @@ class Builder
         $this->registry = $registry;
     }
 
-    public function createMenu()
+    public function createMenu(): ItemInterface
     {
         $menu = $this->factory->createItem($this->type);
 

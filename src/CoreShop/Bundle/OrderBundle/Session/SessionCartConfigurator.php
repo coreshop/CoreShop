@@ -21,7 +21,7 @@ class SessionCartConfigurator implements SessionConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure(SessionInterface $session)
+    public function configure(SessionInterface $session): void
     {
         $bag = new NamespacedAttributeBag('coreshop_session_cart');
         $bag->setName('cart');

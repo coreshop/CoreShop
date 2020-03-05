@@ -12,7 +12,6 @@ services:
     CoreShop\Component\Core\Product\ProductTaxCalculatorFactory:
         arguments:
             - '@coreshop.taxation.factory.tax_calculator'
-            - '@coreshop.factory.address'
 
     coreshop.product.taxed_price_calculator: '@CoreShop\Component\Core\Product\TaxedProductPriceCalculator'
     CoreShop\Component\Core\Product\TaxedProductPriceCalculator:
@@ -26,7 +25,6 @@ services:
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper:
         arguments:
             - '@coreshop.product.taxed_price_calculator'
-            - '@coreshop.context.shopper'
         tags:
             - { name: templating.helper, alias: coreshop_product_price }
 
@@ -45,7 +43,6 @@ services:
     CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper:
         arguments:
             - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
-            - '@coreshop.context.shopper'
             - '@coreshop.product.tax_factory'
             - '@coreshop.provider.taxation.default_country'
         tags:

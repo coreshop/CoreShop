@@ -24,25 +24,19 @@ interface FilterConditionProcessorInterface
      */
     const EMPTY_STRING = '##EMPTY##';
 
-    /**
-     * @param FilterConditionInterface $condition
-     * @param FilterInterface          $filter
-     * @param ListingInterface         $list
-     * @param array                    $currentFilter
-     * @param ParameterBag             $parameterBag
-     * @param bool                     $isPrecondition
-     *
-     * @return mixed
-     */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false);
+    public function addCondition(
+        FilterConditionInterface $condition,
+        FilterInterface $filter,
+        ListingInterface $list,
+        array $currentFilter,
+        ParameterBag $parameterBag,
+        bool $isPrecondition = false
+    ): array;
 
-    /**
-     * @param FilterConditionInterface $condition
-     * @param FilterInterface          $filter
-     * @param ListingInterface         $list
-     * @param array                    $currentFilter
-     *
-     * @return array
-     */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter);
+    public function prepareValuesForRendering(
+        FilterConditionInterface $condition,
+        FilterInterface $filter,
+        ListingInterface $list,
+        array $currentFilter
+    ): array;
 }

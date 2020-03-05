@@ -23,25 +23,10 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractInstallCommand extends Command
 {
-    /**
-     * @var CommandExecutor
-     */
     protected $commandExecutor;
-
-    /**
-     * @var KernelInterface
-     */
     protected $kernel;
-
-    /**
-     * @var CommandDirectoryChecker
-     */
     protected $directoryChecker;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     */
     public function __construct(KernelInterface $kernel, CommandDirectoryChecker $directoryChecker)
     {
         $this->kernel = $kernel;
@@ -53,7 +38,7 @@ abstract class AbstractInstallCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $application = $this->getApplication();
         $application->setCatchExceptions(false);
@@ -68,7 +53,7 @@ abstract class AbstractInstallCommand extends Command
     /**
      * @return string
      */
-    protected function getEnvironment()
+    protected function getEnvironment(): string
     {
         return $this->kernel->getEnvironment();
     }
@@ -76,7 +61,7 @@ abstract class AbstractInstallCommand extends Command
     /**
      * @return bool
      */
-    protected function isDebug()
+    protected function isDebug(): bool
     {
         return $this->kernel->isDebug();
     }
@@ -86,7 +71,7 @@ abstract class AbstractInstallCommand extends Command
      * @param array           $rows
      * @param OutputInterface $output
      */
-    protected function renderTable(array $headers, array $rows, OutputInterface $output)
+    protected function renderTable(array $headers, array $rows, OutputInterface $output): void
     {
         $table = new Table($output);
 
@@ -102,7 +87,7 @@ abstract class AbstractInstallCommand extends Command
      *
      * @return ProgressBar
      */
-    protected function createProgressBar(OutputInterface $output, $length = 10)
+    protected function createProgressBar(OutputInterface $output, $length = 10): ProgressBar
     {
         $progress = new ProgressBar($output);
         $progress->setBarCharacter('<info>░</info>');
@@ -120,7 +105,7 @@ abstract class AbstractInstallCommand extends Command
      * @param bool            $displayProgress
      * @param bool            $passOutput
      */
-    protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true, $passOutput = false)
+    protected function runCommands(array $commands, OutputInterface $output, $displayProgress = true, $passOutput = false): void
     {
         $progress = null;
 
@@ -157,7 +142,7 @@ abstract class AbstractInstallCommand extends Command
      * @param string          $directory
      * @param OutputInterface $output
      */
-    protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output)
+    protected function ensureDirectoryExistsAndIsWritable($directory, OutputInterface $output): void
     {
         $this->directoryChecker->setCommandName($this->getName());
 

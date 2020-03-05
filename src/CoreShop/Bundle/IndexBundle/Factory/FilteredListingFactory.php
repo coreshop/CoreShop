@@ -15,25 +15,15 @@ namespace CoreShop\Bundle\IndexBundle\Factory;
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilteredListingFactory implements FilteredListingFactoryInterface
 {
-    /**
-     * @var ListingFactoryInterface
-     */
     private $listingFactory;
-
-    /**
-     * @var FilterProcessorInterface
-     */
     private $filterProcessor;
-
-    /**
-     * @param ListingFactoryInterface  $listingFactory
-     * @param FilterProcessorInterface $filterProcessor
-     */
+    
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)
     {
         $this->listingFactory = $listingFactory;
@@ -43,7 +33,7 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createList(FilterInterface $filter, ParameterBag $parameterBag)
+    public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface
     {
         $list = $this->listingFactory->createList($filter->getIndex());
 

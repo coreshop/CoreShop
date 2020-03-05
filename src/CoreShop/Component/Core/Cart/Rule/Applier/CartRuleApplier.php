@@ -24,38 +24,12 @@ use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
-    /**
-     * @var ProportionalIntegerDistributor
-     */
     private $distributor;
-
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param ProportionalIntegerDistributor       $distributor
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxCollectorInterface                $taxCollector
-     * @param AddressProviderInterface             $defaultAddressProvider
-     * @param AdjustmentFactoryInterface           $adjustmentFactory
-     */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
@@ -73,7 +47,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
     }
@@ -81,15 +55,12 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applySurcharge(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applySurcharge(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
+    protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         $totalAmount = [];
 
@@ -191,5 +162,3 @@ class CartRuleApplier implements CartRuleApplierInterface
         );
     }
 }
-
-class_alias(CartRuleApplier::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier');

@@ -21,26 +21,10 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInterface
 {
-    /**
-     * @var CarriersResolverInterface
-     */
     private $inner;
-
-    /**
-     * @var CarrierRepositoryInterface
-     */
     private $carrierRepository;
-
-    /**
-     * @var ShippableCarrierValidatorInterface
-     */
     private $shippableCarrierValidator;
 
-    /**
-     * @param CarriersResolverInterface          $inner
-     * @param CarrierRepositoryInterface         $carrierRepository
-     * @param ShippableCarrierValidatorInterface $shippableCarrierValidator
-     */
     public function __construct(
         CarriersResolverInterface $inner,
         CarrierRepositoryInterface $carrierRepository,
@@ -54,7 +38,7 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
     /**
      * {@inheritdoc}
      */
-    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address)
+    public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         if ($shippable instanceof StoreAwareInterface) {
             $carriers = $this->carrierRepository->findForStore($shippable->getStore());

@@ -154,8 +154,6 @@ services:
     #### MULTIPLE
     coreshop.notification_rule.condition.store: '@CoreShop\Component\Core\Notification\Rule\Condition\StoresChecker'
     CoreShop\Component\Core\Notification\Rule\Condition\StoresChecker:
-        arguments:
-            - '@coreshop.repository.order'
         tags:
             - { name: coreshop.notification_rule.condition, type: stores, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }
             - { name: coreshop.notification_rule.condition, type: stores, notification-type: quote, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition\StoresConfigurationType }

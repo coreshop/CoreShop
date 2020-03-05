@@ -25,26 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class CartItemTaxProcessor implements CartProcessorInterface
 {
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $productTaxFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
 
-    /**
-     * @param ProductTaxCalculatorFactoryInterface $productTaxFactory
-     * @param TaxCollectorInterface                $taxCollector
-     * @param AddressProviderInterface             $defaultAddressProvider
-     */
     public function __construct(
         ProductTaxCalculatorFactoryInterface $productTaxFactory,
         TaxCollectorInterface $taxCollector,
@@ -58,7 +42,7 @@ final class CartItemTaxProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(CartInterface $cart): void
     {
         $store = $cart->getStore();
 

@@ -26,43 +26,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class VouchersReport implements ReportInterface, ExportReportInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -80,7 +50,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -96,7 +66,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
 
         $classId = $this->orderRepository->getClassId();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 
@@ -139,7 +109,7 @@ class VouchersReport implements ReportInterface, ExportReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -153,9 +123,9 @@ class VouchersReport implements ReportInterface, ExportReportInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

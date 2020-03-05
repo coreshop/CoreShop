@@ -16,24 +16,14 @@ use Pimcore\Model\Translation\Website;
 
 class SharedTranslation
 {
-    /**
-     * Add a new Shared Translation.
-     *
-     * @param string $key
-     * @param string $language
-     * @param string $value
-     */
-    public static function add($key, $language, $value)
+    public static function add(string $key, string $language, string $value)
     {
         $key = Website::getByKey($key, true);
         $key->addTranslation($language, $value);
         $key->save();
     }
 
-    /**
-     * Cleanup Translations.
-     */
-    public static function cleanup()
+    public static function cleanup(): void
     {
         $list = new Website\Listing();
 

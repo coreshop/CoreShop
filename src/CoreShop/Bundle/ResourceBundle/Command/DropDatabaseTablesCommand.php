@@ -23,20 +23,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DropDatabaseTablesCommand extends Command
 {
-    /**
-     * @var array
-     */
     private $coreShopResources;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @param array                  $coreShopResources
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(array $coreShopResources, EntityManagerInterface $entityManager)
     {
         $this->coreShopResources = $coreShopResources;
@@ -48,7 +37,7 @@ final class DropDatabaseTablesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:resources:drop-tables')
@@ -79,7 +68,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ui = new SymfonyStyle($input, $output);
 

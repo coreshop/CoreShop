@@ -23,32 +23,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PimcoreAdminLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
     private $pimcoreContextResolver;
-
-    /**
-     * @var TokenStorageUserResolver
-     */
     private $tokenStorageUserResolver;
-
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
     private $localeProvider;
-
-    /**
-     * @var RequestStack
-     */
     private $requestStack;
 
-    /**
-     * @param PimcoreContextResolver             $pimcoreContextResolver
-     * @param TokenStorageUserResolver           $tokenStorageUserResolver
-     * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack                       $requestStack
-     */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
@@ -64,7 +43,7 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         $request = $this->requestStack->getCurrentRequest();
 

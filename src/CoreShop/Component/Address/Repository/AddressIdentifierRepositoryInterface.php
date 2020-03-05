@@ -22,5 +22,5 @@ interface AddressIdentifierRepositoryInterface extends RepositoryInterface
      *
      * @return AddressIdentifierInterface
      */
-    public function findByName($name);
+    public function findByName($name): ?AddressIdentifierInterface;
 }

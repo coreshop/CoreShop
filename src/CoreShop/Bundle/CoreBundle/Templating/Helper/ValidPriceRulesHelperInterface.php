@@ -23,5 +23,5 @@ interface ValidPriceRulesHelperInterface
      *
      * @return RuleInterface[]
      */
-    public function getValidRules(ProductInterface $product, array $context = []);
+    public function getValidRules(ProductInterface $product, array $context = []): array;
 }

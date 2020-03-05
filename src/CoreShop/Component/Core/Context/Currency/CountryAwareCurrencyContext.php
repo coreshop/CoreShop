@@ -16,17 +16,12 @@ use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Currency\Context\CurrencyContextInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class CountryAwareCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var CountryContextInterface
-     */
     private $countryContext;
 
-    /**
-     * @param CountryContextInterface $countryContext
-     */
     public function __construct(CountryContextInterface $countryContext)
     {
         $this->countryContext = $countryContext;
@@ -35,7 +30,7 @@ final class CountryAwareCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         /** @var CountryInterface $country */
         $country = $this->countryContext->getCountry();

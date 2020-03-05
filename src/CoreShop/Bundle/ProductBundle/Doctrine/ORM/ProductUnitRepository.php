@@ -13,14 +13,16 @@
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Product\Repository\ProductUnitRepositoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 class ProductUnitRepository extends EntityRepository implements ProductUnitRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
+    public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
@@ -28,7 +30,7 @@ class ProductUnitRepository extends EntityRepository implements ProductUnitRepos
     /**
      * {@inheritdoc}
      */
-    public function findByName(string $name)
+    public function findByName(string $name): ?ProductUnitInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.name = :name')

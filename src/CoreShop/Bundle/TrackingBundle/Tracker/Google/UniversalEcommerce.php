@@ -33,7 +33,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * @param TrackerInterface $tracker
      */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
@@ -41,7 +41,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
@@ -49,7 +49,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -61,7 +61,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         // not implemented
     }
@@ -69,7 +69,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         // not implemented
     }
@@ -77,7 +77,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1): void
     {
         // not implemented
     }
@@ -85,7 +85,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1): void
     {
         // not implemented
     }
@@ -93,7 +93,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented
     }
@@ -101,7 +101,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
             return;
@@ -134,14 +134,14 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * @return bool
      */
-    protected function isGlobalSiteTagMode()
+    protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
         if ($config === false) {
             return false;
         }
 
-        return $config->get('gtagcode');
+        return (bool) $config->get('gtagcode');
     }
 
     /**
@@ -151,7 +151,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'id' => $actionData['id'],
@@ -170,7 +170,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],

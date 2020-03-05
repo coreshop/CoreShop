@@ -26,22 +26,14 @@ use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
-final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
+final class ProductPriceRuleCalculator implements
+    ProductDiscountCalculatorInterface,
+    ProductRetailPriceCalculatorInterface,
+    ProductDiscountPriceCalculatorInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
     private $validRulesFetcher;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $actionServiceRegistry;
 
-    /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param ServiceRegistryInterface   $actionServiceRegistry
-     */
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
@@ -53,7 +45,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -97,7 +89,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -140,7 +132,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;
 

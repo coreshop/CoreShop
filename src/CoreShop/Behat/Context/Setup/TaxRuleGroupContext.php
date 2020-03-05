@@ -25,50 +25,21 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class TaxRuleGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $taxRuleGroupFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $taxRuleFactory;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRuleGroupRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRuleGroupFactory
-     * @param FactoryInterface       $taxRuleFactory
-     * @param RepositoryInterface    $taxRuleGroupRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $taxRuleGroupFactory,
-        FactoryInterface $taxRuleFactory,
-        RepositoryInterface $taxRuleGroupRepository
+        FactoryInterface $taxRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRuleGroupFactory = $taxRuleGroupFactory;
         $this->taxRuleFactory = $taxRuleFactory;
-        $this->taxRuleGroupRepository = $taxRuleGroupRepository;
     }
 
     /**

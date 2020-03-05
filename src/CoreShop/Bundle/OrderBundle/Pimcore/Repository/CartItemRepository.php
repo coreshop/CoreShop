@@ -20,7 +20,7 @@ class CartItemRepository extends PimcoreRepository implements CartItemRepository
     /**
      * {@inheritdoc}
      */
-    public function findCartItemsByProductId($productId)
+    public function findCartItemsByProductId(int $productId): array
     {
         $list = $this->getList();
         $list->setCondition('product__id = ?', [$productId]);

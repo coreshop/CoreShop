@@ -17,44 +17,25 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class WkhtmlOptionsEvent extends Event
 {
-    /**
-     * @var string
-     */
     protected $options;
-
-    /**
-     * @var OrderDocumentInterface
-     */
     protected $orderDocument;
 
-    /**
-     * @param OrderDocumentInterface $orderDocument
-     */
     public function __construct(OrderDocumentInterface $orderDocument)
     {
         $this->orderDocument = $orderDocument;
     }
 
-    /**
-     * @return OrderDocumentInterface
-     */
     public function getOrderDocument(): OrderDocumentInterface
     {
         return $this->orderDocument;
     }
 
-    /**
-     * @return string
-     */
     public function getOptions(): string
     {
         return $this->options;
     }
 
-    /**
-     * @param string $options
-     */
-    public function setOptions(string $options)
+    public function setOptions(string $options): void
     {
         $this->options = $options;
     }

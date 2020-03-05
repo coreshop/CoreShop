@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Context;
 
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Context\CartNotFoundException;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
@@ -21,32 +22,11 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionAndStoreBasedCartContext implements CartContextInterface
 {
-    /**
-     * @var SessionInterface
-     */
     private $session;
-
-    /**
-     * @var string
-     */
     private $sessionKeyName;
-
-    /**
-     * @var CartRepositoryInterface
-     */
     private $cartRepository;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param SessionInterface        $session
-     * @param string                  $sessionKeyName
-     * @param CartRepositoryInterface $cartRepository
-     * @param StoreContextInterface   $storeContext
-     */
     public function __construct(
         SessionInterface $session,
         string $sessionKeyName,
@@ -62,7 +42,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): CartInterface
     {
         try {
             $store = $this->storeContext->getStore();

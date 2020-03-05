@@ -18,20 +18,14 @@ use Pimcore\Model\User;
 
 class PimcoreGuard
 {
-    /**
-     * @var TokenStorageUserResolver
-     */
     private $tokenStorageUserResolver;
 
-    /**
-     * @param TokenStorageUserResolver $tokenStorageUserResolver
-     */
     public function __construct(TokenStorageUserResolver $tokenStorageUserResolver)
     {
         $this->tokenStorageUserResolver = $tokenStorageUserResolver;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): bool
     {
         if (!$item->getAttribute('permission')) {
             return true;

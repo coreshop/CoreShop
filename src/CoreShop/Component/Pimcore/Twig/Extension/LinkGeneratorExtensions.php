@@ -18,14 +18,8 @@ use Twig\TwigFunction;
 
 final class LinkGeneratorExtensions extends AbstractExtension
 {
-    /**
-     * @var LinkGeneratorHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param LinkGeneratorHelperInterface $helper
-     */
     public function __construct(LinkGeneratorHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class LinkGeneratorExtensions extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_url', [$this->helper, 'getUrl']),

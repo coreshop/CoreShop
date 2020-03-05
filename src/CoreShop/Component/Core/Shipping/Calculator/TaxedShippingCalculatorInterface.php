@@ -18,13 +18,10 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface TaxedShippingCalculatorInterface
 {
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     * @param bool               $withTax
-     *
-     * @return mixed
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $withTax = true);
+    public function getPrice(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        bool $withTax = true
+    ): int;
 }

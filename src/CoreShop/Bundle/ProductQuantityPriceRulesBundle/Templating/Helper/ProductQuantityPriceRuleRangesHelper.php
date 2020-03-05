@@ -14,19 +14,15 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper;
 
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Templating\Helper\Helper;
 
 class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuantityPriceRuleRangesHelperInterface
 {
-    /**
-     * @var QuantityReferenceDetectorInterface
-     */
     protected $quantityReferenceDetector;
 
-    /**
-     * @param QuantityReferenceDetectorInterface $quantityReferenceDetector
-     */
     public function __construct(QuantityReferenceDetectorInterface $quantityReferenceDetector)
     {
         $this->quantityReferenceDetector = $quantityReferenceDetector;
@@ -35,7 +31,7 @@ class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuan
     /**
      * {@inheritdoc}
      */
-    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context)
+    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context): bool
     {
         try {
             $this->quantityReferenceDetector->detectRule($product, $context);
@@ -49,7 +45,7 @@ class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuan
     /**
      * {@inheritdoc}
      */
-    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product, array $context)
+    public function getQuantityPriceRule(QuantityRangePriceAwareInterface $product, array $context): ProductQuantityPriceRuleInterface
     {
         return $this->quantityReferenceDetector->detectRule($product, $context);
     }
@@ -57,7 +53,7 @@ class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuan
     /**
      * {@inheritdoc}
      */
-    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context)
+    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context): Collection
     {
         $productQuantityPriceRule = $this->quantityReferenceDetector->detectRule($product, $context);
 
@@ -67,7 +63,7 @@ class ProductQuantityPriceRuleRangesHelper extends Helper implements ProductQuan
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_product_quantity_price_rule_ranges';
     }

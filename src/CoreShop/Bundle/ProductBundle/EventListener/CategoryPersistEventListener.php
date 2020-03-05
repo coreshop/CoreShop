@@ -18,7 +18,7 @@ use Pimcore\Event\Model\ElementEventInterface;
 
 final class CategoryPersistEventListener
 {
-    public function onPreUpdate(ElementEventInterface $event)
+    public function onPreUpdate(ElementEventInterface $event): void
     {
         if ($event instanceof DataObjectEvent) {
             $object = $event->getObject();

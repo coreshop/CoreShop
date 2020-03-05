@@ -28,7 +28,7 @@ final class StoresConditionChecker extends AbstractConditionChecker
         ShippableInterface $shippable,
         AddressInterface $address,
         array $configuration
-    ) {
+    ): bool {
         if (!$shippable instanceof StoreAwareInterface) {
             return false;
         }

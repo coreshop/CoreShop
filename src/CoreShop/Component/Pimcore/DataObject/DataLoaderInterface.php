@@ -16,11 +16,5 @@ use Pimcore\Model\DataObject;
 
 interface DataLoaderInterface
 {
-    /**
-     * @param DataObject\Concrete $data
-     * @param array               $loadedObjects
-     *
-     * @return mixed
-     */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array;
 }

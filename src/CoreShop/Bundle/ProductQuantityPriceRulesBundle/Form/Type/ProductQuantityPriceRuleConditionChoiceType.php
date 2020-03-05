@@ -19,7 +19,7 @@ class ProductQuantityPriceRuleConditionChoiceType extends RuleConditionChoiceTyp
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule_condition_choice';
     }

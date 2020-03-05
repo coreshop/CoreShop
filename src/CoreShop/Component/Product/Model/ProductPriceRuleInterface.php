@@ -17,7 +17,7 @@ interface ProductPriceRuleInterface extends PriceRuleInterface
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * @param string $description

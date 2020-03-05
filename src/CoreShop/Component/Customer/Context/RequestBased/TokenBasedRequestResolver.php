@@ -36,7 +36,7 @@ final class TokenBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCustomer(Request $request)
+    public function findCustomer(Request $request): CustomerInterface
     {
         if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {
             return $this->tokenStorage->getToken()->getUser();

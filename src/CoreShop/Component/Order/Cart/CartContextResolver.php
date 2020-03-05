@@ -16,7 +16,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    public function resolveCartContext(CartInterface $cart)
+    public function resolveCartContext(CartInterface $cart): array
     {
         return [
             'customer' => $cart->getCustomer() ?: null,

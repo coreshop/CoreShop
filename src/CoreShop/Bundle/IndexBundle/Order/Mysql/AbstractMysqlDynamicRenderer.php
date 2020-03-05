@@ -32,7 +32,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function quoteIdentifier($identifier)
+    protected function quoteIdentifier($identifier): string
     {
         return $this->connection->quoteIdentifier($identifier);
     }
@@ -42,7 +42,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function renderPrefix($prefix = null)
+    protected function renderPrefix(?string $prefix): string
     {
         if (null === $prefix) {
             return '';
@@ -57,7 +57,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function quoteFieldName($fieldName, $prefix = null)
+    protected function quoteFieldName(string $fieldName, ?string $prefix = null): string
     {
         return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
     }

@@ -45,7 +45,7 @@
 
         <span class="price-head">{{ 'coreshop.ui.price'|trans }} {{ price_suffix_label }}:</span> {{ product_price.display_product_price(product) }}
         <div class="tax">
-            {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount) }})
+            {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context)) }})
         </div>
     </div>
 

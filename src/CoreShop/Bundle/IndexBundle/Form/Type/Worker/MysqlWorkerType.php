@@ -21,7 +21,7 @@ final class MysqlWorkerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('indexes', CollectionType::class, [
@@ -41,7 +41,7 @@ final class MysqlWorkerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_worker_mysql';
     }

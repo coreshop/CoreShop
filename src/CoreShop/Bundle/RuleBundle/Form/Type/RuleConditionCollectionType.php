@@ -17,7 +17,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionCollectionType extends AbstractConfigurationCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
     }
@@ -25,7 +28,7 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_collection';
     }

@@ -21,7 +21,7 @@ class PaymentProviderRepository extends BasePaymentProviderRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findActiveForStore(StoreInterface $store)
+    public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.stores', 's')

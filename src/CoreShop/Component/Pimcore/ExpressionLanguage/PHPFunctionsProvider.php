@@ -17,7 +17,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 
 class PHPFunctionsProvider implements ExpressionFunctionProviderInterface
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             ExpressionFunction::fromPHP('sprintf'),

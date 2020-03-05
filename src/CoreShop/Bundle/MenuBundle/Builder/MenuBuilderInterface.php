@@ -22,5 +22,5 @@ interface MenuBuilderInterface
      * @param FactoryInterface $factory
      * @param string           $type
      */
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type);
+    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void;
 }

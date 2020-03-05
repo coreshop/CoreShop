@@ -18,14 +18,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FilterUserConditionChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
     private $types;
 
-    /**
-     * @param array $types
-     */
     public function __construct(array $types)
     {
         $this->types = $types;
@@ -34,7 +28,7 @@ final class FilterUserConditionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->types),
@@ -44,7 +38,7 @@ final class FilterUserConditionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -52,7 +46,7 @@ final class FilterUserConditionChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_user_condition_choice';
     }

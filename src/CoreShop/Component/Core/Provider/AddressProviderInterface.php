@@ -17,10 +17,5 @@ use CoreShop\Component\Core\Model\CartInterface;
 
 interface AddressProviderInterface
 {
-    /**
-     * @param CartInterface $cart
-     *
-     * @return AddressInterface|null
-     */
-    public function getAddress(CartInterface $cart);
+    public function getAddress(CartInterface $cart): ?AddressInterface;
 }

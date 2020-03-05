@@ -18,14 +18,8 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtension
 {
-    /**
-     * @var ProductQuantityPriceRuleRangesPriceHelperInterface
-     */
     private $helper;
 
-    /**
-     * @param ProductQuantityPriceRuleRangesPriceHelperInterface $helper
-     */
     public function __construct(ProductQuantityPriceRuleRangesPriceHelperInterface $helper)
     {
         $this->helper = $helper;
@@ -34,7 +28,7 @@ final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtensi
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('coreshop_quantity_price_rule_range_price', [$this->helper, 'getQuantityPriceRuleRangePrice']),

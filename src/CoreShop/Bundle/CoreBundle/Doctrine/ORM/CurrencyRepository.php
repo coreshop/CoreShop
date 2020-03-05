@@ -21,7 +21,7 @@ class CurrencyRepository extends BaseCurrencyRepository implements CurrencyRepos
     /**
      * {@inheritdoc}
      */
-    public function findActiveForStore(StoreInterface $store)
+    public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.countries', 'c')

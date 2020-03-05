@@ -21,32 +21,17 @@ use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var TokenStorageInterface
-     */
     private $tokenStorage;
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
 
-    /**
-     * @param FormFactoryInterface  $formFactory
-     * @param TokenStorageInterface $tokenStorage
-     * @param CartManagerInterface  $cartManager
-     */
     public function __construct(
         FormFactoryInterface $formFactory,
         TokenStorageInterface $tokenStorage,
@@ -60,7 +45,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'address';
     }
@@ -68,7 +53,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(CartInterface $cart): bool
     {
         return false;
     }
@@ -76,7 +61,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart)
+    public function validate(CartInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
@@ -88,7 +73,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(CartInterface $cart, Request $request): bool
     {
         $customer = $this->getCustomer();
         $form = $this->createForm($request, $cart, $customer);
@@ -109,7 +94,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(CartInterface $cart, Request $request): array
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
@@ -121,12 +106,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         ];
     }
 
-    /**
-     * @return CustomerInterface
-     *
-     * @throws CheckoutException
-     */
-    private function getCustomer()
+    private function getCustomer(): CustomerInterface
     {
         $customer = $this->tokenStorage->getToken()->getUser();
 
@@ -137,14 +117,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         return $customer;
     }
 
-    /**
-     * @param Request           $request
-     * @param CartInterface     $cart
-     * @param CustomerInterface $customer
-     *
-     * @return \Symfony\Component\Form\FormInterface
-     */
-    private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer)
+    private function createForm(Request $request, CartInterface $cart, CustomerInterface $customer): FormInterface
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 

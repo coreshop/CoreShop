@@ -25,7 +25,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     /**
      * {@inheritdoc}
      */
-    public function findByCustomer(CustomerInterface $customer)
+    public function findByCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ?', [$customer->getId()]);
@@ -39,7 +39,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     /**
      * {@inheritdoc}
      */
-    public function hasCustomerOrders(CustomerInterface $customer)
+    public function hasCustomerOrders(CustomerInterface $customer): bool
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ?', [$customer->getId()]);
@@ -50,7 +50,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     /**
      * {@inheritdoc}
      */
-    public function findExpiredOrders($days)
+    public function findExpiredOrders(int $days): array
     {
         $daysTimestamp = Carbon::now();
         $daysTimestamp->subDay($days);

@@ -21,7 +21,7 @@ interface ValidationCheckoutStepInterface
      *
      * @param CartInterface $cart
      *
-     * @returns bool
+     * @return bool
      **/
-    public function validate(CartInterface $cart);
+    public function validate(CartInterface $cart): bool;
 }

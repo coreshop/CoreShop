@@ -24,7 +24,7 @@ class LikeRenderer extends AbstractMysqlDynamicRenderer
     /**
      * {@inheritdoc}
      */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var $condition LikeCondition
@@ -66,7 +66,7 @@ class LikeRenderer extends AbstractMysqlDynamicRenderer
     /**
      * {@inheritdoc}
      */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition)
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof LikeCondition;
     }

@@ -26,44 +26,18 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
     private $availabilityChecker;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param AvailabilityCheckerInterface     $availabilityChecker
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->availabilityChecker = $availabilityChecker;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
@@ -102,9 +76,9 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
      * @param CartInterface     $cart
      * @param CartItemInterface $cartItem
      *
-     * @return int
+     * @return float
      */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = 0;

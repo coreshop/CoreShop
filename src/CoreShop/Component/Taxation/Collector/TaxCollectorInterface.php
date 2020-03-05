@@ -24,7 +24,7 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
+    public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
 
     /**
      * @param TaxCalculatorInterface $taxCalculator
@@ -33,7 +33,7 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []);
+    public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array;
 
     /**
      * Merges to Tax arrays from TaxCollector into one.
@@ -43,5 +43,5 @@ interface TaxCollectorInterface
      *
      * @return TaxItemInterface[]
      */
-    public function mergeTaxes(array $taxes1, array $taxes2);
+    public function mergeTaxes(array $taxes1, array $taxes2): array;
 }

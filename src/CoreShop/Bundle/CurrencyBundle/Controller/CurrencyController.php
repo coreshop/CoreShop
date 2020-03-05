@@ -14,10 +14,11 @@ namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CurrencyController extends ResourceController
 {
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): Response
     {
         $settings = [
             'decimal_precision' => $this->getParameter('coreshop.currency.decimal_precision'),

@@ -23,5 +23,5 @@ interface ProductQuantityPriceRuleRepositoryInterface extends RuleRepositoryInte
      *
      * @return ProductQuantityPriceRuleInterface[]
      */
-    public function findForProduct(QuantityRangePriceAwareInterface $product);
+    public function findForProduct(QuantityRangePriceAwareInterface $product): array;
 }

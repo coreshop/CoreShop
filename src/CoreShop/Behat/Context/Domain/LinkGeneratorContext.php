@@ -20,20 +20,9 @@ use Webmozart\Assert\Assert;
 
 final class LinkGeneratorContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $linkGenerator;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param LinkGeneratorInterface $linkGenerator
-     */
     public function __construct(SharedStorageInterface $sharedStorage, LinkGeneratorInterface $linkGenerator)
     {
         $this->sharedStorage = $sharedStorage;

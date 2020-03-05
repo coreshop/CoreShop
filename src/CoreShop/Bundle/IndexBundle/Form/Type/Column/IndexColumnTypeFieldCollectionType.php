@@ -22,7 +22,7 @@ final class IndexColumnTypeFieldCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('className', TextType::class, [
@@ -35,7 +35,7 @@ final class IndexColumnTypeFieldCollectionType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_column_type_field_collection';
     }

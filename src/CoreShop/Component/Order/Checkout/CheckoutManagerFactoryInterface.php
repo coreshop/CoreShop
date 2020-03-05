@@ -21,5 +21,5 @@ interface CheckoutManagerFactoryInterface
      *
      * @return CheckoutManagerInterface
      */
-    public function createCheckoutManager(CartInterface $cart);
+    public function createCheckoutManager(CartInterface $cart): CheckoutManagerInterface;
 }

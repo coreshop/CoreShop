@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ConfigurationBundle\Doctrine\ORM\ConfigurationRepository as BaseConfigurationRepository;
+use CoreShop\Component\Core\Model\ConfigurationInterface;
 use CoreShop\Component\Core\Repository\ConfigurationRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 
@@ -21,7 +22,7 @@ class ConfigurationRepository extends BaseConfigurationRepository implements Con
     /**
      * {@inheritdoc}
      */
-    public function findForKeyAndStore($key, StoreInterface $store)
+    public function findForKeyAndStore(string $key, StoreInterface $store): ?ConfigurationInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.key = :configKey')

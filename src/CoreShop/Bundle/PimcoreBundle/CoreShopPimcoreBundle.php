@@ -31,7 +31,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
     /**
      * @return string
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Pimcore';
     }
@@ -39,7 +39,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Pimcore Bundle';
     }
@@ -47,7 +47,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/pimcore-bundle'])) {
             return 'coreshop/pimcore-bundle';
@@ -69,7 +69,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

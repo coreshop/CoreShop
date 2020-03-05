@@ -22,8 +22,12 @@ final class StoresConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         if (!array_key_exists('store', $params) || !$params['store'] instanceof StoreInterface) {
             return false;
         }

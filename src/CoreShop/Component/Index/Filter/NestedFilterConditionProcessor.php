@@ -36,7 +36,7 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $conditions = $condition->getConfiguration()['conditions'];
         $conditionParams = [];
@@ -66,7 +66,7 @@ final class NestedFilterConditionProcessor implements FilterConditionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $conditions = $condition->getConfiguration()['conditions'];
 

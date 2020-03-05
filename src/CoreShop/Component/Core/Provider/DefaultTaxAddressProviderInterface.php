@@ -16,10 +16,5 @@ use CoreShop\Component\Address\Model\AddressInterface;
 
 interface DefaultTaxAddressProviderInterface
 {
-    /**
-     * @param array $context
-     *
-     * @return AddressInterface|null
-     */
-    public function getAddress(array $context = []);
+    public function getAddress(array $context = []): ?AddressInterface;
 }

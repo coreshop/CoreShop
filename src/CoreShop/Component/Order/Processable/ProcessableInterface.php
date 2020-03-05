@@ -16,31 +16,11 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 interface ProcessableInterface
 {
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed
-     */
-    public function getProcessableItems(OrderInterface $order);
+    public function getProcessableItems(OrderInterface $order): array;
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed
-     */
-    public function getProcessedItems(OrderInterface $order);
+    public function getProcessedItems(OrderInterface $order): array;
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
-    public function isFullyProcessed(OrderInterface $order);
+    public function isFullyProcessed(OrderInterface $order): bool;
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
-    public function isProcessable(OrderInterface $order);
+    public function isProcessable(OrderInterface $order): bool;
 }

@@ -18,28 +18,9 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 interface RuleConditionsValidationProcessorInterface
 {
-    /**
-     * @return string
-     */
-    public function getType();
+    public function getType(): string;
 
-    /**
-     * @param ResourceInterface    $subject
-     * @param RuleInterface        $rule
-     * @param ConditionInterface[] $conditions
-     * @param array                $params
-     *
-     * @return bool
-     */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, $params = []);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool;
 
-    /**
-     * @param ResourceInterface  $subject
-     * @param RuleInterface      $rule
-     * @param ConditionInterface $condition
-     * @param array              $params
-     *
-     * @return mixed
-     */
-    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, $params = []);
+    public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool;
 }

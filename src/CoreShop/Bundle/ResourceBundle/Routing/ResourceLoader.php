@@ -22,20 +22,9 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader implements LoaderInterface
 {
-    /**
-     * @var RegistryInterface
-     */
     private $modelRegistry;
-
-    /**
-     * @var RouteFactoryInterface
-     */
     private $routeFactory;
 
-    /**
-     * @param RegistryInterface     $modelRegistry
-     * @param RouteFactoryInterface $routeFactory
-     */
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
     {
         $this->modelRegistry = $modelRegistry;
@@ -107,7 +96,7 @@ final class ResourceLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($resource, $type = null)
+    public function supports($resource, $type = null): bool
     {
         return 'coreshop.resources' === $type;
     }
@@ -128,16 +117,7 @@ final class ResourceLoader implements LoaderInterface
         // Intentionally left blank.
     }
 
-    /**
-     * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $path
-     * @param string            $actionName
-     * @param array             $methods
-     *
-     * @return Route
-     */
-    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods)
+    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods): Route
     {
         $defaults = [
             '_controller' => $metadata->getServiceId('admin_controller') . sprintf(':%sAction', $actionName),
@@ -146,14 +126,7 @@ final class ResourceLoader implements LoaderInterface
         return $this->routeFactory->createRoute($path, $defaults, [], [], '', [], $methods);
     }
 
-    /**
-     * @param MetadataInterface $metadata
-     * @param array             $configuration
-     * @param string            $actionName
-     *
-     * @return string
-     */
-    private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName)
+    private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName): string
     {
         $sectionPrefix = isset($configuration['section']) ? $configuration['section'] . '_' : '';
 

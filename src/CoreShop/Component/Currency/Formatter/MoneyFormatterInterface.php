@@ -23,5 +23,5 @@ interface MoneyFormatterInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function format($amount, $currencyCode, $locale = 'en');
+    public function format(int $amount, string $currencyCode, string $locale = 'en'): string;
 }

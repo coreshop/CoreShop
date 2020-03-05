@@ -23,5 +23,5 @@ interface OrderDocumentRendererInterface
      *
      * @return string
      */
-    public function renderDocumentPdf(OrderDocumentInterface $orderDocument);
+    public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string;
 }

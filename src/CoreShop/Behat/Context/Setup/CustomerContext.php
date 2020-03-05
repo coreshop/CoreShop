@@ -26,48 +26,19 @@ use Pimcore\Model\DataObject\Folder;
 
 final class CustomerContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $customerFactory;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    private $customerRepository;
-
-    /**
-     * @var FixedCustomerContext
-     */
     private $fixedCustomerContext;
-
-    /**
-     * @var FactoryInterface
-     */
     private $addressFactory;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param FactoryInterface            $customerFactory
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param FixedCustomerContext        $fixedCustomerContext
-     * @param FactoryInterface            $addressFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerFactory,
-        CustomerRepositoryInterface $customerRepository,
         FixedCustomerContext $fixedCustomerContext,
         FactoryInterface $addressFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->customerFactory = $customerFactory;
-        $this->customerRepository = $customerRepository;
         $this->fixedCustomerContext = $fixedCustomerContext;
         $this->addressFactory = $addressFactory;
     }

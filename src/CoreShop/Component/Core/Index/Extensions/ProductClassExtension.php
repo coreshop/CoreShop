@@ -21,14 +21,8 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 final class ProductClassExtension implements IndexColumnsExtensionInterface
 {
-    /**
-     * @var string
-     */
     private $productClassName;
 
-    /**
-     * @param string $productClassName
-     */
     public function __construct(string $productClassName)
     {
         $this->productClassName = $productClassName;
@@ -37,7 +31,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(IndexInterface $index)
+    public function supports(IndexInterface $index): bool
     {
         return $this->productClassName === $index->getClass();
     }
@@ -45,7 +39,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getSystemColumns()
+    public function getSystemColumns(): array
     {
         return [
             'categoryIds' => IndexColumnInterface::FIELD_TYPE_STRING,
@@ -57,7 +51,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocalizedSystemColumns()
+    public function getLocalizedSystemColumns(): array
     {
         return [];
     }
@@ -65,7 +59,7 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexColumns(IndexableInterface $indexable)
+    public function getIndexColumns(IndexableInterface $indexable): array
     {
         if ($indexable instanceof ProductInterface) {
             $categoryIds = [];

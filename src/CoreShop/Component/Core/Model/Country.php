@@ -26,11 +26,6 @@ class Country extends BaseCountry implements CountryInterface
      */
     protected $currency;
 
-    /**
-     * @var Collection|StoreInterface[]
-     */
-    protected $stores;
-
     public function __construct()
     {
         parent::__construct();

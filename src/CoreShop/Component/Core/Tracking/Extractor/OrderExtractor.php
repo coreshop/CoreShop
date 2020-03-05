@@ -18,26 +18,10 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var TrackingExtractorInterface
-     */
     private $extractor;
-
-    /**
-     * @var int
-     */
     protected $decimalFactor;
-
-    /**
-     * @var int
-     */
     protected $decimalPrecision;
 
-    /**
-     * @param TrackingExtractorInterface $extractor
-     * @param int                        $decimalFactor
-     * @param int                        $decimalPrecision
-     */
     public function __construct(TrackingExtractorInterface $extractor, int $decimalFactor, int $decimalPrecision)
     {
         $this->extractor = $extractor;
@@ -48,7 +32,7 @@ class OrderExtractor implements TrackingExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof ProposalInterface;
     }

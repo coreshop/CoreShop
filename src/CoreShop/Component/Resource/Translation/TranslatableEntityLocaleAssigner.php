@@ -17,14 +17,8 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
     private $translationLocaleProvider;
 
-    /**
-     * @param TranslationLocaleProviderInterface $translationLocaleProvider
-     */
     public function __construct(TranslationLocaleProviderInterface $translationLocaleProvider)
     {
         $this->translationLocaleProvider = $translationLocaleProvider;
@@ -33,7 +27,7 @@ final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocale
     /**
      * {@inheritdoc}
      */
-    public function assignLocale(TranslatableInterface $translatableEntity)
+    public function assignLocale(TranslatableInterface $translatableEntity): void
     {
         $localeCode = $this->translationLocaleProvider->getDefaultLocaleCode();
 

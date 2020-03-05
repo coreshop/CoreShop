@@ -25,17 +25,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerType extends AbstractResourceType
 {
-    /**
-     * @var string[]
-     */
     protected $guestValidationGroups = [];
 
-    /**
-     * @param string   $dataClass             FQCN
-     * @param string[] $validationGroups
-     * @param string[] $guestValidationGroups
-     */
-    public function __construct($dataClass, array $validationGroups = [], array $guestValidationGroups = [])
+    public function __construct(string $dataClass, array $validationGroups = [], array $guestValidationGroups = [])
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -45,7 +37,7 @@ class CustomerType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('gender', ChoiceType::class, [
@@ -90,7 +82,7 @@ class CustomerType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -114,7 +106,7 @@ class CustomerType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer';
     }

@@ -28,24 +28,9 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class CarrierType extends AbstractResourceType
 {
-    /**
-     * @var TaxedShippingCalculatorInterface
-     */
     private $taxedShippingCalculator;
-
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
 
     public function __construct(
@@ -67,7 +52,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $cart = $options['cart'];
 
@@ -109,7 +94,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -134,7 +119,7 @@ final class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_carrier';
     }

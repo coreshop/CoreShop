@@ -16,20 +16,9 @@ use CoreShop\Component\Index\Model\IndexableInterface;
 
 interface IndexColumnsExtensionInterface extends IndexExtensionInterface
 {
-    /**
-     * @return array
-     */
-    public function getSystemColumns();
+    public function getSystemColumns(): array;
 
-    /**
-     * @return array
-     */
-    public function getLocalizedSystemColumns();
+    public function getLocalizedSystemColumns(): array;
 
-    /**
-     * @param IndexableInterface $indexable
-     *
-     * @return array
-     */
-    public function getIndexColumns(IndexableInterface $indexable);
+    public function getIndexColumns(IndexableInterface $indexable): array;
 }

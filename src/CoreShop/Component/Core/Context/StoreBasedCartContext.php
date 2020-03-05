@@ -23,25 +23,10 @@ use CoreShop\Component\Store\Context\StoreNotFoundException;
 
 final class StoreBasedCartContext implements CartContextInterface
 {
-    /**
-     * @var CartContextInterface
-     */
     private $cartContext;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var CartInterface|null
-     */
     private $cart;
 
-    /**
-     * @param CartContextInterface    $cartContext
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(CartContextInterface $cartContext, ShopperContextInterface $shopperContext)
     {
         $this->cartContext = $cartContext;
@@ -51,7 +36,7 @@ final class StoreBasedCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): \CoreShop\Component\Order\Model\CartInterface
     {
         if (null !== $this->cart) {
             return $this->cart;
@@ -84,11 +69,7 @@ final class StoreBasedCartContext implements CartContextInterface
         return $cart;
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CustomerInterface $customer
-     */
-    private function setCustomerAndAddressOnCart(CartInterface $cart, CustomerInterface $customer)
+    private function setCustomerAndAddressOnCart(CartInterface $cart, CustomerInterface $customer): void
     {
         $cart->setCustomer($customer);
 

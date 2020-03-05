@@ -23,22 +23,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
-    /**
-     * @var StoreContextInterface
-     */
+    protected $configurationRepository;
     protected $storeContext;
 
-    /**
-     * @var ConfigurationRepositoryInterface
-     */
-    protected $configurationRepository;
-
-    /**
-     * @param EntityManagerInterface           $entityManager
-     * @param ConfigurationRepositoryInterface $configurationRepository
-     * @param FactoryInterface                 $configurationFactory
-     * @param StoreContextInterface            $storeContext
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         ConfigurationRepositoryInterface $configurationRepository,
@@ -47,6 +34,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
+        $this->configurationRepository = $configurationRepository;
         $this->storeContext = $storeContext;
     }
 
@@ -79,7 +67,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * {@inheritdoc}
      */
-    public function setForStore($key, $data, StoreInterface $store = null)
+    public function setForStore($key, $data, StoreInterface $store = null): void
     {
         if (null === $store) {
             $store = $this->getStore();
@@ -102,7 +90,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * {@inheritdoc}
      */
-    public function removeForStore($key, StoreInterface $store = null)
+    public function removeForStore($key, StoreInterface $store = null): void
     {
         if (null === $store) {
             $store = $this->getStore();

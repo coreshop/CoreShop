@@ -29,6 +29,6 @@ interface InterpreterInterface
         $value,
         IndexableInterface $indexable,
         IndexColumnInterface $config,
-        $interpreterConfig = []
+        array $interpreterConfig = []
     );
 }

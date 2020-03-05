@@ -34,7 +34,7 @@ final class TimespanConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('dateFrom', NumberType::class)//TODO: Mabye DateType?
@@ -45,7 +45,7 @@ final class TimespanConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_condition_timespan';
     }

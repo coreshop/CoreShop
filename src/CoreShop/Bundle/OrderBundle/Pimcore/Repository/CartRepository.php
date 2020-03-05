@@ -25,7 +25,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findForCustomer(CustomerInterface $customer)
+    public function findForCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
@@ -42,7 +42,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findNamedForCustomer(CustomerInterface $customer, $name)
+    public function findNamedForCustomer(CustomerInterface $customer, $name): ?CartInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
@@ -60,7 +60,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer)
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?CartInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ? AND order__id is null ', [$customer->getId(), $store->getId()]);
@@ -80,7 +80,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findCartById($id)
+    public function findCartById($id): ?CartInterface
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
@@ -98,7 +98,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findCartByOrder(OrderInterface $order)
+    public function findCartByOrder(OrderInterface $order): ?CartInterface
     {
         $list = $this->getList();
         $list->setCondition('order__id = ? ', [$order->getId()]);
@@ -117,7 +117,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findExpiredCarts($days, $anonymous, $customer)
+    public function findExpiredCarts($days, $anonymous, $customer): array
     {
         $list = $this->getList();
 

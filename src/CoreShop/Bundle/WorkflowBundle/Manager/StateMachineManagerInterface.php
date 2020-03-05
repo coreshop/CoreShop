@@ -16,29 +16,9 @@ use Symfony\Component\Workflow\Workflow;
 
 interface StateMachineManagerInterface
 {
-    /**
-     * @param mixed $subject
-     * @param null  $workflowName
-     *
-     * @return Workflow
-     */
-    public function get($subject, $workflowName = null);
+    public function get($subject, string $workflowName = null): Workflow;
 
-    /**
-     * @param Workflow $workflow
-     * @param mixed    $subject
-     * @param string   $fromState
-     *
-     * @return mixed
-     */
-    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState);
+    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState): ?string;
 
-    /**
-     * @param Workflow $workflow
-     * @param mixed    $subject
-     * @param string   $toState
-     *
-     * @return mixed
-     */
-    public function getTransitionToState(Workflow $workflow, $subject, string $toState);
+    public function getTransitionToState(Workflow $workflow, $subject, string $toState): ?string;
 }

@@ -17,10 +17,5 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 interface ListingFactoryInterface
 {
-    /**
-     * @param IndexInterface $index
-     *
-     * @return ListingInterface
-     */
-    public function createList(IndexInterface $index);
+    public function createList(IndexInterface $index): ListingInterface;
 }

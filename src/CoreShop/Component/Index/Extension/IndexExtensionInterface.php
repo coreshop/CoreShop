@@ -16,10 +16,5 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 interface IndexExtensionInterface
 {
-    /**
-     * @param IndexInterface $index
-     *
-     * @return bool
-     */
-    public function supports(IndexInterface $index);
+    public function supports(IndexInterface $index): bool;
 }

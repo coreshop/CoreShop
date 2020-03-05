@@ -22,17 +22,17 @@ interface CartItemFactoryInterface extends FactoryInterface
     /**
      * @param CartInterface        $cart
      * @param PurchasableInterface $purchasable
-     * @param int                  $quantity
+     * @param float                $quantity
      *
      * @return CartItemInterface
      */
-    public function createWithCart(CartInterface $cart, PurchasableInterface $purchasable, $quantity = 1);
+    public function createWithCart(CartInterface $cart, PurchasableInterface $purchasable, float $quantity = 1): CartItemInterface;
 
     /**
      * @param PurchasableInterface $purchasable
-     * @param int                  $quantity
+     * @param float                $quantity
      *
      * @return CartItemInterface
      */
-    public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1);
+    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1): CartItemInterface;
 }

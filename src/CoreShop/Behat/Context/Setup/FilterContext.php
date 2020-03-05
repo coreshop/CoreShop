@@ -26,57 +26,20 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class FilterContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ClassStorageInterface
-     */
-    private $classStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $filterFactory;
-
-    /**
-     * @var RepositoryInterface
-     */
-    private $filterRepository;
-
-    /**
-     * @var FactoryInterface
-     */
     private $filterConditionFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $filterFactory
-     * @param RepositoryInterface    $filterRepository
-     * @param FactoryInterface       $filterConditionFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        ClassStorageInterface $classStorage,
         ObjectManager $objectManager,
         FactoryInterface $filterFactory,
-        RepositoryInterface $filterRepository,
         FactoryInterface $filterConditionFactory
     ) {
         $this->sharedStorage = $sharedStorage;
-        $this->classStorage = $classStorage;
         $this->objectManager = $objectManager;
         $this->filterFactory = $filterFactory;
-        $this->filterRepository = $filterRepository;
         $this->filterConditionFactory = $filterConditionFactory;
     }
 

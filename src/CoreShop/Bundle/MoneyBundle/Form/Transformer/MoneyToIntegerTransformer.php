@@ -16,14 +16,8 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class MoneyToIntegerTransformer implements DataTransformerInterface
 {
-    /**
-     * @var int
-     */
     private $decimalFactor;
 
-    /**
-     * @param int $decimalFactor
-     */
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;

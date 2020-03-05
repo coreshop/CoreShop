@@ -12,6 +12,8 @@
 
 namespace CoreShop\Component\Address\Context\RequestBased;
 
+use CoreShop\Component\Address\Context\CountryNotFoundException;
+use CoreShop\Component\Address\Model\CountryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Stdlib\PriorityQueue;
 
@@ -27,11 +29,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
         $this->requestResolvers = new PriorityQueue();
     }
 
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param int                      $priority
-     */
-    public function addResolver(RequestResolverInterface $requestResolver, $priority = 0)
+    public function addResolver(RequestResolverInterface $requestResolver, int $priority = 0): void
     {
         $this->requestResolvers->insert($requestResolver, $priority);
     }
@@ -39,16 +37,18 @@ final class CompositeRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCountry(Request $request)
+    public function findCountry(Request $request): CountryInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {
-            $country = $requestResolver->findCountry($request);
-
-            if (null !== $country) {
-                return $country;
+            try {
+                return $requestResolver->findCountry($request);
+            }
+            catch (CountryNotFoundException $ex)
+            {
+                //Silently ignore and continue
             }
         }
 
-        return null;
+        throw new CountryNotFoundException();
     }
 }

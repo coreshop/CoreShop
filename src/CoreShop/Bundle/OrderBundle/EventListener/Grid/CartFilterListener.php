@@ -17,10 +17,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CartFilterListener
 {
-    /**
-     * @param GenericEvent $event
-     */
-    public function checkObjectList(GenericEvent $event)
+    public function checkObjectList(GenericEvent $event): void
     {
         $list = $event->getArgument('list');
         $context = $event->getArgument('context');

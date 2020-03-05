@@ -13,19 +13,14 @@
 namespace CoreShop\Component\Order\Factory;
 
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class CartItemFactory implements CartItemFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
     private $cartItemFactory;
 
-    /**
-     * @param FactoryInterface $cartItemFactory
-     */
     public function __construct(FactoryInterface $cartItemFactory)
     {
         $this->cartItemFactory = $cartItemFactory;
@@ -42,7 +37,7 @@ class CartItemFactory implements CartItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithCart(CartInterface $cart, PurchasableInterface $purchasable, $quantity = 1)
+    public function createWithCart(CartInterface $cart, PurchasableInterface $purchasable, float $quantity = 1): CartItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());
@@ -59,7 +54,7 @@ class CartItemFactory implements CartItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithPurchasable(PurchasableInterface $purchasable, $quantity = 1)
+    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1): CartItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());

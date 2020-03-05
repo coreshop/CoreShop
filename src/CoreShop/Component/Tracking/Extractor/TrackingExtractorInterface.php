@@ -19,7 +19,7 @@ interface TrackingExtractorInterface
      *
      * @return bool
      */
-    public function supports($object);
+    public function supports($object): bool;
 
     /**
      * @param mixed $object

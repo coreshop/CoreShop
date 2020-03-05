@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CartAdjustmentClearer implements CartProcessorInterface
 {
-    public function process(CartInterface $cart)
+    public function process(CartInterface $cart): void
     {
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::CART_PRICE_RULE);
         $cart->removeAdjustmentsRecursively(AdjustmentInterface::SHIPPING);

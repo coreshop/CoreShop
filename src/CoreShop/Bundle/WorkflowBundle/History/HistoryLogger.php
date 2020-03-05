@@ -18,30 +18,14 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 class HistoryLogger implements HistoryLoggerInterface
 {
-    /**
-     * @var NoteServiceInterface
-     */
     private $noteService;
-
-    /**
-     * @var TranslatorInterface
-     */
     private $translator;
-
-    /**
-     * @var string
-     */
     private $noteIdentifier;
 
-    /**
-     * @param NoteServiceInterface $noteService
-     * @param TranslatorInterface  $translator
-     * @param string               $noteIdentifier
-     */
     public function __construct(
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
-        $noteIdentifier
+        string $noteIdentifier
     ) {
         $this->noteService = $noteService;
         $this->translator = $translator;
@@ -51,9 +35,14 @@ class HistoryLogger implements HistoryLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function log(DataObject\Concrete $dataObject, $message = null, $description = null, $translate = false)
+    public function log(
+        DataObject\Concrete $object,
+        ?string $message = null,
+        ?string $description = null,
+        bool $translate = false
+    ): void
     {
-        $note = $this->noteService->createPimcoreNoteInstance($dataObject, $this->noteIdentifier);
+        $note = $this->noteService->createPimcoreNoteInstance($object, $this->noteIdentifier);
 
         $message = strip_tags($message);
 

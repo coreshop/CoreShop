@@ -13,32 +13,21 @@
 namespace CoreShop\Component\Sequence\Generator;
 
 use CoreShop\Component\Sequence\Factory\SequenceFactoryInterface;
+use CoreShop\Component\Sequence\Model\SequenceInterface;
 use CoreShop\Component\Sequence\Repository\SequenceRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SequenceGenerator implements SequenceGeneratorInterface
 {
-    /**
-     * @var SequenceRepositoryInterface
-     */
     private $sequenceRepository;
-
-    /**
-     * @var SequenceFactoryInterface
-     */
     private $sequenceFactory;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private $entityManager;
 
-    /**
-     * @param SequenceRepositoryInterface $sequenceRepository
-     * @param SequenceFactoryInterface    $sequenceFactory
-     * @param EntityManagerInterface      $entityManager
-     */
-    public function __construct(SequenceRepositoryInterface $sequenceRepository, SequenceFactoryInterface $sequenceFactory, EntityManagerInterface $entityManager)
+    public function __construct(
+        SequenceRepositoryInterface $sequenceRepository,
+        SequenceFactoryInterface $sequenceFactory,
+        EntityManagerInterface $entityManager
+    )
     {
         $this->sequenceRepository = $sequenceRepository;
         $this->sequenceFactory = $sequenceFactory;
@@ -48,7 +37,7 @@ class SequenceGenerator implements SequenceGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextSequenceForType($type)
+    public function getNextSequenceForType(string $type): int
     {
         $sequence = $this->getSequence($type);
         $sequence->incrementIndex();
@@ -59,12 +48,7 @@ class SequenceGenerator implements SequenceGeneratorInterface
         return $sequence->getIndex();
     }
 
-    /**
-     * @param string $type
-     *
-     * @return \CoreShop\Component\Sequence\Model\SequenceInterface
-     */
-    private function getSequence($type)
+    private function getSequence(string $type): SequenceInterface
     {
         $sequence = $this->sequenceRepository->findForType($type);
 

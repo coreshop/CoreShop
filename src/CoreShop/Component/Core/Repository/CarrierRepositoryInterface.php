@@ -23,5 +23,5 @@ interface CarrierRepositoryInterface extends RepositoryInterface
      *
      * @return CarrierInterface[]
      */
-    public function findForStore(StoreInterface $store);
+    public function findForStore(StoreInterface $store): array;
 }

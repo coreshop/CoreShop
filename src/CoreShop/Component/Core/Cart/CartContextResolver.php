@@ -19,20 +19,14 @@ use Webmozart\Assert\Assert;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    /**
-     * @var CartContextResolverInterface
-     */
     private $inner;
 
-    /**
-     * @param CartContextResolverInterface $inner
-     */
     public function __construct(CartContextResolverInterface $inner)
     {
         $this->inner = $inner;
     }
 
-    public function resolveCartContext(CartInterface $cart)
+    public function resolveCartContext(CartInterface $cart): array
     {
         $context = $this->inner->resolveCartContext($cart);
 

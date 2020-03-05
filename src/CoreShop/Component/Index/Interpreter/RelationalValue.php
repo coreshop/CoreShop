@@ -14,54 +14,31 @@ namespace CoreShop\Component\Index\Interpreter;
 
 class RelationalValue implements RelationalValueInterface
 {
-    /**
-     * @var int
-     */
     protected $destinationId;
-
-    /**
-     * @var string
-     */
     protected $type;
 
-    /**
-     * @param int    $destinationId
-     * @param string $type
-     */
     public function __construct(int $destinationId, string $type)
     {
         $this->destinationId = $destinationId;
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestinationId()
+    public function getDestinationId(): int
     {
         return $this->destinationId;
     }
 
-    /**
-     * @param int $destinationId
-     */
-    public function setDestinationId($destinationId)
+    public function setDestinationId(int $destinationId): void
     {
         $this->destinationId = $destinationId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }

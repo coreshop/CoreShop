@@ -16,23 +16,14 @@ use Pimcore\Model\DataObject;
 
 final class FolderInstallerProvider
 {
-    /**
-     * @var array
-     */
     private $folders;
 
-    /**
-     * @param array $folders
-     */
     public function __construct(array $folders)
     {
         $this->folders = $folders;
     }
 
-    /**
-     * Installs all CoreShop needed Folders.
-     */
-    public function installFolders()
+    public function installFolders(): void
     {
         foreach ($this->folders as $folder) {
             DataObject\Service::createFolderByPath(sprintf('/%s', $folder));

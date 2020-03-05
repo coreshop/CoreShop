@@ -39,7 +39,7 @@ final class CachedCountryContext implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCountry(Request $request)
+    public function findCountry(Request $request): CountryInterface
     {
         if (null === $this->country) {
             $this->country = $this->inner->findCountry($request);

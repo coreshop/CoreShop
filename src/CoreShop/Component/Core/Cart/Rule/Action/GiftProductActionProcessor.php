@@ -25,26 +25,10 @@ use CoreShop\Component\Rule\Model\ActionInterface;
 
 final class GiftProductActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
     private $productRepository;
-
-    /**
-     * @var CartItemFactoryInterface
-     */
     private $cartItemFactory;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param CartItemFactoryInterface   $cartItemFactory
-     * @param AdjustmentFactoryInterface $adjustmentFactory
-     */
     public function __construct(
         ProductRepositoryInterface $productRepository,
         CartItemFactoryInterface $cartItemFactory,
@@ -58,7 +42,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -105,7 +89,7 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
 
@@ -136,22 +120,13 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         return true;
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     */
-    private function removeCartItem(CartInterface $cart, CartItemInterface $cartItem)
+    private function removeCartItem(CartInterface $cart, CartItemInterface $cartItem): void
     {
         $cart->removeItem($cartItem);
         $cartItem->delete();
     }
 
-    /**
-     * @param ActionInterface $action
-     *
-     * @return string
-     */
-    private function getKey(ActionInterface $action)
+    private function getKey(ActionInterface $action): string
     {
         return sprintf('%s_%s', AdjustmentInterface::CART_PRICE_RULE, $action->getId());
     }

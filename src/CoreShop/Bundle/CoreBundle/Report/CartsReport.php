@@ -23,37 +23,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CartsReport implements ReportInterface, PortletInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $cartRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param PimcoreRepositoryInterface $orderRepository,
-     * @param PimcoreRepositoryInterface $cartRepository
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -69,7 +44,7 @@ class CartsReport implements ReportInterface, PortletInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
@@ -77,7 +52,7 @@ class CartsReport implements ReportInterface, PortletInterface
     /**
      * {@inheritdoc}
      */
-    public function getPortletData(ParameterBag $parameterBag)
+    public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
@@ -87,7 +62,7 @@ class CartsReport implements ReportInterface, PortletInterface
      *
      * @return array
      */
-    protected function getData(ParameterBag $parameterBag)
+    protected function getData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -150,9 +125,9 @@ class CartsReport implements ReportInterface, PortletInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

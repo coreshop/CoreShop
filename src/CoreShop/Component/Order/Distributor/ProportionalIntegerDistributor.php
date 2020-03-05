@@ -19,7 +19,7 @@ final class ProportionalIntegerDistributor implements ProportionalIntegerDistrib
     /**
      * {@inheritdoc}
      */
-    public function distribute(array $integers, int $amount)
+    public function distribute(array $integers, int $amount): array
     {
         Assert::allInteger($integers);
 

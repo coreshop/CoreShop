@@ -20,19 +20,19 @@ interface RuleRepositoryInterface extends RepositoryInterface
     /**
      * @return RuleInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 
     /**
      * @param string $conditionType
      *
      * @return RuleInterface[]
      */
-    public function findWithConditionOfType($conditionType);
+    public function findWithConditionOfType($conditionType): array;
 
     /**
      * @param string $actionType
      *
      * @return RuleInterface[]
      */
-    public function findWithActionOfType($actionType);
+    public function findWithActionOfType($actionType): array;
 }

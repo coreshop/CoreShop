@@ -22,5 +22,3 @@ interface ThemeHelperInterface
      */
     public function useTheme($themeName, \Closure $function);
 }
-
-class_alias(ThemeHelperInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeHelperInterface');

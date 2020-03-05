@@ -21,5 +21,5 @@ interface CurrencyContextInterface
      *
      * @throws CurrencyNotFoundException
      */
-    public function getCurrency();
+    public function getCurrency(): CurrencyInterface;
 }

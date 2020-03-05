@@ -29,27 +29,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    /**
-     * @var CustomerContextInterface
-     */
     private $customerContext;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var RegistrationServiceInterface
-     */
     private $registrationService;
 
-    /**
-     * @param CustomerContextInterface     $customerContext
-     * @param FormFactoryInterface         $formFactory
-     * @param RegistrationServiceInterface $registrationService
-     */
-    public function __construct(CustomerContextInterface $customerContext, FormFactoryInterface $formFactory, RegistrationServiceInterface $registrationService)
+    public function __construct(
+        CustomerContextInterface $customerContext,
+        FormFactoryInterface $formFactory,
+        RegistrationServiceInterface $registrationService
+    )
     {
         $this->customerContext = $customerContext;
         $this->formFactory = $formFactory;
@@ -59,7 +47,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return 'customer';
     }
@@ -67,7 +55,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart)
+    public function doAutoForward(CartInterface $cart): bool
     {
         return true;
     }
@@ -75,7 +63,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart)
+    public function validate(CartInterface $cart): bool
     {
         if (!$cart->hasItems()) {
             return false;
@@ -95,7 +83,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request)
+    public function commitStep(CartInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request);
 
@@ -130,24 +118,17 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request)
+    public function prepareStep(CartInterface $cart, Request $request): array
     {
         return [
             'guestForm' => $this->createForm($request)->createView(),
         ];
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return FormInterface
-     */
-    private function createForm(Request $request)
+    private function createForm(Request $request): FormInterface
     {
         $view = $this->formFactory->createNamed('guest', GuestRegistrationType::class);
 
-        $handledView = $view->handleRequest($request);
-
-        return $handledView;
+        return $view->handleRequest($request);
     }
 }
