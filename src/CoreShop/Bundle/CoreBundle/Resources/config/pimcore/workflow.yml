@@ -18,3 +18,14 @@ core_shop_workflow:
                         on: ['pay']
                         do: ['@coreshop.inventory.order_operator', 'sell']
                         args: ['object']
+        coreshop_order_sales_type:
+            callbacks:
+                after:
+                    commit_order:
+                        on: ['order']
+                        do: ['@CoreShop\Component\Order\Committer\OrderCommitterInterface', 'commitOrder']
+                        args: ['object']
+                    commit_quote:
+                        on: ['quote']
+                        do: ['@CoreShop\Component\Order\Committer\QuoteCommitterInterface', 'commitOrder']
+                        args: ['object']

@@ -20,11 +20,12 @@ interface ObjectClonerInterface
     /**
      * Clones an object and returns it unsaved.
      *
-     * @param Concrete $object
+     * @param Concrete       $object
      * @param AbstractObject $parent
-     * @param string   $key
+     * @param string         $key
+     * @param bool           $saveDirectly
      *
      * @return Concrete
      */
-    public function cloneObject(Concrete $object, AbstractObject $parent, string $key): Concrete;
+    public function cloneObject(Concrete $object, AbstractObject $parent, string $key, bool $saveDirectly = true): Concrete;
 }

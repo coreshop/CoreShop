@@ -111,6 +111,8 @@ EOT
         $outputStyle->writeln(sprintf(
             'You can now open your store at the following path under the website root: <info>/</info>'
         ));
+
+        return 0;
     }
 
     /**

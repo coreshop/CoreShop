@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -104,15 +104,19 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function validateStep(CheckoutStepInterface $step, CartInterface $cart): bool
+    public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool
     {
-        return $step->validate($cart);
+        if ($step instanceof ValidationCheckoutStepInterface) {
+            return $step->validate($cart);
+        }
+
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request): array
+    public function prepareStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): array
     {
         return $step->prepareStep($cart, $request);
     }
@@ -128,7 +132,7 @@ class CheckoutManager implements CheckoutManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CheckoutStepInterface $step, CartInterface $cart, Request $request): bool
+    public function commitStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): bool
     {
         return $step->commitStep($cart, $request);
     }

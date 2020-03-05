@@ -22,7 +22,7 @@ use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +55,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart): bool
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return true;
     }
@@ -63,7 +63,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart): bool
+    public function validate(OrderInterface $cart): bool
     {
         if (!$cart->hasItems()) {
             return false;
@@ -83,7 +83,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request): bool
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request);
 
@@ -118,7 +118,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request): array
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [
             'guestForm' => $this->createForm($request)->createView(),

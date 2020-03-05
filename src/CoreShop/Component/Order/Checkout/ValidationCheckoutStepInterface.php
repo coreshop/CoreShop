@@ -12,16 +12,16 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface ValidationCheckoutStepInterface
 {
     /**
      * Validates Step.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return bool
      **/
-    public function validate(CartInterface $cart): bool;
+    public function validate(OrderInterface $cart): bool;
 }

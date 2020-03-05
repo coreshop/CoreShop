@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OrderBundle\Collector;
 
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,7 +42,7 @@ final class CartCollector extends DataCollector
         ];
     }
 
-    public function getCart(): CartInterface
+    public function getCart(): OrderInterface
     {
         return $this->data['cart'];
     }

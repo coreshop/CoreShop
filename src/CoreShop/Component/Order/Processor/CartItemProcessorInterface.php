@@ -12,12 +12,12 @@
 
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface CartItemProcessorInterface
 {
     public function processCartItem(
-        CartItemInterface $cartItem,
+        OrderItemInterface $cartItem,
         int $itemPrice,
         int $itemRetailPrice,
         int $itemDiscountPrice,

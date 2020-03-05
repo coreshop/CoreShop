@@ -14,7 +14,7 @@ namespace CoreShop\Component\Core\Cart;
 
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContextResolver implements CartContextResolverInterface
@@ -26,7 +26,7 @@ final class CartContextResolver implements CartContextResolverInterface
         $this->inner = $inner;
     }
 
-    public function resolveCartContext(CartInterface $cart): array
+    public function resolveCartContext(OrderInterface $cart): array
     {
         $context = $this->inner->resolveCartContext($cart);
 

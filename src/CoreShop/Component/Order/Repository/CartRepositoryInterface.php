@@ -13,7 +13,6 @@
 namespace CoreShop\Component\Order\Repository;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -23,7 +22,7 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * @param CustomerInterface $customer
      *
-     * @return CartInterface[]
+     * @return OrderInterface[]
      */
     public function findForCustomer(CustomerInterface $customer): array;
 
@@ -31,38 +30,31 @@ interface CartRepositoryInterface extends PimcoreRepositoryInterface
      * @param CustomerInterface $customer
      * @param string            $name
      *
-     * @return CartInterface|null
+     * @return OrderInterface|null
      */
-    public function findNamedForCustomer(CustomerInterface $customer, $name): ?CartInterface;
+    public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface;
 
     /**
      * @param StoreInterface    $store
      * @param CustomerInterface $customer
      *
-     * @return CartInterface|null
+     * @return OrderInterface|null
      */
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?CartInterface;
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
 
     /**
      * @param int $id
      *
-     * @return CartInterface|null
+     * @return OrderInterface|null
      */
-    public function findCartById($id): ?CartInterface;
-
-    /**
-     * @param OrderInterface $order
-     *
-     * @return CartInterface|null
-     */
-    public function findCartByOrder(OrderInterface $order): ?CartInterface;
+    public function findCartById($id): ?OrderInterface;
 
     /**
      * @param int  $days
      * @param bool $anonymous
      * @param bool $customer
      *
-     * @return CartInterface[]
+     * @return OrderInterface[]
      */
     public function findExpiredCarts($days, $anonymous, $customer): array;
 }

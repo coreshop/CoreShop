@@ -34,7 +34,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -97,7 +97,7 @@ final class CartPriceRuleContext implements Context
     /**
      * @Given /^I apply the voucher code "([^"]+)" to (my cart)$/
      */
-    public function iApplyTheCartRuleToMyCart($voucherCode, CartInterface $cart)
+    public function iApplyTheCartRuleToMyCart($voucherCode, OrderInterface $cart)
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 

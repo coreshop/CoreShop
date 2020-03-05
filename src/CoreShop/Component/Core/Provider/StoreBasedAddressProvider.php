@@ -15,7 +15,7 @@ namespace CoreShop\Component\Core\Provider;
 use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
@@ -34,7 +34,7 @@ class StoreBasedAddressProvider implements AddressProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getAddress(CartInterface $cart): ?AddressInterface
+    public function getAddress(OrderInterface $cart): ?AddressInterface
     {
         if ($cart->getStore() instanceof StoreInterface) {
             $address = $this->addressFactory->createNew();

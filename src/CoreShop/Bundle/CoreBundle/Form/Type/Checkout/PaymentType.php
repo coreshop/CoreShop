@@ -16,7 +16,6 @@ use CoreShop\Bundle\PaymentBundle\Form\Type\PaymentProviderChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -155,9 +154,7 @@ final class PaymentType extends AbstractResourceType
 
     protected function getRegistryIdentifier(FormInterface $form, $data = null): ?string
     {
-        if ($data instanceof CartInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
-            return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
-        } elseif ($data instanceof OrderInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
+        if ($data instanceof OrderInterface && $data->getPaymentProvider() instanceof PaymentProviderInterface) {
             return $data->getPaymentProvider()->getGatewayConfig()->getFactoryName();
         }
 

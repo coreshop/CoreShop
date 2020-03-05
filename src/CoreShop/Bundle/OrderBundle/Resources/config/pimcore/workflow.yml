@@ -6,3 +6,4 @@ imports:
     - { resource: "workflow/coreshop_order_payment.yml" }
     - { resource: "workflow/coreshop_order_invoice.yml" }
     - { resource: "workflow/coreshop_order_shipment.yml" }
+    - { resource: "workflow/coreshop_order_sales_type.yml" }

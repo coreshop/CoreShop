@@ -25,6 +25,11 @@ interface ShippableInterface
     public function getWeight();
 
     /**
+     * @param float $weight
+     */
+    public function setWeight($weight);
+
+    /**
      * @param bool $withTax
      *
      * @return int

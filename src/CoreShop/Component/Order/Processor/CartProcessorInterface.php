@@ -12,9 +12,9 @@
 
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartProcessorInterface
 {
-    public function process(CartInterface $cart): void;
+    public function process(OrderInterface $cart): void;
 }

@@ -31,7 +31,7 @@ class SessionStorageListModifier extends SimpleStorageListModifier
      */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        $result = parent::addToList($storageList, $item);
+        parent::addToList($storageList, $item);
 
         $this->manager->persist($storageList);
     }
@@ -41,7 +41,7 @@ class SessionStorageListModifier extends SimpleStorageListModifier
      */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        $result = parent::removeFromList($storageList, $item);
+        parent::removeFromList($storageList, $item);
 
         $this->manager->persist($storageList);
     }

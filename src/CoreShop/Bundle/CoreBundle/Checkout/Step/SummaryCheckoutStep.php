@@ -16,7 +16,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -42,7 +42,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function doAutoForward(CartInterface $cart): bool
+    public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
@@ -50,7 +50,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function getResponse(CartInterface $cart, Request $request): RedirectResponse
+    public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
         $checkoutFinisherUrl = $request->get('checkout_finisher');
 
@@ -60,7 +60,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function validate(CartInterface $cart): bool
+    public function validate(OrderInterface $cart): bool
     {
         return true;
     }
@@ -68,7 +68,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function commitStep(CartInterface $cart, Request $request): bool
+    public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
 
@@ -86,12 +86,12 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
     /**
      * {@inheritdoc}
      */
-    public function prepareStep(CartInterface $cart, Request $request): array
+    public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return ['form' => $this->createForm($request, $cart)->createView()];
     }
 
-    private function createForm(Request $request, CartInterface $cart): FormInterface
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('', SummaryType::class, $cart);
 

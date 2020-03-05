@@ -13,8 +13,8 @@
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use Symfony\Component\Validator\Constraint;
@@ -33,10 +33,10 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
     public function validate($cart, Constraint $constraint): void
     {
         /**
-         * @var CartInterface $cart
+         * @var OrderInterface $cart
          * @var CartMinimumQuantityValidator $constraint
          */
-        Assert::isInstanceOf($cart, CartInterface::class);
+        Assert::isInstanceOf($cart, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartMaximumQuantity::class);
 
         $higherThenMaximum = false;
@@ -45,7 +45,7 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
         $maxLimit = null;
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         foreach ($cart->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
@@ -92,13 +92,13 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = $cartItem->getDefaultUnitQuantity();
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getId() === $cartItem->getId()) {

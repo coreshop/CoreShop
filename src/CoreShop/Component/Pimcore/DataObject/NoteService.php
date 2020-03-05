@@ -21,6 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
 {
+    protected $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {

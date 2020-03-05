@@ -2,13 +2,13 @@ core_shop_core:
     pimcore_admin:
         js:
             provider_item: '/bundles/coreshopcore/pimcore/js/payment/provider/item.js'
-            sale_detail_detail: '/bundles/coreshopcore/pimcore/js/sale/detail/blocks/detail.js'
+            order_detail_detail: '/bundles/coreshopcore/pimcore/js/order/detail/blocks/detail.js'
             order_detail_carriage: '/bundles/coreshopcore/pimcore/js/order/detail/blocks/carriage.js'
             order_shipment: '/bundles/coreshopcore/pimcore/js/order/shipment.js'
-            order_create_step_shipping: '/bundles/coreshopcore/pimcore/js/sale/create/step/shipping.js'
-            order_create_step_products: '/bundles/coreshopcore/pimcore/js/sale/create/step/products.js'
+            order_create_step_shipping: '/bundles/coreshopcore/pimcore/js/order/create/step/shipping.js'
+            order_create_step_products: '/bundles/coreshopcore/pimcore/js/order/create/step/products.js'
             quote_list: '/bundles/coreshopcore/pimcore/js/quote/list.js'
-            sale_item: '/bundles/coreshopcore/pimcore/js/store/item.js'
+            stpre_item: '/bundles/coreshopcore/pimcore/js/store/item.js'
             country_item: '/bundles/coreshopcore/pimcore/js/address/country/item.js'
             report_abstract: '/bundles/coreshopcore/pimcore/js/report/abstract.js'
             report_abstract_store: '/bundles/coreshopcore/pimcore/js/report/abstractStore.js'

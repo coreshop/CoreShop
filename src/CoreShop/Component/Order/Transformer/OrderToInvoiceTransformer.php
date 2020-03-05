@@ -14,7 +14,6 @@ namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -154,7 +153,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $items = [];
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $cartItem
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();

@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 interface LinkGeneratorInterface
 {
     /**
-     * @param             $object
+     * @param mixed       $object
      * @param string|null $routeName
      * @param array       $params
      * @param int         $referenceType

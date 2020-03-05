@@ -17,6 +17,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
@@ -107,6 +108,7 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
                           AND cart.order__id IS NULL
                           AND cart.o_creationDate > ?
                           AND cart.o_creationDate < ?
+                          AND cart.saleState === '".OrderSaleStates::STATE_CART."'
                      GROUP BY cart.oo_id
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";

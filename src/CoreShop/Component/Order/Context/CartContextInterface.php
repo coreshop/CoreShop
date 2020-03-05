@@ -12,14 +12,14 @@
 
 namespace CoreShop\Component\Order\Context;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartContextInterface
 {
     /**
-     * @return CartInterface
+     * @return OrderInterface
      *
      * @throws CartNotFoundException
      */
-    public function getCart(): CartInterface;
+    public function getCart(): OrderInterface;
 }

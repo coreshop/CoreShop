@@ -2,6 +2,12 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Core\Order\Processor\CartTextProcessor:
+        arguments:
+            - '@coreshop.translation_locale_provider'
+        tags:
+            - { name: coreshop.cart_processor, priority: 700 }
+
     coreshop.cart_item.processor: '@CoreShop\Component\Core\Order\Processor\CartItemProcessor'
     CoreShop\Component\Core\Order\Processor\CartItemProcessor:
         arguments:
@@ -79,3 +85,14 @@ services:
             - '@coreshop.taxation.factory.tax_calculator'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
+
+    CoreShop\Component\Core\Order\Processor\CartTotalProcessor:
+        tags:
+            - { name: coreshop.cart_processor, priority: 300 }
+
+    CoreShop\Component\Core\Order\Processor\CartBaseProcessor:
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+        tags:
+            - { name: coreshop.cart_processor, priority: 100 }
+

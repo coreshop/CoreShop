@@ -17,6 +17,7 @@ use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerSelectionType;
 use CoreShop\Bundle\LocaleBundle\Form\Type\LocaleChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
+use CoreShop\Component\Order\OrderSaleStates;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -54,6 +55,7 @@ final class CartCreationType extends AbstractResourceType
         $resolver->setDefaults([
             'csrf_protection' => false,
             'customer' => null,
+            'sales_state' => OrderSaleStates::STATE_CART
         ]);
     }
 }

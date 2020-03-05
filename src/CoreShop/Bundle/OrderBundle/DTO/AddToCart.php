@@ -12,48 +12,36 @@
 
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCart implements AddToCartInterface
 {
     private $cart;
     private $cartItem;
 
-    public function __construct(CartInterface $cart, CartItemInterface $cartItem)
+    public function __construct(OrderInterface $cart, OrderItemInterface $cartItem)
     {
         $this->cart = $cart;
         $this->cartItem = $cartItem;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCart(): CartInterface
+    public function getCart(): OrderInterface
     {
         return $this->cart;
     }
 
-    /**
-     * @param CartInterface $cart
-     */
-    public function setCart(CartInterface $cart): void
+    public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCartItem(): CartItemInterface
+    public function getCartItem(): OrderItemInterface
     {
         return $this->cartItem;
     }
 
-    /**
-     * @param CartItemInterface $cartItem
-     */
-    public function setCartItem(CartItemInterface $cartItem): void
+    public function setCartItem(OrderItemInterface $cartItem)
     {
         $this->cartItem = $cartItem;
     }

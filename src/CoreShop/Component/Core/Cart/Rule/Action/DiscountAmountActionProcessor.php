@@ -18,7 +18,7 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use Webmozart\Assert\Assert;
 
@@ -41,8 +41,11 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
-    {
+    public function applyRule(
+        OrderInterface $cart,
+        array $configuration,
+        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+    ): bool {
         $discount = $this->getDiscount($cart, $configuration);
 
         if ($discount <= 0) {
@@ -57,19 +60,26 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
-    {
+    public function unApplyRule(
+        OrderInterface $cart,
+        array $configuration,
+        ProposalCartPriceRuleItemInterface $cartPriceRuleItem
+    ): bool {
         return true;
     }
 
-    protected function getDiscount(CartInterface $cart, array $configuration): int
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
             $cartAmount = $cart->getTotal($configuration['gross']);
         } else {
-            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
+            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE,
+                    $configuration['gross']);
         }
 
         /**
@@ -80,7 +90,8 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
+        return (int)$this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount),
+            $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
     }
 
     protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int

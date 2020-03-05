@@ -12,8 +12,8 @@
 
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
@@ -64,11 +64,11 @@ class CartModifier implements StorageListModifierInterface
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         /**
-         * @var $storageList CartInterface
-         * @var $item        CartItemInterface
+         * @var $storageList OrderInterface
+         * @var $item        OrderItemInterface
          */
-        Assert::isInstanceOf($storageList, CartInterface::class);
-        Assert::isInstanceOf($item, CartItemInterface::class);
+        Assert::isInstanceOf($storageList, OrderInterface::class);
+        Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $this->eventDispatcher->dispatch(
             'coreshop.cart.remove_add_pre',

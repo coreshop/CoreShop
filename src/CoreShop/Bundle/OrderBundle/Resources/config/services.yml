@@ -18,6 +18,7 @@ imports:
     - { resource: "services/payment.yml" }
     - { resource: "services/forms.yml" }
     - { resource: "services/checkout_listener.yml" }
+    - { resource: "services/controller.yml" }
 
 services:
     _defaults:
@@ -35,6 +36,7 @@ services:
             - '@coreshop.cart_processor'
             - '@coreshop.object_service'
             - '%coreshop.folder.cart%'
+            - '%coreshop.folder.order_item%'
 
     coreshop.cart_item.quantity_modifier: '@CoreShop\Component\StorageList\StorageListItemQuantityModifier'
     CoreShop\Component\StorageList\StorageListItemQuantityModifier: ~
@@ -75,7 +77,7 @@ services:
     CoreShop\Bundle\OrderBundle\Expiration\CartExpiration:
         shared: false
         arguments:
-             - '@coreshop.repository.cart'
+             - '@coreshop.repository.order'
 
     coreshop.order.expire: '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
     CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration:
@@ -97,13 +99,20 @@ services:
         arguments:
             - '@CoreShop\Component\Order\Factory\AdjustmentFactory.inner'
 
-    coreshop.custom_factory.cart_item: '@CoreShop\Component\Order\Factory\CartItemFactory'
-    CoreShop\Component\Order\Factory\CartItemFactory:
-        decorates: coreshop.factory.cart_item
+    CoreShop\Component\Order\Factory\OrderItemFactory:
+        decorates: coreshop.factory.order_item
         decoration_priority: 256
         public: false
         arguments:
-            - '@CoreShop\Component\Order\Factory\CartItemFactory.inner'
+            - '@CoreShop\Component\Order\Factory\OrderItemFactory.inner'
+
+    CoreShop\Component\Order\Factory\OrderFactory:
+        decorates: coreshop.factory.order
+        decoration_priority: 256
+        public: false
+        arguments:
+            - '@CoreShop\Component\Order\Factory\OrderFactory.inner'
+
 
     coreshop.factory.add_to_cart: '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory'
     CoreShop\Bundle\OrderBundle\Factory\AddToCartFactory:

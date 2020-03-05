@@ -1,14 +1,19 @@
 {
+    "id": "3",
     "description": null,
-    "parentClass": "CoreShop\\Component\\Core\\Model\\Order",
+    "parentClass": "CoreShop\\Component\\Order\\Model\\Order",
+    "listingParentClass": null,
     "useTraits": null,
+    "listingUseTraits": null,
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "cacheRawRelationData": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
         "layout": null,
+        "border": false,
         "name": "pimcore_root",
         "type": null,
         "region": null,
@@ -16,13 +21,15 @@
         "width": null,
         "height": null,
         "collapsible": false,
-        "collapsed": null,
+        "collapsed": false,
         "bodyStyle": null,
         "datatype": "layout",
         "permissions": null,
         "childs": [
             {
                 "fieldtype": "tabpanel",
+                "border": false,
+                "tabPosition": "top",
                 "name": "Layout",
                 "type": null,
                 "region": null,
@@ -30,7 +37,7 @@
                 "width": null,
                 "height": null,
                 "collapsible": false,
-                "collapsed": null,
+                "collapsed": false,
                 "bodyStyle": null,
                 "datatype": "layout",
                 "permissions": null,
@@ -39,6 +46,7 @@
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
+                        "border": false,
                         "name": "Order",
                         "type": null,
                         "region": null,
@@ -54,8 +62,13 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
+                                "unique": null,
+                                "showCharCount": null,
                                 "name": "orderNumber",
                                 "title": "Order Number",
                                 "tooltip": "",
@@ -74,9 +87,38 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": false,
+                                "name": "saleState",
+                                "title": "State",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "input",
+                                "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "regex": "",
+                                "unique": false,
+                                "showCharCount": null,
                                 "name": "token",
                                 "title": "Token",
                                 "tooltip": "",
@@ -95,6 +137,9 @@
                             {
                                 "fieldtype": "checkbox",
                                 "defaultValue": 0,
+                                "queryColumnType": "tinyint(1)",
+                                "columnType": "tinyint(1)",
+                                "phpdocType": "boolean",
                                 "name": "backendCreated",
                                 "title": "Backend Created",
                                 "tooltip": "",
@@ -112,6 +157,9 @@
                             },
                             {
                                 "fieldtype": "datetime",
+                                "queryColumnType": "bigint(20)",
+                                "columnType": "bigint(20)",
+                                "phpdocType": "\\Carbon\\Carbon",
                                 "defaultValue": null,
                                 "useCurrentDate": false,
                                 "name": "orderDate",
@@ -318,6 +366,14 @@
                                         "value": "as_IN"
                                     },
                                     {
+                                        "key": "Asturian",
+                                        "value": "ast"
+                                    },
+                                    {
+                                        "key": "Asturian (Spain)",
+                                        "value": "ast_ES"
+                                    },
+                                    {
                                         "key": "Asu",
                                         "value": "asa"
                                     },
@@ -327,11 +383,11 @@
                                     },
                                     {
                                         "key": "Azerbaijani",
-                                        "value": "az_Cyrl"
+                                        "value": "az"
                                     },
                                     {
                                         "key": "Azerbaijani",
-                                        "value": "az"
+                                        "value": "az_Cyrl"
                                     },
                                     {
                                         "key": "Azerbaijani",
@@ -423,10 +479,6 @@
                                     },
                                     {
                                         "key": "Bosnian",
-                                        "value": "bs_Latn"
-                                    },
-                                    {
-                                        "key": "Bosnian",
                                         "value": "bs"
                                     },
                                     {
@@ -434,12 +486,16 @@
                                         "value": "bs_Cyrl"
                                     },
                                     {
-                                        "key": "Bosnian (Bosnia & Herzegovina)",
-                                        "value": "bs_Latn_BA"
+                                        "key": "Bosnian",
+                                        "value": "bs_Latn"
                                     },
                                     {
                                         "key": "Bosnian (Bosnia & Herzegovina)",
                                         "value": "bs_Cyrl_BA"
+                                    },
+                                    {
+                                        "key": "Bosnian (Bosnia & Herzegovina)",
+                                        "value": "bs_Latn_BA"
                                     },
                                     {
                                         "key": "Breton",
@@ -464,6 +520,14 @@
                                     {
                                         "key": "Burmese (Myanmar (Burma))",
                                         "value": "my_MM"
+                                    },
+                                    {
+                                        "key": "Cantonese",
+                                        "value": "yue"
+                                    },
+                                    {
+                                        "key": "Cantonese (Hong Kong SAR China)",
+                                        "value": "yue_HK"
                                     },
                                     {
                                         "key": "Catalan",
@@ -519,15 +583,15 @@
                                     },
                                     {
                                         "key": "Chinese",
+                                        "value": "zh_Hant"
+                                    },
+                                    {
+                                        "key": "Chinese",
                                         "value": "zh_Hans"
                                     },
                                     {
                                         "key": "Chinese",
                                         "value": "zh"
-                                    },
-                                    {
-                                        "key": "Chinese",
-                                        "value": "zh_Hant"
                                     },
                                     {
                                         "key": "Chinese (China)",
@@ -2167,15 +2231,15 @@
                                     },
                                     {
                                         "key": "Punjabi",
-                                        "value": "pa"
-                                    },
-                                    {
-                                        "key": "Punjabi",
                                         "value": "pa_Guru"
                                     },
                                     {
                                         "key": "Punjabi",
                                         "value": "pa_Arab"
+                                    },
+                                    {
+                                        "key": "Punjabi",
+                                        "value": "pa"
                                     },
                                     {
                                         "key": "Punjabi (India)",
@@ -2323,7 +2387,7 @@
                                     },
                                     {
                                         "key": "Serbian",
-                                        "value": "sr_Cyrl"
+                                        "value": "sr"
                                     },
                                     {
                                         "key": "Serbian",
@@ -2331,7 +2395,7 @@
                                     },
                                     {
                                         "key": "Serbian",
-                                        "value": "sr"
+                                        "value": "sr_Cyrl"
                                     },
                                     {
                                         "key": "Serbian (Bosnia & Herzegovina)",
@@ -2343,27 +2407,27 @@
                                     },
                                     {
                                         "key": "Serbian (Kosovo)",
-                                        "value": "sr_Cyrl_XK"
-                                    },
-                                    {
-                                        "key": "Serbian (Kosovo)",
                                         "value": "sr_Latn_XK"
                                     },
                                     {
-                                        "key": "Serbian (Montenegro)",
-                                        "value": "sr_Cyrl_ME"
+                                        "key": "Serbian (Kosovo)",
+                                        "value": "sr_Cyrl_XK"
                                     },
                                     {
                                         "key": "Serbian (Montenegro)",
                                         "value": "sr_Latn_ME"
                                     },
                                     {
-                                        "key": "Serbian (Serbia)",
-                                        "value": "sr_Cyrl_RS"
+                                        "key": "Serbian (Montenegro)",
+                                        "value": "sr_Cyrl_ME"
                                     },
                                     {
                                         "key": "Serbian (Serbia)",
                                         "value": "sr_Latn_RS"
+                                    },
+                                    {
+                                        "key": "Serbian (Serbia)",
+                                        "value": "sr_Cyrl_RS"
                                     },
                                     {
                                         "key": "Shambala",
@@ -2611,10 +2675,6 @@
                                     },
                                     {
                                         "key": "Tachelhit",
-                                        "value": "shi_Tfng"
-                                    },
-                                    {
-                                        "key": "Tachelhit",
                                         "value": "shi"
                                     },
                                     {
@@ -2622,12 +2682,16 @@
                                         "value": "shi_Latn"
                                     },
                                     {
-                                        "key": "Tachelhit (Morocco)",
-                                        "value": "shi_Tfng_MA"
+                                        "key": "Tachelhit",
+                                        "value": "shi_Tfng"
                                     },
                                     {
                                         "key": "Tachelhit (Morocco)",
                                         "value": "shi_Latn_MA"
+                                    },
+                                    {
+                                        "key": "Tachelhit (Morocco)",
+                                        "value": "shi_Tfng_MA"
                                     },
                                     {
                                         "key": "Taita",
@@ -2775,7 +2839,7 @@
                                     },
                                     {
                                         "key": "Uzbek",
-                                        "value": "uz_Cyrl"
+                                        "value": "uz_Latn"
                                     },
                                     {
                                         "key": "Uzbek",
@@ -2787,7 +2851,7 @@
                                     },
                                     {
                                         "key": "Uzbek",
-                                        "value": "uz_Latn"
+                                        "value": "uz_Cyrl"
                                     },
                                     {
                                         "key": "Uzbek (Afghanistan)",
@@ -2795,15 +2859,15 @@
                                     },
                                     {
                                         "key": "Uzbek (Uzbekistan)",
-                                        "value": "uz_Latn_UZ"
-                                    },
-                                    {
-                                        "key": "Uzbek (Uzbekistan)",
                                         "value": "uz_Cyrl_UZ"
                                     },
                                     {
+                                        "key": "Uzbek (Uzbekistan)",
+                                        "value": "uz_Latn_UZ"
+                                    },
+                                    {
                                         "key": "Vai",
-                                        "value": "vai_Vaii"
+                                        "value": "vai_Latn"
                                     },
                                     {
                                         "key": "Vai",
@@ -2811,15 +2875,15 @@
                                     },
                                     {
                                         "key": "Vai",
-                                        "value": "vai_Latn"
-                                    },
-                                    {
-                                        "key": "Vai (Liberia)",
-                                        "value": "vai_Latn_LR"
+                                        "value": "vai_Vaii"
                                     },
                                     {
                                         "key": "Vai (Liberia)",
                                         "value": "vai_Vaii_LR"
+                                    },
+                                    {
+                                        "key": "Vai (Liberia)",
+                                        "value": "vai_Latn_LR"
                                     },
                                     {
                                         "key": "Vietnamese",
@@ -2910,6 +2974,11 @@
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "dynamicOptions": false,
                                 "name": "localeCode",
                                 "title": "Locale",
                                 "tooltip": "",
@@ -2933,6 +3002,11 @@
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "dynamicOptions": false,
                                 "name": "store",
                                 "title": "Store",
                                 "tooltip": "",
@@ -2950,12 +3024,17 @@
                             },
                             {
                                 "fieldtype": "coreShopPaymentProvider",
+                                "phpdocType": "CoreShop\\Component\\Payment\\Model\\PaymentProvider",
                                 "allowEmpty": false,
                                 "options": null,
                                 "width": "",
                                 "defaultValue": null,
                                 "optionsProviderClass": null,
                                 "optionsProviderData": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "dynamicOptions": false,
                                 "name": "paymentProvider",
                                 "title": "Payment Provider",
                                 "tooltip": "",
@@ -2972,28 +3051,11 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "textarea",
-                                "width": 350,
-                                "height": "",
-                                "name": "comment",
-                                "title": "Comment",
-                                "tooltip": "",
-                                "mandatory": false,
-                                "noteditable": true,
-                                "index": false,
-                                "locked": false,
-                                "style": "",
-                                "permissions": null,
-                                "datatype": "data",
-                                "relationType": false,
-                                "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
-                            },
-                            {
                                 "fieldtype": "objectbricks",
+                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Objectbrick",
                                 "allowedTypes": [],
                                 "maxItems": "",
+                                "border": false,
                                 "name": "additionalData",
                                 "title": "Additional Data",
                                 "tooltip": "",
@@ -3010,12 +3072,14 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
+                        "border": false,
                         "name": "Status",
                         "type": null,
                         "region": null,
@@ -3031,9 +3095,13 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "orderState",
                                 "title": "Order State",
                                 "tooltip": "",
@@ -3052,9 +3120,38 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
+                                "name": "paymentState",
+                                "title": "Payment State",
+                                "tooltip": "",
+                                "mandatory": false,
+                                "noteditable": true,
+                                "index": false,
+                                "locked": false,
+                                "style": "",
+                                "permissions": null,
+                                "datatype": "data",
+                                "relationType": false,
+                                "invisible": false,
+                                "visibleGridView": false,
+                                "visibleSearch": false
+                            },
+                            {
+                                "fieldtype": "input",
+                                "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
+                                "columnLength": 190,
+                                "phpdocType": "string",
+                                "regex": "",
+                                "unique": false,
+                                "showCharCount": null,
                                 "name": "shippingState",
                                 "title": "Shipping State",
                                 "tooltip": "",
@@ -3073,9 +3170,13 @@
                             {
                                 "fieldtype": "input",
                                 "width": null,
+                                "queryColumnType": "varchar",
+                                "columnType": "varchar",
                                 "columnLength": 190,
+                                "phpdocType": "string",
                                 "regex": "",
                                 "unique": false,
+                                "showCharCount": null,
                                 "name": "invoiceState",
                                 "title": "Invoice State",
                                 "tooltip": "",
@@ -3090,33 +3191,15 @@
                                 "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
-                            },
-                            {
-                                "fieldtype": "input",
-                                "width": null,
-                                "columnLength": 190,
-                                "regex": "",
-                                "unique": false,
-                                "name": "paymentState",
-                                "title": "Payment State",
-                                "tooltip": "",
-                                "mandatory": false,
-                                "noteditable": true,
-                                "index": false,
-                                "locked": false,
-                                "style": "",
-                                "permissions": null,
-                                "datatype": "data",
-                                "relationType": false,
-                                "invisible": false,
-                                "visibleGridView": false,
-                                "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "tabpanel",
+                        "border": false,
+                        "tabPosition": "top",
                         "name": "Numbers",
                         "type": null,
                         "region": null,
@@ -3133,6 +3216,7 @@
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
+                                "border": false,
                                 "name": "Numbers (converted)",
                                 "type": null,
                                 "region": null,
@@ -3153,6 +3237,11 @@
                                         "defaultValue": null,
                                         "optionsProviderClass": null,
                                         "optionsProviderData": null,
+                                        "queryColumnType": "varchar",
+                                        "columnType": "varchar",
+                                        "columnLength": 190,
+                                        "phpdocType": "string",
+                                        "dynamicOptions": false,
                                         "name": "currency",
                                         "title": "Currency",
                                         "tooltip": "",
@@ -3187,6 +3276,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "totalNet",
@@ -3208,6 +3298,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "totalGross",
@@ -3229,6 +3320,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "subtotalNet",
@@ -3250,6 +3342,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "subtotalGross",
@@ -3266,69 +3359,6 @@
                                                 "invisible": false,
                                                 "visibleGridView": false,
                                                 "visibleSearch": false
-                                            },
-                                        ],
-                                        "locked": false
-                                    },
-                                    {
-                                        "fieldtype": "fieldset",
-                                        "labelWidth": 100,
-                                        "name": "Shipping",
-                                        "type": null,
-                                        "region": null,
-                                        "title": "Shipping",
-                                        "width": null,
-                                        "height": null,
-                                        "collapsible": false,
-                                        "collapsed": false,
-                                        "bodyStyle": "",
-                                        "datatype": "layout",
-                                        "permissions": null,
-                                        "childs": [
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "shippingTax",
-                                                "title": "Shipping Tax",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
-                                            },
-                                            {
-                                                "fieldtype": "numeric",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "decimalPrecision": null,
-                                                "integer": false,
-                                                "unsigned": false,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "shippingTaxRate",
-                                                "title": "Shipping Tax Rate",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
                                             }
                                         ],
                                         "locked": false
@@ -3337,6 +3367,7 @@
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
+                                        "border": false,
                                         "name": "Taxes",
                                         "type": null,
                                         "region": null,
@@ -3351,6 +3382,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopTaxItem"
                                                 ],
@@ -3360,6 +3392,7 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "taxes",
                                                 "title": "Taxes",
                                                 "tooltip": "",
@@ -3376,12 +3409,14 @@
                                                 "visibleSearch": false
                                             }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     },
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
+                                        "border": false,
                                         "name": "Adjustments",
                                         "type": null,
                                         "region": null,
@@ -3394,84 +3429,91 @@
                                         "datatype": "layout",
                                         "permissions": null,
                                         "childs": [
-                                          {
-                                              "fieldtype": "coreShopMoney",
-                                              "width": "",
-                                              "defaultValue": null,
-                                              "minValue": null,
-                                              "maxValue": null,
-                                              "name": "pimcoreAdjustmentTotalNet",
-                                              "title": "Adjustments Total Net",
-                                              "tooltip": "",
-                                              "mandatory": false,
-                                              "noteditable": true,
-                                              "index": false,
-                                              "locked": false,
-                                              "style": "",
-                                              "permissions": null,
-                                              "datatype": "data",
-                                              "relationType": false,
-                                              "invisible": false,
-                                              "visibleGridView": false,
-                                              "visibleSearch": false
-                                          },
-                                          {
-                                              "fieldtype": "coreShopMoney",
-                                              "width": "",
-                                              "defaultValue": null,
-                                              "minValue": null,
-                                              "maxValue": null,
-                                              "name": "pimcoreAdjustmentTotalGross",
-                                              "title": "Adjustments Total Gross",
-                                              "tooltip": "",
-                                              "mandatory": false,
-                                              "noteditable": true,
-                                              "index": false,
-                                              "locked": false,
-                                              "style": "",
-                                              "permissions": null,
-                                              "datatype": "data",
-                                              "relationType": false,
-                                              "invisible": false,
-                                              "visibleGridView": false,
-                                              "visibleSearch": false
-                                          },
-                                          {
-                                              "fieldtype": "fieldcollections",
-                                              "allowedTypes": [
-                                                  "CoreShopAdjustment"
-                                              ],
-                                              "lazyLoading": true,
-                                              "maxItems": "",
-                                              "disallowAddRemove": false,
-                                              "disallowReorder": false,
-                                              "collapsed": false,
-                                              "collapsible": false,
-                                              "name": "adjustmentItems",
-                                              "title": "Adjustments",
-                                              "tooltip": "",
-                                              "mandatory": false,
-                                              "noteditable": true,
-                                              "index": false,
-                                              "locked": false,
-                                              "style": "",
-                                              "permissions": null,
-                                              "datatype": "data",
-                                              "relationType": false,
-                                              "invisible": false,
-                                              "visibleGridView": false,
-                                              "visibleSearch": false
-                                          }
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "pimcoreAdjustmentTotalNet",
+                                                "title": "Adjustments Total Net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "pimcoreAdjustmentTotalGross",
+                                                "title": "Adjustments Total Gross",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
+                                                "allowedTypes": [
+                                                    "CoreShopAdjustment"
+                                                ],
+                                                "lazyLoading": true,
+                                                "maxItems": "",
+                                                "disallowAddRemove": false,
+                                                "disallowReorder": false,
+                                                "collapsed": false,
+                                                "collapsible": false,
+                                                "border": false,
+                                                "name": "adjustmentItems",
+                                                "title": "Adjustments",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             },
                             {
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
+                                "border": false,
                                 "name": "Numbers (Base)",
                                 "type": null,
                                 "region": null,
@@ -3492,6 +3534,11 @@
                                         "defaultValue": null,
                                         "optionsProviderClass": null,
                                         "optionsProviderData": null,
+                                        "queryColumnType": "varchar",
+                                        "columnType": "varchar",
+                                        "columnLength": 190,
+                                        "phpdocType": "string",
+                                        "dynamicOptions": false,
                                         "name": "baseCurrency",
                                         "title": "Base Currency",
                                         "tooltip": "",
@@ -3526,6 +3573,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "baseTotalNet",
@@ -3547,6 +3595,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "baseTotalGross",
@@ -3568,6 +3617,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "baseSubtotalNet",
@@ -3589,6 +3639,7 @@
                                                 "fieldtype": "coreShopMoney",
                                                 "width": "",
                                                 "defaultValue": null,
+                                                "phpdocType": "int",
                                                 "minValue": null,
                                                 "maxValue": null,
                                                 "name": "baseSubtotalGross",
@@ -3605,45 +3656,6 @@
                                                 "invisible": false,
                                                 "visibleGridView": false,
                                                 "visibleSearch": false
-                                            },
-                                        ],
-                                        "locked": false
-                                    },
-                                    {
-                                        "fieldtype": "fieldset",
-                                        "labelWidth": 100,
-                                        "name": "Shipping",
-                                        "type": null,
-                                        "region": null,
-                                        "title": "Shipping",
-                                        "width": null,
-                                        "height": null,
-                                        "collapsible": false,
-                                        "collapsed": false,
-                                        "bodyStyle": "",
-                                        "datatype": "layout",
-                                        "permissions": null,
-                                        "childs": [
-                                            {
-                                                "fieldtype": "coreShopMoney",
-                                                "width": "",
-                                                "defaultValue": null,
-                                                "minValue": null,
-                                                "maxValue": null,
-                                                "name": "baseShippingTax",
-                                                "title": "Base Shipping Tax",
-                                                "tooltip": "",
-                                                "mandatory": false,
-                                                "noteditable": true,
-                                                "index": false,
-                                                "locked": false,
-                                                "style": "",
-                                                "permissions": null,
-                                                "datatype": "data",
-                                                "relationType": false,
-                                                "invisible": false,
-                                                "visibleGridView": false,
-                                                "visibleSearch": false
                                             }
                                         ],
                                         "locked": false
@@ -3652,6 +3664,7 @@
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
+                                        "border": false,
                                         "name": "Taxes (Base)",
                                         "type": null,
                                         "region": null,
@@ -3666,6 +3679,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopTaxItem"
                                                 ],
@@ -3675,6 +3689,7 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "baseTaxes",
                                                 "title": "Taxes",
                                                 "tooltip": "",
@@ -3691,12 +3706,14 @@
                                                 "visibleSearch": false
                                             }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     },
                                     {
                                         "fieldtype": "panel",
                                         "labelWidth": 100,
                                         "layout": null,
+                                        "border": false,
                                         "name": "Adjustments (Base)",
                                         "type": null,
                                         "region": null,
@@ -3710,83 +3727,90 @@
                                         "permissions": null,
                                         "childs": [
                                             {
-                                                  "fieldtype": "coreShopMoney",
-                                                  "width": "",
-                                                  "defaultValue": null,
-                                                  "minValue": null,
-                                                  "maxValue": null,
-                                                  "name": "basePimcoreAdjustmentTotalNet",
-                                                  "title": "Adjustments Total Net",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                },
-                                                {
-                                                  "fieldtype": "coreShopMoney",
-                                                  "width": "",
-                                                  "defaultValue": null,
-                                                  "minValue": null,
-                                                  "maxValue": null,
-                                                  "name": "basePimcoreAdjustmentTotalGross",
-                                                  "title": "Adjustments Total Gross",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                },
-                                                {
-                                                  "fieldtype": "fieldcollections",
-                                                  "allowedTypes": [
-                                                      "CoreShopAdjustment"
-                                                  ],
-                                                  "lazyLoading": true,
-                                                  "maxItems": "",
-                                                  "disallowAddRemove": false,
-                                                  "disallowReorder": false,
-                                                  "collapsed": false,
-                                                  "collapsible": false,
-                                                  "name": "baseAdjustmentItems",
-                                                  "title": "Adjustments",
-                                                  "tooltip": "",
-                                                  "mandatory": false,
-                                                  "noteditable": true,
-                                                  "index": false,
-                                                  "locked": false,
-                                                  "style": "",
-                                                  "permissions": null,
-                                                  "datatype": "data",
-                                                  "relationType": false,
-                                                  "invisible": false,
-                                                  "visibleGridView": false,
-                                                  "visibleSearch": false
-                                                }
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "basePimcoreAdjustmentTotalNet",
+                                                "title": "Adjustments Total Net",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "coreShopMoney",
+                                                "width": "",
+                                                "defaultValue": null,
+                                                "phpdocType": "int",
+                                                "minValue": null,
+                                                "maxValue": null,
+                                                "name": "basePimcoreAdjustmentTotalGross",
+                                                "title": "Adjustments Total Gross",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            },
+                                            {
+                                                "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
+                                                "allowedTypes": [
+                                                    "CoreShopAdjustment"
+                                                ],
+                                                "lazyLoading": true,
+                                                "maxItems": "",
+                                                "disallowAddRemove": false,
+                                                "disallowReorder": false,
+                                                "collapsed": false,
+                                                "collapsible": false,
+                                                "border": false,
+                                                "name": "baseAdjustmentItems",
+                                                "title": "Adjustments",
+                                                "tooltip": "",
+                                                "mandatory": false,
+                                                "noteditable": true,
+                                                "index": false,
+                                                "locked": false,
+                                                "style": "",
+                                                "permissions": null,
+                                                "datatype": "data",
+                                                "relationType": false,
+                                                "invisible": false,
+                                                "visibleGridView": false,
+                                                "visibleSearch": false
+                                            }
                                         ],
-                                        "locked": false
+                                        "locked": false,
+                                        "icon": null
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             },
                             {
                                 "fieldtype": "panel",
                                 "labelWidth": 100,
                                 "layout": null,
+                                "border": false,
                                 "name": "Other",
                                 "type": null,
                                 "region": null,
@@ -3816,6 +3840,7 @@
                                         "childs": [
                                             {
                                                 "fieldtype": "fieldcollections",
+                                                "phpdocType": "\\Pimcore\\Model\\DataObject\\Fieldcollection",
                                                 "allowedTypes": [
                                                     "CoreShopProposalCartPriceRuleItem"
                                                 ],
@@ -3825,6 +3850,7 @@
                                                 "disallowReorder": false,
                                                 "collapsed": false,
                                                 "collapsible": false,
+                                                "border": false,
                                                 "name": "priceRuleItems",
                                                 "title": "Price Rule Items",
                                                 "tooltip": "",
@@ -3844,7 +3870,8 @@
                                         "locked": false
                                     }
                                 ],
-                                "locked": false
+                                "locked": false,
+                                "icon": null
                             }
                         ],
                         "locked": false
@@ -3853,6 +3880,7 @@
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
+                        "border": false,
                         "name": "Items",
                         "type": null,
                         "region": null,
@@ -3866,11 +3894,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
                                 "assetUploadPath": "",
+                                "queryColumnType": "text",
+                                "phpdocType": "array",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -3899,12 +3929,14 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     },
                     {
                         "fieldtype": "panel",
                         "labelWidth": 100,
                         "layout": null,
+                        "border": false,
                         "name": "Customer",
                         "type": null,
                         "region": null,
@@ -3918,10 +3950,15 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
+                                "queryColumnType": {
+                                    "id": "int(11)",
+                                    "type": "enum('document','asset','object')"
+                                },
+                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -3949,10 +3986,15 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
+                                "queryColumnType": {
+                                    "id": "int(11)",
+                                    "type": "enum('document','asset','object')"
+                                },
+                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -3980,10 +4022,15 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
+                                "queryColumnType": {
+                                    "id": "int(11)",
+                                    "type": "enum('document','asset','object')"
+                                },
+                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
                                 "assetTypes": [],
@@ -4011,20 +4058,24 @@
                                 "visibleSearch": false
                             }
                         ],
-                        "locked": false
+                        "locked": false,
+                        "icon": null
                     }
                 ],
                 "locked": false
             }
         ],
-        "locked": false
+        "locked": false,
+        "icon": null
     },
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "linkGeneratorReference": null,
     "propertyVisibility": {
         "grid": {
             "id": true,
+            "key": false,
             "path": true,
             "published": true,
             "modificationDate": true,
@@ -4032,6 +4083,7 @@
         },
         "search": {
             "id": true,
+            "key": false,
             "path": true,
             "published": true,
             "modificationDate": true,

@@ -13,32 +13,35 @@
 namespace CoreShop\Bundle\OrderBundle\Manager;
 
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 
 final class CartManager implements CartManagerInterface
 {
     private $objectService;
     private $cartFolderPath;
+    private $cartItemFolderPath;
     private $cartProcessor;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
         ObjectServiceInterface $objectService,
-        string $cartFolderPath
+        string $cartFolderPath,
+        string $cartItemFolderPath
     ) {
         $this->cartProcessor = $cartProcessor;
         $this->objectService = $objectService;
         $this->cartFolderPath = $cartFolderPath;
+        $this->cartItemFolderPath = $cartItemFolderPath;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function persistCart(CartInterface $cart): void
+    public function persistCart(OrderInterface $cart): void
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));
 
@@ -47,15 +50,25 @@ final class CartManager implements CartManagerInterface
 
             if (!$cart->getId()) {
                 $cart->setItems([]);
-                $cart->setParent($cartsFolder);
+
+                if (!$cart->getParent()) {
+                    $cart->setParent($cartsFolder);
+                }
+
                 $cart->save();
             }
 
             /**
-             * @var CartItemInterface $item
+             * @var OrderItemInterface $item
              */
             foreach ($tempItems as $index => $item) {
-                $item->setParent($cart);
+                $item->setParent(
+                    $this->objectService->createFolderByPath(
+                        sprintf('%s/%s', $cart->getFullPath(), $this->cartItemFolderPath)
+                    )
+                );
+                $item->setPublished(true);
+                $item->setKey($index+1);
                 $item->save();
             }
 
@@ -63,7 +76,7 @@ final class CartManager implements CartManagerInterface
             $this->cartProcessor->process($cart);
 
             /**
-             * @var CartItemInterface $cartItem
+             * @var OrderItemInterface $cartItem
              */
             foreach ($cart->getItems() as $cartItem) {
                 $cartItem->save();

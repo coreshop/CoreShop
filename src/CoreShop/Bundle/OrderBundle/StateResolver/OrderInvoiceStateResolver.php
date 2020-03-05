@@ -38,11 +38,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         $this->processable = $processable;
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed|void
-     */
     public function resolve(OrderInterface $order): void
     {
         if ($order->getInvoiceState() === OrderInvoiceStates::STATE_INVOICED) {
@@ -60,12 +55,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $invoiceState
-     *
-     * @return int
-     */
     private function countOrderInvoicesInState(OrderInterface $order, string $invoiceState): int
     {
         $invoices = $this->orderInvoiceRepository->getDocuments($order);
@@ -81,13 +70,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
         return $items;
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param string         $invoiceState
-     * @param string         $orderInvoiceState
-     *
-     * @return bool
-     */
     private function allInvoicesInStateButOrderStateNotUpdated(
         OrderInterface $order,
         string $invoiceState,
@@ -101,11 +83,6 @@ final class OrderInvoiceStateResolver implements StateResolverInterface
             $this->processable->isFullyProcessed($order);
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function isPartiallyInvoicedButOrderStateNotUpdated(OrderInterface $order): bool
     {
         $invoiceInCompleteStateAmount = $this->countOrderInvoicesInState($order, InvoiceStates::STATE_COMPLETE);

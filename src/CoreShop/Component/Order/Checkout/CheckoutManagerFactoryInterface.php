@@ -12,14 +12,14 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CheckoutManagerFactoryInterface
 {
     /**
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
      * @return CheckoutManagerInterface
      */
-    public function createCheckoutManager(CartInterface $cart): CheckoutManagerInterface;
+    public function createCheckoutManager(OrderInterface $cart): CheckoutManagerInterface;
 }

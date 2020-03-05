@@ -31,9 +31,6 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         $this->paymentRepository = $paymentRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(OrderInterface $order): void
     {
         $workflow = $this->stateMachineManager->get($order, OrderPaymentTransitions::IDENTIFIER);
@@ -51,7 +48,7 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
     }
 
-    private function getTargetTransition(OrderInterface $order): string
+    private function getTargetTransition(OrderInterface $order): ?string
     {
         $refundedPaymentTotal = 0;
         $refundedPayments = $this->getPaymentsWithState($order, PaymentInterface::STATE_REFUNDED);

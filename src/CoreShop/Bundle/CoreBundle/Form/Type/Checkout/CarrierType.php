@@ -16,7 +16,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierChoiceType;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
@@ -102,7 +102,7 @@ final class CarrierType extends AbstractResourceType
         $resolver->setDefault('cart', null);
         $resolver->setDefault('show_carrier_price', true);
         $resolver->setDefault('show_carrier_price_with_tax', true);
-        $resolver->setAllowedTypes('cart', [CartInterface::class]);
+        $resolver->setAllowedTypes('cart', [OrderInterface::class]);
         $resolver->setAllowedTypes('carriers', 'array')
             ->setAllowedValues('carriers', function (array $carriers) {
                 // we already know it is an array as types are validated first

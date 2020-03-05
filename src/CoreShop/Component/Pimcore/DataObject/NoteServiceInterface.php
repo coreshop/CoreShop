@@ -44,7 +44,7 @@ interface NoteServiceInterface
      * @param Concrete $object
      * @param string   $noteType
      *
-     * @return mixed
+     * @return Note[]
      */
     public function getObjectNotes(Concrete $object, string $noteType): array;
 

@@ -12,14 +12,12 @@
 
 namespace CoreShop\Component\Core\Order\Processor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface;
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Exception\NoPurchasableWholesalePriceFoundException;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use Webmozart\Assert\Assert;
 
 final class CartItemsWholesaleProcessor implements CartProcessorInterface
 {
@@ -37,12 +35,12 @@ final class CartItemsWholesaleProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart): void
+    public function process(OrderInterface $cart): void
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             $product = $item->getProduct();

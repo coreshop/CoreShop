@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 interface CheckoutManagerInterface
@@ -33,14 +33,14 @@ interface CheckoutManagerInterface
      *
      * @return CheckoutStepInterface|null
      */
-    public function getStep(string $identifier): CheckoutStepInterface;
+    public function getStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
      *
      * @return CheckoutStepInterface|null
      */
-    public function getNextStep(string $identifier): CheckoutStepInterface;
+    public function getNextStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
@@ -54,7 +54,7 @@ interface CheckoutManagerInterface
      *
      * @return CheckoutStepInterface|null
      */
-    public function getPreviousStep(string $identifier): CheckoutStepInterface;
+    public function getPreviousStep(string $identifier): ?CheckoutStepInterface;
 
     /**
      * @param string $identifier
@@ -72,20 +72,20 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      *
      * @return bool
      */
-    public function validateStep(CheckoutStepInterface $step, CartInterface $cart): bool;
+    public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool;
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      * @param Request               $request
      *
      * @return array
      */
-    public function prepareStep(CheckoutStepInterface $step, CartInterface $cart, Request $request): array;
+    public function prepareStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): array;
 
     /**
      * @param string $identifier
@@ -96,10 +96,10 @@ interface CheckoutManagerInterface
 
     /**
      * @param CheckoutStepInterface $step
-     * @param CartInterface         $cart
+     * @param OrderInterface         $cart
      * @param Request               $request
      *
      * @return bool
      */
-    public function commitStep(CheckoutStepInterface $step, CartInterface $cart, Request $request): bool;
+    public function commitStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): bool;
 }

@@ -13,9 +13,9 @@
 namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface AddressProviderInterface
 {
-    public function getAddress(CartInterface $cart): ?AddressInterface;
+    public function getAddress(OrderInterface $cart): ?AddressInterface;
 }

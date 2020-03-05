@@ -144,7 +144,7 @@ services:
             - '@coreshop.cart.modifier'
             - '@coreshop.cart.manager'
             - '@coreshop.factory.add_to_cart'
-            - '@coreshop.factory.cart_item'
+            - '@coreshop.factory.order_item'
             - '@form.factory'
         tags:
             - { name: fob.context_service }
@@ -207,9 +207,8 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.context.store'
-            - '@coreshop.order.transformer.cart_to_order'
-            - '@coreshop.factory.order'
             - '@coreshop.state_machine_applier'
+            - '@CoreShop\Component\Order\Committer\OrderCommitterInterface'
         tags:
             - { name: fob.context_service }
 

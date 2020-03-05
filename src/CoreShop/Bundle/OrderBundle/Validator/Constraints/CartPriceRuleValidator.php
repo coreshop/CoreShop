@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -44,7 +44,7 @@ final class CartPriceRuleValidator extends ConstraintValidator
         /** @var CartPriceRule $constraint */
         Assert::isInstanceOf($constraint, CartPriceRule::class);
 
-        if (!$value instanceof CartInterface) {
+        if (!$value instanceof OrderInterface) {
             return;
         }
 

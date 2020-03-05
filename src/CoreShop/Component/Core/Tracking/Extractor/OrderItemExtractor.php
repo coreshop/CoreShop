@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
-use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\ProposalItemInterface;
@@ -53,9 +52,7 @@ class OrderItemExtractor implements TrackingExtractorInterface
 
         $proposal = null;
 
-        if ($object instanceof CartItemInterface) {
-            $proposal = $object->getCart();
-        } elseif ($object instanceof OrderItemInterface) {
+        if ($object instanceof OrderItemInterface) {
             $proposal = $object->getOrder();
         }
 

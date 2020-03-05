@@ -12,25 +12,25 @@
 
 namespace CoreShop\Component\Order\Context;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class FixedCartContext implements CartContextInterface
 {
-    private $cart;
+    private $cart ;
 
     /**
      * {@inheritdoc}
      */
-    public function getCart(): CartInterface
+    public function getCart(): OrderInterface
     {
-        if ($this->cart instanceof CartInterface) {
+        if ($this->cart instanceof OrderInterface) {
             return $this->cart;
         }
 
         throw new CartNotFoundException();
     }
 
-    public function setCart(CartInterface $cart): void
+    public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;
     }

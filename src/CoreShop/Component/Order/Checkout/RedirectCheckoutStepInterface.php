@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,10 +21,10 @@ interface RedirectCheckoutStepInterface
     /**
      * Get Next Route for Step.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      * @param Request       $request
      *
      * @return RedirectResponse
      **/
-    public function getResponse(CartInterface $cart, Request $request): RedirectResponse;
+    public function getResponse(OrderInterface $cart, Request $request): RedirectResponse;
 }

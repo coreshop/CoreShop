@@ -12,13 +12,13 @@
 
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
-use CoreShop\Component\Order\Repository\CartRepositoryInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartExpiration implements ProposalExpirationInterface
 {
     private $cartRepository;
 
-    public function __construct(CartRepositoryInterface $cartRepository)
+    public function __construct(OrderRepositoryInterface $cartRepository)
     {
         $this->cartRepository = $cartRepository;
     }

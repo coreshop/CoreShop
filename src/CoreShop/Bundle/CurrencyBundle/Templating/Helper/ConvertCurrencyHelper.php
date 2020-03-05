@@ -27,8 +27,12 @@ class ConvertCurrencyHelper extends Helper implements ConvertCurrencyHelperInter
     /**
      * {@inheritdoc}
      */
-    public function convertAmount(int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int
+    public function convertAmount(?int $amount, string $sourceCurrencyCode, string $targetCurrencyCode): int
     {
+        if (null === $amount) {
+            return 0;
+        }
+
         return $this->currencyConverter->convert($amount, $sourceCurrencyCode, $targetCurrencyCode);
     }
 

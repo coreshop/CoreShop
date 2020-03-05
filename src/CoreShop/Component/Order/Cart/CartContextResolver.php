@@ -12,11 +12,11 @@
 
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    public function resolveCartContext(CartInterface $cart): array
+    public function resolveCartContext(OrderInterface $cart): array
     {
         return [
             'customer' => $cart->getCustomer() ?: null,

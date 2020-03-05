@@ -15,7 +15,7 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use Webmozart\Assert\Assert;
@@ -40,7 +40,7 @@ final class CartPriceRuleContext implements Context
      * @Then /^the (cart rule "[^"]+") should be valid for (my cart)$/
      * @Then /^the (cart rule) should be valid for (my cart)$/
      */
-    public function theSpecificPriceRuleForProductShouldBeValid(CartPriceRuleInterface $cartPriceRule, CartInterface $cart)
+    public function theSpecificPriceRuleForProductShouldBeValid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart)
     {
         Assert::true($this->cartPriceRuleValidationProcessor->isValidCartRule($cart, $cartPriceRule));
     }
@@ -49,7 +49,7 @@ final class CartPriceRuleContext implements Context
      * @Then /^the (cart rule "[^"]+") should be invalid for (my cart)$/
      * @Then /^the (cart rule) should be invalid for (my cart)$/
      */
-    public function theSpecificPriceRuleForProductShouldBeInvalid(CartPriceRuleInterface $cartPriceRule, CartInterface $cart)
+    public function theSpecificPriceRuleForProductShouldBeInvalid(CartPriceRuleInterface $cartPriceRule, OrderInterface $cart)
     {
         Assert::false($this->cartPriceRuleValidationProcessor->isValidCartRule($cart, $cartPriceRule));
     }

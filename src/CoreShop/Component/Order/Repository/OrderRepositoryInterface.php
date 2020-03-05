@@ -15,27 +15,21 @@ namespace CoreShop\Component\Order\Repository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 
 interface OrderRepositoryInterface extends PimcoreRepositoryInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return OrderInterface[]
-     */
+    public function findCartByCustomer(CustomerInterface $customer): array;
+
+    public function findByCartId(int $id): ?OrderInterface;
+
+    public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface;
+
+    public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array;
+
     public function findByCustomer(CustomerInterface $customer): array;
 
-    /**
-     * @param CustomerInterface $customer
-     *
-     * @return bool
-     */
     public function hasCustomerOrders(CustomerInterface $customer): bool;
 
-    /**
-     * @param int $days
-     *
-     * @return OrderInterface[]
-     */
     public function findExpiredOrders(int $days): array;
 }

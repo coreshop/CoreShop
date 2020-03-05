@@ -19,10 +19,12 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 class PimcorePersistentMarkingStore implements MarkingStoreInterface
 {
     private $originMarkingStore;
+    private $persistDirectly;
 
-    public function __construct(MarkingStoreInterface $originMarkingStore)
+    public function __construct(MarkingStoreInterface $originMarkingStore, bool $persistDirectly = true)
     {
         $this->originMarkingStore = $originMarkingStore;
+        $this->persistDirectly = $persistDirectly;
     }
 
     /**
@@ -39,8 +41,11 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     public function setMarking($subject, Marking $marking): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        if ($subject instanceof Concrete) {
-            $subject->save();
+
+        if ($this->persistDirectly) {
+            if ($subject instanceof Concrete) {
+                $subject->save();
+            }
         }
     }
 }
