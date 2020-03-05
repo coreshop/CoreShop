@@ -40,12 +40,12 @@ interface OrderInterface extends
      *
      * @return int
      */
-    public function getShipping($withTax = true);
+    public function getShipping(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getShippingTax();
+    public function getShippingTax(): int;
 
     /**
      * @return float
@@ -53,7 +53,7 @@ interface OrderInterface extends
     public function getShippingTaxRate();
 
     /**
-     * @param int $shippingTaxRate
+     * @param float $shippingTaxRate
      */
     public function setShippingTaxRate($shippingTaxRate);
 

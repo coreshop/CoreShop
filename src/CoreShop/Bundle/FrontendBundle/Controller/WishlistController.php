@@ -30,7 +30,7 @@ class WishlistController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find((int)$request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
@@ -67,7 +67,7 @@ class WishlistController extends FrontendController
      */
     public function removeItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find((int)$request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');

@@ -43,11 +43,11 @@ interface ProposalCartPriceRuleItemInterface extends ResourceInterface
      *
      * @return int
      */
-    public function getDiscount($withTax = true);
+    public function getDiscount(bool $withTax = true): int;
 
     /**
      * @param int  $discount
      * @param bool $withTax
      */
-    public function setDiscount($discount, $withTax = true);
+    public function setDiscount(int $discount, bool $withTax = true);
 }

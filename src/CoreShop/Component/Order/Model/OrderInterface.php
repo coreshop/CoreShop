@@ -157,44 +157,44 @@ interface OrderInterface extends
      *
      * @return int
      */
-    public function getTotal($withTax = true);
+    public function getTotal(bool $withTax = true): int;
 
     /**
      * @param int  $total
      * @param bool $withTax
      */
-    public function setTotal($total, $withTax = true);
+    public function setTotal(int $total, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getTotalTax();
+    public function getTotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getSubtotal($withTax = true);
+    public function getSubtotal(bool $withTax = true): int;
 
     /**
      * @param int  $subtotal
      * @param bool $withTax
      * @return mixed
      */
-    public function setSubtotal($subtotal, $withTax = true);
+    public function setSubtotal(int $subtotal, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getSubtotalTax();
+    public function getSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getDiscount($withTax = true);
+    public function getDiscount(bool $withTax = true): int;
 
     /**
      * @return OrderItemInterface[]
@@ -232,30 +232,30 @@ interface OrderInterface extends
      * @param int  $total
      * @param bool $withTax
      */
-    public function setBaseTotal($total, $withTax = true);
+    public function setBaseTotal(int $total, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseTotal();
+    public function getBaseTotal(): int;
 
     /**
      * @param int  $subtotal
      * @param bool $withTax
      */
-    public function setBaseSubtotal($subtotal, $withTax = true);
+    public function setBaseSubtotal(int $subtotal, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseSubtotalTax();
+    public function getBaseSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseDiscount($withTax = true);
+    public function getBaseDiscount(bool $withTax = true): int;
 
     /**
      * @return Fieldcollection
@@ -272,12 +272,12 @@ interface OrderInterface extends
      *
      * @return int
      */
-    public function getBaseShipping($withTax = true);
+    public function getBaseShipping(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getBaseShippingTax();
+    public function getBaseShippingTax(): int;
 
     /**
      * @return AddressInterface|null

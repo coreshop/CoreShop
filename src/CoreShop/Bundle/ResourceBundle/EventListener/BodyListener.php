@@ -56,6 +56,10 @@ class BodyListener
 
     private function isFormRequest(Request $request): bool
     {
+        if (null === $request->headers->get('Content-Type')) {
+            return false;
+        }
+
         $contentTypeParts = explode(';', $request->headers->get('Content-Type'));
 
         if (isset($contentTypeParts[0])) {

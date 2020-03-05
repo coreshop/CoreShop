@@ -235,14 +235,6 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getShippingGross()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getStore()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -403,7 +395,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalTax()
+    public function getTotalTax(): int
     {
         return $this->getTotal(true) - $this->getTotal(false);
     }
@@ -411,7 +403,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @return int
      */
-    public function getBaseTotalTax()
+    public function getBaseTotalTax(): int
     {
         return $this->getBaseTotal(true) - $this->getBaseTotal(false);
     }
@@ -419,7 +411,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubtotalTax()
+    public function getSubtotalTax(): int
     {
         return $this->getSubtotal(true) - $this->getSubtotal(false);
     }
@@ -427,23 +419,15 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @return int
      */
-    public function getBaseSubtotalTax()
+    public function getBaseSubtotalTax(): int
     {
         return $this->getBaseSubtotal(true) - $this->getBaseSubtotal(false);
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getShippingTax()
-    {
-        return $this->getShipping(true) - $this->getShipping(false);
-    }
-
-    /**
      * @return int
      */
-    public function getBaseShippingTax()
+    public function getBaseShippingTax(): int
     {
         return $this->getBaseShipping(true) - $this->getBaseShipping(false);
     }
@@ -469,7 +453,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getDiscount($withTax = true)
+    public function getDiscount(bool $withTax = true): int
     {
         return $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
@@ -479,7 +463,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getSubtotal($withTax = true)
+    public function getSubtotal(bool $withTax = true): int
     {
         return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
     }
@@ -489,7 +473,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function setSubtotal($subtotal, $withTax = true)
+    public function setSubtotal(int $subtotal, bool $withTax = true)
     {
         return $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
     }
@@ -499,7 +483,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getTotal($withTax = true)
+    public function getTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
@@ -509,25 +493,15 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function setTotal($total, $withTax = true)
+    public function setTotal(int $total, bool $withTax = true)
     {
         return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
     /**
-     * Wrapper Method for Pimcore Object.
-     *
      * {@inheritdoc}
      */
-    public function getShipping($withTax = true)
-    {
-        return $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalNet()
+    public function getTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -535,7 +509,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setTotalNet($total)
+    public function setTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -543,7 +517,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalGross()
+    public function getTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -551,7 +525,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setTotalGross($total)
+    public function setTotalGross(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -559,7 +533,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubtotalNet()
+    public function getSubtotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -567,7 +541,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setSubtotalNet($subTotalNet)
+    public function setSubtotalNet(int $subTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -575,7 +549,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSubtotalGross()
+    public function getSubtotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -583,7 +557,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setSubtotalGross($subTotalGross)
+    public function setSubtotalGross(int $subTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -591,15 +565,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getShippingTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingTaxRate($taxRate)
+    public function setShippingTaxRate(int $taxRate)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -609,7 +575,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseDiscount($withTax = true)
+    public function getBaseDiscount(bool $withTax = true): int
     {
         return $this->getBaseAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
@@ -619,7 +585,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseSubtotal($withTax = true)
+    public function getBaseSubtotal(bool $withTax = true): int
     {
         return $withTax ? $this->getBaseSubtotalGross() : $this->getBaseSubtotalNet();
     }
@@ -629,9 +595,9 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function setBaseSubtotal($subtotal, $withTax = true)
+    public function setBaseSubtotal(int $subtotal, bool $withTax = true)
     {
-        $withTax ? $this->setBaseSubtotalGross($subtotal) : $this->setBaseSubtotalNet($subtotal);
+        return $withTax ? $this->setBaseSubtotalGross($subtotal) : $this->setBaseSubtotalNet($subtotal);
     }
 
     /**
@@ -639,7 +605,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseTotal($withTax = true)
+    public function getBaseTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
     }
@@ -649,9 +615,9 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function setBaseTotal($total, $withTax = true)
+    public function setBaseTotal(int $total, bool $withTax = true)
     {
-        $withTax ? $this->setBaseTotalGross($total) : $this->setBaseTotalNet($total);
+        return $withTax ? $this->setBaseTotalGross($total) : $this->setBaseTotalNet($total);
     }
 
     /**
@@ -659,7 +625,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseShipping($withTax = true)
+    public function getBaseShipping(bool $withTax = true): int
     {
         return $this->getBaseAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
@@ -667,7 +633,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @return int
      */
-    public function getBaseTotalNet()
+    public function getBaseTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -675,7 +641,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @param int $total
      */
-    public function setBaseTotalNet($total)
+    public function setBaseTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -691,7 +657,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @param int $total
      */
-    public function setBaseTotalGross($total)
+    public function setBaseTotalGross(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -699,7 +665,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @return int
      */
-    public function getBaseSubtotalNet()
+    public function getBaseSubtotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -707,7 +673,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @param int $subTotalNet
      */
-    public function setBaseSubtotalNet($subTotalNet)
+    public function setBaseSubtotalNet(int $subTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -715,7 +681,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @return int
      */
-    public function getBaseSubtotalGross()
+    public function getBaseSubtotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -723,7 +689,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * @param int $subTotalGross
      */
-    public function setBaseSubtotalGross($subTotalGross)
+    public function setBaseSubtotalGross(int $subTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

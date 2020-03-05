@@ -62,7 +62,7 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getAmount()
+    public function getAmount(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -70,15 +70,7 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
     /**
      * {@inheritdoc}
      */
-    public function setAmount($amount)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountGross($discountGross)
+    public function setAmount(int $amount)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

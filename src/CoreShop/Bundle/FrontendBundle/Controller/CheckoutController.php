@@ -230,7 +230,7 @@ class CheckoutController extends FrontendController
          */
         $order = $this->getCart();
 
-        $workflow = $this->get(StateMachineManagerInterface::class)->get(OrderSaleTransitions::IDENTIFIER, $order);
+        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
 
         $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
 

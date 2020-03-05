@@ -16,12 +16,13 @@ namespace CoreShop\Component\Resource\Repository;
 
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\Listing\AbstractListing;
 
 interface PimcoreRepositoryInterface extends RepositoryInterface
 {
     public function getClassId(): string;
 
-    public function getList(): Listing;
+    public function getList(): AbstractListing;
 
     public function forceFind(int $id, bool $force = true): ?Concrete;
 }

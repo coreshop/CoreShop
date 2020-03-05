@@ -51,19 +51,19 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
      *
      * @return int
      */
-    public function getDiscount($withTax = true);
+    public function getDiscount(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getDiscountTax();
+    public function getDiscountTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getShipping($withTax = true);
+    public function getShipping(bool $withTax = true): int;
 
     /**
      * @return int
@@ -78,101 +78,101 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
     /**
      * @return int
      */
-    public function getShippingTax();
+    public function getShippingTax(): int;
 
     /**
      * @return int
      */
-    public function getTotalTax();
+    public function getTotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getTotal($withTax = true);
+    public function getTotal(bool $withTax = true): int;
 
     /**
      * @param bool $withTax
      * @param int  $total
      */
-    public function setTotal($total, $withTax = true);
+    public function setTotal(int $total, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getSubtotalTax();
+    public function getSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getSubtotal($withTax = true);
+    public function getSubtotal(bool $withTax = true): int;
 
     /**
      * @param int  $subtotal
      * @param bool $withTax
      */
-    public function setSubtotal($subtotal, $withTax = true);
+    public function setSubtotal(int $subtotal, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseDiscount($withTax = true);
+    public function getBaseDiscount(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getBaseDiscountTax();
-
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
-    public function getBaseShipping($withTax = true);
-
-    /**
-     * @return int
-     */
-    public function getBaseShippingTax();
-
-    /**
-     * @return int
-     */
-    public function getBaseTotalTax();
+    public function getBaseDiscountTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseTotal($withTax = true);
+    public function getBaseShipping(bool $withTax = true): int;
+
+    /**
+     * @return int
+     */
+    public function getBaseShippingTax(): int;
+
+    /**
+     * @return int
+     */
+    public function getBaseTotalTax(): int;
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseTotal(bool $withTax = true);
 
     /**
      * @param int  $baseTotal
      * @param bool $withTax
      */
-    public function setBaseTotal($baseTotal, $withTax = true);
+    public function setBaseTotal(int $baseTotal, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseSubtotalTax();
+    public function getBaseSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseSubtotal($withTax = true);
+    public function getBaseSubtotal(bool $withTax = true): int;
 
     /**
      * @param int  $baseSubtotal
      * @param bool $withTax
      */
-    public function setBaseSubtotal($baseSubtotal, $withTax = true);
+    public function setBaseSubtotal(int $baseSubtotal, bool $withTax = true);
 }

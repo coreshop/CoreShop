@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.order.cart.detail.blocks.detail');
-coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.cart.detail.blocks.detail, {
+coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.order.detail.blocks.detail, {
     // initBlock: function() {
     //     var me = this;
     //

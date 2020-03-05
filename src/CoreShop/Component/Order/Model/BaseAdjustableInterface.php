@@ -39,7 +39,7 @@ interface BaseAdjustableInterface
      *
      * @return int
      */
-    public function getBaseAdjustmentsTotal(string $type = null, $withTax = true);
+    public function getBaseAdjustmentsTotal(string $type = null, bool $withTax = true): int;
 
     /**
      * @param string|null $type

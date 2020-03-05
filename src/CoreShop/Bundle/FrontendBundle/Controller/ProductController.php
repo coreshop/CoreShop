@@ -71,6 +71,6 @@ class ProductController extends FrontendController
      */
     protected function getProductByRequest(Request $request)
     {
-        return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        return $this->get('coreshop.repository.stack.purchasable')->find((int)$request->get('product'));
     }
 }

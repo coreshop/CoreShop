@@ -27,7 +27,7 @@ abstract class Order extends BaseOrder implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getShipping($withTax = true)
+    public function getShipping(bool $withTax = true): int
     {
         return $withTax ? $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, true) : $this->getAdjustmentsTotal(AdjustmentInterface::SHIPPING, false);
     }
@@ -35,7 +35,7 @@ abstract class Order extends BaseOrder implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function getShippingTax()
+    public function getShippingTax(): int
     {
         return $this->getShipping(true) - $this->getShipping(false);
     }

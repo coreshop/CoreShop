@@ -22,7 +22,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function setBasePimcoreAdjustmentTotalNet($adjustmentTotalNet)
+    public function setBasePimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -30,7 +30,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBasePimcoreAdjustmentTotalNet()
+    public function getBasePimcoreAdjustmentTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -38,7 +38,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function setBasePimcoreAdjustmentTotalGross($adjustmentTotalGross)
+    public function setBasePimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -46,7 +46,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBasePimcoreAdjustmentTotalGross()
+    public function getBasePimcoreAdjustmentTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -198,7 +198,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBaseAdjustmentsTotal(?string $type = null, $withTax = true)
+    public function getBaseAdjustmentsTotal(?string $type = null, bool $withTax = true): int
     {
         if (null === $type) {
             if ($withTax) {

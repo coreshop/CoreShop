@@ -17,7 +17,11 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
-interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface, BaseAdjustableInterface, StorageListItemInterface
+interface OrderItemInterface extends
+    PimcoreModelInterface,
+    AdjustableInterface,
+    BaseAdjustableInterface,
+    StorageListItemInterface
 {
     /**
      * @return OrderInterface
@@ -45,13 +49,13 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
      *
      * @return int
      */
-    public function getTotal($withTax = true);
+    public function getTotal(bool $withTax = true): int;
 
     /**
      * @param int  $total
      * @param bool $withTax
      */
-    public function setTotal($total, $withTax = true);
+    public function setTotal(int $total, bool $withTax = true);
 
     /**
      * @return bool
@@ -83,77 +87,77 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
      *
      * @return int
      */
-    public function getItemPrice($withTax = true);
+    public function getItemPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemPrice
      * @param bool $withTax
      */
-    public function setItemPrice($itemPrice, $withTax = true);
+    public function setItemPrice(int $itemPrice, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getItemRetailPrice($withTax = true);
+    public function getItemRetailPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemRetailPrice
      * @param bool $withTax
      */
-    public function setItemRetailPrice($itemRetailPrice, $withTax = true);
+    public function setItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getItemDiscountPrice($withTax = true);
+    public function getItemDiscountPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemDiscountPrice
      * @param bool $withTax
      */
-    public function setItemDiscountPrice($itemDiscountPrice, $withTax = true);
+    public function setItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getItemDiscount($withTax = true);
+    public function getItemDiscount(bool $withTax = true): int;
 
     /**
      * @param int  $itemDiscount
      * @param bool $withTax
      */
-    public function setItemDiscount($itemDiscount, $withTax = true);
+    public function setItemDiscount(int $itemDiscount, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getItemWholesalePrice();
+    public function getItemWholesalePrice(): int;
 
     /**
      * @param int $itemWholesalePrice
      */
-    public function setItemWholesalePrice($itemWholesalePrice);
+    public function setItemWholesalePrice(int $itemWholesalePrice);
 
     /**
      * @return int
      */
-    public function getItemTax();
+    public function getItemTax(): int;
 
     /**
      * @param int $itemTax
      */
-    public function setItemTax($itemTax);
+    public function setItemTax(int $itemTax);
 
     /**
      * @return int
      */
-    public function getTotalTax();
+    public function getTotalTax(): int;
 
     /**
      * @return mixed
@@ -168,43 +172,43 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
     /**
      * @param int $baseItemWholesalePrice
      */
-    public function setBaseItemWholesalePrice($baseItemWholesalePrice);
+    public function setBaseItemWholesalePrice(int $baseItemWholesalePrice);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseItemPrice($withTax = true);
+    public function getBaseItemPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemPrice
      * @param bool $withTax
      */
-    public function setBaseItemPrice($itemPrice, $withTax = true);
+    public function setBaseItemPrice(int $itemPrice, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseItemRetailPrice($withTax = true);
+    public function getBaseItemRetailPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemRetailPrice
      * @param bool $withTax
      */
-    public function setBaseItemRetailPrice($itemRetailPrice, $withTax = true);
+    public function setBaseItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseItemTax();
+    public function getBaseItemTax(): int;
 
     /**
      * @param int $itemTax
      */
-    public function setBaseItemTax($itemTax);
+    public function setBaseItemTax(int $itemTax);
 
     /**
      * @return mixed
@@ -221,11 +225,11 @@ interface OrderItemInterface extends PimcoreModelInterface, AdjustableInterface,
      *
      * @return int
      */
-    public function getBaseTotal($withTax = true);
+    public function getBaseTotal(bool $withTax = true): int;
 
     /**
      * @param int  $total
      * @param bool $withTax
      */
-    public function setBaseTotal($total, $withTax = true);
+    public function setBaseTotal(int $total, bool $withTax = true);
 }

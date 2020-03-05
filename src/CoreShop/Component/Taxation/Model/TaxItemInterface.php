@@ -41,10 +41,10 @@ interface TaxItemInterface extends ResourceInterface
     /**
      * @return int
      */
-    public function getAmount();
+    public function getAmount(): int;
 
     /**
      * @param int $amount
      */
-    public function setAmount($amount);
+    public function setAmount(int $amount);
 }

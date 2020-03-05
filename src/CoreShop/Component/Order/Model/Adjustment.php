@@ -42,7 +42,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
     /**
      * {@inheritdoc}
      */
-    public function getAmount($withTax = true)
+    public function getAmount(bool $withTax = true): int
     {
         return $withTax ? $this->getPimcoreAmountGross() : $this->getPimcoreAmountNet();
     }
@@ -131,7 +131,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
     /**
      * {@inheritdoc}
      */
-    public function setPimcoreAmountNet($pimcoreAmountNet)
+    public function setPimcoreAmountNet(int $pimcoreAmountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -139,7 +139,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
     /**
      * {@inheritdoc}
      */
-    public function getPimcoreAmountNet()
+    public function getPimcoreAmountNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -147,7 +147,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
     /**
      * {@inheritdoc}
      */
-    public function setPimcoreAmountGross($pimcoreAmountGross)
+    public function setPimcoreAmountGross(int $pimcoreAmountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -155,7 +155,7 @@ class Adjustment extends AbstractPimcoreFieldcollection implements AdjustmentInt
     /**
      * {@inheritdoc}
      */
-    public function getPimcoreAmountGross()
+    public function getPimcoreAmountGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

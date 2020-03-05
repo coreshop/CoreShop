@@ -36,5 +36,5 @@ interface ShippableInterface
      *
      * @return int
      */
-    public function getSubtotal($withTax = true);
+    public function getSubtotal(bool $withTax = true): int;
 }

@@ -74,7 +74,7 @@ class CategoryController extends FrontendController
      */
     public function menuLeftAction(Request $request)
     {
-        $activeCategory = $request->get('activeCategory');
+        $activeCategory = (int)$request->get('activeCategory');
         $activeSubCategories = [];
 
         $firstLevelCategories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());

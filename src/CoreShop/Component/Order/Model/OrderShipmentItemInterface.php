@@ -21,24 +21,24 @@ interface OrderShipmentItemInterface extends OrderDocumentItemInterface
      *
      * @return int
      */
-    public function getTotal($withTax = true);
+    public function getTotal(bool $withTax = true): int;
 
     /**
      * @param int  $total
      * @param bool $withTax
      */
-    public function setTotal($total, $withTax = true);
+    public function setTotal(int $total, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseTotal($withTax = true);
+    public function getBaseTotal(bool $withTax = true): int;
 
     /**
      * @param int  $baseTotal
      * @param bool $withTax
      */
-    public function setBaseTotal($baseTotal, $withTax = true);
+    public function setBaseTotal(int $baseTotal, bool $withTax = true);
 }

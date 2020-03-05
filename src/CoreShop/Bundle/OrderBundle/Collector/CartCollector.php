@@ -44,7 +44,7 @@ final class CartCollector extends DataCollector
         ];
     }
 
-    public function getCart(): OrderInterface
+    public function getCart(): ?OrderInterface
     {
         return $this->data['cart'];
     }

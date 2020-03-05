@@ -32,7 +32,7 @@ class OrderCommentController extends PimcoreController
     public function listAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $this->getOrderRepository()->find((int)$orderId);
 
         $objectNoteService = $this->get('coreshop.object_note_service');
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);

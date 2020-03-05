@@ -94,7 +94,7 @@ class CustomerController extends FrontendController
      */
     public function orderDetailAction(Request $request)
     {
-        $orderId = $request->get('order');
+        $orderId = (int)$request->get('order');
         $customer = $this->getCustomer();
 
         if (!$customer instanceof CustomerInterface) {
@@ -146,7 +146,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $addressId = $request->get('address');
+        $addressId = (int)$request->get('address');
         $address = $this->get('coreshop.repository.address')->find($addressId);
         $addressAssignmentManager = $this->get(AddressAssignmentManagerInterface::class);
 
@@ -215,7 +215,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $address = $this->get('coreshop.repository.address')->find($request->get('address'));
+        $address = $this->get('coreshop.repository.address')->find((int)$request->get('address'));
 
         if (!$address instanceof AddressInterface) {
             return $this->redirectToRoute('coreshop_customer_addresses');

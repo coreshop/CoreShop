@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Listing\AbstractListing;
 
 class StackRepository extends PimcoreRepository
 {
@@ -82,7 +83,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function getList(): DataObject\Listing
+    public function getList(): AbstractListing
     {
         $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));

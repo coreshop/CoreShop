@@ -103,7 +103,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getWholesalePrice()
+    public function getWholesalePrice(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -111,7 +111,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setWholesalePrice($wholesalePrice)
+    public function setWholesalePrice(int $wholesalePrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

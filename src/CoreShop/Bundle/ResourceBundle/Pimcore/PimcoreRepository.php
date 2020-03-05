@@ -20,6 +20,7 @@ use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\Listing\AbstractListing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -89,7 +90,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getList(): Listing
+    public function getList(): AbstractListing
     {
         $className = $this->metadata->getClass('model');
 

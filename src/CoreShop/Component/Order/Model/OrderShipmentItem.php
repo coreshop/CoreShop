@@ -74,7 +74,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getTotal($withTax = true)
+    public function getTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
@@ -82,7 +82,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setTotal($total, $withTax = true)
+    public function setTotal(int $total, bool $withTax = true)
     {
         return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
@@ -90,7 +90,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getTotalNet()
+    public function getTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -98,7 +98,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setTotalNet($totalNet)
+    public function setTotalNet(int $totalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -106,7 +106,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getTotalGross()
+    public function getTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -122,7 +122,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotal($withTax = true)
+    public function getBaseTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
     }
@@ -130,7 +130,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotal($baseTotal, $withTax = true)
+    public function setBaseTotal(int $baseTotal, bool $withTax = true)
     {
         return $withTax ? $this->setBaseTotalGross($baseTotal) : $this->setBAseTotalNet($baseTotal);
     }
@@ -138,7 +138,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalNet()
+    public function getBaseTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -146,7 +146,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalNet($baseTotalNet)
+    public function setBaseTotalNet(int $baseTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -154,7 +154,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalGross()
+    public function getBaseTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -162,7 +162,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalGross($baseTotalGross)
+    public function setBaseTotalGross(int $baseTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
