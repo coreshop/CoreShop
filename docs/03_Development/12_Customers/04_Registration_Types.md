@@ -12,12 +12,9 @@ core_shop_customer:
 ```
 
 ## Register By Username
-First, you need to make sure your customer object provides a `username` field.	First, you need to make sure your customer object provides a `username` field.	
-By default, coreshop **does not** install this field to prevent unnecessary confusion.	By default, coreshop **does not** install this field to prevent unnecessary confusion.	
-To implement the username field, just open your class editor and add a text field called `username` and you're good to go!	To implement the username field, just open your class editor and add a text field called `username` and you're good to go!
-
-
-To switch to registration by a unique username, you need change the identifier:
+First, you need to make sure your customer object provides a `username` field.	First, you need to make sure your customer object provides a `username` field.	First, you need to make sure your customer object provides a `username` field.	
+By default, coreshop **does not** install this field to prevent unnecessary confusion.	By default, coreshop **does not** install this field to prevent unnecessary confusion.	By default, coreshop **does not** install this field to prevent unnecessary confusion.	
+To implement the username field, just open your class editor and add a text field called `username` and you're good to go!
 
 ```yaml
 core_shop_customer:
