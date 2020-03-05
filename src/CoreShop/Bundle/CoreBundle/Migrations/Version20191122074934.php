@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;

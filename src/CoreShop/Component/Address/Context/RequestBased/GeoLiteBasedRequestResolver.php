@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Context\CountryNotFoundException;
@@ -56,7 +58,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     {
         $geoDbFileLocation = $this->geoDbFile;
 
-        if (!file_exists($geoDbFileLocation)) {
+        if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             @trigger_error(
                 'You are still using the default search path for the MaxMind GEO DB File. Pimcore introduced a new parameter for the file, use that instead.',
                 E_USER_DEPRECATED
@@ -65,7 +67,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             $geoDbFileLocation = $this->geoDbFallbackFile;
         }
 
-        if (!file_exists($geoDbFileLocation)) {
+        if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             throw new CountryNotFoundException();
         }
 

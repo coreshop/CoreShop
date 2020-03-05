@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -99,7 +101,7 @@ trait TranslatableTrait
     }
 
     /**
-     * @return Collection|TranslationInterface[]
+     * @return TranslationInterface[]|Collection
      */
     public function getTranslations()
     {

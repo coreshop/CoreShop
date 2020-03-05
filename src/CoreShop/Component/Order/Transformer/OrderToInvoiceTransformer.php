@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
@@ -122,6 +124,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
+        /**
+         * @var OrderInterface $order
+         */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($invoice, OrderInvoiceInterface::class);
 
@@ -135,7 +140,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         /**
          * @var OrderInvoiceInterface $invoice
-         * @var OrderInterface        $order
          */
         $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
         $invoice->setInvoiceNumber($invoiceNumber);
@@ -153,7 +157,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $items = [];
 
         /**
-         * @var OrderItemInterface $cartItem
+         * @var OrderItemInterface $item
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();

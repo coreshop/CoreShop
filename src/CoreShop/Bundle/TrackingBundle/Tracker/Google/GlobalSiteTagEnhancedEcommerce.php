@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -74,7 +76,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_view', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -96,7 +98,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -105,7 +107,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, float $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGoogleTagMode() === false) {
             return;
@@ -117,7 +119,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, float $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGoogleTagMode() === false) {
             return;
@@ -184,7 +186,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($product, $action, float $quantity = 1): void
+    protected function trackCartAction($product, $action, float $quantity = 1.0): void
     {
         $product = $this->transformProductAction($product);
         $product['quantity'] = $quantity;

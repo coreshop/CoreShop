@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\MatchCondition;
@@ -52,7 +54,9 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
             $value = $condition->getConfiguration()['preSelect'];
         }
 
-        $value = trim($value);
+        if (is_string($value)) {
+            $value = trim($value);
+        }
 
         if (!empty($value)) {
             $currentFilter[$field] = $value;
@@ -63,7 +67,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
                 $fieldName = 'PRECONDITION_' . $fieldName;
             }
 
-            $list->addCondition(new MatchCondition($field, $value), $fieldName);
+            $list->addCondition(new MatchCondition($field, (string)$value), $fieldName);
         }
 
         return $currentFilter;

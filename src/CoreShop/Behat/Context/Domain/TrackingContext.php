@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -106,7 +108,7 @@ final class TrackingContext implements Context
 
         $params = ['cart' => $cart, 'product' => $product];
 
-        if ($cart->getItems() > 0) {
+        if (count($cart->getItems()) > 0) {
             $params['cartItem'] = $cart->getItems()[0];
         }
 

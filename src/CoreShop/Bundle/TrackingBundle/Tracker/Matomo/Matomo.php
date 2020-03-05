@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Matomo;
 
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
@@ -106,7 +108,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, float $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         if ($this->handleCartAdd) {
             $this->trackCartAction($cart, 'add', $quantity);
@@ -116,7 +118,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, float $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         if ($this->handleCartRemove) {
             $this->trackCartAction($cart, 'remove', $quantity);
@@ -126,7 +128,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($cart, $action, float $quantity = 1): void
+    protected function trackCartAction($cart, $action, float $quantity = 1.0): void
     {
         $calls = $this->buildItemCalls($cart['items']);
         $calls[] = [

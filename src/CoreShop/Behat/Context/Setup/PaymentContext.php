@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -52,9 +54,11 @@ final class PaymentContext implements Context
     {
         /**
          * @var PaymentProviderInterface $paymentProvider
-         * @var GatewayConfig            $gatewayConfig
          */
         $paymentProvider = $this->paymentProviderFactory->createNew();
+        /**
+         * @var GatewayConfig $gatewayConfig
+         */
         $gatewayConfig = $this->gatewayConfigFactory->createNew();
 
         foreach (Tool::getValidLanguages() as $lang) {

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
@@ -100,7 +102,7 @@ final class ProductPriceRuleCalculator implements
 
         foreach ($rules as $rule) {
             /**
-             * @var ActionInterface
+             * @var ActionInterface $action
              */
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());

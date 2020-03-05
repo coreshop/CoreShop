@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
@@ -198,10 +200,10 @@ class CheckoutController extends FrontendController
          * Check all previous steps if they are valid, if not, redirect back
          */
 
-        /**
-         * @var CheckoutStepInterface $step
-         */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
+            /**
+             * @var CheckoutStepInterface $step
+             */
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {

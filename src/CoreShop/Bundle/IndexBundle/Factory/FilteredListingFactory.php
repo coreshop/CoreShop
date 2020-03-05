@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Factory;
 
 use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
@@ -23,7 +25,7 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
 {
     private $listingFactory;
     private $filterProcessor;
-    
+
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)
     {
         $this->listingFactory = $listingFactory;

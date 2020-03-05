@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -39,7 +41,7 @@ class Cart extends BaseCart implements CartInterface
 
     public function setWeight($weight)
     {
-        // TODO: Implement setWeight() method.
+
     }
 
     /**

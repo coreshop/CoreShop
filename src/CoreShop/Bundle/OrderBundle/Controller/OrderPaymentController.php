@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
@@ -91,13 +93,13 @@ class OrderPaymentController extends PimcoreController
             if ($totalPaymentWouldBe > $order->getTotal()) {
                 return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
             } else {
-                /**
-                 * @var PaymentInterface $payment
-                 */
                 $tokenGenerator = new UniqueTokenGenerator(true);
                 $uniqueId = $tokenGenerator->generate(15);
                 $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
+                /**
+                 * @var PaymentInterface $payment
+                 */
                 $payment = $this->getPaymentFactory()->createNew();
                 $payment->setNumber($orderNumber);
                 $payment->setPaymentProvider($paymentProvider);

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\LikeCondition;
@@ -96,7 +98,7 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         }
 
         if (!empty($value)) {
-            $value = '%,' . trim($value) . ',%';
+            $value = '%,' . trim((string)$value) . ',%';
             $fieldName = $isPrecondition ? 'PRECONDITION_' . $field : $field;
             $list->addCondition(new LikeCondition($field, 'both', $value), $fieldName);
         }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart\Rule;
 
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
@@ -40,7 +42,7 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         $result = false;
 
         /**
-         * @var ProposalCartPriceRuleItemInterface
+         * @var ProposalCartPriceRuleItemInterface $priceRuleItem
          */
         if ($priceRuleItem === null) {
             $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();

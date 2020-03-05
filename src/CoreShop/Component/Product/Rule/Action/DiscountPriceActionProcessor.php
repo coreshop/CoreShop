@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -40,11 +42,13 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
         /**
-         * @var CurrencyInterface $currency
          * @var CurrencyInterface $contextCurrency
          */
         $contextCurrency = $context['currency'];
         $price = $configuration['price'];
+        /**
+         * @var CurrencyInterface $currency
+         */
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);

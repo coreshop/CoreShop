@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use Carbon\Carbon;
@@ -328,17 +330,17 @@ interface OrderInterface extends
     public function setAdditionalData($additionalData);
 
     /**
-     * @return array
+     * @return Fieldcollection
      */
     public function getPriceRuleItems();
 
     /**
-     * @param array $priceRuleItems
+     * @param Fieldcollection $priceRuleItems
      */
     public function setPriceRuleItems($priceRuleItems);
 
     /**
-     * @return array
+     * @return ProposalCartPriceRuleItemInterface[]
      */
     public function getPriceRules();
 

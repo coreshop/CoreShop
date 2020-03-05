@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -105,7 +107,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->codeTracker->addCodePart($result);
@@ -114,7 +116,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, float $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'add', $quantity);
@@ -123,7 +125,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, float $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'remove', $quantity);
@@ -183,7 +185,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($product, $action, float $quantity = 1): void
+    protected function trackCartAction($product, $action, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
 

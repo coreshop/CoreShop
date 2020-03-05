@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
 use Metadata\Driver\DriverInterface;
@@ -27,7 +29,7 @@ class PimcoreDataObjectDriver implements DriverInterface
     {
         //We don't want Pimcore entities to be serialized directly
         if ($class->getNamespaceName() === 'Pimcore\\Model\\DataObject') {
-            return null;
+            throw new \InvalidArgumentException('Invalid class given');
         }
 
         return $this->decorated->loadMetadataForClass($class);

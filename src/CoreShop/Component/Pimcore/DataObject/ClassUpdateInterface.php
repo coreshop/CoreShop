@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
@@ -27,7 +29,7 @@ interface ClassUpdateInterface
      *
      * @return bool
      */
-    public function save();
+    public function save(): bool;
 
     /**
      * get a property from the class.
@@ -36,17 +38,15 @@ interface ClassUpdateInterface
      *
      * @return array
      */
-    public function getProperty($property);
+    public function getProperty($property): array;
 
     /**
      * set a property for the class.
      *
      * @param string $property
      * @param mixed  $value
-     *
-     * @return mixed
      */
-    public function setProperty($property, $value);
+    public function setProperty($property, $value): void;
 
     /**
      * Check if Class has field.
@@ -55,14 +55,14 @@ interface ClassUpdateInterface
      *
      * @return bool
      */
-    public function hasField($fieldName);
+    public function hasField($fieldName): bool;
 
     /**
      * @param string $fieldName
      *
      * @return Data|null
      */
-    public function getFieldDefinition($fieldName);
+    public function getFieldDefinition($fieldName): ?Data;
 
     /**
      * Insert Field at the end.
@@ -71,7 +71,7 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function insertField($jsonFieldDefinition);
+    public function insertField($jsonFieldDefinition): void;
 
     /**
      * Insert Field before another field.
@@ -81,7 +81,7 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition);
+    public function insertFieldBefore($fieldName, $jsonFieldDefinition): void;
 
     /**
      * Insert Field after another field.
@@ -91,7 +91,7 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition);
+    public function insertFieldAfter($fieldName, $jsonFieldDefinition): void;
 
     /**
      * Replace existing Field with a new Definition.
@@ -101,7 +101,7 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function replaceField($fieldName, $jsonFieldDefinition);
+    public function replaceField($fieldName, $jsonFieldDefinition): void;
 
     /**
      * Replace Properties from any field.
@@ -111,7 +111,7 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function replaceFieldProperties($fieldName, array $keyValues);
+    public function replaceFieldProperties($fieldName, array $keyValues): void;
 
     /**
      * Remove existing Field.
@@ -120,5 +120,5 @@ interface ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    public function removeField($fieldName);
+    public function removeField($fieldName): void;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
@@ -72,15 +74,20 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
             $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
         }
 
+
+        $amount = $configuration['amount'];
         /**
          * @var CurrencyInterface $currency
          */
-        $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
+        return (int) $this->moneyConverter->convert(
+            $this->getApplicableAmount($cartAmount, $amount),
+            $currency->getIsoCode(),
+            $cart->getCurrency()->getIsoCode()
+        );
     }
 
     protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int

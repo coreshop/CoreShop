@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
@@ -59,14 +61,23 @@ final class RequestCartAvailability
 
         $cart = $this->shopperContext->getCart();
 
-        if ($cart->getId()) {
-            if ($cart->getNeedsRecalculation() === true) {
-                $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.global_error.cart_has_changed');
-                $cart->setNeedsRecalculation(false);
-                $this->cartManager->persistCart($cart);
-                // redirect to same page, otherwise flashbag will show up twice. better solution?
-                $event->setResponse(new RedirectResponse($event->getRequest()->getRequestUri()));
-            }
+        if (!$cart instanceof OrderInterface) {
+            return;
         }
+
+        if (!$cart->getId()) {
+            return;
+        }
+
+        if (!$cart->getNeedsRecalculation()) {
+            return;
+        }
+
+        $this->session->getFlashBag()->add('coreshop_global_error', 'coreshop.global_error.cart_has_changed');
+        $cart->setNeedsRecalculation(false);
+        $this->cartManager->persistCart($cart);
+
+        // redirect to same page, otherwise flashbag will show up twice. better solution?
+        $event->setResponse(new RedirectResponse($event->getRequest()->getRequestUri()));
     }
 }

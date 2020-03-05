@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -77,7 +79,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, float $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
@@ -85,7 +87,7 @@ class UniversalEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, float $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }

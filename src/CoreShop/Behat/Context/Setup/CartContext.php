@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -103,7 +105,7 @@ final class CartContext implements Context
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") to my cart$/
      * @Given /^I add another (product "[^"]+" with unit "[^"]+") in quantity ([^"]+) to my cart$/
      */
-    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1)
+    public function addProductInUnitToCart(array $productAndUnit, float $quantity = 1.0)
     {
         $cart = $this->cartContext->getCart();
 

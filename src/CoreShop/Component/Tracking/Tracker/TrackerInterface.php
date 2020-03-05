@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Tracking\Tracker;
 
 interface TrackerInterface
@@ -22,9 +24,9 @@ interface TrackerInterface
 
     public function trackProductImpression($product): void;
 
-    public function trackCartAdd($cart, $product, float $quantity = 1): void;
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void;
 
-    public function trackCartRemove($cart, $product, float $quantity = 1): void;
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void;
 
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void;
 

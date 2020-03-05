@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
@@ -199,13 +201,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataFromResource
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -217,13 +213,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataForQueryResource
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -231,13 +221,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataForEditmode
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -245,13 +229,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataFromEditmode
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
@@ -263,13 +241,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getVersionPreview
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
@@ -277,12 +249,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * Checks if data is valid for current data field.
-     *
-     * @param mixed $data
-     * @param bool  $omitMandatoryCheck
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
@@ -301,25 +268,18 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
                 throw new Model\Element\ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
+            if (null !== $this->getMinValue() && $this->getMinValue() > $data) {
                 throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
             }
 
-            if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
+            if (null !== $this->getMaxValue() && $data > $this->getMaxValue()) {
                 throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
             }
         }
     }
 
     /**
-     * converts object data to a simple string value or CSV Export.
-     *
-     * @abstract
-     *
-     * @param Model\DataObject\AbstractObject $object
-     * @param array                           $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getForCsvExport($object, $params = [])
     {
@@ -329,26 +289,15 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * fills object field data values from CSV Import String.
-     *
-     * @param string                               $importValue
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-        $value = $this->toNumeric(str_replace(',', '.', $importValue));
-
-        return $value;
+        return $this->toNumeric(str_replace(',', '.', $importValue));
     }
 
-    /** True if change is allowed in edit mode.
-     * @param string $object
-     * @param mixed  $params
-     *
-     * @return bool
+    /**
+     * {@inheritdoc}
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
@@ -370,7 +319,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
      */
     public function isEmpty($data)
     {
-        return strlen($data) < 1;
+        return null === $data || $data === '';
     }
 
     /**

@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\Tracking;
+declare(strict_types=1);
 
 namespace CoreShop\Component\Tracking\Tracker;
 
@@ -60,7 +60,7 @@ class CompositeTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, float $quantity = 1): void
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);
@@ -71,7 +71,7 @@ class CompositeTracker implements TrackerInterface
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, float $quantity = 1): void
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         $cart = $this->extractTrackingData($cart);
         $product = $this->extractTrackingData($product);

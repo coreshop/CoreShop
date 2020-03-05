@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Factory;
 
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -37,7 +39,7 @@ class OrderItemFactory implements OrderItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1): OrderItemInterface
+    public function createWithCart(OrderInterface $cart, PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());
@@ -54,7 +56,7 @@ class OrderItemFactory implements OrderItemFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1): OrderItemInterface
+    public function createWithPurchasable(PurchasableInterface $purchasable, float $quantity = 1.0): OrderItemInterface
     {
         $item = $this->cartItemFactory->createNew();
         $item->setKey(uniqid());

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Configuration;
 
 use CoreShop\Component\Configuration\Model\ConfigurationInterface;
@@ -23,6 +25,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
+    /**
+     * @var ConfigurationRepositoryInterface
+     */
     protected $configurationRepository;
     protected $storeContext;
 

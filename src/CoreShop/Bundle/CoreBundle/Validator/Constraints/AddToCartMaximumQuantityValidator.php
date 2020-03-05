@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
@@ -59,10 +61,13 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
 
         /**
          * @var OrderInterface      $cart
+         */
+        $cart = $addToCartDto->getCart();
+
+        /**
          * @var OrderItemInterface $cartItem
          */
         $cartItem = $addToCartDto->getCartItem();
-        $cart = $addToCartDto->getCart();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $maxLimit = $purchasable->getMaximumQuantityToOrder();

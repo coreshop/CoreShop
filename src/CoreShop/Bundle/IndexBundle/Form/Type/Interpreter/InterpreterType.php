@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
 
 use CoreShop\Bundle\IndexBundle\Form\Type\IndexColumnInterpreterChoiceType;

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
@@ -98,11 +100,11 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $taxItems = $item->getTaxes();
 
                 if ($withTax) {
-                    $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
+                    $itemDiscountNet = (int)($applicableAmount / (1 + $taxCalculator->getTotalRate() / 100));
 
                     $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, ($positive ? $itemDiscountNet : -1 * $itemDiscountNet), $taxItems->getItems()));
                 } else {
-                    $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
+                    $itemDiscountGross = (int)($applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100)));
 
                     $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, ($positive ? $itemDiscountGross : -1 * $itemDiscountGross), $taxItems->getItems()));
                 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -26,6 +28,9 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
 
         do {
             if (is_subclass_of($parent, OrderInvoiceInterface::class)) {
+                /**
+                 * @var OrderInvoiceInterface $parent
+                 */
                 return $parent;
             }
             $parent = $parent->getParent();

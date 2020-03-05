@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
@@ -134,14 +136,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         }
     }
 
-    /**
-     * @param Document $rootDocument
-     * @param string   $language
-     * @param array    $properties
-     *
-     * @return Document
-     */
-    private function installDocument(Document $rootDocument, $language, $properties)
+    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
@@ -202,12 +197,14 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 if ($document instanceof Document\PageSnippet) {
                     $document->setMissingRequiredEditable(false);
                 }
-                
+
                 $document->setPublished(true);
                 $document->save();
 
                 return $document;
             }
         }
+
+        return null;
     }
 }

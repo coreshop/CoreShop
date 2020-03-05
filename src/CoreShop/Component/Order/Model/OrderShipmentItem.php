@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -26,6 +28,9 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
 
         do {
             if (is_subclass_of($parent, OrderShipmentInterface::class)) {
+                /**
+                 * @var OrderShipmentInterface $parent
+                 */
                 return $parent;
             }
             $parent = $parent->getParent();

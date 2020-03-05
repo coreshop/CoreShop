@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\CartInterface as BaseCartInterface;
@@ -30,7 +32,7 @@ interface CartInterface extends BaseCartInterface, ShippableInterface, CarrierAw
     public function getWeight();
 
     /**
-     * @return float
+     * @param float $weight
      */
     public function setWeight($weight);
 

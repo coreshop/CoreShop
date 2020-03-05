@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -25,7 +27,7 @@ final class CartPriceRuleContext implements Context
     private $sharedStorage;
     private $shopperContext;
     private $cartPriceRuleValidationProcessor;
-    
+
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,

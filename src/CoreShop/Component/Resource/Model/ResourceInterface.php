@@ -10,12 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Model;
 
 interface ResourceInterface
 {
     /**
-     * @return int
+     * @return int|string
      */
     public function getId();
 

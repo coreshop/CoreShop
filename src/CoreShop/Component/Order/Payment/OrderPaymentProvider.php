@@ -10,15 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Payment;
 
+use CoreShop\Component\Payment\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
-use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
@@ -43,8 +45,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
         /**
-         * @var PaymentInterface $payment
-         * @var Payment          $payment
+         * @var Payment $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);

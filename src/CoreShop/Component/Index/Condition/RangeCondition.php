@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 class RangeCondition implements ConditionInterface
@@ -49,7 +51,7 @@ class RangeCondition implements ConditionInterface
     {
         return $this->to;
     }
-    
+
     public function setTo(string $to): void
     {
         $this->to = $to;

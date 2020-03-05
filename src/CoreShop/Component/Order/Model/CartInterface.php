@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 interface CartInterface extends ProposalInterface, PimcoreModelInterface, StorageListInterface
 {
@@ -29,17 +32,17 @@ interface CartInterface extends ProposalInterface, PimcoreModelInterface, Storag
     public function getOrder();
 
     /**
-     * @return array
+     * @return Fieldcollection
      */
     public function getPriceRuleItems();
 
     /**
-     * @param array $priceRuleItems
+     * @param Fieldcollection $priceRuleItems
      */
     public function setPriceRuleItems($priceRuleItems);
 
     /**
-     * @return array
+     * @return ProposalCartPriceRuleItemInterface[]
      */
     public function getPriceRules();
 

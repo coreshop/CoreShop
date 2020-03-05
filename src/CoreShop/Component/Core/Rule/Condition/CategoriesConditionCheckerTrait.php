@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Rule\Condition;
 
 use CoreShop\Component\Core\Model\CategoryInterface;
@@ -31,7 +33,7 @@ trait CategoriesConditionCheckerTrait
 
         if ($recursive) {
             foreach ($categories as $categoryId) {
-                $category = $this->categoryRepository->find($categoryId);
+                $category = $this->categoryRepository->find((int) $categoryId);
 
                 if (!$category instanceof CategoryInterface) {
                     continue;

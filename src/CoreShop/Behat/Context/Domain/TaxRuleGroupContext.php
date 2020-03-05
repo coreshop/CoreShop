@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -79,7 +81,7 @@ final class TaxRuleGroupContext implements Context
      * @Then /^the (tax rule group "[^"]+") should add "([^"]+)" to the price "([^"]+)"$/
      * @Then /^the (tax rule group) should add "([^"]+)" to the price "([^"]+)"$/
      */
-    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, $price)
+    public function taxRuleShouldTaxThePrice(TaxRuleGroupInterface $taxRuleGroup, $tax, int $price)
     {
         $address = $this->addressFactory->createNew();
         $address->setCountry($this->countryContext->getCountry());

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Checkout\Step;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType;
@@ -128,12 +130,16 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
     /**
      * @param OrderInterface $cart
      *
-     * @return CarrierInterface[]
+     * @return \CoreShop\Component\Shipping\Model\CarrierInterface[]
      */
     private function getCarriers(OrderInterface $cart): array
     {
-        return $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
+        /**
+         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
+         */
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
 
+        return $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
     }
 
     private function createForm(Request $request, array$carriers, OrderInterface $cart): FormInterface
