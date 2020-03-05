@@ -123,22 +123,6 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $username
-     */
-    public function setUsername($username)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getPassword()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -214,6 +198,14 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     public function setCustomerGroups($customerGroups)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUsername()
+    {
+        return $this->getEmail();
     }
 
     /**

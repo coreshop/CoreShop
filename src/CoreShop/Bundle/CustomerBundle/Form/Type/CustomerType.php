@@ -95,20 +95,6 @@ class CustomerType extends AbstractResourceType
                     'required' => false,
                 ]);
         }
-
-        $builder->addEventListener(FormEvents::SUBMIT, static function(FormEvent $event) use ($options) {
-            $data = $event->getData();
-
-            if (!$data instanceof CustomerInterface) {
-                return;
-            }
-
-            if (!$options['allow_username']) {
-                $data->setUsername($data->getEmail());
-            }
-
-            $event->setData($data);
-        });
     }
 
     /**
