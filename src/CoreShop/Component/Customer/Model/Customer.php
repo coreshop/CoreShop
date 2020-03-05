@@ -123,6 +123,14 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function setUsername($username)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPassword()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -205,6 +213,7 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
      */
     public function getUsername()
     {
+        //This is just a fallback, if you want to use username for login, this method is overwritten by Pimcore's implementation
         return $this->getEmail();
     }
 

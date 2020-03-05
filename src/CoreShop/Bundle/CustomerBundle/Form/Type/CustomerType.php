@@ -13,7 +13,6 @@
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -21,8 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -63,20 +60,21 @@ class CustomerType extends AbstractResourceType
             ])
             ->add('lastname', TextType::class, [
                 'label' => 'coreshop.form.customer.lastname',
-            ])
-            ->add('email', RepeatedType::class, [
-                'type' => EmailType::class,
-                'invalid_message' => 'coreshop.form.customer.email.must_match',
-                'first_options' => ['label' => 'coreshop.form.customer.email'],
-                'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
-            ])
-        ;
+            ]);
+
 
         if ($options['allow_username']) {
             $builder->add('username', TextType::class, [
                 'label' => 'coreshop.form.customer.username',
             ]);
         }
+
+        $builder->add('email', RepeatedType::class, [
+            'type' => EmailType::class,
+            'invalid_message' => 'coreshop.form.customer.email.must_match',
+            'first_options' => ['label' => 'coreshop.form.customer.email'],
+            'second_options' => ['label' => 'coreshop.form.customer.email_repeat'],
+        ]);
 
         if (!$options['guest'] && $options['allow_password_field']) {
             $builder

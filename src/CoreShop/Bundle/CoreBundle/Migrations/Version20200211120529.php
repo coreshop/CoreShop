@@ -91,7 +91,7 @@ class Version20200211120529 extends AbstractPimcoreMigration implements Containe
         $saveClass = false;
         $classUpdater = new ClassUpdate($this->container->getParameter('coreshop.model.customer.pimcore_class_name'));
 
-        if (!$classUpdater->hasField('companyRelation')) {
+        if (!$classUpdater->hasField('company')) {
             $classUpdater->insertFieldAfter('lastname', $companyField);
             $saveClass = true;
         }
