@@ -159,7 +159,7 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find((int)$request->get('product'));
+        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             if ($request->isXmlHttpRequest()) {

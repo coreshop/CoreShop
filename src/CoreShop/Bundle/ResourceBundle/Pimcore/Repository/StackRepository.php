@@ -94,7 +94,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function forceFind(int $id, bool $force = true): ?DataObject\Concrete
+    public function forceFind($id, bool $force = true): ?DataObject\Concrete
     {
         $instance = DataObject::getById($id, $force);
 

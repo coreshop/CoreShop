@@ -33,7 +33,7 @@ trait CategoriesConditionCheckerTrait
 
         if ($recursive) {
             foreach ($categories as $categoryId) {
-                $category = $this->categoryRepository->find((int) $categoryId);
+                $category = $this->categoryRepository->find( $categoryId);
 
                 if (!$category instanceof CategoryInterface) {
                     continue;

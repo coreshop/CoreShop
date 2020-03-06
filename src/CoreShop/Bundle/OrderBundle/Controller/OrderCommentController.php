@@ -32,7 +32,7 @@ class OrderCommentController extends PimcoreController
     public function listAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find((int)$orderId);
+        $order = $this->getOrderRepository()->find($orderId);
 
         $objectNoteService = $this->get('coreshop.object_note_service');
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
@@ -65,7 +65,7 @@ class OrderCommentController extends PimcoreController
         $submitAsEmail = $request->get('submitAsEmail') === 'true';
         $orderId = $request->get('id');
 
-        $order = $this->getOrderRepository()->find((int)$orderId);
+        $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);

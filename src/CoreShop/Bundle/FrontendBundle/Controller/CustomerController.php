@@ -215,7 +215,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $address = $this->get('coreshop.repository.address')->find((int)$request->get('address'));
+        $address = $this->get('coreshop.repository.address')->find($request->get('address'));
 
         if (!$address instanceof AddressInterface) {
             return $this->redirectToRoute('coreshop_customer_addresses');

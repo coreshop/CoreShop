@@ -43,7 +43,7 @@ class OrderInvoiceController extends PimcoreController
     public function getInvoiceAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find((int)$orderId);
+        $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -112,7 +112,7 @@ class OrderInvoiceController extends PimcoreController
 
             $resource = $handledForm->getData();
 
-            $order = $this->getOrderRepository()->find((int)$orderId);
+            $order = $this->getOrderRepository()->find($orderId);
 
             if (!$order instanceof OrderInterface) {
                 return $this->viewHandler->handle([
@@ -159,7 +159,7 @@ class OrderInvoiceController extends PimcoreController
     public function updateStateAction(Request $request)
     {
         $invoiceId = $request->get('id');
-        $invoice = $this->getOrderInvoiceRepository()->find((int)$invoiceId);
+        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
         $transition = $request->get('transition');
 
         if (!$invoice instanceof OrderInvoiceInterface) {
@@ -185,7 +185,7 @@ class OrderInvoiceController extends PimcoreController
     public function renderAction(Request $request)
     {
         $invoiceId = $request->get('id');
-        $invoice = $this->getOrderInvoiceRepository()->find((int)$invoiceId);
+        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
             try {

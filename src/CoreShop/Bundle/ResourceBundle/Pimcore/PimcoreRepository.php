@@ -126,7 +126,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function forceFind(int $id, bool $force = true): ?Concrete
+    public function forceFind($id, bool $force = true): ?Concrete
     {
         $class = $this->metadata->getClass('model');
 

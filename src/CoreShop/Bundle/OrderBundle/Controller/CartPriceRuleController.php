@@ -48,7 +48,7 @@ class CartPriceRuleController extends ResourceController
     public function getVoucherCodesAction(Request $request)
     {
         $id = $request->get('cartPriceRule');
-        $cartPriceRule = $this->repository->find((int)$id);
+        $cartPriceRule = $this->repository->find($id);
 
         if (!$cartPriceRule instanceof CartPriceRuleInterface) {
             throw new NotFoundHttpException();
@@ -130,7 +130,7 @@ class CartPriceRuleController extends ResourceController
     public function exportVoucherCodesAction(Request $request)
     {
         $id = $request->get('cartPriceRule');
-        $priceRule = $this->repository->find((int)$id);
+        $priceRule = $this->repository->find($id);
 
         if ($priceRule instanceof CartPriceRuleInterface) {
             $fileName = $priceRule->getName() . '_vouchercodes';
@@ -177,7 +177,7 @@ class CartPriceRuleController extends ResourceController
     {
         $cartPriceRuleId = $request->get('cartPriceRule');
         $id = $request->get('id');
-        $cartPriceRule = $this->repository->find((int)$cartPriceRuleId);
+        $cartPriceRule = $this->repository->find($cartPriceRuleId);
 
         if (!$cartPriceRule instanceof CartPriceRuleInterface) {
             throw new NotFoundHttpException();

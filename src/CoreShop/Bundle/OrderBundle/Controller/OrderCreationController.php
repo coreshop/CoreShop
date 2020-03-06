@@ -58,7 +58,7 @@ class OrderCreationController extends PimcoreController
         $this->isGrantedOr403();
 
         $customerId = $request->get('customerId');
-        $customer = $customerRepository->find((int)$customerId);
+        $customer = $customerRepository->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
             return $this->viewHandler->handle([

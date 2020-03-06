@@ -39,7 +39,7 @@ class OrderEditController extends PimcoreController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $orderRepository->find((int)$cartId);
+        $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
@@ -84,7 +84,7 @@ class OrderEditController extends PimcoreController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $orderRepository->find((int)$cartId);
+        $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
@@ -98,7 +98,7 @@ class OrderEditController extends PimcoreController
             $productId = $product['cartItem']['purchasable'];
             $quantity = $product['cartItem']['quantity'] ?? 1;
 
-            $product = $purchasableStackRepository->find((int)$productId);
+            $product = $purchasableStackRepository->find($productId);
 
             if (!$product instanceof PurchasableInterface) {
                 return new JsonResponse([
@@ -153,7 +153,7 @@ class OrderEditController extends PimcoreController
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
-        $cart = $orderRepository->find((int)$cartId);
+        $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
             return $this->viewHandler->handle(
@@ -162,7 +162,7 @@ class OrderEditController extends PimcoreController
         }
 
         $cartItemId = $request->get('cartItem');
-        $cartItem = $orderItemRepository->find((int)$cartItemId);
+        $cartItem = $orderItemRepository->find($cartItemId);
 
         if (!$cartItem instanceof OrderItemInterface) {
             return $this->viewHandler->handle(

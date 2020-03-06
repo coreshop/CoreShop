@@ -157,7 +157,7 @@ class OrderController extends PimcoreController
     ): Response
     {
         $orderId = $request->get('o_id');
-        $order = $orderRepository->find((int)$orderId);
+        $order = $orderRepository->find($orderId);
         $transition = $request->get('transition');
 
         if (!$order instanceof OrderInterface) {
@@ -255,7 +255,7 @@ class OrderController extends PimcoreController
         $this->isGrantedOr403();
 
         $orderId = $request->get('id');
-        $order = $orderRepository->find((int)$orderId);
+        $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);

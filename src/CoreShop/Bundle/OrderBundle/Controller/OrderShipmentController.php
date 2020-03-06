@@ -45,7 +45,7 @@ class OrderShipmentController extends PimcoreController
     public function getShipAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find((int)$orderId);
+        $order = $this->getOrderRepository()->find($orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -160,7 +160,7 @@ class OrderShipmentController extends PimcoreController
      */
     public function updateStateAction(Request $request)
     {
-        $shipment = $this->getOrderShipmentRepository()->find((int)$request->get('id'));
+        $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
         $transition = $request->get('transition');
 
         if (!$shipment instanceof OrderShipmentInterface) {
@@ -186,7 +186,7 @@ class OrderShipmentController extends PimcoreController
     public function renderAction(Request $request)
     {
         $shipmentId = $request->get('id');
-        $shipment = $this->getOrderShipmentRepository()->find((int)$shipmentId);
+        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
 
         if ($shipment instanceof OrderShipmentInterface) {
             try {

@@ -24,5 +24,5 @@ interface PimcoreRepositoryInterface extends RepositoryInterface
 
     public function getList(): AbstractListing;
 
-    public function forceFind(int $id, bool $force = true): ?Concrete;
+    public function forceFind($id, bool $force = true): ?Concrete;
 }
