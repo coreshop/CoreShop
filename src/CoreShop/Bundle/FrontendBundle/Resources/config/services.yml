@@ -23,3 +23,9 @@ services:
             - '@coreshop.context.shopper'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\EventListener\PartialProtectionListener:
+        arguments:
+            - '@coreshop.link_generator'
+        tags:
+            - { name: kernel.event_subscriber }

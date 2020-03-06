@@ -157,6 +157,8 @@ class CartController extends FrontendController
      */
     public function addItemAction(Request $request)
     {
+        $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
+
         $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
@@ -165,8 +167,6 @@ class CartController extends FrontendController
                     'success' => false,
                 ]);
             }
-
-            $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
 
             return $this->redirect($redirect);
         }
