@@ -18,7 +18,7 @@
         "coreshop/notification": "^3.0",
         "coreshop/registry": "^3.0",
         "coreshop/rule-bundle": "^3.0",
-        "pimcore/pimcore": "^6.5.0"
+        "pimcore/pimcore": "^6.6.0"
     },
     "config": {
         "bin-dir": "bin"
