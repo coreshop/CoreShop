@@ -23,7 +23,7 @@ if (!defined('TESTS_PATH')) {
     define('TESTS_PATH', __DIR__);
 }
 
-define('PIMCORE_CLASS_DIRECTORY', __DIR__ . '/tmp/var/classes');
+define('PIMCORE_CLASS_DIRECTORY', __DIR__ . '/var/tmp/behat/var/classes');
 define('PIMCORE_TEST', true);
 
 require_once __DIR__ .'/app/BehatAppKernel.php';

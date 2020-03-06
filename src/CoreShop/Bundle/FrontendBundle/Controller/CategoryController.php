@@ -74,7 +74,7 @@ class CategoryController extends FrontendController
      */
     public function menuLeftAction(Request $request)
     {
-        $activeCategory = (int)$request->get('activeCategory');
+        $activeCategory = $request->get('activeCategory');
         $activeSubCategories = [];
 
         $firstLevelCategories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
@@ -184,7 +184,7 @@ class CategoryController extends FrontendController
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
 
-            $list = $this->getProductRepository()->getProducts($options);
+            $list = $this->getProductRepository()->getProductsListing($options);
 
             $paginator = new Paginator($list);
             $paginator->setItemCountPerPage($perPage);

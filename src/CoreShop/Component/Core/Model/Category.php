@@ -32,7 +32,15 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getMetaDescription($language = null)
     {
-        return $this->getPimcoreMetaDescription($language) ?: strip_tags($this->getDescription($language));
+        if (null !== $this->getPimcoreMetaDescription($language)) {
+            return $this->getPimcoreMetaDescription($language);
+        }
+
+        if (null !== $this->getDescription($language)) {
+            return strip_tags($this->getDescription($language));
+        }
+
+        return null;
     }
 
     /**
