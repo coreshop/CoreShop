@@ -170,7 +170,7 @@ class ResourceController extends AdminController
         return $this->viewHandler->handle(['success' => false]);
     }
 
-    protected function findOr404(int $id)
+    protected function findOr404($id)
     {
         $model = $this->repository->find($id);
 
