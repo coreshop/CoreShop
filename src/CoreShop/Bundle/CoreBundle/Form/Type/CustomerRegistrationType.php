@@ -30,12 +30,16 @@ class CustomerRegistrationType extends AbstractType
      */
     protected $validationGroups = [];
 
+    protected $loginIdentifier;
+
     /**
      * @param string[] $validationGroups
+     * @param string $loginIdentifier
      */
-    public function __construct(array $validationGroups)
+    public function __construct(array $validationGroups, string $loginIdentifier)
     {
         $this->validationGroups = $validationGroups;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
@@ -43,6 +47,7 @@ class CustomerRegistrationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('customer', CustomerType::class, [
                 'label' => 'coreshop.form.customer_registration.customer',
@@ -50,6 +55,7 @@ class CustomerRegistrationType extends AbstractType
                     'class' => 'cs-customer',
                 ],
                 'allow_password_field' => true,
+                'allow_username' => $this->loginIdentifier === 'username',
                 'constraints' => [
                     new Valid(['groups' => $this->validationGroups]),
                 ],

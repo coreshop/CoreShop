@@ -86,6 +86,11 @@ interface CustomerInterface extends ResourceInterface, PimcoreModelInterface, Us
     public function setEmail($email);
 
     /**
+     * @param string $username
+     */
+    public function setUsername($username);
+
+    /**
      * @return string
      */
     public function getPassword();
