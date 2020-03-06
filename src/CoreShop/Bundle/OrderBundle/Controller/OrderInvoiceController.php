@@ -28,6 +28,7 @@ use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -42,7 +43,7 @@ class OrderInvoiceController extends PimcoreController
     public function getInvoiceAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $this->getOrderRepository()->find((int)$orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -89,7 +90,7 @@ class OrderInvoiceController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function createInvoiceAction(Request $request)
     {
@@ -111,7 +112,7 @@ class OrderInvoiceController extends PimcoreController
 
             $resource = $handledForm->getData();
 
-            $order = $this->getOrderRepository()->find($orderId);
+            $order = $this->getOrderRepository()->find((int)$orderId);
 
             if (!$order instanceof OrderInterface) {
                 return $this->viewHandler->handle([
@@ -158,7 +159,7 @@ class OrderInvoiceController extends PimcoreController
     public function updateStateAction(Request $request)
     {
         $invoiceId = $request->get('id');
-        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
+        $invoice = $this->getOrderInvoiceRepository()->find((int)$invoiceId);
         $transition = $request->get('transition');
 
         if (!$invoice instanceof OrderInvoiceInterface) {
@@ -184,7 +185,7 @@ class OrderInvoiceController extends PimcoreController
     public function renderAction(Request $request)
     {
         $invoiceId = $request->get('id');
-        $invoice = $this->getOrderInvoiceRepository()->find($invoiceId);
+        $invoice = $this->getOrderInvoiceRepository()->find((int)$invoiceId);
 
         if ($invoice instanceof OrderInvoiceInterface) {
             try {

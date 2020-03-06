@@ -36,7 +36,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $repository->find((int)$request->get('productId'));
 
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
@@ -53,7 +53,7 @@ class ProductUnitDefinitionsController extends ResourceController
         $repository = $this->get('coreshop.repository.stack.product');
 
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $repository->find((int)$request->get('productId'));
 
         if ($product instanceof Concrete) {
             $product = VersionHelper::getLatestVersion($product);

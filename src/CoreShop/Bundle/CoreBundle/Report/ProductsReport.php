@@ -64,7 +64,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
         $objectTypeFilter = $parameterBag->get('objectType', 'all');
-        $storeId = $parameterBag->get('store', null);
+        $storeId = (int)$parameterBag->get('store', null);
 
         $from = Carbon::createFromTimestamp($fromFilter);
         $to = Carbon::createFromTimestamp($toFilter);
@@ -79,7 +79,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
 
         $locale = $this->localeContext->getLocaleCode();
 
-        if (is_null($storeId)) {
+        if (null === $storeId) {
             return [];
         }
 

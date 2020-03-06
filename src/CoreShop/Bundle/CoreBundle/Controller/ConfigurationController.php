@@ -28,7 +28,7 @@ class ConfigurationController extends ResourceController
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $store => $storeValues) {
-            $store = $this->get('coreshop.repository.store')->find($store);
+            $store = $this->get('coreshop.repository.store')->find((int)$store);
 
             foreach ($storeValues as $key => $value) {
                 $this->getConfigurationService()->setForStore($key, $value, $store);

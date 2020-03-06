@@ -114,7 +114,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
     /**
      * {@inheritdoc}
      */
-    public function setTotalGross($totalGross)
+    public function setTotalGross(int $totalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

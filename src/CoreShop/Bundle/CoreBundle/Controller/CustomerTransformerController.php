@@ -68,7 +68,7 @@ class CustomerTransformerController extends AdminController
      *
      * @return JsonResponse
      */
-    public function getEntityDetailsAction(Request $request, string $type, $objectId)
+    public function getEntityDetailsAction(Request $request, string $type, int $objectId)
     {
         $error = false;
         $message = null;
@@ -114,7 +114,7 @@ class CustomerTransformerController extends AdminController
      *
      * @return JsonResponse
      */
-    public function validateAssignmentAction(Request $request, $customerId, $companyId)
+    public function validateAssignmentAction(Request $request, int $customerId, int $companyId = null)
     {
         $error = false;
         $message = null;

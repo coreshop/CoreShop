@@ -67,7 +67,7 @@ class OrderPaymentController extends PimcoreController
         //TODO: Use Form here
 
         $orderId = $request->get('o_id');
-        $order = $this->getSaleRepository()->find($orderId);
+        $order = $this->getSaleRepository()->find((int)$orderId);
         $amount = (float) $request->get('amount', 0) * $this->getParameter('coreshop.currency.decimal_factor');
 
         $paymentProviderId = $request->get('paymentProvider');
@@ -77,7 +77,7 @@ class OrderPaymentController extends PimcoreController
         }
 
         $payments = $this->getPaymentRepository()->findForPayable($order);
-        $paymentProvider = $this->getPaymentProviderRepository()->find($paymentProviderId);
+        $paymentProvider = $this->getPaymentProviderRepository()->find((int)$paymentProviderId);
         $totalPayed = array_sum(array_map(function (PaymentInterface $payment) {
             if ($payment->getState() === PaymentInterface::STATE_CANCELLED ||
                 $payment->getState() === PaymentInterface::STATE_REFUNDED) {

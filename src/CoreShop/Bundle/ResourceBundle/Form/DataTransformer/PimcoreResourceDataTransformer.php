@@ -51,7 +51,7 @@ class PimcoreResourceDataTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if ($value) {
-            return $this->repository->find($value);
+            return $this->repository->find((int)$value);
         }
 
         return null;

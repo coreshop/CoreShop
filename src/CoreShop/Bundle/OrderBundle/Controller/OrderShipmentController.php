@@ -30,6 +30,7 @@ use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -44,7 +45,7 @@ class OrderShipmentController extends PimcoreController
     public function getShipAbleItemsAction(Request $request)
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $this->getOrderRepository()->find((int)$orderId);
 
         if (!$order instanceof OrderInterface) {
             return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
@@ -91,7 +92,7 @@ class OrderShipmentController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function createShipmentAction(Request $request)
     {
@@ -159,7 +160,7 @@ class OrderShipmentController extends PimcoreController
      */
     public function updateStateAction(Request $request)
     {
-        $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
+        $shipment = $this->getOrderShipmentRepository()->find((int)$request->get('id'));
         $transition = $request->get('transition');
 
         if (!$shipment instanceof OrderShipmentInterface) {
@@ -185,7 +186,7 @@ class OrderShipmentController extends PimcoreController
     public function renderAction(Request $request)
     {
         $shipmentId = $request->get('id');
-        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
+        $shipment = $this->getOrderShipmentRepository()->find((int)$shipmentId);
 
         if ($shipment instanceof OrderShipmentInterface) {
             try {
