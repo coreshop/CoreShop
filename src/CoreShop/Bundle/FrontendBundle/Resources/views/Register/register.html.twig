@@ -5,10 +5,19 @@
     <div id="main-container" class="container p-0">
 
         <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a>
+            <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li class="breadcrumb-item" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                    <a href="{{ coreshop_path('coreshop_index') }}" itemprop="item">
+                        <span itemprop="name">{{ 'coreshop.ui.home'|trans }}</span>
+                    </a>
+                    <meta itemprop="position" content="1">
                 </li>
-                <li class="breadcrumb-item active">{{ 'coreshop.ui.register'|trans }}</li>
+                <li class="breadcrumb-item active" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                    <a href="{{ coreshop_path('coreshop_register') }}" itemprop="item">
+                        <span itemprop="name">{{ 'coreshop.ui.register'|trans }}</span>
+                    </a>
+                    <meta itemprop="position" content="2">
+                </li>
             </ol>
         </nav>
 

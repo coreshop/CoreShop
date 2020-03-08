@@ -2,10 +2,20 @@
 
 {% block center %}
     <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
+        <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li class="breadcrumb-item" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                <a href="{{ coreshop_path('coreshop_index') }}" itemprop="item">
+                    <span itemprop="name">{{ 'coreshop.ui.home'|trans }}</span>
+                </a>
+                <meta itemprop="position" content="1">
+            </li>
             {% for cat in category.getHierarchy() %}
-                <li class="breadcrumb-item active"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
+                <li class="breadcrumb-item active" itemscope itemprop="itemListElement" itemtype="https://schema.org/ListItem">
+                    <a href="{{ coreshop_path(cat, 'coreshop_category_list') }}" itemprop="item">
+                        <span itemprop="name">{{ cat.getName }}</span>
+                    </a>
+                    <meta itemprop="position" content="{{ loop.index + 1 }}">
+                </li>
             {% endfor %}
         </ol>
     </nav>
