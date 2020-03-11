@@ -118,7 +118,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "CoreShop\\Test\\": "tests/lib/CoreShop/Test"
+            "CoreShop\\Behat\\": "src/CoreShop/Behat/"
         },
         "classmap": [
             "app/AppKernel.php"

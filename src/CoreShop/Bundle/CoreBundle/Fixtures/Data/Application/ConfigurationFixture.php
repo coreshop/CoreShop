@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
+use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
@@ -69,7 +70,7 @@ class ConfigurationFixture extends AbstractFixture implements ContainerAwareInte
         ];
 
         foreach ($configurations as $key => $value) {
-            $this->container->get('coreshop.configuration.service')->set($key, $value);
+            $this->container->get(ConfigurationServiceInterface::class)->set($key, $value);
         }
     }
 }

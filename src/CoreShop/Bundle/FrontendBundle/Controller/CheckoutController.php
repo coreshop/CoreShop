@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -26,6 +27,7 @@ use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
 use CoreShop\Component\Order\OrderSaleTransitions;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,7 +131,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -312,11 +314,11 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
+        $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
         //After successfull payment, we log out the customer
-        if ($this->get('coreshop.context.shopper')->hasCustomer() &&
-            $this->get('coreshop.context.shopper')->getCustomer()->getIsGuest()) {
+        if ($this->get(ShopperContextInterface::class)->hasCustomer() &&
+            $this->get(ShopperContextInterface::class)->getCustomer()->getIsGuest()) {
             $this->get('security.token_storage')->setToken(null);
         }
 
@@ -359,7 +361,7 @@ class CheckoutController extends FrontendController
      */
     protected function getCartContext()
     {
-        return $this->get('coreshop.context.cart');
+        return $this->get(CartContextInterface::class);
     }
 
     /**

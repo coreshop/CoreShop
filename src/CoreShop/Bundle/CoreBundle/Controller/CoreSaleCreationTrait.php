@@ -19,6 +19,8 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use Webmozart\Assert\Assert;
 
 trait CoreSaleCreationTrait
@@ -68,7 +70,7 @@ trait CoreSaleCreationTrait
             return [];
         }
 
-        $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
+        $carriers = $this->get(CarriersResolverInterface::class)->resolveCarriers($cart, $cart->getShippingAddress());
 
         $currentCurrency = $cart->getStore()->getCurrency()->getIsoCode();
         $result = [];
@@ -77,7 +79,7 @@ trait CoreSaleCreationTrait
          * @var CarrierInterface $carrier
          */
         foreach ($carriers as $carrier) {
-            $price = $this->get('coreshop.carrier.price_calculator.taxed')->getPrice(
+            $price = $this->get(TaxedShippingCalculatorInterface::class)->getPrice(
                 $carrier,
                 $cart,
                 $cart->getShippingAddress()

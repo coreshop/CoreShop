@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;
 
@@ -51,7 +52,7 @@ class SearchController extends FrontendController
                 '%' . $text . '%',
                 '%' . $text . '%',
                 '%' . $text . '%',
-                '%' . $this->container->get('coreshop.context.store')->getStore()->getId() . '%',
+                '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();

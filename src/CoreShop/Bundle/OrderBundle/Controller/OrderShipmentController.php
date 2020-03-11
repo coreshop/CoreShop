@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -26,6 +27,7 @@ use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
+use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
@@ -107,7 +109,7 @@ class OrderShipmentController extends PimcoreController
                 return $this->viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
+                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
                     ]
                 );
             }
@@ -251,7 +253,7 @@ class OrderShipmentController extends PimcoreController
      */
     protected function getOrderToShipmentTransformer()
     {
-        return $this->get('coreshop.order.transformer.order_to_shipment');
+        return $this->get(OrderItemToShipmentItemTransformer::class);
     }
 
     /**

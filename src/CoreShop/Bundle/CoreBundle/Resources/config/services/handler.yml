@@ -2,10 +2,9 @@ services:
     _defaults:
         public: true
 
-    coreshop.handler.shop_logout: '@CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler'
     CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler:
         arguments:
-            - '@coreshop.link_generator'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '%coreshop.after_logout_redirect_route%'
             - '@session'
-            - '@coreshop.context.store'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'

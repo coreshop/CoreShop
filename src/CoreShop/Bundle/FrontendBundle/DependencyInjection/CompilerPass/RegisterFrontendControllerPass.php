@@ -14,6 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Bundle\PayumBundle\Factory\ConfirmOrderFactoryInterface;
+use CoreShop\Bundle\PayumBundle\Factory\GetStatusFactoryInterface;
+use CoreShop\Bundle\PayumBundle\Factory\ResolveNextRouteFactoryInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Order\Payment\OrderPaymentProviderInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -33,7 +39,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                 $customController = $container->getDefinition($controllerClass);
 
                 $customController->addMethodCall('setContainer', [new Reference('service_container')]);
-                $customController->addMethodCall('setTemplateConfigurator', [new Reference('coreshop.frontend.template_configurator')]);
+                $customController->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
 
                 $container->setDefinition($controllerKey, $customController)->setPublic(true);
 
@@ -42,7 +48,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
 
             $controllerDefinition = new Definition($controllerClass);
             $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
-            $controllerDefinition->addMethodCall('setTemplateConfigurator', [new Reference('coreshop.frontend.template_configurator')]);
+            $controllerDefinition->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
             $controllerDefinition->setPublic(true);
 
             switch ($key) {
@@ -50,7 +56,7 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                     $controllerDefinition->setArguments([
                         new Reference('security.authentication_utils'),
                         new Reference('form.factory'),
-                        new Reference('coreshop.context.shopper'),
+                        new Reference(ShopperContextInterface::class),
                     ]);
                 break;
 
@@ -65,11 +71,11 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                         ['setContainer', [new Reference('service_container')]]
                     ]);
                     $controllerDefinition->setArguments([
-                        new Reference('coreshop.order.payment_provider'),
+                        new Reference(OrderPaymentProviderInterface::class),
                         new Reference('coreshop.repository.order'),
-                        new Reference('coreshop.factory.payum_get_status'),
-                        new Reference('coreshop.factory.payum_resolve_next_route'),
-                        new Reference('coreshop.factory.payum_confirm_order'),
+                        new Reference(GetStatusFactoryInterface::class),
+                        new Reference(ResolveNextRouteFactoryInterface::class),
+                        new Reference(ConfirmOrderFactoryInterface::class),
                     ]);
                     break;
             }

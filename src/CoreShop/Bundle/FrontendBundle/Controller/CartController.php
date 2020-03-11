@@ -15,10 +15,12 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
+use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\CartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\ShippingCalculatorType;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Order\Cart\CartModifierInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
@@ -28,7 +30,10 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
+use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -120,8 +125,8 @@ class CartController extends FrontendController
         //check if there is a shipping calculation request
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
             $shippingCalculatorFormData = $form->getData();
-            $carrierPriceCalculator = $this->get('coreshop.carrier.price_calculator.taxed');
-            $carriersResolver = $this->get('coreshop.carrier.resolver');
+            $carrierPriceCalculator = $this->get(TaxedShippingCalculatorInterface::class);
+            $carriersResolver = $this->get(CarriersResolverInterface::class);
 
             /** @var AddressInterface $virtualAddress */
             $virtualAddress = $this->get('coreshop.factory.address')->createNew();
@@ -191,7 +196,7 @@ class CartController extends FrontendController
                 $this->getCartModifier()->addToList($addToCart->getCart(), $addToCart->getCartItem());
                 $this->getCartManager()->persistCart($this->getCart());
 
-                $this->get('coreshop.tracking.manager')->trackCartAdd(
+                $this->get(TrackerInterface::class)->trackCartAdd(
                     $addToCart->getCart(),
                     $addToCart->getCartItem()->getProduct(),
                     $addToCart->getCartItem()->getQuantity()
@@ -261,7 +266,7 @@ class CartController extends FrontendController
         $this->getCartModifier()->removeFromList($this->getCart(), $cartItem);
         $this->getCartManager()->persistCart($this->getCart());
 
-        $this->get('coreshop.tracking.manager')->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
+        $this->get(TrackerInterface::class)->trackCartRemove($this->getCart(), $cartItem->getProduct(), $cartItem->getQuantity());
 
         return $this->redirectToRoute('coreshop_cart_summary');
     }
@@ -298,7 +303,7 @@ class CartController extends FrontendController
      */
     protected function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem)
     {
-        return $this->get('coreshop.factory.add_to_cart')->createWithCartAndCartItem($cart, $cartItem);
+        return $this->get(AddToCartFactoryInterface::class)->createWithCartAndCartItem($cart, $cartItem);
     }
 
     /**
@@ -306,7 +311,7 @@ class CartController extends FrontendController
      */
     protected function getCartPriceRuleProcessor()
     {
-        return $this->get('coreshop.cart_price_rule.processor');
+        return $this->get(CartPriceRuleProcessorInterface::class);
     }
 
     /**
@@ -314,7 +319,7 @@ class CartController extends FrontendController
      */
     protected function getCartPriceRuleUnProcessor()
     {
-        return $this->get('coreshop.cart_price_rule.un_processor');
+        return $this->get(CartPriceRuleUnProcessorInterface::class);
     }
 
     /**
@@ -322,7 +327,7 @@ class CartController extends FrontendController
      */
     protected function getCartModifier()
     {
-        return $this->get('coreshop.cart.modifier');
+        return $this->get(CartModifierInterface::class);
     }
 
     /**
@@ -346,7 +351,7 @@ class CartController extends FrontendController
      */
     protected function getCartContext()
     {
-        return $this->get('coreshop.context.cart');
+        return $this->get(CartContextInterface::class);
     }
 
     /**
@@ -354,7 +359,7 @@ class CartController extends FrontendController
      */
     protected function getCartManager()
     {
-        return $this->get('coreshop.cart.manager');
+        return $this->get(CartManagerInterface::class);
     }
 
     /**

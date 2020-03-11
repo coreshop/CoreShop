@@ -5,19 +5,19 @@ services:
     coreshop.order.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:
-            - '@coreshop.sequence.generator'
+            - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
             - 'order'
 
     coreshop.quote.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:
-            - '@coreshop.sequence.generator'
+            - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
             - 'quote'
 
     CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelperInterface: '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
     CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper:
         arguments:
-            - '@coreshop.workflow.state_info_manager'
+            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
         tags:
             - { name: templating.helper, alias: coreshop_order_state }
 

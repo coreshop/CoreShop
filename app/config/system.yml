@@ -95,7 +95,7 @@ pimcore_admin:
 swiftmailer:
     mailers:
         pimcore_mailer:
-            transport: smtp
+            transport: null
             delivery_addresses: []
             host: ''
             username: ''
@@ -104,7 +104,7 @@ swiftmailer:
             encryption: null
             auth_mode:
         newsletter_mailer:
-            transport: sendmail
+            transport: null
             delivery_addresses: []
             host: ''
             username: ''

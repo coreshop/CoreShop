@@ -19,6 +19,7 @@ use CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand;
 use CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand;
+use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -46,7 +47,7 @@ final class InstallerContext implements Context
     {
         $installCommand = new InstallFixturesCommand(
             $this->kernel,
-            $this->kernel->getContainer()->get('coreshop.installer.checker.command_directory')
+            $this->kernel->getContainer()->get(CommandDirectoryChecker::class)
         );
 
         $this->application = new Application($this->kernel);
@@ -66,7 +67,7 @@ final class InstallerContext implements Context
     {
         $installCommand = new InstallDemoCommand(
             $this->kernel,
-            $this->kernel->getContainer()->get('coreshop.installer.checker.command_directory')
+            $this->kernel->getContainer()->get(CommandDirectoryChecker::class)
         );
 
         $this->application = new Application($this->kernel);

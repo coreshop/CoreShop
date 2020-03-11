@@ -8,9 +8,6 @@ Feature: In order to extend Pimcore's placeholder
   Scenario: Test a container parameter expression
     Then the placeholder value for expression "%Expression(expression, {'expression' : 'parameter(\'kernel.environment\')'});" should be "behat"
 
-  Scenario: Test a container service expression
-    Then the placeholder value for expression "%Expression(expression, {'expression' : 'service(\'coreshop.money_formatter\').format(100, \'EUR\', \'en\')'});" should be "€1.00"
-
   Scenario: Test a coreshop expression language provider for object
     Then the placeholder value for expression "%Expression(expression, {'expression' : 'object(1)'});" should be "/"
 

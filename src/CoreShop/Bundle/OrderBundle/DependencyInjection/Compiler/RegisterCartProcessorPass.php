@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Order\Processor\CompositeCartProcessor;
 
 final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
@@ -24,7 +25,7 @@ final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
     {
         parent::__construct(
             'coreshop.cart_processor',
-            'coreshop.cart_processor.composite',
+            CompositeCartProcessor::class,
             self::CART_PROCESSOR_TAG,
             'addProcessor'
         );

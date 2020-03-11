@@ -26,7 +26,6 @@ services:
         arguments:
             - '@property_accessor'
 
-    coreshop.form.data_mapper.cart_item_quantity: '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
     CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper:
         arguments:
             - '@coreshop.cart_item.quantity_modifier'
@@ -36,7 +35,7 @@ services:
         arguments:
             - '%coreshop.model.order_item.class%'
             - '%coreshop.form.type.cart_item.validation_groups%'
-            - '@coreshop.form.data_mapper.cart_item_quantity'
+            - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
         tags:
             - { name: form.type }
 
@@ -44,7 +43,7 @@ services:
         arguments:
             - '%coreshop.model.order_item.class%'
             - '%coreshop.form.type.cart_item.validation_groups%'
-            - '@coreshop.form.data_mapper.cart_item_quantity'
+            - '@CoreShop\Bundle\OrderBundle\Form\DataMapper\CartItemQuantityDataMapper'
         tags:
             - { name: form.type }
 

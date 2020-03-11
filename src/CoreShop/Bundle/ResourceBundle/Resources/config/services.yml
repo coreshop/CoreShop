@@ -1,20 +1,19 @@
 imports:
-    - { resource: "services/routing.yml" }
-    - { resource: "services/controller.yml" }
-    - { resource: "services/installer.yml" }
-    - { resource: "services/commands.yml" }
-    - { resource: "services/validators.yml" }
-    - { resource: "services/form.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/routing.yml }
+    - { resource: services/controller.yml }
+    - { resource: services/installer.yml }
+    - { resource: services/commands.yml }
+    - { resource: services/validators.yml }
+    - { resource: services/form.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.resource_registry: '@CoreShop\Component\Resource\Metadata\RegistryInterface'
     CoreShop\Component\Resource\Metadata\RegistryInterface: '@CoreShop\Component\Resource\Metadata\Registry'
     CoreShop\Component\Resource\Metadata\Registry: ~
 
-    pimcore.dao.object_manager: '@CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager'
     CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager: ~
 
     CoreShop\Bundle\ResourceBundle\Serialization\RelationsHandler:
@@ -71,17 +70,14 @@ services:
         decoration_priority: 256
         public: false
 
-    coreshop.admin_controller.resource_settings: '@CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController'
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
           - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
         calls:
           - [setContainer, ['@service_container']]
 
-    coreshop.resource.helper.form_error_serializer: '@CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer'
     CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer: ~
 
-    coreshop.doctrine.cache.pimcore: '@CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache'
     CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:
         arguments:
             - '@Pimcore\Cache\Core\CoreHandlerInterface'

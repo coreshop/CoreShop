@@ -123,7 +123,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.order'
-            - '@coreshop.context.cart'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
         tags:
             - { name: fob.context_service }
 

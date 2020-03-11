@@ -53,6 +53,7 @@ final class CountryCollector extends DataCollector
     {
         try {
             $this->data['country'] = $this->countryContext->getCountry();
+            $this->data['country_name'] = $this->countryContext->getCountry() ? $this->countryContext->getCountry()->getName() : null;
             $this->data['country_change_support'] = $this->isCountryChangeSupported();
         } catch (\Exception $exception) {
             //If something went wrong, we don't have any country, which we can safely ignore

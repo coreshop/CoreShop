@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Locale\Context\CompositeLocaleContext;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 
 final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {
@@ -23,8 +25,8 @@ final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.locale',
-            'coreshop.context.locale.composite',
+            LocaleContextInterface::class,
+            CompositeLocaleContext::class,
             self::LOCALE_CONTEXT_SERVICE_TAG,
             'addContext'
         );

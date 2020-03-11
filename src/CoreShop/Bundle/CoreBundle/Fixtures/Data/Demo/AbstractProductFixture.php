@@ -18,6 +18,7 @@ use CoreShop\Bundle\CoreBundle\Faker\Commerce;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -135,7 +136,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $product->setWeight($faker->numberBetween(5, 10));
         $product->setImages($images);
         $product->setStores([$defaultStore]);
-        $product->setParent($this->container->get('coreshop.object_service')->createFolderByPath(sprintf('/demo/%s/%s', $parentPath, Service::getValidKey($usedCategory->getName(), 'object'))));
+        $product->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath(sprintf('/demo/%s/%s', $parentPath, Service::getValidKey($usedCategory->getName(), 'object'))));
         $product->setPublished(true);
         $product->setKey($product->getName());
         $product->setKey(Service::getUniqueKey($product));
