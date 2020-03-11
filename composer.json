@@ -34,17 +34,7 @@
         "pimcore/pimcore": "^6.5.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "symfony/config": "^3.4 | ^4.0",
-        "symfony/doctrine-bridge": "^3.4 | ^4.0",
-        "symfony/expression-language": "^3.4 | ^4.0",
-        "symfony/form": "^3.4 | ^4.0",
-        "symfony/framework-bundle": "^3.4.26 | ^4.1.12",
-        "symfony/security-csrf": "^3.4 | ^4.0",
-        "symfony/templating": "^3.4 | ^4.0",
-        "symfony/twig-bundle": "^3.4 | ^4.0",
-        "symfony/validator": "^3.4 | ^4.0",
-        "symfony/workflow": "~3.3|~4.0",
-        "symfony/yaml": "^3.4 | ^4.0",
+        "symfony/symfony": "^4.4",
         "webmozart/assert": "^1.2"
     },
     "require-dev": {
