@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CompanyRepositoryInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,7 +43,7 @@ class CustomerTransformerController extends AdminController
         if ($value !== null) {
             $list = $this->getCompanyRepository()->getList();
             $list->addConditionParam(sprintf('name LIKE "%%%s%%"', $value));
-            $foundObjects = $list->getObjects();
+            $foundObjects = $list->getData();
         }
 
         /** @var CompanyInterface $maybeDuplicate */

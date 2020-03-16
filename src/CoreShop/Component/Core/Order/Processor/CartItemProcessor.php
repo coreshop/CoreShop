@@ -121,7 +121,7 @@ final class CartItemProcessor implements CartItemProcessorInterface
 
         if ($product instanceof ProductInterface) {
             /**
-             * @var \CoreShop\Component\Core\Model\CartItemInterface $cartItem
+             * @var \CoreShop\Component\Core\Model\OrderItemInterface $cartItem
              */
             $cartItem->setDigitalProduct($product->getDigitalProduct());
         }

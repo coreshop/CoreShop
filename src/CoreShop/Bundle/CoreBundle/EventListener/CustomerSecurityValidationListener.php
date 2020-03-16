@@ -18,6 +18,7 @@ use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
@@ -71,6 +72,9 @@ final class CustomerSecurityValidationListener
 
         $identifierValue = $this->loginIdentifier === 'email' ? $object->getEmail() : $object->getUsername();
 
+        /**
+         * @var Listing $listing
+         */
         $listing = $this->customerRepository->getList();
         $listing->setUnpublished(true);
         $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);

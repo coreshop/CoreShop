@@ -88,7 +88,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return Listing
      */
     public function getList(): AbstractListing
     {

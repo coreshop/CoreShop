@@ -43,6 +43,7 @@ use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\User;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -235,7 +236,10 @@ class OrderController extends PimcoreController
         $list->setOrder($order);
         $list->setOrderKey($orderKey);
 
-        $orders = $list->load();
+        /**
+         * @var Listing $list
+         */
+        $orders = $list->getData();
         $jsonSales = [];
 
         foreach ($orders as $order) {
@@ -276,7 +280,7 @@ class OrderController extends PimcoreController
             $list = $orderRepository->getList();
             $list->setCondition('orderNumber = ? OR o_id = ?', [$number, $number]);
 
-            $orders = $list->load();
+            $orders = $list->getData();
 
             if (count($orders) > 0) {
                 return $this->viewHandler->handle(['success' => true, 'id' => $orders[0]->getId()]);

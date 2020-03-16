@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
-use CoreShop\Component\Core\Model\QuoteInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
@@ -22,7 +22,7 @@ final class QuoteListener extends AbstractNotificationRuleListener
 {
     public function applyRule(GenericEvent $event): void
     {
-        Assert::isInstanceOf($event->getSubject(), QuoteInterface::class);
+        Assert::isInstanceOf($event->getSubject(), OrderInterface::class);
 
         $this->rulesProcessor->applyRules('quote', $event->getSubject());
     }

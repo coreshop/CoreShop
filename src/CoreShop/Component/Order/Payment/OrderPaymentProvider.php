@@ -52,7 +52,11 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setTotalAmount($order->getTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
-        $payment->setCurrency($order->getCurrency());
+
+        if (method_exists($payment, 'setCurrency')) {
+            $payment->setCurrency($order->getCurrency());
+            $payment->setCurrencyCode($order->getCurrency()->getIsoCode());
+        }
 
         if ($order instanceof PaymentSettingsAwareInterface) {
             $payment->setDetails($order->getPaymentSettings());
@@ -68,8 +72,6 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
             round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
         );
 
-        //payum setters
-        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
         $payment->setDescription($description);
 
         return $payment;

@@ -25,7 +25,7 @@ class Payment extends BasePayment implements PaymentInterface
     protected $order;
 
     /**
-     * @var CurrencyInterface
+     * @var \CoreShop\Component\Currency\Model\CurrencyInterface
      */
     protected $currency;
 

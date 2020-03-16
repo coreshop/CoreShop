@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Calculator;
 
-use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
+use CoreShop\Component\Order\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;

@@ -253,7 +253,7 @@ class OrderShipmentController extends PimcoreController
      */
     protected function getOrderToShipmentTransformer()
     {
-        return $this->get(OrderItemToShipmentItemTransformer::class);
+        return $this->get(OrderToShipmentTransformer::class);
     }
 
     /**

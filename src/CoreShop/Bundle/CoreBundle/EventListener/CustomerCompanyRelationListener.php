@@ -50,7 +50,7 @@ final class CustomerCompanyRelationListener
         $list->addConditionParam('company__id = ?', $object->getId());
 
         /** @var CustomerInterface $customer */
-        foreach ($list->getObjects() as $customer) {
+        foreach ($list->getData() as $customer) {
 
             $accessType = $customer->getAddressAccessType();
             if (empty($accessType)) {

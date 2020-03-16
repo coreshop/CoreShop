@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\ORder\Exception;
+namespace CoreShop\Component\Order\Exception;
 
 class NoPurchasableDiscountPriceFoundException extends \Exception
 {
