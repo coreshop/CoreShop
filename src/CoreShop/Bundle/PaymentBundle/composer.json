@@ -16,7 +16,6 @@
     "require": {
         "php": "^7.2",
         "coreshop/payment": "^3.0",
-        "coreshop/currency-bundle": "^3.0",
         "coreshop/resource-bundle": "^3.0",
         "coreshop/workflow-bundle": "^3.0",
         "pimcore/pimcore": "^6.6.0"

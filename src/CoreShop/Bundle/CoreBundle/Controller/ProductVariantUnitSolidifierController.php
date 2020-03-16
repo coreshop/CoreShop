@@ -17,6 +17,8 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\Cloner\ProductClonerInterface;
+use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
+use CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -138,12 +140,12 @@ class ProductVariantUnitSolidifierController extends AdminController
 
     protected function getQuantityPriceRulesCloner(): ProductClonerInterface
     {
-        return $this->get('coreshop.product.cloner.quantity_price_rules');
+        return $this->get(ProductQuantityPriceRulesCloner::class);
     }
 
     protected function getUnitDefinitionsCloner(): ProductClonerInterface
     {
-        return $this->get('coreshop.product.cloner.unit_definitions');
+        return $this->get(ProductUnitDefinitionsCloner::class);
     }
 
 }

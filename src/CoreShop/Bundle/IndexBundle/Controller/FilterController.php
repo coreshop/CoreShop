@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -64,7 +65,7 @@ class FilterController extends ResourceController
              * @var WorkerInterface $worker
              */
             $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->get('coreshop.factory.index.list')->createList($index);
+            $list = $this->get(ListingFactoryInterface::class)->createList($index);
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $request->get('field');
             $column = null;

@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Store\Context\CompositeStoreContext;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 
 final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
 {
@@ -23,8 +25,8 @@ final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.store',
-            'coreshop.context.store.composite',
+            StoreContextInterface::class,
+            CompositeStoreContext::class,
             self::STORE_CONTEXT_TAG,
             'addContext'
         );

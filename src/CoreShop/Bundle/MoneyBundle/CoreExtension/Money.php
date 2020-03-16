@@ -18,6 +18,7 @@ use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Element\ValidationException;
 
 class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
@@ -611,26 +612,26 @@ class Money extends DataObject\ClassDefinition\Data implements
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
+            throw new ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+            throw new ValidationException('invalid numeric data [' . $data . ']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
             $data = $this->toNumeric($data);
 
             if ($data >= PHP_INT_MAX) {
-                throw new Model\Element\ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
+                throw new ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
             }
 
             if (null !== $this->getMinValue() && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
+                throw new ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
             }
 
             if (null !== $this->getMaxValue() && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
+                throw new ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
             }
         }
     }

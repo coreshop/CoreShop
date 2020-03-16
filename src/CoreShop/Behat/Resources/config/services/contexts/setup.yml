@@ -33,7 +33,7 @@ services:
             - '@coreshop.factory.store'
             - '@coreshop.factory.currency'
             - '@coreshop.factory.country'
-            - '@coreshop.context.store.fixed'
+            - '@CoreShop\Component\Store\Context\FixedStoreContext'
         tags:
             - { name: fob.context_service }
 
@@ -52,7 +52,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.country'
             - '@coreshop.repository.country'
-            - '@coreshop.context.country.fixed'
+            - '@CoreShop\Component\Address\Context\FixedCountryContext'
             - '%kernel.project_dir%'
         tags:
             - { name: fob.context_service }
@@ -64,7 +64,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.currency'
             - '@coreshop.repository.currency'
-            - '@coreshop.context.currency.fixed'
+            - '@CoreShop\Component\Currency\Context\FixedCurrencyContext'
         tags:
             - { name: fob.context_service }
 
@@ -73,7 +73,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.factory.customer'
-            - '@coreshop.context.customer.fixed'
+            - '@CoreShop\Component\Customer\Context\FixedCustomerContext'
             - '@coreshop.factory.address'
         tags:
             - { name: fob.context_service }
@@ -140,10 +140,10 @@ services:
         class: CoreShop\Behat\Context\Setup\CartContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.cart'
-            - '@coreshop.cart.modifier'
-            - '@coreshop.cart.manager'
-            - '@coreshop.factory.add_to_cart'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
+            - '@CoreShop\Component\Order\Cart\CartModifierInterface'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
+            - '@CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface'
             - '@coreshop.factory.order_item'
             - '@form.factory'
         tags:
@@ -206,8 +206,8 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.store'
-            - '@coreshop.state_machine_applier'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'
             - '@CoreShop\Component\Order\Committer\OrderCommitterInterface'
         tags:
             - { name: fob.context_service }
@@ -216,9 +216,9 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderShipmentContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.order.transformer.order_to_shipment'
+            - '@CoreShop\Component\Order\Transformer\OrderToShipmentTransformer'
             - '@coreshop.factory.order_shipment'
-            - '@coreshop.state_machine_applier'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'
         tags:
             - { name: fob.context_service }
 
@@ -226,9 +226,9 @@ services:
         class: CoreShop\Behat\Context\Setup\OrderInvoiceContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.order.transformer.order_to_invoice'
+            - '@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer'
             - '@coreshop.factory.order_invoice'
-            - '@coreshop.state_machine_applier'
+            - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'
         tags:
             - { name: fob.context_service }
 
@@ -236,7 +236,7 @@ services:
         class: CoreShop\Behat\Context\Setup\LocaleContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.context.locale.fixed'
+            - '@CoreShop\Component\Locale\Context\FixedLocaleContext'
         tags:
             - { name: fob.context_service }
 
@@ -276,8 +276,8 @@ services:
             - '@coreshop.form_registry.cart_price_rule.actions'
             - '@coreshop.factory.cart_price_rule'
             - '@coreshop.repository.cart_price_rule_voucher_code'
-            - '@coreshop.cart_price_rule.processor'
-            - '@coreshop.cart.manager'
+            - '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface'
+            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
             - '@coreshop.factory.cart_price_rule_voucher_code'
         tags:
             - { name: fob.context_service }

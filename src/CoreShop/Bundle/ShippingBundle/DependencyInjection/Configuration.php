@@ -31,6 +31,7 @@ use CoreShop\Component\Shipping\Model\ShippingRule;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroup;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -53,7 +54,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('default_resolver')->defaultValue('coreshop.shipping.default_resolver.cheapest')->cannotBeEmpty()->end()
+                ->scalarNode('default_resolver')->defaultValue(CheapestDefaultCarrierResolver::class)->cannotBeEmpty()->end()
             ->end();
 
         $this->addModelsSection($rootNode);

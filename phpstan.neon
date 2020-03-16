@@ -6,7 +6,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     symfony:
-        container_xml_path: var/cache/dev/appDevDebugProjectContainer.xml
+        container_xml_path: var/cache/dev/appAppKernelDevDebugContainer.xml
 
     excludes_analyse:
         # Makes PHPStan crash
@@ -39,6 +39,7 @@ parameters:
         - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion()(.*)/'
         - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
         - '/CoreShop\\Bundle\\ResourceBundle\\Routing\\ResourceLoader::getResolver\(\)/'
+        - '/CoreShop\\Bundle\\ResourceBundle\\Serialization\\Driver\\PimcoreDataObjectDriver::loadMetadataForClass/'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'

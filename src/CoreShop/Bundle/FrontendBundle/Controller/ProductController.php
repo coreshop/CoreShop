@@ -15,6 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
+use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,7 +34,7 @@ class ProductController extends FrontendController
         $productRepository = $this->get('coreshop.repository.product');
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
-            'products' => $productRepository->findLatestByStore($this->get('coreshop.context.store')->getStore()),
+            'products' => $productRepository->findLatestByStore($this->get(StoreContextInterface::class)->getStore()),
         ]);
     }
 
@@ -52,12 +55,12 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!in_array($this->get('coreshop.context.store')->getStore()->getId(), $product->getStores())) {
+        if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($product);
-        $this->get('coreshop.tracking.manager')->trackProduct($product);
+        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
+        $this->get(TrackerInterface::class)->trackProduct($product);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,

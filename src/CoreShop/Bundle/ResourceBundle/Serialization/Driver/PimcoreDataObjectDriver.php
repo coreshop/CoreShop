@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
 use Metadata\Driver\DriverInterface;
+use Metadata\NullMetadata;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {

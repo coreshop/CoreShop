@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\QuoteInterface;
@@ -28,7 +29,7 @@ class QuoteController extends FrontendController
         $quote = $this->get('coreshop.repository.order')->find($request->get('quote'));
 
         try {
-            $currentCustomer = $this->get('coreshop.context.customer')->getCustomer();
+            $currentCustomer = $this->get(CustomerContextInterface::class)->getCustomer();
         } catch (CustomerNotFoundException $ex) {
             return $this->redirectToRoute('coreshop_index');
         }

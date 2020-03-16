@@ -35,5 +35,5 @@ core_shop_workflow:
                     add_to_history:
                         priority: 10
                         on: ['order', 'quote']
-                        do: ['@coreshop.workflow.state_history_logger', 'log']
+                        do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
                         args: ['object', 'event']

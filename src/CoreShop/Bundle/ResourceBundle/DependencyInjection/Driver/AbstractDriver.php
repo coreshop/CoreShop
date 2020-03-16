@@ -14,6 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver;
 
+use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcherInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactoryInterface;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\TranslatableFactoryInterface;
 use CoreShop\Component\Resource\Metadata\Metadata;
@@ -78,10 +82,10 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
                 new Reference($metadata->getServiceId('manager')),
-                new Reference('coreshop.resource_controller.view_handler'),
-                new Reference('coreshop.resource_controller.event_dispatcher'),
-                new Reference('coreshop.resource_controller.form_factory'),
-                new Reference('coreshop.resource.helper.form_error_serializer'),
+                new Reference(ViewHandlerInterface::class),
+                new Reference(EventDispatcherInterface::class),
+                new Reference(ResourceFormFactoryInterface::class),
+                new Reference(ErrorSerializer::class),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 

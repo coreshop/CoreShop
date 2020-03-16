@@ -18,14 +18,13 @@ use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use CoreShop\Component\StorageList\StorageListModifierInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
-class CartModifier implements StorageListModifierInterface
+class CartModifier implements CartModifierInterface
 {
     protected $cartItemQuantityModifier;
     protected $eventDispatcher;
@@ -46,8 +45,7 @@ class CartModifier implements StorageListModifierInterface
             );
 
             $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
+        } else {
             $this->cartItemResolver = $cartItemResolver;
         }
     }

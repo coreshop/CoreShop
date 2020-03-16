@@ -22,6 +22,7 @@ use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Customer\Address\AddressAssignmentManagerInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -358,7 +359,7 @@ class CustomerController extends FrontendController
             /**
              * @var CustomerInterface $customer
              */
-            $customer = $this->get('coreshop.context.customer')->getCustomer();
+            $customer = $this->get(CustomerContextInterface::class)->getCustomer();
 
             return $customer;
         } catch (\Exception $ex) {

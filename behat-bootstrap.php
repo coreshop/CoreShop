@@ -33,5 +33,5 @@ if (file_exists(PIMCORE_PROJECT_ROOT.'/pimcore/config/bootstrap.php')) {
 }
 else {
     \Pimcore\Bootstrap::setProjectRoot();
-    \Pimcore\Bootstrap::boostrap();
+    \Pimcore\Bootstrap::bootstrap();
 }

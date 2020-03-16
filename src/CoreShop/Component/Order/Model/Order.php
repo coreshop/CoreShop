@@ -565,7 +565,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
-    public function setShippingTaxRate(int $taxRate)
+    public function setShippingTaxRate($taxRate)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

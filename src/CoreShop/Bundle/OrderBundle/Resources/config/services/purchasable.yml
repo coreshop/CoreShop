@@ -65,13 +65,11 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: purchaseableWholesalePriceCalculators }
 
-    coreshop.order.purchasable.price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator'
     CoreShop\Component\Order\Calculator\CompositePurchasablePriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.price_calculators'
 
-    coreshop.order.purchasable.price_calculactor.default: '@CoreShop\Component\Order\Calculator\PurchasablePriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasablePriceCalculator:
         arguments:
             - '@coreshop.order.purchasable.retail_price_calculator'
@@ -80,7 +78,7 @@ services:
         tags:
             - { name: coreshop.order.purchasable.price_calculator, type: default, priority: 10 }
 
-    coreshop.order.purchasable.calculator: '@CoreShop\Component\Order\Calculator\PurchasableCalculator'
+    CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface: '@CoreShop\Component\Order\Calculator\PurchasableCalculator'
     CoreShop\Component\Order\Calculator\PurchasableCalculator:
         arguments:
             - '@CoreShop\Component\Order\Calculator\PurchasablePriceCalculatorInterface'
@@ -88,15 +86,13 @@ services:
             - '@CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface'
             - '@CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface'
 
-    coreshop.order.purchasable.wholesale_price_calculator: '@CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculatorInterface: '@CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator'
     CoreShop\Component\Order\Calculator\CompositePurchasableWholesalePriceCalculator:
         arguments:
             - '@coreshop.registry.order.purchasable.wholesale_price_calculators'
 
-    coreshop.order.purchasable.wholesale_price_calculator.default: '@CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator'
     CoreShop\Component\Order\Calculator\PurchasableWholesalePriceCalculator:
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.order.purchasable.wholesale_price_calculator, type: default, priority: 10 }

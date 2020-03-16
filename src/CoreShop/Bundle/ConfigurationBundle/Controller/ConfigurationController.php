@@ -38,6 +38,6 @@ class ConfigurationController extends ResourceController
      */
     private function getConfigurationService(): ConfigurationServiceInterface
     {
-        return $this->get('coreshop.configuration.service');
+        return $this->get(ConfigurationServiceInterface::class);
     }
 }

@@ -21,7 +21,6 @@ use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
 abstract class Order extends BaseOrder implements OrderInterface
 {
-    use SaleTrait;
     use CarrierAwareTrait;
 
     /**
@@ -46,7 +45,7 @@ abstract class Order extends BaseOrder implements OrderInterface
     public function hasShippableItems()
     {
         $shippable = false;
-        /** @var SaleItemInterface $item */
+        /** @var OrderItemInterface $item */
         foreach ($this->getItems() as $item) {
             if ($item->getDigitalProduct() !== true) {
                 $shippable = true;
@@ -71,22 +70,6 @@ abstract class Order extends BaseOrder implements OrderInterface
      * {@inheritdoc}
      */
     public function setWeight($weight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingTaxRate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingTaxRate($shippingTaxRate)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

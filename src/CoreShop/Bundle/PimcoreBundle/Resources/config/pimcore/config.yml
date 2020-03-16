@@ -1,5 +1,5 @@
 imports:
-    - { resource: "admin.yml" }
+    - { resource: admin.yml }
 
 pimcore:
     objects:
@@ -12,4 +12,3 @@ pimcore:
                     coreShopDynamicDropdownMultiple: CoreShop\Bundle\PimcoreBundle\CoreExtension\DynamicDropdownMultiple
                     coreShopItemSelector: CoreShop\Bundle\PimcoreBundle\CoreExtension\ItemSelector
                     coreShopSuperBoxSelect: CoreShop\Bundle\PimcoreBundle\CoreExtension\SuperBoxSelect
-  

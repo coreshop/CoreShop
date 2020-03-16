@@ -1,8 +1,8 @@
 imports:
-    - { resource: 'services/rules.yml' }
-    - { resource: 'services/product-quantity-price-rules.yml' }
-    - { resource: 'services/actions.yml' }
-    - { resource: 'services/calculator.yml' }
+    - { resource: services/rules.yml }
+    - { resource: services/product-quantity-price-rules.yml }
+    - { resource: services/actions.yml }
+    - { resource: services/calculator.yml }
 
 services:
     CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface: '@CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelper'

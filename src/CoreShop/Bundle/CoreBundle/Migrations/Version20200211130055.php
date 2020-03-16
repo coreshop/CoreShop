@@ -43,7 +43,7 @@ class Version20200211130055 extends AbstractPimcoreMigration implements Containe
         /**
          * @var CartManagerInterface $cartManager
          */
-        $cartManager = $this->container->get('coreshop.cart.manager');
+        $cartManager = $this->container->get(CartManagerInterface::class);
 
         /**
          * @var FactoryInterface $orderFactory

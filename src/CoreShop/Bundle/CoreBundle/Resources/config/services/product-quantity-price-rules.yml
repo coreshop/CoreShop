@@ -34,30 +34,26 @@ services:
         tags:
             - { name: coreshop.product_quantity_price_rules.condition, type: timespan, form-type: CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
-    coreshop.product_quantity_price_rules.action.amount_decrease: '@CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction'
     CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountDecreaseAction:
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: amount_decrease }
 
-    coreshop.product_quantity_price_rules.action.amount_increase:
-        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountIncreaseAction
+    CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\AmountIncreaseAction:
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: amount_increase }
 
-    coreshop.product_quantity_price_rules.action.fixed:
-        class: CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\FixedAction
+    CoreShop\Component\Core\ProductQuantityPriceRules\Rule\Action\FixedAction:
         arguments:
-            - '@coreshop.currency_converter'
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - { name: coreshop.product_quantity_price_rules.action, type: fixed }
 
-    coreshop.product_quantity_price_rules.calculator.unit_volume:
-        class: CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator
+    CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator:
         decorates: CoreShop\Component\ProductQuantityPriceRules\Calculator\VolumeCalculator
         arguments:
-            - '@coreshop.product_quantity_price_rules.calculator.unit_volume.inner'
+            - '@CoreShop\Component\Core\ProductQuantityPriceRules\Calculator\UnitVolumeCalculator.inner'
             - '@coreshop.registry.product_quantity_price_rules.actions'

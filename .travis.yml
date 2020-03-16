@@ -14,7 +14,6 @@ env:
         - PIMCORE_VERSION="^6.5"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
-        - SYMFONY_VERSION="^3.4"
 
 matrix:
     include:
@@ -39,32 +38,25 @@ matrix:
           php: 7.2
           env:
             - PIMCORE_VERSION="~6.5.0"
-            - SYMFONY_VERSION="^4.0"
 
         - sudo: required
           php: 7.3
           env:
             - PIMCORE_VERSION="~6.5.0"
-            - SYMFONY_VERSION="^4.0"
 
         - sudo: required
           php: 7.2
           env:
             - PIMCORE_VERSION="dev-master"
-            - SYMFONY_VERSION="^4.0"
         - sudo: required
           php: 7.3
           env:
              - PIMCORE_VERSION="dev-master"
-             - SYMFONY_VERSION="^4.0"
     allow_failures:
         - env:
             - CORESHOP_SUITE=codestyle
         - env:
             - PIMCORE_VERSION="dev-master"
-        - env:
-            - PIMCORE_VERSION="dev-master"
-            - SYMFONY_VERSION="^4.0"
     fast_finish: true
 
 cache:

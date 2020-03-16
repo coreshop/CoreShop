@@ -5,9 +5,9 @@ core_shop_workflow:
                 after:
                   resolve_state:
                       on: ['complete', 'refund', 'authorize']
-                      do: ['@coreshop.state_machine_resolver.order_payment', 'resolve']
+                      do: ['@CoreShop\Bundle\OrderBundle\StateResolver\OrderPaymentStateResolver', 'resolve']
                       args: ['object.getOrder()']
                   add_to_history:
                       on: ['process', 'authorize', 'complete', 'fail', 'cancel', 'refund']
-                      do: ['@coreshop.workflow.state_history_logger', 'log']
+                      do: ['@CoreShop\Bundle\WorkflowBundle\History\StateHistoryLoggerInterface', 'log']
                       args: ['object.getOrder()', 'event']

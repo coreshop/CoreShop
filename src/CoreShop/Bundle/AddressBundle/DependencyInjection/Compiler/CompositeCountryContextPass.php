@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Address\Context\CompositeCountryContext;
+use CoreShop\Component\Address\Context\CountryContextInterface;
 
 final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
 {
@@ -23,8 +25,8 @@ final class CompositeCountryContextPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.country',
-            'coreshop.context.country.composite',
+            CountryContextInterface::class,
+            CompositeCountryContext::class,
             self::COUNTRY_CONTEXT_SERVICE_TAG,
             'addContext'
         );

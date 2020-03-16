@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -102,7 +103,7 @@ final class PimcoreDriver extends AbstractDriver
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler'),
+                new Reference(ViewHandlerInterface::class),
             ])
             ->addMethodCall('setContainer', [new Reference('service_container')])
             ->addTag('controller.service_arguments')
@@ -232,7 +233,7 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $alias = new Alias('pimcore.dao.object_manager');
+        $alias = new Alias(ObjectManager::class);
         $alias->setPublic(true);
 
         $container->setAlias(

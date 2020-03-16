@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\InventoryBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -35,6 +36,6 @@ final class CoreShopInventoryExtension extends AbstractModelExtension
         $alias = new Alias($config['checker']);
         $alias->setPublic(true);
 
-        $container->setAlias('coreshop.inventory.availability_checker', $alias);
+        $container->setAlias(AvailabilityCheckerInterface::class, $alias);
     }
 }
