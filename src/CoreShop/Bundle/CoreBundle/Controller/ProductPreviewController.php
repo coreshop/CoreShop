@@ -16,21 +16,26 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
+use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
 {
-    public function previewAction(Request $request): Response
-    {
+    public function previewAction(
+        Request $request,
+        StoreRepositoryInterface $storeRepository,
+        ProductRepositoryInterface $productRepository
+    ): Response {
         if (!$request->get('store')) {
             return new Response('No Store selected');
         }
 
-        $store = $this->get('coreshop.repository.store')->find($request->get('store'));
+        $store = $storeRepository->find($request->get('store'));
 
         if (!$store instanceof StoreInterface) {
             return new Response('Invalid Store selected');
@@ -49,7 +54,7 @@ class ProductPreviewController extends AdminController
         /**
          * @var DataObject\Concrete $object
          */
-        $object = $this->get('coreshop.repository.product')->find($request->get('id'));
+        $object = $productRepository->find($request->get('id'));
 
         if (!$object instanceof ProductInterface) {
             return new Response('Store Preview is only available for Products');
@@ -65,9 +70,9 @@ class ProductPreviewController extends AdminController
             $vars = $object->getObjectVars();
             foreach ($vars as $key => $value) {
                 if (!empty($value) && (is_string($value) || is_numeric($value))) {
-                    $url = str_replace('%' . $key, urlencode($value), $url);
+                    $url = str_replace('%'.$key, urlencode($value), $url);
                 } else {
-                    if (strpos($url, '%' . $key) !== false) {
+                    if (strpos($url, '%'.$key) !== false) {
                         return new Response('No preview available, please ensure that all fields which are required for the preview are filled correctly.');
                     }
                 }
@@ -85,6 +90,6 @@ class ProductPreviewController extends AdminController
 
         $urlParts = parse_url($url);
 
-        return $this->redirect(($site ? 'https://' . $site->getMainDomain() : '') . $urlParts['path']);
+        return $this->redirect(($site ? 'https://'.$site->getMainDomain() : '').$urlParts['path']);
     }
 }

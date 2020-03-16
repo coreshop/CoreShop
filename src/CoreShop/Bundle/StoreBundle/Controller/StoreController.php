@@ -15,13 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\StoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Pimcore\Model\Site;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class StoreController extends ResourceController
 {
-    public function listSitesAction(Request $request): Response
+    public function listSitesAction(ViewHandlerInterface $viewHandler): Response
     {
         $list = new Site\Listing();
         $list->setOrder('ASC');
@@ -40,6 +41,6 @@ class StoreController extends ResourceController
             }
         }
 
-        return $this->viewHandler->handle($sites);
+        return $viewHandler->handle($sites);
     }
 }

@@ -15,43 +15,50 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Core\Portlet\ExportPortletInterface;
 use CoreShop\Component\Core\Portlet\PortletInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class PortletsController extends AdminController
 {
-    public function getPortletDataAction(Request $request): Response
-    {
+    public function getPortletDataAction(
+        Request $request,
+        ViewHandlerInterface $viewHandler,
+        ServiceRegistryInterface $portletsRegistry
+    ): Response {
         $portletName = $request->get('portlet');
-        $portletRegistry = $this->get('coreshop.registry.portlets');
 
-        if (!$portletRegistry->has($portletName)) {
+        if (!$portletsRegistry->has($portletName)) {
             throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portletName));
         }
 
         /** @var PortletInterface $portlet */
-        $portlet = $portletRegistry->get($portletName);
+        $portlet = $portletsRegistry->get($portletName);
 
-        return $this->viewHandler->handle([
+        return $viewHandler->handle([
             'success' => true,
             'data' => $portlet->getPortletData($request->query),
         ]);
     }
 
-    public function exportPortletCsvAction(Request $request): Response
-    {
+    public function exportPortletCsvAction(
+        Request $request,
+        ServiceRegistryInterface $portletsRegistry,
+        SerializerInterface $serializer
+    ): Response {
         $portletName = $request->get('portlet');
-        $portletRegistry = $this->get('coreshop.registry.portlets');
 
-        if (!$portletRegistry->has($portletName)) {
+        if (!$portletsRegistry->has($portletName)) {
             throw new \InvalidArgumentException(sprintf('Portlet %s not found', $portletName));
         }
 
         /** @var PortletInterface $portlet */
-        $portlet = $portletRegistry->get($portletName);
+        $portlet = $portletsRegistry->get($portletName);
 
         if ($portlet instanceof ExportPortletInterface) {
             $data = $portlet->getExportPortletData($request->query);
@@ -59,7 +66,7 @@ class PortletsController extends AdminController
             $data = $portlet->getPortletData($request->query);
         }
 
-        $csvData = $this->get('serializer')->serialize($data, 'csv');
+        $csvData = $serializer->serialize($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(

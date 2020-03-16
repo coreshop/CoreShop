@@ -20,9 +20,7 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -33,29 +31,17 @@ class ResourceController extends AdminController
     protected $metadata;
     protected $factory;
     protected $manager;
-    protected $eventDispatcher;
-    protected $resourceFormFactory;
-    protected $formErrorSerializer;
 
     public function __construct(
         MetadataInterface $metadata,
         RepositoryInterface $repository,
         FactoryInterface $factory,
-        ObjectManager $manager,
-        ViewHandler $viewHandler,
-        EventDispatcherInterface $eventDispatcher,
-        ResourceFormFactoryInterface $resourceFormFactory,
-        ErrorSerializer $formErrorSerializer
+        ObjectManager $manager
     ) {
-        parent::__construct($viewHandler);
-
         $this->metadata = $metadata;
         $this->repository = $repository;
         $this->factory = $factory;
         $this->manager = $manager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->resourceFormFactory = $resourceFormFactory;
-        $this->formErrorSerializer = $formErrorSerializer;
     }
 
     /**
@@ -64,7 +50,8 @@ class ResourceController extends AdminController
     protected function isGrantedOr403(): void
     {
         if ($this->metadata->hasParameter('permission')) {
-            $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(), $this->metadata->getParameter('permission'));
+            $permission = sprintf('%s_permission_%s', $this->metadata->getApplicationName(),
+                $this->metadata->getParameter('permission'));
             $user = method_exists($this, 'getAdminUser') ? $this->getAdminUser() : $this->getUser();
 
             if ($user->isAllowed($permission)) {
@@ -75,81 +62,92 @@ class ResourceController extends AdminController
         }
     }
 
-    public function listAction(Request $request)
+    public function listAction(Request $request, ViewHandlerInterface $viewHandler)
     {
         $data = $this->repository->findAll();
 
-        return $this->viewHandler->handle($data, ['group' => 'List']);
+        return $viewHandler->handle($data, ['group' => 'List']);
     }
 
-    public function getAction(Request $request)
+    public function getAction(Request $request, ViewHandlerInterface $viewHandler)
     {
         $this->isGrantedOr403();
 
         $resources = $this->findOr404($request->get('id'));
 
-        return $this->viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
+        return $viewHandler->handle(['data' => $resources, 'success' => true], ['group' => 'Detailed']);
     }
 
-    public function saveAction(Request $request)
-    {
+    public function saveAction(
+        Request $request,
+        ResourceFormFactoryInterface $resourceFormFactory,
+        EventDispatcherInterface $eventDispatcher,
+        ErrorSerializer $formErrorSerializer,
+        ViewHandlerInterface $viewHandler
+    ) {
         $this->isGrantedOr403();
 
         $resource = $this->findOr404($request->get('id'));
 
-        $form = $this->resourceFormFactory->create($this->metadata, $resource);
+        $form = $resourceFormFactory->create($this->metadata, $resource);
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
-            $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
 
             $this->manager->persist($resource);
             $this->manager->flush();
 
-            $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
-            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
+            return $viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+        $errors = $formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 
-    public function addAction(Request $request)
-    {
+    public function addAction(
+        Request $request,
+        EventDispatcherInterface $eventDispatcher,
+        ViewHandlerInterface $viewHandler
+    ) {
         $this->isGrantedOr403();
 
         $name = $request->get('name');
 
         if (strlen($name) <= 0) {
-            return $this->viewHandler->handle(['success' => false]);
-        } else {
-            $resource = $this->factory->createNew();
-
-            if ($resource instanceof ResourceInterface) {
-                $resource->setValue('name', $name);
-            }
-
-            foreach ($request->request->all() as $key => $value) {
-                $resource->setValue($key, $value);
-            }
-
-            $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
-
-            $this->manager->persist($resource);
-            $this->manager->flush();
-
-            $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
-
-            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
+            return $viewHandler->handle(['success' => false]);
         }
+
+        $resource = $this->factory->createNew();
+
+        if ($resource instanceof ResourceInterface) {
+            $resource->setValue('name', $name);
+        }
+
+        foreach ($request->request->all() as $key => $value) {
+            $resource->setValue($key, $value);
+        }
+
+        $eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
+
+        $this->manager->persist($resource);
+        $this->manager->flush();
+
+        $eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
+
+        return $viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
     }
 
-    public function deleteAction(Request $request)
-    {
+    public function deleteAction(
+        Request $request,
+        EventDispatcherInterface $eventDispatcher,
+        ViewHandlerInterface $viewHandler
+    ) {
         $this->isGrantedOr403();
 
         $id = $request->get('id');
@@ -157,17 +155,17 @@ class ResourceController extends AdminController
         $resource = $this->repository->find($id);
 
         if ($resource instanceof ResourceInterface) {
-            $this->eventDispatcher->dispatchPreEvent('delete', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPreEvent('delete', $this->metadata, $resource, $request);
 
             $this->manager->remove($resource);
             $this->manager->flush();
 
-            $this->eventDispatcher->dispatchPostEvent('delete', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPostEvent('delete', $this->metadata, $resource, $request);
 
-            return $this->viewHandler->handle(['success' => true]);
+            return $viewHandler->handle(['success' => true]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        return $viewHandler->handle(['success' => false]);
     }
 
     protected function findOr404($id)

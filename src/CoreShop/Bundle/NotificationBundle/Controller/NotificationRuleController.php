@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\NotificationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
@@ -23,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NotificationRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $conditions = [];
         $actions = [];
@@ -65,7 +66,7 @@ class NotificationRuleController extends ResourceController
             }
         }
 
-        return $this->viewHandler->handle([
+        return $viewHandler->handle([
             'success' => true,
             'types' => $types,
             'actions' => $actions,
@@ -73,7 +74,7 @@ class NotificationRuleController extends ResourceController
         ]);
     }
 
-    public function sortAction(Request $request): Response
+    public function sortAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         /**
          * @var EntityRepository $repository
@@ -148,7 +149,7 @@ class NotificationRuleController extends ResourceController
 
         $this->manager->flush();
 
-        return $this->viewHandler->handle([
+        return $viewHandler->handle([
             'success' => true,
         ]);
     }

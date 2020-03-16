@@ -40,11 +40,11 @@ services:
             - { name: jms_serializer.handler, type: pimcoreDocument<?>, direction: deserialization, format: json, method: deserializeRelation}
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreAssetHandler:
-         tags:
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation}
-             - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation}
+        tags:
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: serialization, format: json, method: serializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreAsset, direction: deserialization, format: json, method: deserializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: serialization, format: json, method: serializeRelation}
+            - { name: jms_serializer.handler, type: pimcoreAsset<?>, direction: deserialization, format: json, method: deserializeRelation}
 
     CoreShop\Bundle\ResourceBundle\Serialization\PimcoreSiteHandler:
         tags:
@@ -72,9 +72,11 @@ services:
 
     CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController:
         arguments:
-          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandler'
         calls:
-          - [setContainer, ['@service_container']]
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: controller.service_arguments }
 
     CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer: ~
 

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Product\Cloner\ProductClonerInterface;
 use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
@@ -33,10 +34,14 @@ class ProductVariantUnitSolidifierController extends AdminController
     const DISPATCH_STRATEGY_ONLY_UNIT_DEFINITIONS = 'strategy_only_unit_definitions';
     const DISPATCH_STRATEGY_UNIT_DEFINITIONS_AND_QPR = 'strategy_only_unit_definitions_and_qpr';
 
-    public function checkStatusAction(Request $request, int $objectId): Response
+    public function checkStatusAction(
+        int $objectId,
+        ProductRepositoryInterface $productRepository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         /** @var DataObject\Concrete $object */
-        $object = $this->getProductRepository()->find($objectId);
+        $object = $productRepository->find($objectId);
 
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
@@ -63,20 +68,26 @@ class ProductVariantUnitSolidifierController extends AdminController
             }
         }
 
-        return new JsonResponse([
+        return $viewHandler->handle([
             'success'     => true,
             'errorStatus' => $errorStatus,
             'strategy'    => $strategy
         ]);
     }
 
-    public function applyAction(Request $request, int $objectId): Response
+    public function applyAction(
+        int $objectId,
+        ProductRepositoryInterface $productRepository,
+        ProductQuantityPriceRulesCloner $productQuantityPriceRulesCloner,
+        ProductUnitDefinitionsCloner $productUnitDefinitionsCloner,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $success = true;
         $message = null;
 
         /** @var DataObject\Concrete $object */
-        $object = $this->getProductRepository()->find($objectId);
+        $object = $productRepository->find($objectId);
 
         if (!$object instanceof ProductInterface) {
             return new JsonResponse([
@@ -94,7 +105,7 @@ class ProductVariantUnitSolidifierController extends AdminController
             }
 
             try {
-                $this->getUnitDefinitionsCloner()->clone($variant, $object, false);
+                $productUnitDefinitionsCloner->clone($variant, $object, false);
             } catch (\Throwable $e) {
                 $success = false;
                 $message = sprintf(
@@ -104,7 +115,7 @@ class ProductVariantUnitSolidifierController extends AdminController
             }
 
             try {
-                $this->getQuantityPriceRulesCloner()->clone($variant, $object, false);
+                $productQuantityPriceRulesCloner->clone($variant, $object, false);
             } catch (\Throwable $e) {
                 $success = false;
                 $message = sprintf(
@@ -125,27 +136,11 @@ class ProductVariantUnitSolidifierController extends AdminController
 
         }
 
-        return new JsonResponse([
+        return $viewHandler->handle([
             'success'          => $success,
             'message'          => $message,
             'affectedVariants' => $dispatchedVariants
         ]);
 
     }
-
-    protected function getProductRepository(): ProductRepositoryInterface
-    {
-        return $this->get('coreshop.repository.product');
-    }
-
-    protected function getQuantityPriceRulesCloner(): ProductClonerInterface
-    {
-        return $this->get(ProductQuantityPriceRulesCloner::class);
-    }
-
-    protected function getUnitDefinitionsCloner(): ProductClonerInterface
-    {
-        return $this->get(ProductUnitDefinitionsCloner::class);
-    }
-
 }

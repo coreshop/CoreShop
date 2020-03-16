@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -28,32 +29,34 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    public function productUnitDefinitionsListAction(Request $request): Response
+    public function productUnitDefinitionsListAction(
+        Request $request,
+        StackRepository $productStackRepository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $productStackRepository->find($request->get('productId'));
 
         if ($product instanceof ProductInterface) {
             $definitions = $this->getUnitDefinitionsForProduct($product, 'all');
         }
 
-        return $this->viewHandler->handle($definitions);
+        return $viewHandler->handle($definitions);
     }
 
-    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
+    public function productAdditionalUnitDefinitionsListAction(
+        Request $request,
+        StackRepository $productStackRepository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $definitions = [];
 
-        /** @var StackRepository $repository */
-        $repository = $this->get('coreshop.repository.stack.product');
-
         /** @var ProductInterface $product */
-        $product = $repository->find($request->get('productId'));
+        $product = $productStackRepository->find($request->get('productId'));
 
         if ($product instanceof Concrete) {
             $product = VersionHelper::getLatestVersion($product);
@@ -63,7 +66,7 @@ class ProductUnitDefinitionsController extends ResourceController
             $definitions = $this->getUnitDefinitionsForProduct($product, 'additional');
         }
 
-        return $this->viewHandler->handle($definitions);
+        return $viewHandler->handle($definitions);
     }
 
     protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all'): Collection

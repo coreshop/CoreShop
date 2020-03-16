@@ -51,8 +51,16 @@ final class StackRepositoryPass implements CompilerPassInterface
                 $classes,
             ]);
 
-            $container->setDefinition(sprintf('%s.repository.stack.%s', $applicationName, $name), $repositoryDefinition)
+            $id = sprintf('%s.repository.stack.%s', $applicationName, $name);
+
+            $container->setDefinition($id, $repositoryDefinition)
                 ->setPublic(true);
+
+            $container->registerAliasForArgument(
+                $id,
+                $name . 'StackRepository',
+                $name . ' Stack Repository'
+            );
         }
     }
 }

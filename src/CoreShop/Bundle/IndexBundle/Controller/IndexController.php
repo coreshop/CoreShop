@@ -15,16 +15,18 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Interpreter\RelationInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends ResourceController
 {
-    public function getTypesAction(): Response
+    public function getTypesAction(ViewHandlerInterface $viewHandler): Response
     {
         $types = $this->getWorkerTypes();
 
@@ -36,10 +38,13 @@ class IndexController extends ResourceController
             ];
         }
 
-        return $this->viewHandler->handle($typesObject);
+        return $viewHandler->handle($typesObject);
     }
 
-    public function getConfigAction(): Response
+    public function getConfigAction(
+        ServiceRegistryInterface $indexInterpretersRegistry,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $interpreters = $this->getInterpreterTypes();
         $interpretersResult = [];
@@ -55,7 +60,7 @@ class IndexController extends ResourceController
         }
 
         foreach ($interpreters as $interpreter) {
-            $class = $this->get('coreshop.registry.index.interpreter')->get($interpreter);
+            $class = $indexInterpretersRegistry->get($interpreter);
             $localized = in_array(LocalizedInterpreterInterface::class, class_implements($class), true);
             $relation = in_array(RelationInterpreterInterface::class, class_implements($class), true);
 
@@ -93,7 +98,7 @@ class IndexController extends ResourceController
             }
         }
 
-        return $this->viewHandler->handle(
+        return $viewHandler->handle(
             [
                 'success' => true,
                 'interpreters' => $interpretersResult,
@@ -104,12 +109,15 @@ class IndexController extends ResourceController
         );
     }
 
-    public function getClassDefinitionForFieldSelectionAction(Request $request): Response
+    public function getClassDefinitionForFieldSelectionAction(
+        Request $request,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $class = DataObject\ClassDefinition::getByName($request->get('class'));
 
         if (!$class instanceof DataObject\ClassDefinition) {
-            return $this->viewHandler->handle([]);
+            return $viewHandler->handle([]);
         }
 
         $fields = $class->getFieldDefinitions();
@@ -152,7 +160,7 @@ class IndexController extends ResourceController
         $this->getObjectbrickFields($allowedBricks, $result);
         $this->getFieldcollectionFields($allowedCollections, $result);
 
-        return $this->viewHandler->handle($result);
+        return $viewHandler->handle($result);
     }
 
     protected function getSystemFields(): array

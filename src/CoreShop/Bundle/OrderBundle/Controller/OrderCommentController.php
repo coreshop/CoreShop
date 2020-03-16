@@ -15,27 +15,29 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Notes;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderCommentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function listAction(Request $request)
+    public function listAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        NoteServiceInterface $objectNoteService,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $orderRepository->find($orderId);
 
-        $objectNoteService = $this->get(NoteServiceInterface::class);
         $notes = $objectNoteService->getObjectNotes($order, Notes::NOTE_ORDER_COMMENT);
 
         $parsedData = [];
@@ -52,60 +54,53 @@ class OrderCommentController extends PimcoreController
             ];
         }
 
-        return $this->viewHandler->handle(['success' => true, 'comments' => $parsedData]);
+        return $viewHandler->handle(['success' => true, 'comments' => $parsedData]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function addAction(Request $request)
+    public function addAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        NoteServiceInterface $objectNoteService,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $comment = $request->get('comment');
         $submitAsEmail = $request->get('submitAsEmail') === 'true';
         $orderId = $request->get('id');
 
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            return $viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         try {
-            $objectNoteService = $this->get(NoteServiceInterface::class);
             $commentEntity = $objectNoteService->createPimcoreNoteInstance($order, Notes::NOTE_ORDER_COMMENT);
             $commentEntity->setTitle('Order Comment');
             $commentEntity->setDescription(nl2br($comment));
             $commentEntity->addData('submitAsEmail', 'bool', $submitAsEmail);
             $comment = $objectNoteService->storeNote($commentEntity, ['order' => $order, 'submitAsEmail' => $submitAsEmail]);
 
-            return $this->viewHandler->handle(['success' => true, 'commentId' => $comment->getId()]);
+            return $viewHandler->handle(['success' => true, 'commentId' => $comment->getId()]);
         } catch (\Exception $ex) {
-            return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+            return $viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function deleteAction(Request $request)
+    public function deleteAction(
+        Request $request,
+        NoteServiceInterface $objectNoteService,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $commentId = $request->get('id');
-        $objectNoteService = $this->get(NoteServiceInterface::class);
+
         $commentEntity = $objectNoteService->getNoteById($commentId);
-        $commentEntity->delete();
 
-        return $this->viewHandler->handle(['success' => true]);
-    }
+        if (null !== $commentEntity) {
+            $commentEntity->delete();
+        }
 
-    /**
-     * @return PimcoreRepositoryInterface
-     */
-    private function getOrderRepository()
-    {
-        return $this->get('coreshop.repository.order');
+        return $viewHandler->handle(['success' => true]);
     }
 }

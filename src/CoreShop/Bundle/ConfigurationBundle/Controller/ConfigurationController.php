@@ -15,22 +15,27 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ConfigurationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Configuration\Service\ConfigurationServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ConfigurationController extends ResourceController
 {
-    public function saveAllAction(Request $request): Response
+    public function saveAllAction(
+        Request $request,
+        ConfigurationServiceInterface $configurationService,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $values = $request->get('values');
         $values = array_htmlspecialchars($values);
 
         foreach ($values as $key => $value) {
-            $this->getConfigurationService()->set($key, $value);
+            $configurationService->set($key, $value);
         }
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
     /**

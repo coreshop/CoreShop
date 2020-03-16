@@ -14,20 +14,24 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
+use CoreShop\Bundle\ResourceBundle\Controller\EventDispatcher;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ResourceFormFactory;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExchangeRateController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request): Response
+    public function exchangeRateSaveAction(
+        Request $request,
+        ResourceFormFactory $resourceFormFactory,
+        EventDispatcher $eventDispatcher,
+        ErrorSerializer $formErrorSerializer,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $resource = $this->repository->find($request->get('id'));
 
@@ -35,13 +39,13 @@ class ExchangeRateController extends ResourceController
             $resource = $this->factory->createNew();
         }
 
-        $form = $this->resourceFormFactory->create($this->metadata, $resource);
+        $form = $resourceFormFactory->create($this->metadata, $resource);
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
-            $this->eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPreEvent('save', $this->metadata, $resource, $request);
 
             if (!$resource->getId()) {
                 $this->manager->persist($resource);
@@ -49,13 +53,13 @@ class ExchangeRateController extends ResourceController
 
             $this->manager->flush();
 
-            $this->eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
+            $eventDispatcher->dispatchPostEvent('save', $this->metadata, $resource, $request);
 
-            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
+            return $viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
 
-        $errors = $this->formErrorSerializer->serializeErrorFromHandledForm($handledForm);
+        $errors = $formErrorSerializer->serializeErrorFromHandledForm($handledForm);
 
-        return $this->viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
+        return $viewHandler->handle(['success' => false, 'message' => implode(PHP_EOL, $errors)]);
     }
 }

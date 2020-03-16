@@ -22,20 +22,11 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 class PimcoreController extends AdminController
 {
     protected $metadata;
-    protected $repository;
-    protected $factory;
 
     public function __construct(
-        MetadataInterface $metadata,
-        PimcoreRepositoryInterface $repository,
-        FactoryInterface $factory,
-        ViewHandlerInterface $viewHandler
+        MetadataInterface $metadata
     ) {
-        parent::__construct($viewHandler);
 
-        $this->metadata = $metadata;
-        $this->repository = $repository;
-        $this->factory = $factory;
     }
 
     /**

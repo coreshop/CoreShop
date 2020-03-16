@@ -15,19 +15,22 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\IndexBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class FilterController extends ResourceController
 {
 
-    public function getConfigAction(): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
-        return $this->viewHandler->handle(
+        return $viewHandler->handle(
             [
                 'success' => true,
                 'pre_conditions' => array_keys($this->getPreConditionTypes()),
@@ -36,9 +39,13 @@ class FilterController extends ResourceController
         );
     }
 
-    public function getFieldsForIndexAction(Request $request): Response
+    public function getFieldsForIndexAction(
+        Request $request,
+        RepositoryInterface $indexRepository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
+        $index = $indexRepository->find($request->get('index'));
 
         if ($index instanceof IndexInterface) {
             $columns = [
@@ -50,22 +57,28 @@ class FilterController extends ResourceController
                 ];
             }
 
-            return $this->viewHandler->handle($columns);
+            return $viewHandler->handle($columns);
         }
 
-        return $this->viewHandler->handle(false);
+        return $viewHandler->handle(false);
     }
 
-    public function getValuesForFilterFieldAction(Request $request): Response
+    public function getValuesForFilterFieldAction(
+        Request $request,
+        RepositoryInterface $indexRepository,
+        ServiceRegistryInterface $indexWorkerRegistry,
+        ListingFactoryInterface $listingFactory,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
-        $index = $this->get('coreshop.repository.index')->find($request->get('index'));
+        $index = $indexRepository->find($request->get('index'));
 
         if ($index instanceof IndexInterface) {
             /**
              * @var WorkerInterface $worker
              */
-            $worker = $this->get('coreshop.registry.index.worker')->get($index->getWorker());
-            $list = $this->get(ListingFactoryInterface::class)->createList($index);
+            $worker = $indexWorkerRegistry->get($index->getWorker());
+            $list = $listingFactory->createList($index);
             $filterGroupHelper = $worker->getFilterGroupHelper();
             $field = $request->get('field');
             $column = null;
@@ -81,10 +94,10 @@ class FilterController extends ResourceController
                 $returnValues = $filterGroupHelper->getGroupByValuesForFilterGroup($column, $list, $field);
             }
 
-            return $this->viewHandler->handle($returnValues);
+            return $viewHandler->handle($returnValues);
         }
 
-        return $this->viewHandler->handle(false);
+        return $viewHandler->handle(false);
     }
 
     /**

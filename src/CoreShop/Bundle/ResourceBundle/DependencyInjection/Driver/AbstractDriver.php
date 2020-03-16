@@ -82,11 +82,8 @@ abstract class AbstractDriver implements DriverInterface
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
                 new Reference($metadata->getServiceId('manager')),
-                new Reference(ViewHandlerInterface::class),
-                new Reference(EventDispatcherInterface::class),
-                new Reference(ResourceFormFactoryInterface::class),
-                new Reference(ErrorSerializer::class),
             ])
+            ->addTag('controller.service_arguments')
             ->addMethodCall('setContainer', [new Reference('service_container')]);
 
         $container->setDefinition($metadata->getServiceId('admin_controller'), $definition);

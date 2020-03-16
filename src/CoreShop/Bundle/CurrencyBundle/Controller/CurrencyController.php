@@ -15,18 +15,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CurrencyBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CurrencyController extends ResourceController
 {
-    public function getConfigAction(Request $request): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $settings = [
             'decimal_precision' => $this->getParameter('coreshop.currency.decimal_precision'),
             'decimal_factor' => $this->getParameter('coreshop.currency.decimal_factor'),
         ];
 
-        return $this->viewHandler->handle($settings);
+        return $viewHandler->handle($settings);
     }
 }

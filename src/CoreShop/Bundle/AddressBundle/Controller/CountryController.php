@@ -15,18 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\AddressBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class CountryController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listActiveAction(Request $request)
+    public function listActiveAction(ViewHandlerInterface $viewHandler): JsonResponse
     {
         /**
          * @var CountryRepositoryInterface $repository
@@ -35,6 +31,6 @@ class CountryController extends ResourceController
 
         $data = $repository->findBy(['active' => true]);
 
-        return $this->viewHandler->handle($data, ['group' => 'List']);
+        return $viewHandler->handle($data, ['group' => 'List']);
     }
 }

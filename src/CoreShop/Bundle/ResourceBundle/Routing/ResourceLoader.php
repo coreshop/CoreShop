@@ -51,6 +51,7 @@ final class ResourceLoader implements LoaderInterface
             'save' => ['POST'],
             'delete' => ['DELETE'],
         ];
+
         $routesToGenerate = [];
 
         if (!empty($configuration['no_default_routes'])) {
@@ -68,7 +69,7 @@ final class ResourceLoader implements LoaderInterface
         foreach ($defaultRoutes as $route => $methods) {
             $routesToGenerate[] = [
                 'path' => $route,
-                'action' => $route,
+                'action' => $configuration['default_routes'][$route] ?? $route,
                 'methods' => $methods,
             ];
         }

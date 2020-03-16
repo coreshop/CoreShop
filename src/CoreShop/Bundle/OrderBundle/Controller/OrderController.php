@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use Carbon\Carbon;
 use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -102,7 +103,7 @@ class OrderController extends PimcoreController
      */
     protected $paymentRepository;
 
-    public function getStatesAction(Request $request): Response
+    public function getStatesAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         $identifiers = $this->getParameter('coreshop.state_machines');
         $states = [];
@@ -148,14 +149,14 @@ class OrderController extends PimcoreController
             $transitions[$identifier] = array_values($transitions[$identifier]);
         }
 
-        return $this->viewHandler->handle(['success' => true, 'states' => $states, 'transitions' => $transitions]);
+        return $viewHandler->handle(['success' => true, 'states' => $states, 'transitions' => $transitions]);
     }
 
     public function updateOrderStateAction(
         Request $request,
         OrderRepositoryInterface $orderRepository,
         StateMachineManagerInterface $stateMachineManager
-    ): Response
+    , ViewHandlerInterface $viewHandler): Response
     {
         $orderId = $request->get('o_id');
         $order = $orderRepository->find($orderId);
@@ -168,15 +169,15 @@ class OrderController extends PimcoreController
         //apply state machine
         $workflow = $stateMachineManager->get($order, 'coreshop_order');
         if (!$workflow->can($order, $transition)) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+            return $viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
         }
 
         $workflow->apply($order, $transition);
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
-    public function getFolderConfigurationAction(Request $request): Response
+    public function getFolderConfigurationAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         $this->isGrantedOr403();
 
@@ -199,10 +200,10 @@ class OrderController extends PimcoreController
             $name = $orderClassDefinition->getName();
         }
 
-        return $this->viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
+        return $viewHandler->handle(['success' => true, 'className' => $name, 'folderId' => $folderId]);
     }
 
-    public function listAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    public function listAction(Request $request, OrderRepositoryInterface $orderRepository, ViewHandlerInterface $viewHandler): Response
     {
         $this->isGrantedOr403();
 
@@ -246,7 +247,7 @@ class OrderController extends PimcoreController
             $jsonSales[] = $this->prepareSale($order);
         }
 
-        return $this->viewHandler->handle([
+        return $viewHandler->handle([
             'success' => true,
             'data' => $jsonSales,
             'count' => count($jsonSales),
@@ -254,7 +255,7 @@ class OrderController extends PimcoreController
         ]);
     }
 
-    public function detailAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    public function detailAction(Request $request, OrderRepositoryInterface $orderRepository, ViewHandlerInterface $viewHandler): Response
     {
         $this->isGrantedOr403();
 
@@ -262,15 +263,15 @@ class OrderController extends PimcoreController
         $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+            return $viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
         }
 
         $jsonSale = $this->getDetails($order);
 
-        return $this->viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
+        return $viewHandler->handle(['success' => true, 'sale' => $jsonSale]);
     }
 
-    public function findOrderAction(Request $request, OrderRepositoryInterface $orderRepository): Response
+    public function findOrderAction(Request $request, OrderRepositoryInterface $orderRepository, ViewHandlerInterface $viewHandler): Response
     {
         $this->isGrantedOr403();
 
@@ -283,11 +284,11 @@ class OrderController extends PimcoreController
             $orders = $list->getData();
 
             if (count($orders) > 0) {
-                return $this->viewHandler->handle(['success' => true, 'id' => $orders[0]->getId()]);
+                return $viewHandler->handle(['success' => true, 'id' => $orders[0]->getId()]);
             }
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        return $viewHandler->handle(['success' => false]);
     }
 
     protected function prepareSale(OrderInterface $order): array

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
@@ -27,7 +28,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProductValidationController extends AdminController
 {
-    public function validateUnitDefinitionDeletionAction(Request $request): Response
+    public function validateUnitDefinitionDeletionAction(
+        Request $request,
+        StackRepository $productStackRepository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $message = null;
         $success = true;
@@ -35,18 +40,18 @@ class ProductValidationController extends AdminController
         $objectId = $request->get('id', null);
         $unitDefinitionId = $request->get('unitDefinitionId', null);
 
-        if (is_null($unitDefinitionId)) {
-            return new JsonResponse([
+        if (null === $unitDefinitionId) {
+            return $viewHandler->handle([
                 'success' => false,
                 'message' => sprintf('%s is not a valid unit definition id.', $unitDefinitionId),
             ]);
         }
 
         /** @var DataObject\Concrete $object */
-        $object = $this->getProductRepository()->find($objectId);
+        $object = $productStackRepository->find($objectId);
 
         if (!$object instanceof ProductInterface) {
-            return new JsonResponse([
+            return $viewHandler->handle([
                 'success' => false,
                 'message' => sprintf('%s is not a valid product', $objectId),
             ]);
@@ -55,7 +60,7 @@ class ProductValidationController extends AdminController
         $hasQuantityPriceRules = is_array($object->getQuantityPriceRules()) && count($object->getQuantityPriceRules()) > 0;
 
         if ($hasQuantityPriceRules === false) {
-            return new JsonResponse([
+            return $viewHandler->handle([
                 'success' => $success,
                 'message' => $message,
                 'status' => $status,
@@ -86,16 +91,10 @@ class ProductValidationController extends AdminController
             }
         }
 
-        return new JsonResponse([
+        return $viewHandler->handle([
             'success' => $success,
             'message' => $message,
             'status' => $status,
         ]);
     }
-
-    protected function getProductRepository(): StackRepository
-    {
-        return $this->get('coreshop.repository.stack.product');
-    }
-
 }

@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
@@ -53,7 +54,8 @@ class OrderCreationController extends PimcoreController
 
     public function getCustomerDetailsAction(
         Request $request,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        ViewHandlerInterface $viewHandler
     ): Response {
         $this->isGrantedOr403();
 
@@ -61,20 +63,21 @@ class OrderCreationController extends PimcoreController
         $customer = $customerRepository->find($customerId);
 
         if (!$customer instanceof CustomerInterface) {
-            return $this->viewHandler->handle([
+            return $viewHandler->handle([
                 'success' => false,
                 'message' => "Customer with ID '$customerId' not found",
             ]);
         }
 
-        return $this->viewHandler->handle(['success' => true, 'customer' => $this->getDataForObject($customer)]);
+        return $viewHandler->handle(['success' => true, 'customer' => $this->getDataForObject($customer)]);
     }
 
     public function salePreviewAction(
         Request $request,
         FactoryInterface $orderFactory,
         FormFactoryInterface $formFactory,
-        CartProcessorInterface $cartProcessor
+        CartProcessorInterface $cartProcessor,
+        ViewHandlerInterface $viewHandler
     ): Response {
         $cart = $orderFactory->createNew();
         $form = $formFactory->createNamed('', CartCreationType::class, $cart, [
@@ -89,10 +92,10 @@ class OrderCreationController extends PimcoreController
             $cartProcessor->process($cart);
             $json = $this->getCartDetails($cart);
 
-            return $this->viewHandler->handle(['success' => true, 'data' => $json]);
+            return $viewHandler->handle(['success' => true, 'data' => $json]);
         }
 
-        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+        return $viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
     public function saleCreationAction(
@@ -100,9 +103,9 @@ class OrderCreationController extends PimcoreController
         FactoryInterface $orderFactory,
         FormFactoryInterface $formFactory,
         CartManagerInterface $cartManager,
-        CartProcessorInterface $cartProcessor,
         ErrorSerializer $errorSerializer,
-        StateMachineManagerInterface $manager
+        StateMachineManagerInterface $manager,
+        ViewHandlerInterface $viewHandler
     ): Response {
         $this->isGrantedOr403();
 
@@ -117,7 +120,7 @@ class OrderCreationController extends PimcoreController
             $handledForm = $form->handleRequest($request);
 
             if (!$handledForm->isValid()) {
-                return $this->viewHandler->handle(
+                return $viewHandler->handle(
                     [
                         'success' => false,
                         'message' => $errorSerializer->serializeErrorFromHandledForm($form),
@@ -137,13 +140,13 @@ class OrderCreationController extends PimcoreController
 
             $cartManager->persistCart($cart);
 
-            return $this->viewHandler->handle([
+            return $viewHandler->handle([
                 'success' => true,
                 'id' => $cart->getId(),
             ]);
         }
 
-        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+        return $viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
 

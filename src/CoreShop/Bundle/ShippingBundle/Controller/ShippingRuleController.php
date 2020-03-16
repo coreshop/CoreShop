@@ -15,17 +15,18 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShippingRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
+        return $viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
     }
 
     protected function getConfigActions(): array

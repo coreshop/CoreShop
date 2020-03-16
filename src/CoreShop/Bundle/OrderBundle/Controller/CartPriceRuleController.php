@@ -17,35 +17,30 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherGeneratorType;
 use CoreShop\Bundle\OrderBundle\Form\Type\VoucherType;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
+use CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCode;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartPriceRuleController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction(Request $request)
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
 
-        return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
+        return $viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getVoucherCodesAction(Request $request)
+    public function getVoucherCodesAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         $id = $request->get('cartPriceRule');
         $cartPriceRule = $this->repository->find($id);
@@ -54,18 +49,19 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
-        return $this->viewHandler->handle(['total' => count($cartPriceRule->getVoucherCodes()), 'data' => $cartPriceRule->getVoucherCodes(), 'success' => true], ['group' => 'Detailed']);
+        return $viewHandler->handle(['total' => count($cartPriceRule->getVoucherCodes()), 'data' => $cartPriceRule->getVoucherCodes(), 'success' => true], ['group' => 'Detailed']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function createVoucherCodeAction(Request $request)
+    public function createVoucherCodeAction(
+        Request $request,
+        FormFactoryInterface $formFactory,
+        FactoryInterface $cartPriceRuleVoucherCodeFactory,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
-        $form = $this->get('form.factory')->createNamed('', VoucherType::class);
+        $form = $formFactory->createNamed('', VoucherType::class);
         $handledForm = $form->handleRequest($request);
+
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
@@ -74,14 +70,11 @@ class CartPriceRuleController extends ResourceController
                 ->findOneBy(['code' => $resource->getCode()]);
 
             if ($codeCheck instanceof CartPriceRuleVoucherCode) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'voucher code already exists']);
+                return $viewHandler->handle(['success' => false, 'message' => 'voucher code already exists']);
             }
 
-            /** @var FactoryInterface $voucherCodeFactory */
-            $voucherCodeFactory = $this->get('coreshop.factory.cart_price_rule_voucher_code');
-
             /** @var CartPriceRuleVoucherCodeInterface $codeObject */
-            $codeObject = $voucherCodeFactory->createNew();
+            $codeObject = $cartPriceRuleVoucherCodeFactory->createNew();
             $codeObject->setCode($resource->getCode());
             $codeObject->setCreationDate(new \DateTime());
             $codeObject->setUsed(false);
@@ -91,43 +84,41 @@ class CartPriceRuleController extends ResourceController
             $this->manager->persist($codeObject);
             $this->manager->flush();
 
-            return $this->viewHandler->handle(['success' => true]);
+            return $viewHandler->handle(['success' => true]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        return $viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function generateVoucherCodesAction(Request $request)
+    public function generateVoucherCodesAction(
+        Request $request,
+        FormFactoryInterface $formFactory,
+        CartPriceRuleVoucherCodeGenerator $generator,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
-        $form = $this->get('form.factory')->createNamed('', VoucherGeneratorType::class);
+        $form = $formFactory->createNamed('', VoucherGeneratorType::class);
 
         $handledForm = $form->handleRequest($request);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true) && $handledForm->isValid()) {
             $resource = $form->getData();
 
-            $codes = $this->getVoucherCodeGenerator()->generateCodes($resource);
+            $codes = $generator->generateCodes($resource);
 
             foreach ($codes as $code) {
                 $this->manager->persist($code);
             }
+
             $this->manager->flush();
 
-            return $this->viewHandler->handle(['success' => true]);
+            return $viewHandler->handle(['success' => true]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
+        return $viewHandler->handle(['success' => false]);
     }
 
-    /**
-     * @param Request $request
-     */
-    public function exportVoucherCodesAction(Request $request)
+    public function exportVoucherCodesAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         $id = $request->get('cartPriceRule');
         $priceRule = $this->repository->find($id);
@@ -168,12 +159,11 @@ class CartPriceRuleController extends ResourceController
         exit;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function deleteVoucherCodeAction(Request $request)
+    public function deleteVoucherCodeAction(
+        Request $request,
+        CartPriceRuleVoucherRepositoryInterface $repository,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $cartPriceRuleId = $request->get('cartPriceRule');
         $id = $request->get('id');
@@ -183,29 +173,15 @@ class CartPriceRuleController extends ResourceController
             throw new NotFoundHttpException();
         }
 
-        /**
-         * @var RepositoryInterface $repository
-         */
-        $repository = $this->manager
-            ->getRepository('CoreShop\Component\Order\Model\CartPriceRuleVoucherCode');
-
         $code = $repository->find(['id' => $id]);
 
         if ($code instanceof CartPriceRuleVoucherCode) {
             $repository->remove($code);
 
-            return $this->viewHandler->handle(['success' => true, 'id' => $id]);
+            return $viewHandler->handle(['success' => true, 'id' => $id]);
         }
 
-        return $this->viewHandler->handle(['success' => false]);
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator
-     */
-    protected function getVoucherCodeGenerator()
-    {
-        return $this->get('coreshop.generator.cart_price_rule_voucher_codes');
+        return $viewHandler->handle(['success' => false]);
     }
 
     /**

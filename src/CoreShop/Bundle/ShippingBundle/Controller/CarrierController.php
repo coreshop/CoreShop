@@ -15,10 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 
 class CarrierController extends ResourceController
 {
-    public function getConfigAction()
+    public function getConfigAction(ViewHandlerInterface $viewHandler)
     {
         $strategies = $this->getParameter('coreshop.shipping.tax_calculation_strategies');
 
@@ -31,7 +32,7 @@ class CarrierController extends ResourceController
             ];
         }
 
-        return $this->viewHandler->handle(
+        return $viewHandler->handle(
             [
                 'success' => true,
                 'taxCalculationStrategies' => $convertedStrategies

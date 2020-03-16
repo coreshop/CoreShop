@@ -17,10 +17,11 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use Pimcore\Controller\FrontendController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class OrderDocumentPrintController extends FrontendController
 {
-    public function invoiceAction(Request $request, OrderDocumentInterface $document, $order)
+    public function invoiceAction(Request $request, OrderDocumentInterface $document, $order): Response
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:invoice.html.twig', [
             'document' => $document,
@@ -29,7 +30,7 @@ class OrderDocumentPrintController extends FrontendController
         ]);
     }
 
-    public function shipmentAction(Request $request, OrderDocumentInterface $document, $order)
+    public function shipmentAction(Request $request, OrderDocumentInterface $document, $order): Response
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:shipment.html.twig', [
             'document' => $document,
@@ -38,7 +39,7 @@ class OrderDocumentPrintController extends FrontendController
         ]);
     }
 
-    public function headerAction(Request $request, OrderDocumentInterface $document, $order)
+    public function headerAction(Request $request, OrderDocumentInterface $document, $order): Response
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:header.html.twig', [
             'document' => $document,
@@ -47,7 +48,7 @@ class OrderDocumentPrintController extends FrontendController
         ]);
     }
 
-    public function footerAction(Request $request, OrderDocumentInterface $document, $order)
+    public function footerAction(Request $request, OrderDocumentInterface $document, $order): Response
     {
         return $this->render('CoreShopOrderBundle:OrderDocumentPrint:footer.html.twig', [
             'document' => $document,

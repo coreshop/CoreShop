@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResourceSettingsController extends AdminController
 {
-    public function getNicePathAction(Request $request): Response
+    public function getNicePathAction(Request $request, ViewHandlerInterface $viewHandler): Response
     {
         $targets = $this->decodeJson($request->get('targets'));
         $result = [];
@@ -34,10 +34,10 @@ class ResourceSettingsController extends AdminController
             }
         }
 
-        return $this->viewHandler->handle(['success' => true, 'data' => $result]);
+        return $viewHandler->handle(['success' => true, 'data' => $result]);
     }
 
-    public function getConfigAction(): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $config = [
             'classMap' => [],
@@ -69,6 +69,6 @@ class ResourceSettingsController extends AdminController
             }
         }
 
-        return $this->viewHandler->handle($config);
+        return $viewHandler->handle($config);
     }
 }

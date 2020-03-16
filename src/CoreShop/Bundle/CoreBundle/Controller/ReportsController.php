@@ -15,44 +15,51 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Core\Report\ExportReportInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ReportsController extends AdminController
 {
-    public function getReportDataAction(Request $request): Response
-    {
+    public function getReportDataAction(
+        Request $request,
+        ServiceRegistryInterface $reportsRegistry,
+        ViewHandlerInterface $viewHandler
+    ): Response {
         $report = $request->get('report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
 
-        if (!$reportRegistry->has($report)) {
+        if (!$reportsRegistry->has($report)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $report));
         }
 
         /** @var ReportInterface $report */
-        $report = $reportRegistry->get($report);
+        $report = $reportsRegistry->get($report);
 
-        return $this->viewHandler->handle([
+        return $viewHandler->handle([
             'success' => true,
             'data' => $report->getReportData($request->query),
             'total' => $report->getTotal(),
         ]);
     }
 
-    public function exportReportCsvAction(Request $request): Response
-    {
+    public function exportReportCsvAction(
+        Request $request,
+        ServiceRegistryInterface $reportsRegistry,
+        SerializerInterface $serializer
+    ): Response {
         $reportType = $request->get('report');
-        $reportRegistry = $this->get('coreshop.registry.reports');
 
-        if (!$reportRegistry->has($reportType)) {
+        if (!$reportsRegistry->has($reportType)) {
             throw new \InvalidArgumentException(sprintf('Report %s not found', $reportType));
         }
 
         /** @var ReportInterface $report */
-        $report = $reportRegistry->get($reportType);
+        $report = $reportsRegistry->get($reportType);
 
         if ($report instanceof ExportReportInterface) {
             $data = $report->getExportReportData($request->query);
@@ -60,7 +67,7 @@ class ReportsController extends AdminController
             $data = $report->getReportData($request->query);
         }
 
-        $csvData = $this->get('serializer')->encode($data, 'csv');
+        $csvData = $serializer->encode($data, 'csv');
 
         $response = new Response($csvData);
         $disposition = $response->headers->makeDisposition(

@@ -15,11 +15,12 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentProviderController extends ResourceController
 {
-    public function getConfigAction(): Response
+    public function getConfigAction(ViewHandlerInterface $viewHandler): Response
     {
         $factoryResults = [];
 
@@ -30,7 +31,7 @@ class PaymentProviderController extends ResourceController
             ];
         }
 
-        return $this->viewHandler->handle(
+        return $viewHandler->handle(
             [
                 'success' => true,
                 'factories' => $factoryResults,

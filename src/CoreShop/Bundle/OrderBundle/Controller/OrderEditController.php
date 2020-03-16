@@ -11,6 +11,7 @@ use CoreShop\Bundle\OrderBundle\Factory\AddToCartFactoryInterface;
 use CoreShop\Bundle\OrderBundle\Form\Type\AddMultipleToCartType;
 use CoreShop\Bundle\OrderBundle\Form\Type\EditCartType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Order\Cart\CartModifier;
 use CoreShop\Component\Order\Factory\OrderItemFactoryInterface;
@@ -20,11 +21,11 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class OrderEditController extends PimcoreController
@@ -34,15 +35,16 @@ class OrderEditController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         FormFactoryInterface $formFactory,
         ErrorSerializer $errorSerializer,
-        CartManagerInterface $cartManager
-    ): JsonResponse {
+        CartManagerInterface $cartManager,
+        ViewHandlerInterface $viewHandler
+    ): Response {
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
         $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
-            return $this->viewHandler->handle(
+            return $viewHandler->handle(
                 ['success' => false, 'message' => "Order with ID '$cartId' not found"]
             );
         }
@@ -56,7 +58,7 @@ class OrderEditController extends PimcoreController
         $form->handleRequest($request);
 
         if (!$form->isValid()) {
-            return $this->viewHandler->handle([
+            return $viewHandler->handle([
                 'success' => false,
                 'message' => $errorSerializer->serializeErrorFromHandledForm($form),
             ]);
@@ -66,7 +68,7 @@ class OrderEditController extends PimcoreController
 
         $cartManager->persistCart($cart);
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
     public function addItemsAction(
@@ -79,15 +81,16 @@ class OrderEditController extends PimcoreController
         FormFactoryInterface $formFactory,
         ErrorSerializer $errorSerializer,
         CartManagerInterface $cartManager,
-        CartModifier $cartModifier
-    ): JsonResponse {
+        CartModifier $cartModifier,
+        ViewHandlerInterface $viewHandler
+    ): Response {
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
         $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
-            return $this->viewHandler->handle(
+            return $viewHandler->handle(
                 ['success' => false, 'message' => "Order with ID '$cartId' not found"]
             );
         }
@@ -131,7 +134,7 @@ class OrderEditController extends PimcoreController
 
                 $cartManager->persistCart($cart);
 
-                return $this->viewHandler->handle(['success' => true]);
+                return $viewHandler->handle(['success' => true]);
             }
 
             return new JsonResponse([
@@ -140,7 +143,7 @@ class OrderEditController extends PimcoreController
             ]);
         }
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
     public function removeItemAction(
@@ -148,15 +151,16 @@ class OrderEditController extends PimcoreController
         OrderRepositoryInterface $orderRepository,
         OrderItemRepositoryInterface $orderItemRepository,
         CartManagerInterface $cartManager,
-        CartModifier $cartModifier
-    ): JsonResponse {
+        CartModifier $cartModifier,
+        ViewHandlerInterface $viewHandler
+    ): Response {
         $this->isGrantedOr403();
 
         $cartId = $request->get('id');
         $cart = $orderRepository->find($cartId);
 
         if (!$cart instanceof OrderInterface) {
-            return $this->viewHandler->handle(
+            return $viewHandler->handle(
                 ['success' => false, 'message' => "Order with ID '$cartId' not found"]
             );
         }
@@ -165,13 +169,13 @@ class OrderEditController extends PimcoreController
         $cartItem = $orderItemRepository->find($cartItemId);
 
         if (!$cartItem instanceof OrderItemInterface) {
-            return $this->viewHandler->handle(
+            return $viewHandler->handle(
                 ['success' => false, 'message' => "Order Item with ID '$cartItemId' not found"]
             );
         }
 
         if ($cartItem->getOrder()->getId() !== $cart->getId()) {
-            return $this->viewHandler->handle(
+            return $viewHandler->handle(
                 ['success' => false, 'message' => 'Not allowed']
             );
         }
@@ -179,7 +183,7 @@ class OrderEditController extends PimcoreController
         $cartModifier->removeFromList($cart, $cartItem);
         $cartManager->persistCart($cart);
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
     protected function createMultipleAddToCart(

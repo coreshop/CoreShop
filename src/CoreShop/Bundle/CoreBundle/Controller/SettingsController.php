@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +34,7 @@ class SettingsController extends AdminController
         }
     }
 
-    public function getSettingsAction(Request $request): Response
+    public function getSettingsAction(ViewHandlerInterface $viewHandler): Response
     {
         $settings = [
             'bundle' => [
@@ -42,6 +43,6 @@ class SettingsController extends AdminController
             'reports' => array_values($this->getParameter('coreshop.reports')),
         ];
 
-        return $this->viewHandler->handle($settings);
+        return $viewHandler->handle($settings);
     }
 }

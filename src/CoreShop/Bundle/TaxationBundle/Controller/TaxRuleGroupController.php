@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TaxationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,16 +23,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaxRuleGroupController extends ResourceController
 {
-    public function listRulesAction(Request $request): Response
+    public function listRulesAction(Request $request, TaxRuleRepositoryInterface $taxRuleRepository, ViewHandlerInterface $viewHandler): Response
     {
         $ruleGroup = $this->findOr404($request->get('id'));
-        $data = $this->getTaxRulesRepository()->findByGroup($ruleGroup);
+        $data = $taxRuleRepository->findByGroup($ruleGroup);
 
-        return $this->viewHandler->handle($data);
-    }
-
-    protected function getTaxRulesRepository(): TaxRuleRepositoryInterface
-    {
-        return $this->get('coreshop.repository.tax_rule');
+        return $viewHandler->handle($data);
     }
 }

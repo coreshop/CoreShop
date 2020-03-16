@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\OrderShipmentCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -24,45 +25,45 @@ use CoreShop\Component\Order\Model\OrderShipmentInterface;
 use CoreShop\Component\Order\OrderShipmentTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
 use CoreShop\Component\Order\ShipmentStates;
 use CoreShop\Component\Order\Transformer\OrderDocumentTransformerInterface;
-use CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer;
 use CoreShop\Component\Order\Transformer\OrderToShipmentTransformer;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderShipmentController extends PimcoreController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getShipAbleItemsAction(Request $request)
+    public function getShipAbleItemsAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        EventDispatcherInterface $eventDispatcher,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $orderId = $request->get('id');
-        $order = $this->getOrderRepository()->find($orderId);
+        $order = $orderRepository->find($orderId);
 
         if (!$order instanceof OrderInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
+            return $viewHandler->handle(['success' => false, 'message' => 'Order with ID "' . $orderId . '" not found']);
         }
 
         $itemsToReturn = [];
 
         if (!$this->getProcessableHelper()->isProcessable($order)) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create shipments']);
+            return $viewHandler->handle(['success' => false, 'message' => 'The current order state does not allow to create shipments']);
         }
 
         try {
             $items = $this->getProcessableHelper()->getProcessableItems($order);
         } catch (\Exception $e) {
-            return $this->viewHandler->handle(['success' => false, 'message' => $e->getMessage()]);
+            return $viewHandler->handle(['success' => false, 'message' => $e->getMessage()]);
         }
 
         foreach ($items as $item) {
@@ -82,57 +83,60 @@ class OrderShipmentController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch('coreshop.order.shipment.prepare_ship_able', $event);
+                $eventDispatcher->dispatch('coreshop.order.shipment.prepare_ship_able', $event);
 
                 $itemsToReturn[] = $event->getArguments();
             }
         }
 
-        return $this->viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
+        return $viewHandler->handle(['success' => true, 'items' => $itemsToReturn]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function createShipmentAction(Request $request)
+    public function createShipmentAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        FormFactoryInterface $formFactory,
+        ErrorSerializer $errorSerializer,
+        StateMachineManager $stateMachineManager,
+        FactoryInterface $orderShipmentFactory,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
         $orderId = $request->get('id');
 
-        $form = $this->get('form.factory')->createNamed('', OrderShipmentCreationType::class);
+        $form = $formFactory->createNamed('', OrderShipmentCreationType::class);
 
         $handledForm = $form->handleRequest($request);
 
         if ($request->getMethod() === 'POST') {
             if (!$handledForm->isValid()) {
-                return $this->viewHandler->handle(
+                return $viewHandler->handle(
                     [
                         'success' => false,
-                        'message' => $this->get(ErrorSerializer::class)->serializeErrorFromHandledForm($form),
+                        'message' => $errorSerializer->serializeErrorFromHandledForm($form),
                     ]
                 );
             }
 
             $resource = $handledForm->getData();
 
-            $order = $this->getOrderRepository()->find($resource['id']);
+            $order = $orderRepository->find($resource['id']);
 
             if (!$order instanceof OrderInterface) {
-                return $this->viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
+                return $viewHandler->handle(['success' => false, 'message' => "Order with ID '$orderId' not found"]);
             }
 
             try {
                 // request shipment ready state from order, if it's our first shipment.
-                $workflow = $this->getStateMachineManager()->get($order, 'coreshop_order_shipment');
+                $workflow = $stateMachineManager->get($order, 'coreshop_order_shipment');
                 if ($workflow->can($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT)) {
                     $workflow->apply($order, OrderShipmentTransitions::TRANSITION_REQUEST_SHIPMENT);
                 }
 
                 /**
-                 * @var OrderShipmentInterface
+                 * @var OrderShipmentInterface $shipment
                  */
-                $shipment = $this->getShipmentFactory()->createNew();
+                $shipment = $orderShipmentFactory->createNew();
                 $shipment->setState(ShipmentStates::STATE_NEW);
 
                 foreach ($resource as $key => $value) {
@@ -146,53 +150,52 @@ class OrderShipmentController extends PimcoreController
                 $items = $resource['items'];
                 $shipment = $this->getOrderToShipmentTransformer()->transform($order, $shipment, $items);
 
-                return $this->viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
+                return $viewHandler->handle(['success' => true, 'shipmentId' => $shipment->getId()]);
             } catch (\Exception $ex) {
-                return $this->viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
+                return $viewHandler->handle(['success' => false, 'message' => $ex->getMessage()]);
             }
         }
 
-        return $this->viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
+        return $viewHandler->handle(['success' => false, 'message' => 'Method not supported, use POST']);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return mixed
-     */
-    public function updateStateAction(Request $request)
+    public function updateStateAction(
+        Request $request,
+        OrderShipmentRepositoryInterface $orderShipmentRepository,
+        StateMachineManager $stateMachineManager,
+        ViewHandlerInterface $viewHandler
+    ): Response
     {
-        $shipment = $this->getOrderShipmentRepository()->find($request->get('id'));
+        $shipment = $orderShipmentRepository->find($request->get('id'));
         $transition = $request->get('transition');
 
         if (!$shipment instanceof OrderShipmentInterface) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
+            return $viewHandler->handle(['success' => false, 'message' => 'invalid shipment']);
         }
 
         //apply state machine
-        $workflow = $this->getStateMachineManager()->get($shipment, 'coreshop_shipment');
+        $workflow = $stateMachineManager->get($shipment, 'coreshop_shipment');
         if (!$workflow->can($shipment, $transition)) {
-            return $this->viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
+            return $viewHandler->handle(['success' => false, 'message' => 'this transition is not allowed.']);
         }
 
         $workflow->apply($shipment, $transition);
 
-        return $this->viewHandler->handle(['success' => true]);
+        return $viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function renderAction(Request $request)
+    public function renderAction(
+        Request $request,
+        OrderShipmentRepositoryInterface $orderShipmentRepository,
+        OrderDocumentRendererInterface $orderDocumentRenderer
+    ): Response
     {
         $shipmentId = $request->get('id');
-        $shipment = $this->getOrderShipmentRepository()->find($shipmentId);
+        $shipment = $orderShipmentRepository->find($shipmentId);
 
         if ($shipment instanceof OrderShipmentInterface) {
             try {
-                $responseData = $this->getOrderDocumentRenderer()->renderDocumentPdf($shipment);
+                $responseData = $orderDocumentRenderer->renderDocumentPdf($shipment);
                 $header = [
                     'Content-Type' => 'application/pdf',
                     'Content-Disposition' => 'inline; filename="shipment-' . $shipment->getId() . '.pdf"',
@@ -209,22 +212,6 @@ class OrderShipmentController extends PimcoreController
     }
 
     /**
-     * @return OrderDocumentRendererInterface
-     */
-    protected function getOrderDocumentRenderer()
-    {
-        return $this->get('coreshop.renderer.order.pdf');
-    }
-
-    /**
-     * @return OrderShipmentRepositoryInterface
-     */
-    protected function getOrderShipmentRepository()
-    {
-        return $this->get('coreshop.repository.order_shipment');
-    }
-
-    /**
      * @return ProcessableInterface
      */
     protected function getProcessableHelper()
@@ -233,34 +220,10 @@ class OrderShipmentController extends PimcoreController
     }
 
     /**
-     * @return PimcoreRepositoryInterface
-     */
-    protected function getOrderRepository()
-    {
-        return $this->get('coreshop.repository.order');
-    }
-
-    /**
-     * @return FactoryInterface
-     */
-    protected function getShipmentFactory()
-    {
-        return $this->get('coreshop.factory.order_shipment');
-    }
-
-    /**
      * @return OrderDocumentTransformerInterface
      */
     protected function getOrderToShipmentTransformer()
     {
         return $this->get(OrderToShipmentTransformer::class);
-    }
-
-    /**
-     * @return StateMachineManager
-     */
-    protected function getStateMachineManager()
-    {
-        return $this->get('coreshop.state_machine_manager');
     }
 }
