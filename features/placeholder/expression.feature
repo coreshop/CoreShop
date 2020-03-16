@@ -6,7 +6,7 @@ Feature: In order to extend Pimcore's placeholder
     Then the placeholder value for expression "%Expression(expression, {'expression' : '1+1'});" should be "2"
 
   Scenario: Test a container parameter expression
-    Then the placeholder value for expression "%Expression(expression, {'expression' : 'parameter(\'kernel.environment\')'});" should be "behat"
+    Then the placeholder value for expression "%Expression(expression, {'expression' : 'parameter(\'kernel.environment\')'});" should be "test"
 
   Scenario: Test a coreshop expression language provider for object
     Then the placeholder value for expression "%Expression(expression, {'expression' : 'object(1)'});" should be "/"
