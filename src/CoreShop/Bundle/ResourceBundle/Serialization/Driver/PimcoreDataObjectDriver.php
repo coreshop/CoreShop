@@ -30,7 +30,7 @@ class PimcoreDataObjectDriver implements DriverInterface
     {
         //We don't want Pimcore entities to be serialized directly
         if ($class->getNamespaceName() === 'Pimcore\\Model\\DataObject') {
-            return new NullMetadata($class->getName());
+            return null;
         }
 
         return $this->decorated->loadMetadataForClass($class);
