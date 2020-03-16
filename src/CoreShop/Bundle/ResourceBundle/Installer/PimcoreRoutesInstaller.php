@@ -92,7 +92,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             //Route does not exist, so we install it
             $route = Staticroute::create();
             $route->setName($name);
-            $route->setMethods($properties['methods']);
+            if (method_exists($route, 'setMethods')) {
+                $route->setMethods($properties['methods']);
+            }
             $route->setPattern($properties['pattern']);
             $route->setReverse($properties['reverse']);
             $route->setModule($properties['module']);

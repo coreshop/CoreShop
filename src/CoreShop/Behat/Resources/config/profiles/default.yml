@@ -11,4 +11,4 @@ default:
             kernel:
                 path: app/BehatAppKernel.php
                 class: BehatAppKernel
-                environment: behat
+                environment: test
