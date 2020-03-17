@@ -109,7 +109,7 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             $progress->start(count($gridConfigsToInstall));
 
             foreach ($gridConfigsToInstall as $name => $gridData) {
-                $progress->setMessage(sprintf('<error>Install Grid Config %s</error>', $name));
+                $progress->setMessage(sprintf('Install Grid Config %s', $name));
 
                 $this->gridConfigInstaller->installGridConfig($gridData['data'], $gridData['name'], $this->findClassId($gridData['class']), true);
 
@@ -117,6 +117,9 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Grid Configs have been installed successfully</info>');
         }
     }
 

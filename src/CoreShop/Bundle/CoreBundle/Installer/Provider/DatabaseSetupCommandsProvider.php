@@ -79,7 +79,7 @@ final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProvid
 
         $outputStyle->writeln('Seems like your database contains schema.');
         $outputStyle->writeln('<error>Warning! This action will erase your CoreShop Tables.</error>');
-        $question = new ConfirmationQuestion('Do you want to reset your CoreShop scheme it? (y/N) ', false);
+        $question = new ConfirmationQuestion('Do you want to reset your CoreShop scheme? (y/N) ', false);
         if ($questionHelper->ask($input, $output, $question)) {
             return [
                 'coreshop:resources:drop-tables' => ['application-name' => 'coreshop', '--force' => true],
