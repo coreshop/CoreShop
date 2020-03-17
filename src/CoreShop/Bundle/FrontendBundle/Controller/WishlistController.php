@@ -14,23 +14,24 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class WishlistController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function addItemAction(Request $request)
+    public function addItemAction(
+        Request $request,
+        StackRepository $purchasableStackRepository
+    ): Response
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $purchasableStackRepository->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_index'));
@@ -60,14 +61,12 @@ class WishlistController extends FrontendController
         return $this->redirect($redirect);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function removeItemAction(Request $request)
+    public function removeItemAction(
+        Request $request,
+        StackRepository $purchasableStackRepository
+    ): Response
     {
-        $product = $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        $product = $purchasableStackRepository->find($request->get('product'));
 
         if (!$product instanceof PurchasableInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -86,14 +85,9 @@ class WishlistController extends FrontendController
         return $this->redirectToRoute('coreshop_wishlist_summary');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function summaryAction(Request $request)
+    public function summaryAction(TemplateConfiguratorInterface $templateConfigurator): Response
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Wishlist/summary.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Wishlist/summary.html'), [
             'wishlist' => $this->getWishlist(),
         ]);
     }

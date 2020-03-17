@@ -117,10 +117,10 @@
 
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(true), order.getCurrency.isoCode) }}
+                            {{ currency.format(priceRule.getDiscount(true), order.getCurrency.isoCode) }}
                         </td>
                         <td class="text-right">
-                            -{{ currency.format(priceRule.getDiscount(false), order.getCurrency.isoCode) }}
+                            {{ currency.format(priceRule.getDiscount(false), order.getCurrency.isoCode) }}
                         </td>
                     </tr>
                 {% endfor %}

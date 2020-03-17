@@ -134,7 +134,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     public function findByCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
-        $list->setCondition('customer__id = ?', [$customer->getId()]);
+        $list->setCondition('customer__id = ? AND saleState = ?', [$customer->getId(), OrderSaleStates::STATE_ORDER]);
         $list->setOrderKey('o_id');
         $list->setOrder('DESC');
         $list->load();

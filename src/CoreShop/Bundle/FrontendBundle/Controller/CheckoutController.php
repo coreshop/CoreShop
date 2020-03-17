@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -23,44 +24,32 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\CheckoutEvents;
-use CoreShop\Component\Order\Committer\OrderCommitterInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
 use CoreShop\Component\Order\OrderSaleTransitions;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Payum\Core\Payum;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    /**
-     * @var CheckoutManagerFactoryInterface
-     */
-    protected $checkoutManagerFactory;
-
-    /**
-     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     */
-    public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
-    {
-        $this->checkoutManagerFactory = $checkoutManagerFactory;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function processAction(Request $request)
-    {
-        if (!$this->getCart()->hasItems()) {
+    public function processAction(
+        Request $request,
+        ShopperContextInterface $shopperContext,
+        CheckoutManagerFactoryInterface $checkoutManagerFactory,
+        EventDispatcherInterface $eventDispatcher,
+        TrackerInterface $tracker,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        if (!$shopperContext->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
         }
 
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $checkoutManager = $checkoutManagerFactory->createCheckoutManager($shopperContext->getCart());
 
         /**
          * @var CheckoutStepInterface
@@ -68,7 +57,7 @@ class CheckoutController extends FrontendController
         $stepIdentifier = $request->get('stepIdentifier');
         $step = $checkoutManager->getStep($stepIdentifier);
         $dataForStep = [];
-        $cart = $this->getCart();
+        $cart = $shopperContext->getCart();
 
         if (!$step instanceof CheckoutStepInterface) {
             return $this->redirectToRoute('coreshop_index');
@@ -77,7 +66,8 @@ class CheckoutController extends FrontendController
         //Check all previous steps if they are valid, if not, redirect back
         foreach ($checkoutManager->getPreviousSteps($stepIdentifier) as $previousStep) {
             if ($previousStep instanceof ValidationCheckoutStepInterface && !$previousStep->validate($cart)) {
-                return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $previousStep->getIdentifier()]);
+                return $this->redirectToRoute('coreshop_checkout',
+                    ['stepIdentifier' => $previousStep->getIdentifier()]);
             }
         }
 
@@ -89,9 +79,9 @@ class CheckoutController extends FrontendController
             }
         }
 
-        $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
+        $event = new CheckoutEvent($shopperContext->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_PRE, $event);
+        $eventDispatcher->dispatch(CheckoutEvents::CHECKOUT_STEP_PRE, $event);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -114,13 +104,15 @@ class CheckoutController extends FrontendController
                         $nextStep = $checkoutManager->getNextStep($stepIdentifier);
 
                         if ($nextStep) {
-                            $response = $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $nextStep->getIdentifier()]);
+                            $response = $this->redirectToRoute('coreshop_checkout',
+                                ['stepIdentifier' => $nextStep->getIdentifier()]);
                         }
                     }
 
                     //last step needs to tell us where to go!
                     if (!$checkoutManager->hasNextStep($stepIdentifier) && !$response instanceof Response) {
-                        throw new \InvalidArgumentException(sprintf('Last step was executed, but no Response has been generated. To solve your issue, have a look at the last Checkout step %s and implement %s interface', $step->getIdentifier(), RedirectCheckoutStepInterface::class));
+                        throw new \InvalidArgumentException(sprintf('Last step was executed, but no Response has been generated. To solve your issue, have a look at the last Checkout step %s and implement %s interface',
+                            $step->getIdentifier(), RedirectCheckoutStepInterface::class));
                     }
 
                     return $response;
@@ -131,7 +123,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $tracker->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -141,9 +133,10 @@ class CheckoutController extends FrontendController
             'identifier' => $stepIdentifier,
         ]);
 
-        $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
+        $event = new CheckoutEvent($shopperContext->getCart(),
+            ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_POST, $event);
+        $eventDispatcher->dispatch(CheckoutEvents::CHECKOUT_STEP_POST, $event);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -155,35 +148,31 @@ class CheckoutController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
+        return $this->renderResponseForCheckoutStep($request, $templateConfigurator, $step, $stepIdentifier,
+            $dataForStep);
     }
 
-    /**
-     * @param Request               $request
-     * @param CheckoutStepInterface $step
-     * @param string                $stepIdentifier
-     * @param mixed                 $dataForStep
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
-    {
-        $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
+    protected function renderResponseForCheckoutStep(
+        Request $request,
+        TemplateConfiguratorInterface $templateConfigurator,
+        CheckoutStepInterface $step,
+        $stepIdentifier,
+        $dataForStep
+    ): Response {
+        $template = $templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
         return $this->renderTemplate($template, $dataForStep);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Exception
-     */
-    public function doCheckoutAction(Request $request)
-    {
-        $cart = $this->getCart();
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
+    public function doCheckoutAction(
+        Request $request,
+        ShopperContextInterface $shopperContext,
+        CheckoutManagerFactoryInterface $checkoutManagerFactory,
+        EventDispatcherInterface $eventDispatcher,
+        StateMachineManagerInterface $stateMachineManager
+    ): Response {
+        $cart = $shopperContext->getCart();
+        $checkoutManager = $checkoutManagerFactory->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
@@ -208,14 +197,14 @@ class CheckoutController extends FrontendController
              */
             $step = $checkoutManager->getStep($stepIdentifier);
 
-            if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
+            if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($shopperContext->getCart())) {
                 return $this->redirectToRoute('coreshop_checkout', ['stepIdentifier' => $step->getIdentifier()]);
             }
         }
 
-        $event = new CheckoutEvent($this->getCart());
+        $event = new CheckoutEvent($shopperContext->getCart());
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_PRE, $event);
+        $eventDispatcher->dispatch(CheckoutEvents::CHECKOUT_DO_PRE, $event);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -230,9 +219,9 @@ class CheckoutController extends FrontendController
         /**
          * If everything is valid, we continue with Order-Creation.
          */
-        $order = $this->getCart();
+        $order = $shopperContext->getCart();
 
-        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
+        $workflow = $stateMachineManager->get($order, OrderSaleTransitions::IDENTIFIER);
 
         $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
 
@@ -241,14 +230,17 @@ class CheckoutController extends FrontendController
         if (0 === $order->getTotal()) {
             $request->getSession()->set('coreshop_order_id', $order->getId());
 
-            $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, new CheckoutEvent($this->getCart(), ['order' => $order]));
+            $eventDispatcher->dispatch(
+                CheckoutEvents::CHECKOUT_DO_POST,
+                new CheckoutEvent($shopperContext->getCart(), ['order' => $order])
+            );
 
             $response = $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
-        $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
+        $event = new CheckoutEvent($shopperContext->getCart(), ['order' => $order]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, $event);
+        $eventDispatcher->dispatch(CheckoutEvents::CHECKOUT_DO_POST, $event);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -263,16 +255,16 @@ class CheckoutController extends FrontendController
         /*
          * TODO: Not sure if we should create payment object right here, if so, the PaymentBundle would'nt be responsible for it :/
         */
+
         return $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function errorAction(Request $request)
-    {
+    public function errorAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        PaymentRepositoryInterface $paymentRepository,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
         if (null === $orderId) {
@@ -284,25 +276,27 @@ class CheckoutController extends FrontendController
         /**
          * @var OrderInterface $order
          */
-        $order = $this->get('coreshop.repository.order')->find($orderId);
+        $order = $orderRepository->find($orderId);
         Assert::notNull($order);
 
-        $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
+        $payments = $paymentRepository->findForPayable($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
             'lastPayment' => $lastPayment,
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function thankYouAction(Request $request)
+    public function thankYouAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        TrackerInterface $tracker,
+        ShopperContextInterface $shopperContext,
+        TokenStorageInterface $tokenStorage,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response
     {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
@@ -311,18 +305,17 @@ class CheckoutController extends FrontendController
         }
 
         $request->getSession()->remove('coreshop_order_id');
-        $order = $this->get('coreshop.repository.order')->find($orderId);
+        $order = $orderRepository->find($orderId);
         Assert::notNull($order);
 
-        $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
+        $tracker->trackCheckoutComplete($order);
 
         //After successfull payment, we log out the customer
-        if ($this->get(ShopperContextInterface::class)->hasCustomer() &&
-            $this->get(ShopperContextInterface::class)->getCustomer()->getIsGuest()) {
-            $this->get('security.token_storage')->setToken(null);
+        if ($shopperContext->hasCustomer() && $shopperContext->getCustomer()->getIsGuest()) {
+            $tokenStorage->setToken(null);
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }
@@ -346,29 +339,5 @@ class CheckoutController extends FrontendController
             'message' => $message,
             'parameters' => $parameters,
         ];
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Model\OrderInterface
-     */
-    protected function getCart()
-    {
-        return $this->getCartContext()->getCart();
-    }
-
-    /**
-     * @return CartContextInterface
-     */
-    protected function getCartContext()
-    {
-        return $this->get(CartContextInterface::class);
-    }
-
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
-    {
-        return $this->get('payum');
     }
 }

@@ -15,44 +15,48 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class OrderController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function reviseAction(Request $request)
+    public function reviseAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        PaymentRepositoryInterface $paymentRepository,
+        FormFactoryInterface $formFactory,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response
     {
         $token = $request->get('token');
         $payment = null;
 
         /** @var OrderInterface $order */
-        $order = $this->getOrderRepository()->findOneBy(['token' => $token]);
+        $order = $orderRepository->findOneBy(['token' => $token]);
 
         if (!$order instanceof OrderInterface) {
             throw new NotFoundHttpException();
         }
 
         if ($request->query->has('paymentId')) {
-            $paymentObject = $this->getPaymentRepository()->find($request->query->get('paymentId'));
+            $paymentObject = $paymentRepository->find($request->query->get('paymentId'));
             if ($paymentObject instanceof PaymentInterface) {
                 $payment = $paymentObject;
             }
         }
 
-        $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
+        $form = $formFactory->createNamed('', PaymentType::class, $order, [
             'payment_subject' => $order,
         ]);
 
@@ -94,30 +98,6 @@ class OrderController extends FrontendController
             'form' => $form->createView(),
         ];
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
-    }
-
-    /**
-     * @return OrderRepositoryInterface
-     */
-    protected function getOrderRepository()
-    {
-        return $this->get('coreshop.repository.order');
-    }
-
-    /**
-     * @return RepositoryInterface
-     */
-    private function getPaymentRepository()
-    {
-        return $this->get('coreshop.repository.payment');
-    }
-
-    /**
-     * @return FormFactoryInterface
-     */
-    protected function getFormFactory()
-    {
-        return $this->get('form.factory');
+        return $this->renderTemplate($templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 }

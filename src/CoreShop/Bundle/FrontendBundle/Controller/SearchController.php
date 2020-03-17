@@ -15,24 +15,35 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
-use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfigurator;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Zend\Paginator\Paginator;
 
 class SearchController extends FrontendController
 {
-    public function widgetAction(Request $request)
-    {
-        $form = $this->createSearchForm();
+    public function widgetAction(
+        FormFactoryInterface $formFactory,
+        TemplateConfigurator $templateConfigurator
+    ): Response {
+        $form = $this->createSearchForm($formFactory);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Search/_widget.html'), [
             'form' => $form->createView(),
         ]);
     }
 
-    public function searchAction(Request $request)
-    {
-        $form = $this->createSearchForm();
+    public function searchAction(
+        Request $request,
+        FormFactoryInterface $formFactory,
+        ShopperContextInterface $shopperContext,
+        ProductRepositoryInterface $productRepository,
+        TemplateConfigurator $templateConfigurator
+    ): Response {
+        $form = $this->createSearchForm($formFactory);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -48,21 +59,21 @@ class SearchController extends FrontendController
                 'sku LIKE ?',
             ];
             $queryParams = [
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $text . '%',
-                '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$text.'%',
+                '%'.$shopperContext->getStore()->getId().'%',
             ];
 
-            $list = $this->get('coreshop.repository.product')->getList();
-            $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
+            $list = $productRepository->getList();
+            $list->setCondition('active = 1 AND ('.implode(' OR ', $query).') AND stores LIKE ?', $queryParams);
 
             $paginator = new Paginator($list);
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage($itemsPerPage);
 
-            return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
+            return $this->renderTemplate($templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text,
             ]);
@@ -71,11 +82,15 @@ class SearchController extends FrontendController
         return $this->redirectToRoute('coreshop_index');
     }
 
-    protected function createSearchForm()
+    protected function createSearchForm(FormFactoryInterface $formFactory)
     {
-        return $this->get('form.factory')->createNamed('search', SearchType::class, null, [
-            'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
-            'method' => 'GET',
-        ]);
+        return $formFactory->createNamed(
+            'search',
+            SearchType::class,
+            null, [
+                'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
+                'method' => 'GET',
+            ]
+        );
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
@@ -28,6 +29,7 @@ use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
 
@@ -58,57 +60,62 @@ class CategoryController extends FrontendController
      */
     protected $defaultSortDirection = 'asc';
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuAction(Request $request)
-    {
-        $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
+    public function menuAction(
+        CategoryRepositoryInterface $categoryRepository,
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        $categories = $categoryRepository->findForStore($shopperContext->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuLeftAction(Request $request)
-    {
+    public function menuLeftAction(
+        Request $request,
+        CategoryRepositoryInterface $categoryRepository,
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
         $activeCategory = $request->get('activeCategory');
         $activeSubCategories = [];
 
-        $firstLevelCategories = $this->getRepository()->findFirstLevelForStore($this->getContext()->getStore());
+        $firstLevelCategories = $categoryRepository->findFirstLevelForStore($shopperContext->getStore());
 
         if ($activeCategory instanceof CategoryInterface) {
-            $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
+            $activeSubCategories = $categoryRepository->findChildCategoriesForStore(
+                $activeCategory,
+                $shopperContext->getStore()
+            );
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
             'activeSubCategories' => $activeSubCategories,
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
-    {
-        $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
-        $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
-        $gridPerPageDefault = $this->getConfigurationService()->getForStore('system.category.grid.per_page.default');
-        $listPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.list.per_page');
-        $listPerPageDefault = $this->getConfigurationService()->getForStore('system.category.list.per_page.default');
-        $displaySubCategories = $this->getConfigurationService()->getForStore('system.category.list.include_subcategories');
-        $variantMode = $this->getConfigurationService()->getForStore('system.category.variant_mode');
+    public function indexAction(
+        Request $request,
+        ConfigurationServiceInterface $configurationService,
+        CategoryRepositoryInterface $categoryRepository,
+        ProductRepositoryInterface $productRepository,
+        ShopperContextInterface $shopperContext,
+        FilteredListingFactoryInterface $filteredListingFactory,
+        FilterProcessorInterface $filterProcessor,
+        TrackerInterface $tracker,
+        SEOPresentationInterface $seo,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        $listModeDefault = $configurationService->getForStore('system.category.list.mode');
+        $gridPerPageAllowed = $configurationService->getForStore('system.category.grid.per_page');
+        $gridPerPageDefault = $configurationService->getForStore('system.category.grid.per_page.default');
+        $listPerPageAllowed = $configurationService->getForStore('system.category.list.per_page');
+        $listPerPageDefault = $configurationService->getForStore('system.category.list.per_page.default');
+        $displaySubCategories = $configurationService->getForStore('system.category.list.include_subcategories');
+        $variantMode = $configurationService->getForStore('system.category.variant_mode');
 
         $page = $request->get('page', 0);
         $type = $request->get('type', $listModeDefault);
@@ -118,17 +125,22 @@ class CategoryController extends FrontendController
 
         $perPage = $request->get('perPage', $defaultPerPage);
 
-        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
+        $category = $categoryRepository->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
+
         if (!$category instanceof CategoryInterface) {
-            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
+            throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found',
+                $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
         }
 
         if (!in_array($perPage, $allowedPerPage)) {
             $perPage = $defaultPerPage;
         }
 
-        if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
-            throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
+        if (!in_array($shopperContext->getStore()->getId(), array_values($category->getStores()))) {
+            throw new NotFoundHttpException(
+                sprintf('store (id %s) not available in category',
+                    $shopperContext->getStore()->getId())
+            );
         }
 
         $paginator = null;
@@ -136,24 +148,39 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-            $filteredList = $this->get(FilteredListingFactoryInterface::class)->createList($category->getFilter(), $request->request);
+            $filteredList = $filteredListingFactory->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
-            $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
-            $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
+            $filteredList->setVariantMode($variantMode ?? ListingInterface::VARIANT_MODE_HIDE);
+            $filteredList->addCondition(
+                new LikeCondition(
+                    'stores',
+                    'both',
+                    sprintf('%1$s%2$s%1$s', ',', $shopperContext->getStore()->getId())
+                ),
+                'stores'
+            );
             $filteredList->setCategory($category);
 
             $orderDirection = $category->getFilter()->getOrderDirection();
             $orderKey = $category->getFilter()->getOrderKey();
 
-            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)) . '_' . (empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
+            $sortKey = (empty($orderKey) ? $this->defaultSortName : strtoupper($orderKey)).'_'.(empty($orderDirection) ? $this->defaultSortDirection : strtoupper($orderDirection));
             $sort = $request->get('sort', $sortKey);
             $sortParsed = $this->parseSorting($sort);
 
             $filteredList->setOrderKey($sortParsed['name']);
             $filteredList->setOrder($sortParsed['direction']);
 
-            $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
-            $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
+            $currentFilter = $filterProcessor->processConditions(
+                $category->getFilter(),
+                $filteredList,
+                $request->query
+            );
+            $preparedConditions = $filterProcessor->prepareConditionsForRendering(
+                $category->getFilter(),
+                $filteredList,
+                $currentFilter
+            );
 
             $paginator = new Paginator($filteredList);
             $paginator->setCurrentPageNumber($page);
@@ -167,12 +194,13 @@ class CategoryController extends FrontendController
             $viewParameters['conditions'] = $preparedConditions;
         } else {
             //Classic Listing Mode
-            $sort = $request->get('sort', $this->defaultSortName . '_' . $this->defaultSortDirection);
+            $sort = $request->get('sort', $this->defaultSortName.'_'.$this->defaultSortDirection);
             $sortParsed = $this->parseSorting($sort);
 
             $categories = [$category];
             if ($displaySubCategories === true) {
-                foreach ($this->getRepository()->findRecursiveChildCategoriesForStore($category, $this->getContext()->getStore()) as $subCategory) {
+                foreach ($repository->findRecursiveChildCategoriesForStore($category,
+                    $shopperContext->getStore()) as $subCategory) {
                     $categories[] = $subCategory;
                 }
             }
@@ -181,7 +209,7 @@ class CategoryController extends FrontendController
                 'order_key' => $sortParsed['name'],
                 'order' => $sortParsed['direction'],
                 'categories' => $categories,
-                'store' => $this->getContext()->getStore(),
+                'store' => $shopperContext->getStore(),
                 'return_type' => 'list',
             ];
 
@@ -189,7 +217,7 @@ class CategoryController extends FrontendController
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
 
-            $list = $this->getProductRepository()->getProductsListing($options);
+            $list = $productRepository->getProductsListing($options);
 
             $paginator = new Paginator($list);
             $paginator->setItemCountPerPage($perPage);
@@ -207,12 +235,12 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get(TrackerInterface::class)->trackProductImpression($product);
+            $tracker->trackProductImpression($product);
         }
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
+        $seo->updateSeoMetadata($category);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
+        return $this->renderTemplate($templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
     /**
@@ -244,37 +272,5 @@ class CategoryController extends FrontendController
         }
 
         return $sort;
-    }
-
-    /**
-     * @return CategoryRepositoryInterface
-     */
-    protected function getRepository()
-    {
-        return $this->get('coreshop.repository.category');
-    }
-
-    /**
-     * @return ProductRepositoryInterface
-     */
-    protected function getProductRepository()
-    {
-        return $this->get('coreshop.repository.product');
-    }
-
-    /**
-     * @return \CoreShop\Component\Core\Configuration\ConfigurationService
-     */
-    protected function getConfigurationService(): ConfigurationServiceInterface
-    {
-        return $this->get(ConfigurationServiceInterface::class);
-    }
-
-    /**
-     * @return ShopperContextInterface
-     */
-    protected function getContext(): ShopperContextInterface
-    {
-        return $this->get(ShopperContextInterface::class);
     }
 }

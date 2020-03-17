@@ -14,46 +14,47 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Currency\CurrencyStorageInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
-use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CurrencyController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function widgetAction(Request $request)
-    {
-        $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get(ShopperContextInterface::class)->getStore());
+    public function widgetAction(
+        CurrencyRepositoryInterface $currencyRepository,
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        $currencies = $currencyRepository->findActiveForStore($shopperContext->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse
-     */
-    public function switchAction(Request $request)
-    {
+    public function switchAction(
+        Request $request,
+        CurrencyRepositoryInterface $currencyRepository,
+        CartManagerInterface $cartManager,
+        ShopperContextInterface $shopperContext,
+        CurrencyStorageInterface $currencyStorage
+    ): Response {
         $currencyCode = $request->get('currencyCode');
-        $currency = $this->getCurrencyRepository()->getByCode($currencyCode);
-        $cartManager = $this->get(CartManagerInterface::class);
-        $cartContext = $this->get(CartContextInterface::class);
-        $cart = $cartContext->getCart();
+        $currency = $currencyRepository->getByCode($currencyCode);
 
-        $store = $this->get(StoreContextInterface::class)->getStore();
-        $this->get(CurrencyStorageInterface::class)->set($store, $currency);
+        if (null === $currency) {
+            return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
+        }
+
+        $cart = $shopperContext->getCart();
+
+        $store = $shopperContext->getStore();
+        $currencyStorage->set($store, $currency);
 
         $cart->setCurrency($currency);
 
@@ -62,18 +63,5 @@ class CurrencyController extends FrontendController
         }
 
         return new RedirectResponse($request->headers->get('referer', $request->getSchemeAndHttpHost()));
-    }
-
-    /**
-     * @return CurrencyRepositoryInterface
-     */
-    protected function getCurrencyRepository()
-    {
-        /**
-         * @var CurrencyRepositoryInterface
-         */
-        $repo = $this->get('coreshop.repository.currency');
-
-        return $repo;
     }
 }

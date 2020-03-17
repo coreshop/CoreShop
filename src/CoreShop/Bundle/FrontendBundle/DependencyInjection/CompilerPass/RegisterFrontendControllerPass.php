@@ -38,34 +38,16 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
             if ($container->hasDefinition($controllerClass)) {
                 $customController = $container->getDefinition($controllerClass);
 
-                $customController->addMethodCall('setContainer', [new Reference('service_container')]);
-                $customController->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
-
-                $container->setDefinition($controllerKey, $customController)->setPublic(true);
+                $customController->addTag('controller.service_arguments');
 
                 continue;
             }
 
             $controllerDefinition = new Definition($controllerClass);
             $controllerDefinition->addMethodCall('setContainer', [new Reference('service_container')]);
-            $controllerDefinition->addMethodCall('setTemplateConfigurator', [new Reference(TemplateConfiguratorInterface::class)]);
-            $controllerDefinition->setPublic(true);
+            $controllerDefinition->addTag('controller.service_arguments');
 
             switch ($key) {
-                case 'security':
-                    $controllerDefinition->setArguments([
-                        new Reference('security.authentication_utils'),
-                        new Reference('form.factory'),
-                        new Reference(ShopperContextInterface::class),
-                    ]);
-                break;
-
-                case 'checkout':
-                    $controllerDefinition->setArguments([
-                        new Reference('coreshop.checkout_manager.factory')
-                    ]);
-                    break;
-
                 case 'payment':
                     $controllerDefinition->setMethodCalls([
                         ['setContainer', [new Reference('service_container')]]

@@ -22,7 +22,13 @@
                     <div class="card card-smart">
                         <div class="card-body">
                             {{ form_start(form) }}
-                                {{ form_rest(form) }}
+                                {{ form_row(form.salutation) }}
+                                {{ form_row(form.gender) }}
+                                {{ form_row(form.firstname) }}
+                                {{ form_row(form.lastname) }}
+                                {{ form_row(form.email) }}
+                                {{ form_row(form.defaultAddress) }}
+                                {{ form_row(form.newsletterActive) }}
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-success">

@@ -14,28 +14,22 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MailController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function mailAction(Request $request)
+    public function mailAction(TemplateConfiguratorInterface $templateConfigurator): Response
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/mail.html'));
+        return $this->renderTemplate($templateConfigurator->findTemplate('Mail/mail.html'));
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function orderConfirmationAction(Request $request)
-    {
+    public function orderConfirmationAction(
+        Request $request,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
         $order = $request->get('object');
         $viewParameters = [];
 
@@ -43,6 +37,9 @@ class MailController extends FrontendController
             $viewParameters['order'] = $order;
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+        return $this->renderTemplate(
+            $templateConfigurator->findTemplate('Mail/order-confirmation.html'),
+            $viewParameters
+        );
     }
 }

@@ -58,8 +58,8 @@ final class StackRepositoryPass implements CompilerPassInterface
 
             $container->registerAliasForArgument(
                 $id,
-                $name . 'StackRepository',
-                $name . ' Stack Repository'
+                StackRepository::class,
+                $name . 'StackRepository'
             );
         }
     }

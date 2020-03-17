@@ -14,25 +14,30 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Customer\Context\CustomerContextInterface;
-use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\QuoteInterface;
 use CoreShop\Component\Order\OrderSaleStates;
+use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuoteController extends FrontendController
 {
-    public function showAction(Request $request)
-    {
-        $quote = $this->get('coreshop.repository.order')->find($request->get('quote'));
+    public function showAction(
+        Request $request,
+        OrderRepositoryInterface $orderRepository,
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        $quote = $orderRepository->find($request->get('quote'));
 
-        try {
-            $currentCustomer = $this->get(CustomerContextInterface::class)->getCustomer();
-        } catch (CustomerNotFoundException $ex) {
+        if (!$shopperContext->hasCustomer()) {
             return $this->redirectToRoute('coreshop_index');
         }
+
+        $currentCustomer = $shopperContext->getCustomer();
 
         if (!$quote instanceof OrderInterface || !$quote->getSaleState() !== OrderSaleStates::STATE_QUOTE) {
             return $this->redirectToRoute('coreshop_index');
@@ -46,7 +51,7 @@ class QuoteController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Quote/show.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Quote/show.html'), [
             'quote' => $quote,
         ]);
     }

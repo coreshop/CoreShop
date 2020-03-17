@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Currency;
 
-use CoreShop\Component\Core\Model\CurrencyInterface;
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Context\CurrencyNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
 

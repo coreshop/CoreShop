@@ -14,38 +14,38 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
-use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends FrontendController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function latestAction(Request $request)
-    {
-        $productRepository = $this->get('coreshop.repository.product');
-
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
-            'products' => $productRepository->findLatestByStore($this->get(StoreContextInterface::class)->getStore()),
+    public function latestAction(
+        ProductRepositoryInterface $productRepository,
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        return $this->renderTemplate($templateConfigurator->findTemplate('Product/_latest.html'), [
+            'products' => $productRepository->findLatestByStore($shopperContext->getStore()),
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function detailAction(Request $request)
-    {
-        $product = $this->getProductByRequest($request);
+    public function detailAction(
+        Request $request,
+        StackRepository $productStackRepository,
+        ShopperContextInterface $shopperContext,
+        TrackerInterface $tracker,
+        SEOPresentationInterface $seo,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response {
+        $product = $this->getProductByRequest($request, $productStackRepository);
 
         if (!$product instanceof ProductInterface) {
             throw new NotFoundHttpException('product not found');
@@ -55,25 +55,20 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {
+        if (!in_array($shopperContext->getStore()->getId(), $product->getStores())) {
             throw new NotFoundHttpException('product not found');
         }
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
-        $this->get(TrackerInterface::class)->trackProduct($product);
+        $tracker->trackProduct($product);
+        $seo->updateSeoMetadata($product);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->renderTemplate($templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return DataObject\Concrete
-     */
-    protected function getProductByRequest(Request $request)
+    protected function getProductByRequest(Request $request, StackRepository $productStackRepository)
     {
-        return $this->get('coreshop.repository.stack.purchasable')->find($request->get('product'));
+        return $productStackRepository->find($request->get('product'));
     }
 }

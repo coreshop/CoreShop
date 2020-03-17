@@ -14,12 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class IndexController extends FrontendController
 {
-    public function indexAction(Request $request)
+    public function indexAction(TemplateConfiguratorInterface $templateConfigurator): Response
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Index/index.html'));
+        return $this->renderTemplate($templateConfigurator->findTemplate('Index/index.html'));
     }
 }

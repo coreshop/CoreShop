@@ -21,19 +21,6 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class FrontendController extends \Pimcore\Controller\FrontendController
 {
     /**
-     * @var TemplateConfiguratorInterface
-     */
-    protected $templateConfigurator;
-
-    /**
-     * @param TemplateConfiguratorInterface $templateConfigurator
-     */
-    public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
-    {
-        $this->templateConfigurator = $templateConfigurator;
-    }
-
-    /**
      * @param mixed  $object|null
      * @param string $route|null
      * @param array  $parameters

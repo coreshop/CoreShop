@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerLoginType;
+use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,56 +24,27 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends FrontendController
 {
-    /**
-     * @var AuthenticationUtils
-     */
-    protected $authenticationUtils;
-
-    /**
-     * @var FormFactoryInterface
-     */
-    protected $formFactory;
-
-    /**
-     * @var ShopperContextInterface
-     */
-    protected $shopperContext;
-
-    /**
-     * @param AuthenticationUtils     $authenticationUtils
-     * @param FormFactoryInterface    $formFactory
-     * @param ShopperContextInterface $shopperContext
-     */
-    public function __construct(
+    public function loginAction(
+        Request $request,
         AuthenticationUtils $authenticationUtils,
         FormFactoryInterface $formFactory,
-        ShopperContextInterface $shopperContext
-    ) {
-        $this->authenticationUtils = $authenticationUtils;
-        $this->formFactory = $formFactory;
-        $this->shopperContext = $shopperContext;
-    }
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function loginAction(Request $request)
+        ShopperContextInterface $shopperContext,
+        TemplateConfiguratorInterface $templateConfigurator
+    ): Response
     {
-        if ($this->shopperContext->hasCustomer() && $this->shopperContext->getCustomer()->getIsGuest() === false) {
+        if ($shopperContext->hasCustomer() && $shopperContext->getCustomer()->getIsGuest() === false) {
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $lastError = $this->authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $this->authenticationUtils->getLastUsername();
+        $lastError = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-        $form = $this->formFactory->createNamed('', CustomerLoginType::class);
+        $form = $formFactory->createNamed('', CustomerLoginType::class);
 
         $renderLayout = $request->get('renderLayout', true);
 
-        $viewWithLayout = $this->templateConfigurator->findTemplate('Security/login.html');
-        $viewWithoutLayout = $this->templateConfigurator->findTemplate('Security/_login-form.html');
+        $viewWithLayout = $templateConfigurator->findTemplate('Security/login.html');
+        $viewWithoutLayout = $templateConfigurator->findTemplate('Security/_login-form.html');
 
         return $this->renderTemplate($renderLayout ? $viewWithLayout : $viewWithoutLayout, [
             'form' => $form->createView(),
