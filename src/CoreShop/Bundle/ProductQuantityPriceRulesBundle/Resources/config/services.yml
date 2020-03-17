@@ -5,16 +5,9 @@ imports:
     - { resource: services/calculator.yml }
 
 services:
-    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface: '@CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelper'
-    CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelper:
-        arguments:
-            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_quantity_price_rule_ranges }
-
     CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig\ProductQuantityPriceRuleRangesExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelper'
+            - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
         tags:
             - { name: twig.extension }
