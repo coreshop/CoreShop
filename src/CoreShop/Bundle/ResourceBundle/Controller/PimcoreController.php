@@ -21,14 +21,6 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class PimcoreController extends AdminController
 {
-    protected $metadata;
-
-    public function __construct(
-        MetadataInterface $metadata
-    ) {
-
-    }
-
     /**
      * @throws AccessDeniedException
      */

@@ -372,7 +372,7 @@ class CustomerController extends FrontendController
          */
         $customer = $customerRepository->findByNewsletterToken($token);
 
-        if ($customer instanceof CustomerInterface) {
+        if ($customer instanceof \CoreShop\Component\Core\Model\CustomerInterface) {
             $customer->setNewsletterConfirmed(true);
             $customer->setNewsletterToken(null);
 

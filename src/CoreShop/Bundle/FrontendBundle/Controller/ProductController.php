@@ -51,7 +51,7 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!$product->isPublished() || $product->getActive() !== true) {
+        if (!$product->getPublished() || $product->getActive() !== true) {
             throw new NotFoundHttpException('product not found');
         }
 

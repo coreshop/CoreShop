@@ -199,7 +199,7 @@ class CategoryController extends FrontendController
 
             $categories = [$category];
             if ($displaySubCategories === true) {
-                foreach ($repository->findRecursiveChildCategoriesForStore($category,
+                foreach ($categoryRepository->findRecursiveChildCategoriesForStore($category,
                     $shopperContext->getStore()) as $subCategory) {
                     $categories[] = $subCategory;
                 }

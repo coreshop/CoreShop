@@ -265,7 +265,7 @@ class CustomerTransformerController extends AdminController
             $message = $e->getMessage();
         }
 
-        return $viewHandler->json([
+        return $viewHandler->handle([
             'success'    => !$error && !$formError,
             'formError'  => $formError,
             'message'    => $message,
