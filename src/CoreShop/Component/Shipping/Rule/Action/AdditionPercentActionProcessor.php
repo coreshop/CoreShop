@@ -23,7 +23,7 @@ class AdditionPercentActionProcessor implements CarrierPriceModificationActionPr
     /**
      * {@inheritdoc}
      */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration): int
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
         return (int) round($price * ($configuration['percent'] / 100));
     }

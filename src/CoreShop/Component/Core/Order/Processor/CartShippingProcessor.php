@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -36,19 +37,22 @@ final class CartShippingProcessor implements CartProcessorInterface
     private $defaultCarrierResolver;
     private $defaultAddressProvider;
     private $adjustmentFactory;
+    private $cartContextResolver;
 
     public function __construct(
         TaxedShippingCalculatorInterface $carrierPriceCalculator,
         ShippableCarrierValidatorInterface $carrierValidator,
         DefaultCarrierResolverInterface $defaultCarrierResolver,
         AddressProviderInterface $defaultAddressProvider,
-        AdjustmentFactoryInterface $adjustmentFactory
+        AdjustmentFactoryInterface $adjustmentFactory,
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->carrierValidator = $carrierValidator;
         $this->defaultCarrierResolver = $defaultCarrierResolver;
         $this->defaultAddressProvider = $defaultAddressProvider;
         $this->adjustmentFactory = $adjustmentFactory;
+        $this->cartContextResolver = $cartContextResolver;
     }
 
     /**
@@ -62,7 +66,7 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         $totalWeight = 0;
 
-         /**
+        /**
          * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
@@ -98,17 +102,37 @@ final class CartShippingProcessor implements CartProcessorInterface
 
         if (null === $cart->getCarrier()) {
             $this->resolveDefaultCarrier($cart, $address);
-
-            if (null === $cart->getCarrier()) {
-                return;
-            }
         }
 
-        $priceWithTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, true);
-        $priceWithoutTax = $this->carrierPriceCalculator->getPrice($cart->getCarrier(), $cart, $address, false);
+        if (null === $cart->getCarrier()) {
+            return;
+        }
 
-        $cart->addAdjustment($this->adjustmentFactory->createWithData(AdjustmentInterface::SHIPPING, '', $priceWithTax,
-            $priceWithoutTax));
+        $context = $this->cartContextResolver->resolveCartContext($cart);
+
+        $priceWithTax = $this->carrierPriceCalculator->getPrice(
+            $cart->getCarrier(),
+            $cart,
+            $address,
+            true,
+            $context
+        );
+        $priceWithoutTax = $this->carrierPriceCalculator->getPrice(
+            $cart->getCarrier(),
+            $cart,
+            $address,
+            false,
+            $context
+        );
+
+        $cart->addAdjustment(
+            $this->adjustmentFactory->createWithData(
+                AdjustmentInterface::SHIPPING,
+                '',
+                $priceWithTax,
+                $priceWithoutTax
+            )
+        );
     }
 
     /**

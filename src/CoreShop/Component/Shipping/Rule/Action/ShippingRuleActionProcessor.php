@@ -41,12 +41,13 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
         CarrierInterface $carrier,
         ShippableInterface $shippable,
         AddressInterface $address,
-        array $configuration
+        array $configuration,
+        array $context
     ): int {
         $shippingRule = $this->shippingRuleRepository->find($configuration['shippingRule']);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
-            return $this->shippingRuleProcessor->getPrice($shippingRule, $carrier, $shippable, $address);
+            return $this->shippingRuleProcessor->getPrice($shippingRule, $carrier, $shippable, $address, $context);
         }
 
         return 0;
@@ -60,12 +61,13 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
         ShippableInterface $shippable,
         AddressInterface $address,
         int $price,
-        array $configuration
+        array $configuration,
+        array $context
     ): int {
         $shippingRule = $this->shippingRuleRepository->find($configuration['shippingRule']);
 
         if ($shippingRule instanceof ShippingRuleInterface) {
-            return $this->shippingRuleProcessor->getModification($shippingRule, $carrier, $shippable, $address, $price);
+            return $this->shippingRuleProcessor->getModification($shippingRule, $carrier, $shippable, $address, $price, $context);
         }
 
         return 0;

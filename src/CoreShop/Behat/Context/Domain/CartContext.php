@@ -663,6 +663,198 @@ final class CartContext implements Context
         );
     }
 
+    /**
+     * @Then /^the cart item with (product) should have base discount-price with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base discount-price with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseDiscountPriceWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemDiscountPrice(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base discount-price with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base discount-price with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseDiscountPriceWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemDiscountPrice(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base discount with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base discount with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseDiscountWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemDiscount(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base discount with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base discount with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseDiscountWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemDiscount(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base total with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base total with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveBaseATotalWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseTotal(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base total with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base total with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseTotalWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseTotal(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base retail-price with "(\d+)" including tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base retail-price with "(\d+)" including tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseRetailWithTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemRetailPrice(true),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart item with (product) should have base retail-price with "(\d+)" excluding tax$/
+     * @Then /^the cart item with (product "[^"]+") should have base retail-price with "(\d+)" excluding tax$/
+     */
+    public function theCartItemWithProductShouldHaveABaseRetalWithoutTax(ProductInterface $product, int $price)
+    {
+        $cart = $this->cartContext->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
+         */
+        $cartItem = $this->findCartItemByProduct($cart, $product);
+
+        Assert::eq(
+            $cartItem->getBaseItemRetailPrice(false),
+            $price
+        );
+    }
+
+    /**
+     * @Then /^the cart base shipping should be "([^"]+)" excluding tax$/
+     */
+    public function cartBaseShippingCostShouldBeExcludingTax($shipping)
+    {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, OrderInterface::class);
+
+        Assert::eq(
+            $shipping,
+            $cart->getBaseShipping(false),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shipping,
+                $cart->getBaseShipping(false)
+            )
+        );
+    }
+
+    /**
+     * @Then /^the cart base shipping should be "([^"]+)" including tax$/
+     */
+    public function cartBaseShippingCostShouldBeIncludingTax($shipping)
+    {
+        $cart = $this->cartContext->getCart();
+
+        Assert::isInstanceOf($cart, OrderInterface::class);
+
+        Assert::eq(
+            $shipping,
+            $cart->getBaseShipping(true),
+            sprintf(
+                'Cart shipping is expected to be %s, but it is %s',
+                $shipping,
+                $cart->getBaseShipping(true)
+            )
+        );
+    }
+
     protected function findCartItemByProduct(OrderInterface $cart, ProductInterface $product)
     {
         foreach ($cart->getItems() as $cartItem) {

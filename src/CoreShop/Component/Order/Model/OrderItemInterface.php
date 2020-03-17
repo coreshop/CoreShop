@@ -232,4 +232,30 @@ interface OrderItemInterface extends
      * @param bool $withTax
      */
     public function setBaseTotal(int $total, bool $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseItemDiscountPrice(bool $withTax = true): int;
+
+    /**
+     * @param int  $baseItemDiscountPrice
+     * @param bool $withTax
+     */
+    public function setBaseItemDiscountPrice(int $baseItemDiscountPrice, bool $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getBaseItemDiscount(bool $withTax = true): int;
+
+    /**
+     * @param int  $baseItemDiscount
+     * @param bool $withTax
+     */
+    public function setBaseItemDiscount(int $baseItemDiscount, bool $withTax = true);
 }

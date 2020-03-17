@@ -53,16 +53,22 @@ final class CartBaseProcessor implements CartProcessorInterface
         foreach ($cart->getItems() as $item) {
             foreach ([true, false] as $withTax) {
                 $itemRetailPrice = $item->getItemRetailPrice($withTax);
+                $itemDiscountPrice = $item->getItemDiscountPrice($withTax);
+                $itemDiscount = $item->getItemDiscount($withTax);
                 $itemPrice = $item->getTotal($withTax);
                 $total = $item->getItemPrice($withTax);
 
                 $item->setBaseItemRetailPrice($itemRetailPrice, $withTax);
                 $item->setBaseTotal($itemPrice, $withTax);
                 $item->setBaseItemPrice($total, $withTax);
+                $item->setBaseItemDiscount($itemDiscount, $withTax);
+                $item->setBaseItemDiscountPrice($itemDiscountPrice, $withTax);
 
                 $item->setItemRetailPrice($this->convert($itemRetailPrice, $cart), $withTax);
                 $item->setTotal($this->convert($itemPrice, $cart), $withTax);
                 $item->setItemPrice($this->convert($total, $cart), $withTax);
+                $item->setItemDiscount($this->convert($itemDiscount, $cart), $withTax);
+                $item->setItemDiscountPrice($this->convert($itemDiscountPrice, $cart), $withTax);
             }
 
             $itemTax = $item->getItemTax();
@@ -140,7 +146,7 @@ final class CartBaseProcessor implements CartProcessorInterface
         $cart->setBaseTaxes($baseTaxesFieldCollection);
     }
 
-    protected function convert(?int $value, OrderInterface $cart)
+    protected function convert(?int $value, OrderInterface $cart, bool $backwards = false)
     {
         if (null === $value) {
             return 0;
@@ -148,6 +154,14 @@ final class CartBaseProcessor implements CartProcessorInterface
 
         if (!$cart->getBaseCurrency() instanceof CurrencyInterface) {
             return $value;
+        }
+
+        if ($backwards) {
+            return $this->currencyConverter->convert(
+                $value,
+                $cart->getCurrency()->getIsoCode(),
+                $cart->getBaseCurrency()->getIsoCode()
+            );
         }
 
         return $this->currencyConverter->convert(
