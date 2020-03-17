@@ -349,7 +349,7 @@ QUERY;
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $doIndex = $object->getIndexable();
+        $doIndex = $object->getIndexable($index);
 
         if ($doIndex) {
             $preparedData = $this->prepareData($index, $object);
