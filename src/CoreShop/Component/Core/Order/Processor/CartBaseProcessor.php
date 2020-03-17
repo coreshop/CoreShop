@@ -123,8 +123,8 @@ final class CartBaseProcessor implements CartProcessorInterface
         $baseTaxesFieldCollection = new Fieldcollection();
 
         if ($cart->getTaxes() instanceof Fieldcollection) {
-            foreach ($cart->getTaxes()->getItems() as $item) {
-                if ($item instanceof TaxItemInterface) {
+            foreach ($cart->getTaxes()->getItems() as $taxItem) {
+                if ($taxItem instanceof TaxItemInterface) {
                     $taxAmount = $taxItem->getAmount();
 
                     $baseItem = clone $taxItem;
