@@ -1,5 +1,9 @@
 # Upgrade to 3.0
 
+## Type Hints
+CoreShop now completely implemented PHP Type Hints where applicable. This is one of the main reason a simple upgrade
+will not work. You have to check all your extension points for compliance to interface declarations.  
+
 ## Cart and Quote are now Order
 The Cart and Quote Class are now the Order Class as well. Since these entities are similar, it makes sense to just use one.
 
