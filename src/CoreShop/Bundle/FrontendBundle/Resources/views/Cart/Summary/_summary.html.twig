@@ -25,7 +25,7 @@
         <strong>{{ 'coreshop.ui.subtotal_inc'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-sub-total">
-        {{ currency.convertAndFormat(cart.getSubtotal(true)) }}
+        {{ currency.format(cart.getSubtotal(true), cart.currency.isoCode) }}
     </td>
 </tr>
 <tr>
@@ -33,7 +33,7 @@
         <strong>{{ 'coreshop.ui.subtotal_excl'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-discount">
-        {{ currency.convertAndFormat(cart.getSubtotal(false)) }}
+        {{ currency.format(cart.getSubtotal(false), cart.currency.isoCode) }}
     </td>
 </tr>
 {% if discount != 0 %}
@@ -42,7 +42,7 @@
             <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_incl'|trans : 'coreshop.ui.discount_incl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
-            {{ currency.convertAndFormat(discountIt) }}
+            {{ currency.format(discountIt, cart.currency.isoCode) }}
         </td>
     </tr>
     <tr>
@@ -50,7 +50,7 @@
             <strong>{{ discount > 0 ? 'coreshop.ui.surcharge_excl'|trans : 'coreshop.ui.discount_excl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-discount">
-            {{ currency.convertAndFormat(discount) }}
+            {{ currency.format(discount, cart.currency.isoCode) }}
         </td>
     </tr>
 {% endif %}
@@ -60,7 +60,7 @@
             <strong>{{ 'coreshop.ui.shipping_incl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-shipping">
-            {{ currency.convertAndFormat(shippingIt) }}
+            {{ currency.format(shippingIt, cart.currency.isoCode) }}
         </td>
     </tr>
     <tr>
@@ -68,7 +68,7 @@
             <strong>{{ 'coreshop.ui.shipping_excl'|trans }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-shipping">
-            {{ currency.convertAndFormat(shipping) }}
+            {{ currency.format(shipping, cart.currency.isoCode) }}
         </td>
     </tr>
 {% endif %}
@@ -78,7 +78,7 @@
             <strong>{{ 'coreshop.ui.tax_name'|trans|format(taxItem.getName) }}:</strong>
         </td>
         <td colspan="2" class="text-right cart-tax-detail">
-            {{ currency.convertAndFormat(taxItem.amount) }}
+            {{ currency.format(taxItem.amount, cart.currency.isoCode) }}
         </td>
     </tr>
 {% endfor %}
@@ -87,7 +87,7 @@
         <strong>{{ 'coreshop.ui.total_tax'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-tax">
-        {{ currency.convertAndFormat(cart.getTotalTax) }}
+        {{ currency.format(cart.getTotalTax, cart.currency.isoCode) }}
     </td>
 </tr>
 <tr>
@@ -95,7 +95,7 @@
         <strong>{{ 'coreshop.ui.total'|trans }}:</strong>
     </td>
     <td colspan="2" class="text-right cart-total-price">
-        {{ currency.convertAndFormat(cart.getTotal) }}
+        {{ currency.format(cart.getTotal, cart.currency.isoCode) }}
     </td>
 </tr>
 {% if cart.getComment is not empty %}

@@ -44,18 +44,18 @@
         {% set discountPrice = item.getItemDiscountPrice %}
         {% set retailPrice = item.getItemRetailPrice %}
 
-        <span class="price-new">{{ currency.convertAndFormat(price) }}</span>
+        <span class="price-new">{{ currency.format(price, cart.currency.isoCode) }}</span>
         {% if price < retailPrice %}
             {% if discountPrice > 0 %}
-                <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+                <span class="price-old">{{ currency.format(retailPrice, cart.currency.isoCode) }}</span>
             {% endif %}
             {% if discount > 0 %}
-                <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
+                <span class="price-discount">(-{{ currency.format(discount, cart.currency.isoCode) }})</span>
             {% endif %}
         {% endif %}
     </td>
     <td class="text-right cart-item-total-price">
-        {{ currency.convertAndFormat(item.getTotal) }}
+        {{ currency.format(item.getTotal, cart.currency.isoCode) }}
     </td>
     <td class="text-center">
         {% if not item.getIsGiftItem %}

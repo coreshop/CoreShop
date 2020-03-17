@@ -23,9 +23,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartBaseProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
@@ -43,26 +40,47 @@ final class CartBaseProcessor implements CartProcessorInterface
         $cart->setBaseCurrency($cart->getStore()->getCurrency());
 
         foreach ([true, false] as $withTax) {
-            $cart->setBaseSubtotal($this->convert($cart->getSubtotal($withTax), $cart), $withTax);
-            $cart->setBaseTotal($this->convert($cart->getTotal($withTax), $cart), $withTax);
+            $subtotal = $cart->getSubtotal($withTax);
+            $total = $cart->getTotal($withTax);
+
+            $cart->setBaseTotal($subtotal, $withTax);
+            $cart->setTotal($total, $withTax);
+
+            $cart->setSubtotal($this->convert($subtotal, $cart), $withTax);
+            $cart->setTotal($this->convert($total, $cart), $withTax);
         }
 
         foreach ($cart->getItems() as $item) {
             foreach ([true, false] as $withTax) {
+                $itemRetailPrice = $item->getItemRetailPrice($withTax);
+                $itemPrice = $item->getTotal($withTax);
+                $total = $item->getItemPrice($withTax);
 
-                $item->setBaseItemRetailPrice($this->convert($item->getItemRetailPrice($withTax), $cart), $withTax);
-                $item->setBaseTotal($this->convert($item->getTotal($withTax), $cart), $withTax);
-                $item->setBaseItemPrice($this->convert($item->getItemPrice($withTax), $cart), $withTax);
+                $item->setBaseItemRetailPrice($itemRetailPrice, $withTax);
+                $item->setBaseTotal($itemPrice, $withTax);
+                $item->setBaseItemPrice($total, $withTax);
+
+                $item->setItemRetailPrice($this->convert($itemRetailPrice, $cart), $withTax);
+                $item->setTotal($this->convert($itemPrice, $cart), $withTax);
+                $item->setItemPrice($this->convert($total, $cart), $withTax);
             }
 
-            $item->setBaseItemTax($this->convert($item->getItemTax(), $cart));
+            $itemTax = $item->getItemTax();
+
+            $item->setBaseItemTax($itemTax);
+            $item->setItemTax($this->convert($itemTax, $cart));
 
             foreach ($item->getAdjustments() as $adjustment) {
-                $baseAdjustment = clone $adjustment;
-                $baseAdjustmentGross = $this->convert($baseAdjustment->getAmount(true), $cart);
-                $baseAdjustmentNet = $this->convert($baseAdjustment->getAmount(false), $cart);
+                $adjustmentNet = $adjustment->getAmount(false);
+                $adjustmentGross = $adjustment->getAmount(true);
 
-                $baseAdjustment->setAmount($baseAdjustmentGross, $baseAdjustmentNet);
+                $baseAdjustment = clone $adjustment;
+
+                $baseAdjustment->setAmount($adjustmentGross, $adjustmentNet);
+                $adjustment->setAmount(
+                    $this->convert($baseAdjustment->getAmount(true), $cart),
+                    $this->convert($baseAdjustment->getAmount(false), $cart)
+                );
 
                 $item->addBaseAdjustment($baseAdjustment);
             }
@@ -72,8 +90,12 @@ final class CartBaseProcessor implements CartProcessorInterface
             if ($item->getTaxes() instanceof Fieldcollection) {
                 foreach ($item->getTaxes()->getItems() as $taxItem) {
                     if ($taxItem instanceof TaxItemInterface) {
+                        $taxAmount = $taxItem->getAmount();
+
                         $baseItem = clone $taxItem;
-                        $baseItem->setAmount($this->convert($baseItem->getAmount(), $cart));
+                        $baseItem->setAmount($taxAmount);
+
+                        $taxItem->setAmount($this->convert($taxAmount, $cart));
 
                         $baseItemTaxesFieldCollection->add($baseItem);
                     }
@@ -84,11 +106,16 @@ final class CartBaseProcessor implements CartProcessorInterface
         }
 
         foreach ($cart->getAdjustments() as $adjustment) {
-            $baseAdjustment = clone $adjustment;
-            $baseAdjustmentGross = $this->convert($adjustment->getAmount(true), $cart);
-            $baseAdjustmentNet = $this->convert($adjustment->getAmount(false), $cart);
+            $adjustmentNet = $adjustment->getAmount(false);
+            $adjustmentGross = $adjustment->getAmount(true);
 
-            $baseAdjustment->setAmount($baseAdjustmentGross, $baseAdjustmentNet);
+            $baseAdjustment = clone $adjustment;
+
+            $baseAdjustment->setAmount($adjustmentGross, $adjustmentNet);
+            $adjustment->setAmount(
+                $this->convert($baseAdjustment->getAmount(true), $cart),
+                $this->convert($baseAdjustment->getAmount(false), $cart)
+            );
 
             $cart->addBaseAdjustment($baseAdjustment);
         }
@@ -98,8 +125,12 @@ final class CartBaseProcessor implements CartProcessorInterface
         if ($cart->getTaxes() instanceof Fieldcollection) {
             foreach ($cart->getTaxes()->getItems() as $item) {
                 if ($item instanceof TaxItemInterface) {
-                    $baseItem = clone $item;
-                    $baseItem->setAmount($this->convert($baseItem->getAmount(), $cart));
+                    $taxAmount = $taxItem->getAmount();
+
+                    $baseItem = clone $taxItem;
+                    $baseItem->setAmount($taxAmount);
+
+                    $taxItem->setAmount($this->convert($taxAmount, $cart));
 
                     $baseTaxesFieldCollection->add($baseItem);
                 }
