@@ -72,7 +72,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             $progress->start(count($thumbnailsToInstall));
 
             foreach ($thumbnailsToInstall as $name => $thumbnailData) {
-                $progress->setMessage(sprintf('<error>Install Image Thumbnail %s</error>', $name));
+                $progress->setMessage(sprintf('Install Image Thumbnail %s', $name));
 
                 $this->installThumbnail($name, $thumbnailData);
 
@@ -80,6 +80,9 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Grid Configs have been installed successfully</info>');
         }
     }
 

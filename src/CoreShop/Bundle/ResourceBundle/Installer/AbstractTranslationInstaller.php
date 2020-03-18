@@ -84,7 +84,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
             $progress->start(count($translationsToInstall));
 
             foreach ($translationsToInstall as $name => $translationData) {
-                $progress->setMessage(sprintf('<error>Install %s Translation %s</error>', end(explode('\\', $this->translationClass)), $name));
+                $progress->setMessage(sprintf('Install %s Translation %s', end(explode('\\', $this->translationClass)), $name));
 
                 $this->installTranslation($name, $translationData);
 
@@ -92,6 +92,9 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln(sprintf('  - <info>%s Translations have been installed successfully</info>', end(explode('\\', $this->translationClass))));
         }
     }
 

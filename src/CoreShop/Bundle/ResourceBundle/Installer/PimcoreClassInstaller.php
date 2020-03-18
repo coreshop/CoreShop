@@ -112,7 +112,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             $progress->start(count($pimcoreClasses));
 
             foreach ($fieldCollections as $identifier => $fc) {
-                $progress->setMessage(sprintf('<error>Install Fieldcollection %s (%s)</error>', $fc['model'], $fc['file']));
+                $progress->setMessage(sprintf('Install Fieldcollection %s (%s)', $fc['model'], $fc['file']));
 
                 $this->installedCollections[$identifier] = $this->classInstaller->createFieldCollection($fc['file'], $fc['model']);
 
@@ -120,7 +120,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             foreach ($classes as $identifier => $class) {
-                $progress->setMessage(sprintf('<error>Install Class %s (%s)</error>', $class['model'], $class['file']));
+                $progress->setMessage(sprintf('Install Class %s (%s)', $class['model'], $class['file']));
 
                 $this->installedClasses[$identifier] = $this->classInstaller->createClass($class['file'], $class['model']);
 
@@ -128,7 +128,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             foreach ($bricks as $identifier => $brick) {
-                $progress->setMessage(sprintf('<error>Install Brick %s (%s)</error>', $brick['model'], $brick['file']));
+                $progress->setMessage(sprintf('Install Brick %s (%s)', $brick['model'], $brick['file']));
 
                 $this->installedBricks[$identifier] = $this->classInstaller->createBrick($brick['file'], $brick['model']);
 
@@ -136,6 +136,9 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Classes have been installed successfully</info>');
         }
     }
 

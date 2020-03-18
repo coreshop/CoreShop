@@ -53,7 +53,7 @@ final class SqlInstaller implements ResourceInstallerInterface
             $progress->start(count($sqlFilesToExecute));
 
             foreach ($sqlFilesToExecute as $sqlFile) {
-                $progress->setMessage(sprintf('<error>Execute SQL File %s</error>', $sqlFile));
+                $progress->setMessage(sprintf('<info>Execute SQL File %s</info>', $sqlFile));
 
                 $db->executeQuery(file_get_contents($this->kernel->locateResource($sqlFile)));
 
@@ -61,6 +61,9 @@ final class SqlInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>SQLs have been installed successfully</info>');
         }
     }
 }
