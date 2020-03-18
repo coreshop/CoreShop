@@ -71,7 +71,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             $progress->start(count($routesToInstall));
 
             foreach ($routesToInstall as $name => $routeData) {
-                $progress->setMessage(sprintf('<error>Install Route %s</error>', $name));
+                $progress->setMessage(sprintf('Install Route %s', $name));
 
                 $this->installRoute($name, $routeData);
 
@@ -79,6 +79,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Static Routes have been installed successfully</info>');
         }
     }
 

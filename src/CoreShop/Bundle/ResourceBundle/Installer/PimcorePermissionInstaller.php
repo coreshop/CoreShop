@@ -61,7 +61,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {
-                    $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
+                    $progress->setMessage(sprintf('Install Permission %s', $permission));
 
                     $permissionDefinition = Permission\Definition::getByKey($permission);
 
@@ -83,6 +83,9 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Permissions have been installed successfully</info>');
         }
     }
 }
