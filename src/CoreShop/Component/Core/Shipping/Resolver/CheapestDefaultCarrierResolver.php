@@ -12,25 +12,32 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Shipping\Resolver;
+namespace CoreShop\Component\Core\Shipping\Resolver;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
 use CoreShop\Component\Shipping\Exception\UnresolvedDefaultCarrierException;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
+use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
 
 final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInterface
 {
     private $carriersResolver;
     private $carrierPriceCalculator;
+    private $cartContextResolver;
 
     public function __construct(
         CarriersResolverInterface $carriersResolver,
-        CarrierPriceCalculatorInterface $carrierPriceCalculator
+        CarrierPriceCalculatorInterface $carrierPriceCalculator,
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->carriersResolver = $carriersResolver;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
+        $this->cartContextResolver = $cartContextResolver;
     }
 
     /**
@@ -40,13 +47,17 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
     {
         $carriers = $this->carriersResolver->resolveCarriers($shippable, $address);
 
+        if (!$shippable instanceof OrderInterface) {
+            throw new UnresolvedDefaultCarrierException();
+        }
+
         if (empty($carriers)) {
             throw new UnresolvedDefaultCarrierException();
         }
 
         uasort($carriers, function ($a, $b) use ($shippable, $address) {
-            $aPrice = $this->carrierPriceCalculator->getPrice($a, $shippable, $address);
-            $bPrice = $this->carrierPriceCalculator->getPrice($b, $shippable, $address);
+            $aPrice = $this->carrierPriceCalculator->getPrice($a, $shippable, $address, $this->cartContextResolver->resolveCartContext($shippable));
+            $bPrice = $this->carrierPriceCalculator->getPrice($b, $shippable, $address, $this->cartContextResolver->resolveCartContext($shippable));
 
             return $aPrice > $bPrice;
         });
