@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Model;
 
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Product\Model\Product as BaseProduct;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
@@ -345,7 +346,7 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexableEnabled()
+    public function getIndexableEnabled(IndexInterface $index): bool
     {
         return $this->getActive() && $this->getPublished();
     }
@@ -353,15 +354,15 @@ class Product extends BaseProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexable()
+    public function getIndexable(IndexInterface $index): bool
     {
-        return $this->getIndexableEnabled();
+        return $this->getIndexableEnabled($index);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIndexableName($language)
+    public function getIndexableName(IndexInterface $index, string $language): string
     {
         return $this->getName($language);
     }
