@@ -8,6 +8,7 @@ on:
 jobs:
   behat:
     runs-on: ubuntu-latest
+    container: ubuntu
     env:
       PIMCORE_ENVIRONMENT: "test"
       CORESHOP_TEST: 1
@@ -20,12 +21,12 @@ jobs:
           MYSQL_DATABASE: coreshop_test
         ports:
           - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb_file_format=Barracuda --innodb_large_prefix=1 --innodb_file_per_table=1
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
-        pimcore: [~6.5.0, dev-master]
         symfony: [~3.4, ^4.0]
+        pimcore: [~6.5.0, dev-master]
 
     steps:
     - uses: actions/checkout@v2
@@ -45,8 +46,6 @@ jobs:
 
     - name: Setup mysql
       run: |
-        mysql -uroot -h127.0.0.1 -proot -e -e "SET GLOBAL innodb_file_format=Barracuda;"
-        mysql -uroot -h127.0.0.1 -proot -e -e "SET GLOBAL innodb_large_prefix=1;"
         mysql -uroot -h127.0.0.1 -proot -e -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Copy parameters.yml
