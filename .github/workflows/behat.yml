@@ -20,7 +20,7 @@ jobs:
           MYSQL_DATABASE: coreshop_test
         ports:
           - 3306
-        pptions: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
@@ -37,7 +37,7 @@ jobs:
 
     - name: Check PHP Version
       run: php -v
-      
+
     - name: Verify MySQL connection from host
       run: |
         sudo apt-get install -y mysql-client
@@ -56,8 +56,8 @@ jobs:
       run: |
         composer config minimum-stability dev
         composer config prefer-stable true
-        COMPOSER_MEMORY_LIMIT=-1 composer req pimcore/pimcore:{{ matrix.pimcore }} symfony/symfony:{{ matrix.symfony }} --no-interaction --no-scripts --no-update
-        COMPOSER_MEMORY_LIMIT=-1 composer install -o --no-interaction
+        composer req pimcore/pimcore:{{ matrix.pimcore }} symfony/symfony:{{ matrix.symfony }} --no-interaction --no-scripts --no-update
+        composer install -o --no-interaction
 
     - name: Cache clear
       run: bin/console cache:clear
