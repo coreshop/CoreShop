@@ -11,7 +11,7 @@ jobs:
     env:
       PIMCORE_ENVIRONMENT: "test"
       CORESHOP_TEST: 1
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@172.0.0.1/coreshop_test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
     services:
       mysql:
         image: mysql:5.7
