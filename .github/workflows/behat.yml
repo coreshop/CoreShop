@@ -21,7 +21,7 @@ jobs:
           MYSQL_DATABASE: coreshop_test
         ports:
           - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb_file_format=Barracuda --innodb_large_prefix=1 --innodb_file_per_table=1
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3 "mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci --innodb_file_format=Barracuda --innodb_large_prefix=1 --innodb_file_per_table=1"
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
