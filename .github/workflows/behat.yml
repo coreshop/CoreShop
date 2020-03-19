@@ -8,12 +8,17 @@ on:
 jobs:
   behat:
     runs-on: ubuntu-latest
+    env:
+      PIMCORE_ENVIRONMENT: "test"
+      CORESHOP_TEST: 1
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@172.0.0.1/coreshop_test"
     services:
       mysql:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: coreshop_test
+        cmd: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci, --innodb_file_format=Barracuda, --innodb_large_prefix=1, --innodb_file_per_table=1]
         ports:
           - 3306
     strategy:
@@ -24,13 +29,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Setup Mysql
-      run: |
-        mysql --version
-        mysql -e "SET GLOBAL innodb_file_format=Barracuda;"
-        mysql -e "SET GLOBAL innodb_large_prefix=1;"
-        mysql -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Copy parameters.yml
       run: cp app/config/parameters.example.yml app/config/parameters.yml

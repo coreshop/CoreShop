@@ -12,6 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Copy parameters.yml
+      run: cp app/config/parameters.example.yml app/config/parameters.yml
+
     - name: Composer install
       run: composer install --prefer-dist --no-progress --no-suggest
 
