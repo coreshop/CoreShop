@@ -18,9 +18,9 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: coreshop_test
-        cmd: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_general_ci, --innodb_file_format=Barracuda, --innodb_large_prefix=1, --innodb_file_per_table=1]
         ports:
           - 3306
+        pptions: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
@@ -29,6 +29,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Verify MySQL connection from host
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
+
+    - name: Setup mysql
+      run: |
+        mysql -uroot -h127.0.0.1 -proot -e -e "SET GLOBAL innodb_file_format=Barracuda;"
+        mysql -uroot -h127.0.0.1 -proot -e -e "SET GLOBAL innodb_large_prefix=1;"
+        mysql -uroot -h127.0.0.1 -proot -e -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Copy parameters.yml
       run: cp app/config/parameters.example.yml app/config/parameters.yml
