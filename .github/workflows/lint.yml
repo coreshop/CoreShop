@@ -1,0 +1,22 @@
+name: Lint
+on:
+  push:
+    branches: [ master, '3.0' ]
+  pull_request:
+    branches: [ master, '3.0' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Composer install
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Validate YAML
+      run: bin/console lint:yaml src --no-debug
+
+    - name: Validate TWIG
+      run: bin/console lint:twig src --no-debug
