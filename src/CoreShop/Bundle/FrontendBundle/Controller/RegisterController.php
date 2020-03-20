@@ -94,7 +94,9 @@ class RegisterController extends FrontendController
                 $customer = $this->get('coreshop.repository.customer')->findCustomerByEmail($passwordReset['email']);
 
                 if (!$customer instanceof CustomerInterface) {
-                    return $this->redirectToRoute('coreshop_index');
+                    $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.password_reset_user_error'));
+
+                    return $this->redirectToRoute('coreshop_customer_password_reset_request');
                 }
 
                 $customer->setPasswordResetHash(hash('md5', $customer->getId().$customer->getEmail().mt_rand().time()));
