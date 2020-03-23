@@ -1,5 +1,28 @@
 # Within 2.2
 
+## 2.2.0-RC.2
+ - Features:
+    - [IndexBundle] allow configuring if versions should be indexed or not (https://github.com/coreshop/CoreShop/pull/1303)
+    - [IndexBundle] add possibility to store extra information into relational table (https://github.com/coreshop/CoreShop/pull/1306)
+    - [Pimcore] Compatibility with Pimcore 6.5.3 (https://github.com/coreshop/CoreShop/pull/1310)
+    - [Shipping] Calculate shipping tax using cart items (https://github.com/coreshop/CoreShop/pull/1283)
+    - [Doctrine] remove usage of deprecated merge (https://github.com/coreshop/CoreShop/pull/1314)
+    - [Docs] Add Documentation for Unit Definitions (https://github.com/coreshop/CoreShop/pull/1312)
+    - [Payment] decouple Payment from Payum and consider decimal factor (https://github.com/coreshop/CoreShop/pull/1021)
+    - [Installer] change installer colors (https://github.com/coreshop/CoreShop/pull/1325)
+    - [Github Actions] introduce testing with Github Actions (https://github.com/coreshop/CoreShop/pull/1329)
+    
+ - Bugs:
+    - [AddressBundle] introduce filter-active action and filter store-base countries by those (https://github.com/coreshop/CoreShop/pull/1302)
+    - [ThemeBundle] fix configuration for default resolvers (https://github.com/coreshop/CoreShop/pull/1301)
+    - [IndexBundle] index ui improvements (https://github.com/coreshop/CoreShop/pull/1300)
+    - [CoreBundle] fix typo in validation groups and fix guest-registration type (https://github.com/coreshop/CoreShop/pull/1304)
+    - [Translations] fix: add missing translation (https://github.com/coreshop/CoreShop/pull/1308)
+    - [Frontend] Fixes the category items-per-page dropdown in the frontend (https://github.com/coreshop/CoreShop/pull/1313)
+    - [Customer] fix missing username field (https://github.com/coreshop/CoreShop/pull/1315)
+    - [FrontendBundle/CoreBundle] prevent _fragment calls by using ACL's (https://github.com/coreshop/CoreShop/pull/1309)
+    - [Reports] fix export params (https://github.com/coreshop/CoreShop/pull/1328)
+
 ## 2.2.0
  - Features:
     - [Core] Implement Username/Email Login Identifier @solverat (https://github.com/coreshop/CoreShop/issues/1290, https://github.com/coreshop/CoreShop/pull/1291)
