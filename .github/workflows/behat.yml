@@ -1,9 +1,9 @@
 name: Behat
 on:
   push:
-    branches: [ master, '3.0' ]
+    branches: [ '3.0' ]
   pull_request:
-    branches: [ master, '3.0' ]
+    branches: [ '3.0' ]
 
 jobs:
   behat:
@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
-        symfony: [~3.4, ^4.0]
+        symfony: [^4.0]
         pimcore: [~6.5.0, dev-master]
 
     steps:
