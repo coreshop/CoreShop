@@ -13,11 +13,7 @@
     - [Github Actions] introduce testing with Github Actions (https://github.com/coreshop/CoreShop/pull/1329)
     
  - Bugs:
-    - [AddressBundle] introduce filter-active action and filter store-base countries by those (https://github.com/coreshop/CoreShop/pull/1302)
-    - [ThemeBundle] fix configuration for default resolvers (https://github.com/coreshop/CoreShop/pull/1301)
-    - [IndexBundle] index ui improvements (https://github.com/coreshop/CoreShop/pull/1300)
     - [CoreBundle] fix typo in validation groups and fix guest-registration type (https://github.com/coreshop/CoreShop/pull/1304)
-    - [Translations] fix: add missing translation (https://github.com/coreshop/CoreShop/pull/1308)
     - [Frontend] Fixes the category items-per-page dropdown in the frontend (https://github.com/coreshop/CoreShop/pull/1313)
     - [Customer] fix missing username field (https://github.com/coreshop/CoreShop/pull/1315)
     - [FrontendBundle/CoreBundle] prevent _fragment calls by using ACL's (https://github.com/coreshop/CoreShop/pull/1309)
