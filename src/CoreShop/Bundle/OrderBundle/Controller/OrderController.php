@@ -13,14 +13,17 @@
 namespace CoreShop\Bundle\OrderBundle\Controller;
 
 use Carbon\Carbon;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\SaleInterface;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderShipmentRepositoryInterface;
+use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\User;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -139,6 +142,13 @@ class OrderController extends AbstractSaleDetailController
         }
 
         $workflow->apply($order, $transition);
+
+        if ($order instanceof DataObject\Concrete && $transition === OrderTransitions::TRANSITION_CANCEL) {
+            $this->get(HistoryLogger::class)->log(
+                $order,
+                'Admin Order Cancellation'
+            );
+        }
 
         return $this->viewHandler->handle(['success' => true]);
     }

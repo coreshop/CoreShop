@@ -12,9 +12,11 @@
 
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use Pimcore\Model\DataObject\Concrete;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {
@@ -29,13 +31,23 @@ final class OrderExpiration implements ProposalExpirationInterface
     private $stateMachineApplier;
 
     /**
+     * @var HistoryLoggerInterface
+     */
+    private $historyLogger;
+
+    /**
      * @param OrderRepositoryInterface $orderRepository
      * @param StateMachineApplier      $stateMachineApplier
+     * @param HistoryLoggerInterface   $historyLogger
      */
-    public function __construct(OrderRepositoryInterface $orderRepository, StateMachineApplier $stateMachineApplier)
-    {
+    public function __construct(
+        OrderRepositoryInterface $orderRepository,
+        StateMachineApplier $stateMachineApplier,
+        HistoryLoggerInterface $historyLogger = null
+    ) {
         $this->orderRepository = $orderRepository;
         $this->stateMachineApplier = $stateMachineApplier;
+        $this->historyLogger = $historyLogger;
     }
 
     /**
@@ -51,7 +63,15 @@ final class OrderExpiration implements ProposalExpirationInterface
 
         if (is_array($orders)) {
             foreach ($orders as $order) {
-                $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
+                $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER,
+                    OrderTransitions::TRANSITION_CANCEL);
+
+                if (null !== $this->historyLogger && $order instanceof Concrete) {
+                    $this->historyLogger->log(
+                        $order,
+                        'Automatic Expiration Order Cancellation'
+                    );
+                }
             }
         }
     }

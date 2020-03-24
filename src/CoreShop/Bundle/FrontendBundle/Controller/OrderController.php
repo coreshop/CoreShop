@@ -13,12 +13,14 @@
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -62,6 +64,14 @@ class OrderController extends FrontendController
 
             if ($cancelButton instanceof ClickableInterface && $form->isSubmitted() && $cancelButton->isClicked()) {
                 $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
+
+                if ($order instanceof Concrete) {
+                    $this->get(HistoryLogger::class)->log(
+                        $order,
+                        'User Cart Revise Cancellation'
+                    );
+                }
+
                 $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
 
                 if ($cart instanceof CartInterface) {
