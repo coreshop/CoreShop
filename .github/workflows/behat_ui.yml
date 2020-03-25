@@ -1,4 +1,4 @@
-name: Behat
+name: Behat UI Tests
 on:
   push:
     branches: [ '3.0' ]
