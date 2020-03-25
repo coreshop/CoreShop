@@ -27,7 +27,7 @@ ui:
                             browser: chrome
             show_auto: false
 
-        Robertfausk\Behat\PantherExtension: ~
+        CoreShop\Behat\PantherExtension: ~
 
     gherkin:
         filters:
