@@ -83,12 +83,6 @@ jobs:
     - name: Assets Install
       run: bin/console assets:install --symlink web
 
-    - name: Run Chromium
-      run: |
-        export DISPLAY=:99
-        chromedriver &
-        sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-        
     - name: Symlink Public
       run: ln -s web public
 
