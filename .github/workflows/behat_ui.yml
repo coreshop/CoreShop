@@ -30,7 +30,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: nanasess/setup-chromedriver@master
-    - with:
+      with:
         chromedriver-version: '80.0.3987.149'
 
     - name: Install PHP
