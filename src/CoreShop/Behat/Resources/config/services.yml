@@ -1,5 +1,6 @@
 imports:
-    - { resource: "services/contexts.yml" }
+    - { resource: services/contexts.yml }
+    - { resource: services/pages.yml }
 
 
 services:

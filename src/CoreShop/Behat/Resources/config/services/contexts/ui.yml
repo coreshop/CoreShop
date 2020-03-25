@@ -1,0 +1,10 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.behat.context.ui.homepage:
+        class: CoreShop\Behat\Context\Ui\Frontend\HomepageContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\HomePage'
+        tags:
+            - { name: fob.context_service }

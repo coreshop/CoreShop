@@ -23,3 +23,9 @@ services:
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }

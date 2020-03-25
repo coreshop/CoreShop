@@ -47,7 +47,12 @@
         "phpunit/phpunit": "^6",
         "symfony/phpunit-bridge": "^3",
         "symplify/easy-coding-standard": "^7.2.0",
-        "symplify/monorepo-builder": "^7.2"
+        "symplify/monorepo-builder": "^7.2",
+        "friends-of-behat/page-object-extension": "^0.3.1",
+        "behat/mink": "^1.8",
+        "robertfausk/mink-panther-driver": "^1.0",
+        "friends-of-behat/mink-extension": "^2.4",
+        "robertfausk/behat-panther-extension": "^1.0"
     },
     "autoload": {
         "psr-4": {

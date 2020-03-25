@@ -20,3 +20,5 @@ imports:
     - suites/domain/menu.yml
     - suites/domain/version.yml
     - suites/domain/recycle_bin.yml
+
+    - suites/ui/homepage.yml

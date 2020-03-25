@@ -183,6 +183,19 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
+     */
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store)
+    {
+        $product->setActive(true);
+        $product->setPublished(true);
+        $product->setStores([$store->getId()]);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") ean is "([^"]+)"$/
      * @Given /^the (products) ean is "([^"]+)"$/
      */
