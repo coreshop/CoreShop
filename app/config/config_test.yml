@@ -13,11 +13,11 @@ doctrine:
         connections:
             default:
                 url: '%pimcore_test.db.dsn%'
-                host: ~
-                port: ~
-                dbname: ~
-                user: ~
-                password: ~
+                host: ''
+                port: ''
+                dbname: ''
+                user: ''
+                password: ''
 
 parameters:
     pimcore_test.db.dsn: '%env(PIMCORE_TEST_DB_DSN)%'

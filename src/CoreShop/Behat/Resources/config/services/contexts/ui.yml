@@ -8,3 +8,22 @@ services:
             - '@CoreShop\Behat\Page\Frontend\HomePage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui.login:
+        class: CoreShop\Behat\Context\Ui\Frontend\LoginContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\HomePage'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.register:
+        class: CoreShop\Behat\Context\Ui\Frontend\RegistrationContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePage'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPage'
+            - '@CoreShop\Behat\Page\Frontend\Account\RegisterPage'
+            - '@CoreShop\Behat\Element\Frontend\Account\RegisterElement'
+        tags:
+            - { name: fob.context_service }

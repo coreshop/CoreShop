@@ -36,6 +36,14 @@ final class SharedStorageContext implements Context
     }
 
     /**
+     * @Transform /^(?:this|that|the) ([^"]+)$/
+     */
+    public function getResource($resource)
+    {
+        return $this->sharedStorage->get(str_replace([' ', '-', '\''], '_', $resource));
+    }
+
+    /**
      * @Transform /^(object)$/
      */
     public function getLatestObject()

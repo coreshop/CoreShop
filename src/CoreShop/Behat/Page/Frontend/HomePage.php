@@ -17,10 +17,8 @@ namespace CoreShop\Behat\Page\Frontend;
 use Behat\Mink\Element\NodeElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
-class HomePage extends SymfonyPage implements HomePageInterface
+class HomePage extends AbstractFrontendPage implements HomePageInterface
 {
-    protected static $additionalParameters = ['_locale' => 'en'];
-
     public function getRouteName(): string
     {
         return 'coreshop_index';
@@ -38,7 +36,7 @@ class HomePage extends SymfonyPage implements HomePageInterface
 
     public function hasLogoutButton(): bool
     {
-        throw new \Exception('Not implemented yet');
+        return $this->hasElement('logout_button');
     }
 
     public function getFullName(): string
@@ -89,7 +87,8 @@ class HomePage extends SymfonyPage implements HomePageInterface
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'latest_products' => '[data-test-latest-products]'
+            'latest_products' => '[data-test-latest-products]',
+            'logout_button' => '[data-test-logout-button]',
         ]);
     }
 }

@@ -51,7 +51,8 @@
         "friends-of-behat/page-object-extension": "^0.3.1",
         "behat/mink": "^1.8",
         "friends-of-behat/mink-extension": "^2.4",
-        "coreshop/behat-panther-extension": "^1.0.3"
+        "coreshop/behat-panther-extension": "^1.0.3",
+        "lakion/mink-debug-extension": "^1.2"
     },
     "autoload": {
         "psr-4": {

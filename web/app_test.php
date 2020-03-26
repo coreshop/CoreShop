@@ -17,7 +17,7 @@ use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 define('PIMCORE_PROJECT_ROOT', __DIR__ . '/..');
-$_SERVER['PIMCORE_ENVIRONMENT'] = $_SERVER['APP_ENV'] = $_SERVER    ['SYMFONY_ENV'] = 'test';
+$_SERVER['PIMCORE_ENVIRONMENT'] = $_SERVER['APP_ENV'] = $_SERVER['SYMFONY_ENV'] = 'test';
 
 include __DIR__ . "/../vendor/autoload.php";
 include __DIR__ . "/../behat-bootstrap.php";

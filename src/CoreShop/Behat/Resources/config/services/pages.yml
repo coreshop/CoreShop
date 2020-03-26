@@ -9,5 +9,17 @@ services:
         arguments:
             $router: '@router'
 
-    CoreShop\Behat\Page\Frontend\HomePage:
+    CoreShop\Behat\Page\Frontend\AbstractFrontendPage:
         parent: FriendsOfBehat\PageObjectExtension\Page\SymfonyPage
+
+    CoreShop\Behat\Page\Frontend\HomePageInterface: '@CoreShop\Behat\Page\Frontend\HomePage'
+    CoreShop\Behat\Page\Frontend\HomePage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\LoginPageInterface: '@CoreShop\Behat\Page\Frontend\Account\LoginPage'
+    CoreShop\Behat\Page\Frontend\Account\LoginPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\RegisterPageInterface: '@CoreShop\Behat\Page\Frontend\Account\RegisterPage'
+    CoreShop\Behat\Page\Frontend\Account\RegisterPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

@@ -56,6 +56,27 @@ final class CustomerContext implements Context
     }
 
     /**
+     * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
+     */
+    public function theSiteHasACustomerWithPassword(string $email, string $password)
+    {
+        $customer = $this->createCustomer($email);
+
+        $customer->setPassword($password);
+        $customer->setPublished(true);
+
+        $this->saveCustomer($customer);
+    }
+
+    /**
+     * @Then /^the (customer "[^"]+") was deleted$/
+     */
+    public function accountWasDeleted(CustomerInterface $customer)
+    {
+        $customer->delete();
+    }
+
+    /**
      * @Then /^the (customer "[^"]+") is in (customer-group "[^"]+")$/
      * @Then /^([^"]+) is in (customer-group "[^"]+")$/
      */
