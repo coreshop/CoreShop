@@ -245,7 +245,7 @@ class RegistrationContext implements Context
      */
     public function iShouldBeNotifiedThatElementIsRequired(string $element): void
     {
-        $this->assertFieldValidationMessage($element, sprintf('Please enter your %s.', $element));
+        $this->assertFieldValidationMessage($element, 'This value should not be blank.');
     }
 
     /**
@@ -261,7 +261,7 @@ class RegistrationContext implements Context
      */
     public function iShouldBeNotifiedThatThePasswordDoNotMatch(): void
     {
-        $this->assertFieldValidationMessage('password', 'The entered passwords don\'t match');
+        $this->assertFieldValidationMessage('password', 'The password fields must match.');
     }
 
     /**
