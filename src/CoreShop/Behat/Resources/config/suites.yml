@@ -24,3 +24,4 @@ imports:
     - suites/ui/homepage.yml
     - suites/ui/login.yml
     - suites/ui/register.yml
+    - suites/ui/reset.yml

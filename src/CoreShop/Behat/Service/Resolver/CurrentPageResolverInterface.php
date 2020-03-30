@@ -12,21 +12,14 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Behat\Service\Resolver;
 
-interface NotificationRuleListenerInterface
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+
+interface CurrentPageResolverInterface
 {
     /**
-     * @param string $type
-     *
-     * @return bool
+     * @param SymfonyPageInterface[] $pages
      */
-    public function hasBeenFired($type);
-
-    public function clear();
-
-    /**
-     * @param string $type
-     */
-    public function applyNewFired($type);
+    public function getCurrentPageWithForm(array $pages): SymfonyPageInterface;
 }

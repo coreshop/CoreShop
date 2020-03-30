@@ -23,3 +23,7 @@ services:
     CoreShop\Behat\Page\Frontend\Account\RegisterPageInterface: '@CoreShop\Behat\Page\Frontend\Account\RegisterPage'
     CoreShop\Behat\Page\Frontend\Account\RegisterPage:
         parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface: '@CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPage'
+    CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPage:
+            parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

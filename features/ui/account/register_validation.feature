@@ -5,8 +5,8 @@ Feature: Account registration
     I want to be prevented from creating an account without required fields
 
     Background:
-    Given the site operates on a store in "Austria"
-    And the store "Austria" is the default store
+        Given the site operates on a store in "Austria"
+        And the store "Austria" is the default store
 
     Scenario: Trying to register a new account with email that has been already used
         Given the site has a customer "bill@gates.com" with password "test"

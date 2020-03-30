@@ -26,7 +26,7 @@ services:
         class: CoreShop\Behat\Context\Hook\CoreShopSetupContext
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@coreshop.behat.notification_rule_listener'
+            - '@CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListener'
             - '@event_dispatcher'
         tags:
             - { name: fob.context_service }

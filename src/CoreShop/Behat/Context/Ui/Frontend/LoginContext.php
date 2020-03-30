@@ -16,20 +16,28 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\Account\LoginPageInterface;
+use CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
+use CoreShop\Behat\Service\Resolver\CurrentPageResolverInterface;
 use Webmozart\Assert\Assert;
 
 final class LoginContext implements Context
 {
     private $homePage;
     private $loginPage;
+    private $requestPasswordResetPage;
+    private $currentPageResolver;
 
     public function __construct(
         HomePageInterface $homePage,
-        LoginPageInterface $loginPage
+        LoginPageInterface $loginPage,
+        RequestPasswordResetPageInterface $requestPasswordResetPage,
+        CurrentPageResolverInterface $currentPageResolver
     ) {
         $this->homePage = $homePage;
         $this->loginPage = $loginPage;
+        $this->requestPasswordResetPage = $requestPasswordResetPage;
+        $this->currentPageResolver = $currentPageResolver;
     }
 
     /**
@@ -38,6 +46,35 @@ final class LoginContext implements Context
     public function iWantToLogIn(): void
     {
         $this->loginPage->open();
+    }
+
+    /**
+     * @When I want to reset password
+     */
+    public function iWantToResetPassword(): void
+    {
+        $this->requestPasswordResetPage->open();
+    }
+
+    /**
+     * @When I specify the email as :email
+     * @When I do not specify the email
+     */
+    public function iSpecifyTheEmail(?string $email = null): void
+    {
+        $this->requestPasswordResetPage->specifyEmail($email);
+    }
+
+    /**
+     * @When I reset it
+     * @When I try to reset it
+     */
+    public function iResetIt(): void
+    {
+        /** @var RequestPasswordResetPageInterface $currentPage */
+        $currentPage = $this->currentPageResolver->getCurrentPageWithForm([$this->requestPasswordResetPage]);
+
+        $currentPage->reset();
     }
 
     /**

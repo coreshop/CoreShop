@@ -5,15 +5,17 @@ services:
     coreshop.behat.context.ui.homepage:
         class: CoreShop\Behat\Context\Ui\Frontend\HomepageContext
         arguments:
-            - '@CoreShop\Behat\Page\Frontend\HomePage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
         tags:
             - { name: fob.context_service }
 
     coreshop.behat.context.ui.login:
         class: CoreShop\Behat\Context\Ui\Frontend\LoginContext
         arguments:
-            - '@CoreShop\Behat\Page\Frontend\HomePage'
-            - '@CoreShop\Behat\Page\Frontend\Account\LoginPage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface'
+            - '@CoreShop\Behat\Service\Resolver\CurrentPageResolverInterface'
         tags:
             - { name: fob.context_service }
 
@@ -21,9 +23,9 @@ services:
         class: CoreShop\Behat\Context\Ui\Frontend\RegistrationContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@CoreShop\Behat\Page\Frontend\HomePage'
-            - '@CoreShop\Behat\Page\Frontend\Account\LoginPage'
-            - '@CoreShop\Behat\Page\Frontend\Account\RegisterPage'
-            - '@CoreShop\Behat\Element\Frontend\Account\RegisterElement'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\RegisterPageInterface'
+            - '@CoreShop\Behat\Element\Frontend\Account\RegisterElementInterface'
         tags:
             - { name: fob.context_service }
