@@ -27,3 +27,7 @@ services:
     CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface: '@CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPage'
     CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPage:
             parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface: '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPage'
+    CoreShop\Behat\Page\Frontend\Account\ChangePasswordPage:
+            parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

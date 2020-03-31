@@ -8,18 +8,18 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- */
+*/
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Page\Frontend\Account;
+namespace CoreShop\Behat\Service;
 
-use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
+use CoreShop\Behat\Service\Exception\NotificationExpectationMismatchException;
 
-class RegisterPage extends AbstractFrontendPage implements RegisterPageInterface
+interface NotificationCheckerInterface
 {
-    public function getRouteName(): string
-    {
-        return 'coreshop_register';
-    }
+    /**
+     * @throws NotificationExpectationMismatchException
+     */
+    public function checkNotification(string $message, NotificationType $type): void;
 }

@@ -16,17 +16,15 @@ namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
-class RequestPasswordResetPage extends AbstractFrontendPage implements RequestPasswordResetPageInterface
+class ChangePasswordPage extends AbstractFrontendPage implements ChangePasswordPageInterface
 {
     public function getRouteName(): string
     {
-        return 'coreshop_customer_password_reset_request';
+        return 'coreshop_customer_change_password';
     }
 
-    /**
-     * @throws ElementNotFoundException
-     */
     public function checkValidationMessageFor(string $element, string $message): bool
     {
         $errorLabel = $this->getElement($element)->getParent()->find('css', '[data-test-validation-error]');
@@ -38,27 +36,33 @@ class RequestPasswordResetPage extends AbstractFrontendPage implements RequestPa
         return $message === $errorLabel->getText();
     }
 
-    public function reset(): void
+    public function specifyCurrentPassword(string $password): void
     {
-        $this->getElement('reset_button')->click();
+        $this->getElement('current_password')->setValue($password);
     }
 
-    public function specifyEmail(?string $email): void
+    public function specifyNewPassword(string $password): void
     {
-        $this->getElement('email')->setValue($email);
+        $this->getElement('new_password')->setValue($password);
     }
 
-    public function specifyUsername(?string $username): void
+    public function specifyConfirmationPassword(string $password): void
     {
-        $this->getElement('username')->setValue($username);
+        $this->getElement('confirmation')->setValue($password);
+    }
+
+    public function save(): void
+    {
+        $this->getElement('save_changes')->click();
     }
 
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
-            'email' => '[data-test-reset-email]',
-            'username' => '[data-test-reset-username]',
-            'reset_button' => '[data-test-request-password-reset-button]',
+            'save_changes' => '[data-test-save-changes]',
+            'confirmation' => '[data-test-confirmation-new-password]',
+            'current_password' => '[data-test-current-password]',
+            'new_password' => '[data-test-new-password]',
         ]);
     }
 }

@@ -25,3 +25,4 @@ imports:
     - suites/ui/login.yml
     - suites/ui/register.yml
     - suites/ui/reset.yml
+    - suites/ui/customer_profile.yml

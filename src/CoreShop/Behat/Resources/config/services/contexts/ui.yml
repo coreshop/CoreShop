@@ -29,3 +29,12 @@ services:
             - '@CoreShop\Behat\Element\Frontend\Account\RegisterElementInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui.customer_profile:
+        class: CoreShop\Behat\Context\Ui\Frontend\CustomerProfileContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface'
+            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+        tags:
+            - { name: fob.context_service }
