@@ -31,7 +31,7 @@
         "payum/sofort": "^1.4",
         "php": "^7.2",
         "php-http/guzzle6-adapter": "^2.0",
-        "pimcore/pimcore": "^6.5.0",
+        "pimcore/pimcore": "^6.6.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "symfony/symfony": "^4.4",
