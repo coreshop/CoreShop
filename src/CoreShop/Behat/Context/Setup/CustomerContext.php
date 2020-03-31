@@ -59,7 +59,7 @@ final class CustomerContext implements Context
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)"$/
      * @Given /^the site has a customer "([^"]+)" with password "([^"]+)" and name "([^"]+)" "([^"]+)"$/
      */
-    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname, ?string $lastname)
+    public function theSiteHasACustomerWithPassword(string $email, string $password, ?string $firstname = null, ?string $lastname = null)
     {
         $customer = $this->createCustomer($email);
 
