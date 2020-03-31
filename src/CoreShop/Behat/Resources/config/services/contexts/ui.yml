@@ -35,6 +35,7 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface'
             - '@CoreShop\Behat\Service\NotificationCheckerInterface'
         tags:
             - { name: fob.context_service }

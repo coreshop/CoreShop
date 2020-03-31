@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface;
+use CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface;
 use CoreShop\Behat\Service\NotificationCheckerInterface;
 use CoreShop\Behat\Service\NotificationType;
 use CoreShop\Behat\Service\SharedStorageInterface;
@@ -25,15 +26,18 @@ class CustomerProfileContext implements Context
 {
     private $sharedStorage;
     private $changePasswordPage;
+    private $profilePage;
     private $notificationChecker;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ChangePasswordPageInterface $changePasswordPage,
+        ProfilePageInterface $profilePage,
         NotificationCheckerInterface $notificationChecker
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->changePasswordPage = $changePasswordPage;
+        $this->profilePage = $profilePage;
         $this->notificationChecker = $notificationChecker;
     }
 
@@ -116,5 +120,27 @@ class CustomerProfileContext implements Context
             'current_password',
             'This value should be the user\'s current password.'
         ));
+    }
+
+    /**
+     * @Then my name should be :name
+     * @Then my name should still be :name
+     */
+    public function myNameShouldBe($name)
+    {
+        $this->profilePage->open();
+
+        Assert::true($this->profilePage->hasCustomerName($name));
+    }
+
+    /**
+     * @Then my email should be :email
+     * @Then my email should still be :email
+     */
+    public function myEmailShouldBe($email)
+    {
+        $this->profilePage->open();
+
+        Assert::true($this->profilePage->hasCustomerEmail($email));
     }
 }

@@ -31,3 +31,7 @@ services:
     CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface: '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPage'
     CoreShop\Behat\Page\Frontend\Account\ChangePasswordPage:
             parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface: '@CoreShop\Behat\Page\Frontend\Account\ProfilePage'
+    CoreShop\Behat\Page\Frontend\Account\ProfilePage:
+            parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
