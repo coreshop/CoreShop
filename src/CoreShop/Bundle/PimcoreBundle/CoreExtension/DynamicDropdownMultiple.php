@@ -12,10 +12,17 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyObjectRelation;
+use Pimcore\Model\DataObject;
+use Pimcore\Model\Element\Service;
 
-class DynamicDropdownMultiple extends ManyToManyObjectRelation
+class DynamicDropdownMultiple extends
+    DataObject\ClassDefinition\Data\Relations\AbstractRelations
+    implements DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
+    use DataObject\ClassDefinition\Data\Extension\Relation;
+    use DataObject\ClassDefinition\Data\Extension\QueryColumnType;
+    use DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+
     /**
      * Static type of this element.
      *
@@ -142,5 +149,192 @@ class DynamicDropdownMultiple extends ManyToManyObjectRelation
     public function getObjectsAllowed()
     {
         return true;
+    }
+
+    /**
+     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @param array $params
+     *
+     * @return array
+     */
+    public function preGetData($object, $params = [])
+    {
+        $data = null;
+        if ($object instanceof DataObject\Concrete) {
+            $data = $object->getObjectVar($this->getName());
+            if (!$object->isLazyKeyLoaded($this->getName())) {
+                $data = $this->load($object);
+
+                $object->setObjectVar($this->getName(), $data);
+                $this->markLazyloadedFieldAsLoaded($object);
+            }
+        } elseif ($object instanceof DataObject\Localizedfield) {
+            $data = $params['data'];
+        } elseif ($object instanceof DataObject\Fieldcollection\Data\AbstractData) {
+            parent::loadLazyFieldcollectionField($object);
+            $data = $object->getObjectVar($this->getName());
+        } elseif ($object instanceof DataObject\Objectbrick\Data\AbstractData) {
+            parent::loadLazyBrickField($object);
+            $data = $object->getObjectVar($this->getName());
+        }
+
+        if (DataObject\AbstractObject::doHideUnpublished() and is_array($data)) {
+            $publishedList = [];
+            foreach ($data as $listElement) {
+                if (Service::isPublished($listElement)) {
+                    $publishedList[] = $listElement;
+                }
+            }
+
+            return $publishedList;
+        }
+
+        //TODO: move validation to checkValidity & throw exception in Pimcore 7
+        $data = Service::filterMultipleElements($data, $object, $this->getName());
+
+        return is_array($data) ? $data : [];
+    }
+
+    /**
+     * @see Data::getDataFromEditmode
+     *
+     * @param array $data
+     * @param null|DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return array
+     */
+    public function getDataFromEditmode($data, $object = null, $params = [])
+    {
+        //if not set, return null
+        if ($data === null or $data === false) {
+            return null;
+        }
+
+        $objects = [];
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $object) {
+                $o = DataObject::getById($object['id']);
+                if ($o) {
+                    $objects[] = $o;
+                }
+            }
+        }
+        //must return array if data shall be set
+        return $objects;
+    }
+
+    /**
+     * @see Data::getDataForEditmode
+     *
+     * @param array $data
+     * @param null|DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return array
+     */
+    public function getDataForEditmode($data, $object = null, $params = [])
+    {
+        $return = [];
+
+        // add data
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $referencedObject) {
+                if ($referencedObject instanceof DataObject\Concrete) {
+                    $return[] = $referencedObject->getId();
+                }
+            }
+        }
+
+        return $return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepareDataForPersistence($data, $object = null, $params = [])
+    {
+        $return = [];
+
+        if (is_array($data) && count($data) > 0) {
+            $counter = 1;
+            foreach ($data as $object) {
+                if ($object instanceof DataObject\Concrete) {
+                    $return[] = [
+                        'dest_id' => $object->getId(),
+                        'type' => 'object',
+                        'fieldname' => $this->getName(),
+                        'index' => $counter
+                    ];
+                }
+                $counter++;
+            }
+
+            return $return;
+        } elseif (is_array($data) and count($data) === 0) {
+            //give empty array if data was not null
+            return [];
+        } else {
+            //return null if data was null - this indicates data was not loaded
+            return null;
+        }
+    }
+
+    /**
+     * @see QueryResourcePersistenceAwareInterface::getDataForQueryResource
+     *
+     * @param array $data
+     * @param null|DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @throws \Exception
+     *
+     * @return string|null
+     */
+    public function getDataForQueryResource($data, $object = null, $params = [])
+    {
+        //return null when data is not set
+        if (!$data) {
+            return null;
+        }
+
+        $ids = [];
+
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $object) {
+                if ($object instanceof DataObject\Concrete) {
+                    $ids[] = $object->getId();
+                }
+            }
+
+            return ',' . implode(',', $ids) . ',';
+        } elseif (is_array($data) && count($data) === 0) {
+            return '';
+        } else {
+            throw new \Exception('invalid data passed to getDataForQueryResource - must be array and it is: ' . print_r($data, true));
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadData($data, $object = null, $params = [])
+    {
+        $objects = [
+            'dirty' => false,
+            'data' => []
+        ];
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $object) {
+                $o = DataObject::getById($object['dest_id']);
+                if ($o instanceof DataObject\Concrete) {
+                    $objects['data'][] = $o;
+                } else {
+                    $objects['dirty'] = true;
+                }
+            }
+        }
+        //must return array - otherwise this means data is not loaded
+        return $objects;
     }
 }
