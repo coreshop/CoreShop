@@ -12,6 +12,7 @@ jobs:
       PIMCORE_ENVIRONMENT: "test"
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
     services:
       mysql:
         image: mysql:5.7
@@ -83,8 +84,14 @@ jobs:
     - name: Assets Install
       run: bin/console assets:install --symlink web
 
-    - name: Symlink Public
-      run: ln -s web public
+    - name: Setup Symfony CLI
+      run: wget https://get.symfony.com/cli/installer -O - | bash
+
+    - name: Setup Symfony CA
+      run: ~/.symfony/bin/symfony server:ca:install
+
+    - name: Run Symfony Webserver
+      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist --tags="@ui" -p ui
