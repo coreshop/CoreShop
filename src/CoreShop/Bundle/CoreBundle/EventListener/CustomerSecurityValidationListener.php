@@ -18,36 +18,24 @@ use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Http\RequestHelper;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
+    private $requestHelper;
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
-
-    /**
-     * @var string
-     */
     protected $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $loginIdentifier
-     */
     public function __construct(
+        RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
         $className,
         $loginIdentifier
     ) {
+        $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
         $this->loginIdentifier = $loginIdentifier;
@@ -60,6 +48,10 @@ final class CustomerSecurityValidationListener
      */
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event)
     {
+        if (!$this->requestHelper->isFrontendRequestByAdmin()) {
+            return;
+        }
+
         $object = $event->getObject();
 
         if (!$object instanceof CustomerInterface) {

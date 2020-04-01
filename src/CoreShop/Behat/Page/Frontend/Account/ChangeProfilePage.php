@@ -37,22 +37,22 @@ class ChangeProfilePage extends AbstractFrontendPage implements ChangeProfilePag
         return $message === $errorLabel->getText();
     }
 
-    public function specifyFirstname(string $firstname): void
+    public function specifyFirstname(?string $firstname = null): void
     {
         $this->getElement('firstname')->setValue($firstname);
     }
 
-    public function specifyLastname(string $lastname): void
+    public function specifyLastname(?string $lastname = null): void
     {
         $this->getElement('lastname')->setValue($lastname);
     }
 
-    public function specifyEmail(string $email): void
+    public function specifyEmail(?string $email = null): void
     {
         $this->getElement('email')->setValue($email);
     }
 
-    public function specifyConfirmationEmail(string $email): void
+    public function specifyConfirmationEmail(?string $email = null): void
     {
         $this->getElement('confirmation_email')->setValue($email);
     }

@@ -132,6 +132,7 @@ final class UniqueEntityValidator extends ConstraintValidator
          */
         $list = $entity::getList();
         $list->setCondition(implode(' AND ', $condition), $values);
+        $list->setUnpublished(true);
         $elements = $list->load();
 
         if (count($elements) > 0) {

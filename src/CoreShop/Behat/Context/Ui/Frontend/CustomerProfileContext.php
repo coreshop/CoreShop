@@ -158,23 +158,25 @@ class CustomerProfileContext implements Context
 
     /**
      * @When I specify the new first name as :firstname
+     * @When I remove the first name
      */
-    public function iSpecifyTheNewFirstnameAs(string $firstname)
+    public function iSpecifyTheNewFirstnameAs(?string $firstname = null)
     {
         $this->changeProfilePage->specifyFirstname($firstname);
     }
 
     /**
      * @When I specify the new last name as :lastname
+     * @When I remove the last name
      */
-    public function iSpecifyTheNewLastnameAs(string $lastname)
+    public function iSpecifyTheNewLastnameAs(?string $lastname = null)
     {
         $this->changeProfilePage->specifyLastname($lastname);
     }
 
     /**
      * @When I specify the new email as :email
-     * @When I do not specify the password
+     * @When I remove the email
      */
     public function iSpecifiyTheNewEmailAs(?string $email = null)
     {
@@ -185,8 +187,10 @@ class CustomerProfileContext implements Context
 
     /**
      * @When /^I confirm (this email)$/
+     * @When I confirm email as :email
+     * @When /^I also remove the confirm email$/
      */
-    public function iConfirmThisEmail(string $email): void
+    public function iConfirmThisEmail(?string $email = null): void
     {
         $this->changeProfilePage->specifyConfirmationEmail($email);
     }
@@ -197,5 +201,48 @@ class CustomerProfileContext implements Context
     public function iSaveMyPersonalInformation()
     {
         $this->changeProfilePage->save();
+    }
+
+    /**
+     * @Then /^I should be notified that the ([^"]+) is required$/
+     */
+    public function iShouldBeNotifiedThatElementIsRequired(string $element): void
+    {
+        Assert::true($this->changeProfilePage->checkValidationMessageFor(
+            $element,
+            'This value should not be blank.'
+        ));
+    }
+    /**
+     * @Then /^I should be notified that the ([^"]+) is invalid$/
+     */
+    public function iShouldBeNotifiedThatElementIsInvalid(string $element): void
+    {
+        Assert::true($this->changeProfilePage->checkValidationMessageFor(
+            $element,
+            'This value is not a valid email address.'
+        ));
+    }
+
+    /**
+     * @Then /^I should be notified that the ([^"]+) does not match$/
+     */
+    public function iShouldBeNotifiedThatThePasswordDoNotMatch(string $element): void
+    {
+        Assert::true($this->changeProfilePage->checkValidationMessageFor(
+            $element,
+            sprintf('The %s fields must match.', $element)
+        ));
+    }
+
+    /**
+     * @Then I should be notified that the email is already used
+     */
+    public function iShouldBeNotifiedThatTheEmailIsAlreadyUsed(): void
+    {
+        Assert::true($this->changeProfilePage->checkValidationMessageFor(
+            'email',
+            'This email is already used.'
+        ));
     }
 }

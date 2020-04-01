@@ -19,13 +19,13 @@ use FriendsOfBehat\PageObjectExtension\Page\PageInterface;
 
 interface ChangeProfilePageInterface extends PageInterface
 {
-    public function specifyFirstname(string $firstname): void;
+    public function specifyFirstname(?string $firstname = null): void;
 
-    public function specifyLastname(string $lastname): void;
+    public function specifyLastname(?string $lastname = null): void;
 
-    public function specifyEmail(string $email): void;
+    public function specifyEmail(?string $email = null): void;
 
-    public function specifyConfirmationEmail(string $email): void;
+    public function specifyConfirmationEmail(?string $email = null): void;
 
     public function save(): void;
 
