@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface;
+use CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface;
 use CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface;
 use CoreShop\Behat\Service\NotificationCheckerInterface;
 use CoreShop\Behat\Service\NotificationType;
@@ -27,17 +28,20 @@ class CustomerProfileContext implements Context
     private $sharedStorage;
     private $changePasswordPage;
     private $profilePage;
+    private $changeProfilePage;
     private $notificationChecker;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ChangePasswordPageInterface $changePasswordPage,
         ProfilePageInterface $profilePage,
+        ChangeProfilePageInterface $changeProfilePage,
         NotificationCheckerInterface $notificationChecker
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->changePasswordPage = $changePasswordPage;
         $this->profilePage = $profilePage;
+        $this->changeProfilePage = $changeProfilePage;
         $this->notificationChecker = $notificationChecker;
     }
 
@@ -142,5 +146,56 @@ class CustomerProfileContext implements Context
         $this->profilePage->open();
 
         Assert::true($this->profilePage->hasCustomerEmail($email));
+    }
+
+    /**
+     * @When /^I want to change my personal information$/
+     */
+    public function iWantToChangeMyPersonalInformation()
+    {
+        $this->changeProfilePage->open();
+    }
+
+    /**
+     * @When I specify the new first name as :firstname
+     */
+    public function iSpecifyTheNewFirstnameAs(string $firstname)
+    {
+        $this->changeProfilePage->specifyFirstname($firstname);
+    }
+
+    /**
+     * @When I specify the new last name as :lastname
+     */
+    public function iSpecifyTheNewLastnameAs(string $lastname)
+    {
+        $this->changeProfilePage->specifyLastname($lastname);
+    }
+
+    /**
+     * @When I specify the new email as :email
+     * @When I do not specify the password
+     */
+    public function iSpecifiyTheNewEmailAs(?string $email = null)
+    {
+        $this->changeProfilePage->specifyEmail($email);
+
+        $this->sharedStorage->set('email', $email);
+    }
+
+    /**
+     * @When /^I confirm (this email)$/
+     */
+    public function iConfirmThisEmail(string $email): void
+    {
+        $this->changeProfilePage->specifyConfirmationEmail($email);
+    }
+
+    /**
+     * @Given I save my personal information
+     */
+    public function iSaveMyPersonalInformation()
+    {
+        $this->changeProfilePage->save();
     }
 }

@@ -140,7 +140,7 @@ final class UniqueEntityValidator extends ConstraintValidator
              */
             $foundElement = $elements[0];
 
-            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $foundElement) {
+            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $foundElement->getId()) {
                 return;
             }
 
