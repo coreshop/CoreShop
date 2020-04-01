@@ -87,9 +87,6 @@ jobs:
     - name: Setup Symfony CLI
       run: wget https://get.symfony.com/cli/installer -O - | bash
 
-    - name: Setup Symfony CA
-      run: ~/.symfony/bin/symfony server:ca:install
-
     - name: Run Symfony Webserver
       run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
 
