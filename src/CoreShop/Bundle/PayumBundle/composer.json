@@ -27,7 +27,7 @@
     "payum/sofort": "^1.4",
     "payum/paypal-express-checkout-nvp": "^1.4",
     "php-http/guzzle6-adapter": "^1.1",
-    "pimcore/pimcore": "^6.5.3"
+    "pimcore/pimcore": "^6.6.0"
   },
   "config": {
     "bin-dir": "bin"
