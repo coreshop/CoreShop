@@ -16,10 +16,16 @@ use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Http\RequestHelper;
 use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
+    /**
+     * @var RequestHelper
+     */
+    protected $requestHelper;
+
     /**
      * @var CustomerRepositoryInterface
      */
@@ -36,15 +42,22 @@ final class CustomerSecurityValidationListener
     protected $loginIdentifier;
 
     /**
+     * @param RequestHelper               $requestHelper
      * @param CustomerRepositoryInterface $customerRepository
      * @param string                      $className
      * @param string                      $loginIdentifier
      */
     public function __construct(
+        RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
         $className,
         $loginIdentifier
     ) {
+        if ($this->requestHelper->isFrontendRequestByAdmin()) {
+            return;
+        }
+
+        $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
         $this->loginIdentifier = $loginIdentifier;
