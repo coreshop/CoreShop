@@ -29,6 +29,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '80.0.3987.106'
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: intl
+
+    - name: Check PHP Version
+      run: php -v
 
     - name: Start mysql service
       run: sudo /etc/init.d/mysql start
@@ -58,17 +70,21 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Run Webserver Container
-      container: pimcore/pimcore:PHP{{ php }}-apache-test
+    - name: Composer install
       run: |
         composer config minimum-stability dev
         composer config prefer-stable true
         composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} --no-interaction --no-scripts --no-update
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
-        bin/console cache:clear
-        bin/console assets:install --symlink web
+    - name: Cache clear
+      run: bin/console cache:clear
 
-        ln -s web public
+    - name: Assets Install
+      run: bin/console assets:install --symlink web
 
-        vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist --tags="@ui" -p ui
+    - name: Symlink Public
+      run: ln -s web public
+
+    - name: Run Behat
+      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist --tags="@ui" -p ui
