@@ -53,10 +53,6 @@ final class CustomerSecurityValidationListener
         $className,
         $loginIdentifier
     ) {
-        if ($this->requestHelper->isFrontendRequestByAdmin()) {
-            return;
-        }
-
         $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
@@ -70,6 +66,10 @@ final class CustomerSecurityValidationListener
      */
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event)
     {
+        if (!$this->requestHelper->isFrontendRequestByAdmin()) {
+            return;
+        }
+
         $object = $event->getObject();
 
         if (!$object instanceof CustomerInterface) {
