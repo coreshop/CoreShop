@@ -18,6 +18,7 @@ use Carbon\Carbon;
 use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -30,6 +31,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Notes;
 use CoreShop\Component\Order\OrderStates;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Processable\ProcessableInterface;
 use CoreShop\Component\Order\Repository\OrderInvoiceRepositoryInterface;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
@@ -172,6 +174,13 @@ class OrderController extends PimcoreController
         }
 
         $workflow->apply($order, $transition);
+
+        if ($order instanceof DataObject\Concrete && $transition === OrderTransitions::TRANSITION_CANCEL) {
+            $this->get(HistoryLogger::class)->log(
+                $order,
+                'Admin Order Cancellation'
+            );
+        }
 
         return $this->viewHandler->handle(['success' => true]);
     }
@@ -323,7 +332,7 @@ class OrderController extends PimcoreController
         return $element;
     }
 
-    protected function prepareAddress(string $address, string $type): array
+    protected function prepareAddress(AddressInterface $address, string $type): array
     {
         $prefix = 'address'.ucfirst($type);
         $values = [];
