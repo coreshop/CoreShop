@@ -14,15 +14,8 @@ services:
             - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
             - 'quote'
 
-    CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelperInterface: '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
-    CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper:
-        arguments:
-            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
-        tags:
-            - { name: templating.helper, alias: coreshop_order_state }
-
     CoreShop\Bundle\OrderBundle\Twig\OrderStateExtension:
         arguments:
-            - '@CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelper'
+            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
         tags:
             - { name: twig.extension }

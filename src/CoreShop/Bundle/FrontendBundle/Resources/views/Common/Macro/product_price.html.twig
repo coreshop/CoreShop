@@ -5,13 +5,13 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {% set priceUnformatted = product|coreshop_product_price(with_tax, coreshop.context) %}
+    {% set priceUnformatted = product|coreshop_product_price(coreshop.context, with_tax) %}
     {% set price = currency.convertAndFormat(priceUnformatted) %}
-    {% set discountUnformatted = product|coreshop_product_discount(with_tax, coreshop.context) %}
+    {% set discountUnformatted = product|coreshop_product_discount(coreshop.context, with_tax) %}
     {% set discount = currency.convertAndFormat(discountUnformatted) %}
-    {% set discountPriceUnformatted = product|coreshop_product_discount_price(with_tax, coreshop.context) %}
+    {% set discountPriceUnformatted = product|coreshop_product_discount_price(coreshop.context, with_tax) %}
     {% set discountPrice = currency.convertAndFormat(discountPriceUnformatted) %}
-    {% set retailPriceUnformatted = product|coreshop_product_retail_price(with_tax, coreshop.context) %}
+    {% set retailPriceUnformatted = product|coreshop_product_retail_price(coreshop.context, with_tax) %}
     {% set retailPrice = currency.convertAndFormat(retailPriceUnformatted) %}
 
     <span class="price-new">{{ price }}</span>
@@ -58,7 +58,7 @@
                 <ul class="list-group list-group-flush">
                     {% for additionalUnit in additionalUnitDefinitions %}
                         <li class="list-group-item">
-                            {% set additionalUnitPrice = product|coreshop_product_price(with_tax, coreshop.context|merge({unitDefinition: additionalUnit})) %}
+                            {% set additionalUnitPrice = product|coreshop_product_price(coreshop.context|merge({unitDefinition: additionalUnit}), with_tax) %}
                             {% set additionalUnitPrice = currency.convertAndFormat(additionalUnitPrice) %}
                             <span class="price-head">{{ 'coreshop.ui.price'|trans }} per {{ additionalUnit.unit.translation(app.request.locale).fullLabel }}:</span>
                             <span class="price-new">{{ additionalUnitPrice }}</span>

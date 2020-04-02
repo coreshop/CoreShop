@@ -11,17 +11,9 @@ services:
         arguments:
             - '%coreshop.currency.decimal_factor%'
 
-    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface: '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
-    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper:
-        lazy: true
-        arguments:
-            - '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
-        tags:
-            - { name: templating.helper, alias: coreshop_format_money }
-
     CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
         tags:
             - { name: twig.extension }

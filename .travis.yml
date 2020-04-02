@@ -11,7 +11,7 @@ env:
     global:
         - PIMCORE_ENVIRONMENT=test
         - PIMCORE_TEST_DB_DSN="mysql://root@localhost/coreshop_test"
-        - PIMCORE_VERSION="^6.5"
+        - PIMCORE_VERSION="^6.6"
         - CORESHOP_TEST=1
         - CORESHOP_SUITE=application
 

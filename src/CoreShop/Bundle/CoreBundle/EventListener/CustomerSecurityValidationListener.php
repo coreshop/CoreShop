@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
@@ -24,7 +23,7 @@ use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    private $requestHelper;
+    protected $requestHelper;
     protected $customerRepository;
     protected $className;
     protected $loginIdentifier;
@@ -78,6 +77,12 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        throw new ValidationException(sprintf('%s "%s" is already used. Please use another one.', ucfirst($this->loginIdentifier), $identifierValue));
+        throw new ValidationException(
+            sprintf(
+                '%s "%s" is already used. Please use another one.',
+                ucfirst($this->loginIdentifier),
+                $identifierValue
+            )
+        );
     }
 }

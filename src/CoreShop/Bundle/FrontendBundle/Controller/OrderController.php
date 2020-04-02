@@ -15,11 +15,14 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Order\PaymentType;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLogger;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -52,6 +55,14 @@ class OrderController extends FrontendController
             }
         }
 
+        foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
+            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+                $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.order_already_paid'));
+
+                return $this->redirectToRoute('coreshop_index');
+            }
+        }
+
         $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
             'payment_subject' => $order,
         ]);
@@ -63,10 +74,20 @@ class OrderController extends FrontendController
 
             if ($cancelButton instanceof ClickableInterface && $form->isSubmitted() && $cancelButton->isClicked()) {
                 throw new \Exception('fix me');
-//                $this->get('coreshop.state_machine_applier')->apply($cart, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
 //
-//                if ($cart instanceof OrderInterface) {
-//                    $cart->setState('cart');
+//                $this->get('coreshop.state_machine_applier')->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
+//
+//                if ($order instanceof Concrete) {
+//                    $this->get(HistoryLogger::class)->log(
+//                        $order,
+//                        'User Cart Revise Cancellation'
+//                    );
+//                }
+//
+//                $cart = $this->get('coreshop.repository.cart')->findCartByOrder($order);
+//
+//                if ($cart instanceof CartInterface) {
+//                    $cart->setOrder(null);
 //
 //                    $this->get('coreshop.cart.manager')->persistCart($cart);
 //
@@ -80,7 +101,9 @@ class OrderController extends FrontendController
 //                }
 
                 return $this->redirectToRoute('coreshop_index');
-            } elseif ($form->isValid()) {
+            }
+
+            if ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -106,7 +129,7 @@ class OrderController extends FrontendController
     }
 
     /**
-     * @return RepositoryInterface
+     * @return PaymentRepositoryInterface
      */
     private function getPaymentRepository()
     {

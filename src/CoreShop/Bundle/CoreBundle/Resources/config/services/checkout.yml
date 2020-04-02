@@ -8,19 +8,12 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper:
+    CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension:
         arguments:
             - '@request_stack'
             - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
-            - '@coreshop.checkout_manager.factory'
+            - '@CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface'
             - '@CoreShop\Component\Order\Context\CartContextInterface'
-        tags:
-            - { name: templating.helper, alias: coreshop_checkout_identifier}
-
-    CoreShop\Bundle\CoreBundle\Twig\CheckoutIdentifierExtension:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\CheckoutIdentifierHelper'
         tags:
             - { name: twig.extension }
 

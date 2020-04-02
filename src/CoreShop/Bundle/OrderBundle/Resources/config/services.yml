@@ -80,6 +80,7 @@ services:
         arguments:
              - '@coreshop.repository.order'
              - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface'
+             - '@CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface'
 
     CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface: '@CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor'
     CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor: ~

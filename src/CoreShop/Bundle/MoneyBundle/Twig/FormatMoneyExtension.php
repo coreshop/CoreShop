@@ -14,17 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MoneyBundle\Twig;
 
-use CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface;
+use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class FormatMoneyExtension extends AbstractExtension
 {
-    private $helper;
+    private $moneyFormatter;
 
-    public function __construct(FormatMoneyHelperInterface $helper)
+    public function __construct(MoneyFormatterInterface $moneyFormatter)
     {
-        $this->helper = $helper;
+        $this->moneyFormatter = $moneyFormatter;
     }
 
     /**
@@ -33,7 +33,7 @@ final class FormatMoneyExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('coreshop_format_money', [$this->helper, 'formatAmount']),
+            new TwigFilter('coreshop_format_money', [$this->moneyFormatter, 'format']),
         ];
     }
 }
