@@ -362,7 +362,7 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int) $price);
+            $productUnitDefinitionPrice->setPrice($price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues

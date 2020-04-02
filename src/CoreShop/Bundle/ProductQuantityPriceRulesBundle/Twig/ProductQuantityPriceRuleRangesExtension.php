@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig;
 
-use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
@@ -37,8 +36,8 @@ final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
     {
         return [
             new TwigFunction('coreshop_quantity_price_rule_ranges_available', [$this, 'hasActiveQuantityPriceRuleRanges']),
-            new TwigFunction('coreshop_quantity_price_rule', [$this->quantityReferenceDetector, 'getQuantityPriceRule']),
-            new TwigFunction('coreshop_quantity_price_rule_ranges', [$this->quantityReferenceDetector, 'getQuantityPriceRuleRanges']),
+            new TwigFunction('coreshop_quantity_price_rule', [$this->quantityReferenceDetector, 'detectRule']),
+            new TwigFunction('coreshop_quantity_price_rule_ranges', [$this, 'getQuantityPriceRuleRanges']),
         ];
     }
 
@@ -51,5 +50,12 @@ final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
         }
 
         return true;
+    }
+
+    public function getQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context)
+    {
+        $productQuantityPriceRule = $this->quantityReferenceDetector->detectRule($product, $context);
+
+        return $productQuantityPriceRule->getRanges();
     }
 }

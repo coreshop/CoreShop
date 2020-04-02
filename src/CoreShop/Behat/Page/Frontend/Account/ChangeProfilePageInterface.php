@@ -15,9 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend\Account;
 
 use Behat\Mink\Exception\ElementNotFoundException;
-use FriendsOfBehat\PageObjectExtension\Page\PageInterface;
+use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 
-interface ChangeProfilePageInterface extends PageInterface
+interface ChangeProfilePageInterface extends FrontendPageInterface
 {
     public function specifyFirstname(?string $firstname = null): void;
 

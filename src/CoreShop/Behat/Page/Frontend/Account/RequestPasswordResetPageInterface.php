@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Account;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 
-interface RequestPasswordResetPageInterface extends SymfonyPageInterface
+interface RequestPasswordResetPageInterface extends FrontendPageInterface
 {
     public function checkValidationMessageFor(string $element, string $message): bool;
 

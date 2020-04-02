@@ -14,20 +14,23 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
-
-abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageInterface
+interface ProductPageInterface extends FrontendPageInterface
 {
-    protected static $additionalParameters = ['_locale' => 'en'];
+    public function getContent(): string;
 
-    public function isOpenWithUri(string $uri): bool
-    {
-        return $this->getSession()->getCurrentUrl() !== $uri;
-    }
+    public function getName(): string;
 
-    public function tryToOpenWithUri(string $uri): void
-    {
-        $absoluteUrl = $this->makePathAbsolute($uri);
-        $this->getSession()->visit($absoluteUrl);
-    }
+    public function getPrice(): string;
+
+    public function getPriceForUnit(string $unitName): string;
+
+    public function getOriginalPrice(): string;
+
+    public function getDiscount(): string;
+
+    public function getTaxRate(): string;
+
+    public function getTax(): string;
+
+    public function getQuantityPriceRules(): array;
 }

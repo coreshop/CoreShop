@@ -26,3 +26,4 @@ imports:
     - suites/ui/register.yml
     - suites/ui/reset.yml
     - suites/ui/customer_profile.yml
+    - suites/ui/product.yml

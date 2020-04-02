@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
-
-interface HomePageInterface extends SymfonyPageInterface
+interface HomePageInterface extends FrontendPageInterface
 {
     public function getContent(): string;
 

@@ -39,3 +39,7 @@ services:
     CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface: '@CoreShop\Behat\Page\Frontend\Account\ChangeProfilePage'
     CoreShop\Behat\Page\Frontend\Account\ChangeProfilePage:
             parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\ProductPageInterface: '@CoreShop\Behat\Page\Frontend\ProductPage'
+    CoreShop\Behat\Page\Frontend\ProductPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

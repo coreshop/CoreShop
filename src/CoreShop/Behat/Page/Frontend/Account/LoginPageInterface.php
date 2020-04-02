@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Account;
 
-use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
+use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 
-interface LoginPageInterface extends SymfonyPageInterface
+interface LoginPageInterface extends FrontendPageInterface
 {
     public function hasValidationErrorWith(string $message): bool;
 

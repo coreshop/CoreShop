@@ -12,13 +12,13 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Page\Frontend\Account;
+namespace CoreShop\Behat\Page\Frontend;
 
-use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 
-interface ProfilePageInterface extends FrontendPageInterface
+interface FrontendPageInterface extends SymfonyPageInterface
 {
-    public function hasCustomerName(string $name): bool;
+    public function isOpenWithUri(string $uri): bool;
 
-    public function hasCustomerEmail(string $email): bool;
+    public function tryToOpenWithUri(string $uri): void;
 }
