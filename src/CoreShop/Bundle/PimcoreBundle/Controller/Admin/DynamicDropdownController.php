@@ -48,20 +48,7 @@ final class DynamicDropdownController extends AdminController
             $parentFolderPath = str_replace('//', '/', $parentFolderPath);
 
             $folder = DataObject\Folder::getByPath($parentFolderPath);
-
-            if ($folder) {
-                $options = $this->walkPath($request, $folder);
-            } else {
-                $message = sprintf('The folder submitted could not be found: "%s"', $folderName);
-
-                return $this->json(
-                    [
-                        'success' => false,
-                        'message' => $message,
-                        'options' => $options,
-                    ]
-                );
-            }
+            $options = $folder instanceof DataObject\AbstractObject ? $this->walkPath($request, $folder) : [];
         } else {
             $message = sprintf('The folder submitted for parentId is not valid: "%s"', $folderName);
 
