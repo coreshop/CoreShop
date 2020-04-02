@@ -230,7 +230,7 @@ final class FilterContext implements Context
                 continue;
             }
 
-            $result[] = $object->getIndexableName('en');
+            $result[] = $object->getIndexableName($filter->getIndex(), 'en');
         }
 
         Assert::eq([$firstResult, $secondResult], $result);

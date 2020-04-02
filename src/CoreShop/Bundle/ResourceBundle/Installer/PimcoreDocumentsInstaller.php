@@ -97,7 +97,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 
             foreach ($docsToInstall as $docData) {
                 $progress->setMessage(
-                    sprintf('<error>Install Document %s/%s</error>', $docData['path'], $docData['key'])
+                    sprintf('Install Document %s/%s', $docData['path'], $docData['key'])
                 );
 
                 foreach ($validLanguages as $language) {
@@ -133,6 +133,9 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Documents have been installed successfully</info>');
         }
     }
 
