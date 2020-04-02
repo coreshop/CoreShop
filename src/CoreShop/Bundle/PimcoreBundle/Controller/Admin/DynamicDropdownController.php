@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Element\Service;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,8 +31,10 @@ final class DynamicDropdownController extends AdminController
      */
     public function optionsAction(Request $request)
     {
-        $folderName = $request->get('folderName');
-        $parentFolderPath = preg_replace('@[^a-zA-Z0-9/\-_\s]@', '', $folderName);
+        $parts = array_map(static function ($part) {
+            return Service::getValidKey($part, 'object');
+        }, preg_split('/\//', $request->get('folderName'), null, PREG_SPLIT_NO_EMPTY));
+        $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
 
