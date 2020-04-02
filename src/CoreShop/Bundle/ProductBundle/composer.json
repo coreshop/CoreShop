@@ -24,7 +24,7 @@
     "coreshop/rule-bundle": "^2.0",
     "coreshop/resource-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
-    "pimcore/pimcore": "^6.5.3"
+    "pimcore/pimcore": "^6.6.0"
   },
   "config": {
     "bin-dir": "bin"

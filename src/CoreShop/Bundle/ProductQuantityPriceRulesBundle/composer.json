@@ -28,7 +28,7 @@
     "coreshop/product-quantity-price-rules": "^2.1",
     "coreshop/rule-bundle": "^2.1",
     "coreshop/money-bundle": "^2.1",
-    "pimcore/pimcore": "^6.5.3"
+    "pimcore/pimcore": "^6.6.0"
   },
   "config": {
     "bin-dir": "bin"
