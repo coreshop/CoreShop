@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Form\ClickableInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -51,6 +52,14 @@ class OrderController extends FrontendController
             }
         }
 
+        foreach ($this->getPaymentRepository()->findForPayable($order) as $payment) {
+            if ($payment->getState() === PaymentInterface::STATE_COMPLETED) {
+                $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.order_already_paid'));
+
+                return $this->redirectToRoute('coreshop_index');
+            }
+        }
+
         $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
             'payment_subject' => $order,
         ]);
@@ -79,7 +88,9 @@ class OrderController extends FrontendController
                 }
 
                 return $this->redirectToRoute('coreshop_index');
-            } elseif ($form->isValid()) {
+            }
+
+            if ($form->isValid()) {
                 $order = $form->getData();
                 $order->save();
 
@@ -105,7 +116,7 @@ class OrderController extends FrontendController
     }
 
     /**
-     * @return RepositoryInterface
+     * @return PaymentRepositoryInterface
      */
     private function getPaymentRepository()
     {
