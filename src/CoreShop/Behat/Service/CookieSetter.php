@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use Behat\Mink\Driver\PantherDriver;
-use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Session;
 use FriendsOfBehat\SymfonyExtension\Driver\SymfonyDriver;
 use Symfony\Component\BrowserKit\Cookie;
