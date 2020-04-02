@@ -74,6 +74,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CustomerSecurityValidationListener:
         arguments:
+            - '@Pimcore\Http\RequestHelper'
             - '@coreshop.repository.customer'
             - '%coreshop.model.customer.class%'
             - '%coreshop.customer.security.login_identifier%'
