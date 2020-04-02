@@ -15,29 +15,25 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface;
+use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigTest;
 
 final class AddressAllocatorExtension extends AbstractExtension
 {
-    /**
-     * @var AddressAllocatorHelperInterface
-     */
-    private $helper;
+    private $customerAddressAllocator;
 
-    /**
-     * @param AddressAllocatorHelperInterface $helper
-     */
-    public function __construct(AddressAllocatorHelperInterface $helper)
+    public function __construct(CustomerAddressAllocatorInterface $customerAddressAllocator)
     {
-        $this->helper = $helper;
+        $this->customerAddressAllocator = $customerAddressAllocator;
     }
+
 
     public function getTests()
     {
         return [
-            new TwigTest('coreshop_address_owner_of', [$this->helper, 'isOwnerOfAddress'])
+            new TwigTest('coreshop_address_owner_of', [$this->customerAddressAllocator, 'isOwnerOfAddress'])
         ];
     }
     /**
@@ -46,7 +42,7 @@ final class AddressAllocatorExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('coreshop_allocate_valid_addresses', [$this->helper, 'allocateAddresses']),
+            new TwigFilter('coreshop_allocate_valid_addresses', [$this->customerAddressAllocator, 'allocateAddresses']),
         ];
     }
 }

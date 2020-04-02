@@ -19,15 +19,13 @@ services:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Core\Taxation\TaxApplicatorInterface'
 
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper:
+    CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension:
         arguments:
             - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
         tags:
-            - { name: templating.helper, alias: coreshop_product_price }
+            - { name: twig.extension }
 
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper:
+    CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension:
         arguments:
             - '@CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetector'
             - '@CoreShop\Component\Order\Calculator\PurchasableCalculatorInterface'
@@ -35,48 +33,21 @@ services:
             - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
             - '@CoreShop\Component\Core\Taxation\TaxApplicatorInterface'
         tags:
-            - { name: templating.helper, alias: coreshop_product_tax }
-
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
-            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
-            - '@CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_tax }
-
-    CoreShop\Bundle\CoreBundle\Twig\ProductPriceExtension:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelper'
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Bundle\CoreBundle\Twig\ProductQuantityPriceRuleRangesPriceExtension:
-        arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelper'
-        tags:
             - { name: twig.extension }
 
     CoreShop\Bundle\CoreBundle\Twig\ProductTaxExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelper'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
+            - '@CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface'
+            - '@CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface'
         tags:
             - { name: twig.extension }
-
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper:
-        arguments:
-            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
-        tags:
-            - { name: templating.helper, alias: coreshop_configuration}
 
     CoreShop\Bundle\CoreBundle\Twig\ConfigurationExtension:
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelper'
+            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
         tags:
             - { name: twig.extension }
-
 
     CoreShop\Component\Core\Product\Calculator\StoreProductPriceCalculator:
         tags:

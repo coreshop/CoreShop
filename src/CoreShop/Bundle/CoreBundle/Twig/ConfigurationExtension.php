@@ -15,16 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelperInterface;
+use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class ConfigurationExtension extends AbstractExtension
 {
-    private $helper;
+    private $configurationService;
 
-    public function __construct(ConfigurationHelperInterface $helper)
+    public function __construct(ConfigurationServiceInterface $configurationService)
     {
-        $this->helper = $helper;
+        $this->configurationService = $configurationService;
     }
 
     /**
@@ -33,7 +34,7 @@ final class ConfigurationExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('coreshop_configuration', [$this->helper, 'getConfiguration']),
+            new TwigFunction('coreshop_configuration', [$this->configurationService, 'getForStore']),
         ];
     }
 }

@@ -15,16 +15,19 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Twig;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Templating\Helper\ProductQuantityPriceRuleRangesHelperInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Detector\QuantityReferenceDetectorInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
+use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
 {
-    private $helper;
+    protected $quantityReferenceDetector;
 
-    public function __construct(ProductQuantityPriceRuleRangesHelperInterface $helper)
+    public function __construct(QuantityReferenceDetectorInterface $quantityReferenceDetector)
     {
-        $this->helper = $helper;
+        $this->quantityReferenceDetector = $quantityReferenceDetector;
     }
 
     /**
@@ -33,9 +36,20 @@ final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('coreshop_quantity_price_rule_ranges_available', [$this->helper, 'hasActiveQuantityPriceRuleRanges']),
-            new TwigFunction('coreshop_quantity_price_rule', [$this->helper, 'getQuantityPriceRule']),
-            new TwigFunction('coreshop_quantity_price_rule_ranges', [$this->helper, 'getQuantityPriceRuleRanges']),
+            new TwigFunction('coreshop_quantity_price_rule_ranges_available', [$this, 'hasActiveQuantityPriceRuleRanges']),
+            new TwigFunction('coreshop_quantity_price_rule', [$this->quantityReferenceDetector, 'getQuantityPriceRule']),
+            new TwigFunction('coreshop_quantity_price_rule_ranges', [$this->quantityReferenceDetector, 'getQuantityPriceRuleRanges']),
         ];
+    }
+
+    public function hasActiveQuantityPriceRuleRanges(QuantityRangePriceAwareInterface $product, array $context): bool
+    {
+        try {
+            $this->quantityReferenceDetector->detectRule($product, $context);
+        } catch (NoRuleFoundException $e) {
+            return false;
+        }
+
+        return true;
     }
 }

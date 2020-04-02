@@ -75,7 +75,7 @@ final class CookieStorage implements StorageInterface, EventSubscriberInterface
 
         $response = $event->getResponse();
         foreach ($this->responseCookies as $name => $value) {
-            $response->headers->setCookie(new Cookie($name, $value));
+            $response->headers->setCookie(new Cookie($name, (string)$value));
         }
 
         $this->requestCookies = new ParameterBag();

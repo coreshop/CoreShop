@@ -63,17 +63,9 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Customer\CustomerTransformHelperInterface'
 
-    CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelper:
-        arguments:
-            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
-        lazy: true
-        tags:
-            - { name: templating.helper, alias: coreshop_format_address }
-
     CoreShop\Bundle\CoreBundle\Twig\AddressAllocatorExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface'
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
         tags:
             - { name: twig.extension }
