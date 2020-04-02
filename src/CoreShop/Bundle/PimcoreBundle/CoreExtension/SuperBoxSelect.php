@@ -30,9 +30,8 @@ class SuperBoxSelect extends DynamicDropdownMultiple
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        //if not set, return null
-        if ($data === null or $data === false) {
-            return null;
+        if ($data === null || $data === false) {
+            return [];
         }
 
         $elements = array();

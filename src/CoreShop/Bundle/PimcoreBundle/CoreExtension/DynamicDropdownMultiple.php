@@ -206,18 +206,17 @@ class DynamicDropdownMultiple extends
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        //if not set, return null
-        if ($data === null or $data === false) {
-            return null;
+        if ($data === null || $data === false) {
+            return [];
         }
 
         $objects = [];
         if (is_array($data) && count($data) > 0) {
-            foreach ($data as $object) {
-                $o = DataObject::getById($object['id']);
+            foreach ($data as $ob) {
+                $o = DataObject::getById($ob['id']);
                 if ($o) {
                     $objects[] = $o;
-                }
+
             }
         }
         //must return array if data shall be set
