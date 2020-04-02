@@ -189,9 +189,6 @@ class DynamicDropdownMultiple extends
             return $publishedList;
         }
 
-        //TODO: move validation to checkValidity & throw exception in Pimcore 7
-        $data = Service::filterMultipleElements($data, $object, $this->getName());
-
         return is_array($data) ? $data : [];
     }
 
