@@ -61,5 +61,7 @@ jobs:
     - name: Composer install
       run: composer install --prefer-dist --no-progress --no-suggest
 
-    - name: Validate YAML
-      run: vendor/bin/phpstan analyse -c phpstan.neon src -l 3
+    - name: STAN
+      run: |
+        bin/console cache:warmup --env=dev
+        vendor/bin/phpstan analyse -c phpstan.neon src -l 3
