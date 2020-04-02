@@ -216,7 +216,7 @@ class DynamicDropdownMultiple extends
                 $o = DataObject::getById($ob['id']);
                 if ($o) {
                     $objects[] = $o;
-
+                }
             }
         }
         //must return array if data shall be set
