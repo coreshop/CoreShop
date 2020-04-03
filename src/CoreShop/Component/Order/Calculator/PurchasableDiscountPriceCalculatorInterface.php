@@ -12,7 +12,7 @@
 
 namespace CoreShop\Component\Order\Calculator;
 
-use CoreShop\Component\ORder\Exception\NoPurchasableDiscountPriceFoundException;
+use CoreShop\Component\Order\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface PurchasableDiscountPriceCalculatorInterface
