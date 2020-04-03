@@ -81,4 +81,4 @@ jobs:
       run: bin/console assets:install --symlink web
 
     - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist --tags="@domain" -p default
+      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

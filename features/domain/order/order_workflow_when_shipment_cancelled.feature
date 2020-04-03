@@ -1,4 +1,4 @@
-@order @domain
+@domain @order
 Feature: Create a new order
   I create a shipment and cancel it
   I create another shipment which then gets shipped

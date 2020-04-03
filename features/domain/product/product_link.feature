@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: In order that a customer can visit the product page
   The website needs to create a URL
 

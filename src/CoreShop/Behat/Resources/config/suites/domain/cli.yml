@@ -10,4 +10,4 @@ default:
 
                 - coreshop.behat.context.cli.installer
             filters:
-                tags: "@cli"
+                tags: "@domain && @cli"

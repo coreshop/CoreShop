@@ -1,4 +1,4 @@
-@shipping @domain
+@domain @shipping
 Feature: Add a new carrier without rules should be valid
 
   Background:

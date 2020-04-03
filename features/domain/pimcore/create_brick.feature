@@ -1,4 +1,4 @@
-@pimcore @domain
+@domain @pimcore
 Feature: Adding a new pimcore brick
 
   Scenario: Create a new pimcore brick

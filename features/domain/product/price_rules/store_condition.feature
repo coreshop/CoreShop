@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: Adding a new Product
   In order to extend my catalog
   the catalog has a price-rule for a store

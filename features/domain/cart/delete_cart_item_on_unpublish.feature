@@ -1,4 +1,4 @@
-@cart @domain
+@domain @cart
 Feature: In Order to not allow
   customers to buy products that are unpublished
   CoreShop deletes those cart-items and

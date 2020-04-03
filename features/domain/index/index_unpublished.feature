@@ -1,4 +1,4 @@
-@index @domain
+@domain @index
 Feature: Adding a object index
   In order to make my catalog searchable
   I want to create a new index

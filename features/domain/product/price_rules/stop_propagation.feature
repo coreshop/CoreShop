@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: Adding a new Product
   In order to increase my sales, I created catalog rules for products
 

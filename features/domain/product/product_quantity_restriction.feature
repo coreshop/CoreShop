@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: Adding a new Product
   In order to extend my catalog
   I want to create a new product with different quantity restrictions

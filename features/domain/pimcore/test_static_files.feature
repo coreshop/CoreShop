@@ -1,4 +1,4 @@
-@pimcore @domain
+@domain @pimcore
 Feature: In order for the pimcore backend to function
   It needs to load all registered CoreShop Static Resources
 

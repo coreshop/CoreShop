@@ -1,4 +1,4 @@
-@domain
+@domain @cart
 Feature: Use a different calculation strategy for shipping tax calculation
   The tax calculation for the shipping can be based on the cart items
   We create and store a cart with different products to

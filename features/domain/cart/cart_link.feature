@@ -1,4 +1,4 @@
-@domain
+@domain @cart
 Feature: In order that a customer can visit the cart-summary page
   The website needs to create a URL
 

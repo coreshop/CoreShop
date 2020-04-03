@@ -1,4 +1,4 @@
-@country @domain
+@domain @country
 Feature: The visitor is always linked to a country
   So, In Order to find the right country, there is the CountryContext
 

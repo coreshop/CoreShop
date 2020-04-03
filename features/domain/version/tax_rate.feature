@@ -1,4 +1,4 @@
-@version @domain
+@domain @version
 Feature: Support Pimcore Versions
 
   Background:

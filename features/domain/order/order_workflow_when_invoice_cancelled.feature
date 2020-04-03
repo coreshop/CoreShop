@@ -1,4 +1,4 @@
-@order @domain
+@domain @order
 Feature: Create a new order
   I create a invoice and cancel it
   I create another invoice which then gets invoiced

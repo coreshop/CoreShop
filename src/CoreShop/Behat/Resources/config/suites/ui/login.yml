@@ -24,4 +24,4 @@ default:
 
                 - coreshop.behat.context.ui.login
             filters:
-                tags: "@account_login"
+                tags: "@ui && @account_login"

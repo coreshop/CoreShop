@@ -1,4 +1,4 @@
-@category @domain
+@domain @category
 Feature: In order that a customer can visit the category page
   The website needs to create a URL
 

@@ -1,4 +1,4 @@
-@cart @domain
+@domain @cart
 Feature: Create a new cart where store uses gross values
   In Order to calculate taxes and round them right
   we create a cart and add items to it

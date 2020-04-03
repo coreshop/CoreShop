@@ -1,4 +1,4 @@
-@domain
+@domain @cart
 Feature: Create a new cart
   In order to know what taxes are applied
   we store the shipping tax rate into the cart

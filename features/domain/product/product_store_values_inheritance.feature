@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: Having the ability to inherit store values
 
   Background:

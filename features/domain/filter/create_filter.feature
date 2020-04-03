@@ -1,4 +1,4 @@
-@filter @domain
+
 Feature: Adding a filter for an index
   In order to make my catalog searchable
   I want to create a new index with an filter and add conditions

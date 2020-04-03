@@ -1,4 +1,4 @@
-@cli @domain
+@domain @cli
 Feature: Load sample data feature
     In order to have sample data in CoreShop
     As a Developer

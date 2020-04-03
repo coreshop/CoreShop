@@ -22,4 +22,4 @@ default:
 
                 - coreshop.behat.context.ui.customer_profile
             filters:
-                tags: "@customer_profile"
+                tags: "@ui && @customer_profile"

@@ -1,4 +1,4 @@
-@placeholder @domain
+@domain @placeholder
 Feature: In order to extend Pimcore's placeholder
   CoreShop adds a expression placeholder
 

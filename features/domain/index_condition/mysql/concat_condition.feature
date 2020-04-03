@@ -1,4 +1,4 @@
-@index_condition @domain
+@domain @index_condition
 Feature: In order to have an abstraction for index and filters
   we have a concat condition class
 

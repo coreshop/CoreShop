@@ -1,4 +1,4 @@
-@theme @domain
+@domain @theme
 Feature: In order to allow multishop with different designs
   we allow each store a different template
 

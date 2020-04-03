@@ -1,4 +1,4 @@
-@menu @domain
+@domain @menu
 Feature: In order to allow better menu structures
   we build the menu for CoreShop in PHP Services
 

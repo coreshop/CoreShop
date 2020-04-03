@@ -1,4 +1,4 @@
-@taxation @domain
+@domain @taxation
 Feature: Adding a new Tax Rule
   I want to create a new tax rule
 

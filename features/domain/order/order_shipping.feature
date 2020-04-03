@@ -1,4 +1,4 @@
-@order @domain
+@domain @order
 Feature: Create a new order
   And test if the shipping is calculated right
 

@@ -1,4 +1,4 @@
-@seo @domain
+@domain @seo
 Feature: Adding a new Product with SEO information
   In order to make my catalog more findable
   I want to create a new product and add SEO Informations

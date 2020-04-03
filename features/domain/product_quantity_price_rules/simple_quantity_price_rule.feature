@@ -1,4 +1,4 @@
-@product_quantity_price_rules @domain
+@domain @product_quantity_price_rules
 Feature: Adding a new product with a simple quantity price rule
 
   Background:

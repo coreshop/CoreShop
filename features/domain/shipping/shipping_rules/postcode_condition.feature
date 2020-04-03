@@ -1,4 +1,4 @@
-@shipping @domain
+@domain @shipping
 Feature: Adding a new Shipping Rule
   In order to calculate shipping
   I'll create a new shipping rule

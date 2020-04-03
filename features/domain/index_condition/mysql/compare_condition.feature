@@ -1,4 +1,4 @@
-@index_condition @domain
+
 Feature: In order to have an abstraction for index and filters
   we have a compare condition class
 

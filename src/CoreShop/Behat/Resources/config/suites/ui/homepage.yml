@@ -22,4 +22,4 @@ default:
 
                 - coreshop.behat.context.ui.homepage
             filters:
-                tags: "@homepage"
+                tags: "@ui && @homepage"

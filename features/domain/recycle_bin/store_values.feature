@@ -1,4 +1,4 @@
-@recycle_bin @domain
+@domain @recycle_bin
 Feature: In order to support Pimcore Recycle Bin, we have to serialize Store Values and merge them back
 
   Background:

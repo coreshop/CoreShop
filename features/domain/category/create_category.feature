@@ -1,4 +1,4 @@
-@category @domain
+@domain @category
 Feature: Create a new category
   In Order to structure my products
   I want to create some categories

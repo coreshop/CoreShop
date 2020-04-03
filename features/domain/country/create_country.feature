@@ -1,4 +1,4 @@
-@country @domain
+@domain @country
 Feature: Create a new country
   In Order to allow customers from different countries
   I need to create countries

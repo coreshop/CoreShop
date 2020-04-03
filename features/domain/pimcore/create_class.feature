@@ -1,4 +1,4 @@
-@pimcore @domain
+@domain @pimcore
 Feature: Adding a new pimcore Class
 
   Scenario: Create a new pimcore class

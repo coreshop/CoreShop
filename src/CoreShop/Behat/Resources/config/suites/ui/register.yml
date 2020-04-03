@@ -24,4 +24,4 @@ default:
 
                 - coreshop.behat.context.ui.register
             filters:
-                tags: "@account_register"
+                tags: "@ui && @account_register"

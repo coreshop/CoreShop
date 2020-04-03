@@ -1,4 +1,4 @@
-@shipping @domain
+@domain @shipping
 Feature: In Order to make checkout easier
   I create one carrier which will be defaulted
   As a logged in customer

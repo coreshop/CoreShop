@@ -47,4 +47,4 @@ default:
                 - coreshop.behat.context.domain.link_generator
                 - coreshop.behat.context.domain.product_unit
             filters:
-                tags: "@product"
+                tags: "@domain && @product"

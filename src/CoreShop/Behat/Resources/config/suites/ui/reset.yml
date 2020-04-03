@@ -25,4 +25,4 @@ default:
                 - coreshop.behat.context.ui.login
                 - coreshop.behat.context.domain.notification_rule
             filters:
-                tags: "@account_reset"
+                tags: "@ui && @account_reset"

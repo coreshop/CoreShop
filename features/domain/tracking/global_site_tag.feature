@@ -1,4 +1,4 @@
-@tracking @domain
+@domain @tracking
 Feature: In order to track ecommerce sales
   we track them using Google Site Tag Manager
 

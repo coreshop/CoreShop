@@ -1,4 +1,4 @@
-@country @domain
+@domain @country
 Feature: Every country uses different formatting for addresses
   Therefore we store that inside the country it self
 

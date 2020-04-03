@@ -1,4 +1,4 @@
-@version @domain
+@domain @version
 Feature: In order to support Pimcore Versioning, we have to serialize Store Values and merge them back
 
   Background:

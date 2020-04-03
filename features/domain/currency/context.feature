@@ -1,4 +1,4 @@
-@currency @domain
+@domain @currency
 Feature: Adding a new Currency
   In Order to increase my sales
   I want to create a new currency

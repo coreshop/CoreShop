@@ -1,4 +1,4 @@
-@product @domain
+@domain @product
 Feature: Adding a new Product and a category
   In order to extend my catalog
   I want to create a new product and a category
