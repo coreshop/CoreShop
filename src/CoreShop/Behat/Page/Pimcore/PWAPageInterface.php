@@ -12,15 +12,9 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Page\Frontend\Account;
+namespace CoreShop\Behat\Page\Pimcore;
 
-use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
-
-interface LoginPageInterface extends FrontendPageInterface
+interface PWAPageInterface extends PimcorePageInterface
 {
-    public function logIn(): void;
-
-    public function specifyPassword(string $password): void;
-
-    public function specifyUsername(string $username): void;
+    public function hasLogoutButton(): bool;
 }

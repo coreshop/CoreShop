@@ -5,3 +5,4 @@ imports:
     - { resource: contexts/domain.yml }
     - { resource: contexts/cli.yml }
     - { resource: contexts/ui.yml }
+    - { resource: contexts/ui_pimcore.yml }

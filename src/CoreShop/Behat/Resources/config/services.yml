@@ -1,6 +1,7 @@
 imports:
     - { resource: services/contexts.yml }
     - { resource: services/pages.yml }
+    - { resource: services/pages_pimcore.yml }
     - { resource: services/elements.yml }
 
 services:

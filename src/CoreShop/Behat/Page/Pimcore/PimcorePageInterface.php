@@ -12,15 +12,11 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Page\Frontend\Account;
+namespace CoreShop\Behat\Page\Pimcore;
 
-use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
+use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 
-interface LoginPageInterface extends FrontendPageInterface
+interface PimcorePageInterface extends SymfonyPageInterface
 {
-    public function logIn(): void;
-
-    public function specifyPassword(string $password): void;
-
-    public function specifyUsername(string $username): void;
+    public function waitForPimcore($time = 10000, $condition = null);
 }

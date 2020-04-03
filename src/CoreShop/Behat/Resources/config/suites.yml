@@ -1,3 +1,4 @@
 imports:
     - suites/domain.yml
     - suites/ui.yml
+    - suites/ui_pimcore.yml
