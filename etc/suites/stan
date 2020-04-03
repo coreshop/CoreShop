@@ -1,5 +1,0 @@
-code=0
-
-$CS_HOME/etc/_scripts/phpstan || code=$?
-
-exit ${code}
