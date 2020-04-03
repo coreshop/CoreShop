@@ -6,7 +6,7 @@ on:
     branches: [ master, '3.0' ]
 
 jobs:
-  lint:
+  stan:
     runs-on: ubuntu-latest
     env:
       PIMCORE_ENVIRONMENT: "test"
@@ -63,5 +63,6 @@ jobs:
 
     - name: STAN
       run: |
+        cp -f app/config/config_test.yml app/config/config_dev.yml
         bin/console cache:warmup --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3
