@@ -18,7 +18,7 @@ use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyRelation;
 use Pimcore\Model\DataObject\Service;
 
-class ItemSelector extends ManyToManyRelation
+class ItemSelector extends DynamicDropdownMultiple
 {
     /**
      * Static type of this element.
@@ -27,119 +27,14 @@ class ItemSelector extends ManyToManyRelation
      */
     public $fieldtype = 'coreShopItemSelector';
 
-    /**
-     * @var string
-     */
-    public $folderName;
-
-    /**
-     * @var string
-     */
-    public $className;
-
-    /**
-     * @var string
-     */
-    public $methodName;
-
-    /**
-     * @var string
-     */
-    public $recursive;
-
-    /**
-     * @var string
-     */
-    public $sortBy;
-
-    /**
-     * @return mixed
-     */
-    public function getFolderName()
-    {
-        return $this->folderName;
-    }
-
-    /**
-     * @param mixed $folderName
-     */
-    public function setFolderName($folderName)
-    {
-        $this->folderName = $folderName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClassName()
-    {
-        return $this->className;
-    }
-
-    /**
-     * @param mixed $className
-     */
-    public function setClassName($className)
-    {
-        $this->className = $className;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMethodName()
-    {
-        return $this->methodName;
-    }
-
-    /**
-     * @param mixed $methodName
-     */
-    public function setMethodName($methodName)
-    {
-        $this->methodName = $methodName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecursive()
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * @param mixed $recursive
-     */
-    public function setRecursive($recursive)
-    {
-        $this->recursive = $recursive;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
-    }
 
     /**
      * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
-        //if not set, return null
-        if ($data === null or $data === false) {
-            return null;
+        if ($data === null || $data === false) {
+            return [];
         }
 
         $elements = array();

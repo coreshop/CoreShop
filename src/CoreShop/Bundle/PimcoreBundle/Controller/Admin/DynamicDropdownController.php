@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Element\Service;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,7 +28,10 @@ final class DynamicDropdownController extends AdminController
     public function optionsAction(Request $request): Response
     {
         $folderName = $request->get('folderName');
-        $parentFolderPath = preg_replace('@[^a-zA-Z0-9/\-_\s]@', '', $folderName);
+        $parts = array_map(static function ($part) {
+            return Service::getValidKey($part, 'object');
+        }, preg_split('/\//', $folderName, null, PREG_SPLIT_NO_EMPTY));
+        $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
 
@@ -41,20 +45,7 @@ final class DynamicDropdownController extends AdminController
             $parentFolderPath = str_replace('//', '/', $parentFolderPath);
 
             $folder = DataObject\Folder::getByPath($parentFolderPath);
-
-            if ($folder) {
-                $options = $this->walkPath($request, $folder);
-            } else {
-                $message = sprintf('The folder submitted could not be found: "%s"', $folderName);
-
-                return $this->json(
-                    [
-                        'success' => false,
-                        'message' => $message,
-                        'options' => $options,
-                    ]
-                );
-            }
+            $options = $folder instanceof DataObject\AbstractObject ? $this->walkPath($request, $folder) : [];
         } else {
             $message = sprintf('The folder submitted for parentId is not valid: "%s"', $folderName);
 

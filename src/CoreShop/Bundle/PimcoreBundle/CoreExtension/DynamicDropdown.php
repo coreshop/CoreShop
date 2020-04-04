@@ -14,12 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
+use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\DataObject\Service;
+use Pimcore\Model\Document;
 use Pimcore\Model\Element;
 
-class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
+class DynamicDropdown
+    extends DataObject\ClassDefinition\Data\Relations\AbstractRelations
+    implements DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
 {
+    use DataObject\ClassDefinition\Data\Extension\Relation;
+    use DataObject\ClassDefinition\Data\Extension\QueryColumnType;
+    use DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+
     /**
      * Static type of this element.
      *
@@ -170,9 +177,113 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
     }
 
     /**
-     * @return null|int
+     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @param array $params
+     *
+     * @return null|Element\ElementInterface
      */
-    public function getDataForEditmode($data, $object = null, $params = array())
+    public function preGetData($object, $params = [])
+    {
+        $data = null;
+        if ($object instanceof DataObject\Concrete) {
+            $data = $object->getObjectVar($this->getName());
+
+            if (!$object->isLazyKeyLoaded($this->getName())) {
+                $data = $this->load($object);
+
+                $object->setObjectVar($this->getName(), $data);
+                $this->markLazyloadedFieldAsLoaded($object);
+            }
+        } elseif ($object instanceof DataObject\Localizedfield) {
+            $data = $params['data'];
+        } elseif ($object instanceof DataObject\Fieldcollection\Data\AbstractData) {
+            parent::loadLazyFieldcollectionField($object);
+            $data = $object->getObjectVar($this->getName());
+        } elseif ($object instanceof DataObject\Objectbrick\Data\AbstractData) {
+            parent::loadLazyBrickField($object);
+            $data = $object->getObjectVar($this->getName());
+        }
+
+        if (DataObject\AbstractObject::doHideUnpublished() && ($data instanceof Element\ElementInterface)) {
+            if (!Element\Service::isPublished($data)) {
+                return null;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function prepareDataForPersistence($data, $object = null, $params = [])
+    {
+        if ($data instanceof Element\ElementInterface) {
+            $type = Element\Service::getType($data);
+            $id = $data->getId();
+
+            return [[
+                'dest_id' => $id,
+                'type' => $type,
+                'fieldname' => $this->getName()
+            ]];
+        }
+
+        return null;
+    }
+
+    /**
+     * @see QueryResourcePersistenceAwareInterface::getDataForQueryResource
+     *
+     * @param Asset|Document|DataObject\AbstractObject $data
+     * @param null|DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return array
+     */
+    public function getDataForQueryResource($data, $object = null, $params = [])
+    {
+        $rData = $this->prepareDataForPersistence($data, $object, $params);
+        $return = [];
+
+        $return[$this->getName() . '__id'] = isset($rData[0]['dest_id']) ? $rData[0]['dest_id'] : null;
+        $return[$this->getName() . '__type'] = isset($rData[0]['type']) ? $rData[0]['type'] : null;
+
+        return $return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function loadData($data, $object = null, $params = [])
+    {
+        // data from relation table
+        $data = is_array($data) ? $data : [];
+        $data = current($data);
+
+        $result = [
+            'dirty' => false,
+            'data' => null
+        ];
+
+        if (!empty($data['dest_id']) && !empty($data['type'])) {
+            $element = Element\Service::getElementById($data['type'], $data['dest_id']);
+            if ($element instanceof Element\ElementInterface) {
+                $result['data'] = $element;
+            } else {
+                $result['dirty'] = true;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return int|null
+     */
+    public function getDataForEditmode($data, $object = null, $params = [])
     {
         if ($data) {
             return $data->getId();
