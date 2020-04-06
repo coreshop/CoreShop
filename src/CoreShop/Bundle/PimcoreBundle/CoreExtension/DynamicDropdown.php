@@ -33,6 +33,21 @@ class DynamicDropdown
     public $fieldtype = 'coreShopDynamicDropdown';
 
     /**
+     * Type for the column to query
+     *
+     * @var array
+     */
+    public $queryColumnType = [
+        'id' => 'int(11)',
+        'type' => "enum('document','asset','object')",
+    ];
+
+    /**
+     * @var int
+     */
+    public $width;
+
+    /**
      * @var string
      */
     public $folderName;
@@ -76,6 +91,22 @@ class DynamicDropdown
     public function getClasses()
     {
         return [['classes' => $this->getClassName()]];
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
     }
 
     /**
@@ -183,6 +214,7 @@ class DynamicDropdown
     public function preGetData($object, $params = [])
     {
         $data = null;
+
         if ($object instanceof DataObject\Concrete) {
             $data = $object->getObjectVar($this->getName());
 
@@ -202,10 +234,10 @@ class DynamicDropdown
             $data = $object->getObjectVar($this->getName());
         }
 
-        if (DataObject\AbstractObject::doHideUnpublished() && ($data instanceof Element\ElementInterface)) {
-            if (!Element\Service::isPublished($data)) {
-                return null;
-            }
+        if ($data instanceof Element\ElementInterface && DataObject\AbstractObject::doHideUnpublished() &&
+            !Element\Service::isPublished($data)
+        ) {
+            return null;
         }
 
         return $data;
@@ -244,8 +276,8 @@ class DynamicDropdown
         $rData = $this->prepareDataForPersistence($data, $object, $params);
         $return = [];
 
-        $return[$this->getName() . '__id'] = isset($rData[0]['dest_id']) ? $rData[0]['dest_id'] : null;
-        $return[$this->getName() . '__type'] = isset($rData[0]['type']) ? $rData[0]['type'] : null;
+        $return[$this->getName() . '__id'] = $rData[0]['dest_id'] ?? null;
+        $return[$this->getName() . '__type'] = $rData[0]['type'] ?? null;
 
         return $return;
     }
@@ -266,6 +298,7 @@ class DynamicDropdown
 
         if (!empty($data['dest_id']) && !empty($data['type'])) {
             $element = Element\Service::getElementById($data['type'], $data['dest_id']);
+
             if ($element instanceof Element\ElementInterface) {
                 $result['data'] = $element;
             } else {
@@ -321,6 +354,5 @@ class DynamicDropdown
      */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
-        return;
     }
 }

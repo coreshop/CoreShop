@@ -27,6 +27,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
     // This is for documentation purposes (and to make ide IDE happy)
     // It will be overwritten in this.initData() immediately
     datax: {
+        width: null,
         sortBy: null,
         recursive: null,
         className: null,
@@ -122,7 +123,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
         this.specificPanel.removeAll();
         this.specificPanel.add([
             {
-                xtype: 'spinnerfield',
+                xtype: 'numberfield',
                 fieldLabel: t('width'),
                 name: 'width',
                 value: this.datax.width
@@ -178,11 +179,11 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             {
                 xtype: 'combo',
                 fieldLabel: t('coreshop_dynamic_dropdown_sort_by'),
-                name: 'sortby',
+                name: 'sortBy',
                 listWidth: 'auto',
                 triggerAction: 'all',
                 editable: false,
-                value: this.datax.sortby ? this.datax.sortby : 'byid',
+                value: this.datax.sortBy ? this.datax.sortBy : 'byid',
                 store: [['byid', t('id')], ['byvalue', t('value')]]
             },
             this.classesCombo,

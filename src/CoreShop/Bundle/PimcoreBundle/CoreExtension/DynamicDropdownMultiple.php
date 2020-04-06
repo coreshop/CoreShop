@@ -31,6 +31,18 @@ class DynamicDropdownMultiple extends
     public $fieldtype = 'coreShopDynamicDropdownMultiple';
 
     /**
+     * Type for the column to query
+     *
+     * @var string
+     */
+    public $queryColumnType = 'text';
+
+    /**
+     * @var int
+     */
+    public $width;
+
+    /**
      * @var string
      */
     public $folderName;
@@ -56,11 +68,32 @@ class DynamicDropdownMultiple extends
     public $sortBy;
 
     /**
+     * @var bool
+     */
+    public $onlyPublished;
+
+    /**
      * {@inheritdoc}
      */
     public function getClasses()
     {
         return [['classes' => $this->getClassName()]];
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
     }
 
     /**
@@ -146,6 +179,22 @@ class DynamicDropdownMultiple extends
     /**
      * @return bool
      */
+    public function isOnlyPublished()
+    {
+        return $this->onlyPublished;
+    }
+
+    /**
+     * @param bool $onlyPublished
+     */
+    public function setOnlyPublished($onlyPublished)
+    {
+        $this->onlyPublished = $onlyPublished;
+    }
+
+    /**
+     * @return bool
+     */
     public function getObjectsAllowed()
     {
         return true;
@@ -160,11 +209,12 @@ class DynamicDropdownMultiple extends
     public function preGetData($object, $params = [])
     {
         $data = null;
+
         if ($object instanceof DataObject\Concrete) {
             $data = $object->getObjectVar($this->getName());
+
             if (!$object->isLazyKeyLoaded($this->getName())) {
                 $data = $this->load($object);
-
                 $object->setObjectVar($this->getName(), $data);
                 $this->markLazyloadedFieldAsLoaded($object);
             }
@@ -178,8 +228,9 @@ class DynamicDropdownMultiple extends
             $data = $object->getObjectVar($this->getName());
         }
 
-        if (DataObject\AbstractObject::doHideUnpublished() and is_array($data)) {
+        if (is_array($data) && DataObject\AbstractObject::doHideUnpublished()) {
             $publishedList = [];
+
             foreach ($data as $listElement) {
                 if (Service::isPublished($listElement)) {
                     $publishedList[] = $listElement;
@@ -211,12 +262,14 @@ class DynamicDropdownMultiple extends
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $ob) {
                 $o = DataObject::getById($ob['id']);
+
                 if ($o) {
                     $objects[] = $o;
                 }
             }
         }
-        //must return array if data shall be set
+
+        // must return array if data shall be set
         return $objects;
     }
 
@@ -252,28 +305,33 @@ class DynamicDropdownMultiple extends
     {
         $return = [];
 
-        if (is_array($data) && count($data) > 0) {
-            $counter = 1;
-            foreach ($data as $object) {
-                if ($object instanceof DataObject\Concrete) {
-                    $return[] = [
-                        'dest_id' => $object->getId(),
-                        'type' => 'object',
-                        'fieldname' => $this->getName(),
-                        'index' => $counter
-                    ];
+        if (is_array($data)) {
+            if (count($data) > 0) {
+                $counter = 1;
+
+                foreach ($data as $obj) {
+                    if ($obj instanceof DataObject\Concrete) {
+                        $return[] = [
+                            'dest_id' => $obj->getId(),
+                            'type' => 'object',
+                            'fieldname' => $this->getName(),
+                            'index' => $counter
+                        ];
+                    }
+
+                    $counter++;
                 }
-                $counter++;
+
+                return $return;
             }
 
-            return $return;
-        } elseif (is_array($data) and count($data) === 0) {
-            //give empty array if data was not null
-            return [];
-        } else {
-            //return null if data was null - this indicates data was not loaded
-            return null;
+            if (count($data) === 0) {
+                return [];
+            }
         }
+
+        // return null if data was null - this indicates data was not loaded
+        return null;
     }
 
     /**
@@ -289,26 +347,30 @@ class DynamicDropdownMultiple extends
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        //return null when data is not set
+        // return null when data is not set
         if (!$data) {
             return null;
         }
 
         $ids = [];
 
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $object) {
-                if ($object instanceof DataObject\Concrete) {
-                    $ids[] = $object->getId();
+        if (is_array($data)) {
+            if (count($data) > 0) {
+                foreach ($data as $obj) {
+                    if ($obj instanceof DataObject\Concrete) {
+                        $ids[] = $obj->getId();
+                    }
                 }
+
+                return ',' . implode(',', $ids) . ',';
             }
 
-            return ',' . implode(',', $ids) . ',';
-        } elseif (is_array($data) && count($data) === 0) {
-            return '';
-        } else {
-            throw new \Exception('invalid data passed to getDataForQueryResource - must be array and it is: ' . print_r($data, true));
+            if (count($data) === 0) {
+                return '';
+            }
         }
+
+        throw new \Exception('invalid data passed to getDataForQueryResource - must be array and it is: ' . print_r($data, true));
     }
 
     /**
@@ -320,9 +382,10 @@ class DynamicDropdownMultiple extends
             'dirty' => false,
             'data' => []
         ];
+
         if (is_array($data) && count($data) > 0) {
-            foreach ($data as $object) {
-                $o = DataObject::getById($object['dest_id']);
+            foreach ($data as $obj) {
+                $o = DataObject::getById($obj['dest_id']);
                 if ($o instanceof DataObject\Concrete) {
                     $objects['data'][] = $o;
                 } else {
@@ -330,7 +393,8 @@ class DynamicDropdownMultiple extends
                 }
             }
         }
-        //must return array - otherwise this means data is not loaded
+
+        // must return array - otherwise this means data is not loaded
         return $objects;
     }
 }
