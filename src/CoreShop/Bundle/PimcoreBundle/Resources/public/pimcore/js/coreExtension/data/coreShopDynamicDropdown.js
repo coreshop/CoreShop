@@ -21,18 +21,19 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
         object: true,
         objectbrick: true,
         fieldcollection: true,
-        localizedfield: true
+        localizedfield: true,
     },
 
     // This is for documentation purposes (and to make ide IDE happy)
     // It will be overwritten in this.initData() immediately
     datax: {
-        width: null,
-        sortBy: null,
-        recursive: null,
         className: null,
+        folderName: null,
         methodName: null,
-        folderName: null
+        onlyPublished: null,
+        recursive: null,
+        sortBy: null,
+        width: null,
     },
 
     initialize: function (treeNode, initData) {
@@ -60,10 +61,10 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/class/get-tree'
+                url: '/admin/class/get-tree',
             },
             fields: ['name', 'id'],
-            autoLoad: true
+            autoLoad: true,
         });
 
         this.classesCombo = new Ext.form.ComboBox({
@@ -82,14 +83,12 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
                 collapse: {
                     fn: function (combo/*, value*/) {
                         this.methodsCombo.store.reload({
-                            params: {
-                                className: this.classesCombo.getValue()
-                            }
+                            params: { className: this.classesCombo.getValue() },
                         });
                         this.methodsCombo.setValue('');
-                    }.bind(this)
-                }
-            }
+                    }.bind(this),
+                },
+            },
         });
 
         this.methodsStore = new Ext.data.JsonStore({
@@ -99,7 +98,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
                 url: '/admin/coreshop/dynamic-dropdown/methods',
                 extraParams: {
                     className: this.classesCombo.getValue()
-                }
+                },
             },
             fields: ['key', 'value'],
         });
@@ -117,7 +116,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             valueField: 'key',
             summaryDisplay: true,
             queryMode: 'local',
-            value: this.datax.methodName
+            value: this.datax.methodName,
         });
 
         this.specificPanel.removeAll();
@@ -126,7 +125,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
                 xtype: 'numberfield',
                 fieldLabel: t('width'),
                 name: 'width',
-                value: this.datax.width
+                value: this.datax.width,
             },
             {
                 xtype: 'textfield',
@@ -135,7 +134,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
                 cls: 'input_drop_target',
                 value: this.datax.folderName,
                 listeners: {
-                    'render': function (el) {
+                    render: function (el) {
                         new Ext.dd.DropZone(el.getEl(), {
                             reference: this,
                             ddGroup: 'element',
@@ -145,36 +144,40 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
 
                             onNodeOver: function (target, dd, e, data) {
                                 data = data.records[0].data;
-                                if (data.type == 'folder') {
+
+                                if (data.type === 'folder') {
                                     return Ext.dd.DropZone.prototype.dropAllowed;
                                 }
+
                                 return Ext.dd.DropZone.prototype.dropNotAllowed;
                             },
 
                             onNodeDrop: function (target, dd, e, data) {
                                 data = data.records[0].data;
-                                if (data.type == 'folder') {
+
+                                if (data.type === 'folder') {
                                     this.setValue(data.path);
+
                                     return true;
                                 }
-                                return false;
-                            }.bind(el)
-                        });
-                    }
-                }
 
+                                return false;
+                            }.bind(el),
+                        });
+                    },
+                },
             },
             {
                 xtype: 'checkbox',
                 fieldLabel: t('coreshop_dynamic_dropdown_recursive'),
                 name: 'recursive',
-                checked: this.datax.recursive
+                checked: this.datax.recursive,
             },
             {
                 xtype: 'checkbox',
                 fieldLabel: t('coreshop_dynamic_dropdown_only_published'),
                 name: 'onlyPublished',
-                checked: this.datax.onlyPublished
+                checked: this.datax.onlyPublished,
             },
             {
                 xtype: 'combo',
@@ -184,20 +187,22 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
                 triggerAction: 'all',
                 editable: false,
                 value: this.datax.sortBy ? this.datax.sortBy : 'byid',
-                store: [['byid', t('id')], ['byvalue', t('value')]]
+                store: [['byid', t('id')], ['byvalue', t('value')]],
             },
             this.classesCombo,
-            this.methodsCombo
+            this.methodsCombo,
         ]);
+
         return this.layout;
     },
 
     isValid: function ($super) {
         var data = this.getData();
+
         if (data.className === '' || data.methodName === '' || data.folderName === '') {
             return false;
         }
 
         return $super();
-    }
+    },
 });

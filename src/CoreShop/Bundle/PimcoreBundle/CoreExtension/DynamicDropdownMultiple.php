@@ -145,15 +145,15 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getRecursive(): bool
+    public function getRecursive(): string
     {
         return $this->recursive;
     }
 
     /**
-     * @param bool $recursive
+     * @param string $recursive
      */
     public function setRecursive($recursive)
     {

@@ -69,12 +69,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     ];
 
     /**
-     * @var int
-     */
-    public $width;
-
-    /**
-     * @var bool
+     * @var string
      */
     public $recursive;
 
@@ -82,6 +77,11 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
      * @var string
      */
     public $sortBy;
+
+    /**
+     * @var int
+     */
+    public $width;
 
     /**
      * @return string
@@ -148,15 +148,15 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function getRecursive(): bool
+    public function getRecursive(): string
     {
         return $this->recursive;
     }
 
     /**
-     * @param bool $recursive
+     * @param string $recursive
      */
     public function setRecursive($recursive)
     {
