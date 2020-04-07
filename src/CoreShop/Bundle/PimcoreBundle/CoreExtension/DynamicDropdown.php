@@ -86,7 +86,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return string
      */
-    public function getClassName(): string
+    public function getClassName()
     {
         return $this->className;
     }
@@ -102,7 +102,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return string
      */
-    public function getFolderName(): string
+    public function getFolderName()
     {
         return $this->folderName;
     }
@@ -118,7 +118,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return string
      */
-    public function getMethodName(): string
+    public function getMethodName()
     {
         return $this->methodName;
     }
@@ -134,7 +134,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return bool
      */
-    public function isOnlyPublished(): bool
+    public function isOnlyPublished()
     {
         return $this->onlyPublished;
     }
@@ -150,7 +150,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return string
      */
-    public function getRecursive(): string
+    public function getRecursive()
     {
         return $this->recursive;
     }
@@ -166,7 +166,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return string
      */
-    public function getSortBy(): string
+    public function getSortBy()
     {
         return $this->sortBy;
     }
@@ -182,7 +182,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * @return int
      */
-    public function getWidth(): int
+    public function getWidth()
     {
         return $this->width;
     }
@@ -217,7 +217,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
      *
      * @return null|Element\ElementInterface
      */
-    public function preGetData($object, $params = []): ?Element\ElementInterface
+    public function preGetData($object, $params = [])
     {
         $data = null;
 
@@ -267,7 +267,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * {@inheritdoc}
      */
-    public function getDataForQueryResource($data, $object = null, $params = []): array
+    public function getDataForQueryResource($data, $object = null, $params = [])
     {
         $queryData = [];
         $name = $this->getName();
@@ -321,7 +321,7 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     /**
      * {@inheritdoc}
      */
-    public function getDataFromEditmode($data, $object = null, $params = array())
+    public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return DataObject::getById($data);
     }

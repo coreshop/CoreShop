@@ -83,7 +83,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return string
      */
-    public function getClassName(): string
+    public function getClassName()
     {
         return $this->className;
     }
@@ -99,7 +99,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return string
      */
-    public function getFolderName(): string
+    public function getFolderName()
     {
         return $this->folderName;
     }
@@ -115,7 +115,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return string
      */
-    public function getMethodName(): string
+    public function getMethodName()
     {
         return $this->methodName;
     }
@@ -131,7 +131,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return bool
      */
-    public function isOnlyPublished(): bool
+    public function isOnlyPublished()
     {
         return $this->onlyPublished;
     }
@@ -147,7 +147,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return string
      */
-    public function getRecursive(): string
+    public function getRecursive()
     {
         return $this->recursive;
     }
@@ -163,7 +163,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return string
      */
-    public function getSortBy(): string
+    public function getSortBy()
     {
         return $this->sortBy;
     }
@@ -179,7 +179,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     /**
      * @return int
      */
-    public function getWidth(): int
+    public function getWidth()
     {
         return $this->width;
     }
@@ -214,7 +214,7 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
      *
      * @return array
      */
-    public function preGetData($object, $params = []): array
+    public function preGetData($object, $params = [])
     {
         $data = null;
 
