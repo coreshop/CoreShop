@@ -13,15 +13,28 @@
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model\DataObject;
-use Pimcore\Model\Element\Service;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Extension\QueryColumnType;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Extension\Relation;
+use Pimcore\Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\Element;
+use RuntimeException;
 
-class DynamicDropdownMultiple extends
-    DataObject\ClassDefinition\Data\Relations\AbstractRelations
-    implements DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
+class DynamicDropdownMultiple extends AbstractRelations implements QueryResourcePersistenceAwareInterface
 {
-    use DataObject\ClassDefinition\Data\Extension\Relation;
-    use DataObject\ClassDefinition\Data\Extension\QueryColumnType;
-    use DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+    use AllowObjectRelationTrait;
+    use QueryColumnType;
+    use Relation;
+
+    /**
+     * @var string
+     */
+    public $className;
 
     /**
      * Static type of this element.
@@ -31,18 +44,6 @@ class DynamicDropdownMultiple extends
     public $fieldtype = 'coreShopDynamicDropdownMultiple';
 
     /**
-     * Type for the column to query
-     *
-     * @var string
-     */
-    public $queryColumnType = 'text';
-
-    /**
-     * @var int
-     */
-    public $width;
-
-    /**
      * @var string
      */
     public $folderName;
@@ -50,12 +51,19 @@ class DynamicDropdownMultiple extends
     /**
      * @var string
      */
-    public $className;
+    public $methodName;
 
     /**
+     * @var bool
+     */
+    public $onlyPublished;
+
+    /**
+     * Type for the column to query.
+     *
      * @var string
      */
-    public $methodName;
+    public $queryColumnType = 'text';
 
     /**
      * @var string
@@ -68,60 +76,20 @@ class DynamicDropdownMultiple extends
     public $sortBy;
 
     /**
-     * @var bool
+     * @var int
      */
-    public $onlyPublished;
+    public $width;
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getClasses()
-    {
-        return [['classes' => $this->getClassName()]];
-    }
-
-    /**
-     * @return int
-     */
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    /**
-     * @param int $width
-     */
-    public function setWidth($width)
-    {
-        $this->width = $width;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFolderName()
-    {
-        return $this->folderName;
-    }
-
-    /**
-     * @param mixed $folderName
-     */
-    public function setFolderName($folderName)
-    {
-        $this->folderName = $folderName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
 
     /**
-     * @param mixed $className
+     * @param string $className
      */
     public function setClassName($className)
     {
@@ -129,15 +97,31 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getMethodName()
+    public function getFolderName(): string
+    {
+        return $this->folderName;
+    }
+
+    /**
+     * @param string $folderName
+     */
+    public function setFolderName($folderName)
+    {
+        $this->folderName = $folderName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethodName(): string
     {
         return $this->methodName;
     }
 
     /**
-     * @param mixed $methodName
+     * @param string $methodName
      */
     public function setMethodName($methodName)
     {
@@ -145,41 +129,9 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @return mixed
-     */
-    public function getRecursive()
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * @param mixed $recursive
-     */
-    public function setRecursive($recursive)
-    {
-        $this->recursive = $recursive;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
-    }
-
-    /**
      * @return bool
      */
-    public function isOnlyPublished()
+    public function isOnlyPublished(): bool
     {
         return $this->onlyPublished;
     }
@@ -195,18 +147,74 @@ class DynamicDropdownMultiple extends
     /**
      * @return bool
      */
+    public function getRecursive(): bool
+    {
+        return $this->recursive;
+    }
+
+    /**
+     * @param bool $recursive
+     */
+    public function setRecursive($recursive)
+    {
+        $this->recursive = $recursive;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortBy(): string
+    {
+        return $this->sortBy;
+    }
+
+    /**
+     * @param string $sortBy
+     */
+    public function setSortBy($sortBy)
+    {
+        $this->sortBy = $sortBy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth(): int
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return [['classes' => $this->getClassName()]];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getObjectsAllowed()
     {
         return true;
     }
 
     /**
-     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @param Concrete|Localizedfield|Objectbrick\Data\AbstractData|Fieldcollection\Data\AbstractData $object
      * @param array $params
      *
      * @return array
      */
-    public function preGetData($object, $params = [])
+    public function preGetData($object, $params = []): array
     {
         $data = null;
 
@@ -232,7 +240,7 @@ class DynamicDropdownMultiple extends
             $publishedList = [];
 
             foreach ($data as $listElement) {
-                if (Service::isPublished($listElement)) {
+                if (Element\Service::isPublished($listElement)) {
                     $publishedList[] = $listElement;
                 }
             }
@@ -244,13 +252,7 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @see Data::getDataFromEditmode
-     *
-     * @param array $data
-     * @param null|DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
@@ -259,13 +261,16 @@ class DynamicDropdownMultiple extends
         }
 
         $objects = [];
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $ob) {
-                $o = DataObject::getById($ob['id']);
 
-                if ($o) {
-                    $objects[] = $o;
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $objectId) {
+                $obj = DataObject::getById($objectId);
+
+                if (!$obj instanceof DataObject\Concrete) {
+                    continue;
                 }
+
+                $objects[] = $obj;
             }
         }
 
@@ -274,13 +279,7 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @see Data::getDataForEditmode
-     *
-     * @param array $data
-     * @param null|DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -289,9 +288,11 @@ class DynamicDropdownMultiple extends
         // add data
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $referencedObject) {
-                if ($referencedObject instanceof DataObject\Concrete) {
-                    $return[] = $referencedObject->getId();
+                if (!$referencedObject instanceof DataObject\Concrete) {
+                    continue;
                 }
+
+                $return[] = $referencedObject->getId();
             }
         }
 
@@ -299,7 +300,7 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function prepareDataForPersistence($data, $object = null, $params = [])
     {
@@ -315,7 +316,7 @@ class DynamicDropdownMultiple extends
                             'dest_id' => $obj->getId(),
                             'type' => 'object',
                             'fieldname' => $this->getName(),
-                            'index' => $counter
+                            'index' => $counter,
                         ];
                     }
 
@@ -335,15 +336,7 @@ class DynamicDropdownMultiple extends
     }
 
     /**
-     * @see QueryResourcePersistenceAwareInterface::getDataForQueryResource
-     *
-     * @param array $data
-     * @param null|DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @throws \Exception
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -357,12 +350,14 @@ class DynamicDropdownMultiple extends
         if (is_array($data)) {
             if (count($data) > 0) {
                 foreach ($data as $obj) {
-                    if ($obj instanceof DataObject\Concrete) {
-                        $ids[] = $obj->getId();
+                    if (!$obj instanceof DataObject\Concrete) {
+                        continue;
                     }
+
+                    $ids[] = $obj->getId();
                 }
 
-                return ',' . implode(',', $ids) . ',';
+                return sprintf(',%s,', implode(',', $ids));
             }
 
             if (count($data) === 0) {
@@ -370,7 +365,12 @@ class DynamicDropdownMultiple extends
             }
         }
 
-        throw new \Exception('invalid data passed to getDataForQueryResource - must be array and it is: ' . print_r($data, true));
+        throw new RuntimeException(
+            sprintf(
+                'Invalid data passed to getDataForQueryResource - must be array and it is: %s',
+                gettype($data)
+            )
+        );
     }
 
     /**
@@ -386,6 +386,7 @@ class DynamicDropdownMultiple extends
         if (is_array($data) && count($data) > 0) {
             foreach ($data as $obj) {
                 $o = DataObject::getById($obj['dest_id']);
+
                 if ($o instanceof DataObject\Concrete) {
                     $objects['data'][] = $o;
                 } else {
