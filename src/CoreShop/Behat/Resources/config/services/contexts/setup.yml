@@ -323,5 +323,6 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.security_service.frontend'
             - '@coreshop.repository.customer'
+            - '@coreshop.factory.customer'
         tags:
             - { name: fob.context_service }

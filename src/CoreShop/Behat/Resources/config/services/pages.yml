@@ -43,3 +43,7 @@ services:
     CoreShop\Behat\Page\Frontend\ProductPageInterface: '@CoreShop\Behat\Page\Frontend\ProductPage'
     CoreShop\Behat\Page\Frontend\ProductPage:
         parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\CartPageInterface: '@CoreShop\Behat\Page\Frontend\CartPage'
+    CoreShop\Behat\Page\Frontend\CartPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

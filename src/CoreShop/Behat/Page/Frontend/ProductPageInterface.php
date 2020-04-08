@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
+use Behat\Mink\Exception\ElementNotFoundException;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+
 interface ProductPageInterface extends FrontendPageInterface
 {
     public function getContent(): string;
@@ -33,4 +36,24 @@ interface ProductPageInterface extends FrontendPageInterface
     public function getTax(): string;
 
     public function getQuantityPriceRules(): array;
+
+    /**
+     * @throws ElementNotFoundException
+     */
+    public function addToCart(): void;
+
+    /**
+     * @throws ElementNotFoundException
+     */
+    public function addToCartWithQuantity(string $quantity): void;
+
+    /**
+     * @throws ElementNotFoundException
+     */
+    public function addToCartInUnit(ProductUnitDefinitionInterface $unit): void;
+
+    /**
+     * @throws ElementNotFoundException
+     */
+    public function addToCartInUnitWithQuantity(ProductUnitDefinitionInterface $unit, string $quantity): void;
 }

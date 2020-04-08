@@ -44,7 +44,44 @@ services:
     coreshop.behat.context.ui.product:
         class: CoreShop\Behat\Context\Ui\Frontend\ProductContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
             - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.cart:
+        class: CoreShop\Behat\Context\Ui\Frontend\CartContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+            - '@CoreShop\Behat\Page\Frontend\CartPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.user:
+        class: CoreShop\Behat\Context\Ui\Frontend\UserContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.store:
+        class: CoreShop\Behat\Context\Ui\Frontend\StoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Service\StoreContextSetterInterface'
+            - '@coreshop.repository.store'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.currency:
+        class: CoreShop\Behat\Context\Ui\Frontend\CurrencyContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
         tags:
             - { name: fob.context_service }

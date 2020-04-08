@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
 class HomePage extends AbstractFrontendPage implements HomePageInterface
@@ -31,17 +32,12 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
 
     public function logOut(): void
     {
-        throw new \Exception('Not implemented yet');
+        $this->getElement('logout_button')->click();
     }
 
     public function hasLogoutButton(): bool
     {
         return $this->hasElement('logout_button');
-    }
-
-    public function getFullName(): string
-    {
-        throw new \Exception('Not implemented yet');
     }
 
     public function getActiveCurrency(): string
@@ -56,7 +52,9 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
 
     public function switchCurrency(string $currencyCode): void
     {
-        throw new \Exception('Not implemented yet');
+        $this->getElement('currency_selector')->click();
+
+        $this->getElement('currency_selector_code', ['%code%' => $currencyCode])->click();
     }
 
     public function getActiveLocale(): string
@@ -89,6 +87,8 @@ class HomePage extends AbstractFrontendPage implements HomePageInterface
         return array_merge(parent::getDefinedElements(), [
             'latest_products' => '[data-test-latest-products]',
             'logout_button' => '[data-test-logout-button]',
+            'currency_selector' => '[data-test-currency-selector]',
+            'currency_selector_code' => '[data-test-currency-selector-code="%code%"]',
         ]);
     }
 }

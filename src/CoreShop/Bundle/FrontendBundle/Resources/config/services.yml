@@ -35,3 +35,7 @@ services:
             - '%kernel.environment%'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
+        tags:
+            - { name: twig.extension }

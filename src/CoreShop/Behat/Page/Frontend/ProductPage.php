@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 {
@@ -84,9 +85,36 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         );
     }
 
+    public function addToCart(): void
+    {
+        $this->getElement('add_to_cart')->click();
+    }
+
+    public function addToCartWithQuantity(string $quantity): void
+    {
+        $this->getElement('quantity')->setValue($quantity);
+        $this->getElement('add_to_cart')->click();
+    }
+
+    public function addToCartInUnit(ProductUnitDefinitionInterface $unit): void
+    {
+        $this->getElement('unit')->setValue($unit->getId());
+        $this->getElement('add_to_cart')->click();
+    }
+
+    public function addToCartInUnitWithQuantity(ProductUnitDefinitionInterface $unit, string $quantity): void
+    {
+        $this->getElement('unit')->setValue($unit->getId());
+        $this->getElement('quantity')->setValue($quantity);
+        $this->getElement('add_to_cart')->click();
+    }
+
     protected function getDefinedElements(): array
     {
         return array_merge(parent::getDefinedElements(), [
+            'add_to_cart' => '[data-test-add-to-cart]',
+            'quantity' => '[data-test-quantity]',
+            'unit' => '[data-test-unit]',
             'product_name' => '[data-test-product-name]',
             'product_price' => '[data-test-product-price]',
             'product_original_price' => '[data-test-product-original-price]',

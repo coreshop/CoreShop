@@ -17,20 +17,24 @@ namespace CoreShop\Behat\Context\Ui\Frontend;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Page\Frontend\HomePageInterface;
 use CoreShop\Behat\Page\Frontend\ProductPageInterface;
+use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
+    private $sharedStorage;
     private $linkGenerator;
     private $productPage;
 
     public function __construct(
+        SharedStorageInterface $sharedStorage,
         LinkGeneratorInterface $linkGenerator,
         ProductPageInterface $productPage
     )
     {
+        $this->sharedStorage = $sharedStorage;
         $this->linkGenerator = $linkGenerator;
         $this->productPage = $productPage;
     }

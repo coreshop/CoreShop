@@ -50,3 +50,8 @@ services:
     CoreShop\Behat\Service\NotificationChecker:
         arguments:
             - '@CoreShop\Behat\Service\NotificationAccessorInterface'
+
+    CoreShop\Behat\Service\StoreContextSetterInterface: '@CoreShop\Behat\Service\StoreContextSetter'
+    CoreShop\Behat\Service\StoreContextSetter:
+        arguments:
+            - '@CoreShop\Behat\Service\CookieSetterInterface'

@@ -4,7 +4,7 @@
 {% block content %}
 
     {% include '@CoreShopFrontend/Checkout/_order-steps.html.twig' %}
-    
+
     <div class="shopping-cart-table">
         {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
     </div>
@@ -14,7 +14,7 @@
             {% include '@CoreShopFrontend/Cart/Summary/_items.html.twig' %}
         </div>
     {% else %}
-        <p>{{ 'coreshop.ui.cart_empty'|trans }}</p>
+        <p {{ coreshop_test_html_attribute('cart-empty') }}>{{ 'coreshop.ui.cart_empty'|trans }}</p>
     {% endif %}
 
     <div class="row">

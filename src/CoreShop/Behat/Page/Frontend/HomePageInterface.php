@@ -22,8 +22,6 @@ interface HomePageInterface extends FrontendPageInterface
 
     public function logOut();
 
-    public function getFullName(): string;
-
     public function getActiveCurrency(): string;
 
     public function getAvailableCurrencies(): array;

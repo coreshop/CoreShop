@@ -12,38 +12,36 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Context\Transform;
+namespace CoreShop\Behat\Context\Ui\Frontend;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Behat\Service\StoreContextSetterInterface;
+use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Store\Repository\StoreRepositoryInterface;
-use Webmozart\Assert\Assert;
 
 final class StoreContext implements Context
 {
     private $sharedStorage;
+    private $storeContextSetter;
     private $storeRepository;
 
-    public function __construct(SharedStorageInterface $sharedStorage, StoreRepositoryInterface $storeRepository)
-    {
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        StoreContextSetterInterface $storeContextSetter,
+        StoreRepositoryInterface $storeRepository
+    ) {
         $this->sharedStorage = $sharedStorage;
+        $this->storeContextSetter = $storeContextSetter;
         $this->storeRepository = $storeRepository;
     }
 
     /**
-     * @Transform /^store(?:|s) "([^"]+)"$/
-     * @Transform /^store to "([^"]+)"$/
+     * @Given /^I changed (?:|back )my current (store to "([^"]+)")$/
+     * @When /^I change (?:|back )my current (store to "([^"]+)")$/
      */
-    public function getStoreByName($name)
+    public function iChangeMyCurrentStoreTo(StoreInterface $store): void
     {
-        $stores = $this->storeRepository->findBy(['name' => $name]);
-
-        Assert::eq(
-            count($stores),
-            1,
-            sprintf('%d stores has been found with name "%s".', count($stores), $name)
-        );
-
-        return reset($stores);
+        $this->storeContextSetter->setStore($store);
     }
 }

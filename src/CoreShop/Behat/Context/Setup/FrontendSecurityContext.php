@@ -18,6 +18,9 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SecurityServiceInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Pimcore\File;
+use Pimcore\Model\DataObject\Folder;
 use Webmozart\Assert\Assert;
 
 final class FrontendSecurityContext implements Context
@@ -25,15 +28,18 @@ final class FrontendSecurityContext implements Context
     private $sharedStorage;
     private $securityService;
     private $customerRepository;
+    private $customerFactory;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
         SecurityServiceInterface $securityService,
-        CustomerRepositoryInterface $customerRepository
+        CustomerRepositoryInterface $customerRepository,
+        FactoryInterface $customerFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->securityService = $securityService;
         $this->customerRepository = $customerRepository;
+        $this->customerFactory = $customerFactory;
     }
 
     /**
@@ -45,5 +51,25 @@ final class FrontendSecurityContext implements Context
         Assert::notNull($user);
 
         $this->securityService->logIn($user);
+    }
+
+    /**
+     * @Given I am a logged in customer
+     */
+    public function iAmLoggedInCustomer()
+    {
+        $customer = $this->customerFactory->createNew();
+        $customer->setKey(File::getValidFilename('coreshop@pimcore.org'));
+        $customer->setParent(Folder::getByPath('/'));
+        $customer->setEmail('coreshop@pimcore.org');
+        $customer->setFirstname(reset(explode('@', 'coreshop@pimcore.org')));
+        $customer->setLastname(end(explode('@', 'coreshop@pimcore.org')));
+        $customer->setPassword('coreshop');
+        $customer->setPublished(true);
+        $customer->save();
+
+        $this->securityService->logIn($customer);
+
+        $this->sharedStorage->set('customer', $customer);
     }
 }
