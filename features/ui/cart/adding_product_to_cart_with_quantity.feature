@@ -1,4 +1,4 @@
-@ui @cart
+@ui @cart @wip
 Feature: Adding a product of given quantity to the cart
 
     Background:

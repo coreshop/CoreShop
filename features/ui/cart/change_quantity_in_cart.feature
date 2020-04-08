@@ -1,4 +1,4 @@
-@ui @cart
+@ui @cart @wip
 Feature: Changing quantity of a product in cart
 
     Background:
