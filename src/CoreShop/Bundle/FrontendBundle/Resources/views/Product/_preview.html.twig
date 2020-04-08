@@ -10,7 +10,7 @@
         {% endif %}
     </div>
     <div class="caption">
-        <h4><a href="{{ href }}">{{ product.name }}</a></h4>
+        <h4><a href="{{ href }}" {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a></h4>
         <div class="description">
             {{ product.shortDescription }}
         </div>

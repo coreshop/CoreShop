@@ -20,4 +20,4 @@ default:
                 - coreshop.behat.context.domain.category
                 - coreshop.behat.context.domain.link_generator
             filters:
-                tags: "@category"
+                tags: "@domain && @category"

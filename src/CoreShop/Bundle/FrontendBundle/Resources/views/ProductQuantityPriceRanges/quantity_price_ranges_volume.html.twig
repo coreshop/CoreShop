@@ -40,7 +40,7 @@
             <th scope="col">{{ unit_label_excl }}</th>
         </tr>
         </thead>
-        <tbody class="">
+        <tbody class="" {{ coreshop_test_html_attribute('product-quantity-price-rules') }}>
 
         {% for sorted_unit_range in sorted_unit_ranges %}
 
@@ -51,9 +51,13 @@
             {% endif %}
 
             {% for range in sorted_unit_range.ranges %}
-                <tr class="">
+                <tr class="" {{ coreshop_test_html_attribute('product-quantity-price-rule') }}>
                     <td class="">
-                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.rangeStartingFrom }}</span>
+
+                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }}
+                        <span {{ coreshop_test_html_attribute('product-quantity-price-rule-start', range.rangeStartingFrom) }}>
+                            {{ range.rangeStartingFrom }}
+                        </span>
                         {% if range.isHighlighted %}
                             <span class="badge badge-info">{{ 'coreshop.ui.product_quantity_price_rules.best_offer'|trans }}</span>
                         {% endif %}
@@ -67,11 +71,17 @@
                             <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ currency.convertAndFormatFromCustomCurrency(range.currency.isoCode, range.amount) }}</small>
                         {% endif %}
                     </td>
+                    {% set price = currency.convertAndFormat(coreshop_quantity_price_rule_range_price(range, product, coreshop.context|merge({'unitDefinition' : sorted_unit_range.unit_definition }), true)) %}
+                    {% set price_excl = currency.convertAndFormat(coreshop_quantity_price_rule_range_price(range, product, coreshop.context|merge({'unitDefinition' : sorted_unit_range.unit_definition }), false)) %}
                     <td class="">
-                        <span class="range-price">{{ currency.convertAndFormat(coreshop_quantity_price_rule_range_price(range, product, coreshop.context|merge({'unitDefinition' : sorted_unit_range.unit_definition }), true)) }}</span>
+                        <span class="range-price" {{ coreshop_test_html_attribute('product-quantity-price-rule-price-inc', price) }}>
+                            {{ price }}
+                        </span>
                     </td>
                     <td class="">
-                        <span class="range-price">{{ currency.convertAndFormat(coreshop_quantity_price_rule_range_price(range, product, coreshop.context|merge({'unitDefinition' : sorted_unit_range.unit_definition }), false)) }}</span>
+                        <span class="range-price" {{ coreshop_test_html_attribute('product-quantity-price-rule-price-exc', price_excl) }}>
+                            {{ price_excl }}
+                        </span>
                     </td>
                 </tr>
             {% endfor %}

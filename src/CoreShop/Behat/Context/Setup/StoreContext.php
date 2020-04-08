@@ -110,6 +110,16 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^the (store "[^"]+") is the default store$/
+     */
+    public function theStoreIsDefault(StoreInterface $store)
+    {
+        $store->setIsDefault(true);
+
+        $this->saveStore($store);
+    }
+
+    /**
      * @param string                 $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null  $country

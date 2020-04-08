@@ -23,5 +23,5 @@ CoreShop\Component\Customer\Model\Customer:
         - \CoreShop\Bundle\ResourceBundle\Validator\Constraints\UniqueEntity:
               groups: ['coreshop_customer_guest']
               fields: ['container.getParameter("coreshop.customer.security.login_identifier")']
-              values: {isGuest: [false, null]}
+              values: {isGuest: [true]}
               message: 'container.getParameter("coreshop.customer.security.login_identifier") == "email" ? "coreshop.form.guest.email_is_customer" : "coreshop.form.guest.username_is_customer"'

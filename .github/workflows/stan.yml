@@ -23,7 +23,7 @@ jobs:
     strategy:
       matrix:
         php: [7.3, 7.4]
-        
+
     steps:
     - uses: actions/checkout@v2
 
@@ -66,6 +66,6 @@ jobs:
 
     - name: STAN
       run: |
-        cp -f app/config/config_test.yml app/config/config_dev.yml
+        cp -f app/config/config_stan.yml app/config/config_dev.yml
         bin/console cache:warmup --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3

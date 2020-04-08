@@ -1,10 +1,12 @@
 <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" href="#" id="currencyDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="nav-link dropdown-toggle" href="#" id="currencyDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" {{ coreshop_test_html_attribute('currency-selector') }}>
         {{ 'coreshop.ui.currency'|trans }}
     </a>
-    <div class="dropdown-menu" aria-labelledby="currencyDropdown">
+    <div class="dropdown-menu" aria-labelledby="currencyDropdown" >
         {% for currency in currencies %}
-            <a class="dropdown-item" href="{{ coreshop_path('coreshop_switch_currency', {'currencyCode': currency.isoCode}) }}">{{ currency.name }}</a>
+            <a class="dropdown-item" href="{{ coreshop_path('coreshop_switch_currency', {'currencyCode': currency.isoCode}) }}" {{ coreshop_test_html_attribute('currency-selector-code', currency.isoCode) }}>
+                {{ currency.name }} ({{ currency.isoCode }})
+            </a>
         {% endfor %}
     </div>
 </li>

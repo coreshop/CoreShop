@@ -1,2 +1,3 @@
 imports:
     - profiles/default.yml
+    - profiles/ui.yml

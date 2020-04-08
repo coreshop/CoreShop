@@ -16,4 +16,4 @@ default:
                 - coreshop.behat.context.domain.pimcore_class
                 - coreshop.behat.context.domain.pimcore
             filters:
-                tags: "@pimcore"
+                tags: "@domain && @pimcore"

@@ -20,4 +20,4 @@ default:
 
                 - coreshop.behat.context.domain.country
             filters:
-                tags: "@country"
+                tags: "@domain && @country"
