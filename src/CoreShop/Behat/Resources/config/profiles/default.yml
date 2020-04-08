@@ -12,3 +12,7 @@ default:
                 path: app/BehatAppKernel.php
                 class: BehatAppKernel
                 environment: test
+
+    gherkin:
+        filters:
+            tags: '@domain && ~@wip'

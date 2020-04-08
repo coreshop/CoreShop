@@ -29,3 +29,7 @@ ui:
             show_auto: false
 
         CoreShop\Behat\PantherExtension: ~
+
+    gherkin:
+        filters:
+            tags: '@ui && ~@wip'

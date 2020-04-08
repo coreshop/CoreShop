@@ -1,4 +1,4 @@
-@ui @ui_pimcore @login
+@ui @ui_pimcore @login @wip
 Feature: Signing in to the Pimcore Backend
 
     Scenario: Sign in with email and password
