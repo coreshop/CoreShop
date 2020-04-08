@@ -12,18 +12,29 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Extension\QueryColumnType;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Extension\Relation;
+use Pimcore\Model\DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AbstractRelations;
+use Pimcore\Model\DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Fieldcollection;
+use Pimcore\Model\DataObject\Localizedfield;
+use Pimcore\Model\DataObject\Objectbrick;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element;
 
-class DynamicDropdown
-    extends DataObject\ClassDefinition\Data\Relations\AbstractRelations
-    implements DataObject\ClassDefinition\Data\QueryResourcePersistenceAwareInterface
+class DynamicDropdown extends AbstractRelations implements QueryResourcePersistenceAwareInterface
 {
-    use DataObject\ClassDefinition\Data\Extension\Relation;
-    use DataObject\ClassDefinition\Data\Extension\QueryColumnType;
-    use DataObject\ClassDefinition\Data\Relations\AllowObjectRelationTrait;
+    use AllowObjectRelationTrait;
+    use QueryColumnType;
+    use Relation;
+
+    /**
+     * @var string
+     */
+    public $className;
 
     /**
      * Static type of this element.
@@ -40,12 +51,22 @@ class DynamicDropdown
     /**
      * @var string
      */
-    public $className;
+    public $methodName;
 
     /**
-     * @var string
+     * @var bool
      */
-    public $methodName;
+    public $onlyPublished;
+
+    /**
+     * Type for the column to query.
+     *
+     * @var array
+     */
+    public $queryColumnType = [
+        'id' => 'int(11)',
+        'type' => "enum('document','asset','object')",
+    ];
 
     /**
      * @var string
@@ -58,44 +79,12 @@ class DynamicDropdown
     public $sortBy;
 
     /**
-     * @var bool
+     * @var int
      */
-    public $onlyPublished;
+    public $width;
 
     /**
-     * {@inheritdoc}
-     */
-    public function getObjectsAllowed()
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClasses()
-    {
-        return [['classes' => $this->getClassName()]];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFolderName()
-    {
-        return $this->folderName;
-    }
-
-    /**
-     * @param mixed $folderName
-     */
-    public function setFolderName($folderName)
-    {
-        $this->folderName = $folderName;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getClassName()
     {
@@ -103,7 +92,7 @@ class DynamicDropdown
     }
 
     /**
-     * @param mixed $className
+     * @param string $className
      */
     public function setClassName($className)
     {
@@ -111,7 +100,23 @@ class DynamicDropdown
     }
 
     /**
-     * @return mixed
+     * @return string
+     */
+    public function getFolderName()
+    {
+        return $this->folderName;
+    }
+
+    /**
+     * @param string $folderName
+     */
+    public function setFolderName($folderName)
+    {
+        $this->folderName = $folderName;
+    }
+
+    /**
+     * @return string
      */
     public function getMethodName()
     {
@@ -119,43 +124,11 @@ class DynamicDropdown
     }
 
     /**
-     * @param mixed $methodName
+     * @param string $methodName
      */
     public function setMethodName($methodName)
     {
         $this->methodName = $methodName;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRecursive()
-    {
-        return $this->recursive;
-    }
-
-    /**
-     * @param mixed $recursive
-     */
-    public function setRecursive($recursive)
-    {
-        $this->recursive = $recursive;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSortBy()
-    {
-        return $this->sortBy;
-    }
-
-    /**
-     * @param mixed $sortBy
-     */
-    public function setSortBy($sortBy)
-    {
-        $this->sortBy = $sortBy;
     }
 
     /**
@@ -175,7 +148,71 @@ class DynamicDropdown
     }
 
     /**
-     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @return string
+     */
+    public function getRecursive()
+    {
+        return $this->recursive;
+    }
+
+    /**
+     * @param string $recursive
+     */
+    public function setRecursive($recursive)
+    {
+        $this->recursive = $recursive;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSortBy()
+    {
+        return $this->sortBy;
+    }
+
+    /**
+     * @param string $sortBy
+     */
+    public function setSortBy($sortBy)
+    {
+        $this->sortBy = $sortBy;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClasses()
+    {
+        return [['classes' => $this->getClassName()]];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getObjectsAllowed()
+    {
+        return true;
+    }
+
+    /**
+     * @param Concrete|Localizedfield|Objectbrick\Data\AbstractData|Fieldcollection\Data\AbstractData $object
      * @param array $params
      *
      * @return null|Element\ElementInterface
@@ -183,75 +220,67 @@ class DynamicDropdown
     public function preGetData($object, $params = [])
     {
         $data = null;
-        if ($object instanceof DataObject\Concrete) {
+
+        if ($object instanceof Concrete) {
             $data = $object->getObjectVar($this->getName());
 
             if (!$object->isLazyKeyLoaded($this->getName())) {
                 $data = $this->load($object);
-
                 $object->setObjectVar($this->getName(), $data);
                 $this->markLazyloadedFieldAsLoaded($object);
             }
-        } elseif ($object instanceof DataObject\Localizedfield) {
+        } elseif ($object instanceof Localizedfield) {
             $data = $params['data'];
-        } elseif ($object instanceof DataObject\Fieldcollection\Data\AbstractData) {
+        } elseif ($object instanceof Fieldcollection\Data\AbstractData) {
             parent::loadLazyFieldcollectionField($object);
             $data = $object->getObjectVar($this->getName());
-        } elseif ($object instanceof DataObject\Objectbrick\Data\AbstractData) {
+        } elseif ($object instanceof Objectbrick\Data\AbstractData) {
             parent::loadLazyBrickField($object);
             $data = $object->getObjectVar($this->getName());
         }
 
-        if (DataObject\AbstractObject::doHideUnpublished() && ($data instanceof Element\ElementInterface)) {
-            if (!Element\Service::isPublished($data)) {
-                return null;
-            }
+        if ($data instanceof Element\ElementInterface && DataObject\AbstractObject::doHideUnpublished() &&
+            !Element\Service::isPublished($data)
+        ) {
+            return null;
         }
 
         return $data;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function prepareDataForPersistence($data, $object = null, $params = [])
     {
-        if ($data instanceof Element\ElementInterface) {
-            $type = Element\Service::getType($data);
-            $id = $data->getId();
-
-            return [[
-                'dest_id' => $id,
-                'type' => $type,
-                'fieldname' => $this->getName()
-            ]];
+        if (!$data instanceof Element\ElementInterface) {
+            return null;
         }
 
-        return null;
+        return [[
+            'dest_id' => $data->getId(),
+            'type' => Element\Service::getType($data),
+            'fieldname' => $this->getName()
+        ]];
     }
 
     /**
-     * @see QueryResourcePersistenceAwareInterface::getDataForQueryResource
-     *
-     * @param Asset|Document|DataObject\AbstractObject $data
-     * @param null|DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
+        $queryData = [];
+        $name = $this->getName();
         $rData = $this->prepareDataForPersistence($data, $object, $params);
-        $return = [];
 
-        $return[$this->getName() . '__id'] = isset($rData[0]['dest_id']) ? $rData[0]['dest_id'] : null;
-        $return[$this->getName() . '__type'] = isset($rData[0]['type']) ? $rData[0]['type'] : null;
+        $queryData[$name . '__id'] = $rData[0]['dest_id'] ?? null;
+        $queryData[$name . '__type'] = $rData[0]['type'] ?? null;
 
-        return $return;
+        return $queryData;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function loadData($data, $object = null, $params = [])
     {
@@ -266,6 +295,7 @@ class DynamicDropdown
 
         if (!empty($data['dest_id']) && !empty($data['type'])) {
             $element = Element\Service::getElementById($data['type'], $data['dest_id']);
+
             if ($element instanceof Element\ElementInterface) {
                 $result['data'] = $element;
             } else {
@@ -278,22 +308,20 @@ class DynamicDropdown
 
     /**
      * {@inheritdoc}
-     *
-     * @return int|null
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
-        if ($data) {
-            return $data->getId();
+        if (!$data instanceof Element\ElementInterface) {
+            return null;
         }
 
-        return null;
+        return $data->getId();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDataFromEditmode($data, $object = null, $params = array())
+    public function getDataFromEditmode($data, $object = null, $params = [])
     {
         return DataObject::getById($data);
     }
@@ -307,13 +335,13 @@ class DynamicDropdown
             $data = DataObject::getById($data);
         }
 
-        if ($data instanceof Element\ElementInterface) {
-            $method = $this->getMethodName();
-
-            return $data->$method();
+        if (!$data instanceof Element\ElementInterface) {
+            return null;
         }
 
-        return null;
+        $method = $this->getMethodName();
+
+        return $data->$method();
     }
 
     /**
@@ -321,6 +349,5 @@ class DynamicDropdown
      */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
-        return;
     }
 }
