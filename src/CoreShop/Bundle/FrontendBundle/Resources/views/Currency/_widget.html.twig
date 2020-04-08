@@ -4,7 +4,7 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="currencyDropdown">
         {% for currency in currencies %}
-            <a class="dropdown-item" href="{{ coreshop_path('coreshop_switch_currency', {'currencyCode': currency.getIsoCode}) }}">{{ currency.getName() }}</a>
+            <a class="dropdown-item" href="{{ coreshop_path('coreshop_switch_currency', {'currencyCode': currency.isoCode}) }}">{{ currency.name }}</a>
         {% endfor %}
     </div>
 </li>

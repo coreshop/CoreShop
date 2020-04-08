@@ -24,7 +24,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in cart.getItems %}
+            {% for item in cart.items %}
                 {% include '@CoreShopFrontend/Cart/Summary/_item.html.twig' with {'item': item, 'form': form.items[loop.index0]} %}
             {% endfor %}
             <tr>
@@ -46,6 +46,6 @@
 
 </div>
 
-{% if cart.getShipping(false) is null %}
+{% if cart.shipping(false) is null %}
     {{ render(controller('coreshop.frontend.controller.cart:shipmentCalculationAction')) }}
 {% endif %}

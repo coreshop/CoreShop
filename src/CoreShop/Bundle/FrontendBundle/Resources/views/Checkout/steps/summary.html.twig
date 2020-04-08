@@ -10,7 +10,7 @@
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_errors(form) }}
 
-        {% if cart.hasItems() %}
+        {% if cart.hasItems %}
             <div class="cart-summary">
                 {% include '@CoreShopFrontend/Checkout/steps/summary/_list.html.twig' %}
             </div>

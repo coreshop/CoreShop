@@ -3,7 +3,7 @@
 {# first sort by unit, if given #}
 {% set sorted_unit_ranges = [] %}
 
-{% for range in rule.getRanges() %}
+{% for range in rule.ranges %}
     {% set unit_identifier = range.hasUnitDefinition ? range.unitDefinition.unit.translation(app.request.locale).fullLabel : 'default' %}
     {% set unit_definition = range.hasUnitDefinition ? range.unitDefinition : null %}
     {% if sorted_unit_ranges[unit_identifier] is not defined %}
@@ -14,7 +14,7 @@
     {% set sorted_unit_ranges = sorted_unit_ranges|merge({ (unit_identifier): {'ranges' : current_ranges, 'unit_definition' : unit_definition } }) %}
 {% endfor %}
 
-<div class="product-quantity-price-ranges quantity-type-{{ rule.getCalculationBehaviour() }} d-block">
+<div class="product-quantity-price-ranges quantity-type-{{ rule.calculationBehaviour }} d-block">
     <h3>{{ 'coreshop.ui.product_quantity_price_rules.ranges_available'|trans }}</h3>
     <table class="table table-striped">
         <thead class="">
@@ -53,18 +53,18 @@
             {% for range in sorted_unit_range.ranges %}
                 <tr class="">
                     <td class="">
-                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.getRangeStartingFrom() }}</span>
-                        {% if range.isHighlighted() %}
+                        {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }} <span class="">{{ range.rangeStartingFrom }}</span>
+                        {% if range.isHighlighted %}
                             <span class="badge badge-info">{{ 'coreshop.ui.product_quantity_price_rules.best_offer'|trans }}</span>
                         {% endif %}
-                        {% if range.hasPseudoPrice() %}
+                        {% if range.hasPseudoPrice %}
                             <small>{{ 'coreshop.ui.product_quantity_price_rules.list_price'|trans }}
-                                <del>{{ currency.convertAndFormatFromCustomCurrency(range.getCurrency.isoCode, range.getPseudoPrice()) }}</del>
+                                <del>{{ currency.convertAndFormatFromCustomCurrency(range.currency.isoCode, range.pseudoPrice) }}</del>
                             </small>
-                        {% elseif range.getPricingBehaviour() == 'percentage_decrease' %}
-                            <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ range.getPercentage() }}%</small>
-                        {% elseif range.getPricingBehaviour() == 'amount_decrease' %}
-                            <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ currency.convertAndFormatFromCustomCurrency(range.getCurrency.isoCode, range.getAmount()) }}</small>
+                        {% elseif range.pricingBehaviour == 'percentage_decrease' %}
+                            <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ range.percentage }}%</small>
+                        {% elseif range.pricingBehaviour == 'amount_decrease' %}
+                            <small>{{ 'coreshop.ui.product_quantity_price_rules.you_save'|trans }}: {{ currency.convertAndFormatFromCustomCurrency(range.currency.isoCode, range.amount) }}</small>
                         {% endif %}
                     </td>
                     <td class="">
