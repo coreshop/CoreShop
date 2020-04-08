@@ -1,0 +1,17 @@
+services:
+    CoreShop\Bundle\StoreBundle\Context\Debug\DebugStorePersister:
+        arguments:
+            - '@CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreProviderInterface'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+    CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreProviderInterface: '@CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreProvider'
+    CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreProvider: ~
+
+    CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreContext:
+        arguments:
+            - '@CoreShop\Bundle\StoreBundle\Context\Debug\DebugStoreProviderInterface'
+            - '@coreshop.repository.store'
+            - '@request_stack'
+        tags:
+            - { name: coreshop.context.store, type: debug, priority: 256 }

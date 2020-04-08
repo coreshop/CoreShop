@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\NotificationRuleListenerInterface;
 use CoreShop\Behat\Service\Setup;
+use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use CoreShop\Bundle\NotificationBundle\Events;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -80,12 +80,5 @@ final class CoreShopSetupContext implements Context
     public function clearNotificationRuleListener()
     {
         $this->notificationRuleListener->clear();
-
-        $function = function (GenericEvent $event) {
-            $this->notificationRuleListener->applyNewFired($event->getSubject());
-        };
-
-        $this->eventDispatcher->removeListener(Events::PRE_APPLY, $function);
-        $this->eventDispatcher->addListener(Events::PRE_APPLY, $function);
     }
 }

@@ -44,4 +44,4 @@ default:
                 - coreshop.behat.context.domain.customer
                 - coreshop.behat.context.domain.notification_rule
             filters:
-                tags: "@order"
+                tags: "@domain && @order"

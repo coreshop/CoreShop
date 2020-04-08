@@ -316,3 +316,13 @@ services:
             - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.frontend_security:
+        class: CoreShop\Behat\Context\Setup\FrontendSecurityContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.security_service.frontend'
+            - '@coreshop.repository.customer'
+            - '@coreshop.factory.customer'
+        tags:
+            - { name: fob.context_service }

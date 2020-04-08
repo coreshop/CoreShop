@@ -144,7 +144,7 @@ services:
         class: CoreShop\Behat\Context\Domain\NotificationContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.behat.notification_rule_listener'
+            - '@CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListener'
         tags:
             - { name: fob.context_service }
 

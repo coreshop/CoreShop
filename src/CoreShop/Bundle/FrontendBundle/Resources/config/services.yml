@@ -23,3 +23,19 @@ services:
             - '@CoreShop\Component\Core\Context\ShopperContextInterface'
         tags:
             - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestHtmlAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\TestFormAttributeExtension:
+        arguments:
+            - '%kernel.environment%'
+        tags:
+            - { name: twig.extension }
+
+    CoreShop\Bundle\FrontendBundle\Twig\MergeRecursiveExtension:
+        tags:
+            - { name: twig.extension }

@@ -3,7 +3,7 @@
 
     <div class="row">
         <div class="col-12 p-0">
-            <div id="owl-product" class="owl-carousel">
+            <div id="owl-product" class="owl-carousel" {{ coreshop_test_html_attribute('latest-products') }}>
                 {% for product in products %}
                 <div class="item">
                     {% include '@CoreShopFrontend/Product/_preview.html.twig' with {'product': product} %}

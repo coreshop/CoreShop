@@ -88,7 +88,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
      */
     public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
     {
@@ -98,7 +99,20 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is (:?also) priced at (\d+) for (store "[^"]+")$/
+     * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
+     */
+    public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStores(array_merge($product->getStores(), [$store->getId()]));
+        $product->setStorePrice($price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/
      * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
      */
     public function theProductHasAVariantPricedAt(
@@ -178,6 +192,23 @@ final class ProductContext implements Context
         $product->setWidth($width);
         $product->setHeight($height);
         $product->setDepth($depth);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available$/
+     */
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store = null)
+    {
+        $product->setActive(true);
+        $product->setPublished(true);
+
+        if (null !== $store) {
+            $product->setStores([$store->getId()]);
+        }
 
         $this->saveProduct($product);
     }
@@ -349,7 +380,7 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int) $price);
+            $productUnitDefinitionPrice->setPrice($price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues

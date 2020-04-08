@@ -132,6 +132,7 @@ final class UniqueEntityValidator extends ConstraintValidator
          */
         $list = $entity::getList();
         $list->setCondition(implode(' AND ', $condition), $values);
+        $list->setUnpublished(true);
         $elements = $list->load();
 
         if (count($elements) > 0) {
@@ -140,7 +141,7 @@ final class UniqueEntityValidator extends ConstraintValidator
              */
             $foundElement = $elements[0];
 
-            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $foundElement) {
+            if ($constraint->allowSameEntity && count($elements) === 1 && $entity->getId() === $foundElement->getId()) {
                 return;
             }
 

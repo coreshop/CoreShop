@@ -32,6 +32,7 @@ final class StoreContext implements Context
 
     /**
      * @Transform /^store(?:|s) "([^"]+)"$/
+     * @Transform /^store to "([^"]+)"$/
      */
     public function getStoreByName($name)
     {

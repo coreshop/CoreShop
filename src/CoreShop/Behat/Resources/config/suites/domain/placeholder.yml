@@ -15,4 +15,4 @@ default:
 
                 - coreshop.behat.context.domain.placeholder
             filters:
-                tags: "@placeholder"
+                tags: "@domain && @placeholder"

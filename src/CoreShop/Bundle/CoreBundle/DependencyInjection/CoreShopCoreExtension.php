@@ -76,6 +76,11 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $loader->load('services.yml');
 
+        $env = $container->getParameter('kernel.environment');
+        if ('test' === $env) {
+            $loader->load('services_test.yml');
+        }
+
         if (array_key_exists('checkout', $config)) {
             $this->registerCheckout($container, $config['checkout']);
         }

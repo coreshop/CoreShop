@@ -36,7 +36,7 @@
 
         <div class="col-sm-7 product-details">
 
-            <h2>{{ product.getName }}</h2>
+            <h2 {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.getName }}</h2>
             <hr/>
 
             {% if product.getShortDescription|length > 0 %}
@@ -81,7 +81,13 @@
                     {{ product_price.display_product_price(product) }}
                 </div>
                 <div class="tax">
-                    {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }} ({{ currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context)) }})
+                    <span {{ coreshop_test_html_attribute('product-tax-rate', product|coreshop_product_tax_rate(coreshop.context)) }}>
+                        {{ 'coreshop.product.tax.inc'|trans|format(product|coreshop_product_tax_rate(coreshop.context)) }}
+                    </span>
+
+                    <span {{ coreshop_test_html_attribute('product-tax', currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context))) }}>
+                        ({{ currency.convertAndFormat(product|coreshop_product_tax_amount(coreshop.context)) }})
+                    </span>
                 </div>
             {% endif %}
 

@@ -128,14 +128,18 @@ class Select extends Tag
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**
-     * @param mixed $data
+     * {@inheritdoc}
      */
     public function setDataFromResource($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**

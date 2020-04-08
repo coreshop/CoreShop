@@ -5,7 +5,7 @@
         <i class="fa fa-shopping-cart"></i>
         <span id="cart-overview-total">
             <span class="cart-badge">{% if cart.getItems() %} {{ cart.getItems()|length }} {% else %} 0 {% endif %}</span> {{ 'coreshop.ui.items'|trans }} -
-            <span class="cart-total"> {{ currency.convertAndFormat(cart.getTotal) }}</span></span>
+            <span class="cart-total" {{ coreshop_test_html_attribute('cart-total') }}> {{ currency.convertAndFormat(cart.getTotal) }}</span></span>
     </button>
     <ul class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
         <li>
