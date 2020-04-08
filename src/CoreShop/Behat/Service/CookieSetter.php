@@ -16,7 +16,6 @@ namespace CoreShop\Behat\Service;
 
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Session;
-use FriendsOfBehat\SymfonyExtension\Driver\SymfonyDriver;
 use Symfony\Component\BrowserKit\Cookie;
 
 final class CookieSetter implements CookieSetterInterface
@@ -48,16 +47,6 @@ final class CookieSetter implements CookieSetterInterface
     {
         $this->prepareMinkSessionIfNeeded($this->minkSession);
 
-        $driver = $this->minkSession->getDriver();
-
-        if ($driver instanceof SymfonyDriver) {
-            $driver->getClient()->getCookieJar()->set(
-                new Cookie($name, $value, null, null, parse_url($this->minkParameters['base_url'], \PHP_URL_HOST))
-            );
-
-            return;
-        }
-
         $this->minkSession->setCookie($name, $value);
     }
 
@@ -71,10 +60,6 @@ final class CookieSetter implements CookieSetterInterface
     private function shouldMinkSessionBePrepared(Session $session): bool
     {
         $driver = $session->getDriver();
-
-        if ($driver instanceof SymfonyDriver) {
-            return false;
-        }
 
         if ($driver instanceof PantherDriver && $driver->getClient() === null) {
             return true;

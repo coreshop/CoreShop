@@ -18,6 +18,8 @@ use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 
 interface LoginPageInterface extends FrontendPageInterface
 {
+    public function hasValidationErrorWith(string $message): bool;
+
     public function logIn(): void;
 
     public function specifyPassword(string $password): void;
