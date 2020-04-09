@@ -3,16 +3,16 @@
 
 <div class="product-col">
     <div class="image">
-        {% if product.getImage() %}
+        {% if product.image is asset_image %}
             <a href="{{ href }}">
-                {{ product.getImage().getThumbnail('coreshop_productList').getHtml({'class': 'img-fluid', 'alt': product.getName(), 'id': 'image' ~ product.getId()})|raw }}
+                {{ product.image|image_thumbnail_html('coreshop_productList', {'class': 'img-fluid', 'alt': product.name, 'id': 'image' ~ product.id}) }}
             </a>
         {% endif %}
     </div>
     <div class="caption">
         <h4><a href="{{ href }}" {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.name }}</a></h4>
         <div class="description">
-            {{ product.getShortDescription() }}
+            {{ product.shortDescription }}
         </div>
 
         <div class="price">

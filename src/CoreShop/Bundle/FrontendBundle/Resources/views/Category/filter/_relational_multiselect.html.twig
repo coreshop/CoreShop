@@ -11,7 +11,7 @@
             {% for value in objects if value %}
                 <label class="checkbox">
                     <input name="{{ fieldName }}[]" type="checkbox" value="{{ value.id }}" {% if currentValues is iterable and value.id in currentValues %} checked="checked" {% endif %}>
-                    {{ value.getId }} {% if quantityUnit %} {{ quantityUnit.getAbbreviation }} {% endif %}
+                    {{ value.getId }} {% if quantityUnit %} {{ quantityUnit.abbreviation }} {% endif %}
                 </label>
             {% endfor %}
         </div>

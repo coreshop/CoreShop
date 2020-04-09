@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-            {% for item in cart.getItems %}
+            {% for item in cart.items %}
                 {% include '@CoreShopFrontend/Checkout/steps/summary/_item.html.twig' with {'item': item} %}
             {% endfor %}
             {% include '@CoreShopFrontend/Checkout/steps/summary/_rules.html.twig' %}

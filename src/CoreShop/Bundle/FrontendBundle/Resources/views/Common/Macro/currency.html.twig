@@ -5,13 +5,13 @@
 {%- macro convertAndFormat(amount) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+    {{- format(amount|coreshop_convert_currency(coreshop.store.currency.isoCode, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
 {%- endmacro -%}
 
 {%- macro convertAndFormatFromCustomCurrency(fromCurrencyIso, amount) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
 {%- endmacro -%}
 
 {%- macro getPrice(product, with_tax) -%}

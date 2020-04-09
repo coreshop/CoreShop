@@ -7,27 +7,27 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            {% if product.getCategories|length > 0 %}
-                {% for cat in product.getCategories|first.getHierarchy() %}
-                    <li class="breadcrumb-item"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
+            {% if product.categories|length > 0 %}
+                {% for cat in product.categories|first.hierarchy %}
+                    <li class="breadcrumb-item"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.name }}</a></li>
                 {% endfor %}
             {% endif %}
-            <li class="breadcrumb-item active">{{ product.getName }}</li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
         </ol>
     </nav>
 
     <div class="row product-info">
 
         <div class="col-sm-5 images-block">
-            {% if product.getImage %}
-                {{ product.getImage().getThumbnail("coreshop_productDetail").getHtml({"class": "img-responsive thumbnail"})|raw }}
+            {% if product.image is asset_image %}
+                {{ product.image|image_thumbnail_html("coreshop_productDetail", {"class": "img-responsive thumbnail"}) }}
             {% endif %}
 
-            {% if product.getImages|length > 0 %}
+            {% if product.images|length > 0 %}
                 <div class="row">
-                    {% for image in product.getImages %}
+                    {% for image in product.images %}
                         <div class="col-12 col-sm-6">
-                            {{ image.getThumbnail("coreshop_productDetailThumbnail").getHtml({"class": "img-responsive thumbnail"})|raw }}
+                            {{ image|image_thumbnail_html("coreshop_productDetailThumbnail", {"class": "img-responsive thumbnail"}) }}
                         </div>
                     {% endfor %}
                 </div>
@@ -35,30 +35,29 @@
         </div>
 
         <div class="col-sm-7 product-details">
-
-            <h2 {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.getName }}</h2>
+            <h2 {{ coreshop_test_html_attribute('product-name', product.name) }}>{{ product.name }}</h2>
             <hr/>
 
-            {% if product.getShortDescription|length > 0 %}
+            {% if product.shortDescription|length > 0 %}
                 <div class="description">
-                    {{ product.getShortDescription }}
+                    {{ product.shortDescription }}
                 </div>
                 <hr/>
             {% endif %}
 
             <ul class="list-unstyled manufacturer">
-                {% if product.getManufacturer %}
+                {% if product.manufacturer %}
                     <li>
-                        <span>{{ 'coreshop.ui.brand'|trans }}:</span> {{ product.getManufacturer.getName }}
+                        <span>{{ 'coreshop.ui.brand'|trans }}:</span> {{ product.manufacturer.name }}
                     </li>
                 {% endif %}
 
-                {% if product.getEan %}
-                <li><span>{{ 'coreshop.ui.ean'|trans }}:</span> {{ product.getEan }}
+                {% if product.ean %}
+                <li><span>{{ 'coreshop.ui.ean'|trans }}:</span> {{ product.ean }}
                     {% endif %}
                 <li>
                     <span>{{ 'coreshop.ui.availability'|trans }}:</span>
-                    {% if product.getIsTracked %}
+                    {% if product.isTracked %}
                         {% if coreshop_inventory_is_sufficient(product) %}
                             <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                         {% else %}
@@ -95,7 +94,7 @@
 
             {% if coreshop_quantity_price_rule_ranges_available(product, coreshop.context) %}
                 {% set rule = coreshop_quantity_price_rule(product, coreshop.context) %}
-                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.getCalculationBehaviour() ~'.html.twig' with { rule: rule, product: product } only %}
+                {% include '@CoreShopFrontend/ProductQuantityPriceRanges/quantity_price_ranges_' ~ rule.calculationBehaviour ~'.html.twig' with { rule: rule, product: product } only %}
                 <hr/>
             {% endif %}
 
@@ -124,8 +123,8 @@
 
         <div class="tab-content clearfix">
             <div class="tab-pane active" id="tab-description">
-                {% if product.getDescription|length > 0 %}
-                    {{ product.getDescription|raw }}
+                {% if product.description|length > 0 %}
+                    {{ product.description|raw }}
                 {% else %}
                     {{ 'coreshop.ui.no_description_available'|trans }}
                 {% endif %}

@@ -1,5 +1,5 @@
 {% import _self as generator %}
-{% set pages = paginator.getPages() %}
+{% set pages = paginator.pages %}
 
 {% macro generate_seo_pagination_url(page) %}
     {% spaceless %}

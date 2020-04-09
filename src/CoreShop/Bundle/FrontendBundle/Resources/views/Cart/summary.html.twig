@@ -9,7 +9,7 @@
         {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}
     </div>
 
-    {% if cart.hasItems() %}
+    {% if cart.hasItems %}
         <div class="cart-summary">
             {% include '@CoreShopFrontend/Cart/Summary/_items.html.twig' %}
         </div>
@@ -23,7 +23,7 @@
                 {{ 'coreshop.ui.continue_shopping'|trans }}
             </a>
         </div>
-        {% if cart.hasItems() %}
+        {% if cart.hasItems %}
             <div class="col-12 col-sm-2">
                 <a href="{{ coreshop_path(cart, 'coreshop_checkout', {'stepIdentifier': coreshop_checkout_steps_get_first()}) }}" class="btn btn-success w-100">
                     {{ 'coreshop.ui.checkout'|trans }}
