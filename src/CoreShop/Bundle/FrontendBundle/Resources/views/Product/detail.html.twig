@@ -58,10 +58,12 @@
                 <li>
                     <span>{{ 'coreshop.ui.availability'|trans }}:</span>
                     {% if product.isTracked %}
-                        {% if coreshop_inventory_is_sufficient(product) %}
+                        {% if coreshop_inventory_is_available(product) %}
                             <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>
                         {% else %}
-                            {{ 'coreshop.ui.out_of_stock'|trans }}
+                            <span {{ coreshop_test_html_attribute('product-out-of-stock') }}>
+                                {{ 'coreshop.ui.out_of_stock'|trans }}
+                            </span>
                         {% endif %}
                     {% else %}
                         <strong class="label label-success"> {{ 'coreshop.ui.in_stock'|trans }}</strong>

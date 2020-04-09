@@ -36,6 +36,8 @@ interface ProductPageInterface extends FrontendPageInterface
 
     public function getTax(): string;
 
+    public function getIsOutOfStock(): bool;
+
     public function getQuantityPriceRules(): array;
 
     public function getQuantityPriceRulesForUnit(ProductUnitInterface $unit): array;

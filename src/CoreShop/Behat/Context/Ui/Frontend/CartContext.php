@@ -167,6 +167,17 @@ final class CartContext implements Context
     }
 
     /**
+     * @Then I should be notified that :productName does not have sufficient stock
+     */
+    public function iShouldBeNotifiedThatDoesNotHaveSufficientStock(string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('%s DOES NOT HAVE SUFFICIENT STOCK.', $productName),
+            NotificationType::error()
+        );
+    }
+
+    /**
      * @Then there should be one item in my cart
      */
     public function thereShouldBeOneItemInMyCart()

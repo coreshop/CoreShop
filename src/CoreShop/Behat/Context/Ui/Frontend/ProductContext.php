@@ -216,4 +216,13 @@ final class ProductContext implements Context
         Assert::greaterThan($priceRules, $number+1);
         Assert::contains($priceRules[$number]['startingFrom'], $startingFrom);
     }
+    /**
+     * @Then /^I should see that this (product) is out of stock$/
+     */
+    public function iShouldSeeThatThisProductIsOutOfStock(ProductInterface $product)
+    {
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+
+        Assert::true($this->productPage->getIsOutOfStock());
+    }
 }

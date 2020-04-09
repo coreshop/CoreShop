@@ -33,6 +33,7 @@ default:
                 - coreshop.behat.context.setup.exchange_rate
 
                 - coreshop.behat.context.ui.cart
+                - coreshop.behat.context.ui.product
                 - coreshop.behat.context.ui.user
                 - coreshop.behat.context.ui.register
                 - coreshop.behat.context.ui.store

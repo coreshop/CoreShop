@@ -60,6 +60,11 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         return $this->getElement('product_tax_rate')->getText();
     }
 
+    public function getIsOutOfStock(): bool
+    {
+        return $this->hasElement('product_ouf_of_stock');
+    }
+
     public function getTax(): string
     {
         return $this->getElement('product_tax')->getText();
@@ -140,6 +145,7 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
             'product_unit_price_carton' => '[data-test-product-unit-price-carton]',
             'product_unit_price_palette' => '[data-test-product-unit-price-palette]',
             'product_quantity_price_rules' => '[data-test-product-quantity-price-rules]',
+            'product_ouf_of_stock' => '[data-test-product-out-of-stock]',
         ]);
     }
 }
