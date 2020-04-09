@@ -1,5 +1,5 @@
 @ui @cart @wip
-Feature: Adding a product of given quantity to the cart
+Feature: Adding a product to cart with a unit
 
     Background:
         Given the site operates on a store in "Austria"

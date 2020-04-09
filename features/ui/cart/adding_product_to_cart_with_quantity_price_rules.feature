@@ -1,5 +1,5 @@
 @ui @cart @wip
-Feature: Adding a product of given quantity to the cart
+Feature: Adding a product with a quantity price rule
 
     Background:
         Given the site operates on a store in "Austria"

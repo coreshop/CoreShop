@@ -323,6 +323,16 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/
+     * @Given /^the (product) has a maximum order quantity of "([^"]+)"$/
+     */
+    public function theProductHasAMaximumOrderQuantity(ProductInterface $product, int $maximumQuantity)
+    {
+        $product->setMaximumQuantityToOrder($maximumQuantity);
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product) has the default (unit "[^"]+")$/
      * @Given /^the (product "[^"]+") has the default (unit "[^"]+")"$/
      */

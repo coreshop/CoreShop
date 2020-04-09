@@ -46,7 +46,7 @@ final class NotificationChecker implements NotificationCheckerInterface
     private function resolveClass(NotificationType $type): string
     {
         $typeClassMap = [
-            'failure' => 'alert-danger',
+            'error' => 'alert-danger',
             'info' => 'alert-info',
             'success' => 'alert-success',
         ];

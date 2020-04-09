@@ -136,12 +136,34 @@ final class CartContext implements Context
         $this->cartPage->verify();
     }
 
-        /**
+    /**
      * @Then I should be notified that the product has been successfully added
      */
     public function iShouldBeNotifiedThatItHasBeenSuccessfullyAdded()
     {
         $this->notificationChecker->checkNotification('ITEM ADDED', NotificationType::success());
+    }
+
+    /**
+     * @Then I should be notified that I need to order at least :quantity of :productName
+     */
+    public function iShouldBeNotifiedThatItNeedToOrderAtLeastOf(string $quantity, string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('YOU NEED TO ORDER AT LEAST %s UNITS OF %s.', $quantity, $productName),
+            NotificationType::error()
+        );
+    }
+
+    /**
+     * @Then I should be notified that I can only order a maximum of :quantity of :productName
+     */
+    public function iShouldBeNotifiedThatICanOnlyOrderAMaximumQuantityOf(string $quantity, string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('YOU CAN ORDER A MAXIMUM OF %s UNITS OF %s.', $quantity, $productName),
+            NotificationType::error()
+        );
     }
 
     /**
