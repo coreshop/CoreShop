@@ -23,6 +23,8 @@ use CoreShop\Behat\Service\NotificationType;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -75,6 +77,20 @@ final class CartContext implements Context
     {
         $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
         $this->productPage->addToCart();
+
+        $this->sharedStorage->set('product', $product);
+    }
+
+    /**
+     * @Given /^I add this (product) in (unit "[^"]+") to the cart$/
+     * @Given /^I add (product "[^"]+") in (unit "[^"]+") to the cart$/
+     */
+    public function iAddProductInUnitToTheCart(ProductInterface $product, ProductUnitInterface $unit): void
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartInUnit($unitDefinition);
 
         $this->sharedStorage->set('product', $product);
     }
@@ -138,7 +154,36 @@ final class CartContext implements Context
         Assert::same($this->cartPage->getItemUnitPrice($productName), $unitPrice);
     }
 
-        /**
+    /**
+     * @Then /^I should see "([^"]+)" with total price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductWithTotalPriceInMyCart($productName, $unitPrice)
+    {
+        Assert::same($this->cartPage->getItemTotalPrice($productName), $unitPrice);
+    }
+
+    /**
+     * @Then /^I should see (product "[^"]+") in (unit "[^"]+") with unit price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductInUnitWithUnitPriceInMyCart(ProductInterface $product, ProductUnitInterface $unit, $unitPrice)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::same($this->cartPage->getItemUnitPriceWithUnit($product->getName(), $unitDefinition), $unitPrice);
+    }
+
+    /**
+     * @Then /^I should see this (product) with (unit "[^"]+") in my cart$/
+     * @Then /^I should see (product "[^"]+") with (unit "[^"]+") in my cart$/
+     */
+    public function iShouldSeeProductWithUnitInMyCart(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::true($this->cartPage->hasProductInUnit($product->getName(), $unitDefinition));
+    }
+
+    /**
      * @Then /^I should see "([^"]+)" with quantity (\d+) in my cart$/
      */
     public function iShouldSeeWithQuantityInMyCart($productName, $quantity)
@@ -163,5 +208,23 @@ final class CartContext implements Context
         $this->cartPage->open();
 
         Assert::same($this->cartPage->getTotal(), $total);
+    }
+
+    protected function findUnitDefinition(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = null;
+
+        Assert::notNull($product->getUnitDefinitions());
+
+        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $definition) {
+            if ($definition->getUnit()->getId() === $unit->getId()) {
+                $unitDefinition = $definition;
+                break;
+            }
+        }
+
+        Assert::notNull($unitDefinition);
+
+        return $unitDefinition;
     }
 }

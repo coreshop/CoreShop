@@ -15,8 +15,8 @@ Feature: Create a new cart
     And the site has a product "Shoes" priced at 1000
     And the product has the tax rule group "AT"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24" and price 2000 and precision 2
-    And the product has and additional unit "Palette" with conversion rate "200" and price 150000 and precision 4
+    And the product has an additional unit "Carton" with conversion rate "24" and price 2000 and precision 2
+    And the product has an additional unit "Palette" with conversion rate "200" and price 150000 and precision 4
     And adding a cart price rule named "discount"
     And the cart rule is active
     And the cart rule is a voucher rule with code "asdf"

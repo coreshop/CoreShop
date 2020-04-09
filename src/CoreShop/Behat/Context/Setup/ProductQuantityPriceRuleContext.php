@@ -115,7 +115,11 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
      * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)%$/
      */
-    public function theProductQuantityPriceRuleHasRangePercentageDecrease(ProductQuantityPriceRuleInterface $rule, int $from, float $percentage)
+    public function theProductQuantityPriceRuleHasRangePercentageDecrease(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        float $percentage
+    )
     {
         /**
          * @var QuantityRangeInterface $range
@@ -132,7 +136,11 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a range starting from to ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
      * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-increase of ([^"]+)%$/
      */
-    public function theProductQuantityPriceRuleHasRangePercentageIncrease(ProductQuantityPriceRuleInterface $rule, int $from, float $percentage)
+    public function theProductQuantityPriceRuleHasRangePercentageIncrease(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        float $percentage
+    )
     {
         /**
          * @var QuantityRangeInterface $range
@@ -146,13 +154,13 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-decrease of (\d+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-decrease of (\d+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeAmountDecrease(
         ProductQuantityPriceRuleInterface $rule,
         int $from,
-        $amount,
+        int $amount,
         CurrencyInterface $currency
     ) {
         /**
@@ -168,13 +176,13 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-increase of (\d+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-increase of (\d+) in (currency "[^"]+")$/
      */
     public function theProductQuantityPriceRuleHasRangeAmountIncrease(
         ProductQuantityPriceRuleInterface $rule,
         int $from,
-        $amount,
+        int $amount,
         CurrencyInterface $currency
     ) {
         /**
@@ -190,10 +198,15 @@ final class ProductQuantityPriceRuleContext implements Context
     }
 
     /**
-     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
-     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour fixed of (\d+) in (currency "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour fixed of (\d+) in (currency "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasRangeFixed(ProductQuantityPriceRuleInterface $rule, int $from, $amount, CurrencyInterface $currency)
+    public function theProductQuantityPriceRuleHasRangeFixed(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        int $amount,
+        CurrencyInterface $currency
+    )
     {
         /**
          * @var QuantityRangeInterface $range
@@ -211,7 +224,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition countries with (country "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition countries with (country "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasACountriesCondition(ProductQuantityPriceRuleInterface $rule, CountryInterface $country)
+    public function theProductQuantityPriceRuleHasACountriesCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        CountryInterface $country
+    )
     {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
@@ -226,7 +242,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition customers with (customer "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition customers with (customer "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasACustomerCondition(ProductQuantityPriceRuleInterface $rule, CustomerInterface $customer)
+    public function theProductQuantityPriceRuleHasACustomerCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        CustomerInterface $customer
+    )
     {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
@@ -258,7 +277,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition customer-groups with (customer-group "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition customer-groups with (customer-group "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasACustomerGroupCondition(ProductQuantityPriceRuleInterface $rule, CustomerGroupInterface $group)
+    public function theProductQuantityPriceRuleHasACustomerGroupCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        CustomerGroupInterface $group
+    )
     {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
@@ -273,7 +295,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition stores with (store "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition stores with (store "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasAStoreCondition(ProductQuantityPriceRuleInterface $rule, StoreInterface $store)
+    public function theProductQuantityPriceRuleHasAStoreCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        StoreInterface $store
+    )
     {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
@@ -288,7 +313,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition zones with (zone "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition zones with (zone "[^"]+")$/
      */
-    public function theProductQuantityPriceRuleHasAZoneCondition(ProductQuantityPriceRuleInterface $rule, ZoneInterface $zone)
+    public function theProductQuantityPriceRuleHasAZoneCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        ZoneInterface $zone
+    )
     {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
@@ -303,7 +331,10 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition currencies with (currency "[^"]+")$/
      * @Given /^the (quantity price rule) has a condition currencies with (currency "[^"]+")$/
      */
-    public function theProductsQuantityPriceRuleHasACurrencyCondition(ProductQuantityPriceRuleInterface $rule, CurrencyInterface $currency)
+    public function theProductsQuantityPriceRuleHasACurrencyCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        CurrencyInterface $currency
+    )
     {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 

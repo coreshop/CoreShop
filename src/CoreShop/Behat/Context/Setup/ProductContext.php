@@ -344,12 +344,12 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d++")$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+")$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
      */
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,

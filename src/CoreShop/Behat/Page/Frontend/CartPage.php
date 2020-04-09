@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 class CartPage extends AbstractFrontendPage implements CartPageInterface
 {
@@ -40,6 +42,16 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
         return $this->hasItemWith($name, '[data-test-cart-item-name]');
     }
 
+    public function hasProductInUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): bool
+    {
+        return null !== $this->getElement('cart_item_unit',
+                [
+                    '%unitId%' => $unitDefinition->getId(),
+                    '%name%' => $name,
+                ]
+            );
+    }
+
     public function getItemUnitPrice(string $name): string
     {
         $unitPrice = $this->getElement('item_unit_price', ['%name%' => $name]);
@@ -47,9 +59,30 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
         return trim($unitPrice->getText());
     }
 
+    public function getItemUnitPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string
+    {
+        $unitPrice = $this->getElement('item_unit_price_unit', ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]);
+
+        return trim($unitPrice->getText());
+    }
+
+    public function getItemTotalPrice(string $productName): string
+    {
+        $unitPrice = $this->getElement('item_total_price', ['%name%' => $productName]);
+
+        return trim($unitPrice->getText());
+    }
+
+    public function getItemTotalPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string
+    {
+        $unitPrice = $this->getElement('item_total_price_unit', ['%name%' => $name, '%unitId%' => $unitDefinition->getId()]);
+
+        return trim($unitPrice->getText());
+    }
+
     public function getQuantity(string $productName): int
     {
-        return (int) $this->getElement('item_quantity_input', ['%name%' => $productName])->getValue();
+        return (int)$this->getElement('item_quantity_input', ['%name%' => $productName])->getValue();
     }
 
     public function changeQuantity(string $productName, string $quantity): void
@@ -94,7 +127,7 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
 
     private function getPriceFromString(string $price): int
     {
-        return (int) round((float) str_replace(['€', '£', '$'], '', $price) * 100, 2);
+        return (int)round((float)str_replace(['€', '£', '$'], '', $price) * 100, 2);
     }
 
     protected function getDefinedElements(): array
@@ -103,10 +136,14 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
             'cart_empty' => '[data-test-cart-empty]',
             'cart_items' => '[data-test-cart-items]',
             'item_unit_price' => '[data-test-cart-item-row="%name%"] [data-test-cart-item-unit-price]',
+            'item_unit_price_unit' => '[data-test-cart-item-row-unit-%unitId%="%name%"] [data-test-cart-item-unit-price]',
+            'item_total_price' => '[data-test-cart-item-row="%name%"] [data-test-cart-item-total-price]',
+            'item_total_price_unit' => '[data-test-cart-item-row-unit-%unitId%="%name%"] [data-test-cart-item-total-price]',
             'item_quantity_input' => '[data-test-cart-item-quantity-input="%name%"]',
             'update_cart_button' => '[data-test-update-cart-button]',
             'delete_button' => '[data-test-cart-remove-button="%name%"]',
             'cart_total' => '[data-test-cart-total]',
+            'cart_item_unit' => '[data-test-cart-item-unit-%unitId%="%name%"]',
         ]);
     }
 }

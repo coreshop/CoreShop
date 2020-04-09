@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
-use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 
 interface CartPageInterface extends FrontendPageInterface
 {
@@ -24,7 +24,15 @@ interface CartPageInterface extends FrontendPageInterface
 
     public function hasItemNamed(string $name): bool;
 
+    public function hasProductInUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): bool;
+
+    public function getItemUnitPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string;
+
     public function getItemUnitPrice(string $productName): string;
+
+    public function getItemTotalPrice(string $productName): string;
+
+    public function getItemTotalPriceWithUnit(string $name, ProductUnitDefinitionInterface $unitDefinition): string;
 
     public function getQuantity(string $productName): int;
 
