@@ -33,12 +33,15 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Form\FormFactoryInterface;
+use Webmozart\Assert\Assert;
 
 final class ProductQuantityPriceRuleContext implements Context
 {
@@ -50,6 +53,7 @@ final class ProductQuantityPriceRuleContext implements Context
     private $formFactory;
     private $conditionFormTypeRegistry;
     private $productQuantityPriceRuleFactory;
+    private $productRepository;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -57,7 +61,8 @@ final class ProductQuantityPriceRuleContext implements Context
         FactoryInterface $rangeFactory,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
-        FactoryInterface $productQuantityPriceRuleFactory
+        FactoryInterface $productQuantityPriceRuleFactory,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
@@ -65,6 +70,7 @@ final class ProductQuantityPriceRuleContext implements Context
         $this->formFactory = $formFactory;
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->productQuantityPriceRuleFactory = $productQuantityPriceRuleFactory;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -130,6 +136,8 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setRangeStartingFrom($from);
 
         $this->addRange($rule, $range);
+
+        $this->sharedStorage->set('quantity-price-rule-range', $range);
     }
 
     /**
@@ -151,6 +159,8 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setRangeStartingFrom($from);
 
         $this->addRange($rule, $range);
+
+        $this->sharedStorage->set('quantity-price-rule-range', $range);
     }
 
     /**
@@ -173,6 +183,8 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setCurrency($currency);
 
         $this->addRange($rule, $range);
+
+        $this->sharedStorage->set('quantity-price-rule-range', $range);
     }
 
     /**
@@ -195,6 +207,8 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setCurrency($currency);
 
         $this->addRange($rule, $range);
+
+        $this->sharedStorage->set('quantity-price-rule-range', $range);
     }
 
     /**
@@ -218,6 +232,29 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setCurrency($currency);
 
         $this->addRange($rule, $range);
+
+        $this->sharedStorage->set('quantity-price-rule-range', $range);
+    }
+
+    /**
+     * @Given /^the (price range) is only valid for (unit "[^"]+")$/
+     */
+    public function theQuantityPriceRangeIsValidForUnit(QuantityRangeInterface $range, ProductUnitInterface $unit)
+    {
+        $productId = $range->getRule()->getProduct();
+        /**
+         * @var ProductInterface $product
+         */
+        $product = $this->productRepository->find($productId);
+
+        Assert::notNull($product);
+
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        $range->setUnitDefinition($unitDefinition);
+
+        $this->objectManager->persist($range);
+        $this->objectManager->flush();
     }
 
     /**
@@ -437,6 +474,24 @@ final class ProductQuantityPriceRuleContext implements Context
 
         $this->objectManager->persist($rule);
         $this->objectManager->flush();
+    }
+
+    protected function findUnitDefinition(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = null;
+
+        Assert::notNull($product->getUnitDefinitions());
+
+        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $definition) {
+            if ($definition->getUnit()->getId() === $unit->getId()) {
+                $unitDefinition = $definition;
+                break;
+            }
+        }
+
+        Assert::notNull($unitDefinition);
+
+        return $unitDefinition;
     }
 
     /**

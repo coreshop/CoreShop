@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Element\NodeElement;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 
 class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 {
@@ -66,22 +67,16 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
 
     public function getQuantityPriceRules(): array
     {
-        $element = $this->getElement('product_quantity_price_rules');
+        return $this->processQuantityPriceRuleElement('[data-test-product-quantity-price-rule]');
+    }
 
-        return array_map(
-            static function(NodeElement $element) {
-                $startFromElement = $element->find('css', '[data-test-product-quantity-price-rule-start]');
-                $priceElement = $element->find('css', '[data-test-product-quantity-price-rule-price-inc]');
-                $priceExcElement = $element->find('css', '[data-test-product-quantity-price-rule-price-exc]');
-
-                return [
-                    'text' => $element->getText(),
-                    'startingFrom' => $startFromElement->getText(),
-                    'price' => $priceElement->getText(),
-                    'priceExcl' => $priceExcElement->getText(),
-                ];
-            },
-            $element->findAll('css', '[data-test-product-quantity-price-rule]')
+    public function getQuantityPriceRulesForUnit(ProductUnitInterface $unit): array
+    {
+        return $this->processQuantityPriceRuleElement(
+            sprintf(
+                '[data-test-product-quantity-price-rule-unit-%s]',
+                $unit->getId()
+            )
         );
     }
 
@@ -107,6 +102,27 @@ class ProductPage extends AbstractFrontendPage implements ProductPageInterface
         $this->getElement('unit')->setValue($unit->getId());
         $this->getElement('quantity')->setValue($quantity);
         $this->getElement('add_to_cart')->click();
+    }
+
+    protected function processQuantityPriceRuleElement(string $selector)
+    {
+        $element = $this->getElement('product_quantity_price_rules');
+
+        return array_map(
+            static function(NodeElement $element) {
+                $startFromElement = $element->find('css', '[data-test-product-quantity-price-rule-start]');
+                $priceElement = $element->find('css', '[data-test-product-quantity-price-rule-price-inc]');
+                $priceExcElement = $element->find('css', '[data-test-product-quantity-price-rule-price-exc]');
+
+                return [
+                    'text' => $element->getText(),
+                    'startingFrom' => $startFromElement->getText(),
+                    'price' => $priceElement->getText(),
+                    'priceExcl' => $priceExcElement->getText(),
+                ];
+            },
+            $element->findAll('css', $selector)
+        );
     }
 
     protected function getDefinedElements(): array

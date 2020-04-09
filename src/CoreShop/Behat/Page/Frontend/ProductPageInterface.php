@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Page\Frontend;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 
 interface ProductPageInterface extends FrontendPageInterface
 {
@@ -36,6 +37,8 @@ interface ProductPageInterface extends FrontendPageInterface
     public function getTax(): string;
 
     public function getQuantityPriceRules(): array;
+
+    public function getQuantityPriceRulesForUnit(ProductUnitInterface $unit): array;
 
     /**
      * @throws ElementNotFoundException

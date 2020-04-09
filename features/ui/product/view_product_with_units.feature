@@ -4,7 +4,7 @@ Feature: Viewing product details with units
     Background:
         Given the site operates on a store in "Austria"
         And the store "Austria" is the default store
-        Given the site has a product-unit "Pieces"
+        And the site has a product-unit "Pieces"
         And the site has a product-unit "Carton"
         And the site has a product-unit "Palette"
 
