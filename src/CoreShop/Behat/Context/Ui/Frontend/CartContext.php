@@ -82,6 +82,15 @@ final class CartContext implements Context
     }
 
     /**
+     * @Given /^I add (\d+) of this (product) to the cart$/
+     */
+    public function iAddQuantityProductToTheCart($quantity, ProductInterface $product)
+    {
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartWithQuantity($quantity);
+    }
+
+    /**
      * @Given /^I add this (product) in (unit "[^"]+") to the cart$/
      * @Given /^I add (product "[^"]+") in (unit "[^"]+") to the cart$/
      */
@@ -96,6 +105,20 @@ final class CartContext implements Context
     }
 
     /**
+     * @Given /^I add (\d+) of this (product) in (unit "[^"]+") to the cart$/
+     * @Given /^I add (\d+) of (product "[^"]+") in (unit "[^"]+") to the cart$/
+     */
+    public function iAddQuantityProductInUnitToTheCart($quantity, ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartInUnitWithQuantity($unitDefinition, $quantity);
+
+        $this->sharedStorage->set('product', $product);
+    }
+
+    /**
      * @Given I removed product :productName from the cart
      * @When I remove product :productName from the cart
      */
@@ -103,15 +126,6 @@ final class CartContext implements Context
     {
         $this->cartPage->open();
         $this->cartPage->removeProduct($productName);
-    }
-
-    /**
-     * @Given /^I add (\d+) of this (product) to the cart$/
-     */
-    public function iAddQuantityProductToTheCart($quantity, ProductInterface $product)
-    {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
-        $this->productPage->addToCartWithQuantity($quantity);
     }
 
     /**
@@ -157,9 +171,9 @@ final class CartContext implements Context
     /**
      * @Then /^I should see "([^"]+)" with total price "([^"]+)" in my cart$/
      */
-    public function iShouldSeeProductWithTotalPriceInMyCart($productName, $unitPrice)
+    public function iShouldSeeProductWithTotalPriceInMyCart($productName, $totalPrice)
     {
-        Assert::same($this->cartPage->getItemTotalPrice($productName), $unitPrice);
+        Assert::same($this->cartPage->getItemTotalPrice($productName), $totalPrice);
     }
 
     /**
@@ -170,6 +184,16 @@ final class CartContext implements Context
         $unitDefinition = $this->findUnitDefinition($product, $unit);
 
         Assert::same($this->cartPage->getItemUnitPriceWithUnit($product->getName(), $unitDefinition), $unitPrice);
+    }
+
+    /**
+     * @Then /^I should see (product "[^"]+") in (unit "[^"]+") with total price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductInUnitWithTotalPriceInMyCart(ProductInterface $product, ProductUnitInterface $unit, $totalPrice)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::same($this->cartPage->getItemTotalPriceWithUnit($product->getName(), $unitDefinition), $totalPrice);
     }
 
     /**
