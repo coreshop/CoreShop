@@ -60,10 +60,11 @@ final class CheckoutContext implements Context
 
     /**
      * @When I am at the address checkout step
+     * @When I try to open the address checkout step
      */
     public function IAmAtTheAddressCheckoutStep()
     {
-        $this->addressPage->open();
+        $this->addressPage->tryToOpen();
     }
 
     /**
@@ -92,10 +93,11 @@ final class CheckoutContext implements Context
 
     /**
      * @When I am at the customer checkout step
+     * @When I try to open the customer checkout step
      */
     public function IAmAtTheCustomerCheckoutStep()
     {
-        $this->customerPage->open();
+        $this->customerPage->tryToOpen();
     }
 
     /**
@@ -103,15 +105,16 @@ final class CheckoutContext implements Context
      */
     public function IShouldBeOnTheCustomerCheckoutStep()
     {
-        $this->customerPage->verify();
+        $this->customerPage->tryToOpen();
     }
 
     /**
      * @When I am at the shipping checkout step
+     * @When I try to open the shipping checkout step
      */
     public function IAmAtTheShippingCheckoutStep()
     {
-        $this->shippingPage->open();
+        $this->shippingPage->tryToOpen();
     }
 
     /**
@@ -119,7 +122,7 @@ final class CheckoutContext implements Context
      */
     public function IShouldBeOnTheShippingCheckoutStep()
     {
-        $this->shippingPage->verify();
+        $this->shippingPage->tryToOpen();
     }
 
     /**
@@ -132,10 +135,11 @@ final class CheckoutContext implements Context
 
     /**
      * @When I am at the payment checkout step
+     * @When I try to open the payment checkout step
      */
     public function IAmAtThePaymentCheckoutStep()
     {
-        $this->paymentPage->open();
+        $this->paymentPage->tryToOpen();
     }
 
     /**
@@ -164,10 +168,11 @@ final class CheckoutContext implements Context
 
     /**
      * @When I am at the summary checkout step
+     * @When I try to open the summary checkout step
      */
     public function IAmAtTheSummaryCheckoutStep()
     {
-        $this->summaryPage->open();
+        $this->summaryPage->tryToOpen();
     }
 
     /**
