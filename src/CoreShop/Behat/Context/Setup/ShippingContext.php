@@ -100,6 +100,41 @@ final class ShippingContext implements Context
     }
 
     /**
+     * @Given /^the site has a carrier "([^"]+)" and ships for (\d+) in (currency "[^"]+")$/
+     */
+    public function theSiteHasACarrierAndShipsForX($name, int $price, CurrencyInterface $currency)
+    {
+        $carrier = $this->createCarrier($name);
+
+        /**
+         * @var ShippingRuleInterface $rule
+         */
+        $rule = $this->shippingRuleFactory->createNew();
+        $rule->setName($name);
+        $rule->setActive(true);
+
+        $this->assertActionForm(PriceActionConfigurationType::class, 'price');
+
+        $this->addAction($rule, $this->createActionWithForm('price', [
+            'price' => $price,
+            'currency' => $currency->getId(),
+        ]));
+
+        $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
+        $shippingRuleGroup->setShippingRule($rule);
+        $shippingRuleGroup->setPriority(1);
+
+        $carrier->addShippingRule($shippingRuleGroup);
+
+        $this->objectManager->persist($carrier);
+        $this->objectManager->persist($shippingRuleGroup);
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+
+        $this->sharedStorage->set('shipping-rule', $rule);
+    }
+
+    /**
      * @Given /^the (carrier "[^"]+") has (tax rule group "[^"]+")$/
      * @Given /^the (carrier) has the (tax rule group "[^"]+")$/
      */
@@ -530,6 +565,8 @@ final class ShippingContext implements Context
         }
 
         $this->saveCarrier($carrier);
+
+        return $carrier;
     }
 
     /**

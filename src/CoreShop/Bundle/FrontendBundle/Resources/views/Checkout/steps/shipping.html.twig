@@ -14,8 +14,9 @@
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
             {{ form_errors(form) }}
 
-            {{ form_widget(form.carrier) }}
-            {{ form_row(form.comment) }}
+            {{ form_widget(form.carrier, coreshop_test_form_attribute('carrier')) }}
+            {{ form_row(form.comment, coreshop_test_form_attribute('shipping-comment')) }}
+
             <div class="row">
                 {% set previousStep = coreshop_checkout_steps_get_previous() %}
                 {% if previousStep is not null %}
@@ -27,7 +28,7 @@
                     </div>
                 {% endif %}
                 <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
-                    <button type="submit" class="btn btn-success pull-right">
+                    <button type="submit" class="btn btn-success pull-right" {{ coreshop_test_html_attribute('submit-shipping-step') }}>
                         {{ 'coreshop.ui.proceed'|trans }}
                     </button>
                 </div>

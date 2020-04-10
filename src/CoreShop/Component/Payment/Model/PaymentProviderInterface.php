@@ -14,12 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Payment\Model;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
 use Pimcore\Model\Asset;
 
-interface PaymentProviderInterface extends ToggleableInterface, TranslatableInterface, TimestampableInterface
+interface PaymentProviderInterface extends
+    ResourceInterface,
+    ToggleableInterface,
+    TranslatableInterface,
+    TimestampableInterface
 {
     /**
      * @return mixed

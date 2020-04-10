@@ -47,3 +47,27 @@ services:
     CoreShop\Behat\Page\Frontend\CartPageInterface: '@CoreShop\Behat\Page\Frontend\CartPage'
     CoreShop\Behat\Page\Frontend\CartPage:
         parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\AddressPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\AddressPage'
+    CoreShop\Behat\Page\Frontend\Checkout\AddressPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\CustomerPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\CustomerPage'
+    CoreShop\Behat\Page\Frontend\Checkout\CustomerPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\PaymentPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\PaymentPage'
+    CoreShop\Behat\Page\Frontend\Checkout\PaymentPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\ShippingPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\ShippingPage'
+    CoreShop\Behat\Page\Frontend\Checkout\ShippingPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\SummaryPage'
+    CoreShop\Behat\Page\Frontend\Checkout\SummaryPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage
+
+    CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface: '@CoreShop\Behat\Page\Frontend\Checkout\ThankYouPage'
+    CoreShop\Behat\Page\Frontend\Checkout\ThankYouPage:
+        parent: CoreShop\Behat\Page\Frontend\AbstractFrontendPage

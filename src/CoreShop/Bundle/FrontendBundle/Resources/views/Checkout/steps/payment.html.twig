@@ -15,7 +15,7 @@
             {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                 {{ form_errors(form) }}
 
-                {{ form_row(form.paymentProvider) }}
+                {{ form_row(form.paymentProvider, coreshop_test_form_attribute('select-payment-provider')) }}
 
                 <div class="paymentSettings">
                     {% if form.paymentSettings is defined %}
@@ -41,7 +41,7 @@
                         </div>
                     {% endif %}
                     <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
-                        <button type="submit" class="btn btn-success pull-right">
+                        <button type="submit" class="btn btn-success pull-right" {{ coreshop_test_html_attribute('submit-payment-step') }}>
                             {{ 'coreshop.ui.proceed'|trans }}
                         </button>
                     </div>

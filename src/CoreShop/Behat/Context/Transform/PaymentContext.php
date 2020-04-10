@@ -53,6 +53,6 @@ final class PaymentContext implements Context
      */
     public function country()
     {
-        return $this->sharedStorage->get('paymentProvider');
+        return $this->sharedStorage->get('payment-provider');
     }
 }
