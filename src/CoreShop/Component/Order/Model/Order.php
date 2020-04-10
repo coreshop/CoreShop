@@ -738,5 +738,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      */
     protected function recalculateAfterAdjustmentChange()
     {
+        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(null, true), true);
+        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(null, false), false);
     }
 }

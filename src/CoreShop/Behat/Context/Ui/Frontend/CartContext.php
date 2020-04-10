@@ -145,6 +145,22 @@ final class CartContext implements Context
     }
 
     /**
+     * @Then I should be notified that the voucher has been applied
+     */
+    public function iShouldBeNotifiedThatTheVoucherHasBeenApplied()
+    {
+        $this->notificationChecker->checkNotification('VOUCHER HAS BEEN SUCCESSFULLY APPLIED', NotificationType::success());
+    }
+
+    /**
+     * @Then I should be notified that the voucher is invalid
+     */
+    public function iShouldBeNotifiedThatTheVoucherIsInvalid()
+    {
+        $this->notificationChecker->checkNotification('THIS VOUCHER IS INVALID', NotificationType::error());
+    }
+
+    /**
      * @Then I should be notified that I need to order at least :quantity of :productName
      */
     public function iShouldBeNotifiedThatItNeedToOrderAtLeastOf(string $quantity, string $productName)
@@ -191,6 +207,14 @@ final class CartContext implements Context
     public function thisProductShouldHaveName($itemName)
     {
         Assert::true($this->cartPage->hasItemNamed($itemName));
+    }
+
+    /**
+     * @Given /^I apply the voucher code "([^"]+)"$/
+     */
+    public function iApplyTheCartRuleToMyCart($voucherCode)
+    {
+        $this->cartPage->applyVoucherCode($voucherCode);
     }
 
     /**

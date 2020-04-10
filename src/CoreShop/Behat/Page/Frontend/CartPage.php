@@ -96,6 +96,12 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
         $this->getElement('delete_button', ['%name%' => $productName])->press();
     }
 
+    public function applyVoucherCode(string $voucherCode): void
+    {
+        $this->getElement('voucher_code')->setValue($voucherCode);
+        $this->getElement('apply_voucher_button')->click();
+    }
+
     public function getTotal(): string
     {
         $cartTotalText = $this->getElement('cart_total')->getText();
@@ -141,7 +147,9 @@ class CartPage extends AbstractFrontendPage implements CartPageInterface
             'item_total_price_unit' => '[data-test-cart-item-row-unit-%unitId%="%name%"] [data-test-cart-item-total-price]',
             'item_quantity_input' => '[data-test-cart-item-quantity-input="%name%"]',
             'update_cart_button' => '[data-test-update-cart-button]',
+            'apply_voucher_button' => '[data-test-apply-voucher-button]',
             'delete_button' => '[data-test-cart-remove-button="%name%"]',
+            'voucher_code' => '[data-test-voucher-code]',
             'cart_total' => '[data-test-cart-total]',
             'cart_item_unit' => '[data-test-cart-item-unit-%unitId%="%name%"]',
         ]);

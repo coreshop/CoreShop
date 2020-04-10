@@ -40,5 +40,7 @@ interface CartPageInterface extends FrontendPageInterface
 
     public function removeProduct(string $productName): void;
 
+    public function applyVoucherCode(string $voucherCode): void;
+
     public function getTotal(): string;
 }
