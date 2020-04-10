@@ -44,7 +44,6 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -132,6 +131,27 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
 
         $this->sharedStorage->set('shipping-rule', $rule);
+    }
+
+    /**
+     * @Given /^the (carrier "[^"]+") is disabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is disabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsDisabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->removeStore($store);
+
+        $this->saveCarrier($carrier);
+    }
+    /**
+     * @Given /^the (carrier "[^"]+") is enabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is enabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsEnabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->addStore($store);
+
+        $this->saveCarrier($carrier);
     }
 
     /**

@@ -23,8 +23,10 @@ use CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface;
 use CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use Webmozart\Assert\Assert;
 
 final class CheckoutContext implements Context
 {
@@ -122,7 +124,15 @@ final class CheckoutContext implements Context
      */
     public function IShouldBeOnTheShippingCheckoutStep()
     {
-        $this->shippingPage->tryToOpen();
+        $this->shippingPage->verify();
+    }
+
+    /**
+     * @When /^I should not see carrier "([^"]+)"$/
+     */
+    public function IShouldNotSeeCarrier($carrier)
+    {
+        Assert::false(in_array($carrier, $this->shippingPage->getCarriers(), true));
     }
 
     /**

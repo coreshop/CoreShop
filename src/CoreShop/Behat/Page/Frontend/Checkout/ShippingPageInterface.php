@@ -19,4 +19,6 @@ use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
 interface ShippingPageInterface extends FrontendPageInterface
 {
     public function submitStep(): void;
+
+    public function getCarriers(): array;
 }

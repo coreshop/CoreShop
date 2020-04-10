@@ -14,9 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
-use Behat\Mink\Session;
 use CoreShop\Behat\Page\Frontend\AbstractFrontendPage;
-use Symfony\Component\Routing\RouterInterface;
 
 class ShippingPage extends AbstractFrontendPage implements ShippingPageInterface
 {
@@ -28,6 +26,19 @@ class ShippingPage extends AbstractFrontendPage implements ShippingPageInterface
     public function submitStep(): void
     {
         $this->getElement('submit_shipping_step')->click();
+    }
+
+    public function getCarriers(): array
+    {
+        $inputs = $this->getSession()->getPage()->findAll('css', '[data-test-carrier-label]');
+
+        $carriers = [];
+
+        foreach ($inputs as $input) {
+            $carriers[] = trim($input->getText());
+        }
+
+        return $carriers;
     }
 
     protected function getAdditionalParameters(): array

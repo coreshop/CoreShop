@@ -22,6 +22,7 @@ default:
                 - coreshop.behat.context.transform.customer
                 - coreshop.behat.context.transform.address
                 - coreshop.behat.context.transform.payment
+                - coreshop.behat.context.transform.shipping
 
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.product

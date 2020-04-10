@@ -32,7 +32,6 @@ services:
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep:
         arguments:
-            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
             - '@coreshop.shipping.carrier.validator'
             - '@form.factory'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
@@ -76,9 +75,15 @@ services:
         arguments:
             - '%coreshop.model.order.class%'
             - '%coreshop.form.type.checkout.carrier.validation_groups%'
-            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
+        tags:
+            - {name: form.type}
+
+    CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierChoiceType:
+        arguments:
+            - '%coreshop.model.order.class%'
+            - '%coreshop.form.type.checkout.carrier.validation_groups%'
+            - '@coreshop.repository.carrier'
+            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
-            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
-            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:
             - {name: form.type}
