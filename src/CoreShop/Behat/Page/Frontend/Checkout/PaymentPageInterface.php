@@ -15,8 +15,11 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Page\Frontend\Checkout;
 
 use CoreShop\Behat\Page\Frontend\FrontendPageInterface;
+use CoreShop\Component\Core\Model\PaymentProviderInterface;
 
 interface PaymentPageInterface extends FrontendPageInterface
 {
     public function submitStep(): void;
+
+    public function selectPaymentProvider(PaymentProviderInterface $paymentProvider);
 }
