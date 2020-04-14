@@ -212,6 +212,26 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     }
 
     /**
+     * @param Element\AbstractElement|null $data
+     *
+     * @return array
+     */
+    public function resolveDependencies($data)
+    {
+        $dependencies = [];
+
+        if ($data instanceof Element\ElementInterface) {
+            $elementType = Element\Service::getElementType($data);
+            $dependencies[$elementType . '_' . $data->getId()] = [
+                'id' => $data->getId(),
+                'type' => $elementType
+            ];
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * @param Concrete|Localizedfield|Objectbrick\Data\AbstractData|Fieldcollection\Data\AbstractData $object
      * @param array $params
      *

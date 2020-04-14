@@ -209,6 +209,30 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     }
 
     /**
+     * @param Element\AbstractElement[]|null $data
+     *
+     * @return array
+     */
+    public function resolveDependencies($data)
+    {
+        $dependencies = [];
+
+        if (is_array($data) && count($data) > 0) {
+            foreach ($data as $e) {
+                if ($e instanceof Element\ElementInterface) {
+                    $elementType = Element\Service::getElementType($e);
+                    $dependencies[$elementType . '_' . $e->getId()] = [
+                        'id' => $e->getId(),
+                        'type' => $elementType
+                    ];
+                }
+            }
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * @param Concrete|Localizedfield|Objectbrick\Data\AbstractData|Fieldcollection\Data\AbstractData $object
      * @param array $params
      *
