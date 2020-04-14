@@ -13,3 +13,148 @@ translations:
         languages:
             en: 'Product'
             de: 'Produkt'
+
+    coreshop.category.name:
+        languages:
+            en: 'Name'
+            de: 'Name'
+
+    coreshop.category.description:
+        languages:
+            en: 'Description'
+            de: 'Beschreibung'
+
+    coreshop.category.parent_category:
+        languages:
+            en: 'Parent Category'
+            de: 'Eltern Kategorie'
+
+    coreshop.manufacturer.name:
+        languages:
+            en: 'Name'
+            de: 'Name'
+
+    coreshop.manufacturer.image:
+        languages:
+            en: 'Image'
+            de: 'Bild'
+
+    coreshop.product.informations:
+        languages:
+            en: 'Informations'
+            de: 'Informationen'
+
+    coreshop.product.name:
+        languages:
+            en: 'Name'
+            de: 'Name'
+
+    coreshop.product.short_description:
+        languages:
+            en: 'Short Description'
+            de: 'Kurz Beschreibung'
+
+    coreshop.product.sku:
+        languages:
+            en: 'SKU'
+            de: 'SKU'
+
+    coreshop.product.ean13:
+        languages:
+            en: 'EAN13'
+            de: 'EAN13'
+
+    coreshop.product.active:
+        languages:
+            en: 'Active'
+            de: 'Aktiv'
+
+    coreshop.product.manufacturer:
+        languages:
+            en: 'Manufacturer'
+            de: 'Hersteller'
+
+    coreshop.product.details:
+        languages:
+            en: 'Details'
+            de: 'Details'
+
+    coreshop.product.description:
+        languages:
+            en: 'Description'
+            de: 'Beschreibung'
+
+    coreshop.product.categories:
+        languages:
+            en: 'Categories'
+            de: 'Kategorien'
+
+    coreshop.product.images:
+        languages:
+            en: 'Images'
+            de: 'Bilder'
+
+    coreshop.product.price_and_units:
+        languages:
+            en: 'Price & Units'
+            de: 'Preis & Einheiten'
+
+    coreshop.product.unit_definitions:
+        languages:
+            en: 'Unit Definitions'
+            de: 'Einheiten Definition'
+
+    coreshop.product.item_quantity_factor:
+        languages:
+            en: 'Item Quantity Factor'
+            de: 'Einheitsmengenfaktor'
+
+    coreshop.product.item_quantity_factor.tooltip:
+        languages:
+            en: 'If you''re calculating with a different item quantity, you''re able to define a different item quantity factor. For example, if you want to display a "Price per 1000 Items" label, you need to change the item quantity factor to "1000". Be aware that CoreShop will recalculate the item price by using the "(default item price) / (item quantity factor)" formula.'
+            de: '-'
+
+    coreshop.product.wholesale_price:
+        languages:
+            en: 'Wholesaleprice'
+            de: 'Einkaufspreis'
+
+    coreshop.product.wholesale_buying_price:
+        languages:
+            en: 'Wholesaleprice'
+            de: 'Einkaufspreis'
+
+    coreshop.product.price_rules:
+        languages:
+            en: 'Price Rules'
+            de: 'Preis Regeln'
+
+    coreshop.product.product_specific_price_rules:
+        languages:
+            en: 'Specific Price Rules'
+            de: 'Produkt Preis Regeln'
+
+    coreshop.product.shipping:
+        languages:
+            en: 'Shipping'
+            de: 'Versand'
+
+    coreshop.product.weight:
+        languages:
+            en: 'Weight'
+            de: 'Gewicht'
+
+    coreshop.product.height:
+        languages:
+            en: 'Height'
+            de: 'Höhe'
+
+    coreshop.product.width:
+        languages:
+            en: 'Width'
+            de: 'Breite'
+
+    coreshop.product.depth:
+        languages:
+            en: 'Depth'
+            de: 'Tiefe'
