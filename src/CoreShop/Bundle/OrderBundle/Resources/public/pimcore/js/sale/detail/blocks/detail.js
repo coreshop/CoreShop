@@ -255,6 +255,15 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'discountNet',
+                    width: 150,
+                    align: 'right',
+                    renderer: function (value) {
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
+                    }.bind(this)
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'discount',
                     width: 150,
                     align: 'right',

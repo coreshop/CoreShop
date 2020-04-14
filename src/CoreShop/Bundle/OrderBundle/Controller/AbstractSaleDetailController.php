@@ -264,13 +264,12 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
                         'name' => '--',
                         'code' => empty($ruleItem->getVoucherCode()) ? null : $ruleItem->getVoucherCode(),
                         'discount' => $ruleItem->getDiscount(),
+                        'discountNet' => $ruleItem->getDiscount(false),
                     ];
 
                     if ($rule instanceof CartPriceRuleInterface) {
-                        $ruleData = array_merge($ruleData, [
-                            'id' => $rule->getId(),
-                            'name' => $rule->getName(),
-                        ]);
+                        $ruleData['id'] = $rule->getId();
+                        $ruleData['name'] = $rule->getName();
                     }
 
                     $rules[] = $ruleData;
@@ -329,6 +328,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $summary[] = [
                 'key' => $sale->getDiscount() < 0 ? 'discount' : 'surcharge',
                 'value' => $sale->getDiscount(),
+                'valueNet' => $sale->getDiscount(false),
             ];
         }
 
@@ -336,6 +336,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             $summary[] = [
                 'key' => 'shipping',
                 'value' => $sale->getShipping(),
+                'valueNet' => $sale->getShipping(false),
             ];
 
             $summary[] = [
