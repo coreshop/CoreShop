@@ -116,5 +116,7 @@ final class CartItemsProcessor implements CartProcessorInterface
 
         $cart->setSubtotal($subtotalGross, true);
         $cart->setSubtotal($subtotalNet, false);
+
+        $cart->recalculateAdjustmentsTotal();
     }
 }

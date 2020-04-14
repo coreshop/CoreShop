@@ -17,8 +17,8 @@ Feature: Create a new cart
     And the site has a product-unit "Carton"
     And the site has a product-unit "Palette"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24"
-    And the product has and additional unit "Palette" with conversion rate "200"
+    And the product has an additional unit "Carton" with conversion rate "24"
+    And the product has an additional unit "Palette" with conversion rate "200"
 
   Scenario: Create a new cart and add a product
     Given I add the product "T-Shirt" with unit "Pieces" to my cart

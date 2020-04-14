@@ -106,6 +106,7 @@ final class CustomerContext implements Context
 
     /**
      * @Given /^the (customer "[^"]+") has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
+     * @Given /^the (customer) has an address with (country "[^"]+"), "([^"]+)", "([^"]+)", "([^"]+)", "([^"]+)"$/
      */
     public function theCustomerHasAnAddress(
         CustomerInterface $customer,
@@ -131,6 +132,8 @@ final class CustomerContext implements Context
 
         $customer->addAddress($address);
         $customer->save();
+
+        $this->sharedStorage->set('address', $address);
     }
 
     /**

@@ -20,6 +20,7 @@ use CoreShop\Behat\Page\Frontend\ProductPageInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
@@ -166,5 +167,62 @@ final class ProductContext implements Context
 
         Assert::greaterThan($priceRules, $number+1);
         Assert::contains($priceRules[$number]['startingFrom'], $startingFrom);
+    }
+
+
+    /**
+     * @Then /^I should see one quantity price rule with price "([^"]+)" for (unit "[^"]+")$/
+     */
+    public function iShouldSeeOneQuantityPiceRuleForUnitWithPrice($price, ProductUnitInterface $unit)
+    {
+        $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
+
+        Assert::count($priceRules, 1);
+        Assert::contains($priceRules[0]['price'], $price);
+    }
+
+    /**
+     * @Then /^I should see the quantity price rule (\d+) with price "([^"]+)" for (unit "[^"]+")$/
+     */
+    public function iShouldSeeTheQuantityPriceRuleForUnitWithPrice(int $number, $price, ProductUnitInterface $unit)
+    {
+        $number--;
+        $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
+
+        Assert::greaterThan($priceRules, $number+1);
+        Assert::contains($priceRules[$number]['price'], $price);
+    }
+
+    /**
+     * @Then /^I should see the quantity price rule (\d+) with excl price "([^"]+)" for (unit "[^"]+")$/
+     */
+    public function iShouldSeeTheQuantityPriceRuleForUnitWithInclPrice(int $number, $price, ProductUnitInterface $unit)
+    {
+        $number--;
+        $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
+
+        Assert::greaterThan($priceRules, $number+1);
+        Assert::contains($priceRules[$number]['priceExcl'], $price);
+    }
+
+    /**
+     * @Then /^I should see the quantity price rule (\d+) starting from "(\d+)" for (unit "[^"]+")$/
+     */
+    public function iShouldSeeTheQuantityPriceRuleForUnitStartingFrom(int $number, $startingFrom, ProductUnitInterface $unit)
+    {
+        $number--;
+        $priceRules = $this->productPage->getQuantityPriceRulesForUnit($unit);
+
+        Assert::greaterThan($priceRules, $number+1);
+        Assert::contains($priceRules[$number]['startingFrom'], $startingFrom);
+    }
+    /**
+     * @Then /^I should see that this (product) is out of stock$/
+     */
+    public function iShouldSeeThatThisProductIsOutOfStock(ProductInterface $product)
+    {
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+
+        Assert::true($this->productPage->getIsOutOfStock());
     }
 }

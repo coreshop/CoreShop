@@ -17,23 +17,23 @@ Feature: Create a new cart where store uses gross values
     And the site has a product "Shoes" priced at 1000
     And the product has the tax rule group "AT"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24" and price 2000
-    And the product has and additional unit "Palette" with conversion rate "200" and price 150000
+    And the product has an additional unit "Carton" with conversion rate "24" and price 2000
+    And the product has an additional unit "Palette" with conversion rate "200" and price 150000
     And the site has a product "T-Shirt" priced at 2000
     And the product has the tax rule group "AT"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24" and price 4000
-    And the product has and additional unit "Palette" with conversion rate "200" and price 300000
+    And the product has an additional unit "Carton" with conversion rate "24" and price 4000
+    And the product has an additional unit "Palette" with conversion rate "200" and price 300000
     And the site has a product "Shorts" priced at 3000
     And the product has the tax rule group "AT"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24" and price 3000
-    And the product has and additional unit "Palette" with conversion rate "200" and price 450000
+    And the product has an additional unit "Carton" with conversion rate "24" and price 3000
+    And the product has an additional unit "Palette" with conversion rate "200" and price 450000
     And the site has a product "CH T-Shirt" priced at 1590
     And the product has the tax rule group "CH"
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24" and price 35000
-    And the product has and additional unit "Palette" with conversion rate "200" and price 250000
+    And the product has an additional unit "Carton" with conversion rate "24" and price 35000
+    And the product has an additional unit "Palette" with conversion rate "200" and price 250000
 
   Scenario: Create a new cart and add a product and calculate totals
     Given I add the product "T-Shirt" with unit "Carton" to my cart

@@ -3,7 +3,7 @@
 
 {% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
 
-<tr class="shopping-cart-item" {{ coreshop_test_html_attribute('cart-item-row', item.name) }}>
+<tr class="shopping-cart-item" {% if item.hasUnitDefinition %}{{ coreshop_test_html_attribute('cart-item-row-unit-' ~ item.unitDefinition.id, item.name) }}{% endif %}{{ coreshop_test_html_attribute('cart-item-row', item.name) }}>
     <td class="text-center">
         {% if item.product and item.product.image is asset_image %}
             <a href="{{ productUrl }}">
@@ -30,7 +30,9 @@
                 {{ form_widget(form.quantity, coreshop_test_form_attribute('cart-item-quantity-input', item.name)) }}
                 {% if item.hasUnitDefinition %}
                     <div class="input-group-append">
-                        <span class="input-group-text">{{ item.unitDefinition.unit.name }}</span>
+                        <span class="input-group-text" {{ coreshop_test_html_attribute('cart-item-unit-' ~ item.unitDefinition.id, item.name) }}>
+                            {{ item.unitDefinition.unit.name }}
+                        </span>
                     </div>
                 {% endif %}
 
@@ -54,7 +56,7 @@
             {% endif %}
         {% endif %}
     </td>
-    <td class="text-right cart-item-total-price">
+    <td class="text-right cart-item-total-price" {{ coreshop_test_html_attribute('cart-item-total-price', item.name) }}>
         {{ currency.convertAndFormat(item.total) }}
     </td>
     <td class="text-center">

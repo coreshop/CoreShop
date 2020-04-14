@@ -51,7 +51,13 @@
             {% endif %}
 
             {% for range in sorted_unit_range.ranges %}
-                <tr class="" {{ coreshop_test_html_attribute('product-quantity-price-rule') }}>
+                <tr class=""
+                    {% if sorted_unit_range.unit_definition is not null %}
+                        {{ coreshop_test_html_attribute('product-quantity-price-rule-unit-' ~ sorted_unit_range.unit_definition.unit.id) }}
+                    {% else %}
+                        {{ coreshop_test_html_attribute('product-quantity-price-rule') }}
+                    {% endif %}
+                >
                     <td class="">
 
                         {{ 'coreshop.ui.product_quantity_price_rules.starting_from'|trans }}

@@ -1,5 +1,6 @@
 @ui @cart
 Feature: Removing cart item from cart
+
     Background:
         Given the site operates on a store in "Austria"
         And the store "Austria" is the default store

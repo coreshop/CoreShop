@@ -73,7 +73,7 @@ class CartPriceRule implements CartPriceRuleInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }

@@ -1,5 +1,6 @@
 @ui @cart
-Feature: Adding a product to the cart
+Feature: Adding a product to the cart with different store prices
+
     Background:
         Given the site operates on a store in "Austria"
         And the store "Austria" is the default store

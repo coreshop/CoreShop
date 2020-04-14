@@ -14,15 +14,34 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Frontend;
 
+use Behat\Mink\Session;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class AbstractFrontendPage extends SymfonyPage implements FrontendPageInterface
 {
     protected static $additionalParameters = ['_locale' => 'en'];
 
+    public function __construct(Session $session, $minkParameters, RouterInterface $router)
+    {
+        parent::__construct($session, $minkParameters, $router);
+    }
+
     public function isOpenWithUri(string $uri): bool
     {
         return $this->getSession()->getCurrentUrl() !== $uri;
+    }
+
+    protected function getUrl(array $urlParameters = []): string
+    {
+        $urlParameters = array_merge($urlParameters, $this->getAdditionalParameters());
+
+        return parent::getUrl($urlParameters);
+    }
+
+    protected function getAdditionalParameters(): array
+    {
+        return [];
     }
 
     public function tryToOpenWithUri(string $uri): void

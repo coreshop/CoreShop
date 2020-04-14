@@ -32,18 +32,15 @@ use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $carriersResolver;
     private $shippableCarrierValidator;
     private $formFactory;
     private $cartManager;
 
     public function __construct(
-        CarriersResolverInterface $carriersResolver,
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
         FormFactoryInterface $formFactory,
         CartManagerInterface $cartManager
     ) {
-        $this->carriersResolver = $carriersResolver;
         $this->shippableCarrierValidator = $shippableCarrierValidator;
         $this->formFactory = $formFactory;
         $this->cartManager = $cartManager;
@@ -96,7 +93,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
-        $form = $this->createForm($request, $this->getCarriers($cart), $cart);
+        $form = $this->createForm($request, $cart);
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
@@ -118,34 +115,14 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
      */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
-        //Get Carriers
-        $carriers = $this->getCarriers($cart);
-
         return [
-            'carriers' => $carriers,
-            'form' => $this->createForm($request, $carriers, $cart)->createView(),
+            'form' => $this->createForm($request, $cart)->createView(),
         ];
     }
 
-    /**
-     * @param OrderInterface $cart
-     *
-     * @return \CoreShop\Component\Shipping\Model\CarrierInterface[]
-     */
-    private function getCarriers(OrderInterface $cart): array
-    {
-        /**
-         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
-         */
-        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
-
-        return $this->carriersResolver->resolveCarriers($cart, $cart->getShippingAddress());
-    }
-
-    private function createForm(Request $request, array$carriers, OrderInterface $cart): FormInterface
+    private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
         $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
-            'carriers' => $carriers,
             'cart' => $cart,
         ]);
 
