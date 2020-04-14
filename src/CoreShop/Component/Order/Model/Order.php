@@ -731,6 +731,8 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      */
     protected function recalculateBaseAfterAdjustmentChange()
     {
+        $this->setBaseTotal($this->getBaseSubtotal(true) + $this->getBaseAdjustmentsTotal(null, true), true);
+        $this->setBaseTotal($this->getBaseSubtotal(false) + $this->getBaseAdjustmentsTotal(null, false), false);
     }
 
     /**
@@ -738,7 +740,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      */
     protected function recalculateAfterAdjustmentChange()
     {
-        $this->setTotal($this->getTotal(true) + $this->getAdjustmentsTotal(null, true), true);
-        $this->setTotal($this->getTotal(false) + $this->getAdjustmentsTotal(null, false), false);
+        $this->setTotal($this->getSubtotal(true) + $this->getAdjustmentsTotal(null, true), true);
+        $this->setTotal($this->getSubtotal(false) + $this->getAdjustmentsTotal(null, false), false);
     }
 }
