@@ -276,6 +276,74 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
     }
 
     /**
+     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @param array|null $data
+     * @param array $params
+     *
+     * @return array|null
+     */
+    public function preSetData($object, $data, $params = [])
+    {
+        if ($data === null) {
+            $data = [];
+        }
+
+        $this->markLazyloadedFieldAsLoaded($object);
+
+        return $data;
+    }
+
+    /**
+     * @param mixed $value
+     * @param DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return mixed
+     */
+    public function marshal($value, $object = null, $params = [])
+    {
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $element) {
+                $type = Element\Service::getType($element);
+                $id = $element->getId();
+                $result[] = [
+                    'type' => $type,
+                    'id' => $id
+                ];
+            }
+
+            return $result;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $value
+     * @param DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return mixed
+     */
+    public function unmarshal($value, $object = null, $params = [])
+    {
+        if (is_array($value)) {
+            $result = [];
+            foreach ($value as $elementData) {
+                $type = $elementData['type'];
+                $id = $elementData['id'];
+                $element = Element\Service::getElementById($type, $id);
+                if ($element) {
+                    $result[] = $element;
+                }
+            }
+
+            return $result;
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
