@@ -23,6 +23,8 @@ use CoreShop\Behat\Service\NotificationType;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
+use CoreShop\Component\Product\Model\ProductUnitInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContext implements Context
@@ -80,6 +82,43 @@ final class CartContext implements Context
     }
 
     /**
+     * @Given /^I add (\d+) of this (product) to the cart$/
+     */
+    public function iAddQuantityProductToTheCart($quantity, ProductInterface $product)
+    {
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartWithQuantity($quantity);
+    }
+
+    /**
+     * @Given /^I add this (product) in (unit "[^"]+") to the cart$/
+     * @Given /^I add (product "[^"]+") in (unit "[^"]+") to the cart$/
+     */
+    public function iAddProductInUnitToTheCart(ProductInterface $product, ProductUnitInterface $unit): void
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartInUnit($unitDefinition);
+
+        $this->sharedStorage->set('product', $product);
+    }
+
+    /**
+     * @Given /^I add (\d+) of this (product) in (unit "[^"]+") to the cart$/
+     * @Given /^I add (\d+) of (product "[^"]+") in (unit "[^"]+") to the cart$/
+     */
+    public function iAddQuantityProductInUnitToTheCart($quantity, ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
+        $this->productPage->addToCartInUnitWithQuantity($unitDefinition, $quantity);
+
+        $this->sharedStorage->set('product', $product);
+    }
+
+    /**
      * @Given I removed product :productName from the cart
      * @When I remove product :productName from the cart
      */
@@ -90,15 +129,6 @@ final class CartContext implements Context
     }
 
     /**
-     * @Given /^I add (\d+) of this (product) to the cart$/
-     */
-    public function iAddQuantityProductToTheCart($quantity, ProductInterface $product)
-    {
-        $this->productPage->tryToOpenWithUri($this->linkGenerator->generate($product, null, ['_locale' => 'en']));
-        $this->productPage->addToCartWithQuantity($quantity);
-    }
-
-    /**
      * @Then /^I should be(?: on| redirected to) the cart summary page$/
      */
     public function shouldBeOnMyCartSummaryPage()
@@ -106,12 +136,61 @@ final class CartContext implements Context
         $this->cartPage->verify();
     }
 
-        /**
+    /**
      * @Then I should be notified that the product has been successfully added
      */
     public function iShouldBeNotifiedThatItHasBeenSuccessfullyAdded()
     {
         $this->notificationChecker->checkNotification('ITEM ADDED', NotificationType::success());
+    }
+
+    /**
+     * @Then I should be notified that the voucher has been applied
+     */
+    public function iShouldBeNotifiedThatTheVoucherHasBeenApplied()
+    {
+        $this->notificationChecker->checkNotification('VOUCHER HAS BEEN SUCCESSFULLY APPLIED', NotificationType::success());
+    }
+
+    /**
+     * @Then I should be notified that the voucher is invalid
+     */
+    public function iShouldBeNotifiedThatTheVoucherIsInvalid()
+    {
+        $this->notificationChecker->checkNotification('THIS VOUCHER IS INVALID', NotificationType::error());
+    }
+
+    /**
+     * @Then I should be notified that I need to order at least :quantity of :productName
+     */
+    public function iShouldBeNotifiedThatItNeedToOrderAtLeastOf(string $quantity, string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('YOU NEED TO ORDER AT LEAST %s UNITS OF %s.', $quantity, $productName),
+            NotificationType::error()
+        );
+    }
+
+    /**
+     * @Then I should be notified that I can only order a maximum of :quantity of :productName
+     */
+    public function iShouldBeNotifiedThatICanOnlyOrderAMaximumQuantityOf(string $quantity, string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('YOU CAN ORDER A MAXIMUM OF %s UNITS OF %s.', $quantity, $productName),
+            NotificationType::error()
+        );
+    }
+
+    /**
+     * @Then I should be notified that :productName does not have sufficient stock
+     */
+    public function iShouldBeNotifiedThatDoesNotHaveSufficientStock(string $productName)
+    {
+        $this->notificationChecker->checkNotification(
+            sprintf('%s DOES NOT HAVE SUFFICIENT STOCK.', $productName),
+            NotificationType::error()
+        );
     }
 
     /**
@@ -131,6 +210,14 @@ final class CartContext implements Context
     }
 
     /**
+     * @Given /^I apply the voucher code "([^"]+)"$/
+     */
+    public function iApplyTheCartRuleToMyCart($voucherCode)
+    {
+        $this->cartPage->applyVoucherCode($voucherCode);
+    }
+
+    /**
      * @Then /^I should see "([^"]+)" with unit price "([^"]+)" in my cart$/
      */
     public function iShouldSeeProductWithUnitPriceInMyCart($productName, $unitPrice)
@@ -138,7 +225,46 @@ final class CartContext implements Context
         Assert::same($this->cartPage->getItemUnitPrice($productName), $unitPrice);
     }
 
-        /**
+    /**
+     * @Then /^I should see "([^"]+)" with total price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductWithTotalPriceInMyCart($productName, $totalPrice)
+    {
+        Assert::same($this->cartPage->getItemTotalPrice($productName), $totalPrice);
+    }
+
+    /**
+     * @Then /^I should see (product "[^"]+") in (unit "[^"]+") with unit price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductInUnitWithUnitPriceInMyCart(ProductInterface $product, ProductUnitInterface $unit, $unitPrice)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::same($this->cartPage->getItemUnitPriceWithUnit($product->getName(), $unitDefinition), $unitPrice);
+    }
+
+    /**
+     * @Then /^I should see (product "[^"]+") in (unit "[^"]+") with total price "([^"]+)" in my cart$/
+     */
+    public function iShouldSeeProductInUnitWithTotalPriceInMyCart(ProductInterface $product, ProductUnitInterface $unit, $totalPrice)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::same($this->cartPage->getItemTotalPriceWithUnit($product->getName(), $unitDefinition), $totalPrice);
+    }
+
+    /**
+     * @Then /^I should see this (product) with (unit "[^"]+") in my cart$/
+     * @Then /^I should see (product "[^"]+") with (unit "[^"]+") in my cart$/
+     */
+    public function iShouldSeeProductWithUnitInMyCart(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = $this->findUnitDefinition($product, $unit);
+
+        Assert::true($this->cartPage->hasProductInUnit($product->getName(), $unitDefinition));
+    }
+
+    /**
      * @Then /^I should see "([^"]+)" with quantity (\d+) in my cart$/
      */
     public function iShouldSeeWithQuantityInMyCart($productName, $quantity)
@@ -163,5 +289,23 @@ final class CartContext implements Context
         $this->cartPage->open();
 
         Assert::same($this->cartPage->getTotal(), $total);
+    }
+
+    protected function findUnitDefinition(ProductInterface $product, ProductUnitInterface $unit)
+    {
+        $unitDefinition = null;
+
+        Assert::notNull($product->getUnitDefinitions());
+
+        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $definition) {
+            if ($definition->getUnit()->getId() === $unit->getId()) {
+                $unitDefinition = $definition;
+                break;
+            }
+        }
+
+        Assert::notNull($unitDefinition);
+
+        return $unitDefinition;
     }
 }

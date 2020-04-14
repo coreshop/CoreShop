@@ -21,7 +21,7 @@ Feature: Adding a new Product
     And the site has a product-unit "Palette"
     And the site has a product "Shoe 2" priced at 200
     And the product has the default unit "Pieces"
-    And the product has and additional unit "Carton" with conversion rate "24"
-    And the product has and additional unit "Palette" with conversion rate "200"
+    And the product has an additional unit "Carton" with conversion rate "24"
+    And the product has an additional unit "Palette" with conversion rate "200"
     Then the product should have and additional unit "Carton" with conversion rate "24"
     Then the product should have and additional unit "Palette" with conversion rate "200"

@@ -291,6 +291,7 @@ services:
             - '@form.factory'
             - '@coreshop.form_registry.product_quantity_price_rules.conditions'
             - '@coreshop.factory.product_quantity_price_rule'
+            - '@coreshop.repository.product'
         tags:
             - { name: fob.context_service }
 

@@ -18,6 +18,7 @@ default:
                 - coreshop.behat.context.transform.currency
                 - coreshop.behat.context.transform.product_unit
                 - coreshop.behat.context.transform.product_quantity_price_rule
+                - coreshop.behat.context.transform.cart_price_rule
 
                 - coreshop.behat.context.setup.store
                 - coreshop.behat.context.setup.product
@@ -31,8 +32,10 @@ default:
                 - coreshop.behat.context.setup.currency
                 - coreshop.behat.context.setup.country
                 - coreshop.behat.context.setup.exchange_rate
+                - coreshop.behat.context.setup.cart_price_rule
 
                 - coreshop.behat.context.ui.cart
+                - coreshop.behat.context.ui.product
                 - coreshop.behat.context.ui.user
                 - coreshop.behat.context.ui.register
                 - coreshop.behat.context.ui.store

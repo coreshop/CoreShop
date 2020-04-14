@@ -85,3 +85,17 @@ services:
             - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui.checkout:
+        class: CoreShop\Behat\Context\Ui\Frontend\CheckoutContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\CustomerPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\AddressPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\ShippingPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\PaymentPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface'
+        tags:
+            - { name: fob.context_service }
