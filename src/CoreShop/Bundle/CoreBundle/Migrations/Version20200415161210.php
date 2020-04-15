@@ -4,6 +4,7 @@ namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
+use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use Doctrine\DBAL\Schema\Schema;
@@ -70,13 +71,13 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
         foreach ($batchList as $cart) {
             /**
              * @var OrderInterface $order
-             * @var Concrete $order
              */
             $order = $this->container->get('coreshop.factory.order')->createNew();
 
             $order->setSaleState(OrderSaleStates::STATE_CART);
             $order->setParent(Service::createFolderByPath($this->container->getParameter('coreshop.folder.cart')));
             $order->setKey($cart->getKey());
+            $order->setPublished(true);
 
             foreach ($normalFields as $field) {
                 $getterFrom = 'get' . ucfirst($field);
@@ -120,6 +121,8 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
 
             $order->setItems($this->migrateOrderItems($order, $cart->getItems()));
             $order->save();
+
+            $this->container->get(CartManagerInterface::class)->persistCart($order);
         }
 
         foreach ($fieldsNotMigrated as $from => $to) {
@@ -127,7 +130,7 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
         }
     }
 
-    protected function migrateOrderItems(Concrete $order, array $items): array
+    protected function migrateOrderItems(OrderInterface $order, array $items): array
     {
         $withTaxFields = [
             'total',
@@ -162,6 +165,7 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
             $orderItem = $this->container->get('coreshop.factory.order_item')->createNew();
             $orderItem->setKey($cartItem->getKey());
             $orderItem->setParent($order);
+            $orderItem->setPublished(true);
 
             foreach ($normalFields as $field) {
                 $getterFrom = 'get' . ucfirst($field);

@@ -222,7 +222,7 @@ class Version20200415152315 extends AbstractPimcoreMigration implements Containe
                 $fieldBefore = $field['name'];
 
                 $this->writeMessage(
-                    sprintf('Field "%s" already found, skipping', $field)
+                    sprintf('Field "%s" already found, skipping', $field['name'])
                 );
 
                 continue;
