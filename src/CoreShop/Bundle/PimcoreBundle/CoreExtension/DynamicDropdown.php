@@ -212,6 +212,26 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     }
 
     /**
+     * @param Element\AbstractElement|null $data
+     *
+     * @return array
+     */
+    public function resolveDependencies($data)
+    {
+        $dependencies = [];
+
+        if ($data instanceof Element\ElementInterface) {
+            $elementType = Element\Service::getElementType($data);
+            $dependencies[$elementType . '_' . $data->getId()] = [
+                'id' => $data->getId(),
+                'type' => $elementType
+            ];
+        }
+
+        return $dependencies;
+    }
+
+    /**
      * @param Concrete|Localizedfield|Objectbrick\Data\AbstractData|Fieldcollection\Data\AbstractData $object
      * @param array $params
      *
@@ -246,6 +266,34 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
         }
 
         return $data;
+    }
+
+    /**
+     * @param DataObject\Concrete|DataObject\Localizedfield|DataObject\Objectbrick\Data\AbstractData|DataObject\Fieldcollection\Data\AbstractData $object
+     * @param array|null $data
+     * @param array $params
+     *
+     * @return mixed
+     */
+    public function preSetData($object, $data, $params = [])
+    {
+        $this->markLazyloadedFieldAsLoaded($object);
+
+        return $data;
+    }
+
+    /**
+     * @param Element\ElementInterface $value1
+     * @param Element\ElementInterface $value2
+     *
+     * @return bool
+     */
+    public function isEqual($value1, $value2)
+    {
+        $compareValue1 = $value1 ? $value1->getType() . $value1->getId() : null;
+        $compareValue2 = $value2 ? $value2->getType() . $value2->getId() : null;
+
+        return $compareValue1 === $compareValue2;
     }
 
     /**
@@ -342,6 +390,48 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
         $method = $this->getMethodName();
 
         return $data->$method();
+    }
+
+
+     /**
+     * @param mixed $value
+     * @param DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return mixed
+     */
+    public function marshal($value, $object = null, $params = [])
+    {
+        if ($value) {
+            $type = Element\Service::getType($value);
+            $id = $value->getId();
+
+            return [
+                'type' => $type,
+                'id' => $id
+            ];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param mixed $value
+     * @param DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return mixed
+     */
+    public function unmarshal($value, $object = null, $params = [])
+    {
+        if (is_array($value)) {
+            $type = $value['type'];
+            $id = $value['id'];
+
+            return Element\Service::getElementById($type, $id);
+        }
+
+        return null;
     }
 
     /**
