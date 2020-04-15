@@ -89,7 +89,7 @@ final class PaymentContext implements Context
          * @var PaymentInterface $payment
          */
         $payment = $this->paymentFactory->createNew();
-        $payment->setCurrency($order->getCurrency());
+        $payment->setCurrency($order->getBaseCurrency());
         $payment->setNumber($order->getId());
         $payment->setPaymentProvider($paymentProvider);
         $payment->setTotalAmount($amount);

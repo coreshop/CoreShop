@@ -92,8 +92,8 @@ class OrderItemToInvoiceItemTransformer implements OrderDocumentItemTransformerI
         $invoiceItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
         $invoiceItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $invoiceItem->setBaseTotal((int)($orderItem->getBaseItemPrice(true) * $quantity), true);
-        $invoiceItem->setBaseTotal((int)($orderItem->getBaseItemPrice(false) * $quantity), false);
+        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $invoiceItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
         VersionHelper::useVersioning(function () use ($invoiceItem) {
             $invoiceItem->save();

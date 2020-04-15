@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
 {
     use AdjustableTrait;
-    use BaseAdjustableTrait;
+    use ConvertedAdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -41,9 +41,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalTax(): int
+    public function getConvertedTotalTax(): int
     {
-        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
+        return $this->getConvertedTotal(true) - $this->getConvertedTotal(false);
     }
 
     /**
@@ -73,25 +73,25 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseDiscountTax(): int
+    public function getConvertedDiscountTax(): int
     {
-        return $this->getBaseDiscount(true) - $this->getBaseDiscount(false);
+        return $this->getConvertedDiscount(true) - $this->getConvertedDiscount(false);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseShippingTax(): int
+    public function getConvertedShippingTax(): int
     {
-        return $this->getBaseShipping(true) - $this->getBaseShipping(false);
+        return $this->getConvertedShipping(true) - $this->getConvertedShipping(false);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseSubtotalTax(): int
+    public function getConvertedSubtotalTax(): int
     {
-        return $this->getBaseSubtotal(true) - $this->getBaseSubtotal(false);
+        return $this->getConvertedSubtotal(true) - $this->getConvertedSubtotal(false);
     }
 
     /**
@@ -391,9 +391,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseDiscount(bool $withTax = true): int
+    public function getConvertedDiscount(bool $withTax = true): int
     {
-        return $this->getBaseAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
+        return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
     /**
@@ -401,9 +401,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseSubtotal(bool $withTax = true): int
+    public function getConvertedSubtotal(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseSubtotalGross() : $this->getBaseSubtotalNet();
+        return $withTax ? $this->getConvertedSubtotalGross() : $this->getConvertedSubtotalNet();
     }
 
     /**
@@ -411,9 +411,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function setBaseSubtotal(int $baseSubtotal, bool $withTax = true)
+    public function setConvertedSubtotal(int $convertedSubtotal, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseSubtotalGross($baseSubtotal) : $this->setBaseSubtotalNet($baseSubtotal);
+        return $withTax ? $this->setConvertedSubtotalGross($convertedSubtotal) : $this->setConvertedSubtotalNet($convertedSubtotal);
     }
 
     /**
@@ -421,9 +421,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseTotal(bool $withTax = true): int
+    public function getConvertedTotal(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
+        return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
     /**
@@ -431,9 +431,9 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function setBaseTotal(int $baseTotal, bool $withTax = true)
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseTotalGross($baseTotal) : $this->setBaseTotalNet($baseTotal);
+        return $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
     }
 
     /**
@@ -441,23 +441,15 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
      *
      * {@inheritdoc}
      */
-    public function getBaseShipping(bool $withTax = true): int
+    public function getConvertedShipping(bool $withTax = true): int
     {
-        return $this->getBaseAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
+        return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalNet(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalNet(int $total)
+    public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -465,7 +457,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalGross(): int
+    public function setConvertedTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -473,7 +465,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalGross(int $baseTotal)
+    public function getConvertedTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -481,7 +473,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseSubtotalNet(): int
+    public function setConvertedTotalGross(int $convertedTotal)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -489,7 +481,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function setBaseSubtotalNet(int $baseSubTotalNet)
+    public function getConvertedSubtotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -497,7 +489,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getBaseSubtotalGross(): int
+    public function setConvertedSubtotalNet(int $convertedSubTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -505,7 +497,15 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     /**
      * {@inheritdoc}
      */
-    public function setBaseSubtotalGross(int $baseSubTotalGross)
+    public function getConvertedSubtotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedSubtotalGross(int $convertedSubTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -514,7 +514,7 @@ class OrderInvoice extends AbstractPimcoreModel implements OrderInvoiceInterface
     {
     }
 
-    protected function recalculateBaseAfterAdjustmentChange()
+    protected function recalculateConvertedAfterAdjustmentChange()
     {
     }
 }

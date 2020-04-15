@@ -21,7 +21,7 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-final class CartBaseProcessor implements CartProcessorInterface
+final class CartCurrencyConversionProcessor implements CartProcessorInterface
 {
     protected $currencyConverter;
 
@@ -35,7 +35,7 @@ final class CartBaseProcessor implements CartProcessorInterface
      */
     public function process(OrderInterface $cart): void
     {
-        $cart->removeBaseAdjustmentsRecursively();
+        $cart->removeConvertedAdjustmentsRecursively();
 
         $cart->setBaseCurrency($cart->getStore()->getCurrency());
 
@@ -43,8 +43,8 @@ final class CartBaseProcessor implements CartProcessorInterface
             $subtotal = $cart->getSubtotal($withTax);
             $total = $cart->getTotal($withTax);
 
-            $cart->setBaseTotal($this->convert($subtotal, $cart), $withTax);
-            $cart->setBaseTotal($this->convert($total, $cart), $withTax);
+            $cart->setConvertedSubtotal($this->convert($subtotal, $cart), $withTax);
+            $cart->setConvertedTotal($this->convert($total, $cart), $withTax);
         }
 
         foreach ($cart->getItems() as $item) {
@@ -55,68 +55,68 @@ final class CartBaseProcessor implements CartProcessorInterface
                 $itemPrice = $item->getTotal($withTax);
                 $total = $item->getItemPrice($withTax);
 
-                $item->setBaseItemRetailPrice($this->convert($itemRetailPrice, $cart), $withTax);
-                $item->setBaseTotal($this->convert($itemPrice, $cart), $withTax);
-                $item->setBaseItemPrice($this->convert($total, $cart), $withTax);
-                $item->setBaseItemDiscount($this->convert($itemDiscount, $cart), $withTax);
-                $item->setBaseItemDiscountPrice($this->convert($itemDiscountPrice, $cart), $withTax);
+                $item->setConvertedItemRetailPrice($this->convert($itemRetailPrice, $cart), $withTax);
+                $item->setConvertedTotal($this->convert($itemPrice, $cart), $withTax);
+                $item->setConvertedItemPrice($this->convert($total, $cart), $withTax);
+                $item->setConvertedItemDiscount($this->convert($itemDiscount, $cart), $withTax);
+                $item->setConvertedItemDiscountPrice($this->convert($itemDiscountPrice, $cart), $withTax);
             }
 
             $itemTax = $item->getItemTax();
 
-            $item->setBaseItemTax($this->convert($itemTax, $cart));
+            $item->setConvertedItemTax($this->convert($itemTax, $cart));
 
             foreach ($item->getAdjustments() as $adjustment) {
-                $baseAdjustment = clone $adjustment;
+                $convertedAdjustment = clone $adjustment;
 
-                $baseAdjustment->setAmount(
-                    $this->convert($baseAdjustment->getAmount(true), $cart),
-                    $this->convert($baseAdjustment->getAmount(false), $cart)
+                $convertedAdjustment->setAmount(
+                    $this->convert($convertedAdjustment->getAmount(true), $cart),
+                    $this->convert($convertedAdjustment->getAmount(false), $cart)
                 );
 
-                $item->addBaseAdjustment($baseAdjustment);
+                $item->addConvertedAdjustment($convertedAdjustment);
             }
 
-            $baseItemTaxesFieldCollection = new Fieldcollection();
+            $convertedItemTaxesFieldCollection = new Fieldcollection();
 
             if ($item->getTaxes() instanceof Fieldcollection) {
                 foreach ($item->getTaxes()->getItems() as $taxItem) {
                     if ($taxItem instanceof TaxItemInterface) {
-                        $baseItem = clone $taxItem;
-                        $baseItem->setAmount($this->convert($taxItem->getAmount(), $cart));
+                        $convertedItem = clone $taxItem;
+                        $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
 
-                        $baseItemTaxesFieldCollection->add($baseItem);
+                        $convertedItemTaxesFieldCollection->add($convertedItem);
                     }
                 }
             }
 
-            $item->setBaseTaxes($baseItemTaxesFieldCollection);
+            $item->setConvertedTaxes($convertedItemTaxesFieldCollection);
         }
 
         foreach ($cart->getAdjustments() as $adjustment) {
-            $baseAdjustment = clone $adjustment;
-            $baseAdjustment->setAmount(
-                $this->convert($baseAdjustment->getAmount(true), $cart),
-                $this->convert($baseAdjustment->getAmount(false), $cart)
+            $convertedAdjustment = clone $adjustment;
+            $convertedAdjustment->setAmount(
+                $this->convert($convertedAdjustment->getAmount(true), $cart),
+                $this->convert($convertedAdjustment->getAmount(false), $cart)
             );
 
-            $cart->addBaseAdjustment($baseAdjustment);
+            $cart->addConvertedAdjustment($convertedAdjustment);
         }
 
-        $baseTaxesFieldCollection = new Fieldcollection();
+        $convertedTaxesFieldCollection = new Fieldcollection();
 
         if ($cart->getTaxes() instanceof Fieldcollection) {
             foreach ($cart->getTaxes()->getItems() as $taxItem) {
                 if ($taxItem instanceof TaxItemInterface) {
-                    $baseItem = clone $taxItem;
-                    $baseItem->setAmount($this->convert($taxItem->getAmount(), $cart));
+                    $convertedItem = clone $taxItem;
+                    $convertedItem->setAmount($this->convert($taxItem->getAmount(), $cart));
 
-                    $baseTaxesFieldCollection->add($baseItem);
+                    $convertedTaxesFieldCollection->add($convertedItem);
                 }
             }
         }
 
-        $cart->setBaseTaxes($baseTaxesFieldCollection);
+        $cart->setConvertedTaxes($convertedTaxesFieldCollection);
     }
 
     protected function convert(?int $value, OrderInterface $cart, bool $backwards = false)

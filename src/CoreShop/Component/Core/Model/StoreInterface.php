@@ -36,9 +36,9 @@ interface StoreInterface extends BaseStoreInterface, CountriesAwareInterface
     public function getBaseCountry();
 
     /**
-     * @param CountryInterface $baseCurrency
+     * @param CountryInterface $baseCountry
      */
-    public function setBaseCountry(CountryInterface $baseCurrency);
+    public function setBaseCountry(CountryInterface $baseCountry);
 
     /**
      * @return Collection|ConfigurationInterface[]

@@ -54,8 +54,8 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setDatePayment(new \DateTime());
 
         if (method_exists($payment, 'setCurrency')) {
-            $payment->setCurrency($order->getCurrency());
-            $payment->setCurrencyCode($order->getCurrency()->getIsoCode());
+            $payment->setCurrency($order->getBaseCurrency());
+            $payment->setCurrencyCode($order->getBaseCurrency()->getIsoCode());
         }
 
         if ($order instanceof PaymentSettingsAwareInterface) {
@@ -67,9 +67,10 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         }
 
         $description = sprintf(
-            'Payment contains %s item(s) for a total of %s.',
+            'Payment contains %s item(s) for a total of %s for currency "%s".',
             count($order->getItems()),
-            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
+            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision),
+            $payment->getCurrencyCode()
         );
 
         $payment->setDescription($description);

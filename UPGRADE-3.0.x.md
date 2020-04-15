@@ -56,6 +56,14 @@ core_shop_workflow:
 Per default it is also not allowed to change a committed Order back to a Cart. But we will provide a way to cancel Orders
 and re-create a Cart out of it.
 
+## Order Changes with Base Values
+CoreShop stores the total, subtotal, etc. Values twice per Order. Once in the Customer choosen Currency, and once in the 
+Store's base currency. Those values used to be called "baseValues". With 3.0 we switched that around, so the "normal" numbers
+are the Store' based currency values and the Customer's choosen Currency are called "converted" Values and are accessible in
+getters like "getConvertedTotal", "getConvertedItemDiscountPrice", etc.
+
+For the migration from 2.x to 3.x, we take care about storing the values in the right field.
+
 # Shipping Price Calculation
 Introduced the context parameter like we have for Product Price Calculation to determine certain context variables like
 store or currency.

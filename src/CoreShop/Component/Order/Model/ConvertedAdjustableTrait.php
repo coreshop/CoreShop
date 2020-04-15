@@ -17,12 +17,12 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use Pimcore\Model\DataObject\Fieldcollection;
 
-trait BaseAdjustableTrait
+trait ConvertedAdjustableTrait
 {
     /**
      * {@inheritdoc}
      */
-    public function setBasePimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
+    public function setConvertedPimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -30,7 +30,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBasePimcoreAdjustmentTotalNet(): int
+    public function getConvertedPimcoreAdjustmentTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -38,7 +38,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function setBasePimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
+    public function setConvertedPimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -46,7 +46,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBasePimcoreAdjustmentTotalGross(): int
+    public function getConvertedPimcoreAdjustmentTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -54,7 +54,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBaseAdjustmentItems()
+    public function getConvertedAdjustmentItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -62,7 +62,7 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function setBaseAdjustmentItems($adjustmentItems)
+    public function setConvertedAdjustmentItems($adjustmentItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -70,9 +70,9 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function hasBaseAdjustments()
+    public function hasConvertedAdjustments()
     {
-        return $this->getBaseAdjustmentItems() instanceof Fieldcollection && $this->getBaseAdjustmentItems()->getCount() > 0;
+        return $this->getConvertedAdjustmentItems() instanceof Fieldcollection && $this->getConvertedAdjustmentItems()->getCount() > 0;
     }
 
     /**
@@ -80,12 +80,12 @@ trait BaseAdjustableTrait
      *
      * @return AdjustmentInterface[]
      */
-    public function getBaseAdjustments(string $type = null)
+    public function getConvertedAdjustments(string $type = null)
     {
         $adjustments = [];
 
-        if ($this->getBaseAdjustmentItems() instanceof Fieldcollection) {
-            foreach ($this->getBaseAdjustmentItems() as $item) {
+        if ($this->getConvertedAdjustmentItems() instanceof Fieldcollection) {
+            foreach ($this->getConvertedAdjustmentItems() as $item) {
                 if ($item instanceof AdjustmentInterface) {
                     $adjustments[] = $item;
                 }
@@ -107,9 +107,9 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function hasBaseAdjustment(AdjustmentInterface $adjustment)
+    public function hasConvertedAdjustment(AdjustmentInterface $adjustment)
     {
-        $items = $this->getBaseAdjustmentItems();
+        $items = $this->getConvertedAdjustmentItems();
 
         if ($items instanceof Fieldcollection) {
             foreach ($items as $item) {
@@ -127,10 +127,10 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function addBaseAdjustment(AdjustmentInterface $adjustment)
+    public function addConvertedAdjustment(AdjustmentInterface $adjustment)
     {
-        if (!$this->hasBaseAdjustment($adjustment)) {
-            $items = $this->getBaseAdjustmentItems();
+        if (!$this->hasConvertedAdjustment($adjustment)) {
+            $items = $this->getConvertedAdjustmentItems();
 
             if (!$items instanceof Fieldcollection) {
                 $items = new Fieldcollection();
@@ -138,18 +138,18 @@ trait BaseAdjustableTrait
 
             $items->add($adjustment);
 
-            $this->setBaseAdjustmentItems($items);
+            $this->setConvertedAdjustmentItems($items);
 
-            $this->recalculateBaseAdjustmentsTotal();
+            $this->recalculateConvertedAdjustmentsTotal();
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeBaseAdjustment(AdjustmentInterface $adjustment)
+    public function removeConvertedAdjustment(AdjustmentInterface $adjustment)
     {
-        $items = $this->getBaseAdjustmentItems();
+        $items = $this->getConvertedAdjustmentItems();
 
         if ($items instanceof Fieldcollection) {
             for ($i = 0, $c = $items->getCount(); $i < $c; $i++) {
@@ -162,34 +162,34 @@ trait BaseAdjustableTrait
                 }
             }
 
-            $this->setBaseAdjustmentItems($items);
-            $this->recalculateBaseAdjustmentsTotal();
+            $this->setConvertedAdjustmentItems($items);
+            $this->recalculateConvertedAdjustmentsTotal();
         }
 
-        $this->addToBaseAdjustmentsTotal($adjustment);
+        $this->addToConvertedAdjustmentsTotal($adjustment);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeBaseAdjustments(string $type = null)
+    public function removeConvertedAdjustments(string $type = null)
     {
-        foreach ($this->getBaseAdjustments($type) as $adjustment) {
-            $this->removeBaseAdjustment($adjustment);
+        foreach ($this->getConvertedAdjustments($type) as $adjustment) {
+            $this->removeConvertedAdjustment($adjustment);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeBaseAdjustmentsRecursively(string $type = null)
+    public function removeConvertedAdjustmentsRecursively(string $type = null)
     {
-        $this->removeBaseAdjustments($type);
+        $this->removeConvertedAdjustments($type);
 
         if (method_exists($this, 'getItems')) {
             foreach ($this->getItems() as $item) {
-                if ($item instanceof BaseAdjustableInterface) {
-                    $item->removeBaseAdjustmentsRecursively($type);
+                if ($item instanceof ConvertedAdjustableInterface) {
+                    $item->removeConvertedAdjustmentsRecursively($type);
                 }
             }
         }
@@ -198,18 +198,18 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function getBaseAdjustmentsTotal(?string $type = null, bool $withTax = true): int
+    public function getConvertedAdjustmentsTotal(?string $type = null, bool $withTax = true): int
     {
         if (null === $type) {
             if ($withTax) {
-                return $this->getBasePimcoreAdjustmentTotalGross() ?: 0;
+                return $this->getConvertedPimcoreAdjustmentTotalGross() ?: 0;
             }
 
-            return $this->getBasePimcoreAdjustmentTotalNet() ?: 0;
+            return $this->getConvertedPimcoreAdjustmentTotalNet() ?: 0;
         }
 
         $total = 0;
-        foreach ($this->getBaseAdjustments($type) as $adjustment) {
+        foreach ($this->getConvertedAdjustments($type) as $adjustment) {
             if (!$adjustment->getNeutral()) {
                 $total += $adjustment->getAmount($withTax);
             }
@@ -221,48 +221,48 @@ trait BaseAdjustableTrait
     /**
      * {@inheritdoc}
      */
-    public function recalculateBaseAdjustmentsTotal()
+    public function recalculateConvertedAdjustmentsTotal()
     {
         $adjustmentsTotalGross = 0;
         $adjustmentsTotalNet = 0;
 
-        foreach ($this->getBaseAdjustments() as $adjustment) {
+        foreach ($this->getConvertedAdjustments() as $adjustment) {
             if (!$adjustment->getNeutral()) {
                 $adjustmentsTotalGross += $adjustment->getAmount(true);
                 $adjustmentsTotalNet += $adjustment->getAmount(false);
             }
         }
 
-        $this->setBasePimcoreAdjustmentTotalGross($adjustmentsTotalGross);
-        $this->setBasePimcoreAdjustmentTotalNet($adjustmentsTotalNet);
+        $this->setConvertedPimcoreAdjustmentTotalGross($adjustmentsTotalGross);
+        $this->setConvertedPimcoreAdjustmentTotalNet($adjustmentsTotalNet);
 
-        $this->recalculateBaseAfterAdjustmentChange();
+        $this->recalculateConvertedAfterAdjustmentChange();
     }
 
     /**
      * @param AdjustmentInterface $adjustment
      */
-    protected function addToBaseAdjustmentsTotal(AdjustmentInterface $adjustment)
+    protected function addToConvertedAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {
-            $this->recalculateBaseAdjustmentsTotal();
-            $this->recalculateBaseAfterAdjustmentChange();
+            $this->recalculateConvertedAdjustmentsTotal();
+            $this->recalculateConvertedAfterAdjustmentChange();
         }
     }
 
     /**
      * @param AdjustmentInterface $adjustment
      */
-    protected function subtractFromBaseAdjustmentsTotal(AdjustmentInterface $adjustment)
+    protected function subtractFromConvertedAdjustmentsTotal(AdjustmentInterface $adjustment)
     {
         if (!$adjustment->getNeutral()) {
-            $this->recalculateBaseAdjustmentsTotal();
-            $this->recalculateBaseAfterAdjustmentChange();
+            $this->recalculateConvertedAdjustmentsTotal();
+            $this->recalculateConvertedAfterAdjustmentChange();
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract protected function recalculateBaseAfterAdjustmentChange();
+    abstract protected function recalculateConvertedAfterAdjustmentChange();
 }

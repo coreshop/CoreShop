@@ -212,17 +212,17 @@ class OrderCreationController extends PimcoreController
 
         $price = $item->getItemPrice();
         $total = $item->getTotal();
-        $basePrice = $this->currencyConverter->convert($price, $currentCurrency, $currency);
-        $baseTotal = $this->currencyConverter->convert($total, $currentCurrency, $currency);
+        $convertedPrice = $this->currencyConverter->convert($price, $currentCurrency, $currency);
+        $convertedTotal = $this->currencyConverter->convert($total, $currentCurrency, $currency);
 
         return [
             'product' => $item->getProduct() ? $item->getProduct()->getId() : 0,
             'productName' => $item->getProduct() ? $item->getProduct()->getName() : '',
             'quantity' => $item->getQuantity(),
-            'basePrice' => $price,
-            'baseTotal' => $total,
-            'price' => $basePrice,
-            'total' => $baseTotal,
+            'price' => $price,
+            'total' => $total,
+            'convertedPrice' => $convertedPrice,
+            'convertedTotal' => $convertedTotal,
         ];
     }
 

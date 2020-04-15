@@ -21,7 +21,7 @@ final class NoDiscountPurchasableCalculator implements PurchasableDiscountCalcul
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, int $basePrice): int
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         return 0;
     }

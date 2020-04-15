@@ -84,6 +84,11 @@ translations:
             en: 'Numbers (Converted)'
             de: 'Zahlen (Umgerechnet)'
 
+    coreshop.order_invoice.numbers_store:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
     coreshop.order_invoice.total_net:
         languages:
             en: 'Total (Net)'
@@ -119,45 +124,40 @@ translations:
             en: 'Adjustments Total (Net)'
             de: 'Adaptierungen Summe (Netto)'
 
-    coreshop.order_invoice.numbers_base:
+    coreshop.order_invoice.converted_total_net:
         languages:
-            en: 'Numbers (Base)'
-            de: 'Zahlen (Basis)'
+            en: 'Converted Total (Net)'
+            de: 'Umgerechnet Summe (Netto)'
 
-    coreshop.order_invoice.base_total_net:
+    coreshop.order_invoice.converted_total_gross:
         languages:
-            en: 'Base Total (Net)'
-            de: 'Basis Summe (Netto)'
+            en: 'Converted Total (Gross)'
+            de: 'Umgerechnet Summe (Brutto)'
 
-    coreshop.order_invoice.base_total_gross:
+    coreshop.order_invoice.subconverted_total_net:
         languages:
-            en: 'Base Total (Gross)'
-            de: 'Basis Summe (Brutto)'
+            en: 'Converted Subtotal (Net)'
+            de: 'Umgerechnet Teilsumme (Netto)'
 
-    coreshop.order_invoice.subbase_total_net:
+    coreshop.order_invoice.subconverted_total_gross:
         languages:
-            en: 'Base Subtotal (Net)'
-            de: 'Basis Teilsumme (Netto)'
+            en: 'Converted Subtotal (Gross)'
+            de: 'Umgerechnet Teilsumme (Brutto)'
 
-    coreshop.order_invoice.subbase_total_gross:
+    coreshop.order_invoice.converted_adjustments:
         languages:
-            en: 'Base Subtotal (Gross)'
-            de: 'Basis Teilsumme (Brutto)'
+            en: 'Converted Adjustments'
+            de: 'Umgerechnet Adaptierungen'
 
-    coreshop.order_invoice.base_adjustments:
+    coreshop.order_invoice.converted_adjustments_total_gross:
         languages:
-            en: 'Base Adjustments'
-            de: 'Basis Adaptierungen'
+            en: 'Converted Adjustments Total (Gross)'
+            de: 'Umgerechnet Adaptierungen Summe (Brutto)'
 
-    coreshop.order_invoice.base_adjustments_total_gross:
+    coreshop.order_invoice.converted_adjustments_total_net:
         languages:
-            en: 'Base Adjustments Total (Gross)'
-            de: 'Basis Adaptierungen Summe (Brutto)'
-
-    coreshop.order_invoice.base_adjustments_total_net:
-        languages:
-            en: 'Base Adjustments Total (Net)'
-            de: 'Basis Adaptierungen Summe (Netto)'
+            en: 'Converted Adjustments Total (Net)'
+            de: 'Umgerechnet Adaptierungen Summe (Netto)'
 
     coreshop.order_invoice.items:
         languages:
@@ -184,11 +184,6 @@ translations:
             en: 'Numbers'
             de: 'Zahlen'
 
-    coreshop.order_invoice_item.numbers_converted:
-        languages:
-            en: 'Numbers (Converted)'
-            de: 'Zahlen (Umgerechnet)'
-
     coreshop.order_invoice_item.total_net:
         languages:
             en: 'Total (Net)'
@@ -199,20 +194,25 @@ translations:
             en: 'Total (Gross)'
             de: 'Summe (Brutto)'
 
-    coreshop.order_invoice_item.numbers_base:
+    coreshop.order_invoice_item.numbers_converted:
         languages:
-            en: 'Numbers (Base)'
-            de: 'Zahlen (Basis)'
+            en: 'Numbers (converted)'
+            de: 'Zahlen (Umgerechnet)'
 
-    coreshop.order_invoice_item.base_total_net:
+    coreshop.order_invoice_item.numbers_store:
         languages:
-            en: 'Base Total (Net)'
-            de: 'Basis Summe (Netto)'
+            en: 'Numbers'
+            de: 'Zahlen'
 
-    coreshop.order_invoice_item.base_total_gross:
+    coreshop.order_invoice_item.converted_total_net:
         languages:
-            en: 'Base Total (Gross)'
-            de: 'Basis Summe (Brutto)'
+            en: 'Converted Total (Net)'
+            de: 'Umgerechnet Summe (Netto)'
+
+    coreshop.order_invoice_item.converted_total_gross:
+        languages:
+            en: 'Converted Total (Gross)'
+            de: 'Umgerechnet Summe (Brutto)'
 
     coreshop.order.order:
         languages:
@@ -349,60 +349,55 @@ translations:
             en: 'Adjustments Total (Net)'
             de: 'Adaptierungen Summe (Netto)'
 
-    coreshop.order.numbers_base:
-        languages:
-            en: 'Numbers (Base)'
-            de: 'Zahlen (Basis)'
-
     coreshop.order.base_currency:
         languages:
-            en: 'Base Currency'
-            de: 'Basis Währung'
+            en: 'Converted Currency'
+            de: 'Umgerechnet Währung'
 
-    coreshop.order.base_totals:
+    coreshop.order.converted_totals:
         languages:
-            en: 'Base Totals'
-            de: 'Basis Summen'
+            en: 'Converted Totals'
+            de: 'Umgerechnet Summen'
 
-    coreshop.order.base_total_net:
+    coreshop.order.converted_total_net:
         languages:
-            en: 'Base Total (Net)'
-            de: 'Basis Summe (Netto)'
+            en: 'Converted Total (Net)'
+            de: 'Umgerechnet Summe (Netto)'
 
-    coreshop.order.base_total_gross:
+    coreshop.order.converted_total_gross:
         languages:
-            en: 'Base Total (Gross)'
-            de: 'Basis Summe (Brutto)'
+            en: 'Converted Total (Gross)'
+            de: 'Umgerechnet Summe (Brutto)'
 
-    coreshop.order.base_subtotal_net:
+    coreshop.order.converted_subtotal_net:
         languages:
-            en: 'Base Subtotal (Net)'
-            de: 'Basis Teilsumme (Netto)'
+            en: 'Converted Subtotal (Net)'
+            de: 'Umgerechnet Teilsumme (Netto)'
 
-    coreshop.order.base_subtotal_gross:
+    coreshop.order.converted_subtotal_gross:
         languages:
-            en: 'Base Subtotal (Gross)'
-            de: 'Basis Teilsumme (Brutto)'
+            en: 'Converted Subtotal (Gross)'
+            de: 'Umgerechnet Teilsumme (Brutto)'
 
-    coreshop.order.base_taxes:
+    coreshop.order.converted_taxes:
         languages:
-            en: 'Base Taxes'
-            de: 'Basis Steuern'
+            en: 'Converted Taxes'
+            de: 'Umgerechnet Steuern'
 
-    coreshop.order.base_adjustments:
+    coreshop.order.converted_adjustments:
         languages:
-            en: 'Base Adjustments'
-            de: 'Basis Adaptierungen'
+            en: 'Converted Adjustments'
+            de: 'Umgerechnet Adaptierungen'
 
-    coreshop.order.base_adjustments_total_gross:
+    coreshop.order.converted_adjustments_total_gross:
         languages:
-            en: 'Base Adjustments Total (Gross)'
-            de: 'Basis Adaptierungen Summe (Brutto)'
+            en: 'Converted Adjustments Total (Gross)'
+            de: 'Umgerechnet Adaptierungen Summe (Brutto)'
 
-    coreshop.order.base_adjustments_total_net:
+    coreshop.order.converted_adjustments_total_net:
         languages:
-            en: 'Base Adjustments Total (Net)'
-            de: 'Basis Adaptierungen Summe (Netto)'
+            en: 'Converted Adjustments Total (Net)'
+            de: 'Umgerechnet Adaptierungen Summe (Netto)'
 
     coreshop.order.other:
         languages:
@@ -514,6 +509,11 @@ translations:
             en: 'Numbers (Converted)'
             de: 'Zahlen (Umgerechnet)'
 
+    coreshop.order_item.numbers_store:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
     coreshop.order_item.item_wholesale_price:
         languages:
             en: 'Item Wholesale Price'
@@ -574,90 +574,85 @@ translations:
             en: 'Adjustments Total (Net)'
             de: 'Adaptierungen Summe (Netto)'
 
-    coreshop.order_item.numbers_base:
+    coreshop.order_item.converted_item_wholesale_price:
         languages:
-            en: 'Numbers (Base)'
-            de: 'Zahlen (Basis)'
+            en: 'Converted Item Wholesale Price'
+            de: 'Umgerechnet Position Einkaufspreis'
 
-    coreshop.order_item.base_item_wholesale_price:
+    coreshop.order_item.converted_item_discount_net:
         languages:
-            en: 'Base Item Wholesale Price'
-            de: 'Basis Position Einkaufspreis'
+            en: 'Converted Item Discount (Net)'
+            de: 'Umgerechnet Position Rabatt (Netto)'
 
-    coreshop.order_item.base_item_discount_net:
+    coreshop.order_item.converted_item_discount_gross:
         languages:
-            en: 'Base Item Discount (Net)'
-            de: 'Basis Position Rabatt (Netto)'
+            en: 'Converted Item Discount (Gross)'
+            de: 'Umgerechnet Position Rabatt (Brutto)'
 
-    coreshop.order_item.base_item_discount_gross:
+    coreshop.order_item.converted_item_price_net:
         languages:
-            en: 'Base Item Discount (Gross)'
-            de: 'Basis Position Rabatt (Brutto)'
+            en: 'Converted Item Price (Net)'
+            de: 'Umgerechnet Position Preis (Netto)'
 
-    coreshop.order_item.base_item_price_net:
+    coreshop.order_item.converted_item_discount_price_net:
         languages:
-            en: 'Base Item Price (Net)'
-            de: 'Basis Position Preis (Netto)'
+            en: 'Converted Item Discount Price (Net)'
+            de: 'Umgerechnet Position Rabatt Preis (Netto)'
 
-    coreshop.order_item.base_item_discount_price_net:
+    coreshop.order_item.converted_item_discount_price_gross:
         languages:
-            en: 'Base Item Discount Price (Net)'
-            de: 'Basis Position Rabatt Preis (Netto)'
+            en: 'Converted Item Discount Price (Gross)'
+            de: 'Umgerechnet Position Rabatt Preis (Brutto)'
 
-    coreshop.order_item.base_item_discount_price_gross:
+    coreshop.order_item.converted_item_price_gross:
         languages:
-            en: 'Base Item Discount Price (Gross)'
-            de: 'Basis Position Rabatt Preis (Brutto)'
+            en: 'Converted Item Price (Gross)'
+            de: 'Umgerechnet Position Preis (Brutto)'
 
-    coreshop.order_item.base_item_price_gross:
+    coreshop.order_item.converted_item_retail_price_net:
         languages:
-            en: 'Base Item Price (Gross)'
-            de: 'Basis Position Preis (Brutto)'
+            en: 'Converted Item Retail Price (Net)'
+            de: 'Umgerechnet Position Verkaufspreis (Netto)'
 
-    coreshop.order_item.base_item_retail_price_net:
+    coreshop.order_item.converted_item_retail_price_gross:
         languages:
-            en: 'Base Item Retail Price (Net)'
-            de: 'Basis Position Verkaufspreis (Netto)'
+            en: 'Converted Item Retail Price (Gross)'
+            de: 'Umgerechnet Position Verkaufspreis (Brutto)'
 
-    coreshop.order_item.base_item_retail_price_gross:
+    coreshop.order_item.converted_total_net:
         languages:
-            en: 'Base Item Retail Price (Gross)'
-            de: 'Basis Position Verkaufspreis (Brutto)'
+            en: 'Converted Total (Net)'
+            de: 'Umgerechnet Gesamt (Netto)'
 
-    coreshop.order_item.base_total_net:
+    coreshop.order_item.converted_total_gross:
         languages:
-            en: 'Base Total (Net)'
-            de: 'Basis Gesamt (Netto)'
+            en: 'Converted Total (Gross)'
+            de: 'Umgerechnet Gesamt (Brutto)'
 
-    coreshop.order_item.base_total_gross:
+    coreshop.order_item.converted_item_tax:
         languages:
-            en: 'Base Total (Gross)'
-            de: 'Basis Gesamt (Brutto)'
+            en: 'Converted Item Tax'
+            de: 'Umgerechnet Position Steuer'
 
-    coreshop.order_item.base_item_tax:
-        languages:
-            en: 'Base Item Tax'
-            de: 'Basis Position Steuer'
-
-    coreshop.order_item.base_taxes:
+    coreshop.order_item.converted_taxes:
         languages:
             en: 'Taxes'
             de: 'Steuern'
 
-    coreshop.order_item.base_adjustments:
+    coreshop.order_item.converted_adjustments:
         languages:
-            en: 'Base Adjustments'
-            de: 'Basis Adaptierungen'
+            en: 'Converted Adjustments'
+            de: 'Umgerechnet Adaptierungen'
 
-    coreshop.order_item.base_adjustments_total_gross:
+    coreshop.order_item.converted_adjustments_total_gross:
         languages:
-            en: 'Base Adjustments Total (Gross)'
-            de: 'Basis Adaptierungen Summe (Brutto)'
+            en: 'Converted Adjustments Total (Gross)'
+            de: 'Umgerechnet Adaptierungen Summe (Brutto)'
 
-    coreshop.order_item.base_adjustments_total_net:
+    coreshop.order_item.converted_adjustments_total_net:
         languages:
-            en: 'Base Adjustments Total (Net)'
-            de: 'Basis Adaptierungen Summe (Netto)'
+            en: 'Converted Adjustments Total (Net)'
+            de: 'Umgerechnet Adaptierungen Summe (Netto)'
 
     coreshop.order_shipment.shipment:
         languages:
@@ -719,15 +714,15 @@ translations:
             en: 'Total (Gross)'
             de: 'Summe (Brutto)'
 
-    coreshop.order_shipment_item.base_total_net:
+    coreshop.order_shipment_item.converted_total_net:
         languages:
-            en: 'Base Total (Net)'
-            de: 'Basis Summe (Netto)'
+            en: 'Converted Total (Net)'
+            de: 'Umgerechnet Summe (Netto)'
 
-    coreshop.order_shipment_item.base_total_gross:
+    coreshop.order_shipment_item.converted_total_gross:
         languages:
-            en: 'Base Total (Gross)'
-            de: 'Basis Summe (Brutto)'
+            en: 'Converted Total (Gross)'
+            de: 'Umgerechnet Summe (Brutto)'
 
     coreshop.adjustment.type_identifier:
         languages:

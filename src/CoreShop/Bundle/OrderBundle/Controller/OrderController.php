@@ -312,8 +312,8 @@ class OrderController extends PimcoreController
             'subtotal' => $order->getSubtotal(),
             'totalTax' => $order->getTotalTax(),
             'total' => $order->getTotal(),
-            'currency' => $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency()),
-            'currencyName' => $order->getCurrency() instanceof CurrencyInterface ? $order->getCurrency()->getName() : '',
+            'currency' => $this->getCurrency($order->getBaseCurrency() ?: $order->getStore()->getCurrency()),
+            'currencyName' => $order->getBaseCurrency() instanceof CurrencyInterface ? $order->getBaseCurrency()->getName() : '',
             'customerName' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getFirstname().' '.$order->getCustomer()->getLastname() : '',
             'customerEmail' => $order->getCustomer() instanceof CustomerInterface ? $order->getCustomer()->getEmail() : '',
             'store' => $order->getStore() instanceof StoreInterface ? $order->getStore()->getId() : null,
@@ -373,7 +373,7 @@ class OrderController extends PimcoreController
         $jsonSale['o_id'] = $order->getId();
         $jsonSale['saleNumber'] = $order->getOrderNumber();
         $jsonSale['saleDate'] = $order->getOrderDate() ? $order->getOrderDate()->getTimestamp() : null;
-        $jsonSale['currency'] = $this->getCurrency($order->getCurrency() ?: $order->getStore()->getCurrency());
+        $jsonSale['currency'] = $this->getCurrency($order->getBaseCurrency() ?: $order->getStore()->getCurrency());
         $jsonSale['store'] = $order->getStore() instanceof StoreInterface ? $this->getStore($order->getStore()) : null;
 
         if (!isset($jsonSale['items'])) {
@@ -559,10 +559,12 @@ class OrderController extends PimcoreController
         $summary[] = [
             'key' => 'total_tax',
             'value' => $order->getTotalTax(),
+            'converted_value' => $order->getConvertedTotalTax(),
         ];
         $summary[] = [
             'key' => 'total',
             'value' => $order->getTotal(),
+            'converted_value' => $order->getConvertedTotal(),
         ];
 
         return $summary;
@@ -588,13 +590,16 @@ class OrderController extends PimcoreController
             'o_id' => $item->getId(),
             'product_name' => $item->getName(),
             'product_image' => null,
-            //TODO: ($detail->getProductImage() instanceof \Pimcore\Model\Asset\Image) ? $detail->getProductImage()->getPath() : null,
+            'quantity' => $item->getQuantity(),
             'wholesale_price' => $item->getItemWholesalePrice(),
             'price_without_tax' => $item->getItemPrice(false),
             'price' => $item->getItemPrice(true),
-            'quantity' => $item->getQuantity(),
             'total' => $item->getTotal(),
             'total_tax' => $item->getTotalTax(),
+            'converted_price_without_tax' => $item->getConvertedItemPrice(false),
+            'converted_price' => $item->getConvertedItemPrice(true),
+            'converted_total' => $item->getConvertedTotal(),
+            'converted_total_tax' => $item->getConvertedTotalTax(),
         ];
     }
 

@@ -18,6 +18,7 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Resolver\CarriersResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -31,19 +32,22 @@ final class CarrierChoiceType extends AbstractResourceType
     private $repository;
     private $carriersResolver;
     private $taxedShippingCalculator;
+    private $cartContextResolver;
 
     public function __construct(
         $dataClass,
         array $validationGroups,
         CarrierRepositoryInterface $repository,
         CarriersResolverInterface $carriersResolver,
-        TaxedShippingCalculatorInterface $taxedShippingCalculator
+        TaxedShippingCalculatorInterface $taxedShippingCalculator,
+        CartContextResolverInterface $cartContextResolver
     ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->repository = $repository;
         $this->carriersResolver = $carriersResolver;
         $this->taxedShippingCalculator = $taxedShippingCalculator;
+        $this->cartContextResolver = $cartContextResolver;
     }
 
     /**
@@ -92,7 +96,8 @@ final class CarrierChoiceType extends AbstractResourceType
                 $carrier,
                 $cart,
                 $cart->getShippingAddress(),
-                $options['show_carrier_price_with_tax']
+                $options['show_carrier_price_with_tax'],
+                $this->cartContextResolver->resolveCartContext($cart)
             );
 
             $prices[$choice->value] = $price;

@@ -24,7 +24,7 @@ Feature: Create a new cart
 
   Scenario: Create a new cart, add a product and shipping should be applied
     And I add the product "T-Shirt" to my cart
-    Then the cart shipping should be "2000" excluding tax
-    And the cart shipping should be "2400" including tax
-    Then the cart base shipping should be "1000" excluding tax
-    And the cart base shipping should be "1200" including tax
+    Then the cart shipping should be "1000" excluding tax
+    And the cart shipping should be "1200" including tax
+    Then the cart converted shipping should be "2000" excluding tax
+    And the cart converted shipping should be "2400" including tax

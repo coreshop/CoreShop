@@ -289,7 +289,7 @@ coreshop.core.settings = Class.create({
                     defaults: {width: 600},
                     items: [
                         {
-                            fieldLabel: t('coreshop_base_guestcheckout'),
+                            fieldLabel: t('coreshop_guestcheckout'),
                             xtype: 'checkbox',
                             name: 'system.guest.checkout',
                             checked: this.getValue(shopId, 'system.guest.checkout')
