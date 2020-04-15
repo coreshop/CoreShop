@@ -47,7 +47,7 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         return null !== DataObject\ClassDefinition\Service::importClassDefinitionFromJson($this->classDefinition, json_encode($this->jsonDefinition), true);
     }
 
-    public function renameField($fieldName, $newFieldName): void
+    public function renameField(string $fieldName, string $newFieldName): void
     {
         $this->findField(
             $fieldName,
