@@ -46,18 +46,18 @@
         {% set discountPrice = item.itemDiscountPrice %}
         {% set retailPrice = item.itemRetailPrice %}
 
-        <span class="price-new" {{ coreshop_test_html_attribute('cart-item-unit-price', item.name) }}>{{ currency.format(price, cart.currency.isoCode) }}</span>
+        <span class="price-new" {{ coreshop_test_html_attribute('cart-item-unit-price', item.name) }}>{{ currency.convertAndFormat(price) }}</span>
         {% if price < retailPrice %}
             {% if discountPrice > 0 %}
-                <span class="price-old">{{ currency.format(retailPrice, cart.currency.isoCode) }}</span>
+                <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
             {% endif %}
             {% if discount > 0 %}
-                <span class="price-discount">(-{{ currency.format(discount, cart.currency.isoCode) }})</span>
+                <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
             {% endif %}
         {% endif %}
     </td>
     <td class="text-right cart-item-total-price" {{ coreshop_test_html_attribute('cart-item-total-price', item.name) }}>
-        {{ currency.format(item.total, cart.currency.isoCode) }}
+        {{ currency.convertAndFormat(item.total) }}
     </td>
     <td class="text-center">
         {% if not item.isGiftItem %}

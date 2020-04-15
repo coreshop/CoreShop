@@ -9,7 +9,7 @@
             <td class="text-center"></td>
             <td class="text-right" colspan="2">
                 {% if priceRule.discount != 0 %}
-                    {{ currency.format(priceRule.discount(true), cart.currency.isoCode) }}
+                    {{ currency.convertAndFormat(priceRule.discount(true)) }}
                 {% endif %}
             </td>
             <td colspan="1" class="text-left cart-sub-total">
