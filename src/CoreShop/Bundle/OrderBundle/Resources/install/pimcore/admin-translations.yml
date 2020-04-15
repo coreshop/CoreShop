@@ -48,3 +48,708 @@ translations:
         languages:
             en: 'Quote Item'
             de: 'Angebot Element'
+
+    coreshop.order_invoice.invoice:
+        languages:
+            en: 'Invoice'
+            de: 'Rechnung'
+
+    coreshop.order_invoice.order:
+        languages:
+            en: 'Order'
+            de: 'Bestellung'
+
+    coreshop.order_invoice.date:
+        languages:
+            en: 'Date'
+            de: 'Datum'
+
+    coreshop.order_invoice.number:
+        languages:
+            en: 'Number'
+            de: 'Nummer'
+
+    coreshop.order_invoice.state:
+        languages:
+            en: 'State'
+            de: 'Status'
+
+    coreshop.order_invoice.numbers:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
+    coreshop.order_invoice.numbers_converted:
+        languages:
+            en: 'Numbers (Converted)'
+            de: 'Zahlen (Umgerechnet)'
+
+    coreshop.order_invoice.total_net:
+        languages:
+            en: 'Total (Net)'
+            de: 'Summe (Netto)'
+
+    coreshop.order_invoice.total_gross:
+        languages:
+            en: 'Total (Gross)'
+            de: 'Summe (Brutto)'
+
+    coreshop.order_invoice.subtotal_net:
+        languages:
+            en: 'Subtotal (Net)'
+            de: 'Teilsumme (Netto)'
+
+    coreshop.order_invoice.subtotal_gross:
+        languages:
+            en: 'Subtotal (Gross)'
+            de: 'Teilsumme (Brutto)'
+
+    coreshop.order_invoice.adjustments:
+        languages:
+            en: 'Adjustments'
+            de: 'Adaptierungen'
+
+    coreshop.order_invoice.adjustments_total_gross:
+        languages:
+            en: 'Adjustments Total (Gross)'
+            de: 'Adaptierungen Summe (Brutto)'
+
+    coreshop.order_invoice.adjustments_total_net:
+        languages:
+            en: 'Adjustments Total (Net)'
+            de: 'Adaptierungen Summe (Netto)'
+
+    coreshop.order_invoice.numbers_base:
+        languages:
+            en: 'Numbers (Base)'
+            de: 'Zahlen (Basis)'
+
+    coreshop.order_invoice.base_total_net:
+        languages:
+            en: 'Base Total (Net)'
+            de: 'Basis Summe (Netto)'
+
+    coreshop.order_invoice.base_total_gross:
+        languages:
+            en: 'Base Total (Gross)'
+            de: 'Basis Summe (Brutto)'
+
+    coreshop.order_invoice.subbase_total_net:
+        languages:
+            en: 'Base Subtotal (Net)'
+            de: 'Basis Teilsumme (Netto)'
+
+    coreshop.order_invoice.subbase_total_gross:
+        languages:
+            en: 'Base Subtotal (Gross)'
+            de: 'Basis Teilsumme (Brutto)'
+
+    coreshop.order_invoice.base_adjustments:
+        languages:
+            en: 'Base Adjustments'
+            de: 'Basis Adaptierungen'
+
+    coreshop.order_invoice.base_adjustments_total_gross:
+        languages:
+            en: 'Base Adjustments Total (Gross)'
+            de: 'Basis Adaptierungen Summe (Brutto)'
+
+    coreshop.order_invoice.base_adjustments_total_net:
+        languages:
+            en: 'Base Adjustments Total (Net)'
+            de: 'Basis Adaptierungen Summe (Netto)'
+
+    coreshop.order_invoice.items:
+        languages:
+            en: 'Items'
+            de: 'Positionen'
+
+    coreshop.order_invoice_item.item:
+        languages:
+            en: 'Item'
+            de: 'Position'
+
+    coreshop.order_invoice_item.order_item:
+        languages:
+            en: 'Order Item'
+            de: 'Bestellposition'
+
+    coreshop.order_invoice_item.quantity:
+        languages:
+            en: 'Quantity'
+            de: 'Menge'
+
+    coreshop.order_invoice_item.numbers:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
+    coreshop.order_invoice_item.numbers_converted:
+        languages:
+            en: 'Numbers (Converted)'
+            de: 'Zahlen (Umgerechnet)'
+
+    coreshop.order_invoice_item.total_net:
+        languages:
+            en: 'Total (Net)'
+            de: 'Summe (Netto)'
+
+    coreshop.order_invoice_item.total_gross:
+        languages:
+            en: 'Total (Gross)'
+            de: 'Summe (Brutto)'
+
+    coreshop.order_invoice_item.numbers_base:
+        languages:
+            en: 'Numbers (Base)'
+            de: 'Zahlen (Basis)'
+
+    coreshop.order_invoice_item.base_total_net:
+        languages:
+            en: 'Base Total (Net)'
+            de: 'Basis Summe (Netto)'
+
+    coreshop.order_invoice_item.base_total_gross:
+        languages:
+            en: 'Base Total (Gross)'
+            de: 'Basis Summe (Brutto)'
+
+    coreshop.order.order:
+        languages:
+            en: 'Order'
+            de: 'Bestellung'
+
+    coreshop.order.number:
+        languages:
+            en: 'Number'
+            de: 'Nummer'
+
+    coreshop.order.sale_state:
+        languages:
+            en: 'Sale State'
+            de: 'Typ Status'
+
+    coreshop.order.token:
+        languages:
+            en: 'Token'
+            de: 'Token'
+
+    coreshop.order.backend_created:
+        languages:
+            en: 'Backend created'
+            de: 'Aus Admin erstellt'
+
+    coreshop.order.date:
+        languages:
+            en: 'Date'
+            de: 'Datum'
+
+    coreshop.order.locale:
+        languages:
+            en: 'Language'
+            de: 'Sprache'
+
+    coreshop.order.store:
+        languages:
+            en: 'Store'
+            de: 'Store'
+
+    coreshop.order.payment_provider:
+        languages:
+            en: 'Payment Provider'
+            de: 'Zahlungsanbieter'
+
+    coreshop.order.additional_data:
+        languages:
+            en: 'Additional Data'
+            de: 'Zusätzliche Daten'
+
+    coreshop.order.status:
+        languages:
+            en: 'State'
+            de: 'Status'
+
+    coreshop.order.order_state:
+        languages:
+            en: 'Order State'
+            de: 'Bestellstatus'
+
+    coreshop.order.payment_state:
+        languages:
+            en: 'Payment State'
+            de: 'Zahlungstatus'
+
+    coreshop.order.shipping_state:
+        languages:
+            en: 'Shipping State'
+            de: 'Versandstatus'
+
+    coreshop.order.invoice_state:
+        languages:
+            en: 'Invoice State'
+            de: 'Rechnungstatus'
+
+    coreshop.order.numbers:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
+    coreshop.order.numbers_converted:
+        languages:
+            en: 'Numbers (Converted)'
+            de: 'Zahlen (Umgerechnet)'
+
+    coreshop.order.currency:
+        languages:
+            en: 'Currency'
+            de: 'Währung'
+
+    coreshop.order.totals:
+        languages:
+            en: 'Totals'
+            de: 'Summen'
+
+    coreshop.order.total_net:
+        languages:
+            en: 'Total (Net)'
+            de: 'Summe (Netto)'
+
+    coreshop.order.total_gross:
+        languages:
+            en: 'Total (Gross)'
+            de: 'Summe (Brutto)'
+
+    coreshop.order.subtotal_net:
+        languages:
+            en: 'Subtotal (Net)'
+            de: 'Teilsumme (Netto)'
+
+    coreshop.order.subtotal_gross:
+        languages:
+            en: 'Subtotal (Gross)'
+            de: 'Teilsumme (Brutto)'
+
+    coreshop.order.taxes:
+        languages:
+            en: 'Taxes'
+            de: 'Steuern'
+
+    coreshop.order.adjustments:
+        languages:
+            en: 'Adjustments'
+            de: 'Adaptierungen'
+
+    coreshop.order.adjustments_total_gross:
+        languages:
+            en: 'Adjustments Total (Gross)'
+            de: 'Adaptierungen Summe (Brutto)'
+
+    coreshop.order.adjustments_total_net:
+        languages:
+            en: 'Adjustments Total (Net)'
+            de: 'Adaptierungen Summe (Netto)'
+
+    coreshop.order.numbers_base:
+        languages:
+            en: 'Numbers (Base)'
+            de: 'Zahlen (Basis)'
+
+    coreshop.order.base_currency:
+        languages:
+            en: 'Base Currency'
+            de: 'Basis Währung'
+
+    coreshop.order.base_totals:
+        languages:
+            en: 'Base Totals'
+            de: 'Basis Summen'
+
+    coreshop.order.base_total_net:
+        languages:
+            en: 'Base Total (Net)'
+            de: 'Basis Summe (Netto)'
+
+    coreshop.order.base_total_gross:
+        languages:
+            en: 'Base Total (Gross)'
+            de: 'Basis Summe (Brutto)'
+
+    coreshop.order.base_subtotal_net:
+        languages:
+            en: 'Base Subtotal (Net)'
+            de: 'Basis Teilsumme (Netto)'
+
+    coreshop.order.base_subtotal_gross:
+        languages:
+            en: 'Base Subtotal (Gross)'
+            de: 'Basis Teilsumme (Brutto)'
+
+    coreshop.order.base_taxes:
+        languages:
+            en: 'Base Taxes'
+            de: 'Basis Steuern'
+
+    coreshop.order.base_adjustments:
+        languages:
+            en: 'Base Adjustments'
+            de: 'Basis Adaptierungen'
+
+    coreshop.order.base_adjustments_total_gross:
+        languages:
+            en: 'Base Adjustments Total (Gross)'
+            de: 'Basis Adaptierungen Summe (Brutto)'
+
+    coreshop.order.base_adjustments_total_net:
+        languages:
+            en: 'Base Adjustments Total (Net)'
+            de: 'Basis Adaptierungen Summe (Netto)'
+
+    coreshop.order.other:
+        languages:
+            en: 'Other'
+            de: 'Anderes'
+
+    coreshop.order.price_rules:
+        languages:
+            en: 'Price Rules'
+            de: 'Preisregeln'
+
+    coreshop.order.items:
+        languages:
+            en: 'Items'
+            de: 'Positionen'
+
+    coreshop.order.customer:
+        languages:
+            en: 'Customer'
+            de: 'Kunde'
+
+    coreshop.order.shipping_address:
+        languages:
+            en: 'Shipping Address'
+            de: 'Lieferadresse'
+
+    coreshop.order.invoice_address:
+        languages:
+            en: 'Invoice Address'
+            de: 'Rechnungsadresse'
+
+    coreshop.order_item.informations:
+        languages:
+            en: 'Informations'
+            de: 'Informationen'
+
+    coreshop.order_item.name:
+        languages:
+            en: 'Name'
+            de: 'Name'
+
+    coreshop.order_item.is_gift_item:
+        languages:
+            en: 'Is Gift Item?'
+            de: 'Geschenkartikel?'
+
+    coreshop.order_item.unit_identifier:
+        languages:
+            en: 'Unit Identifier'
+            de: 'Produkteinheit - ID'
+
+    coreshop.order_item.unit:
+        languages:
+            en: 'Unit'
+            de: 'Produkteinheit'
+
+    coreshop.order_item.quantity:
+        languages:
+            en: 'Quantity'
+            de: 'Menge'
+
+    coreshop.order_item.product:
+        languages:
+            en: 'Product'
+            de: 'Produkt'
+
+    coreshop.order_item.object_id:
+        languages:
+            en: 'Object ID'
+            de: 'Objekt ID'
+
+    coreshop.order_item.main_object_id:
+        languages:
+            en: 'Main Object ID'
+            de: 'Hauptobjekt ID'
+
+    coreshop.order_item.item_discount_price_net:
+        languages:
+            en: 'Item Discount Price (Net)'
+            de: 'Position Rabatt Preis (Netto)'
+
+    coreshop.order_item.item_discount_price_gross:
+        languages:
+            en: 'Item Discount Price (Gross)'
+            de: 'Position Rabatt Preis (Brutto)'
+
+    coreshop.order_item.unit_definition:
+        languages:
+            en: 'Unit Definition'
+            de: 'Einheitsdefinition'
+
+    coreshop.order_item.item_discount_net:
+        languages:
+            en: 'Item Discount (Net)'
+            de: 'Position Rabatt (Netto)'
+
+    coreshop.order_item.item_discount_gross:
+        languages:
+            en: 'Item Discount (Gross)'
+            de: 'Position Rabatt (Brutto)'
+
+    coreshop.order_item.numbers:
+        languages:
+            en: 'Numbers'
+            de: 'Zahlen'
+
+    coreshop.order_item.numbers_converted:
+        languages:
+            en: 'Numbers (Converted)'
+            de: 'Zahlen (Umgerechnet)'
+
+    coreshop.order_item.item_wholesale_price:
+        languages:
+            en: 'Item Wholesale Price'
+            de: 'Position Einkaufspreis'
+
+    coreshop.order_item.item_price_net:
+        languages:
+            en: 'Item Price (Net)'
+            de: 'Position Preis (Netto)'
+
+    coreshop.order_item.item_price_gross:
+        languages:
+            en: 'Item Price (Gross)'
+            de: 'Position Preis (Brutto)'
+
+    coreshop.order_item.item_retail_price_net:
+        languages:
+            en: 'Item Retail Price (Net)'
+            de: 'Position Verkaufspreis (Netto)'
+
+    coreshop.order_item.item_retail_price_gross:
+        languages:
+            en: 'Item Retail Price (Gross)'
+            de: 'Position Verkaufspreis (Brutto)'
+
+    coreshop.order_item.total_net:
+        languages:
+            en: 'Total (Net)'
+            de: 'Gesamt (Netto)'
+
+    coreshop.order_item.total_gross:
+        languages:
+            en: 'Total (Gross)'
+            de: 'Gesamt (Brutto)'
+
+    coreshop.order_item.item_tax:
+        languages:
+            en: 'Item Tax'
+            de: 'Position Steuer'
+
+    coreshop.order_item.taxes:
+        languages:
+            en: 'Taxes'
+            de: 'Steuern'
+
+    coreshop.order_item.adjustments:
+        languages:
+            en: 'Adjustments'
+            de: 'Adaptierungen'
+
+    coreshop.order_item.adjustments_total_gross:
+        languages:
+            en: 'Adjustments Total (Gross)'
+            de: 'Adaptierungen Summe (Brutto)'
+
+    coreshop.order_item.adjustments_total_net:
+        languages:
+            en: 'Adjustments Total (Net)'
+            de: 'Adaptierungen Summe (Netto)'
+
+    coreshop.order_item.numbers_base:
+        languages:
+            en: 'Numbers (Base)'
+            de: 'Zahlen (Basis)'
+
+    coreshop.order_item.base_item_wholesale_price:
+        languages:
+            en: 'Base Item Wholesale Price'
+            de: 'Basis Position Einkaufspreis'
+
+    coreshop.order_item.base_item_price_net:
+        languages:
+            en: 'Base Item Price (Net)'
+            de: 'Basis Position Preis (Netto)'
+
+    coreshop.order_item.base_item_price_gross:
+        languages:
+            en: 'Base Item Price (Gross)'
+            de: 'Basis Position Preis (Brutto)'
+
+    coreshop.order_item.base_item_retail_price_net:
+        languages:
+            en: 'Base Item Retail Price (Net)'
+            de: 'Basis Position Verkaufspreis (Netto)'
+
+    coreshop.order_item.base_item_retail_price_gross:
+        languages:
+            en: 'Base Item Retail Price (Gross)'
+            de: 'Basis Position Verkaufspreis (Brutto)'
+
+    coreshop.order_item.base_total_net:
+        languages:
+            en: 'Base Total (Net)'
+            de: 'Basis Gesamt (Netto)'
+
+    coreshop.order_item.base_total_gross:
+        languages:
+            en: 'Base Total (Gross)'
+            de: 'Basis Gesamt (Brutto)'
+
+    coreshop.order_item.base_item_tax:
+        languages:
+            en: 'Base Item Tax'
+            de: 'Basis Position Steuer'
+
+    coreshop.order_item.base_taxes:
+        languages:
+            en: 'Taxes'
+            de: 'Steuern'
+
+    coreshop.order_item.base_adjustments:
+        languages:
+            en: 'Base Adjustments'
+            de: 'Basis Adaptierungen'
+
+    coreshop.order_item.base_adjustments_total_gross:
+        languages:
+            en: 'Base Adjustments Total (Gross)'
+            de: 'Basis Adaptierungen Summe (Brutto)'
+
+    coreshop.order_item.base_adjustments_total_net:
+        languages:
+            en: 'Base Adjustments Total (Net)'
+            de: 'Basis Adaptierungen Summe (Netto)'
+
+    coreshop.order_shipment.shipment:
+        languages:
+            en: 'Shipment'
+            de: 'Versendung'
+
+    coreshop.order_shipment.order:
+        languages:
+            en: 'Order'
+            de: 'Bestellung'
+
+    coreshop.order_shipment.date:
+        languages:
+            en: 'Date'
+            de: 'Datum'
+
+    coreshop.order_shipment.number:
+        languages:
+            en: 'Number'
+            de: 'Nummer'
+
+    coreshop.order_shipment.state:
+        languages:
+            en: 'State'
+            de: 'Status'
+
+    coreshop.order_shipment.tracking_code:
+        languages:
+            en: 'Tracking Code'
+            de: 'Sendungsverfolgungsnummer'
+
+    coreshop.order_shipment.items:
+        languages:
+            en: 'Items'
+            de: 'Positionen'
+
+    coreshop.order_shipment_item.item:
+        languages:
+            en: 'Item'
+            de: 'Position'
+
+    coreshop.order_shipment_item.order_item:
+        languages:
+            en: 'Order Item'
+            de: 'Bestellposition'
+
+    coreshop.order_shipment_item.quantity:
+        languages:
+            en: 'Quantity'
+            de: 'Menge'
+
+    coreshop.order_shipment_item.total_net:
+        languages:
+            en: 'Total (Net)'
+            de: 'Summe (Netto)'
+
+    coreshop.order_shipment_item.total_gross:
+        languages:
+            en: 'Total (Gross)'
+            de: 'Summe (Brutto)'
+
+    coreshop.order_shipment_item.base_total_net:
+        languages:
+            en: 'Base Total (Net)'
+            de: 'Basis Summe (Netto)'
+
+    coreshop.order_shipment_item.base_total_gross:
+        languages:
+            en: 'Base Total (Gross)'
+            de: 'Basis Summe (Brutto)'
+
+    coreshop.adjustment.type_identifier:
+        languages:
+            en: 'Type'
+            de: 'Typ'
+
+    coreshop.adjustment.label:
+        languages:
+            en: 'Label'
+            de: 'Bezeichnung'
+
+    coreshop.adjustment.amount_net:
+        languages:
+            en: 'Amount (Net)'
+            de: 'Betrag (Netto)'
+
+    coreshop.adjustment.amount_gross:
+        languages:
+            en: 'Amount (Gross)'
+            de: 'Betrag (Brutto)'
+
+    coreshop.adjustment.neutral:
+        languages:
+            en: 'Neutral'
+            de: 'Neutral'
+
+    coreshop.cart_price_rule_item.price_rule:
+        languages:
+            en: 'Price Rule'
+            de: 'Preisregel'
+
+    coreshop.cart_price_rule_item.voucher_code:
+        languages:
+            en: 'Voucher Code'
+            de: 'Gutscheincode'
+
+    coreshop.cart_price_rule_item.discount_net:
+        languages:
+            en: 'Discount (Net)'
+            de: 'Rabatt (Netto)'
+
+    coreshop.cart_price_rule_item.discount_gross:
+        languages:
+            en: 'Discount (Gross)'
+            de: 'Rabatt (Brutto)'

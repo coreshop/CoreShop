@@ -39,7 +39,7 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
         $types = [
             [
                 'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_ONLY,
-                'key'   => 'coreshop.admin.company.address_access.own_only'
+                'key'   => 'coreshop.company.address_access.own_only'
             ]
         ];
 
@@ -49,12 +49,12 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
 
         $types[] = [
             'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_COMPANY_ONLY,
-            'key'   => 'coreshop.admin.company.address_access.company_only'
+            'key'   => 'coreshop.company.address_access.company_only'
         ];
 
         $types[] = [
             'value' => CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY,
-            'key'   => 'coreshop.admin.company.address_access.own_and_company'
+            'key'   => 'coreshop.company.address_access.own_and_company'
         ];
 
         return $types;
