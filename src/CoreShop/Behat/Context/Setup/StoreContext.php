@@ -110,6 +110,16 @@ final class StoreContext implements Context
     }
 
     /**
+     * @Given /^the (store "[^"]+") is the default store$/
+     */
+    public function theStoreIsDefault(StoreInterface $store)
+    {
+        $store->setIsDefault(true);
+
+        $this->saveStore($store);
+    }
+
+    /**
      * @param string                 $name
      * @param CurrencyInterface|null $currency
      * @param CountryInterface|null  $country
@@ -146,6 +156,13 @@ final class StoreContext implements Context
             $country->setIsoCode('AT');
             $country->setCurrency($currency);
             $country->setActive(true);
+            $country->setAddressFormat('
+                %Text(company);
+                %Text(salutation); %Text(firstname); %Text(lastname);
+                %Text(street); %Text(number);
+                %Text(postCode); %Text(city);
+                %DataObject(country,{"method" : "getName"});
+            ');
 
             $this->entityManager->persist($country);
 

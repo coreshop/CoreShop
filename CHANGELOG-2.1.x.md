@@ -1,5 +1,12 @@
 # Within 2.1
 
+## 2.1.5
+ - Bugs:
+    - [Translations] fix: add missing translation (https://github.com/coreshop/CoreShop/pull/1308)
+    - [IndexBundle] index ui improvements (https://github.com/coreshop/CoreShop/pull/1300)
+    - [ThemeBundle] fix configuration for default resolvers (https://github.com/coreshop/CoreShop/pull/1301)
+    - [AddressBundle] introduce filter-active action and filter store-base countries by those (https://github.com/coreshop/CoreShop/pull/1302)
+    
 ## 2.1.4
  - Feature:
     - [CoreBundle] allow store-values to be reset and inherit again (https://github.com/coreshop/CoreShop/pull/1273)

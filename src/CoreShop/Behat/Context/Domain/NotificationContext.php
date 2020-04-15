@@ -15,8 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\NotificationRuleListenerInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Webmozart\Assert\Assert;
 
 final class NotificationContext implements Context

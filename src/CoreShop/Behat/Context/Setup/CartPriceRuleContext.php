@@ -404,14 +404,17 @@ final class CartPriceRuleContext implements Context
     /**
      * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
      * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
+     * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
      */
-    public function theCartPriceRuleHasADiscountAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    public function theCartPriceRuleHasADiscountAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency, string $appliedOn = 'total')
     {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => (int) $amount,
             'currency' => $currency->getId(),
+            'applyOn' => $appliedOn
         ]));
     }
 

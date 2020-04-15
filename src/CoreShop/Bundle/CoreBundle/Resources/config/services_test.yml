@@ -1,0 +1,6 @@
+services:
+    CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListener:
+        arguments:
+            - '%kernel.cache_dir%/notifications'
+        tags:
+            - { name: kernel.event_listener, event: coreshop.notification.pre_process_rules, method: applyNewFired }

@@ -22,16 +22,6 @@ interface IndexableInterface
     public function getId();
 
     /**
-     * @return bool
-     */
-    public function getIndexableEnabled();
-
-    /**
-     * @return bool
-     */
-    public function getIndexable();
-
-    /**
      * @return string
      */
     public function getKey();
@@ -52,14 +42,11 @@ interface IndexableInterface
     public function getType();
 
     /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getIndexableName($language);
-
-    /**
      * @return mixed
      */
     public function getParent();
+
+    public function getIndexableEnabled(IndexInterface $index): bool;
+    public function getIndexable(IndexInterface $index): bool;
+    public function getIndexableName(IndexInterface $index, string $language): string;
 }

@@ -65,7 +65,7 @@ class Setup
 
         $installer->setupDatabase([
             'username' => 'admin',
-            'password' => microtime(),
+            'password' => 'coreshop',
         ]);
 
         static::$pimcoreSetupDone = true;

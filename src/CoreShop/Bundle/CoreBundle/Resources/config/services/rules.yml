@@ -173,17 +173,9 @@ services:
         tags:
             - { name: pimcore.maintenance.task, type: coreshop_rule_availability }
 
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface: '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
-    CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper:
-        lazy: true
-        arguments:
-            - '@coreshop.product.rules.fetcher'
-        tags:
-            - { name: templating.helper, alias: coreshop_product_price_rules }
-
     CoreShop\Bundle\CoreBundle\Twig\ValidPriceRulesExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelper'
+            - '@coreshop.product.rules.fetcher'
         tags:
             - { name: twig.extension }

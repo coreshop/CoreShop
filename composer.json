@@ -31,7 +31,7 @@
         "payum/sofort": "^1.4",
         "php": "^7.2",
         "php-http/guzzle6-adapter": "^2.0",
-        "pimcore/pimcore": "^6.5.0",
+        "pimcore/pimcore": "^6.6.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "symfony/symfony": "^4.4",
@@ -47,7 +47,12 @@
         "phpunit/phpunit": "^6",
         "symfony/phpunit-bridge": "^3",
         "symplify/easy-coding-standard": "^7.2.0",
-        "symplify/monorepo-builder": "^7.2"
+        "symplify/monorepo-builder": "^7.2",
+        "friends-of-behat/page-object-extension": "^0.3.1",
+        "behat/mink": "^1.8",
+        "friends-of-behat/mink-extension": "^2.4",
+        "coreshop/behat-panther-extension": "^1.0.3",
+        "lakion/mink-debug-extension": "^1.2"
     },
     "autoload": {
         "psr-4": {

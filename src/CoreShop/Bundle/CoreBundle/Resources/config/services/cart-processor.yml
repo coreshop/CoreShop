@@ -78,10 +78,6 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
 
-    CoreShop\Component\Core\Order\Processor\CartTotalProcessor:
-        tags:
-            - { name: coreshop.cart_processor, priority: 300 }
-
     CoreShop\Component\Core\Order\Processor\CartBaseProcessor:
         arguments:
             - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'

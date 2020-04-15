@@ -68,6 +68,7 @@ services:
     coreshop.behat.context.transform.customer:
         class: CoreShop\Behat\Context\Transform\CustomerContext
         arguments:
+            - '@coreshop.behat.shared_storage'
             - '@coreshop.repository.customer'
         tags:
             - { name: fob.context_service }

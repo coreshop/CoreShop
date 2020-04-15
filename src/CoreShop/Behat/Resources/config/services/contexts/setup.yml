@@ -291,6 +291,7 @@ services:
             - '@form.factory'
             - '@coreshop.form_registry.product_quantity_price_rules.conditions'
             - '@coreshop.factory.product_quantity_price_rule'
+            - '@coreshop.repository.product'
         tags:
             - { name: fob.context_service }
 
@@ -314,5 +315,15 @@ services:
         class: CoreShop\Behat\Context\Setup\RecycleBinContext
         arguments:
             - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.setup.frontend_security:
+        class: CoreShop\Behat\Context\Setup\FrontendSecurityContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@coreshop.security_service.frontend'
+            - '@coreshop.repository.customer'
+            - '@coreshop.factory.customer'
         tags:
             - { name: fob.context_service }

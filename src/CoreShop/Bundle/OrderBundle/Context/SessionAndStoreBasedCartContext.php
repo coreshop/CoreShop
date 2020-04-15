@@ -49,7 +49,7 @@ final class SessionAndStoreBasedCartContext implements CartContextInterface
         try {
             $store = $this->storeContext->getStore();
         } catch (StoreNotFoundException $exception) {
-            throw new CartNotFoundException($exception);
+            throw new CartNotFoundException($exception->getMessage(), $exception);
         }
 
         if (!$this->session->has(sprintf('%s.%s', $this->sessionKeyName, $store->getId()))) {

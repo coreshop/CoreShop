@@ -49,6 +49,7 @@ final class PaymentContext implements Context
 
     /**
      * @Given /^There is a payment provider "([^"]+)" using factory "([^"]+)"$/
+     * @Given /^the site has a payment provider "([^"]+)" using factory "([^"]+)"$/
      */
     public function thereIsAPaymentProviderUsingFactory($name, $factory)
     {
@@ -69,12 +70,14 @@ final class PaymentContext implements Context
         $gatewayConfig->setGatewayName($name);
         $paymentProvider->setGatewayConfig($gatewayConfig);
         $paymentProvider->setIdentifier($name);
+        $paymentProvider->addStore($this->sharedStorage->get('store'));
+        $paymentProvider->setActive(true);
 
         $this->entityManager->persist($gatewayConfig);
         $this->entityManager->persist($paymentProvider);
         $this->entityManager->flush();
 
-        $this->sharedStorage->set('paymentProvider', $paymentProvider);
+        $this->sharedStorage->set('payment-provider', $paymentProvider);
     }
 
     /**

@@ -14,17 +14,17 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\AddressBundle\Twig;
 
-use CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface;
+use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    private $helper;
+    private $addressFormatter;
 
-    public function __construct(FormatAddressHelperInterface $helper)
+    public function __construct(AddressFormatterInterface $addressFormatter)
     {
-        $this->helper = $helper;
+        $this->addressFormatter = $addressFormatter;
     }
 
     /**
@@ -33,7 +33,7 @@ final class FormatAddressExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('coreshop_format_address', [$this->helper, 'formatAddress'], ['is_safe' => ['html']]),
+            new TwigFilter('coreshop_format_address', [$this->addressFormatter, 'formatAddress'], ['is_safe' => ['html']]),
         ];
     }
 }

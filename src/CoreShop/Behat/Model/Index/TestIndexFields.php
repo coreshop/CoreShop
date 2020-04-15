@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Model\Index;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
@@ -23,7 +24,7 @@ class TestIndexFields extends AbstractPimcoreModel implements IndexableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexable()
+    public function getIndexable(IndexInterface $index): bool
     {
         return true;
     }
@@ -31,9 +32,15 @@ class TestIndexFields extends AbstractPimcoreModel implements IndexableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexableEnabled()
+    public function getIndexableEnabled(IndexInterface $index): bool
     {
-        return $this->getEnabled();
+        $enabled = $this->getEnabled();
+
+        if (!is_bool($enabled)) {
+            return false;
+        }
+
+        return $enabled;
     }
 
     /**
@@ -55,9 +62,15 @@ class TestIndexFields extends AbstractPimcoreModel implements IndexableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexableName($language)
+    public function getIndexableName(IndexInterface $index, string $language): string
     {
-        return $this->getName($language);
+        $name = $this->getName($language);
+
+        if (!is_string($name)) {
+            return '';
+        }
+
+        return $name;
     }
 
     /**

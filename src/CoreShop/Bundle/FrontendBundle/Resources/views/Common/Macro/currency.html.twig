@@ -5,13 +5,13 @@
 {%- macro convertAndFormat(amount) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+    {{- format(amount|coreshop_convert_currency(coreshop.store.currency.isoCode, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
 {%- endmacro -%}
 
 {%- macro convertAndFormatFromCustomCurrency(fromCurrencyIso, amount) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.currency.isoCode), coreshop.currency.isoCode) }}
 {%- endmacro -%}
 
 {%- macro getPrice(product, with_tax) -%}
@@ -21,7 +21,7 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {{- convertAndFormat(product|coreshop_product_price(with_tax, coreshop.context)) }}
+    {{- convertAndFormat(product|coreshop_product_price(coreshop.context, with_tax)) }}
 {%- endmacro -%}
 
 {%- macro getRetailPrice(product, with_tax) -%}
@@ -31,7 +31,7 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {{- convertAndFormat(product|coreshop_product_retail_price(with_tax, coreshop.context)) }}
+    {{- convertAndFormat(product|coreshop_product_retail_price(coreshop.context, with_tax)) }}
 {%- endmacro -%}
 
 {%- macro getDiscount(product, with_tax) -%}
@@ -41,7 +41,7 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {{- convertAndFormat(product|coreshop_product_discount(with_tax, coreshop.context)) }}
+    {{- convertAndFormat(product|coreshop_product_discount(coreshop.context, with_tax)) }}
 {%- endmacro -%}
 
 {%- macro getDiscountPrice(product, with_tax) -%}
@@ -51,5 +51,5 @@
         {% set with_tax = true %}
     {% endif %}
 
-    {{- convertAndFormat(product|coreshop_product_discount_price(with_tax, coreshop.context)) }}
+    {{- convertAndFormat(product|coreshop_product_discount_price(coreshop.context, with_tax)) }}
 {%- endmacro -%}

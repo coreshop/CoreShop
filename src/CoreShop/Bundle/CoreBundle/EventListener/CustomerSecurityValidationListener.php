@@ -14,40 +14,27 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
+use Pimcore\Http\RequestHelper;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
+    protected $requestHelper;
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
-
-    /**
-     * @var string
-     */
     protected $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $loginIdentifier
-     */
     public function __construct(
+        RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
         $className,
         $loginIdentifier
     ) {
+        $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
         $this->className = $className;
         $this->loginIdentifier = $loginIdentifier;
@@ -60,6 +47,10 @@ final class CustomerSecurityValidationListener
      */
     public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event)
     {
+        if ($this->requestHelper->hasCurrentRequest() && !$this->requestHelper->isFrontendRequestByAdmin()) {
+            return;
+        }
+
         $object = $event->getObject();
 
         if (!$object instanceof CustomerInterface) {
@@ -86,6 +77,12 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        throw new ValidationException(sprintf('%s "%s" is already used. Please use another one.', ucfirst($this->loginIdentifier), $identifierValue));
+        throw new ValidationException(
+            sprintf(
+                '%s "%s" is already used. Please use another one.',
+                ucfirst($this->loginIdentifier),
+                $identifierValue
+            )
+        );
     }
 }

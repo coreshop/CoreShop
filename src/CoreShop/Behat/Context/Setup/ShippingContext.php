@@ -44,7 +44,6 @@ use CoreShop\Component\Core\Model\CurrencyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -97,6 +96,62 @@ final class ShippingContext implements Context
     public function theSiteHasACarrier($name)
     {
         $this->createCarrier($name);
+    }
+
+    /**
+     * @Given /^the site has a carrier "([^"]+)" and ships for (\d+) in (currency "[^"]+")$/
+     */
+    public function theSiteHasACarrierAndShipsForX($name, int $price, CurrencyInterface $currency)
+    {
+        $carrier = $this->createCarrier($name);
+
+        /**
+         * @var ShippingRuleInterface $rule
+         */
+        $rule = $this->shippingRuleFactory->createNew();
+        $rule->setName($name);
+        $rule->setActive(true);
+
+        $this->assertActionForm(PriceActionConfigurationType::class, 'price');
+
+        $this->addAction($rule, $this->createActionWithForm('price', [
+            'price' => $price,
+            'currency' => $currency->getId(),
+        ]));
+
+        $shippingRuleGroup = $this->shippingRuleGroupFactory->createNew();
+        $shippingRuleGroup->setShippingRule($rule);
+        $shippingRuleGroup->setPriority(1);
+
+        $carrier->addShippingRule($shippingRuleGroup);
+
+        $this->objectManager->persist($carrier);
+        $this->objectManager->persist($shippingRuleGroup);
+        $this->objectManager->persist($rule);
+        $this->objectManager->flush();
+
+        $this->sharedStorage->set('shipping-rule', $rule);
+    }
+
+    /**
+     * @Given /^the (carrier "[^"]+") is disabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is disabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsDisabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->removeStore($store);
+
+        $this->saveCarrier($carrier);
+    }
+    /**
+     * @Given /^the (carrier "[^"]+") is enabled for (store "[^"]+")$/
+     * @Given /^the (carrier) is enabled for  (store "[^"]+")$/
+     */
+    public function theCarrierIsEnabledForStore(CarrierInterface $carrier, StoreInterface $store)
+    {
+        $carrier->addStore($store);
+
+        $this->saveCarrier($carrier);
     }
 
     /**
@@ -530,6 +585,8 @@ final class ShippingContext implements Context
         }
 
         $this->saveCarrier($carrier);
+
+        return $carrier;
     }
 
     /**

@@ -1,6 +1,8 @@
 imports:
-    - { resource: "services/contexts.yml" }
-
+    - { resource: services/contexts.yml }
+    - { resource: services/pages.yml }
+    - { resource: services/pages_pimcore.yml }
+    - { resource: services/elements.yml }
 
 services:
     _defaults:
@@ -12,9 +14,6 @@ services:
     coreshop.behat.class_storage:
         class: CoreShop\Behat\Service\ClassStorage
 
-    coreshop.behat.notification_rule_listener:
-        class: CoreShop\Behat\Service\NotificationRuleListener
-
     CoreShop\Behat\Service\RelationalIndexExtension:
         tags:
             - { name: coreshop.index.extension }
@@ -22,3 +21,37 @@ services:
     CoreShop\Behat\Service\CustomRelationalIndexInterpreter:
         tags:
             - { name: coreshop.index.interpreter, type: custom_relational }
+
+    CoreShop\Behat\Service\Resolver\CurrentPageResolverInterface: '@CoreShop\Behat\Service\Resolver\CurrentPageResolver'
+    CoreShop\Behat\Service\Resolver\CurrentPageResolver:
+        arguments:
+            - '@behat.mink.default_session'
+            - '@router'
+
+    CoreShop\Behat\Service\CookieSetterInterface: '@CoreShop\Behat\Service\CookieSetter'
+    CoreShop\Behat\Service\CookieSetter:
+        arguments:
+            - '@behat.mink.default_session'
+            - '@behat.mink.parameters'
+
+    coreshop.security_service.frontend:
+        class: CoreShop\Behat\Service\SecurityService
+        arguments:
+            - '@session'
+            - '@CoreShop\Behat\Service\CookieSetterInterface'
+            - 'shop'
+
+    CoreShop\Behat\Service\NotificationAccessorInterface: '@CoreShop\Behat\Service\NotificationAccessor'
+    CoreShop\Behat\Service\NotificationAccessor:
+        arguments:
+            - '@behat.mink.default_session'
+
+    CoreShop\Behat\Service\NotificationCheckerInterface: '@CoreShop\Behat\Service\NotificationChecker'
+    CoreShop\Behat\Service\NotificationChecker:
+        arguments:
+            - '@CoreShop\Behat\Service\NotificationAccessorInterface'
+
+    CoreShop\Behat\Service\StoreContextSetterInterface: '@CoreShop\Behat\Service\StoreContextSetter'
+    CoreShop\Behat\Service\StoreContextSetter:
+        arguments:
+            - '@CoreShop\Behat\Service\CookieSetterInterface'

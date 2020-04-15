@@ -1,0 +1,68 @@
+name: Lint
+on:
+  push:
+    branches: [ master, '3.0' ]
+  pull_request:
+    branches: [ master, '3.0' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      PIMCORE_ENVIRONMENT: "test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: coreshop_test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: 7.2
+        extensions: intl
+
+    - name: Copy parameters.yml
+      run: cp app/config/parameters.example.yml app/config/parameters.yml
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Start mysql service
+      run: sudo /etc/init.d/mysql start
+
+    - name: Verify MySQL connection from host
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
+
+    - name: Setup mysql
+      run: |
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
+        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+
+    - name: Composer install
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Validate YAML
+      run: bin/console lint:yaml src --no-debug
+
+    - name: Validate TWIG
+      run: bin/console lint:twig src --no-debug

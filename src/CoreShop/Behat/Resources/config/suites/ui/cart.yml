@@ -1,0 +1,44 @@
+default:
+    suites:
+        ui_cart:
+            contexts:
+                - coreshop.behat.context.hook.pimcore_setup
+                - coreshop.behat.context.hook.coreshop_setup
+
+                - coreshop.behat.context.hook.doctrine_orm
+                - coreshop.behat.context.hook.pimcore_dao
+
+                - coreshop.behat.context.transform.shared_storage
+                - coreshop.behat.context.transform.tax_rate
+                - coreshop.behat.context.transform.tax_rule_group
+                - coreshop.behat.context.transform.store
+                - coreshop.behat.context.transform.product
+                - coreshop.behat.context.transform.country
+                - coreshop.behat.context.transform.product_specific_price_rule
+                - coreshop.behat.context.transform.currency
+                - coreshop.behat.context.transform.product_unit
+                - coreshop.behat.context.transform.product_quantity_price_rule
+                - coreshop.behat.context.transform.cart_price_rule
+
+                - coreshop.behat.context.setup.store
+                - coreshop.behat.context.setup.product
+                - coreshop.behat.context.setup.tax_rate
+                - coreshop.behat.context.setup.tax_rule_group
+                - coreshop.behat.context.setup.product_specific_price_rule
+                - coreshop.behat.context.setup.product_unit
+                - coreshop.behat.context.setup.product_quantity_price_rule
+                - coreshop.behat.context.setup.frontend_security
+                - coreshop.behat.context.setup.customer
+                - coreshop.behat.context.setup.currency
+                - coreshop.behat.context.setup.country
+                - coreshop.behat.context.setup.exchange_rate
+                - coreshop.behat.context.setup.cart_price_rule
+
+                - coreshop.behat.context.ui.cart
+                - coreshop.behat.context.ui.product
+                - coreshop.behat.context.ui.user
+                - coreshop.behat.context.ui.register
+                - coreshop.behat.context.ui.store
+                - coreshop.behat.context.ui.currency
+            filters:
+                tags: "@ui && @cart"

@@ -19,13 +19,13 @@
                 <div class="row">
 
                     <div class="col-12 col-sm-6 invoice-address-selector">
-                        {{ form_row(form.invoiceAddress) }}
+                        {{ form_row(form.invoiceAddress, coreshop_test_form_attribute('invoice-address')) }}
                     </div>
 
                     {% if hasShippableItems %}
                         <div class="col-12 col-sm-6 shipping-address-selector"
                              style="{% if hasShippableItems == true and form.useInvoiceAsShipping.vars.data %} display:none; {% endif %}">
-                            {{ form_row(form.shippingAddress) }}
+                            {{ form_row(form.shippingAddress, coreshop_test_form_attribute('shipping-address')) }}
                         </div>
                     {% endif %}
 
@@ -34,7 +34,7 @@
                 {% if hasShippableItems %}
                     <div class="row">
                         <div class="col-12">
-                            {{ form_row(form.useInvoiceAsShipping) }}
+                            {{ form_row(form.useInvoiceAsShipping, coreshop_test_form_attribute('use-invoice-as-shipping')) }}
                         </div>
                     </div>
                 {% endif %}
@@ -93,7 +93,7 @@
                         </div>
                     {% endif %}
                     <div class="col-12 {{ previousStep is not null ? 'col-sm-6' : '' }}">
-                        <button type="submit" class="btn btn-success pull-right">
+                        <button type="submit" class="btn btn-success pull-right" {{ coreshop_test_html_attribute('submit-address-step') }}>
                             {{ 'coreshop.ui.proceed'|trans }}
                         </button>
                     </div>

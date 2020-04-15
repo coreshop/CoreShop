@@ -1,0 +1,101 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.behat.context.ui.homepage:
+        class: CoreShop\Behat\Context\Ui\Frontend\HomepageContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.login:
+        class: CoreShop\Behat\Context\Ui\Frontend\LoginContext
+        arguments:
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\RequestPasswordResetPageInterface'
+            - '@CoreShop\Behat\Service\Resolver\CurrentPageResolverInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.register:
+        class: CoreShop\Behat\Context\Ui\Frontend\RegistrationContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\LoginPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\RegisterPageInterface'
+            - '@CoreShop\Behat\Element\Frontend\Account\RegisterElementInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.customer_profile:
+        class: CoreShop\Behat\Context\Ui\Frontend\CustomerProfileContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\Account\ChangePasswordPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\ProfilePageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Account\ChangeProfilePageInterface'
+            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.product:
+        class: CoreShop\Behat\Context\Ui\Frontend\ProductContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.cart:
+        class: CoreShop\Behat\Context\Ui\Frontend\CartContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@CoreShop\Behat\Service\NotificationCheckerInterface'
+            - '@CoreShop\Behat\Page\Frontend\CartPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\ProductPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.user:
+        class: CoreShop\Behat\Context\Ui\Frontend\UserContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.store:
+        class: CoreShop\Behat\Context\Ui\Frontend\StoreContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Service\StoreContextSetterInterface'
+            - '@coreshop.repository.store'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.currency:
+        class: CoreShop\Behat\Context\Ui\Frontend\CurrencyContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Behat\Page\Frontend\HomePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui.checkout:
+        class: CoreShop\Behat\Context\Ui\Frontend\CheckoutContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\CustomerPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\AddressPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\ShippingPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\PaymentPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\SummaryPageInterface'
+            - '@CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface'
+        tags:
+            - { name: fob.context_service }

@@ -10,6 +10,10 @@ services:
         tags:
             - { name: twig.extension }
 
+    CoreShop\Component\Pimcore\Twig\Extension\ImageThumbnailExtension:
+        tags:
+            - { name: twig.extension }
+
     CoreShop\Component\Pimcore\Twig\Extension\ObjectHelperExtensions:
         tags:
             - { name: twig.extension }

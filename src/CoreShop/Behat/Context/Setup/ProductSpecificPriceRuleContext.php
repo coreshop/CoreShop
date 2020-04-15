@@ -76,6 +76,7 @@ final class ProductSpecificPriceRuleContext implements Context
 
     /**
      * @Given /^adding a product specific price rule to (product "[^"]+") named "([^"]+)"$/
+     * @Given /^adding a product specific price rule to this (product) named "([^"]+)"$/
      */
     public function addingAProductSpecificPriceRuleToProduct(ProductInterface $product, $ruleName)
     {
