@@ -13,7 +13,7 @@ The Order is basically the same as before, so you can create custom migrations t
 
 Only thing we migrate is for existing orders eg. add new Fields or set the initial state.
 
-### Differential between Cart, Quote and Order
+### Difference between Cart, Quote and Order
 To differentiate between them, we introduced a new Workflow and State Field called "saleType". The "saleType" currently
 supports 3 types: "Cart", "Quote" and "Order". Workflow Transitions are used to move the Object to a different folder
 or otherwise further process data within the Entity. The standard Workflow looks like this:
@@ -108,4 +108,3 @@ To
     public function getIndexableEnabled(IndexInterface $index): bool
     public function getIndexableName(IndexInterface $index, string $language): string
 ```
-
