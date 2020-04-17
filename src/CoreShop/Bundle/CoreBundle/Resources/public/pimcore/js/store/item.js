@@ -22,6 +22,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     xtype: 'coreshop.country',
                     fieldLabel: t('coreshop_base_country'),
                     value: this.data.baseCountry,
+                    name: 'baseCountry',
                     store: {
                         proxy: {
                             type: 'ajax',
