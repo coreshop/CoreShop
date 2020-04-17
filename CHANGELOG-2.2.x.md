@@ -1,5 +1,17 @@
 # Within 2.2
 
+## 2.2.0
+ - Features:
+    - [Order] don't allow order-revise when completed payment has been made (https://github.com/coreshop/CoreShop/pull/1334)
+    - [Order] persist internal cancellation reasons (https://github.com/coreshop/CoreShop/pull/1333)
+    - [Pimcore] require min 6.6 (https://github.com/coreshop/CoreShop/pull/1338)
+    - [GithubAction] add stan test (https://github.com/coreshop/CoreShop/pull/1341)
+    
+ - Bugs:
+    - [SecurityValidator] only trigger when Pimcore Frontend request (https://github.com/coreshop/CoreShop/pull/1339)
+    - [PimcoreBundle] fix dynamic dropdown extensions (https://github.com/coreshop/CoreShop/pull/1337)
+    - [Pimcore Bundle] Fix loading dynamic dropdown options (https://github.com/coreshop/CoreShop/pull/1340)
+    
 ## 2.2.0-RC.2
  - Features:
     - [IndexBundle] allow configuring if versions should be indexed or not (https://github.com/coreshop/CoreShop/pull/1303)
@@ -19,7 +31,7 @@
     - [FrontendBundle/CoreBundle] prevent _fragment calls by using ACL's (https://github.com/coreshop/CoreShop/pull/1309)
     - [Reports] fix export params (https://github.com/coreshop/CoreShop/pull/1328)
 
-## 2.2.0
+## 2.2.0-RC.1
  - Features:
     - [Core] Implement Username/Email Login Identifier @solverat (https://github.com/coreshop/CoreShop/issues/1290, https://github.com/coreshop/CoreShop/pull/1291)
     - [Pimcore] require min Pimcore 6.5 (https://github.com/coreshop/CoreShop/pull/1286)
@@ -29,5 +41,6 @@
     - [PHPStan] level-3 (https://github.com/coreshop/CoreShop/pull/1220)
     - [Pimcore] remove pimcore bc layers (https://github.com/coreshop/CoreShop/pull/1221)
     - [CoreBundle] support version marshall und unmarshall to merge with existing data (https://github.com/coreshop/CoreShop/pull/1145)
+ 
  - Bugs:
     - [CoreExtensions] fix issue with CoreShop CoreExtensions Recycle Bin (https://github.com/coreshop/CoreShop/pull/1254)
