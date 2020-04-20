@@ -15,7 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection;
 
 use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
+use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\SchemaRegistryServicePass;
 use CoreShop\Component\SEO\Extractor\ExtractorInterface;
+use CoreShop\Component\SEO\Schema\SchemaGeneratorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -40,5 +42,9 @@ final class CoreShopSEOExtension extends Extension
         $container
             ->registerForAutoconfiguration(ExtractorInterface::class)
             ->addTag(ExtractorRegistryServicePass::EXTRACTOR_TAG);
+
+        $container
+            ->registerForAutoconfiguration(SchemaGeneratorInterface::class)
+            ->addTag(SchemaRegistryServicePass::SCHEMA_GENERATOR_TAG);
     }
 }

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\SEOBundle;
 
 use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
+use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\SchemaRegistryServicePass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
@@ -32,6 +33,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
         parent::build($container);
 
         $container->addCompilerPass(new ExtractorRegistryServicePass());
+        $container->addCompilerPass(new SchemaRegistryServicePass());
     }
 
     /**

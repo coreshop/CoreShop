@@ -19,23 +19,23 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class ExtractorRegistryServicePass implements CompilerPassInterface
+final class SchemaRegistryServicePass implements CompilerPassInterface
 {
-    public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
+    public const SCHEMA_GENERATOR_TAG = 'coreshop.seo.schema_generator';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('coreshop.registry.seo.extractor')) {
+        if (!$container->has('coreshop.registry.seo.schema_generator')) {
             return;
         }
 
-        $registry = $container->getDefinition('coreshop.registry.seo.extractor');
+        $registry = $container->getDefinition('coreshop.registry.seo.schema_generator');
 
         $map = [];
-        foreach ($container->findTaggedServiceIds(static::EXTRACTOR_TAG) as $id => $attributes) {
+        foreach ($container->findTaggedServiceIds(static::SCHEMA_GENERATOR_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);
 
             if (!isset($attributes[0]['type'])) {
@@ -51,6 +51,6 @@ final class ExtractorRegistryServicePass implements CompilerPassInterface
             $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
         }
 
-        $container->setParameter('coreshop.seo.extractors', $map);
+        $container->setParameter('coreshop.seo.schema_generators', $map);
     }
 }

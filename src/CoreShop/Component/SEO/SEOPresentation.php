@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\SEO;
 
+use CoreShop\Component\Product\SEO\Schema\ProductSchemaGenerator;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use CoreShop\Component\SEO\Extractor\ExtractorInterface;
 use CoreShop\Component\SEO\Model\SEOMetadata;
@@ -25,15 +26,18 @@ class SEOPresentation implements SEOPresentationInterface
     protected $headMeta;
     protected $headTitle;
     protected $extractorRegistry;
+    protected $schemaPresentation;
 
     public function __construct(
         HeadMeta $headMeta,
         HeadTitle $headTitle,
-        PrioritizedServiceRegistryInterface $extractorRegistry
+        PrioritizedServiceRegistryInterface $extractorRegistry,
+        SEOSchemaPresentationInterface $schemaPresentation = null
     ) {
         $this->headMeta = $headMeta;
         $this->headTitle = $headTitle;
         $this->extractorRegistry = $extractorRegistry;
+        $this->schemaPresentation = $schemaPresentation;
     }
 
     /**
@@ -67,6 +71,14 @@ class SEOPresentation implements SEOPresentationInterface
 
         if ($seoMetadata->getMetaDescription()) {
             $this->headMeta->setDescription($seoMetadata->getMetaDescription());
+        }
+
+        if (null !== $this->schemaPresentation) {
+            $graph = $this->schemaPresentation->createSchema($object);
+
+            if (count($graph->getProperties()) > 0) {
+                $this->headMeta->addRaw($graph->toScript());
+            }
         }
     }
 

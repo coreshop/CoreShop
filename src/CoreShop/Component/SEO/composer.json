@@ -16,7 +16,8 @@
     "require": {
         "php": "^7.2",
         "coreshop/registry": "^3.0",
-        "webmozart/assert": "^1.2"
+        "webmozart/assert": "^1.2",
+        "spatie/schema-org": "^2.13"
     },
     "config": {
         "bin-dir": "bin"

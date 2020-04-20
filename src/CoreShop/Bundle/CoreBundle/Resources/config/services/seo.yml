@@ -1,0 +1,4 @@
+services:
+    CoreShop\Component\Product\SEO\Schema\ProductSchemaGenerator:
+        tags:
+            - { name: coreshop.seo.schema_generator }

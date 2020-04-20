@@ -35,7 +35,8 @@
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "symfony/symfony": "^4.4",
-        "webmozart/assert": "^1.2"
+        "webmozart/assert": "^1.2",
+        "spatie/schema-org": "^2.13"
     },
     "require-dev": {
         "behat/behat": "^3.3",

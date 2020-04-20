@@ -14,10 +14,31 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: seoExtractors }
 
+    coreshop.registry.seo.schema_generator:
+        class: CoreShop\Component\Registry\PrioritizedServiceRegistry
+        arguments:
+            - 'CoreShop\Component\SEO\Schema\SchemaGeneratorInterface'
+            - 'seo schema generator'
+        tags:
+            - { name: coreshop.registry, type_hint: seoExtractors }
+
     CoreShop\Component\SEO\SEOPresentationInterface: '@CoreShop\Component\SEO\SEOPresentation'
     CoreShop\Component\SEO\SEOPresentation:
         arguments:
-        - '@Pimcore\Templating\Helper\HeadMeta'
-        - '@Pimcore\Templating\Helper\HeadTitle'
-        - '@coreshop.registry.seo.extractor'
+            - '@Pimcore\Templating\Helper\HeadMeta'
+            - '@Pimcore\Templating\Helper\HeadTitle'
+            - '@coreshop.registry.seo.extractor'
+            - '@CoreShop\Component\SEO\SEOSchemaPresentationInterface'
 
+    CoreShop\Component\SEO\SEOSchemaPresentationInterface: '@CoreShop\Component\SEO\SEOSchemaPresentation'
+    CoreShop\Component\SEO\SEOSchemaPresentation:
+        arguments:
+            - '@coreshop.registry.seo.schema_generator'
+
+    CoreShop\Bundle\SEOBundle\EventListener\RequestSEOListener:
+        arguments:
+            - '@CoreShop\Component\SEO\SEOPresentationInterface'
+            - '@Pimcore\Http\RequestHelper'
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
+        tags:
+            - { name: kernel.event_subscriber }
