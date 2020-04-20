@@ -16,10 +16,10 @@ namespace CoreShop\Bundle\CoreBundle\Application;
 
 final class Version
 {
-    const MAJOR_VERSION = '2';
-    const MINOR_VERSION = '2';
+    const MAJOR_VERSION = '3';
+    const MINOR_VERSION = '0';
     const RELEASE_VERSION = '0';
-    const EXTRA_VERSION = 'RC.2';
+    const EXTRA_VERSION = 'alpha';
 
     public static function getVersion(): string
     {
