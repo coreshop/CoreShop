@@ -33,6 +33,51 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('pimcore_site')->defaultFalse()->end()
                         ->booleanNode('pimcore_document_property')->defaultFalse()->end()
                     ->end()
+                ->end()
+                ->arrayNode('inheritance')
+                    ->normalizeKeys(false)
+                    ->useAttributeAsKey('theme_name')
+                    ->beforeNormalization()
+                        ->always()
+                            ->then(function ($config) {
+                                if (!\is_array($config)) {
+                                    return [];
+                                }
+                                // If XML config with only one routing attribute
+                                if (2 === \count($config) && isset($config['theme_name']) && isset($config['parent_themes'])) {
+                                    $config = [0 => $config];
+                                }
+
+                                $newConfig = [];
+                                foreach ($config as $k => $v) {
+                                    if (!\is_int($k)) {
+                                        $newConfig[$k] = [
+                                            'parent_themes' => $v['parent_themes'] ?? (\is_array($v) ? array_values($v) : [$v]),
+                                        ];
+                                    } else {
+                                        $newConfig[$v['theme_name']]['parent_themes'] = array_map(
+                                            function ($a) {
+                                                return \is_string($a) ? $a : $a['service'];
+                                            },
+                                            array_values($v['parent_themes'])
+                                        );
+                                    }
+                                }
+
+                                return $newConfig;
+                            })
+                        ->end()
+                        ->prototype('array')
+                            ->performNoDeepMerging()
+                            ->children()
+                                ->arrayNode('parent_themes')
+                                    ->requiresAtLeastOneElement()
+                                    ->prototype('scalar')->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
