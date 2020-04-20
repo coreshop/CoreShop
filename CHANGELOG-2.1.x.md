@@ -1,5 +1,9 @@
 # Within 2.1
 
+## 2.1.6
+ - Bugs:
+    - [CoreBundle][2.1] Fix name of country combo (https://github.com/coreshop/CoreShop/pull/1350)
+
 ## 2.1.5
  - Bugs:
     - [Translations] fix: add missing translation (https://github.com/coreshop/CoreShop/pull/1308)
