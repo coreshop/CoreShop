@@ -64,23 +64,22 @@ class OrderController extends BaseOrderController
     {
         $summary = parent::getSummary($order);
 
-        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface) {
-            if ($order->getShipping() > 0) {
-                $summary[] = [
-                    'key' => 'shipping',
-                    'value' => $order->getShipping(),
-                ];
+        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface && $order->getShipping() > 0) {
+            $summary[] = [
+                'key' => 'shipping',
+                'value' => $order->getShipping(),
+                'convertedValue' => $order->getConvertedShipping(),
+            ];
 
-                $summary[] = [
-                    'key' => 'shipping_tax',
-                    'value' => $order->getShippingTax(),
-                ];
-            }
+            $summary[] = [
+                'key' => 'shipping_tax',
+                'value' => $order->getShippingTax(),
+                'convertedValue' => $order->getConvertedShippingTax(),
+            ];
         }
 
         return $summary;
     }
-
 
     protected function prepareSaleItem(OrderItemInterface $item): array
     {

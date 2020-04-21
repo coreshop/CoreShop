@@ -22,7 +22,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
         }
 
         // insert unit definition before "total"
-        columns.splice((columns.length - 2), 0, {
+        columns.splice((columns.length - 3), 0, {
             xtype: 'gridcolumn',
             dataIndex: 'unit',
             text: t('coreshop_unit'),
