@@ -245,6 +245,11 @@ interface OrderInterface extends
     public function getConvertedTotalTax(): int;
 
     /**
+     * @param bool $withTax
+     * @return int
+     */
+    public function getConvertedSubtotal(bool $withTax = true): int;
+    /**
      * @param int  $subtotal
      * @param bool $withTax
      */
