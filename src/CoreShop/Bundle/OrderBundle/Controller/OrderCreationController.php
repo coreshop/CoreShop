@@ -201,6 +201,9 @@ class OrderCreationController extends PimcoreController
             'total' => $item->getTotal(),
             'convertedPrice' => $item->getConvertedItemPrice(),
             'convertedTotal' => $item->getConvertedTotal(),
+            'customItemPrice' => $item->getCustomItemPrice(),
+            'customItemDiscount' => $item->getCustomItemDiscount(),
+            'convertedCustomItemPrice' => $item->getConvertedCustomItemPrice()
         ];
     }
 

@@ -298,6 +298,38 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
+    public function getCustomItemPrice(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomItemPrice(int $customItemPrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomItemDiscount()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomItemDiscount($customItemPrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getItemPriceNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -515,6 +547,22 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
      * {@inheritdoc}
      */
     public function setTaxes($taxes)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedCustomItemPrice(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedCustomItemPrice(int $convertedCustomItemPrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

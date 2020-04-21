@@ -101,6 +101,21 @@ final class CartItemsProcessor implements CartProcessorInterface
             $itemDiscountPrice = $this->productPriceCalculator->getDiscountPrice($product, $context);
             $itemDiscount = $this->productPriceCalculator->getDiscount($product, $context, $itemPriceWithoutDiscount);
 
+            if (null === $item->getCustomItemDiscount()) {
+                $item->setCustomItemDiscount(0);
+            }
+
+            if ($item->getCustomItemPrice()) {
+                $itemPrice = $item->getCustomItemPrice();
+            }
+            else {
+                $item->setCustomItemPrice(0);
+            }
+
+            if ($item->getCustomItemDiscount() > 0) {
+                $itemPrice = (int)round((100 - $item->getCustomItemDiscount()) / 100 * $itemPrice);
+            }
+
             $this->cartItemProcessor->processCartItem(
                 $item,
                 $itemPrice,

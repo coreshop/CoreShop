@@ -83,6 +83,26 @@ interface OrderItemInterface extends
     public function setQuantity($quantity);
 
     /**
+     * @return int
+     */
+    public function getCustomItemPrice(): int;
+
+    /**
+     * @param int $customItemPrice
+     */
+    public function setCustomItemPrice(int $customItemPrice);
+
+    /**
+     * @return int
+     */
+    public function getCustomItemDiscount();
+
+    /**
+     * @param int $customItemPrice
+     */
+    public function setCustomItemDiscount($customItemPrice);
+
+    /**
      * @param bool $withTax
      *
      * @return int
@@ -173,6 +193,16 @@ interface OrderItemInterface extends
      * @param int $convertedItemWholesalePrice
      */
     public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice);
+
+    /**
+     * @return int
+     */
+    public function getConvertedCustomItemPrice(): int;
+
+    /**
+     * @param int $convertedCustomItemPrice
+     */
+    public function setConvertedCustomItemPrice(int $convertedCustomItemPrice);
 
     /**
      * @param bool $withTax

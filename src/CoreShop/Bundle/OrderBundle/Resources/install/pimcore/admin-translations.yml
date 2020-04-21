@@ -768,3 +768,19 @@ translations:
         languages:
             en: 'Discount (Gross)'
             de: 'Rabatt (Brutto)'
+
+    coreshop.order_item.custom_item_discount:
+        languages:
+            en: 'Custom Item Discount'
+            de: 'kundenspezifischer Positionsrabatt'
+
+    coreshop.order_item.custom_item_price:
+        languages:
+            en: 'Custom Item Price'
+            de: 'kundenspezifischer Positionspreis'
+
+    coreshop.order_item.converted_custom_item_price:
+        languages:
+            en: 'Converted Custom Item Price'
+            de: 'Umgerechnet kundenspezifischer Positionspreis'
+
