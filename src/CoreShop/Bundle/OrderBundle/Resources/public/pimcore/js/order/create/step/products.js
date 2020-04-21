@@ -101,7 +101,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'price',
+                    dataIndex: 'convertedPrice',
                     width: 150,
                     align: 'right',
                     text: t('coreshop_converted_price'),

@@ -235,9 +235,10 @@ interface OrderInterface extends
     public function setConvertedTotal(int $total, bool $withTax = true);
 
     /**
+     * @param bool $withTax
      * @return int
      */
-    public function getConvertedTotal(): int;
+    public function getConvertedTotal(bool $withTax = true): int;
     /**
      * @return int
      */

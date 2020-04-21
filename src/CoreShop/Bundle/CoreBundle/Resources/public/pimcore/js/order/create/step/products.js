@@ -61,7 +61,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
         }
 
         // insert unit definition before "total"
-        columns.splice((columns.length - 2), 0, {
+        columns.splice((columns.length - 3), 0, {
             xtype: 'gridcolumn',
             dataIndex: 'unitDefinition',
             text: t('coreshop_unit'),

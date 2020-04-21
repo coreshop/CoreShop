@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController as BaseOrderCreationController;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
@@ -88,7 +89,9 @@ class OrderCreationController extends BaseOrderCreationController
             $price = $this->get(TaxedShippingCalculatorInterface::class)->getPrice(
                 $carrier,
                 $cart,
-                $cart->getShippingAddress()
+                $cart->getShippingAddress(),
+                true,
+                $this->get(CartContextResolverInterface::class)->resolveCartContext($cart)
             );
 
             $result[] = [
@@ -110,18 +113,21 @@ class OrderCreationController extends BaseOrderCreationController
 
         $result = parent::getCartSummary($cart);
 
-        array_splice($result, 3, 0, [
+        array_splice($result, 6, 0, [
+            [
+                'key' => 'shipping',
+                'value' => $cart->getShipping(true),
+                'convertedValue' => $cart->getConvertedShipping(true),
+            ],
             [
                 'key' => 'shipping_without_tax',
                 'value' => $cart->getShipping(false),
+                'convertedValue' => $cart->getConvertedShipping(false),
             ],
             [
                 'key' => 'shipping_tax',
                 'value' => $cart->getShipping(true) - $cart->getShipping(false),
-            ],
-            [
-                'key' => 'shipping',
-                'value' => $cart->getShipping(true),
+                'convertedValue' => $cart->getConvertedShipping(true) - $cart->getConvertedShipping(false),
             ],
         ]);
 

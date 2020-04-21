@@ -119,7 +119,7 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
         $cart->setConvertedTaxes($convertedTaxesFieldCollection);
     }
 
-    protected function convert(?int $value, OrderInterface $cart, bool $backwards = false)
+    protected function convert(?int $value, OrderInterface $cart)
     {
         if (null === $value) {
             return 0;
@@ -127,14 +127,6 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
 
         if (!$cart->getBaseCurrency() instanceof CurrencyInterface) {
             return $value;
-        }
-
-        if ($backwards) {
-            return $this->currencyConverter->convert(
-                $value,
-                $cart->getCurrency()->getIsoCode(),
-                $cart->getBaseCurrency()->getIsoCode()
-            );
         }
 
         return $this->currencyConverter->convert(
