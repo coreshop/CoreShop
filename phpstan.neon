@@ -40,6 +40,7 @@ parameters:
         - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
         - '/CoreShop\\Bundle\\ResourceBundle\\Routing\\ResourceLoader::getResolver\(\)/'
         - '/CoreShop\\Bundle\\ResourceBundle\\Serialization\\Driver\\PimcoreDataObjectDriver::loadMetadataForClass/'
+        - '/Call to an undefined method Spatie\\SchemaOrg\\Graph::/'
 
         # Pimcore BC Breaks
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
