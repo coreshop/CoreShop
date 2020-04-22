@@ -15,6 +15,7 @@ services:
             - '@coreshop.factory.address'
 
     coreshop.product.taxed_price_calculator: '@CoreShop\Component\Core\Product\TaxedProductPriceCalculator'
+    CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface: '@CoreShop\Component\Core\Product\TaxedProductPriceCalculator'
     CoreShop\Component\Core\Product\TaxedProductPriceCalculator:
         arguments:
             - '@coreshop.order.purchasable.calculator'
