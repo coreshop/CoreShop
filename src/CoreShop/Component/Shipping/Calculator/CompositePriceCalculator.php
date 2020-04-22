@@ -30,12 +30,12 @@ class CompositePriceCalculator implements CarrierPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): int
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
-        $price = false;
+        $price = 0;
 
         foreach ($this->calculators as $calculator) {
-            $actionPrice = $calculator->getPrice($carrier, $shippable, $address);
+            $actionPrice = $calculator->getPrice($carrier, $shippable, $address, $context);
 
             if (false !== $actionPrice && null !== $actionPrice) {
                 $price = $actionPrice;

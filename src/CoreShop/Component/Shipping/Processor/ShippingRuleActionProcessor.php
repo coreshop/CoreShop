@@ -41,7 +41,13 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): int
+    public function getPrice(
+        ShippingRuleInterface $shippingRule,
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $context
+    ): int
     {
         $price = 0;
 
@@ -49,7 +55,13 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof CarrierPriceActionProcessorInterface) {
-                $price += $processor->getPrice($carrier, $shippable, $address, $action->getConfiguration());
+                $price += $processor->getPrice(
+                    $carrier,
+                    $shippable,
+                    $address,
+                    $action->getConfiguration(),
+                    $context
+                );
             }
         }
 
@@ -59,7 +71,14 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getModification(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price): int
+    public function getModification(
+        ShippingRuleInterface $shippingRule,
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        int $price,
+        array $context
+    ): int
     {
         $modifications = 0;
 
@@ -67,7 +86,14 @@ class ShippingRuleActionProcessor implements ShippingRuleActionProcessorInterfac
             $processor = $this->actionServiceRegistry->get($action->getType());
 
             if ($processor instanceof CarrierPriceModificationActionProcessorInterface) {
-                $modifications += $processor->getModification($carrier, $shippable, $address, $price, $action->getConfiguration());
+                $modifications += $processor->getModification(
+                    $carrier,
+                    $shippable,
+                    $address,
+                    $price,
+                    $action->getConfiguration(),
+                    $context
+                );
             }
         }
 

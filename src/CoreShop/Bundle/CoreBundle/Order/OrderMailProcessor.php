@@ -75,7 +75,7 @@ class OrderMailProcessor implements OrderMailProcessorInterface
             $emailParameters = array_merge($customer->getObjectVars(), $params);
         }
 
-        $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getCurrency()->getIsoCode());
+        $emailParameters['orderTotal'] = $this->priceFormatter->format($order->getTotal(), $order->getBaseCurrency()->getIsoCode());
         $emailParameters['orderNumber'] = $order->getOrderNumber();
 
         //always add the model to email!

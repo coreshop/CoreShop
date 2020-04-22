@@ -17,5 +17,4 @@ services:
         abstract: true
         calls:
             - ['setAddressFormatter', ['@CoreShop\Component\Address\Formatter\AddressFormatterInterface']]
-            - ['setCurrencyConverter', ['@CoreShop\Component\Currency\Converter\CurrencyConverterInterface']]
 

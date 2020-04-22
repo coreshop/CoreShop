@@ -44,8 +44,3 @@ services:
     CoreShop\Component\Shipping\Calculator\CompositePriceCalculator:
         arguments:
             - ['@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator']
-
-    CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver:
-        arguments:
-            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
-            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'

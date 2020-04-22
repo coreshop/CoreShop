@@ -71,3 +71,9 @@ services:
             - '@CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery.inner'
             - '@coreshop.repository.carrier'
             - '@coreshop.shipping.carrier.validator'
+
+    CoreShop\Component\Core\Shipping\Resolver\CheapestDefaultCarrierResolver:
+        arguments:
+            - '@CoreShop\Component\Shipping\Resolver\CarriersResolverInterface'
+            - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'

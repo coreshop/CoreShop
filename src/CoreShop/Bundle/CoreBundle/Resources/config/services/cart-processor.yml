@@ -40,6 +40,7 @@ services:
             - '@CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
             - '@coreshop.factory.adjustment'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: coreshop.cart_processor, priority: 550 }
 
@@ -77,7 +78,7 @@ services:
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
 
-    CoreShop\Component\Core\Order\Processor\CartBaseProcessor:
+    CoreShop\Component\Core\Order\Processor\CartCurrencyConversionProcessor:
         arguments:
             - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
         tags:

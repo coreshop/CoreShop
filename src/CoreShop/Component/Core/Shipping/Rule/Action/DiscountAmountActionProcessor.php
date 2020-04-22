@@ -39,18 +39,21 @@ class DiscountAmountActionProcessor implements CarrierPriceModificationActionPro
     /**
      * {@inheritdoc}
      */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration): int
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+
+        /**
+         * @var CurrencyInterface $contextCurrency
+         */
+        $contextCurrency = $context['currency'];
         $amount = $configuration['amount'];
 
-        if ($shippable instanceof CurrencyAwareInterface) {
-            $currency = $this->currencyRepository->find($configuration['currency']);
+        $currency = $this->currencyRepository->find($configuration['currency']);
 
-            Assert::isInstanceOf($currency, CurrencyInterface::class);
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-            return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
-        }
-
-        return $amount;
+        return -1 * $this->moneyConverter->convert($amount, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

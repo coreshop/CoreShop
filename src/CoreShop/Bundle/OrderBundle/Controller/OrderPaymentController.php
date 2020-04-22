@@ -105,9 +105,9 @@ class OrderPaymentController extends PimcoreController
                 $payment->setPaymentProvider($paymentProvider);
 
                 if (method_exists($payment, 'setCurrency')) {
-                    $payment->setCurrency($order->getCurrency());
+                    $payment->setCurrency($order->getBaseCurrency());
                 }
-                
+
                 $payment->setTotalAmount($amount);
                 $payment->setState(PaymentInterface::STATE_NEW);
                 $payment->setDatePayment(Carbon::now());

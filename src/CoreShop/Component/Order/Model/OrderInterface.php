@@ -33,7 +33,7 @@ interface OrderInterface extends
     StoreAwareInterface,
     LocaleAwareInterface,
     AdjustableInterface,
-    BaseAdjustableInterface,
+    ConvertedAdjustableInterface,
     CustomerAwareInterface,
     PayableInterface,
     StorageListInterface
@@ -232,52 +232,62 @@ interface OrderInterface extends
      * @param int  $total
      * @param bool $withTax
      */
-    public function setBaseTotal(int $total, bool $withTax = true);
+    public function setConvertedTotal(int $total, bool $withTax = true);
 
+    /**
+     * @param bool $withTax
+     * @return int
+     */
+    public function getConvertedTotal(bool $withTax = true): int;
     /**
      * @return int
      */
-    public function getBaseTotal(): int;
+    public function getConvertedTotalTax(): int;
 
+    /**
+     * @param bool $withTax
+     * @return int
+     */
+    public function getConvertedSubtotal(bool $withTax = true): int;
     /**
      * @param int  $subtotal
      * @param bool $withTax
      */
-    public function setBaseSubtotal(int $subtotal, bool $withTax = true);
+    public function setConvertedSubtotal(int $subtotal, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseSubtotalTax(): int;
+    public function getConvertedSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseDiscount(bool $withTax = true): int;
+    public function getConvertedDiscount(bool $withTax = true): int;
 
     /**
      * @return Fieldcollection
      */
-    public function getBaseTaxes();
+    public function getConvertedTaxes();
 
     /**
      * @param Fieldcollection $taxes
      */
-    public function setBaseTaxes($taxes);
+    public function setConvertedTaxes($taxes);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseShipping(bool $withTax = true): int;
+    public function getConvertedShipping(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getBaseShippingTax(): int;
+    public function getConvertedShippingTax(): int;
 
     /**
      * @return AddressInterface|null

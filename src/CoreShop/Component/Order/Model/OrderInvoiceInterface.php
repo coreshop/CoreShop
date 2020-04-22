@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
-interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterface, BaseAdjustableInterface
+interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterface, ConvertedAdjustableInterface
 {
     /**
      * @return \DateTime
@@ -121,58 +121,58 @@ interface OrderInvoiceInterface extends OrderDocumentInterface, AdjustableInterf
      *
      * @return int
      */
-    public function getBaseDiscount(bool $withTax = true): int;
+    public function getConvertedDiscount(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getBaseDiscountTax(): int;
+    public function getConvertedDiscountTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseShipping(bool $withTax = true): int;
+    public function getConvertedShipping(bool $withTax = true): int;
 
     /**
      * @return int
      */
-    public function getBaseShippingTax(): int;
+    public function getConvertedShippingTax(): int;
 
     /**
      * @return int
      */
-    public function getBaseTotalTax(): int;
+    public function getConvertedTotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseTotal(bool $withTax = true);
+    public function getConvertedTotal(bool $withTax = true);
 
     /**
-     * @param int  $baseTotal
+     * @param int  $convertedTotal
      * @param bool $withTax
      */
-    public function setBaseTotal(int $baseTotal, bool $withTax = true);
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseSubtotalTax(): int;
+    public function getConvertedSubtotalTax(): int;
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseSubtotal(bool $withTax = true): int;
+    public function getConvertedSubtotal(bool $withTax = true): int;
 
     /**
-     * @param int  $baseSubtotal
+     * @param int  $convertedSubtotal
      * @param bool $withTax
      */
-    public function setBaseSubtotal(int $baseSubtotal, bool $withTax = true);
+    public function setConvertedSubtotal(int $convertedSubtotal, bool $withTax = true);
 }

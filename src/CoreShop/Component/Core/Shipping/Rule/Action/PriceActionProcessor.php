@@ -38,18 +38,21 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): int
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration, array $context): int
     {
+        Assert::keyExists($context, 'currency');
+        Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
+
+        /**
+         * @var CurrencyInterface $contextCurrency
+         */
+        $contextCurrency = $context['currency'];
         $price = $configuration['price'];
 
-        if ($shippable instanceof CurrencyAwareInterface) {
-            $currency = $this->currencyRepository->find($configuration['currency']);
+        $currency = $this->currencyRepository->find($configuration['currency']);
 
-            Assert::isInstanceOf($currency, CurrencyInterface::class);
+        Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-            return $this->moneyConverter->convert($price, $currency->getIsoCode(), $shippable->getCurrency()->getIsoCode());
-        }
-
-        return $price;
+        return $this->moneyConverter->convert($price, $currency->getIsoCode(), $contextCurrency->getIsoCode());
     }
 }

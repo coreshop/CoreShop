@@ -35,7 +35,7 @@
                         {{ order.orderDate|date("d.m.Y") }}
                     </td>
                     <td>
-                        {{ currency.format(order.total, order.currency.isoCode) }}
+                        {{ currency.format(order.convertedTotal, order.currency.isoCode) }}
                     </td>
                     <td>
                         <span class="badge badge-info">{{ order|coreshop_order_state.calculatedState }}</span>

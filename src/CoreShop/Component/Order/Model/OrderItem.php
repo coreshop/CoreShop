@@ -23,7 +23,7 @@ use Pimcore\Model\DataObject\Fieldcollection;
 abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterface
 {
     use AdjustableTrait;
-    use BaseAdjustableTrait;
+    use ConvertedAdjustableTrait;
 
     /**
      * {@inheritdoc}
@@ -122,33 +122,33 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemPrice(bool $withTax = true): int
+    public function getConvertedItemPrice(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseItemPriceGross() : $this->getBaseItemPriceNet();
+        return $withTax ? $this->getConvertedItemPriceGross() : $this->getConvertedItemPriceNet();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemPrice(int $itemPrice, bool $withTax = true)
+    public function setConvertedItemPrice(int $itemPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseItemPriceGross($itemPrice) : $this->setBaseItemPriceNet($itemPrice);
+        return $withTax ? $this->setConvertedItemPriceGross($itemPrice) : $this->setConvertedItemPriceNet($itemPrice);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemRetailPrice(bool $withTax = true): int
+    public function getConvertedItemRetailPrice(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseItemRetailPriceGross() : $this->getBaseItemRetailPriceNet();
+        return $withTax ? $this->getConvertedItemRetailPriceGross() : $this->getConvertedItemRetailPriceNet();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemRetailPrice(int $itemRetailPrice, bool $withTax = true)
+    public function setConvertedItemRetailPrice(int $itemRetailPrice, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseItemRetailPriceGross($itemRetailPrice) : $this->setBaseItemRetailPriceNet(
+        return $withTax ? $this->setConvertedItemRetailPriceGross($itemRetailPrice) : $this->setConvertedItemRetailPriceNet(
             $itemRetailPrice
         );
     }
@@ -156,17 +156,49 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotal(bool $withTax = true): int
+    public function getConvertedTotal(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
+        return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotal(int $total, bool $withTax = true)
+    public function setConvertedTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseTotalGross($total) : $this->setBaseTotalNet($total);
+        return $withTax ? $this->setConvertedTotalGross($total) : $this->setConvertedTotalNet($total);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscount(bool $withTax = true): int
+    {
+        return $withTax ? $this->getConvertedItemDiscountGross() : $this->getConvertedItemDiscountNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscount(int $itemDiscount, bool $withTax = true)
+    {
+        return $withTax ? $this->setConvertedItemDiscountGross($itemDiscount) : $this->setConvertedItemDiscountNet($itemDiscount);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscountPrice(bool $withTax = true): int
+    {
+        return $withTax ? $this->getConvertedItemDiscountPriceGross() : $this->getConvertedItemDiscountPriceNet();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true)
+    {
+        return $withTax ? $this->setConvertedItemDiscountPriceGross($itemDiscountPrice) : $this->setConvertedItemDiscountPriceNet($itemDiscountPrice);
     }
 
     /**
@@ -181,6 +213,28 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
         $totalTax = 0;
 
         foreach ($this->getTaxes()->getItems() as $taxItem) {
+            if (!$taxItem instanceof TaxItemInterface) {
+                continue;
+            }
+
+            $totalTax += $taxItem->getAmount();
+        }
+
+        return $totalTax;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedTotalTax(): int
+    {
+        if (!$this->getConvertedTaxes() instanceof Fieldcollection) {
+            return 0;
+        }
+
+        $totalTax = 0;
+
+        foreach ($this->getConvertedTaxes()->getItems() as $taxItem) {
             if (!$taxItem instanceof TaxItemInterface) {
                 continue;
             }
@@ -237,6 +291,38 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
      * {@inheritdoc}
      */
     public function setTotalGross(int $totalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomItemPrice(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomItemPrice(int $customItemPrice)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCustomItemDiscount()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCustomItemDiscount($customItemPrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -468,7 +554,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemPriceNet(): int
+    public function getConvertedCustomItemPrice(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -476,7 +562,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemPriceNet(int $itemPriceNet)
+    public function setConvertedCustomItemPrice(int $convertedCustomItemPrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -484,7 +570,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemPriceGross(): int
+    public function getConvertedItemPriceNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -492,7 +578,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemPriceGross(int $itemPriceGross)
+    public function setConvertedItemPriceNet(int $itemPriceNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -500,7 +586,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemRetailPriceNet(): int
+    public function getConvertedItemPriceGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -508,7 +594,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemRetailPriceNet(int $itemPriceNet)
+    public function setConvertedItemPriceGross(int $itemPriceGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -516,7 +602,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemRetailPriceGross(): int
+    public function getConvertedItemRetailPriceNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -524,7 +610,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemRetailPriceGross(int $itemPriceGross)
+    public function setConvertedItemRetailPriceNet(int $itemPriceNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -532,7 +618,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemWholesalePrice(): int
+    public function getConvertedItemRetailPriceGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -540,7 +626,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemWholesalePrice(int $wholesalePrice)
+    public function setConvertedItemRetailPriceGross(int $itemPriceGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -548,7 +634,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseItemTax(): int
+    public function getConvertedItemWholesalePrice(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -556,7 +642,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseItemTax(int $itemTax)
+    public function setConvertedItemWholesalePrice(int $wholesalePrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -564,7 +650,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseTaxes()
+    public function getConvertedItemTax(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -572,7 +658,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseTaxes($taxes)
+    public function setConvertedItemTax(int $itemTax)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -580,7 +666,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalNet(): int
+    public function getConvertedTaxes()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -588,7 +674,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalNet(int $total)
+    public function setConvertedTaxes($taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -596,7 +682,7 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalGross(): int
+    public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -604,7 +690,88 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalGross(int $total)
+    public function setConvertedTotalNet(int $total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedTotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedTotalGross(int $total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscountNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscountNet(int $convertedItemDiscountNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscountGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscountGross(int $convertedItemDiscountGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscountPriceNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscountPriceNet(int $convertedItemDiscountPriceNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedItemDiscountPriceGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedItemDiscountPriceGross(int $convertedItemDiscountPriceGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -621,9 +788,9 @@ abstract class OrderItem extends AbstractPimcoreModel implements OrderItemInterf
     /**
      * {@inheritdoc}
      */
-    protected function recalculateBaseAfterAdjustmentChange()
+    protected function recalculateConvertedAfterAdjustmentChange()
     {
-        $this->setBaseTotal($this->getBaseTotal(true) + $this->getBaseAdjustmentsTotal(null, true), true);
-        $this->setBaseTotal($this->getBaseTotal(false) + $this->getBaseAdjustmentsTotal(null, false), false);
+        $this->setConvertedTotal($this->getConvertedTotal(true) + $this->getConvertedAdjustmentsTotal(null, true), true);
+        $this->setConvertedTotal($this->getConvertedTotal(false) + $this->getConvertedAdjustmentsTotal(null, false), false);
     }
 }

@@ -21,7 +21,7 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 interface ShippingRuleActionProcessorInterface
 {
-    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): int;
+    public function getPrice(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int;
 
-    public function getModification(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price): int;
+    public function getModification(ShippingRuleInterface $shippingRule, CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $context): int;
 }

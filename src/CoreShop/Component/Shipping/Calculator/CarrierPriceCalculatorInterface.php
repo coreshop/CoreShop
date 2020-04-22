@@ -20,5 +20,5 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierPriceCalculatorInterface
 {
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): int;
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int;
 }

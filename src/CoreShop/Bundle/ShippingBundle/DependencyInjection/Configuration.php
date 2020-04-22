@@ -54,7 +54,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('default_resolver')->defaultValue(CheapestDefaultCarrierResolver::class)->cannotBeEmpty()->end()
+                ->scalarNode('default_resolver')->cannotBeEmpty()->end()
             ->end();
 
         $this->addModelsSection($rootNode);

@@ -39,11 +39,11 @@ interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
      *
      * @return int
      */
-    public function getBaseTotal(bool $withTax = true): int;
+    public function getConvertedTotal(bool $withTax = true): int;
 
     /**
-     * @param int  $baseTotal
+     * @param int  $convertedTotal
      * @param bool $withTax
      */
-    public function setBaseTotal(int $baseTotal, bool $withTax = true);
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true);
 }

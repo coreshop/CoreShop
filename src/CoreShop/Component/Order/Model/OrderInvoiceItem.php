@@ -50,9 +50,9 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalTax(): int
+    public function getConvertedTotalTax(): int
     {
-        return $this->getBaseTotal(true) - $this->getBaseTotal(false);
+        return $this->getConvertedTotal(true) - $this->getConvertedTotal(false);
     }
 
     /**
@@ -138,31 +138,23 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotal(bool $withTax = true): int
+    public function getConvertedTotal(bool $withTax = true): int
     {
-        return $withTax ? $this->getBaseTotalGross() : $this->getBaseTotalNet();
+        return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotal(int $baseTotal, bool $withTax = true)
+    public function setConvertedTotal(int $convertedTotal, bool $withTax = true)
     {
-        return $withTax ? $this->setBaseTotalGross($baseTotal) : $this->setBaseTotalNet($baseTotal);
+        return $withTax ? $this->setConvertedTotalGross($convertedTotal) : $this->setConvertedTotalNet($convertedTotal);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalNet(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseTotalNet(int $baseTotalNet)
+    public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -170,7 +162,7 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function getBaseTotalGross(): int
+    public function setConvertedTotalNet(int $convertedTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -178,7 +170,15 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
     /**
      * {@inheritdoc}
      */
-    public function setBaseTotalGross(int $baseTotalGross)
+    public function getConvertedTotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedTotalGross(int $convertedTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

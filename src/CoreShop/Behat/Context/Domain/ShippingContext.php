@@ -19,6 +19,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Repository\CarrierRepositoryInterface;
+use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
@@ -34,6 +35,7 @@ final class ShippingContext implements Context
     private $addressFactory;
     private $carrierPriceCalculator;
     private $shippingRuleValidator;
+    private $cartContextResolver;
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
@@ -41,7 +43,8 @@ final class ShippingContext implements Context
         RuleValidationProcessorInterface $ruleValidationProcessor,
         FactoryInterface $addressFactory,
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
-        ShippableCarrierValidatorInterface $shippingRuleValidator
+        ShippableCarrierValidatorInterface $shippingRuleValidator,
+        CartContextResolverInterface $cartContextResolver
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->carrierRepository = $carrierRepository;
@@ -49,6 +52,7 @@ final class ShippingContext implements Context
         $this->addressFactory = $addressFactory;
         $this->carrierPriceCalculator = $carrierPriceCalculator;
         $this->shippingRuleValidator = $shippingRuleValidator;
+        $this->cartContextResolver = $cartContextResolver;
     }
 
     /**
@@ -100,7 +104,7 @@ final class ShippingContext implements Context
     {
         $address = $cart->getShippingAddress() ?: $this->addressFactory->createNew();
 
-        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address));
+        Assert::same((int)$price, $this->carrierPriceCalculator->getPrice($carrier, $cart, $address, $this->cartContextResolver->resolveCartContext($cart)));
     }
 
     /**

@@ -29,7 +29,7 @@ class CompositePurchasableDiscountCalculator implements PurchasableDiscountCalcu
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, int $basePrice): int
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         $discounts = 0;
 
@@ -37,7 +37,7 @@ class CompositePurchasableDiscountCalculator implements PurchasableDiscountCalcu
          * @var PurchasableDiscountCalculatorInterface $calculator
          */
         foreach ($this->discountCalculators->all() as $calculator) {
-            $discounts += $calculator->getDiscount($purchasable, $context, $basePrice);
+            $discounts += $calculator->getDiscount($purchasable, $context, $convertedPrice);
         }
 
         return $discounts;

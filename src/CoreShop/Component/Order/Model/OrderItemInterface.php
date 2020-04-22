@@ -20,7 +20,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 interface OrderItemInterface extends
     PimcoreModelInterface,
     AdjustableInterface,
-    BaseAdjustableInterface,
+    ConvertedAdjustableInterface,
     StorageListItemInterface
 {
     /**
@@ -81,6 +81,26 @@ interface OrderItemInterface extends
      * @param float $quantity
      */
     public function setQuantity($quantity);
+
+    /**
+     * @return int
+     */
+    public function getCustomItemPrice(): int;
+
+    /**
+     * @param int $customItemPrice
+     */
+    public function setCustomItemPrice(int $customItemPrice);
+
+    /**
+     * @return int
+     */
+    public function getCustomItemDiscount();
+
+    /**
+     * @param int $customItemPrice
+     */
+    public function setCustomItemDiscount($customItemPrice);
 
     /**
      * @param bool $withTax
@@ -170,66 +190,107 @@ interface OrderItemInterface extends
     public function setTaxes($taxes);
 
     /**
-     * @param int $baseItemWholesalePrice
+     * @param int $convertedItemWholesalePrice
      */
-    public function setBaseItemWholesalePrice(int $baseItemWholesalePrice);
+    public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice);
+
+    /**
+     * @return int
+     */
+    public function getConvertedCustomItemPrice(): int;
+
+    /**
+     * @param int $convertedCustomItemPrice
+     */
+    public function setConvertedCustomItemPrice(int $convertedCustomItemPrice);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseItemPrice(bool $withTax = true): int;
+    public function getConvertedItemPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemPrice
      * @param bool $withTax
      */
-    public function setBaseItemPrice(int $itemPrice, bool $withTax = true);
+    public function setConvertedItemPrice(int $itemPrice, bool $withTax = true);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseItemRetailPrice(bool $withTax = true): int;
+    public function getConvertedItemRetailPrice(bool $withTax = true): int;
 
     /**
      * @param int  $itemRetailPrice
      * @param bool $withTax
      */
-    public function setBaseItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
+    public function setConvertedItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
 
     /**
      * @return int
      */
-    public function getBaseItemTax(): int;
+    public function getConvertedItemTax(): int;
 
     /**
      * @param int $itemTax
      */
-    public function setBaseItemTax(int $itemTax);
+    public function setConvertedItemTax(int $itemTax);
 
     /**
      * @return mixed
      */
-    public function getBaseTaxes();
+    public function getConvertedTaxes();
 
     /**
      * @param mixed $taxes
      */
-    public function setBaseTaxes($taxes);
+    public function setConvertedTaxes($taxes);
 
     /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getBaseTotal(bool $withTax = true): int;
+    public function getConvertedTotal(bool $withTax = true): int;
+
+    /**
+     * @return int
+     */
+    public function getConvertedTotalTax(): int;
 
     /**
      * @param int  $total
      * @param bool $withTax
      */
-    public function setBaseTotal(int $total, bool $withTax = true);
+    public function setConvertedTotal(int $total, bool $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getConvertedItemDiscountPrice(bool $withTax = true): int;
+
+    /**
+     * @param int  $convertedItemDiscountPrice
+     * @param bool $withTax
+     */
+    public function setConvertedItemDiscountPrice(int $convertedItemDiscountPrice, bool $withTax = true);
+
+    /**
+     * @param bool $withTax
+     *
+     * @return int
+     */
+    public function getConvertedItemDiscount(bool $withTax = true): int;
+
+    /**
+     * @param int  $convertedItemDiscount
+     * @param bool $withTax
+     */
+    public function setConvertedItemDiscount(int $convertedItemDiscount, bool $withTax = true);
 }

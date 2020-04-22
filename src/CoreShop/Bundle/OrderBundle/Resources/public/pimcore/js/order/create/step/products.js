@@ -53,13 +53,21 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
             this.onRowEditingFinished(editor, context, eOpts);
         }.bind(this));
 
+        this.cartPanelGrid.on('beforeedit', function (editor, context, eOpts) {
+            context.record.set('customItemPrice', context.record.get('customItemPrice') / 100);
+        }.bind(this));
+
         return this.cartPanelGrid;
     },
 
     onRowEditingFinished: function(editor, context, eOpts) {
         var qty = editor.editor.form.findField('quantity');
+        var customItemPrice = editor.editor.form.findField('customItemPrice');
+        var discount = editor.editor.form.findField('customItemDiscount');
 
         context.record.set('quantity', qty.getValue());
+        context.record.set('customItemPrice', customItemPrice.getValue() * 100);
+        context.record.set('customItemDiscount', discount.getValue());
 
         this.products = this.getCartProducts();
 
@@ -91,13 +99,33 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'basePrice',
+                    dataIndex: 'customItemDiscount',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_base_price'),
+                    text: t('coreshop_custom_item_discount'),
+                    renderer: function (value, metaData, record) {
+                        return '<span style="font-weight:bold">' + record.get('customItemDiscount') + '</span>';
+                    }.bind(this),
+                    field : {
+                        xtype: 'numberfield',
+                        decimalPrecision : 0,
+                        minValue: 0,
+                        maxValue: 100
+                    }
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'customItemPrice',
+                    width: 150,
+                    align: 'right',
+                    text: t('coreshop_custom_item_price'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.symbol, value) + '</span>';
-                    }.bind(this)
+                    }.bind(this),
+                    field : {
+                        xtype: 'numberfield',
+                        decimalPrecision : 2
+                    }
                 },
                 {
                     xtype: 'gridcolumn',
@@ -105,6 +133,16 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     width: 150,
                     align: 'right',
                     text: t('coreshop_price'),
+                    renderer: function (value, metaData, record) {
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.symbol, value) + '</span>';
+                    }.bind(this)
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'convertedPrice',
+                    width: 150,
+                    align: 'right',
+                    text: t('coreshop_converted_price'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
                     }.bind(this)
@@ -121,20 +159,20 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'baseTotal',
+                    dataIndex: 'total',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_base_total'),
+                    text: t('coreshop_total'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.symbol, value) + '</span>';
                     }.bind(this)
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'total',
+                    dataIndex: 'convertedTotal',
                     width: 150,
                     align: 'right',
-                    text: t('coreshop_total'),
+                    text: t('coreshop_converted_total'),
                     renderer: function (value, metaData, record) {
                         return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.symbol, value) + '</span>';
                     }.bind(this)

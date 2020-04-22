@@ -46,11 +46,6 @@ class OrderCreationController extends PimcoreController
      */
     protected $addressFormatter;
 
-    /**
-     * @var CurrencyConverterInterface
-     */
-    protected $currencyConverter;
-
     public function getCustomerDetailsAction(
         Request $request,
         CustomerRepositoryInterface $customerRepository
@@ -178,15 +173,6 @@ class OrderCreationController extends PimcoreController
 
         $totals = $this->getCartSummary($cart);
 
-        foreach ($totals as &$totalEntry) {
-            $price = $totalEntry['value'];
-            $priceConverted = $this->currencyConverter->convert($price, $cart->getStore()->getCurrency()->getIsoCode(),
-                $cart->getCurrency()->getIsoCode());
-            $totalEntry['value'] = $priceConverted;
-        }
-
-        unset($totalEntry);
-
         $jsonCart['summary'] = $totals;
 
         return $jsonCart;
@@ -207,22 +193,17 @@ class OrderCreationController extends PimcoreController
 
     protected function prepareCartItem(OrderInterface $cart, OrderItemInterface $item): array
     {
-        $currentCurrency = $cart->getCurrency()->getIsoCode();
-        $currency = $cart->getStore()->getCurrency()->getIsoCode();
-
-        $price = $item->getItemPrice();
-        $total = $item->getTotal();
-        $basePrice = $this->currencyConverter->convert($price, $currentCurrency, $currency);
-        $baseTotal = $this->currencyConverter->convert($total, $currentCurrency, $currency);
-
         return [
             'product' => $item->getProduct() ? $item->getProduct()->getId() : 0,
             'productName' => $item->getProduct() ? $item->getProduct()->getName() : '',
             'quantity' => $item->getQuantity(),
-            'basePrice' => $price,
-            'baseTotal' => $total,
-            'price' => $basePrice,
-            'total' => $baseTotal,
+            'price' => $item->getItemPrice(),
+            'total' => $item->getTotal(),
+            'convertedPrice' => $item->getConvertedItemPrice(),
+            'convertedTotal' => $item->getConvertedTotal(),
+            'customItemPrice' => $item->getCustomItemPrice(),
+            'customItemDiscount' => $item->getCustomItemDiscount(),
+            'convertedCustomItemPrice' => $item->getConvertedCustomItemPrice()
         ];
     }
 
@@ -232,38 +213,47 @@ class OrderCreationController extends PimcoreController
             [
                 'key' => 'subtotal',
                 'value' => $cart->getSubtotal(true),
-            ],
-            [
-                'key' => 'subtotal_tax',
-                'value' => $cart->getSubtotalTax(),
+                'convertedValue' => $cart->getConvertedSubtotal(true),
             ],
             [
                 'key' => 'subtotal_without_tax',
                 'value' => $cart->getSubtotal(false),
+                'convertedValue' => $cart->getConvertedSubtotal(false),
             ],
             [
-                'key' => 'discount_without_tax',
-                'value' => -1 * $cart->getDiscount(false),
-            ],
-            [
-                'key' => 'discount_tax',
-                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
+                'key' => 'subtotal_tax',
+                'value' => $cart->getSubtotalTax(),
+                'convertedValue' => $cart->getConvertedSubtotalTax(),
             ],
             [
                 'key' => 'discount',
                 'value' => -1 * $cart->getDiscount(true),
+                'convertedValue' => -1 * $cart->getConvertedDiscount(true),
             ],
             [
-                'key' => 'total_without_tax',
-                'value' => $cart->getTotal(false),
+                'key' => 'discount_without_tax',
+                'value' => -1 * $cart->getDiscount(false),
+                'convertedValue' => -1 * $cart->getConvertedDiscount(false),
             ],
             [
-                'key' => 'total_tax',
-                'value' => $cart->getTotalTax(),
+                'key' => 'discount_tax',
+                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
+                'convertedValue' => -1 * $cart->getConvertedDiscount(true) - $cart->getConvertedDiscount(false),
             ],
             [
                 'key' => 'total',
                 'value' => $cart->getTotal(true),
+                'convertedValue' => $cart->getConvertedTotal(true),
+            ],
+            [
+                'key' => 'total_without_tax',
+                'value' => $cart->getTotal(false),
+                'convertedValue' => $cart->getConvertedTotal(false),
+            ],
+            [
+                'key' => 'total_tax',
+                'value' => $cart->getTotalTax(),
+                'convertedValue' => $cart->getConvertedTotalTax(),
             ],
         ];
     }
@@ -298,10 +288,5 @@ class OrderCreationController extends PimcoreController
     public function setAddressFormatter(AddressFormatterInterface $addressFormatter): void
     {
         $this->addressFormatter = $addressFormatter;
-    }
-
-    public function setCurrencyConverter(CurrencyConverterInterface $currencyConverter): void
-    {
-        $this->currencyConverter = $currencyConverter;
     }
 }

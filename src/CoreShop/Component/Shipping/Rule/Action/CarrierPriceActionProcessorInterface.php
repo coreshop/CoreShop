@@ -24,6 +24,7 @@ interface CarrierPriceActionProcessorInterface extends CarrierActionProcessorInt
         CarrierInterface $carrier,
         ShippableInterface $shippable,
         AddressInterface $address,
-        array $configuration
+        array $configuration,
+        array $context
     ): int;
 }

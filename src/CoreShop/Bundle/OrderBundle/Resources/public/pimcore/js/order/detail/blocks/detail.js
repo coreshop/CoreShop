@@ -118,7 +118,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                             if (row.type === 'string') {
                                 value = row.value;
                             } else if (row.type === 'price') {
-                                value = coreshop.util.format.currency(_.sale.currency.symbol, row.value)
+                                value = coreshop.util.format.currency(_.sale.baseCurrency.symbol, row.value)
                             } else {
                                 value = '--';
                             }
@@ -136,24 +136,16 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                 {
                     xtype: 'gridcolumn',
                     flex: 1,
-                    dataIndex: 'product_name',
+                    dataIndex: 'productName',
                     text: t('coreshop_product')
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'wholesale_price',
-                    text: t('coreshop_wholesale_price'),
-                    width: 150,
-                    align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'price_without_tax',
+                    dataIndex: 'priceNet',
                     text: t('coreshop_price_without_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol),
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.symbol),
                     field: {
                         xtype: 'numberfield',
                         decimalPrecision: 4
@@ -161,10 +153,28 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'convertedPriceNet',
+                    text: t('coreshop_converted_price_without_tax'),
+                    width: 150,
+                    align: 'right',
+                    hidden: this.sale.currency.id === this.sale.baseCurrency.id,
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol),
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'price',
                     text: t('coreshop_price_with_tax'),
                     width: 150,
                     align: 'right',
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.symbol)
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'convertedPrice',
+                    text: t('coreshop_converted_price_with_tax'),
+                    width: 150,
+                    align: 'right',
+                    hidden: this.sale.currency.id === this.sale.baseCurrency.id,
                     renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
@@ -184,6 +194,15 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     text: t('coreshop_total'),
                     width: 150,
                     align: 'right',
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.symbol)
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'convertedTotal',
+                    text: t('coreshop_converted_total'),
+                    width: 150,
+                    align: 'right',
+                    hidden: this.sale.currency.id === this.sale.baseCurrency.id,
                     renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
                 },
                 {
@@ -225,6 +244,16 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.symbol, value) + '</span>';
+                    }.bind(this)
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'convertedValue',
+                    width: 150,
+                    align: 'right',
+                    hidden: this.sale.currency.id === this.sale.baseCurrency.id,
+                    renderer: function (value) {
                         return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
                     }.bind(this)
                 }
@@ -259,7 +288,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.symbol, value) + '</span>';
                     }.bind(this)
                 }
             ]

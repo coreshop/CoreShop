@@ -91,8 +91,8 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $shipmentItem->setTotal((int)($orderItem->getItemPrice(true) * $quantity), true);
         $shipmentItem->setTotal((int)($orderItem->getItemPrice(false) * $quantity), false);
 
-        $shipmentItem->setBaseTotal((int)($orderItem->getBaseItemPrice(true) * $quantity), true);
-        $shipmentItem->setBaseTotal((int)($orderItem->getBaseItemPrice(false) * $quantity), false);
+        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(true) * $quantity), true);
+        $shipmentItem->setConvertedTotal((int)($orderItem->getConvertedItemPrice(false) * $quantity), false);
 
         VersionHelper::useVersioning(function () use ($shipmentItem) {
             $shipmentItem->save();

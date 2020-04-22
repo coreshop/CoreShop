@@ -15,7 +15,7 @@ services:
     CoreShop\Component\Store\Context\RequestBased\StoreContext:
         public: false
         arguments:
-            - '@coreshop.context.store.request_based.resolver'
+            - '@CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface'
             - '@request_stack'
         tags:
             - { name: coreshop.context.store, priority: 1 }

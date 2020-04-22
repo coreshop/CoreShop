@@ -31,7 +31,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): int
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
         $netPrice = 0;
 
@@ -39,7 +39,7 @@ final class CarrierPriceCalculator implements CarrierPriceCalculatorInterface
          * @var CarrierPriceCalculatorInterface $calculator
          */
         foreach ($this->shippingCalculatorRegistry->all() as $calculator) {
-            $price = $calculator->getPrice($carrier, $shippable, $address);
+            $price = $calculator->getPrice($carrier, $shippable, $address, $context);
 
             if (false !== $price && null !== $price) {
                 $netPrice = $price;

@@ -25,7 +25,7 @@ ui:
                     panther:
                         options:
                             browser: chrome
-#                            external_base_uri: "http://localhost:9080/app_test.php"
+#                            external_converted_uri: "http://localhost:9080/app_test.php"
             show_auto: false
 
         CoreShop\Behat\PantherExtension: ~

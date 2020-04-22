@@ -101,6 +101,7 @@ services:
             - '@coreshop.factory.address'
             - '@CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface'
             - '@CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator'
+            - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
             - { name: fob.context_service }
 
