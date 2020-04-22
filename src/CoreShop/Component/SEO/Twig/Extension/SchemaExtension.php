@@ -12,9 +12,9 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\Twig\Extension;
+namespace CoreShop\Component\SEO\Twig\Extension;
 
-use CoreShop\Component\SEO\SchemaPresentationInterface;
+use CoreShop\Component\SEO\SEOSchemaPresentationInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -22,7 +22,7 @@ class SchemaExtension extends AbstractExtension
 {
     protected $schemaPresentation;
 
-    public function __construct(SchemaPresentationInterface $schemaPresentation)
+    public function __construct(SEOSchemaPresentationInterface $schemaPresentation)
     {
         $this->schemaPresentation = $schemaPresentation;
     }
