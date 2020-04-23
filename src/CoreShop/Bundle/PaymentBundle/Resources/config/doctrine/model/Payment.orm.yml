@@ -11,25 +11,6 @@ CoreShop\Component\Payment\Model\Payment:
         state:
             column: state
             type: string
-        number:
-            column: number
-            type: string
-            nullable: true
-        description:
-            number: description
-            type: string
-            nullable: true
-        totalAmount:
-            column: total_amount
-            type: bigint
-            nullable: true
-        currencyCode:
-            column: currency_code
-            type: string
-            nullable: true
-        details:
-            column: details
-            type: json_array
         orderId:
             column: orderId
             type: integer
@@ -54,3 +35,10 @@ CoreShop\Component\Payment\Model\Payment:
                 name: payment_provider_id
                 referencedColumnName: id
                 nullable: true
+        currency:
+            targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
+            joinColumn:
+                name: currency_id
+                referencedColumnName: id
+                nullable: true
+                onDelete: 'SET NULL'

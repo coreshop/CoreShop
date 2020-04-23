@@ -12,10 +12,11 @@
 
 namespace CoreShop\Component\Payment\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
-class Payment implements PaymentInterface
+class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
 {
     use SetValuesTrait;
     use TimestampableTrait;
@@ -29,11 +30,6 @@ class Payment implements PaymentInterface
      * @var PaymentProviderInterface
      */
     protected $paymentProvider;
-
-    /**
-     * @var int
-     */
-    protected $totalAmount;
 
     /**
      * @var string
@@ -51,6 +47,11 @@ class Payment implements PaymentInterface
     protected $details = [];
 
     /**
+     * @var CurrencyInterface
+     */
+    protected $currency;
+
+    /**
      * @var \DateTime
      */
     protected $datePayment;
@@ -59,16 +60,6 @@ class Payment implements PaymentInterface
      * @var int
      */
     protected $orderId;
-
-    /**
-     * @var string
-     */
-    protected $number;
-
-    /**
-     * @var string
-     */
-    protected $description;
 
     /**
      * {@inheritdoc}
@@ -97,33 +88,25 @@ class Payment implements PaymentInterface
     /**
      * {@inheritdoc}
      */
-    public function getTotalAmount()
-    {
-        return $this->totalAmount;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalAmount($totalAmount)
-    {
-        $this->totalAmount = $totalAmount;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrencyCode()
     {
-        return $this->currencyCode;
+        return $this->currency->getIsoCode();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setCurrencyCode($currencyCode)
+    public function getCurrency()
     {
-        $this->currencyCode = $currencyCode;
+        return $this->currency;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
     }
 
     /**
@@ -180,37 +163,5 @@ class Payment implements PaymentInterface
         }
 
         $this->details = $details;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getNumber()
-    {
-        return $this->number;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setNumber($number)
-    {
-        $this->number = $number;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
     }
 }

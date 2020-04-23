@@ -12,12 +12,13 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Order\Model\OrderPaymentInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
@@ -58,12 +59,23 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
         /**
-         * @var OrderPaymentInterface $payment
+         * @var PaymentInterface $payment
+         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
+
+        // only allow two decimals in payment amounts!
+        // example: 898757 becomes 8988
+        if ($this->decimalFactor === 100) {
+            $totalAmount = $order->getTotal();
+        } else {
+            $totalAmount = (int) round((round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision) * 100), 0);
+        }
+
+        $payment->setTotalAmount($totalAmount);
+
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());

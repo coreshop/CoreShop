@@ -12,10 +12,9 @@
 
 namespace CoreShop\Component\Order\Model;
 
-use CoreShop\Component\Currency\Model\CurrencyAwareInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 
-interface OrderPaymentInterface extends PaymentInterface, CurrencyAwareInterface
+interface OrderPaymentInterface extends PaymentInterface
 {
     /**
      * @return OrderInterface
