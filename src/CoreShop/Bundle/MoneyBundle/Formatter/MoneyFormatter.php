@@ -33,9 +33,10 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function format($amount, $currency, $locale = 'en', int $factor = null)
+    public function format($amount, $currency, $locale = 'en', int $fraction = 2, int $factor = null)
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $fraction);
 
         $result = $formatter->formatCurrency(abs($amount / ($factor ?? $this->decimalFactor)), $currency);
         Assert::notSame(
