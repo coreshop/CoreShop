@@ -1,11 +1,11 @@
-{%- macro format(amount, currency_code) -%}
-    {{ amount|coreshop_format_money(currency_code, coreshop.localeCode) }}
+{%- macro format(amount, currency_code, factor) -%}
+    {{ amount|coreshop_format_money(currency_code, coreshop.localeCode, factor) }}
 {%- endmacro -%}
 
-{%- macro convertAndFormat(amount) -%}
+{%- macro convertAndFormat(amount, factor) -%}
     {% from _self import format %}
 
-    {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode) }}
+    {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode, factor) }}
 {%- endmacro -%}
 
 {%- macro convertAndFormatFromCustomCurrency(fromCurrencyIso, amount) -%}

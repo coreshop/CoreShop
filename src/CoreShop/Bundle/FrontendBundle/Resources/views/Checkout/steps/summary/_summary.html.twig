@@ -92,6 +92,16 @@
         {{ currency.convertAndFormat(cart.getTotal) }}
     </td>
 </tr>
+{% if currency.convertAndFormat(cart.total) != currency.convertAndFormat(cart.paymentTotal, 100) %}
+<tr>
+    <td class="text-right" colspan="3">
+        <strong>{{ 'coreshop.ui.payment_total'|trans }}:</strong>
+    </td>
+    <td colspan="2" class="text-right cart-total-payment-price">
+        {{ currency.convertAndFormat(cart.paymentTotal, 100) }}
+    </td>
+</tr>
+{% endif %}
 {% if cart.getComment is not empty %}
     <tr>
         <td colspan="5">

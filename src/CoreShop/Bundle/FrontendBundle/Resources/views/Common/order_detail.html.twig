@@ -230,6 +230,16 @@
                     {{ currency.format(order.getTotal, order.getCurrency.isoCode) }}
                 </td>
             </tr>
+            {% if currency.format(order.total, order.getCurrency.isoCode) != currency.format(order.paymentTotal, order.getCurrency.isoCode, 100) %}
+                <tr>
+                    <td class="text-right">
+                        <strong>{{ 'coreshop.ui.payment_total'|trans }}:</strong>
+                    </td>
+                    <td colspan="2" class="text-right cart-total-price">
+                        {{ currency.format(order.paymentTotal, 100) }}
+                    </td>
+                </tr>
+            {% endif %}
             </tfoot>
         </table>
     </div>

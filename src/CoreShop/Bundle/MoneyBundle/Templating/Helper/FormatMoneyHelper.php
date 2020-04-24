@@ -33,9 +33,9 @@ class FormatMoneyHelper extends Helper implements FormatMoneyHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAmount($amount, $currencyCode, $localeCode)
+    public function formatAmount($amount, $currencyCode, $localeCode, int $factor = null)
     {
-        return $this->moneyFormatter->format($amount, $currencyCode, $localeCode);
+        return $this->moneyFormatter->format($amount, $currencyCode, $localeCode, $factor);
     }
 
     /**
