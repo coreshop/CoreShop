@@ -43,6 +43,10 @@ class InheritanceLocator extends FileLocator
 
     protected function getPathsForBundleResource($parameters)
     {
+        if (null === $this->lastTheme) {
+            return parent::getPathsForBundleResource($parameters);
+        }
+
         $paths = array();
         $hierarchy = $this->resolveHierarchy();
 
@@ -61,6 +65,10 @@ class InheritanceLocator extends FileLocator
 
     protected function getPathsForAppResource($parameters)
     {
+        if (null === $this->lastTheme) {
+            return parent::getPathsForAppResource($parameters);
+        }
+
         $paths = array();
         $hierarchy = $this->resolveHierarchy();
 
