@@ -224,8 +224,11 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     dataIndex: 'value',
                     width: 150,
                     align: 'right',
-                    renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.symbol, value) + '</span>';
+                    renderer: function (value, md, record) {
+                        var factor = record.get('factor') ?? pimcore.globalmanager.get('coreshop.currency.decimal_factor');
+                        var precision = record.get('precision') ?? pimcore.globalmanager.get('coreshop.currency.decimal_precision');
+
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency_precision(this.sale.currency.symbol, value, precision, factor) + '</span>';
                     }.bind(this)
                 }
             ]

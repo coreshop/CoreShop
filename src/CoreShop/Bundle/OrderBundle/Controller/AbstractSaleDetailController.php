@@ -367,6 +367,12 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
             'key' => 'total',
             'value' => $sale->getTotal(),
         ];
+        $summary[] = [
+            'key' => 'payment_total',
+            'value' => $sale->getPaymentTotal(),
+            'precision' => 2,
+            'factor' => 100
+        ];
 
         return $summary;
     }
