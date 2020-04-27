@@ -25,3 +25,19 @@ Cart/Order value to a precision of 2 into the `paymentTotal` Value.
 For example:
 
 Your Cart/Order is "€ 1.000,5498", your payment total then is: "€ 1.000,55".
+
+If you want to display the payment total in your cart, you can use this template:
+
+```twig
+{% if currency.convertAndFormat(cart.total) != currency.convertAndFormat(cart.paymentTotal, 2, 100) %}
+<tr>
+    <td class="text-right" colspan="3">	
+        <strong>{{ 'coreshop.ui.payment_total'|trans }}:</strong>
+    </td>
+    <td colspan="2" class="text-right cart-total-payment-price">
+        {{ currency.convertAndFormat(cart.paymentTotal, 2, 100) }}
+    </td>
+</tr>
+{% endif %}
+```
+c
