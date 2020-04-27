@@ -99,17 +99,6 @@
     </td>
 </tr>
 
-{% if cart.total != cart.paymentTotal %}
-<tr>
-    <td class="text-right">
-        <strong>{{ 'coreshop.ui.payment_total'|trans }}:</strong>
-    </td>
-    <td colspan="2" class="text-right cart-total-price">
-        {{ currency.convertAndFormat(cart.paymentTotal, 2, 100) }}
-    </td>
-</tr>
-{% endif %}
-
 {% if cart.getComment is not empty %}
     <tr>
         <td colspan="5">
