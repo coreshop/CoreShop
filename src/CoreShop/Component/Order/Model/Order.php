@@ -533,6 +533,22 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     /**
      * {@inheritdoc}
      */
+    public function getPaymentTotal()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentTotal(int $paymentTotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSubtotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -658,6 +674,22 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
      * @param int $total
      */
     public function setConvertedTotalGross(int $total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConvertedPaymentTotal()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setConvertedPaymentTotal(int $convertedPaymentTotal)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

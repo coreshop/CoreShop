@@ -60,11 +60,11 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             $refundedPaymentTotal += $payment->getTotalAmount();
         }
 
-        if (count($refundedPayments) > 0 && $refundedPaymentTotal >= $order->getTotal()) {
+        if (count($refundedPayments) > 0 && $refundedPaymentTotal >= $order->getPaymentTotal()) {
             return OrderPaymentTransitions::TRANSITION_REFUND;
         }
 
-        if ($refundedPaymentTotal < $order->getTotal() && 0 < $refundedPaymentTotal) {
+        if ($refundedPaymentTotal < $order->getPaymentTotal() && 0 < $refundedPaymentTotal) {
             return OrderPaymentTransitions::TRANSITION_PARTIALLY_REFUND;
         }
 
@@ -76,11 +76,11 @@ final class OrderPaymentStateResolver implements StateResolverInterface
         }
 
         $payments = $this->paymentRepository->findForPayable($order);
-        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getTotal()) || count($payments) === 0) {
+        if ((count($completedPayments) > 0 && $completedPaymentTotal >= $order->getPaymentTotal()) || count($payments) === 0) {
             return OrderPaymentTransitions::TRANSITION_PAY;
         }
 
-        if ($completedPaymentTotal < $order->getTotal() && $completedPaymentTotal > 0) {
+        if ($completedPaymentTotal < $order->getPaymentTotal() && $completedPaymentTotal > 0) {
             return OrderPaymentTransitions::TRANSITION_PARTIALLY_PAY;
         }
 
@@ -91,11 +91,11 @@ final class OrderPaymentStateResolver implements StateResolverInterface
             $authorizedPaymentTotal += $payment->getTotalAmount();
         }
 
-        if (count($authorizedPayments) > 0 && $authorizedPaymentTotal >= $order->getTotal()) {
+        if (count($authorizedPayments) > 0 && $authorizedPaymentTotal >= $order->getPaymentTotal()) {
             return OrderPaymentTransitions::TRANSITION_AUTHORIZE;
         }
 
-        if ($authorizedPaymentTotal < $order->getTotal() && $authorizedPaymentTotal > 0) {
+        if ($authorizedPaymentTotal < $order->getPaymentTotal() && $authorizedPaymentTotal > 0) {
             return OrderPaymentTransitions::TRANSITION_PARTIALLY_AUTHORIZE;
         }
 

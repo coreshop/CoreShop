@@ -45,5 +45,5 @@ services:
             - '@coreshop.theme.resolver'
             - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_subscriber }
 

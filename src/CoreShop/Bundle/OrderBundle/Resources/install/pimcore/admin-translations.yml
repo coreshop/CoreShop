@@ -784,3 +784,12 @@ translations:
             en: 'Converted Custom Item Price'
             de: 'Umgerechnet kundenspezifischer Positionspreis'
 
+    coreshop.order.converted_payment_total:
+        languages:
+            en: 'Converted Payment Total'
+            de: 'Umgerechnet Zahlungsbetrag'
+
+    coreshop.order.payment_total:
+        languages:
+            en: 'Payment Total'
+            de: 'Zahlungsbetrag'

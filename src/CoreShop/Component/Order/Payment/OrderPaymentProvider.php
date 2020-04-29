@@ -10,28 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Order\Model\OrderPaymentInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
     private $paymentFactory;
-    private $decimalFactor;
-    private $decimalPrecision;
 
-    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
+    public function __construct(FactoryInterface $paymentFactory)
     {
         $this->paymentFactory = $paymentFactory;
-        $this->decimalFactor = $decimalFactor;
-        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -45,18 +40,15 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
 
         /**
          * @var PaymentInterface $payment
+         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
+        $payment->setTotalAmount($order->getPaymentTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
-
-        if (method_exists($payment, 'setCurrency')) {
-            $payment->setCurrency($order->getBaseCurrency());
-            $payment->setCurrencyCode($order->getBaseCurrency()->getIsoCode());
-        }
+        $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
             $payment->setDetails($order->getPaymentSettings());
@@ -67,12 +59,13 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         }
 
         $description = sprintf(
-            'Payment contains %s item(s) for a total of %s for currency "%s".',
+            'Payment contains %s item(s) for a total of %s.',
             count($order->getItems()),
-            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision),
-            $payment->getCurrencyCode()
+            round($order->getPaymentTotal() / 100, 2)
         );
 
+        //payum setters
+        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
         $payment->setDescription($description);
 
         return $payment;

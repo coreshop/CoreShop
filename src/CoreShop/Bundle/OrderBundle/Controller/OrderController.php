@@ -563,6 +563,13 @@ class OrderController extends PimcoreController
             'value' => $order->getTotal(),
             'convertedValue' => $order->getConvertedTotal(),
         ];
+        $summary[] = [
+            'key' => 'payment_total',
+            'value' => $order->getPaymentTotal(),
+            'convertedValue' => $order->getConvertedPaymentTotal(),
+            'precision' => 2,
+            'factor' => 100
+        ];
 
         return $summary;
     }

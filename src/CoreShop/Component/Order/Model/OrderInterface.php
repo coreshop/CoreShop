@@ -153,6 +153,16 @@ interface OrderInterface extends
     public function setBaseCurrency($currency);
 
     /**
+     * @return int
+     */
+    public function getPaymentTotal();
+
+    /**
+     * @param int $paymentTotal
+     */
+    public function setPaymentTotal(int $paymentTotal);
+
+    /**
      * @param bool $withTax
      *
      * @return int
@@ -239,6 +249,17 @@ interface OrderInterface extends
      * @return int
      */
     public function getConvertedTotal(bool $withTax = true): int;
+
+    /**
+     * @return int
+     */
+    public function getConvertedPaymentTotal();
+
+    /**
+     * @param int $convertedPaymentTotal
+     */
+    public function setConvertedPaymentTotal(int $convertedPaymentTotal);
+
     /**
      * @return int
      */

@@ -83,7 +83,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.order.d
                             text: t('coreshop_amount'),
                             flex: 1,
                             renderer: function (value) {
-                                return coreshop.util.format.currency(me.sale.currency.symbol, value, true);
+                                return coreshop.util.format.currency_precision(me.sale.currency.symbol, value, 2, 100);
                             }
                         },
                         {

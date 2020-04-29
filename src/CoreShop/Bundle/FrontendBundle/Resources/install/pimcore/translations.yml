@@ -1342,3 +1342,9 @@ translations:
           de_CH: 'Bestellung bereits bezahlt.'
           en: 'Order has already been paid.'
           de: 'Bestellung bereits bezahlt.'
+
+  coreshop.ui.payment_total:
+      languages:
+          de_CH: 'Zu zahlender Betrag'
+          en: 'Total to be paid'
+          de: 'Zu zahlender Betrag'

@@ -29,11 +29,12 @@ final class MoneyFormatter implements MoneyFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function format(int $amount, string $currency, string $locale = 'en'): string
+    public function format(int $amount, string $currency, string $locale = 'en', int $fraction = 2, int $factor = null): string
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
+        $formatter->setAttribute(\NumberFormatter::FRACTION_DIGITS, $fraction);
 
-        $result = $formatter->formatCurrency(abs($amount / $this->decimalFactor), $currency);
+        $result = $formatter->formatCurrency(abs($amount / ($factor ?? $this->decimalFactor)), $currency);
         Assert::notSame(
             false,
             $result,

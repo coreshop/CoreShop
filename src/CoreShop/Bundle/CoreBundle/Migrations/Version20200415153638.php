@@ -25,6 +25,7 @@ class Version20200415153638 extends AbstractPimcoreMigration implements Containe
         $batchList = new BatchListing($orderList, 50);
 
         $fieldMap = [
+            'paymentTotal' => 'convertedPaymentTotal',
             'totalNet' => 'convertedTotalNet',
             'totalGross' => 'convertedTotalGross',
             'subtotalNet' => 'convertedSubtotalNet',

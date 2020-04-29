@@ -14,7 +14,8 @@
         }
     ],
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "coreshop/currency": "^3.0"
     },
     "config": {
         "bin-dir": "bin"

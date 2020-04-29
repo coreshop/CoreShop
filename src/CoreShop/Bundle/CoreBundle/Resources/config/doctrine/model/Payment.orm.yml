@@ -5,11 +5,3 @@ CoreShop\Component\Core\Model\Payment:
         order:
             column: '`order`'
             type: pimcoreObject
-    manyToOne:
-        currency:
-            targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
-            joinColumn:
-                name: currency_id
-                referencedColumnName: id
-                nullable: true
-                onDelete: 'SET NULL'

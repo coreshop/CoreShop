@@ -39,6 +39,8 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
 
         $cart->setBaseCurrency($cart->getStore()->getCurrency());
 
+        $cart->setConvertedPaymentTotal($this->convert($cart->getPaymentTotal(), $cart));
+
         foreach ([true, false] as $withTax) {
             $subtotal = $cart->getSubtotal($withTax);
             $total = $cart->getTotal($withTax);
