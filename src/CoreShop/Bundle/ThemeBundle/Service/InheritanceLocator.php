@@ -83,6 +83,10 @@ class InheritanceLocator extends FileLocator
 
     protected function resolveHierarchy()
     {
+        if (!$this->lastTheme) {
+            return [];
+        }
+
         $this->checkCircularDependency($this->lastTheme);
 
         return $this->getThemeHierarchy($this->lastTheme);

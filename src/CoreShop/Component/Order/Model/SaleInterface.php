@@ -199,4 +199,24 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
      * @param bool $backendCreated
      */
     public function setBackendCreated($backendCreated);
+
+    /**
+     * @return int
+     */
+    public function getPaymentTotal();
+
+    /**
+     * @param int $paymentTotal
+     */
+    public function setPaymentTotal($paymentTotal);
+
+    /**
+     * @return int
+     */
+    public function getBasePaymentTotal();
+
+    /**
+     * @param int $basePaymentTotal
+     */
+    public function setBasePaymentTotal($basePaymentTotal);
 }

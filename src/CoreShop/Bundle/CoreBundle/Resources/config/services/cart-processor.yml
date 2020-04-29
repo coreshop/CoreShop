@@ -79,3 +79,10 @@ services:
             - '@coreshop.registry.shipping.tax_calculation_strategies'
         tags:
             - { name: coreshop.cart_processor, priority: 350 }
+
+    CoreShop\Component\Core\Order\Processor\CartPaymentProcessor:
+        arguments:
+            - '%coreshop.currency.decimal_factor%'
+            - '%coreshop.currency.decimal_precision%'
+        tags:
+            - { name: coreshop.cart_processor, priority: 300 }

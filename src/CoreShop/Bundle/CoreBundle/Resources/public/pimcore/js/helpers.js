@@ -28,11 +28,17 @@ coreshop.helpers.createOrder = function () {
     );
 };
 
-coreshop.util.format.currency = function (currency, v, forceTwoDecimals) {
+coreshop.util.format.currency = function (currency, v) {
+    return coreshop.util.format.currency_precision(
+        currency,
+        v,
+        pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
+        pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+    );
+};
 
-    var factor = forceTwoDecimals === true ? 100 : pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
-        decimalPrecision = forceTwoDecimals === true ? 2 : pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
-        value = (Math.round(((v / factor) - 0) * factor)) / factor;
+coreshop.util.format.currency_precision = function (currency, v, decimalPrecision, decimalFactor) {
+    var value = (Math.round(((v / decimalFactor) - 0) * decimalFactor)) / decimalFactor;
 
     currency = currency + ' ';
 

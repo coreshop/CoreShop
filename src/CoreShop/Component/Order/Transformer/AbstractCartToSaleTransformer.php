@@ -163,6 +163,9 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setBaseSubtotal($cart->getSubtotal(true), true);
         $sale->setBaseSubtotal($cart->getSubtotal(false), false);
 
+        $sale->setPaymentTotal($this->currencyConverter->convert($cart->getPaymentTotal(), $fromCurrencyCode, $toCurrencyCode));
+        $sale->setBasePaymentTotal($cart->getPaymentTotal());
+
         foreach ($cart->getAdjustments() as $adjustment) {
             $sale->addAdjustment($adjustment);
 
