@@ -18,6 +18,7 @@ use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ThemeRequestListener implements EventSubscriberInterface
@@ -29,7 +30,7 @@ final class ThemeRequestListener implements EventSubscriberInterface
 
     /**
      * @var ActiveThemeInterface
-     */
+     */ 
     private $activeTheme;
 
     /**
@@ -52,29 +53,17 @@ final class ThemeRequestListener implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (!$event->isMasterRequest()) {
-            $exception = $event->getRequest()->get('exception', null);
-
-            if (empty($exception)) {
-                return;
-            }
-        }
-
-        try {
-            $this->themeResolver->resolveTheme($this->activeTheme);
-        } catch (ThemeNotResolvedException $exception) {
-        }
+        $this->resolveTheme($event);
     }
 
-    /**
-     * @param GetResponseEvent $event
-     */
     public function onKernelController(FilterControllerEvent $event)
+    {
+        $this->resolveTheme($event);
+    }
+
+    protected function resolveTheme(KernelEvent $event)
     {
         if (!$event->isMasterRequest()) {
             $exception = $event->getRequest()->get('exception', null);
