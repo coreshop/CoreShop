@@ -15,9 +15,12 @@ namespace CoreShop\Bundle\ThemeBundle\EventListener;
 use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
-final class ThemeRequestListener
+final class ThemeRequestListener implements EventSubscriberInterface
 {
     /**
      * @var ThemeResolverInterface
@@ -39,10 +42,39 @@ final class ThemeRequestListener
         $this->activeTheme = $activeTheme;
     }
 
+    public static function getSubscribedEvents()
+    {
+        return [
+            // priority must be after
+            // -> Pimcore\Bundle\CoreBundle\EventListener\Frontend\DocumentFallbackListener
+            KernelEvents::REQUEST => ['onKernelRequest', 19],
+            KernelEvents::CONTROLLER => ['onKernelController', 19],
+        ];
+    }
+
     /**
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)
+    {
+        if (!$event->isMasterRequest()) {
+            $exception = $event->getRequest()->get('exception', null);
+
+            if (empty($exception)) {
+                return;
+            }
+        }
+
+        try {
+            $this->themeResolver->resolveTheme($this->activeTheme);
+        } catch (ThemeNotResolvedException $exception) {
+        }
+    }
+
+    /**
+     * @param GetResponseEvent $event
+     */
+    public function onKernelController(FilterControllerEvent $event)
     {
         if (!$event->isMasterRequest()) {
             $exception = $event->getRequest()->get('exception', null);
