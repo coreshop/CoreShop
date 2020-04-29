@@ -12,12 +12,13 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Order\Model\OrderPaymentInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
@@ -58,12 +59,13 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
         /**
-         * @var OrderPaymentInterface $payment
+         * @var PaymentInterface $payment
+         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
         $payment->setPaymentProvider($order->getPaymentProvider());
-        $payment->setTotalAmount($order->getTotal());
+        $payment->setTotalAmount($order->getPaymentTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());

@@ -275,3 +275,4 @@ coreshop_creating_cart_finished_detail: 'The cart has been created successfully,
 coreshop_sale_action_open_cart: 'Open Cart'
 coreshop_customer_to_company_assign_to_new: 'Assign Customer to new Company'
 coreshop_customer_to_company_assign_to_existing: 'Assign Customer to existing Company'
+coreshop_payment_total: 'Payment Total'

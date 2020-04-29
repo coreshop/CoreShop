@@ -380,6 +380,39 @@ abstract class Sale extends AbstractProposal implements SaleInterface
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaymentTotal()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPaymentTotal($paymentTotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBasePaymentTotal()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setBasePaymentTotal($basePaymentTotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     /**
      * {@inheritdoc}
      */
