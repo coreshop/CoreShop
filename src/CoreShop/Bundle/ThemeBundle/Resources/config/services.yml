@@ -52,5 +52,5 @@ services:
             - '@coreshop.theme.resolver'
             - '@coreshop.theme.active_theme'
         tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+            - { name: kernel.event_subscriber }
 
