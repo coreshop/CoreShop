@@ -19,7 +19,9 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
@@ -110,18 +112,33 @@ class CategoryController extends FrontendController
         $allowedPerPage = $type === 'list' ? $listPerPageAllowed : $gridPerPageAllowed;
 
         $perPage = $request->get('perPage', $defaultPerPage);
+        $isFrontendRequestByAdmin = false;
+        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier), 'pimcore_unpublished' => true]);
 
-        $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
         if (!$category instanceof CategoryInterface) {
             throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
         }
 
-        if (!in_array($perPage, $allowedPerPage)) {
-            $perPage = $defaultPerPage;
+        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+            $isFrontendRequestByAdmin = true;
+        }
+
+        if ($isFrontendRequestByAdmin === false && !$category->isPublished()) {
+            throw new NotFoundHttpException('category not found');
         }
 
         if (!in_array($this->getContext()->getStore()->getId(), array_values($category->getStores()))) {
             throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
+        }
+
+        $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($category);
+
+        if (urldecode($request->getPathInfo()) !== $urlToBe) {
+            return $this->redirect($urlToBe);
+        }
+
+        if (!in_array($perPage, $allowedPerPage)) {
+            $perPage = $defaultPerPage;
         }
 
         $paginator = null;
