@@ -24,7 +24,7 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
     /**
      * @var int
      */
-    protected $price;
+    protected $price = 0;
 
     /**
      * @var ProductUnitDefinitionInterface
