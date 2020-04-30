@@ -207,7 +207,7 @@ coreshop.resource.panel = Class.create({
             jsonData = this.prepareAdd(jsonData);
         }
 
-        if (button === 'ok' && value.length > 2) {
+        if (button === 'ok') {
             Ext.Ajax.request({
                 url: this.url.add,
                 jsonData: jsonData,
