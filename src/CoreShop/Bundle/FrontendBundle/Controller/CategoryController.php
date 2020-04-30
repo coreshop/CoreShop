@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Index\Condition\LikeCondition;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -114,6 +115,12 @@ class CategoryController extends FrontendController
         $category = $this->getRepository()->findOneBy([$this->repositoryIdentifier => $request->get($this->requestIdentifier)]);
         if (!$category instanceof CategoryInterface) {
             throw new NotFoundHttpException(sprintf(sprintf('category with identifier "%s" (%s) not found', $this->repositoryIdentifier, $request->get($this->requestIdentifier))));
+        }
+
+        $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($category);
+
+        if (urldecode($request->getPathInfo()) !== $urlToBe) {
+            return $this->redirect($urlToBe);
         }
 
         if (!in_array($perPage, $allowedPerPage)) {
