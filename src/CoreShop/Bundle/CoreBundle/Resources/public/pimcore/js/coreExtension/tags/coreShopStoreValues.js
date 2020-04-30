@@ -208,7 +208,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             data = this.data.hasOwnProperty(store.getId()) ? this.data[store.getId()] : null;
             valuesBuilder = new coreshop.product.storeValues.builder(this.fieldConfig, store, data, this.productUnitDefinitionsStore, this.object.id);
 
-            if (data && data.hasOwnProperty('inherited') && !data.inherited) {
+            if (data && data.hasOwnProperty('inherited') && !data.inherited && data.inheritable) {
                 formPanel.add({
                     xtype: 'button',
                     text: t('coreshop_restore_inheritance'),
