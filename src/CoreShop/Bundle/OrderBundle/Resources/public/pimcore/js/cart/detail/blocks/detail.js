@@ -130,7 +130,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_price_without_tax'),
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
                 },
 
                 {
@@ -139,7 +139,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_price_with_tax'),
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -157,7 +157,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_total_without_tax'),
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -165,7 +165,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     text: t('coreshop_total'),
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
                 },
                 {
                     menuDisabled: true,
@@ -204,7 +204,7 @@ coreshop.order.cart.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     dataIndex: 'value',
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.symbol)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
                 }
             ]
         };

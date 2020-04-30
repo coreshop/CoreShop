@@ -94,6 +94,6 @@ coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.sale.d
         me.currencyPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_currency') + ': </span>' + me.sale.currency.name);
         me.weightPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_weight') + ': </span>' + (me.sale.shippingPayment.weight ? me.sale.shippingPayment.weight : 0));
         me.carrierPanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_carrier') + ': </span>' + me.sale.shippingPayment.carrier);
-        me.pricePanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(me.sale.currency.symbol, me.sale.shippingPayment.cost));
+        me.pricePanel.setHtml('<span style="font-weight:bold;">' + t('coreshop_price') + ': </span>' + coreshop.util.format.currency(me.sale.currency.iso, me.sale.shippingPayment.cost));
     }
 });

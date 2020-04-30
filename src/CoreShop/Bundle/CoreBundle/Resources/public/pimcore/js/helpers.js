@@ -28,23 +28,6 @@ coreshop.helpers.createOrder = function () {
     );
 };
 
-coreshop.util.format.currency = function (currency, v) {
-    return coreshop.util.format.currency_precision(
-        currency,
-        v,
-        pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
-        pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
-    );
-};
-
-coreshop.util.format.currency_precision = function (currency, v, decimalPrecision, decimalFactor) {
-    var value = (Math.round(((v / decimalFactor) - 0) * decimalFactor)) / decimalFactor;
-
-    currency = currency + ' ';
-
-    return Ext.util.Format.currency(value, currency, decimalPrecision, false);
-};
-
 coreshop.helpers.showAbout = function () {
 
     var html = '<div class="pimcore_about_window">';
