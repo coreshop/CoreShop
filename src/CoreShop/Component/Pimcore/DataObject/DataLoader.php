@@ -64,7 +64,7 @@ class DataLoader implements DataLoaderInterface
                 if ($def instanceof Money) {
                     $value = $fieldData;
                 } else {
-                    $value = $def->getDataForEditmode($fieldData, $data, false);
+                    $value = $def->getDataForEditmode($fieldData, $data);
                 }
 
                 $objectData[$key] = $value;
