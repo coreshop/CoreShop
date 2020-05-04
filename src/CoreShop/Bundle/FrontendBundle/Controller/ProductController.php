@@ -18,6 +18,8 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use Pimcore\Http\RequestHelper;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,12 +49,25 @@ class ProductController extends FrontendController
     {
         $product = $this->getProductByRequest($request);
 
+        $isFrontendRequestByAdmin = false;
+
         if (!$product instanceof ProductInterface) {
             throw new NotFoundHttpException('product not found');
         }
 
-        if (!$product->isPublished() || $product->getActive() !== true) {
+        if ($this->get(RequestHelper::class)->isFrontendRequestByAdmin($request)) {
+            $isFrontendRequestByAdmin = true;
+        }
+
+        if ($isFrontendRequestByAdmin === false && (!$product->isPublished() || $product->getActive() !== true)) {
             throw new NotFoundHttpException('product not found');
+        }
+
+
+        $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($product);
+
+        if (urldecode($request->getPathInfo()) !== $urlToBe) {
+            return $this->redirect($urlToBe);
         }
 
         if (!in_array($this->get(StoreContextInterface::class)->getStore()->getId(), $product->getStores())) {

@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
+use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionPriceInterface;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -39,32 +40,9 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
-
         $builder
-            ->add('price', IntegerType::class)
+            ->add('price', MoneyType::class)
             ->add('unitDefinition', ProductUnitDefinitionSelectionType::class);
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function onPreSubmit(FormEvent $event)
-    {
-        /** @var ProductUnitDefinitionPriceInterface $data */
-        $data = $event->getData();
-
-        if (!isset($data['price'])) {
-            return;
-        }
-
-        if (!is_numeric($data['price'])) {
-            $data['price'] = 0;
-        } else {
-            $data['price'] = (int) round((round($data['price'], $this->decimalPrecision) * $this->decimalFactor), 0);
-        }
-
-        $event->setData($data);
     }
 
     /**

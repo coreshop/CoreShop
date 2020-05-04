@@ -514,6 +514,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             return $storeData;
         }
 
+        $class = Model\DataObject\ClassDefinition::getById($object->getClassId());
+
+        if (!$class instanceof Model\DataObject\ClassDefinition) {
+            return $storeData;
+        }
+
+        $inheritable = $class->getAllowInherit() && $object->getParent() instanceof $object;
+
         foreach ($data as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -524,7 +532,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $storeValuesEntity->getStore()->getName(),
                 'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
                 'values' => $values,
-                'inherited' => false
+                'inherited' => false,
+                'inheritable' => $inheritable
             ];
         }
 
@@ -541,6 +550,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
                 'values' => ['price' => 0],
+                'inheritable' => $inheritable
             ];
         }
 

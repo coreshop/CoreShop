@@ -682,6 +682,7 @@ class OrderController extends PimcoreController
             'id' => $currency->getId(),
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
+            'iso' => $currency->getIsoCode()
         ];
     }
 

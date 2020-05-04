@@ -22,20 +22,20 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
-interface ProductInterface extends BaseProductInterface, IndexableInterface, PurchasableInterface, StockableInterface, PimcoreSEOAwareInterface, SEOImageAwareInterface, SEOOpenGraphAwareInterface, QuantityRangePriceAwareInterface
+interface ProductInterface extends
+    BaseProductInterface,
+    IndexableInterface,
+    PurchasableInterface,
+    StockableInterface,
+    PimcoreSEOAwareInterface,
+    SEOImageAwareInterface,
+    SEOOpenGraphAwareInterface,
+    QuantityRangePriceAwareInterface,
+    PimcoreStoresAwareInterface
 {
-    /**
-     * @return StoreInterface[]
-     */
-    public function getStores();
-
-    /**
-     * @param StoreInterface[] $stores
-     */
-    public function setStores($stores);
-
     /**
      * @param \CoreShop\Component\Store\Model\StoreInterface|null $store
      *

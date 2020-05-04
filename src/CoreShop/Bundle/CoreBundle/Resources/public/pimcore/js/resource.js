@@ -79,6 +79,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
             case coreshop.class_map.coreshop.product:
                 this._enrichProductObject(tab);
                 break;
+
+            case coreshop.class_map.coreshop.category:
+                this._enrichCategoryObject(tab);
+                break;
         }
 
         pimcore.layout.refresh();
@@ -166,6 +170,10 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
             renderTab.reload();
         };
+    },
+
+    _enrichCategoryObject: function (tab) {
+        tab.tabbar.insert(1, new coreshop.core.object.store_preview(tab).getLayout());
     },
 
     _enrichProductObject: function (tab) {

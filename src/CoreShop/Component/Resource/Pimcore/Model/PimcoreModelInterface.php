@@ -40,6 +40,11 @@ interface PimcoreModelInterface extends ResourceInterface, ElementInterface
     public function getPublished();
 
     /**
+     * @return bool
+     */
+    public function isPublished();
+
+    /**
      * @param ElementInterface $parent
      */
     public function setParent($parent);

@@ -18,8 +18,13 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+use CoreShop\Component\Store\Model\StoresAwareInterface;
 
-interface CategoryInterface extends BaseCategoryInterface, PimcoreSEOAwareInterface, SEOOpenGraphAwareInterface
+interface CategoryInterface extends
+    BaseCategoryInterface,
+    PimcoreSEOAwareInterface,
+    SEOOpenGraphAwareInterface,
+    PimcoreStoresAwareInterface
 {
     /**
      * @return FilterInterface
@@ -30,14 +35,4 @@ interface CategoryInterface extends BaseCategoryInterface, PimcoreSEOAwareInterf
      * @param FilterInterface $filter
      */
     public function setFilter($filter);
-
-    /**
-     * @return StoreInterface[]
-     */
-    public function getStores();
-
-    /**
-     * @param StoreInterface[] $stores
-     */
-    public function setStores($stores);
 }

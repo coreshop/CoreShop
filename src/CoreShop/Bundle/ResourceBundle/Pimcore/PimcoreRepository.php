@@ -149,6 +149,12 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     {
         $list = $this->getList();
 
+        if (isset($criteria['pimcore_unpublished'])) {
+            $list->setUnpublished($criteria['pimcore_unpublished']);
+
+            unset($criteria['pimcore_unpublished']);
+        }
+
         $criteria = $this->normalizeCriteria($criteria);
 
         if (is_array($criteria) && count($criteria) > 0) {
