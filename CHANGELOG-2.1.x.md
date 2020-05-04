@@ -1,5 +1,9 @@
 # Within 2.1
 
+## 2.1.7
+ - Bugs:
+    - [Pimcore] fix getDataForEditmode (https://github.com/coreshop/CoreShop/pull/1372, https://github.com/coreshop/CoreShop/pull/1361)
+
 ## 2.1.6
  - Bugs:
     - [CoreBundle][2.1] Fix name of country combo (https://github.com/coreshop/CoreShop/pull/1350)
