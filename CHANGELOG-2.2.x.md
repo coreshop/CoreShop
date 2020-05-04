@@ -1,7 +1,7 @@
 # Within 2.2
 
 
-## 2.2.0-RC.2
+## 2.2.0
  - Features:
     - [Order] don't allow order-revise when completed payment has been made (https://github.com/coreshop/CoreShop/pull/1334)
     - [Order] persist internal cancellation reasons (https://github.com/coreshop/CoreShop/pull/1333)
