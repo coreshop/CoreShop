@@ -63,10 +63,9 @@ class ProductController extends FrontendController
             throw new NotFoundHttpException('product not found');
         }
 
-
         $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($product);
 
-        if (urldecode($request->getPathInfo()) !== $urlToBe) {
+        if (urldecode($request->getBaseUrl().$request->getPathInfo()) !== $urlToBe) {
             return $this->redirect($urlToBe);
         }
 

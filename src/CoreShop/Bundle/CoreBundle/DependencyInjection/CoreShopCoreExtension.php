@@ -77,7 +77,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $loader->load('services.yml');
 
         $env = $container->getParameter('kernel.environment');
-        if ('test' === $env) {
+        if (strpos($env, 'test') !== false) {
             $loader->load('services_test.yml');
         }
 

@@ -23,6 +23,14 @@ class AppKernel extends Kernel
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
     }
 
+    protected function getEnvironmentsForDevBundles(): array
+    {
+        return array_merge(
+            ['test_precision'],
+            parent::getEnvironmentsForDevBundles()
+        );
+    }
+
     public function boot()
     {
         \Pimcore::setKernel($this);

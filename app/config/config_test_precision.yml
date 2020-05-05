@@ -1,0 +1,9 @@
+imports:
+    - { resource: config_test.yml }
+    - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/prod.yml' } # loads default dev configuration
+    - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/dev.yml' } # loads default dev configuration
+    - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/test.yml' } # loads default dev configuration
+
+core_shop_currency:
+    money_decimal_precision: 6
+    money_decimal_factor: 1000000

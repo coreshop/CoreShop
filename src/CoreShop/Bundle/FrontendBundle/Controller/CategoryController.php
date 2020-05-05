@@ -140,7 +140,7 @@ class CategoryController extends FrontendController
 
         $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($category);
 
-        if (urldecode($request->getPathInfo()) !== $urlToBe) {
+        if (urldecode($request->getBaseUrl().$request->getPathInfo()) !== $urlToBe) {
             return $this->redirect($urlToBe);
         }
 

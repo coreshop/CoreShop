@@ -33,6 +33,14 @@ class BehatAppKernel extends Kernel
         \Pimcore::setKernel($this);
     }
 
+    protected function getEnvironmentsForDevBundles(): array
+    {
+        return array_merge(
+            ['test_precision'],
+            parent::getEnvironmentsForDevBundles()
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
