@@ -11,8 +11,15 @@
 
 pimcore.registerNS('pimcore.object.tags.coreShopItemSelector');
 pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.multiselect, {
-    delimiter:',',
     type: 'coreShopItemSelector',
+
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return data.dest_id;
+        });
+        this.fieldConfig = fieldConfig;
+    },
 
     getLayoutEdit: function() {
         Ext.require([
@@ -58,7 +65,7 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
             fromTitle: t('coreshop_dynamic_dropdown_itemselector_available'),
             toTitle: t('coreshop_dynamic_dropdown_itemselector_selected'),
             width: 600,
-            value: this.data
+            value: this.data_mapped
         };
 
         if (this.fieldConfig.width) {

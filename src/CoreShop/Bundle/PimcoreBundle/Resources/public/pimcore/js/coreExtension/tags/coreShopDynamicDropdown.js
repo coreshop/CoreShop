@@ -13,6 +13,12 @@ pimcore.registerNS('pimcore.object.tags.coreShopDynamicDropdown');
 pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.select, {
     type: 'coreShopDynamicDropdown',
 
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = data.dest_id;
+        this.fieldConfig = fieldConfig;
+    },
+
     getGridColumnEditor: function (field) {
         if (field.layout.noteditable) {
             return null;
@@ -129,7 +135,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             queryMode: 'local',
             autoSelect: false,
             autoLoadOnValue: true,
-            value: this.data,
+            value: this.data_mapped,
             plugins: ['clearbutton'],
             listConfig: {
                 getInnerTpl: function (displayField) {
