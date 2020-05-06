@@ -15,7 +15,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
 
      initialize: function (data, fieldConfig) {
         this.data = data;
-        this.data_mapped = data.dest_id;
+        this.data_mapped = parseInt(data.id);
         this.fieldConfig = fieldConfig;
     },
 
@@ -45,7 +45,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             fields: ['key', 'value'],
             listeners: {
                 load: function (store, records, success, operation) {
-                    console.debug(operation);
+
                 }.bind(this)
             },
             autoLoad: true
@@ -57,9 +57,11 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
             editable: false,
             mode: 'local',
             valueField: 'value',
-            displayField: 'key'
+            displayField: 'key',
+            autoComplete: false,
+            forceSelection: true,
+            selectOnFocus: true,
         };
-
 
         return new Ext.form.ComboBox(options);
     },

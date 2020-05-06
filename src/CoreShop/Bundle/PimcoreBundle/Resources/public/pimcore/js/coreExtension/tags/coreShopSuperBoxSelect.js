@@ -16,7 +16,7 @@ pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.mu
      initialize: function (data, fieldConfig) {
         this.data = data;
         this.data_mapped = (data ? data : []).map(function(data) {
-            return data.dest_id;
+            return parseInt(data.id);
         });
         this.fieldConfig = fieldConfig;
     },

@@ -16,7 +16,7 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
      initialize: function (data, fieldConfig) {
         this.data = data;
         this.data_mapped = (data ? data : []).map(function(data) {
-            return data.id;
+            return parseInt(data.id);
         });
         this.fieldConfig = fieldConfig;
     },

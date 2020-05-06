@@ -16,7 +16,7 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
      initialize: function (data, fieldConfig) {
         this.data = data;
         this.data_mapped = (data ? data : []).map(function(data) {
-            return data.dest_id;
+            return parseInt(data.id);
         });
         this.fieldConfig = fieldConfig;
     },
@@ -73,9 +73,8 @@ pimcore.object.tags.coreShopItemSelector = Class.create(pimcore.object.tags.mult
         }
 
         this.component = new Ext.ux.form.ItemSelector(options);
+
         return this.component;
-
-
     },
 
     getGridColumnEditor:function (field) {
