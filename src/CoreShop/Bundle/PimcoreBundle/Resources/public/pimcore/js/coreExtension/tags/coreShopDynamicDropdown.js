@@ -15,7 +15,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
 
      initialize: function (data, fieldConfig) {
         this.data = data;
-        this.data_mapped = parseInt(data.id);
+        this.data_mapped = data ? parseInt(data.id) : null;
         this.fieldConfig = fieldConfig;
     },
 
