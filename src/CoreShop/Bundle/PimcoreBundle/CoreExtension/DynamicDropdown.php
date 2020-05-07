@@ -440,4 +440,16 @@ class DynamicDropdown extends AbstractRelations implements QueryResourcePersiste
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVersionPreview($data, $object = null, $params = [])
+    {
+        if ($data instanceof Element\AbstractElement) {
+            return $data->getRealFullPath();
+        }
+
+        return '';
+    }
 }

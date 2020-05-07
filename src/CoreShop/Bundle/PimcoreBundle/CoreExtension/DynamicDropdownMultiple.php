@@ -490,4 +490,24 @@ class DynamicDropdownMultiple extends AbstractRelations implements QueryResource
         // must return array - otherwise this means data is not loaded
         return $objects;
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function getVersionPreview($data, $object = null, $params = [])
+    {
+        if (is_array($data) && count($data) > 0) {
+            $pathes = [];
+
+            foreach ($data as $e) {
+                if ($e instanceof Element\ElementInterface) {
+                    $pathes[] = get_class($e) . $e->getRealFullPath();
+                }
+            }
+
+            return implode('<br />', $pathes);
+        }
+
+        return null;
+    }
 }
