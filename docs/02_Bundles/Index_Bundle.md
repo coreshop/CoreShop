@@ -51,7 +51,7 @@ $filteredList->load();
 ## Pimcore UI
 
  - Index Configuration
- - Fitler Configuration
+ - Filter Configuration
 
 How to use?
 
