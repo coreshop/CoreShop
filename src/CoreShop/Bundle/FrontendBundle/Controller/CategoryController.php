@@ -138,12 +138,6 @@ class CategoryController extends FrontendController
             throw new NotFoundHttpException(sprintf(sprintf('store (id %s) not available in category', $this->getContext()->getStore()->getId())));
         }
 
-        $urlToBe = $this->get(LinkGeneratorInterface::class)->generate($category);
-
-        if (urldecode($request->getBaseUrl().$request->getPathInfo()) !== $urlToBe) {
-            return $this->redirect($urlToBe);
-        }
-
         if (!in_array($perPage, $allowedPerPage)) {
             $perPage = $defaultPerPage;
         }

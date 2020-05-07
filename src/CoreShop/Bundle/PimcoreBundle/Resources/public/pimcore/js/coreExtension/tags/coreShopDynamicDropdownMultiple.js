@@ -13,6 +13,14 @@ pimcore.registerNS('pimcore.object.tags.coreShopDynamicDropdownMultiple');
 pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.object.tags.multiselect, {
     type: 'coreShopDynamicDropdownMultiple',
 
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return parseInt(data.id);
+        });
+        this.fieldConfig = fieldConfig;
+    },
+
     getLayoutEdit: function () {
         this.options_store = new Ext.data.JsonStore({
             proxy: {
@@ -57,7 +65,7 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
             valueField: 'value',
             labelWidth: this.fieldConfig.labelWidth ? this.fieldConfig.labelWidth : 100,
             autoLoadOnValue: true,
-            value: this.data
+            value: this.data_mapped
         };
 
         options.width = 300;
@@ -69,10 +77,6 @@ pimcore.object.tags.coreShopDynamicDropdownMultiple = Class.create(pimcore.objec
 
         if (this.fieldConfig.height) {
             options.height = this.fieldConfig.height;
-        }
-
-        if (typeof this.data === 'string' || typeof this.data === 'number') {
-            options.value = this.data;
         }
 
         this.component = Ext.create('Ext.ux.form.MultiSelect', options);

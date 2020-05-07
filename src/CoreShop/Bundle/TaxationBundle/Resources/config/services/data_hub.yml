@@ -6,4 +6,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.tax_rule_group.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopTaxRuleGroup }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopTaxRuleGroup }

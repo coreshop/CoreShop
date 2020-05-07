@@ -4,4 +4,4 @@ services:
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopMoney }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopMoney }

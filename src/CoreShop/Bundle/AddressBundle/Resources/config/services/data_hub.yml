@@ -6,7 +6,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.country.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCountry }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCountry }
 
     coreshop.datahub.graphql.querytypegenerator.resource.state:
         class: CoreShop\Component\Resource\DataHub\QueryType\Resource
@@ -15,7 +15,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.state.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopState }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopState }
 
     coreshop.datahub.graphql.querytypegenerator.resource.address_identifier:
         class: CoreShop\Component\Resource\DataHub\QueryType\Resource
@@ -24,7 +24,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.address_identifier.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopAddressIdentifier }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopAddressIdentifier }
 
     coreshop.datahub.graphql.querytypegenerator.resource.country.list:
         class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
@@ -33,4 +33,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.country.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCountryMultiselect }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCountryMultiselect }
