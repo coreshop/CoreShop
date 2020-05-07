@@ -4,21 +4,39 @@ services:
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopDynamicDropdown }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopDynamicDropdown }
+
+    coreshop.datahub.graphql.dataobjectmutationtypegenerator.resource.dynamic_dropdown:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectMutationFieldConfigGenerator\ManyToOneRelation
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopDynamicDropdown }
 
     coreshop.datahub.graphql.querytypegenerator.resource.dynamic_dropdown_multiple:
         class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectQueryFieldConfigGenerator\Multihref
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopDynamicDropdownMultiple }
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopItemSelector }
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopSuperBoxSelect }
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopEmbeddedClass }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopDynamicDropdownMultiple }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopItemSelector }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopSuperBoxSelect }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopEmbeddedClass }
+
+    coreshop.datahub.graphql.dataobjectmutationtypegenerator.redsource.dynamic_dropdown_multiple:
+        class: Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectMutationFieldConfigGenerator\ManyToManyRelation
+        arguments:
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
+            - '@Pimcore\Bundle\DataHubBundle\GraphQL\DataObjectType\ElementDescriptorInputType'
+        tags:
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopDynamicDropdownMultiple }
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopItemSelector }
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopSuperBoxSelect }
+            - { name: pimcore.datahub.graphql.dataobjectmutationtypegenerator, id: typegenerator_dataobjectmutationdatatype_coreShopEmbeddedClass }
 
     coreshop.datahub.graphql.querytypegenerator.resource.serialized_data:
         class: CoreShop\Bundle\PimcoreBundle\DataHub\QueryType\SerializedData
         arguments:
             - '@Pimcore\Bundle\DataHubBundle\GraphQL\Service'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopSerializedData }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopSerializedData }

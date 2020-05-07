@@ -6,4 +6,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_quantity_price_rule.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopProductQuantityPriceRules }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopProductQuantityPriceRules }
