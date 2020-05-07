@@ -12,10 +12,6 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
-use Pimcore\Model\DataObject\AbstractObject;
-use Pimcore\Model\DataObject\ClassDefinition\Data\ManyToManyRelation;
-use Pimcore\Model\DataObject\Service;
-
 class ItemSelector extends DynamicDropdownMultiple
 {
     /**
@@ -24,45 +20,6 @@ class ItemSelector extends DynamicDropdownMultiple
      * @var string
      */
     public $fieldtype = 'coreShopItemSelector';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDataFromEditmode($data, $object = null, $params = [])
-    {
-        if ($data === null || $data === false) {
-            return [];
-        }
-
-        $elements = array();
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $id) {
-                $elements[] = Service::getElementById('object', $id);
-            }
-        }
-
-        //must return array if data shall be set
-        return $elements;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDataForEditmode($data, $object = null, $params = [])
-    {
-        $return = array();
-
-        if (is_array($data) && count($data) > 0) {
-            foreach ($data as $element) {
-                /** @var AbstractObject $element */
-                $return[] = $element->getId();
-            }
-
-            return implode(',', $return);
-        }
-
-        return null;
-    }
 
     /**
      * {@inheritdoc}
