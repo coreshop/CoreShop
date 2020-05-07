@@ -6,7 +6,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_store_price.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopStorePrice }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopStorePrice }
 
 
     coreshop.datahub.graphql.querytypegenerator.resource.product_store_values:
@@ -16,4 +16,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.product_store_values.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopStoreValues }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopStoreValues }
