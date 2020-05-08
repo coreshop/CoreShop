@@ -27,7 +27,7 @@ final class SummaryType extends AbstractResourceType
     {
         $builder
             ->add('acceptTerms', CheckboxType::class, [
-                'constraints' => [new NotBlank(['groups' => [$this->validationGroups]])],
+                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
                 'label' => 'coreshop.ui.accept_terms',
                 'mapped' => false,
             ]);
