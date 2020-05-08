@@ -11,7 +11,6 @@ Feature: Viewing a product details
         When I open the product's detail page
         Then I should see the price "€100.12"
 
-
     Scenario: View product price with rounding
         Given the site has a product "T-Shirt" priced at 100556567
         And the product is active and published and available for store "Austria"

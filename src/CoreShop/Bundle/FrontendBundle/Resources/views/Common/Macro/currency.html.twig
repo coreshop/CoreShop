@@ -1,6 +1,6 @@
 {%- macro format(amount, currency_code, fraction, factor) -%}
     {%- if fraction is null -%}
-        {%- set fraction = 2 -%}
+        {%- set fraction = coreshop_currency_display_fraction(coreshop.context) -%}
     {%- endif -%}
 
     {{ amount|coreshop_format_money(currency_code, coreshop.localeCode, fraction, factor) -}}

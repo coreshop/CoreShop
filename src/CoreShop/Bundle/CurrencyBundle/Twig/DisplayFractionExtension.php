@@ -14,24 +14,31 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
-use Symfony\Component\Intl\Currencies;
+use CoreShop\Component\Currency\Display\DisplayFractionProviderInterface;
 use Twig\Extension\AbstractExtension;
-use Twig\TwigFilter;
+use Twig\TwigFunction;
 
-final class CurrencyExtension extends AbstractExtension
+final class DisplayFractionExtension extends AbstractExtension
 {
+    private $displayFractionProvider;
+
+    public function __construct(DisplayFractionProviderInterface $displayFractionProvider)
+    {
+        $this->displayFractionProvider = $displayFractionProvider;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFunctions()
     {
         return [
-            new TwigFilter('coreshop_currency_symbol', [$this, 'convertCurrencyCodeToSymbol']),
+            new TwigFunction('coreshop_currency_display_fraction', [$this, 'getDisplayFraction']),
         ];
     }
 
-    public function convertCurrencyCodeToSymbol(string $code, ?string $locale = null): string
+    public function getDisplayFraction(array $context): int
     {
-        return Currencies::getSymbol($code);
+        return $this->displayFractionProvider->getDisplayFraction($context);
     }
 }

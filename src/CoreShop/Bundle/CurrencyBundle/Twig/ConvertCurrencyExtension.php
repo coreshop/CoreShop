@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CurrencyBundle\Twig;
 
-use CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;

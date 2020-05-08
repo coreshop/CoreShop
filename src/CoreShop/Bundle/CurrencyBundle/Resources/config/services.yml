@@ -27,3 +27,6 @@ services:
     CoreShop\Component\Currency\Context\FixedCurrencyContext:
         tags:
             - { name: coreshop.context.currency }
+
+    CoreShop\Component\Currency\Display\DisplayFractionProviderInterface: '@CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider'
+    CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider: ~
