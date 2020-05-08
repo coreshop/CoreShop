@@ -166,6 +166,7 @@ final class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
+                            ->booleanNode('enabled')->defaultTrue()->cannotBeEmpty()->end()
                             ->variableNode('on')->end()
                             ->variableNode('do')->end()
                             ->scalarNode('priority')->defaultValue(0)->end()
