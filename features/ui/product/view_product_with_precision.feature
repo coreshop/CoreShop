@@ -9,11 +9,10 @@ Feature: Viewing a product details
         Given the site has a product "T-Shirt" priced at 100123456
         And the product is active and published and available for store "Austria"
         When I open the product's detail page
-        Then I should see the price "€100.12"
+        Then I should see the price "€100.123456"
 
     Scenario: View product price with rounding
         Given the site has a product "T-Shirt" priced at 100556567
         And the product is active and published and available for store "Austria"
         When I open the product's detail page
-        Then I should see the price "€100.56"
-
+        Then I should see the price "€100.556567"
