@@ -76,6 +76,10 @@ class WorkflowListener implements EventSubscriberInterface
     public function applyTransition(string $transitionName, Event $event, array $actions): void
     {
         foreach ($actions as $callback) {
+            if ($callback['enabled'] === false) {
+                continue;   
+            }
+            
             if (!in_array($transitionName, $callback['on'])) {
                 continue;
             }
