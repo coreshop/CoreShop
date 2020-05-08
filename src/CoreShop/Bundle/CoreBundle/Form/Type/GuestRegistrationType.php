@@ -54,7 +54,7 @@ class GuestRegistrationType extends AbstractType
                 ],
                 'guest' => true,
                 'constraints' => [
-                    new Valid(['groups' => [$this->validationGroupsGuest]]),
+                    new Valid(['groups' => $this->validationGroupsGuest]),
                 ],
             ])
             ->add('address', AddressType::class, [
@@ -63,7 +63,7 @@ class GuestRegistrationType extends AbstractType
                     'class' => 'cs-address',
                 ],
                 'constraints' => [
-                    new Valid(['groups' => [$this->validationGroups]]),
+                    new Valid(['groups' => $this->validationGroups]),
                 ],
             ])
 
