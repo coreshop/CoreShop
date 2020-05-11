@@ -1,5 +1,13 @@
 # Within 2.1
 
+## 2.1.8
+ - Bugs:
+    - [ResourceBundle] Fix unique entity validator (https://github.com/coreshop/CoreShop/pull/1385)
+    - [DataHub] fix integration (https://github.com/coreshop/CoreShop/pull/1389)
+   
+ - Features:
+    - [WorkflowBundle] Add enabled option to workflow callbacks (https://github.com/coreshop/CoreShop/pull/1392)
+    
 ## 2.1.7
  - Bugs:
     - [Pimcore] fix getDataForEditmode (https://github.com/coreshop/CoreShop/pull/1372, https://github.com/coreshop/CoreShop/pull/1361)
