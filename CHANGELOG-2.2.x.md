@@ -1,15 +1,12 @@
 # Within 2.2
 
 ## 2.2.1
- - Features:
+ - Bugs:
     - [CoreBundle] fix registration service (https://github.com/coreshop/CoreShop/pull/1391)
     - [CoreBundle] fix validation groups (https://github.com/coreshop/CoreShop/pull/1390)
     - [PimcoreBundle] Dynamic Dropdowns Issues (https://github.com/coreshop/CoreShop/issues/1380, https://github.com/coreshop/CoreShop/pull/1382)
     - [FrontendBundle] revert url-forward, doesn't work for all cases  (https://github.com/coreshop/CoreShop/pull/1386, https://github.com/coreshop/CoreShop/issues/1383)
     
- - Bugs:
-    - [SecurityValidator] only trigger when Pimcore Frontend request (https://github.com/coreshop/CoreShop/pull/1339)
-
 ## 2.2.0
  - Features:
     - [Order] don't allow order-revise when completed payment has been made (https://github.com/coreshop/CoreShop/pull/1334)
