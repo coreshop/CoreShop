@@ -24,11 +24,10 @@ use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
-use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Http\RequestHelper;
+use SeoBundle\MetaData\MetaDataProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Zend\Paginator\Paginator;
@@ -221,7 +220,7 @@ class CategoryController extends FrontendController
             $this->get(TrackerInterface::class)->trackProductImpression($product);
         }
 
-        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
+        $this->get(MetaDataProviderInterface::class)->updateSeoElement($category, $request->getLocale());
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }

@@ -19,10 +19,6 @@ use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Product\Model\ProductInterface as BaseProductInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
-use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
-use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
-use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface ProductInterface extends

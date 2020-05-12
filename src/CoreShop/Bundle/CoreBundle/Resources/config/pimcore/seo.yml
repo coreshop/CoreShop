@@ -1,0 +1,22 @@
+seo:
+    meta_data_configuration:
+        meta_data_provider:
+            auto_detect_documents: true
+        meta_data_integrator:
+            documents:
+                enabled: true
+                hide_pimcore_default_seo_panel: true
+            objects:
+                enabled: true
+                data_classes:
+                    - "%coreshop.model.product.pimcore_class_name%"
+                    - "%coreshop.model.category.pimcore_class_name%"
+            enabled_integrator:
+                -   integrator_name: title_description
+                -   integrator_name: open_graph
+                    integrator_config:
+                        facebook_image_thumbnail: 'coreshop_social_thumb'
+                -   integrator_name: twitter_card
+                    integrator_config:
+                        twitter_image_thumbnail: 'coreshop_social_thumb'
+                -   integrator_name: schema

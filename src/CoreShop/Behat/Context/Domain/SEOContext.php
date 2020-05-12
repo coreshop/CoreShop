@@ -17,9 +17,9 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
+use SeoBundle\MetaData\MetaDataProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
@@ -31,7 +31,7 @@ final class SEOContext implements Context
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        SEOPresentationInterface $seoPresentation,
+        MetaDataProviderInterface $seoPresentation,
         HeadTitle $headTitle,
         HeadMeta $headMeta
     )
@@ -46,9 +46,9 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta title "([^"]+)"$/
      * @Then /^the (product) should have meta title "([^"]+)"$/
      */
-    public function productShouldHaveMetaTitle(ProductInterface $product, $title)
+    public function productShouldHaveMetaTitle(ProductInterface $product, string $title)
     {
-        $this->seoPresentation->updateSeoMetadata($product);
+        $this->seoPresentation->updateSeoElement($product, 'en');
 
         Assert::same($product->getMetaTitle(), $title);
         Assert::same($this->headTitle->toString(), sprintf('<title>%s</title>', $title));
@@ -58,9 +58,9 @@ final class SEOContext implements Context
      * @Then /^the (product "[^"]+") should have meta description "([^"]+)"$/
      * @Then /^the (product) should have meta description "([^"]+)"$/
      */
-    public function productShouldHaveMetaDescription(ProductInterface $product, $description)
+    public function productShouldHaveMetaDescription(ProductInterface $product, string $description)
     {
-        $this->seoPresentation->updateSeoMetadata($product);
+        $this->seoPresentation->updateSeoElement($product, 'en');
 
         $descriptionItem = null;
 

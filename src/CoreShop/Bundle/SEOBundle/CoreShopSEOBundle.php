@@ -20,6 +20,9 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
+/**
+ * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
+ */
 final class CoreShopSEOBundle extends AbstractPimcoreBundle
 {
     use PackageVersionTrait;
@@ -30,6 +33,11 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
+
+        @trigger_error(
+            'CoreShopSeoBundle is deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1',
+            E_USER_DEPRECATED
+        );
 
         $container->addCompilerPass(new ExtractorRegistryServicePass());
     }

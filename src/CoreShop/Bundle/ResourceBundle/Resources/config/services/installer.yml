@@ -108,6 +108,13 @@ services:
         tags:
             - { name: coreshop.resource.installer, type: grid_config, priority: 200}
 
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreDependantBundleInstaller:
+        arguments:
+            - '@kernel'
+            - '@Pimcore\Extension\Bundle\PimcoreBundleManager'
+        tags:
+            - { name: coreshop.resource.installer, type: dependant_bundles, priority: 550}
+
     coreshop.resource.installer:
         alias: 'CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller'
         public: true
@@ -116,3 +123,4 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller:
         arguments:
             - '@coreshop.registry.resource.installers'
+

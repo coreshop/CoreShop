@@ -170,4 +170,25 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
         }
     }
+
+    /**
+     * @param string           $applicationName
+     * @param array            $bundles
+     * @param ContainerBuilder $container
+     */
+    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container)
+    {
+        $appParameterName = sprintf('%s.dependant.bundles', $applicationName);
+        $globalParameterName = 'coreshop.all.dependant.bundles';
+
+        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            $bundleConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+
+            foreach ($bundles as $bundleName) {
+                $bundleConfig[] = $bundleName;
+            }
+
+            $container->setParameter($parameterName, $bundleConfig);
+        }
+    }
 }

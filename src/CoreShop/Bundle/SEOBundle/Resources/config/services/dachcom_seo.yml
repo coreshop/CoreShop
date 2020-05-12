@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    CoreShop\Component\SEO\DachcomSeo\TitleDescriptionExtractor:
+        tags:
+            - {name: seo.meta_data.extractor, identifier: coreshop_seo_title_description }
+
+    CoreShop\Component\SEO\DachcomSeo\OGExtractor:
+        tags:
+            - {name: seo.meta_data.extractor, identifier: coreshop_seo_og_tags }

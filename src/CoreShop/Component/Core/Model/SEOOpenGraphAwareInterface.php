@@ -12,17 +12,26 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Component\SEO\Model;
+namespace CoreShop\Component\Core\Model;
 
-use Pimcore\Model\Asset\Image;
-
-/**
- * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
- */
-interface SEOImageAwareInterface
+interface SEOOpenGraphAwareInterface
 {
     /**
-     * @return Image
+     * @param null $language
+     *
+     * @return string
      */
-    public function getImage();
+    public function getOGTitle($language = null);
+
+    /**
+     * @param null $language
+     *
+     * @return string
+     */
+    public function getOGDescription($language = null);
+
+    /**
+     * @return string
+     */
+    public function getOGType();
 }

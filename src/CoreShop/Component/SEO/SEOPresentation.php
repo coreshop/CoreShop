@@ -20,6 +20,9 @@ use CoreShop\Component\SEO\Model\SEOMetadata;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
 
+/**
+ * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
+ */
 class SEOPresentation implements SEOPresentationInterface
 {
     protected $headMeta;

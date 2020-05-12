@@ -1,6 +1,8 @@
 CoreShop SEO Bundle
 ===================
 
+# Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
+
 CoreShop
 ------
 

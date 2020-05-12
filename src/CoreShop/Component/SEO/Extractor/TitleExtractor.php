@@ -18,6 +18,9 @@ use CoreShop\Component\SEO\Model\SEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
+ */
 final class TitleExtractor implements ExtractorInterface
 {
     /**
