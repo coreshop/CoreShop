@@ -14,9 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\SEO\DachcomSeo;
 
+use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
+use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+use Pimcore\Model\Asset\Image;
 use Pimcore\Tool;
 use SeoBundle\MetaData\Extractor\ExtractorInterface;
 use SeoBundle\Model\SeoMetaDataInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
@@ -28,7 +32,7 @@ final class OGExtractor implements ExtractorInterface
      */
     public function supports($object)
     {
-        return $object instanceof \CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
+        return $object instanceof SEOOpenGraphAwareInterface;
     }
 
     /**
@@ -36,23 +40,21 @@ final class OGExtractor implements ExtractorInterface
      */
     public function updateMetadata($element, ?string $locale, SeoMetaDataInterface $seoMetadata)
     {
-        if (method_exists($element, 'getMetaTitle') && !empty($element->getOGTitle($locale))) {
+        Assert::isInstanceOf($element, SEOOpenGraphAwareInterface::class);
+
+        if (!empty($element->getOGTitle($locale))) {
             $seoMetadata->addExtraProperty('og:title', $element->getOGTitle($locale));
-        } elseif (method_exists($element, 'getName') && !empty($element->getName($locale))) {
-            $seoMetadata->addExtraProperty('og:title', $element->getName($locale));
         }
 
-        if (method_exists($element, 'getOGDescription') && !empty($element->getOGDescription($locale))) {
+        if (!empty($element->getOGDescription($locale))) {
             $seoMetadata->addExtraProperty('og:description', $element->getOGDescription($locale));
-        } elseif (method_exists($element, 'getShortDescription') && !empty($element->getShortDescription($locale))) {
-            $seoMetadata->addExtraProperty('og:description', $element->getShortDescription($locale));
         }
 
-        if (method_exists($element, 'getOGType') && !empty($element->getOGType())) {
+        if (!empty($element->getOGType())) {
             $seoMetadata->addExtraProperty('og:type', $element->getOGType());
         }
 
-        if (method_exists($element, 'getImage') && !empty($element->getImage())) {
+        if ($element instanceof SEOImageAwareInterface && $element->getImage() instanceof Image) {
             $ogImage = Tool::getHostUrl() . $element->getImage()->getThumbnail('seo');
             $seoMetadata->addExtraProperty('og:image', $ogImage);
         }
