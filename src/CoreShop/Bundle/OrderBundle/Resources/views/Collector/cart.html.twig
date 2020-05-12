@@ -11,7 +11,7 @@
                 </span>
             {% else %}
                 <span class="sf-toolbar-value">
-                    {{ collector.cart.total|coreshop_format_money(collector.cart.getBaseCurrency.getIsoCode, collector.locale) }}
+                    {{ collector.cart.total|coreshop_format_money(collector.cart.getCurrency.getIsoCode, collector.locale) }}
                 </span>
             {% endif %}
         {% endset %}
