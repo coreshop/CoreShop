@@ -463,6 +463,8 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
     public function setMaxItems($maxItems)
     {
         $this->maxItems = $maxItems;
+
+        return $this;
     }
 
     /**

@@ -14,6 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * @property ContainerInterface $container
+ */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
     protected $viewHandler;
