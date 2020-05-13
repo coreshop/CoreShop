@@ -1,1 +1,6 @@
 ---
+coreshop_loading: 'CoreShop sta caricando'
+coreshop_about: 'Informazioni su CoreShop'
+coreshop_settings: 'Impostazioni'
+coreshop_category: 'Categoria'
+coreshop_default_image: 'Immagine predefinita'
