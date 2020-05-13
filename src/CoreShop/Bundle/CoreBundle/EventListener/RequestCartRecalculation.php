@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
@@ -20,32 +22,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 final class RequestCartRecalculation
 {
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var RequestHelper
-     */
     private $pimcoreRequestHelper;
 
-    /**
-     * @param CartManagerInterface          $cartManager
-     * @param ShopperContextInterface       $shopperContext
-     * @param ConfigurationServiceInterface $configurationService
-     * @param RequestHelper                 $pimcoreRequestHelper
-     */
     public function __construct(
         CartManagerInterface $cartManager,
         ShopperContextInterface $shopperContext,
@@ -58,12 +39,7 @@ final class RequestCartRecalculation
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
-    /**
-     * Force Cart to be recalculated.
-     *
-     * @param GetResponseEvent $event
-     */
-    public function checkPriceRuleState(GetResponseEvent $event)
+    public function checkPriceRuleState(GetResponseEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

@@ -15,7 +15,7 @@
 
         <h2 class="main-heading text-center">
             {{ 'coreshop.ui.address'|trans }} <br/>
-            {% if not address.getId %}
+            {% if not address.id %}
                 <span>{{ 'coreshop.ui.add_new_address'|trans }}</span>
             {% endif %}
         </h2>
@@ -28,7 +28,10 @@
                             {{ form_start(form) }}
                                 {{ form_errors(form) }}
 
-                                {{ form_row(form.company) }}
+                                {% if form.addressAffiliation is defined %}
+                                    {{ form_row(form.addressAffiliation) }}
+                                {% endif %}
+
                                 {{ form_row(form.salutation) }}
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}
@@ -41,7 +44,7 @@
 
                                 <div class="form-group">
                                     <button type="submit" class="btn btn-success">
-                                        {% if not address.getId %}
+                                        {% if not address.id %}
                                             {{ 'coreshop.ui.add'|trans }}
                                         {% else %}
                                             {{ 'coreshop.ui.save'|trans }}

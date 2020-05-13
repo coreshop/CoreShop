@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle;
 
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
@@ -22,6 +24,7 @@ use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippab
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingTaxCalculationStrategyPass;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -40,7 +43,7 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -48,6 +51,7 @@ final class CoreShopShippingBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ShippingRuleActionPass());
         $container->addCompilerPass(new ShippingPriceCalculatorsPass());
         $container->addCompilerPass(new CompositeShippableValidatorPass());
+        $container->addCompilerPass(new ShippingTaxCalculationStrategyPass());
     }
 
     /**

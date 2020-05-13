@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Security;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -21,37 +23,33 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
+    protected $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     */
-    public function __construct(CustomerRepositoryInterface $customerRepository, $className)
+    public function __construct(
+        CustomerRepositoryInterface $customerRepository,
+        string $className,
+        string $loginIdentifier
+    )
     {
         $this->customerRepository = $customerRepository;
         $this->className = $className;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($emailAddress)
+    public function loadUserByUsername($userNameOrEmailAddress)
     {
-        $customer = $this->customerRepository->findCustomerByEmail($emailAddress);
+        $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $userNameOrEmailAddress, false);
+
         if ($customer instanceof CustomerInterface) {
             return $customer;
         }
 
-        throw new UsernameNotFoundException(sprintf('User with email address %s was not found', $emailAddress));
+        throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $userNameOrEmailAddress));
     }
 
     /**

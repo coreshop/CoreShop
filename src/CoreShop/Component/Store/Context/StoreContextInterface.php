@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context;
 
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -21,5 +23,5 @@ interface StoreContextInterface
      *
      * @throws StoreNotFoundException
      */
-    public function getStore();
+    public function getStore(): StoreInterface;
 }

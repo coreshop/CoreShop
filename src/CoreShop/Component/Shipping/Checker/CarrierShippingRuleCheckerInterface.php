@@ -10,20 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
 interface CarrierShippingRuleCheckerInterface
 {
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     *
-     * @return mixed
-     */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address);
+    public function findValidShippingRule(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): ?ShippingRuleGroupInterface;
 }

@@ -15,7 +15,6 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type;
 use CoreShop\Bundle\AddressBundle\Form\Type\AddressType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\CustomerType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Valid;

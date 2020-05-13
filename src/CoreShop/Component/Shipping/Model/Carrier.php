@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -51,6 +53,11 @@ class Carrier extends AbstractResource implements CarrierInterface
      * @var Asset|null
      */
     private $logo;
+
+    /**
+     * @var string
+     */
+    private $taxCalculationStrategy;
 
     /**
      * @var Collection|ShippingRuleGroupInterface[]
@@ -166,6 +173,22 @@ class Carrier extends AbstractResource implements CarrierInterface
     public function setLogo($logo)
     {
         $this->logo = $logo;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTaxCalculationStrategy()
+    {
+        return $this->taxCalculationStrategy;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTaxCalculationStrategy($taxCalculationStrategy)
+    {
+        $this->taxCalculationStrategy = $taxCalculationStrategy;
     }
 
     /**

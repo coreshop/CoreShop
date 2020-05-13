@@ -16,15 +16,21 @@ use CoreShop\Bundle\OrderBundle\Event\AdminAddressCreationEvent;
 use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Bundle\OrderBundle\Form\Type\AdminAddressCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AddressCreationController extends PimcoreController
 {
-    public function createCustomerAction(Request $request)
+    public function createAddressAction(
+        Request $request,
+        ObjectServiceInterface $objectService,
+        ErrorSerializer $errorSerializer
+    ): Response
     {
         $form = $this->get('form.factory')->createNamed('', AdminAddressCreationType::class);
 
@@ -46,7 +52,7 @@ class AddressCreationController extends PimcoreController
 
                 $address->setPublished(true);
                 $address->setKey(uniqid());
-                $address->setParent($this->get(ObjectServiceInterface::class)->createFolderByPath(sprintf(
+                $address->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $customer->getFullPath(),
                     $this->getParameter('coreshop.folder.address')
@@ -70,7 +76,7 @@ class AddressCreationController extends PimcoreController
             return $this->viewHandler->handle(
                 [
                     'success' => false,
-                    'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
+                    'message' => $errorSerializer->serializeErrorFromHandledForm($form),
                 ]
             );
         }

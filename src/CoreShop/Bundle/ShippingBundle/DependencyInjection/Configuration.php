@@ -10,11 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
+use CoreShop\Bundle\ShippingBundle\Controller\CarrierController;
 use CoreShop\Bundle\ShippingBundle\Controller\ShippingRuleController;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierTranslationType;
 use CoreShop\Bundle\ShippingBundle\Form\Type\CarrierType;
@@ -29,6 +31,7 @@ use CoreShop\Component\Shipping\Model\ShippingRule;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroup;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
+use CoreShop\Component\Shipping\Resolver\CheapestDefaultCarrierResolver;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -51,7 +54,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('default_resolver')->defaultValue('coreshop.shipping.default_resolver.cheapest')->cannotBeEmpty()->end()
+                ->scalarNode('default_resolver')->cannotBeEmpty()->end()
             ->end();
 
         $this->addModelsSection($rootNode);
@@ -80,7 +83,7 @@ final class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('model')->defaultValue(Carrier::class)->cannotBeEmpty()->end()
                                         ->scalarNode('interface')->defaultValue(CarrierInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('admin_controller')->defaultValue(ResourceController::class)->cannotBeEmpty()->end()
+                                        ->scalarNode('admin_controller')->defaultValue(CarrierController::class)->cannotBeEmpty()->end()
                                         ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
                                         ->scalarNode('repository')->cannotBeEmpty()->end()
                                         ->scalarNode('form')->defaultValue(CarrierType::class)->cannotBeEmpty()->end()

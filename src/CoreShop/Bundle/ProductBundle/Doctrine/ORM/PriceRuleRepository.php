@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\RuleBundle\Doctrine\ORM\RuleRepository;
@@ -20,7 +22,7 @@ class PriceRuleRepository extends RuleRepository implements PriceRuleRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')

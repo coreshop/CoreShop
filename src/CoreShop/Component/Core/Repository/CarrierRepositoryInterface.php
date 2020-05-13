@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\CarrierInterface;
@@ -23,5 +25,5 @@ interface CarrierRepositoryInterface extends RepositoryInterface
      *
      * @return CarrierInterface[]
      */
-    public function findForStore(StoreInterface $store);
+    public function findForStore(StoreInterface $store): array;
 }

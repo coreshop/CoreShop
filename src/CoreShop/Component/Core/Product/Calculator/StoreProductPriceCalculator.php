@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductRetailPriceCalculatorInterface;
@@ -23,7 +25,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**
          * @var $subject \CoreShop\Component\Core\Model\ProductInterface

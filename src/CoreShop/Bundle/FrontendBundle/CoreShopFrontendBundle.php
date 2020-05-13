@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle;
 
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
@@ -38,7 +40,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -48,7 +50,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Frontend';
     }
@@ -56,7 +58,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Frontend Bundle';
     }
@@ -64,7 +66,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/frontend-bundle'])) {
             return 'coreshop/frontend-bundle';

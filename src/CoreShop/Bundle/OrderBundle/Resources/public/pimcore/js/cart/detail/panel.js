@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.order.cart.detail.panel');
-coreshop.order.cart.detail.panel = Class.create(coreshop.order.sale.detail.panel, {
+coreshop.order.cart.detail.panel = Class.create(coreshop.order.order.detail.panel, {
     type: 'cart',
 
     getBlockIdentifier: function () {

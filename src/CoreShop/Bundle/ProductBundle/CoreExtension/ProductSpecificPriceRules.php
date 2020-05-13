@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -28,7 +31,8 @@ use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -161,6 +165,22 @@ class ProductSpecificPriceRules extends Data implements
         }
 
         return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**

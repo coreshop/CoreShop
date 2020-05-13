@@ -10,14 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Worker;
 
+use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
-use Pimcore\Model\Listing\AbstractListing;
 
 interface WorkerInterface
 {

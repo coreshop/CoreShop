@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
@@ -29,7 +31,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('amount', MoneyType::class, [])
@@ -92,7 +94,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return ProductQuantityRangeType::class;
     }
@@ -100,7 +102,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [ProductQuantityRangeType::class];
     }

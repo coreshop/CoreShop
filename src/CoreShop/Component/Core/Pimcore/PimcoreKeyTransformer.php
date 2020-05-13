@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Pimcore;
 
 use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
@@ -20,7 +22,7 @@ class PimcoreKeyTransformer implements ItemKeyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($string)
+    public function transform(string $string): string
     {
         return File::getValidFilename($string);
     }

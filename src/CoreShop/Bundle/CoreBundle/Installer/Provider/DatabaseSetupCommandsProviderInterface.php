@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Installer\Provider;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -18,12 +20,5 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 interface DatabaseSetupCommandsProviderInterface
 {
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     * @param QuestionHelper  $questionHelper
-     *
-     * @return array
-     */
-    public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper);
+    public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array;
 }

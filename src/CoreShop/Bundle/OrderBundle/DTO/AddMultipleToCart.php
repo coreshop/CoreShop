@@ -10,18 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
 class AddMultipleToCart implements AddMultipleToCartInterface
 {
-    /**
-     * @var AddToCartInterface[]
-     */
     private $items;
 
-    /**
-     * @param AddToCartInterface[] $items
-     */
     public function __construct(array $items)
     {
         $this->items = $items;
@@ -30,7 +26,7 @@ class AddMultipleToCart implements AddMultipleToCartInterface
     /**
      * @return AddToCartInterface[]
      */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
@@ -38,7 +34,7 @@ class AddMultipleToCart implements AddMultipleToCartInterface
     /**
      * @param AddToCartInterface[] $items
      */
-    public function setItems(array $items)
+    public function setItems(array $items): void
     {
         $this->items = $items;
     }
@@ -46,7 +42,7 @@ class AddMultipleToCart implements AddMultipleToCartInterface
     /**
      * @param AddToCartInterface $addToCart
      */
-    public function addItem(AddToCartInterface $addToCart)
+    public function addItem(AddToCartInterface $addToCart): void
     {
         $this->items[] = $addToCart;
     }

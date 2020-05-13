@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
@@ -17,9 +19,12 @@ use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippab
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleActionPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingRuleConditionPass;
+use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingTaxCalculationStrategyPass;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface;
 use CoreShop\Component\Shipping\Rule\Condition\ShippingConditionCheckerInterface;
 use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
+use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
 use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -45,7 +50,7 @@ final class CoreShopShippingExtension extends AbstractModelExtension
         $alias = new Alias($config['default_resolver']);
         $alias->setPublic(true);
 
-        $container->setAlias('coreshop.carrier.default_resolver', $alias);
+        $container->setAlias(DefaultCarrierResolverInterface::class, $alias);
 
         $bundles = $container->getParameter('kernel.bundles');
 
@@ -70,5 +75,9 @@ final class CoreShopShippingExtension extends AbstractModelExtension
         $container
             ->registerForAutoconfiguration(ShippingConditionCheckerInterface::class)
             ->addTag(ShippingRuleConditionPass::SHIPPING_RULE_CONDITION_TAG);
+
+        $container
+            ->registerForAutoconfiguration(TaxCalculationStrategyInterface::class)
+            ->addTag(ShippingTaxCalculationStrategyPass::SHIPPING_TAX_STRATEGY_TAG);
     }
 }

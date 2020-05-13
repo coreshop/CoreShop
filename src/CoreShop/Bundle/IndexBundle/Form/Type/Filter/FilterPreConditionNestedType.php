@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Filter;
 
 use CoreShop\Bundle\IndexBundle\Form\Type\FilterPreConditionCollectionType;
@@ -21,9 +23,22 @@ use Symfony\Component\Form\FormEvents;
 final class FilterPreConditionNestedType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('conditions', FilterPreConditionCollectionType::class);
@@ -42,7 +57,7 @@ final class FilterPreConditionNestedType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_filter_pre_condition_type_nested';
     }

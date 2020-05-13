@@ -5,6 +5,6 @@ services:
     CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelperInterface: '@CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelper'
     CoreShop\Component\Pimcore\Templating\Helper\LinkGeneratorHelper:
         arguments:
-            - '@coreshop.link_generator'
+            - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
         tags:
           - { name: templating.helper, alias: coreshop_link }

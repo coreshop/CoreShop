@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -50,6 +52,11 @@ class Index extends AbstractResource implements IndexInterface
      * @var Collection|IndexColumnInterface[]
      */
     protected $columns;
+
+    /**
+     * @var bool
+     */
+    protected $indexLastVersion = false;
 
     public function __construct()
     {
@@ -172,5 +179,21 @@ class Index extends AbstractResource implements IndexInterface
     public function hasColumn(IndexColumnInterface $column)
     {
         return $this->columns->contains($column);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexLastVersion()
+    {
+        return $this->indexLastVersion;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIndexLastVersion($indexLastVersion)
+    {
+        $this->indexLastVersion = $indexLastVersion;
     }
 }

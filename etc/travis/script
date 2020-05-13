@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-export CS_HOME=$TRAVIS_BUILD_DIR
-
-$CS_HOME/etc/suites/$CORESHOP_SUITE

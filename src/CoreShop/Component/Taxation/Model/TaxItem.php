@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -60,7 +62,7 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
     /**
      * {@inheritdoc}
      */
-    public function getAmount()
+    public function getAmount(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -68,15 +70,7 @@ class TaxItem extends AbstractPimcoreFieldcollection implements TaxItemInterface
     /**
      * {@inheritdoc}
      */
-    public function setAmount($amount)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDiscountGross($discountGross)
+    public function setAmount(int $amount)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

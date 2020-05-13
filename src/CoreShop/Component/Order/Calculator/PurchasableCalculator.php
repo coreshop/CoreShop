@@ -10,40 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
+use CoreShop\Component\Order\Exception\NoPurchasableDiscountPriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasablePriceFoundException;
 use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class PurchasableCalculator implements PurchasableCalculatorInterface
 {
-    /**
-     * @var PurchasablePriceCalculatorInterface
-     */
     private $purchasablePriceCalculator;
-
-    /**
-     * @var PurchasableRetailPriceCalculatorInterface
-     */
     private $purchasableRetailPriceCalculator;
-
-    /**
-     * @var PurchasableDiscountPriceCalculatorInterface
-     */
     private $purchasableDiscountPriceCalculator;
-
-    /**
-     * @var PurchasableDiscountCalculatorInterface
-     */
     private $purchasableDiscountCalculator;
 
-    /**
-     * @param PurchasablePriceCalculatorInterface         $purchasablePriceCalculator
-     * @param PurchasableRetailPriceCalculatorInterface   $purchasableRetailPriceCalculator
-     * @param PurchasableDiscountPriceCalculatorInterface $purchasableDiscountPriceCalculator
-     * @param PurchasableDiscountCalculatorInterface      $purchasableDiscountCalculator
-     */
     public function __construct(
         PurchasablePriceCalculatorInterface $purchasablePriceCalculator,
         PurchasableRetailPriceCalculatorInterface $purchasableRetailPriceCalculator,
@@ -59,7 +41,7 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getPrice(PurchasableInterface $purchasable, array $context, $includingDiscounts = false)
+    public function getPrice(PurchasableInterface $purchasable, array $context, bool $includingDiscounts = false): int
     {
         try {
             return $this->purchasablePriceCalculator->getPrice($purchasable, $context, $includingDiscounts);
@@ -72,19 +54,19 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice)
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
-        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $basePrice);
+        return $this->purchasableDiscountCalculator->getDiscount($purchasable, $context, $convertedPrice);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(PurchasableInterface $purchasable, array $context)
+    public function getDiscountPrice(PurchasableInterface $purchasable, array $context): int
     {
         try {
             return $this->purchasableDiscountPriceCalculator->getDiscountPrice($purchasable, $context);
-        } catch (NoPurchasableRetailPriceFoundException $ex) {
+        } catch (NoPurchasableDiscountPriceFoundException $ex) {
         }
 
         return 0;
@@ -93,7 +75,7 @@ final class PurchasableCalculator implements PurchasableCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $purchasable, array $context)
+    public function getRetailPrice(PurchasableInterface $purchasable, array $context): int
     {
         try {
             return $this->purchasableRetailPriceCalculator->getRetailPrice($purchasable, $context);

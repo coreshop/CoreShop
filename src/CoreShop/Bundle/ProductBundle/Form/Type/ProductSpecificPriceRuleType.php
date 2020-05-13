@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
@@ -24,7 +26,7 @@ final class ProductSpecificPriceRuleType extends RuleType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('translations', ResourceTranslationsType::class, [
@@ -42,7 +44,7 @@ final class ProductSpecificPriceRuleType extends RuleType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_specific_price_rule';
     }

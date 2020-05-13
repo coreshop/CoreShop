@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Extension;
 
 use CoreShop\Component\Index\Model\IndexInterface;
 
 interface IndexExtensionInterface
 {
-    /**
-     * @param IndexInterface $index
-     *
-     * @return bool
-     */
-    public function supports(IndexInterface $index);
+    public function supports(IndexInterface $index): bool;
 }

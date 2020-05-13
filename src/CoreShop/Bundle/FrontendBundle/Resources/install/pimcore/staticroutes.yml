@@ -36,8 +36,19 @@ routes:
     priority: 2
 
   coreshop_cart_add:
+    methods:
+      - POST
     pattern: "/(\\w+)\\/shop\\/cart\\/add\\/([0-9]+)$/"
     reverse: "/%_locale/shop/cart/add/%product"
+    module: FrontendBundlex
+    controller: "@coreshop.frontend.controller.cart"
+    action: addItem
+    variables: _locale,product
+    priority: 3
+
+  coreshop_partial_cart_add:
+    pattern: "/(\\w+)\\/_partial\\/cart\\/add\\/([0-9]+)$/"
+    reverse: "/%_locale/_partial/cart/add/%product"
     module: FrontendBundle
     controller: "@coreshop.frontend.controller.cart"
     action: addItem

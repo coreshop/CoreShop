@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
@@ -19,6 +21,7 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
@@ -30,7 +33,8 @@ use Webmozart\Assert\Assert;
 
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
-    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface
+    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -464,6 +468,22 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     /**
      * {@inheritdoc}
      */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function delete($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -494,6 +514,14 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             return $storeData;
         }
 
+        $class = Model\DataObject\ClassDefinition::getById($object->getClassId());
+
+        if (!$class instanceof Model\DataObject\ClassDefinition) {
+            return $storeData;
+        }
+
+        $inheritable = $class->getAllowInherit() && $object->getParent() instanceof $object;
+
         foreach ($data as $storeValuesEntity) {
             $context = SerializationContext::create();
             $context->setSerializeNull(true);
@@ -504,6 +532,8 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $storeValuesEntity->getStore()->getName(),
                 'currencySymbol' => $storeValuesEntity->getStore()->getCurrency()->getSymbol(),
                 'values' => $values,
+                'inherited' => false,
+                'inheritable' => $inheritable
             ];
         }
 
@@ -520,6 +550,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 'name' => $store->getName(),
                 'currencySymbol' => $store->getCurrency()->getSymbol(),
                 'values' => ['price' => 0],
+                'inheritable' => $inheritable
             ];
         }
 

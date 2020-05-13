@@ -6,7 +6,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.currency.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCurrency }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCurrency }
 
     coreshop.datahub.graphql.querytypegenerator.resource.currency.list:
         class: CoreShop\Component\Resource\DataHub\QueryType\ResourceList
@@ -15,7 +15,7 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.currency.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopCurrencyMultiselect }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopCurrencyMultiselect }
 
     coreshop.datahub.graphql.querytypegenerator.resource.money_currency:
         class: CoreShop\Bundle\CurrencyBundle\DataHub\QueryType\MoneyCurrency
@@ -24,4 +24,4 @@ services:
             - '@coreshop.data_hub.doctrine_provider'
             - '%coreshop.model.currency.class%'
         tags:
-            - { name: pimcore.datahub.graphql.querytypegenerator, id: typegenerator_querydatatype_coreShopMoneyCurrency }
+            - { name: pimcore.datahub.graphql.dataobjectquerytypegenerator, id: typegenerator_dataobjectquerydatatype_coreShopMoneyCurrency }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Distributor;
 
 interface ProportionalIntegerDistributorInterface
@@ -20,5 +22,5 @@ interface ProportionalIntegerDistributorInterface
      *
      * @return array
      */
-    public function distribute(array $integers, int $amount);
+    public function distribute(array $integers, int $amount): array;
 }

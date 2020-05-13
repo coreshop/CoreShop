@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Manager;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface CartManagerInterface
 {
-    /**
-     * @param CartInterface $cart
-     *
-     * @return mixed
-     */
-    public function persistCart(CartInterface $cart);
+    public function persistCart(OrderInterface $cart): void;
 }

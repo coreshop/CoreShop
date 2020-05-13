@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -28,7 +31,10 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\LazyLoadedFieldsInterface;
 use Webmozart\Assert\Assert;
 
-class ProductUnitDefinitions extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductUnitDefinitions extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -208,6 +214,22 @@ class ProductUnitDefinitions extends Data implements Data\CustomResourcePersisti
         }
 
         return $entityData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**

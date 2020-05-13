@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,14 +22,8 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class RelationsHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private $manager;
 
-    /**
-     * @param EntityManagerInterface $manager
-     */
     public function __construct(EntityManagerInterface $manager)
     {
         $this->manager = $manager;

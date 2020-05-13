@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Payment\Resolver;
 
 use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
@@ -20,20 +22,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    /**
-     * @var PaymentProviderResolverInterface
-     */
     private $inner;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param PaymentProviderResolverInterface $inner
-     * @param EventDispatcherInterface         $eventDispatcher
-     */
     public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
     {
         $this->inner = $inner;
@@ -43,7 +34,7 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
     /**
      * {@inheritdoc}
      */
-    public function resolvePaymentProviders(ResourceInterface $subject = null)
+    public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
         $allowedPaymentProviders = [];
 

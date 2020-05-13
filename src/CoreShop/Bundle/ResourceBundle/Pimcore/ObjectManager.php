@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
@@ -89,7 +91,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function merge($object)
     {
-        //TODO:
+        return $object;
     }
 
     /**
@@ -121,7 +123,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function detach($object)
     {
-        //TODO:
+
     }
 
     /**
@@ -129,7 +131,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function refresh($object)
     {
-        //TODO:
+
     }
 
     /**
@@ -176,22 +178,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     public function getClassMetadata($className)
     {
-        // TODO
+        throw new \Exception('not implemented');
     }
 
     public function getMetadataFactory()
     {
-        // TODO
+        throw new \Exception('not implemented');
     }
 
     public function initializeObject($obj)
     {
-        // TODO
+        throw new \Exception('not implemented');
     }
 
     public function contains($object)
     {
-        // TODO
+        throw new \Exception('not implemented');
     }
 
     /**
@@ -204,7 +206,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param mixed $resource
      *
      * @return int
      */
@@ -220,7 +222,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param mixed $resource
      *
      * @return string
      */
@@ -236,18 +238,18 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param mixed $resource
      *
      * @return bool
      */
     private function isResourceNew($resource)
     {
         if ($resource instanceof ElementInterface) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
+            return null === $resource->getId() || $resource->getId() === 0;
         }
 
         if (method_exists($resource, 'getId')) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
+            return null === $resource->getId() || $resource->getId() === 0;
         }
 
         return true;

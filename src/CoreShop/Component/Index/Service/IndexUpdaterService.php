@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Service;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -22,20 +24,9 @@ use Psr\Log\InvalidArgumentException;
 
 final class IndexUpdaterService implements IndexUpdaterServiceInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $indexRepository;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerServiceRegistry;
 
-    /**
-     * @param RepositoryInterface      $indexRepository
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(RepositoryInterface $indexRepository, ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->indexRepository = $indexRepository;
@@ -45,24 +36,20 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function updateIndices($subject)
+    public function updateIndices(IndexableInterface $subject, bool $isVersionEvent = false): void
     {
-        $this->operationOnIndex($subject, 'update');
+        $this->operationOnIndex($subject, 'update', $isVersionEvent);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeIndices($subject)
+    public function removeIndices(IndexableInterface $subject): void
     {
         $this->operationOnIndex($subject, 'remove');
     }
 
-    /**
-     * @param string $subject
-     * @param string $operation
-     */
-    private function operationOnIndex($subject, $operation = 'update')
+    private function operationOnIndex(IndexableInterface $subject, string $operation = 'update', bool $isVersionChange = false): void
     {
         $indices = $this->indexRepository->findAll();
 
@@ -72,6 +59,11 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
             }
 
             if (!$this->isEligible($index, $subject)) {
+                continue;
+            }
+
+            //Don't store version changes into the index!
+            if ($isVersionChange && !$index->getIndexLastVersion()) {
                 continue;
             }
 
@@ -97,22 +89,8 @@ final class IndexUpdaterService implements IndexUpdaterServiceInterface
         }
     }
 
-    /**
-     * @param IndexInterface $index
-     * @param mixed          $subject
-     *
-     * @return bool
-     */
-    private function isEligible($index, $subject)
+    private function isEligible(IndexInterface $index, IndexableInterface $subject): bool
     {
-        if (!$index instanceof IndexInterface) {
-            return false;
-        }
-
-        if (!$subject instanceof IndexableInterface) {
-            return false;
-        }
-
         if (!$subject instanceof Concrete) {
             return false;
         }

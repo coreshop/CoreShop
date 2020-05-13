@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context;
 
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -24,7 +26,7 @@ final class FixedCountryContext implements CountryContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         if ($this->country instanceof CountryInterface) {
             return $this->country;
@@ -36,7 +38,7 @@ final class FixedCountryContext implements CountryContextInterface
     /**
      * @param CountryInterface $country
      */
-    public function setCountry(CountryInterface $country)
+    public function setCountry(CountryInterface $country): void
     {
         $this->country = $country;
     }

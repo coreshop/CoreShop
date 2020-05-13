@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -30,20 +32,9 @@ use Pimcore\Tool;
 
 final class PimcoreClassContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ClassStorageInterface
-     */
     private $classStorage;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ClassStorageInterface  $classStorage
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ClassStorageInterface $classStorage
@@ -656,6 +647,21 @@ final class PimcoreClassContext implements Context
      */
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
     {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->save();
+    }
+
+    /**
+     * @Given /the (object-instance) has following values as version:/
+     */
+    public function theObjectInstanceHasFollowingValuesAsVersion(Concrete $object, TableNode $table)
+    {
+        $this->setObjectValuesFromTable($object, $table);
+        $object->saveVersion();
+    }
+
+    private function setObjectValuesFromTable(Concrete $object, TableNode $table)
+    {
         $hash = $table->getHash();
 
         foreach ($hash as $row) {
@@ -726,8 +732,6 @@ final class PimcoreClassContext implements Context
                     break;
             }
         }
-
-        $object->save();
     }
 
     /**

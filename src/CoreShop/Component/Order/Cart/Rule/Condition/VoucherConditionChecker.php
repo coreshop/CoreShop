@@ -10,25 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
-use Webmozart\Assert\Assert;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $voucherCodeRepository;
 
-    /**
-     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
-     */
     public function __construct(CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->voucherCodeRepository = $voucherCodeRepository;
@@ -37,13 +32,11 @@ class VoucherConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isCartRuleValid(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration)
+    public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (null === $voucher) {
             return false;
         }
-
-        Assert::isInstanceOf($cart, CartInterface::class);
 
         $maxUsagePerCode = $configuration['maxUsagePerCode'];
         $onlyOnePerCart = $configuration['onlyOnePerCart'];

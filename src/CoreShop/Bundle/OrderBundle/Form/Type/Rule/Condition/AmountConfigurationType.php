@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
@@ -22,23 +24,36 @@ use Symfony\Component\Validator\Constraints\Type;
 final class AmountConfigurationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('minAmount', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new GreaterThan(['value' => 0, 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('maxAmount', MoneyType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new GreaterThan(['value' => 0, 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new GreaterThan(['value' => 0, 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
@@ -46,7 +61,7 @@ final class AmountConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_condition_amount';
     }

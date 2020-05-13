@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -24,13 +26,14 @@ class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('identifier', TextType::class)
             ->add('trackingUrl', TextType::class)
             ->add('isFree', CheckboxType::class)
             ->add('logo', PimcoreAssetChoiceType::class)
+            ->add('taxCalculationStrategy', ShippingTaxCalculationStrategyChoiceType::class)
             ->add('shippingRules', ShippingRuleGroupCollectionType::class)
             ->add('translations', ResourceTranslationsType::class, [
                 'entry_type' => CarrierTranslationType::class,
@@ -40,7 +43,7 @@ class CarrierType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_carrier';
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -22,42 +24,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class ExchangeRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $exchangeRateFactory;
 
-    /**
-     * @var ExchangeRateRepositoryInterface
-     */
-    private $exchangeRateRepository;
-
-    /**
-     * @param SharedStorageInterface          $sharedStorage
-     * @param ObjectManager                   $objectManager
-     * @param FactoryInterface                $exchangeRateFactory
-     * @param ExchangeRateRepositoryInterface $exchangeRateRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
-        FactoryInterface $exchangeRateFactory,
-        ExchangeRateRepositoryInterface $exchangeRateRepository
+        FactoryInterface $exchangeRateFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->exchangeRateFactory = $exchangeRateFactory;
-        $this->exchangeRateRepository = $exchangeRateRepository;
     }
 
     /**

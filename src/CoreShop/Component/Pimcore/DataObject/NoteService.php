@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\Concrete;
@@ -21,14 +23,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -37,7 +33,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getNoteById($id)
+    public function getNoteById(int $id): ?Note
     {
         return Note::getById($id);
     }
@@ -45,7 +41,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function createPimcoreNoteInstance(Concrete $object, $noteType)
+    public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note
     {
         $note = new Note();
         $note->setElement($object);
@@ -58,7 +54,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function createAnonymousNoteInstance($noteType)
+    public function createAnonymousNoteInstance(string $noteType): Note
     {
         $note = new Note();
         $note->setDate(time());
@@ -70,7 +66,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getObjectNotes(Concrete $object, $noteType)
+    public function getObjectNotes(Concrete $object, string $noteType): array
     {
         $noteList = new Note\Listing();
         $noteList->addConditionParam('type = ?', $noteType);
@@ -84,7 +80,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function storeNoteForEmail(Note $note, Document\Email $emailDocument)
+    public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note
     {
         //Because logger does not return any id, we need to fetch the last one!
         $listing = new Log\Listing();
@@ -104,7 +100,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function storeNote(Note $note, $eventParams = [])
+    public function storeNote(Note $note, array $eventParams = []): Note
     {
         $note->save();
 
@@ -119,7 +115,7 @@ class NoteService implements NoteServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function deleteNote($noteId, $eventParams = [])
+    public function deleteNote(int $noteId, array $eventParams = []): void
     {
         $note = $this->getNoteById($noteId);
 

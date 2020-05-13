@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use Doctrine\DBAL\Connection;
@@ -21,20 +23,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcorePermissionInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var Connection
-     */
     private $connection;
 
-    /**
-     * @param KernelInterface $kernel
-     * @param Connection      $connection
-     */
     public function __construct(KernelInterface $kernel, Connection $connection)
     {
         $this->kernel = $kernel;
@@ -44,7 +35,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.permissions', $applicationName) : 'coreshop.all.permissions';
 
@@ -70,7 +61,7 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
 
             foreach ($permissionGroups as $group => $permissions) {
                 foreach ($permissions as $permission) {
-                    $progress->setMessage(sprintf('<error>Install Permission %s</error>', $permission));
+                    $progress->setMessage(sprintf('Install Permission %s', $permission));
 
                     $permissionDefinition = Permission\Definition::getByKey($permission);
 
@@ -92,6 +83,9 @@ final class PimcorePermissionInstaller implements ResourceInstallerInterface
             }
 
             $progress->finish();
+            $progress->clear();
+
+            $output->writeln('  - <info>Permissions have been installed successfully</info>');
         }
     }
 }

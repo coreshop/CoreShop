@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\MarkingStore;
 
 use Pimcore\Model\DataObject\Concrete;
@@ -18,25 +20,19 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class PimcorePersistentMarkingStore implements MarkingStoreInterface
 {
-    /**
-     * Origin marking store.
-     *
-     * @var MarkingStoreInterface
-     */
     private $originMarkingStore;
+    private $persistDirectly;
 
-    /**
-     * @param MarkingStoreInterface $originMarkingStore origin marking store
-     */
-    public function __construct(MarkingStoreInterface $originMarkingStore)
+    public function __construct(MarkingStoreInterface $originMarkingStore, bool $persistDirectly = true)
     {
         $this->originMarkingStore = $originMarkingStore;
+        $this->persistDirectly = $persistDirectly;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMarking($subject)
+    public function getMarking($subject): Marking
     {
         return $this->originMarkingStore->getMarking($subject);
     }
@@ -44,11 +40,14 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
     /**
      * {@inheritdoc}
      */
-    public function setMarking($subject, Marking $marking)
+    public function setMarking($subject, Marking $marking): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
-        if ($subject instanceof Concrete) {
-            $subject->save();
+
+        if ($this->persistDirectly) {
+            if ($subject instanceof Concrete) {
+                $subject->save();
+            }
         }
     }
 }

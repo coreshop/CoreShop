@@ -10,21 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Service;
+
+use CoreShop\Component\Index\Model\IndexableInterface;
 
 interface IndexUpdaterServiceInterface
 {
-    /**
-     * Update all Indices with $subject.
-     *
-     * @param mixed $subject
-     */
-    public function updateIndices($subject);
+    public function updateIndices(IndexableInterface $subject, bool $isVersionChange = false): void;
 
-    /**
-     * Remove all Indices with $subject.
-     *
-     * @param mixed $subject
-     */
-    public function removeIndices($subject);
+    public function removeIndices(IndexableInterface $subject): void;
 }

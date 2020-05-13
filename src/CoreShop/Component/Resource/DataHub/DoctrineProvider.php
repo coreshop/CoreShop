@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\DataHub;
 
 use CoreShop\Component\Resource\DataHub\Type\ArrayType;
@@ -117,7 +119,7 @@ class DoctrineProvider
 
         foreach ($entityMetaType->getFieldNames() as $fieldName) {
             $fieldType = $this->mapFieldType($entityMetaType->getTypeOfField($fieldName));
-            $resolverClass = null;
+            
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
             $inputFields[$fieldName] = array(

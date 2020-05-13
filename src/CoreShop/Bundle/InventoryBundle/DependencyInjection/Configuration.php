@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\InventoryBundle\DependencyInjection;
 
+use CoreShop\Component\Inventory\Checker\AvailabilityChecker;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -28,7 +31,7 @@ final class Configuration implements ConfigurationInterface
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('checker')->defaultValue('coreshop.inventory.availability_checker.default')->cannotBeEmpty()->end()
+                ->scalarNode('checker')->defaultValue(AvailabilityChecker::class)->cannotBeEmpty()->end()
             ->end();
 
         return $treeBuilder;

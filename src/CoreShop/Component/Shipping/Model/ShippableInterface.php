@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 interface ShippableInterface
@@ -25,9 +27,14 @@ interface ShippableInterface
     public function getWeight();
 
     /**
+     * @param float $weight
+     */
+    public function setWeight($weight);
+
+    /**
      * @param bool $withTax
      *
      * @return int
      */
-    public function getSubtotal($withTax = true);
+    public function getSubtotal(bool $withTax = true): int;
 }

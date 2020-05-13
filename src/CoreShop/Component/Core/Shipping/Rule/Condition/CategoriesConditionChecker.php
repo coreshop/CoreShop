@@ -10,12 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Rule\Condition\CategoriesConditionCheckerTrait;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
@@ -28,9 +30,6 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
         CategoriesConditionCheckerTrait::__construct as private __traitConstruct;
     }
 
-    /**
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->__traitConstruct($categoryRepository);
@@ -39,15 +38,20 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
-        if (!$shippable instanceof CartInterface) {
+    public function isShippingRuleValid(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address,
+        array $configuration
+    ): bool {
+        if (!$shippable instanceof OrderInterface) {
             return false;
         }
 
         $cartItems = $shippable->getItems();
 
-        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $shippable->getStore(), $configuration['recursive'] ?: false);
+        $categoryIdsToCheck = $this->getCategoriesToCheck($configuration['categories'], $shippable->getStore(),
+            $configuration['recursive'] ?: false);
 
         foreach ($cartItems as $item) {
             if ($item->getProduct() instanceof ProductInterface) {

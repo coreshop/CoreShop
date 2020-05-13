@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Model;
 
 interface AddressesAwareInterface
@@ -25,6 +27,11 @@ interface AddressesAwareInterface
      * @return bool
      */
     public function hasAddress(AddressInterface $address);
+
+    /**
+     * @param AddressInterface $address
+     */
+    public function removeAddress(AddressInterface $address);
 
     /**
      * @return AddressInterface[]

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -142,7 +144,7 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return object|array|null
      */
     public function getDetails()
     {

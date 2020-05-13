@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle;
 
 use CoreShop\Bundle\AddressBundle\CoreShopAddressBundle;
@@ -62,7 +64,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -115,7 +117,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Core';
     }
@@ -123,7 +125,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Pimcore eCommerce';
     }
@@ -131,7 +133,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * {@inheritdoc}
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
     }
@@ -139,7 +141,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
     /**
      * @return string
      */
-    public function getComposerVersion()
+    public function getComposerVersion(): string
     {
         $version = Versions::getVersion('coreshop/core-shop');
 

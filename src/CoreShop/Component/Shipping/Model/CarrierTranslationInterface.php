@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -30,7 +32,7 @@ interface CarrierTranslationInterface extends ResourceInterface, TimestampableIn
     /**
      * @return string
      */
-    public function getDescription();
+    public function getDescription(): string;
 
     /**
      * @param string $description

@@ -237,8 +237,14 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
     download: function () {
         var me = this;
 
+        var options = {};
+        this.getStore().setLoadOptions(options);
+
+        var operation = this.getStore().createOperation('read', options);
+        var request = this.getStore().getProxy().buildRequest(operation);
+
         var url = '/admin/coreshop/report/export?report=' + me.reportType;
-        var filterParams = me.getFilterParams();
+        var filterParams = request.getParams();
 
         url += '&' + Ext.urlEncode(filterParams);
 
@@ -257,6 +263,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
             this.store = new Ext.data.Store({
                 autoDestroy: true,
                 remoteSort: this.remoteSort,
+                pageSize: 50,
                 proxy: {
                     type: 'ajax',
                     url: '/admin/coreshop/report/get-data?report=' + this.reportType,

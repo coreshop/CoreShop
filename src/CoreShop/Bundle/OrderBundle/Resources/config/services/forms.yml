@@ -2,6 +2,14 @@ parameters:
     coreshop.form.type.add_to_cart.validation_groups: [coreshop]
     coreshop.form.type.edit_cart.validation_groups: [coreshop]
     coreshop.form.type.add_multiple_to_cart.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.action.discount_amount.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.action.discount_percent.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.action.surcharge_amount.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.action.surcharge_percent.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.amount.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.nested.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.timespan.validation_groups: [coreshop]
+    coreshop.form.type.cart_price_rule.condition.voucher.validation_groups: [coreshop]
 
 services:
     CoreShop\Bundle\OrderBundle\Form\Type\AddToCartType:
@@ -21,7 +29,7 @@ services:
     coreshop.form.type.edit_cart:
         class: CoreShop\Bundle\OrderBundle\Form\Type\EditCartType
         arguments:
-            - '%coreshop.model.cart.class%'
+            - '%coreshop.model.order.class%'
             - '%coreshop.form.type.edit_cart.validation_groups%'
         tags:
             - { name: form.type }
@@ -32,3 +40,51 @@ services:
             - '@coreshop.repository.stack.purchasable'
         tags:
             - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.action.discount_amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountPercentConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.action.discount_percent.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargeAmountConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.action.surcharge_amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.action.surcharge_percent.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.amount.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.nested.validation_groups%'
+        tags:
+            - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.timespan.validation_groups%'
+        tags:
+           - { name: form.type }
+
+    CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType:
+        arguments:
+            - '%coreshop.form.type.cart_price_rule.condition.voucher.validation_groups%'
+        tags:
+           - { name: form.type }

@@ -2,27 +2,24 @@ services:
     _defaults:
         public: true
 
-    coreshop.tracking.extractor.order: '@CoreShop\Component\Core\Tracking\Extractor\OrderExtractor'
     CoreShop\Component\Core\Tracking\Extractor\OrderExtractor:
         arguments:
-            - '@coreshop.tracking.extractor'
+            - '@CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface'
             - '%coreshop.currency.decimal_factor%'
             - '%coreshop.currency.decimal_precision%'
         tags:
             - { name: coreshop.tracking.extractor, type: order }
 
-    coreshop.tracking.extractor.order_item: '@CoreShop\Component\Core\Tracking\Extractor\OrderItemExtractor'
     CoreShop\Component\Core\Tracking\Extractor\OrderItemExtractor:
         arguments:
             - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.tracking.extractor, type: order-item }
 
-    coreshop.tracking.extractor.purchasable: '@CoreShop\Component\Core\Tracking\Extractor\ProductExtractor'
     CoreShop\Component\Core\Tracking\Extractor\ProductExtractor:
         arguments:
-            - '@coreshop.product.taxed_price_calculator'
-            - '@coreshop.context.shopper'
+            - '@CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface'
+            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
             - '%coreshop.currency.decimal_factor%'
         tags:
             - { name: coreshop.tracking.extractor, type: product }

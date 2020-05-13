@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Installer\Checker;
 
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,14 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class CommandDirectoryChecker
 {
-    /**
-     * @var string
-     */
     private $name;
-
-    /**
-     * @var Filesystem
-     */
     private $filesystem;
 
     /**
@@ -36,7 +31,7 @@ final class CommandDirectoryChecker
         $this->filesystem = $filesystem;
     }
 
-    public function ensureDirectoryExists($directory, OutputInterface $output)
+    public function ensureDirectoryExists(string $directory, OutputInterface $output): void
     {
         if (is_dir($directory)) {
             return;
@@ -59,7 +54,7 @@ final class CommandDirectoryChecker
         }
     }
 
-    public function ensureDirectoryIsWritable($directory, OutputInterface $output)
+    public function ensureDirectoryIsWritable(string $directory, OutputInterface $output): void
     {
         if (is_writable($directory)) {
             return;
@@ -82,7 +77,7 @@ final class CommandDirectoryChecker
         }
     }
 
-    public function setCommandName($name)
+    public function setCommandName(string $name): void
     {
         $this->name = $name;
     }

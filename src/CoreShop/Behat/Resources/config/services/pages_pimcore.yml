@@ -1,0 +1,12 @@
+services:
+    CoreShop\Behat\Page\Pimcore\AbstractPimcorePage:
+        parent: FriendsOfBehat\PageObjectExtension\Page\SymfonyPage
+
+    CoreShop\Behat\Page\Pimcore\LoginPageInterface: '@CoreShop\Behat\Page\Pimcore\LoginPage'
+    CoreShop\Behat\Page\Pimcore\LoginPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage
+
+
+    CoreShop\Behat\Page\Pimcore\PWAPageInterface: '@CoreShop\Behat\Page\Pimcore\PWAPage'
+    CoreShop\Behat\Page\Pimcore\PWAPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
@@ -21,12 +23,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PortletsController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
-     */
-    public function getPortletDataAction(Request $request)
+    public function getPortletDataAction(Request $request): Response
     {
         $portletName = $request->get('portlet');
         $portletRegistry = $this->get('coreshop.registry.portlets');
@@ -44,12 +41,7 @@ class PortletsController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function exportPortletCsvAction(Request $request)
+    public function exportPortletCsvAction(Request $request): Response
     {
         $portletName = $request->get('portlet');
         $portletRegistry = $this->get('coreshop.registry.portlets');

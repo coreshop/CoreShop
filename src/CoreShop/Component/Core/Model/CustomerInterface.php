@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -19,6 +21,16 @@ use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface
 
 interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface, DefaultAddressAwareInterface
 {
+    /**
+     * @return string
+     */
+    public function getAddressAccessType();
+
+    /**
+     * @param string $addressAccessType
+     */
+    public function setAddressAccessType($addressAccessType);
+
     /**
      * @return AddressInterface
      */

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
 use Pimcore\Analytics\SiteId\SiteIdProvider;
@@ -18,25 +20,10 @@ use Pimcore\Config\Config as ConfigObject;
 
 class ConfigResolver implements ConfigResolverInterface
 {
-    /**
-     * @var null|bool|ConfigObject
-     */
-    private $googleConfig = null;
-
-    /**
-     * @var SiteIdProvider
-     */
+    private $googleConfig;
     private $siteIdProvider;
-
-    /**
-     * @var GoogleConfigProvider
-     */
     private $goggleConfigProvider;
 
-    /**
-     * @param SiteIdProvider       $siteIdProvider
-     * @param GoogleConfigProvider $goggleConfigProvider
-     */
     public function __construct(
         SiteIdProvider $siteIdProvider,
         GoogleConfigProvider $goggleConfigProvider
@@ -46,11 +33,11 @@ class ConfigResolver implements ConfigResolverInterface
     }
 
     /**
-     * @return bool|ConfigObject
+     * @return ConfigObject
      */
-    public function getGoogleConfig()
+    public function getGoogleConfig(): ?ConfigObject
     {
-        if (!is_null($this->googleConfig)) {
+        if (null !== $this->googleConfig) {
             return $this->googleConfig;
         }
 
@@ -58,8 +45,9 @@ class ConfigResolver implements ConfigResolverInterface
         $siteId = $this->siteIdProvider->getForRequest();
 
         $configKey = $siteId->getConfigKey();
+
         if (!$config->isSiteConfigured($configKey)) {
-            return false;
+            return null;
         }
 
         $siteConfig = $config->getConfigForSite($configKey);

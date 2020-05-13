@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Context\CountryNotFoundException;
+use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 
 class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProviderInterface
@@ -33,7 +36,7 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
     /**
      * {@inheritdoc}
      */
-    public function getAddress(array $context = [])
+    public function getAddress(array $context = []): ?AddressInterface
     {
         $address = $this->addressFactory->createNew();
 
@@ -42,7 +45,7 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
         } elseif (array_key_exists('store', $context)) {
             $country = $context['store']->getBaseCountry();
         } else {
-            throw new CountryNotFoundException('No country has been found');
+            throw new CountryNotFoundException();
         }
 
         $address->setCountry($country);

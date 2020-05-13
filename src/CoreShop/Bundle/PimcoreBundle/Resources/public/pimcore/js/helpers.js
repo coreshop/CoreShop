@@ -34,3 +34,29 @@ coreshop.helpers.hexToRgb = function (hex) {
         parseInt(result[3], 16)
     ] : null;
 };
+
+
+coreshop.util.format.currency = function (currency, v) {
+    if (currency === undefined || currency === '') {
+        return '0';
+    }
+
+    return coreshop.util.format.currency_precision(
+        currency,
+        v,
+        pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
+        pimcore.globalmanager.get('coreshop.currency.decimal_factor'),
+    );
+};
+
+coreshop.util.format.currency_precision = function (currency, v, decimalPrecision, decimalFactor) {
+    var value = (Math.round((v / decimalFactor) * decimalFactor)) / decimalFactor;
+    var options = {
+        style: 'currency',
+        currency: currency,
+        minimumFractionDigits: decimalPrecision
+    };
+    var numberFormatter = new Intl.NumberFormat(pimcore.globalmanager.get('user').language, options);
+
+    return numberFormatter.format(value);
+};

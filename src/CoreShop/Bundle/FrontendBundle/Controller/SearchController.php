@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
+use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Paginator\Paginator;
 
@@ -49,7 +52,7 @@ class SearchController extends FrontendController
                 '%' . $text . '%',
                 '%' . $text . '%',
                 '%' . $text . '%',
-                '%' . $this->container->get('coreshop.context.store')->getStore()->getId() . '%',
+                '%' . $this->container->get(StoreContextInterface::class)->getStore()->getId() . '%',
             ];
 
             $list = $this->get('coreshop.repository.product')->getList();
@@ -70,7 +73,7 @@ class SearchController extends FrontendController
 
     protected function createSearchForm()
     {
-        return $form = $this->get('form.factory')->createNamed('search', SearchType::class, null, [
+        return $this->get('form.factory')->createNamed('search', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET',
         ]);

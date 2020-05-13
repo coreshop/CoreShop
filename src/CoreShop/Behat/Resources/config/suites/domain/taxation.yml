@@ -24,4 +24,4 @@ default:
                 - coreshop.behat.context.domain.tax_rate
                 - coreshop.behat.context.domain.tax_rule_group
             filters:
-                tags: "@taxation"
+                tags: "@domain && @taxation"

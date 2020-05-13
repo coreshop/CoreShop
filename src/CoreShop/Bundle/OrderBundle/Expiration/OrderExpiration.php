@@ -10,38 +10,36 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
+use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use CoreShop\Bundle\WorkflowBundle\History\HistoryLoggerInterface;
 use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
+use Pimcore\Model\DataObject\Concrete;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
+    private $historyLogger;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineApplier      $stateMachineApplier
-     */
-    public function __construct(OrderRepositoryInterface $orderRepository, StateMachineApplier $stateMachineApplier)
-    {
+    public function __construct(
+        OrderRepositoryInterface $orderRepository,
+        StateMachineApplier $stateMachineApplier,
+        HistoryLoggerInterface $historyLogger
+    ) {
         $this->orderRepository = $orderRepository;
         $this->stateMachineApplier = $stateMachineApplier;
+        $this->historyLogger = $historyLogger;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function expire($days, $params = [])
+    public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {
             return;
@@ -51,7 +49,18 @@ final class OrderExpiration implements ProposalExpirationInterface
 
         if (is_array($orders)) {
             foreach ($orders as $order) {
-                $this->stateMachineApplier->apply($order, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CANCEL);
+                $this->stateMachineApplier->apply(
+                    $order,
+                    OrderTransitions::IDENTIFIER,
+                    OrderTransitions::TRANSITION_CANCEL
+                );
+
+                if (null !== $this->historyLogger && $order instanceof Concrete) {
+                    $this->historyLogger->log(
+                        $order,
+                        'Automatic Expiration Order Cancellation'
+                    );
+                }
             }
         }
     }

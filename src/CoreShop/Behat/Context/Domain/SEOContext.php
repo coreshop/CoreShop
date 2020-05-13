@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -22,33 +24,17 @@ use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var SEOPresentationInterface
-     */
     private $seoPresentation;
-
-    /**
-     * @var HeadTitle
-     */
     private $headTitle;
-
-    /**
-     * @var HeadMeta
-     */
     private $headMeta;
 
-    /**
-     * @param SharedStorageInterface   $sharedStorage
-     * @param SEOPresentationInterface $seoPresentation
-     * @param HeadTitle                $headTitle
-     * @param HeadMeta                 $headMeta
-     */
-    public function __construct(SharedStorageInterface $sharedStorage, SEOPresentationInterface $seoPresentation, HeadTitle $headTitle, HeadMeta $headMeta)
+    public function __construct(
+        SharedStorageInterface $sharedStorage,
+        SEOPresentationInterface $seoPresentation,
+        HeadTitle $headTitle,
+        HeadMeta $headMeta
+    )
     {
         $this->sharedStorage = $sharedStorage;
         $this->seoPresentation = $seoPresentation;

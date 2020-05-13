@@ -16,6 +16,7 @@ use CoreShop\Bundle\OrderBundle\Event\AdminCustomerCreationEvent;
 use CoreShop\Bundle\OrderBundle\Events;
 use CoreShop\Bundle\OrderBundle\Form\Type\AdminCustomerCreationType;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
+use CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer;
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
@@ -24,10 +25,15 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CustomerCreationController extends PimcoreController
 {
-    public function createCustomerAction(Request $request)
+    public function createCustomerAction(
+        Request $request,
+        ObjectServiceInterface $objectService,
+        ErrorSerializer $errorSerializer
+    ): Response
     {
         $form = $this->get('form.factory')->createNamed('', AdminCustomerCreationType::class);
 
@@ -48,7 +54,7 @@ class CustomerCreationController extends PimcoreController
                 $address = $data['address'];
 
                 $customer->setPublished(true);
-                $customer->setParent($this->get(ObjectServiceInterface::class)->createFolderByPath(sprintf(
+                $customer->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $this->getParameter('coreshop.folder.customer'),
                     mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
@@ -59,7 +65,7 @@ class CustomerCreationController extends PimcoreController
 
                 $address->setPublished(true);
                 $address->setKey(uniqid());
-                $address->setParent($this->get(ObjectServiceInterface::class)->createFolderByPath(sprintf(
+                $address->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $customer->getFullPath(),
                     $this->getParameter('coreshop.folder.address')
@@ -87,7 +93,7 @@ class CustomerCreationController extends PimcoreController
             return $this->viewHandler->handle(
                 [
                     'success' => false,
-                    'message' => $this->get('coreshop.resource.helper.form_error_serializer')->serializeErrorFromHandledForm($form),
+                    'message' => $errorSerializer->serializeErrorFromHandledForm($form),
                 ]
             );
         }

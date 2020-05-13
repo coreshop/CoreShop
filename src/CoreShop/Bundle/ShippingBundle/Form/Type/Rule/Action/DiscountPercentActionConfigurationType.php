@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
@@ -22,16 +24,29 @@ use Symfony\Component\Validator\Constraints\Type;
 class DiscountPercentActionConfigurationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('percent', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
-                    new Range(['min' => 0, 'max' => 100, 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
+                    new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
@@ -39,7 +54,7 @@ class DiscountPercentActionConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_action_discount_percent';
     }

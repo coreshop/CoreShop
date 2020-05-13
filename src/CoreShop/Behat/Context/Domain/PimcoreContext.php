@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -18,44 +20,13 @@ use Webmozart\Assert\Assert;
 
 final class PimcoreContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var string
-     */
     private $webRoot;
-
-    /**
-     * @var array
-     */
     private $adminJs;
-
-    /**
-     * @var array
-     */
     private $adminCss;
-
-    /**
-     * @var array
-     */
     private $editmodeJs;
-
-    /**
-     * @var array
-     */
     private $editmodeCss;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param string                 $webRoot
-     * @param array                  $adminJs
-     * @param array                  $adminCss
-     * @param array                  $editmodeJs
-     * @param array                  $editmodeCss
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         string $webRoot,

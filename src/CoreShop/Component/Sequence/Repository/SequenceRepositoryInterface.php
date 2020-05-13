@@ -10,16 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Sequence\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
+use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 interface SequenceRepositoryInterface extends RepositoryInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return mixed
-     */
-    public function findForType($type);
+    public function findForType(string $type): ?SequenceInterface;
 }

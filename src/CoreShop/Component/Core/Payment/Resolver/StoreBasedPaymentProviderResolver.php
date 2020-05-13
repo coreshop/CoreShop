@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Payment\Resolver;
 
 use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
@@ -19,21 +21,13 @@ use CoreShop\Component\Store\Context\StoreContextInterface;
 
 class StoreBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    /**
-     * @var PaymentProviderRepositoryInterface
-     */
     private $paymentProviderRepository;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param PaymentProviderRepositoryInterface $paymentProviderRepository
-     * @param StoreContextInterface              $storeContext
-     */
-    public function __construct(PaymentProviderRepositoryInterface $paymentProviderRepository, StoreContextInterface $storeContext)
+    public function __construct(
+        PaymentProviderRepositoryInterface $paymentProviderRepository,
+        StoreContextInterface $storeContext
+    )
     {
         $this->paymentProviderRepository = $paymentProviderRepository;
         $this->storeContext = $storeContext;
@@ -42,7 +36,7 @@ class StoreBasedPaymentProviderResolver implements PaymentProviderResolverInterf
     /**
      * {@inheritdoc}
      */
-    public function resolvePaymentProviders(ResourceInterface $subject = null)
+    public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
         return $this->paymentProviderRepository->findActiveForStore($this->storeContext->getStore());
     }

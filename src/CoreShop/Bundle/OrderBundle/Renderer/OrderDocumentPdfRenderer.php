@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
@@ -24,32 +26,11 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    /**
-     * @var FragmentRendererInterface
-     */
     private $fragmentRenderer;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
-
-    /**
-     * @var PdfRendererInterface
-     */
     private $renderer;
-
-    /**
-     * @var ThemeHelperInterface
-     */
     private $themeHelper;
 
-    /**
-     * @param FragmentRendererInterface $fragmentRenderer
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param PdfRendererInterface      $renderer
-     * @param ThemeHelperInterface      $themeHelper
-     */
     public function __construct(
         FragmentRendererInterface $fragmentRenderer,
         EventDispatcherInterface $eventDispatcher,
@@ -65,7 +46,7 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
+    public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {
             $params = [

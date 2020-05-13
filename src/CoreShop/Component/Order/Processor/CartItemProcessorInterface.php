@@ -10,26 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Processor;
 
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface CartItemProcessorInterface
 {
-    /**
-     * @param CartItemInterface $cartItem
-     * @param int               $itemPrice
-     * @param int               $itemRetailPrice
-     * @param int               $itemDiscountPrice
-     * @param int               $itemDiscount
-     * @param array             $context
-     */
     public function processCartItem(
-        CartItemInterface $cartItem,
+        OrderItemInterface $cartItem,
         int $itemPrice,
         int $itemRetailPrice,
         int $itemDiscountPrice,
         int $itemDiscount,
         array $context
-    );
+    ): void;
 }

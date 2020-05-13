@@ -10,34 +10,31 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
 use CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface;
+use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ValidPriceRulesExtension extends AbstractExtension
 {
-    /**
-     * @var ValidPriceRulesHelperInterface
-     */
-    private $helper;
+    protected $validPriceRulesFetcher;
 
-    /**
-     * @param ValidPriceRulesHelperInterface $helper
-     */
-    public function __construct(ValidPriceRulesHelperInterface $helper)
+    public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher)
     {
-        $this->helper = $helper;
+        $this->validPriceRulesFetcher = $validPriceRulesFetcher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('coreshop_product_price_rules', [$this->helper, 'getValidRules']),
+            new TwigFilter('coreshop_product_price_rules', [$this->validPriceRulesFetcher, 'getValidRules']),
         ];
     }
 }

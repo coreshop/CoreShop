@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -23,9 +25,6 @@ class AddressFormatter implements AddressFormatterInterface
      */
     private $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -34,7 +33,7 @@ class AddressFormatter implements AddressFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAddress(AddressInterface $address, $asHtml = true)
+    public function formatAddress(AddressInterface $address, bool $asHtml = true): string
     {
         if (method_exists($address, 'getObjectVars')) {
             $objectVars = $address->getObjectVars();
@@ -54,7 +53,7 @@ class AddressFormatter implements AddressFormatterInterface
         $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
 
         if ($asHtml) {
-            $address = nl2br($address);
+            $address = \nl2br($address);
         }
 
         return $address;

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Tracking\Extractor;
 
 use CoreShop\Component\Core\Context\ShopperContextInterface;
@@ -21,26 +23,10 @@ use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class ProductExtractor implements TrackingExtractorInterface
 {
-    /**
-     * @var TaxedProductPriceCalculatorInterface
-     */
     private $taxedPurchasablePriceCalculator;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var int
-     */
     private $decimalFactor;
 
-    /**
-     * @param TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator
-     * @param ShopperContextInterface              $shopperContext
-     * @param int                                  $decimalFactor
-     */
     public function __construct(
         TaxedProductPriceCalculatorInterface $taxedPurchasablePriceCalculator,
         ShopperContextInterface $shopperContext,
@@ -54,7 +40,7 @@ class ProductExtractor implements TrackingExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof PurchasableInterface;
     }

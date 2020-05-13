@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\AddressBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
@@ -24,7 +26,7 @@ final class ValidAddressIdentifier extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'coreshop_address_valid_identifier';
     }
@@ -32,7 +34,7 @@ final class ValidAddressIdentifier extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;
     }

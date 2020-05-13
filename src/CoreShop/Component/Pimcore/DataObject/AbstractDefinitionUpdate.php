@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Exception\ClassDefinitionFieldNotFoundException;
+use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
@@ -29,12 +32,12 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function save();
+    abstract public function save(): bool;
 
     /**
      * {@inheritdoc}
      */
-    public function getProperty($property)
+    public function getProperty($property): array
     {
         return $this->jsonDefinition[$property];
     }
@@ -42,7 +45,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function setProperty($property, $value)
+    public function setProperty($property, $value): void
     {
         $this->jsonDefinition[$property] = $value;
     }
@@ -50,7 +53,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function hasField($fieldName)
+    public function hasField($fieldName): bool
     {
         return array_key_exists($fieldName, $this->fieldDefinitions);
     }
@@ -58,7 +61,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($fieldName)
+    public function getFieldDefinition($fieldName): ?Data
     {
         if (!$this->hasField($fieldName)) {
             throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
@@ -70,7 +73,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function insertField($jsonFieldDefinition)
+    public function insertField($jsonFieldDefinition): void
     {
         $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
     }
@@ -78,7 +81,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition)
+    public function insertFieldBefore($fieldName, $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -99,7 +102,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition)
+    public function insertFieldAfter($fieldName, $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -116,7 +119,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function replaceField($fieldName, $jsonFieldDefinition)
+    public function replaceField($fieldName, $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -129,7 +132,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function replaceFieldProperties($fieldName, array $keyValues)
+    public function replaceFieldProperties($fieldName, array $keyValues): void
     {
         $this->findField(
             $fieldName,
@@ -144,7 +147,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
     /**
      * {@inheritdoc}
      */
-    public function removeField($fieldName)
+    public function removeField($fieldName): void
     {
         $this->findField(
             $fieldName,
@@ -160,7 +163,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
      *
      * @throws ClassDefinitionFieldNotFoundException
      */
-    protected function findField(string $fieldName, \Closure $callback)
+    protected function findField(string $fieldName, \Closure $callback): void
     {
         $found = false;
 

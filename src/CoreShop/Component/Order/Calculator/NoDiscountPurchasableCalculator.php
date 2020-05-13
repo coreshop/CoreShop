@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -19,7 +21,7 @@ final class NoDiscountPurchasableCalculator implements PurchasableDiscountCalcul
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(PurchasableInterface $purchasable, array $context, $basePrice)
+    public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         return 0;
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Document;
 
 use Pimcore\Model\Document\Tag\TagInterface;
@@ -22,5 +24,5 @@ interface DocumentTagFactoryInterface
      *
      * @return TagInterface
      */
-    public function create($type, $params);
+    public function create(string $type, array $params): TagInterface;
 }

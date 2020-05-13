@@ -14,6 +14,22 @@ Ext.define('CoreShop.address.CountrySalutation', {
     initComponent: function () {
         this.items = [Ext.mergeIf(this.country, {
             xtype: 'coreshop.country',
+            store: {
+                proxy: {
+                    type: 'ajax',
+                    url: '/admin/coreshop/countries/list-active',
+                    reader: {
+                        type: 'json',
+                    }
+                },
+                fields: [
+                    {name: 'id'},
+                    {name: 'name'}
+                ],
+                autoLoad: true,
+                remoteSort: false,
+                remoteFilter: false
+            },
             name: this.name_country,
             allowBlank: false,
             listeners: {

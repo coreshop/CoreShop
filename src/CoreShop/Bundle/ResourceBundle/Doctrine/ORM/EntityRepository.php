@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Doctrine\ORM;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -21,7 +23,7 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function add(ResourceInterface $resource)
+    public function add(ResourceInterface $resource): void
     {
         $this->_em->persist($resource);
         $this->_em->flush();
@@ -30,7 +32,7 @@ class EntityRepository extends BaseEntityRepository implements RepositoryInterfa
     /**
      * {@inheritdoc}
      */
-    public function remove(ResourceInterface $resource)
+    public function remove(ResourceInterface $resource): void
     {
         if (null !== $this->find($resource->getId())) {
             $this->_em->remove($resource);

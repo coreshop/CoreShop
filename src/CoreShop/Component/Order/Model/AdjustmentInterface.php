@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -49,7 +51,7 @@ interface AdjustmentInterface extends ResourceInterface
      *
      * @return int
      */
-    public function getAmount($withTax = true);
+    public function getAmount(bool $withTax = true): int;
 
     /**
      * @param int $grossAmount

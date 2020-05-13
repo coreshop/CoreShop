@@ -10,15 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 interface ViewHandlerInterface
 {
-    /**
-     * @param mixed $data
-     * @param array $options
-     *
-     * @return mixed
-     */
-    public function handle($data, $options = []);
+    public function handle($data, array $options = []): JsonResponse;
 }

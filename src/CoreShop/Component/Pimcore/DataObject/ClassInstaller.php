@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
@@ -19,13 +21,12 @@ class ClassInstaller implements ClassInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function createBrick($jsonFile, $brickName)
+    public function createBrick(string $jsonFile, string $brickName): DataObject\Objectbrick\Definition
     {
-        $objectBrick = null;
-
         try {
             $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
         } catch (\Exception $e) {
+            $objectBrick = null;
         }
 
         if (null === $objectBrick) {
@@ -45,7 +46,7 @@ class ClassInstaller implements ClassInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function createClass($jsonFile, $className, $updateClass = false)
+    public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition
     {
         $tempClass = new DataObject\ClassDefinition();
         $id = $tempClass->getDao()->getIdByName($className);
@@ -95,13 +96,12 @@ class ClassInstaller implements ClassInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function createFieldCollection($jsonFile, $name)
+    public function createFieldCollection(string $jsonFile, string $name): DataObject\Fieldcollection\Definition
     {
-        $fieldCollection = null;
-
         try {
             $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
         } catch (\Exception $e) {
+            $fieldCollection = null;
         }
 
         if (null === $fieldCollection) {

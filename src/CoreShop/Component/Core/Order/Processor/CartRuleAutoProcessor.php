@@ -10,36 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
 final class CartRuleAutoProcessor implements CartProcessorInterface
 {
-    /**
-     * @var CartPriceRuleRepositoryInterface
-     */
     private $cartPriceRuleRepository;
-
-    /**
-     * @var CartPriceRuleProcessorInterface
-     */
     private $cartPriceRuleProcessor;
-
-    /**
-     * @var CartPriceRuleUnProcessorInterface
-     */
     private $cartPriceRuleUnProcessor;
 
-    /**
-     * @param CartPriceRuleRepositoryInterface  $cartPriceRuleRepository
-     * @param CartPriceRuleProcessorInterface   $cartPriceRuleProcessor
-     * @param CartPriceRuleUnProcessorInterface $cartPriceRuleUnProcessor
-     */
     public function __construct(
         CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
@@ -53,7 +39,7 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $eligibleRules = $this->cartPriceRuleRepository->findNonVoucherRules();
 

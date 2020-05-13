@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
@@ -17,6 +19,7 @@ use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
+use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
@@ -73,6 +76,11 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $loader->load('services.yml');
 
+        $env = $container->getParameter('kernel.environment');
+        if (strpos($env, 'test') !== false) {
+            $loader->load('services_test.yml');
+        }
+
         if (array_key_exists('checkout', $config)) {
             $this->registerCheckout($container, $config['checkout']);
         }
@@ -82,6 +90,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             $alias->setPublic(true);
 
             $container->setAlias('coreshop.checkout_manager.factory', $alias);
+            $container->setAlias(CheckoutManagerFactoryInterface::class, $alias);
         } else {
             throw new \InvalidArgumentException('No valid Checkout Manager has been configured!');
         }

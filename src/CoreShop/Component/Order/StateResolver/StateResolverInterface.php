@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\StateResolver;
 
 use CoreShop\Component\Order\Model\OrderInterface;
 
 interface StateResolverInterface
 {
-    /**
-     * @param OrderInterface $order
-     *
-     * @return mixed
-     */
-    public function resolve(OrderInterface $order);
+    public function resolve(OrderInterface $order): void;
 }

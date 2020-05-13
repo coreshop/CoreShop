@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -19,24 +21,14 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerOrderDeletionListener
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(
-        OrderRepositoryInterface $orderRepository
-    ) {
+    public function __construct(OrderRepositoryInterface $orderRepository)
+    {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param DataObjectDeleteInfoEvent $event
-     */
-    public function checkCustomerDeletionAllowed(DataObjectDeleteInfoEvent $event)
+    public function checkCustomerDeletionAllowed(DataObjectDeleteInfoEvent $event): void
     {
         $object = $event->getObject();
 
@@ -52,10 +44,7 @@ final class CustomerOrderDeletionListener
         }
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function checkCustomerOrdersBeforeDeletion(DataObjectEvent $event)
+    public function checkCustomerOrdersBeforeDeletion(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 

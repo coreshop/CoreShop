@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -31,7 +34,10 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
 use function League\Uri\merge_query;
 
-class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersistingInterface, Data\CustomVersionMarshalInterface
+class ProductQuantityPriceRules extends Data implements
+    Data\CustomResourcePersistingInterface,
+    Data\CustomVersionMarshalInterface,
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -158,6 +164,22 @@ class ProductQuantityPriceRules extends Data implements Data\CustomResourcePersi
         }
 
         return $entities;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**

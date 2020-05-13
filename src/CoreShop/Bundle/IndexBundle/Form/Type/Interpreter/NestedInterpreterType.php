@@ -10,26 +10,46 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Interpreter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Valid;
 
 final class NestedInterpreterType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @var string[]
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
     {
-        $builder
-            ->add('interpreters', InterpreterCollectionType::class);
+        $this->validationGroups = $validationGroups;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('interpreters', InterpreterCollectionType::class, [
+                'constraints' => [
+                    new Valid(['groups' => $this->validationGroups]),
+                ],
+            ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_interpreter_nested';
     }

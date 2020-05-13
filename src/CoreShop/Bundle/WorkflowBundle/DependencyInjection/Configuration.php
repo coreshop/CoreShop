@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
@@ -166,6 +168,7 @@ final class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->children()
+                            ->booleanNode('enabled')->defaultTrue()->end()
                             ->variableNode('on')->end()
                             ->variableNode('do')->end()
                             ->scalarNode('priority')->defaultValue(0)->end()

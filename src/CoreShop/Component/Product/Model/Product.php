@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Product\Helper\VariantHelper;
@@ -32,41 +34,6 @@ class Product extends AbstractPimcoreModel implements ProductInterface
         }
 
         return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * TODO: Refactor to do this in a service!
-     */
-    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants')
-    {
-        $master = $this->getVariantMaster();
-
-        if ($master instanceof self) {
-            $differences = VariantHelper::getProductVariations($master, $this, $type, $field, $language);
-
-            return $differences;
-        }
-
-        return false;
-    }
-
-    /**
-     * Return topmost master if object is a variant.
-     *
-     * @return PimcoreModelInterface
-     */
-    public function getVariantMaster()
-    {
-        $master = $this;
-        while ($master->getType() === 'variant') {
-            if ($master->getParent() instanceof self) {
-                $master = $master->getParent();
-            }
-        }
-
-        return $master;
     }
 
     /**
@@ -136,7 +103,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getWholesalePrice()
+    public function getWholesalePrice(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -144,7 +111,7 @@ class Product extends AbstractPimcoreModel implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setWholesalePrice($wholesalePrice)
+    public function setWholesalePrice(int $wholesalePrice)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

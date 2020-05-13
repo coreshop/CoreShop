@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Validator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -18,14 +20,5 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface ShippableCarrierValidatorInterface
 {
-    /**
-     * Check if Carrier is valid for Shippable.
-     *
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     *
-     * @return bool
-     */
-    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address);
+    public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool;
 }

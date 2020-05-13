@@ -22,6 +22,11 @@ CoreShop\Component\Index\Model\Index:
         configuration:
             column: configuration
             type: array
+        indexLastVersion:
+            column: indexLastVersion
+            type: boolean
+            options:
+                default: false
         creationDate:
             type: datetime
             gedmo:

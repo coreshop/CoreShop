@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
@@ -23,43 +25,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CustomersReport implements ReportInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $customerRepository;
 
-    /**
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository
-     * @param PimcoreRepositoryInterface $customerRepository
-     */
     public function __construct(
         Connection $db,
         MoneyFormatterInterface $moneyFormatter,
@@ -77,7 +49,7 @@ class CustomersReport implements ReportInterface
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
         $toFilter = $parameterBag->get('to', strtotime(date('t-m-Y')));
@@ -120,9 +92,9 @@ class CustomersReport implements ReportInterface
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

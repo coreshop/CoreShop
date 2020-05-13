@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 class CodeTracker
@@ -22,7 +24,7 @@ class CodeTracker
     /**
      * @param mixed $block
      */
-    public function addCodePart($block)
+    public function addCodePart($block): void
     {
         $this->blocks[] = $block;
     }
@@ -30,7 +32,7 @@ class CodeTracker
     /**
      * @return array
      */
-    public function getBlocks()
+    public function getBlocks(): array
     {
         return $this->blocks;
     }

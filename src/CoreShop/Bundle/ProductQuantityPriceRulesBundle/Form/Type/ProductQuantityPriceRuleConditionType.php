@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionType;
@@ -20,7 +22,7 @@ final class ProductQuantityPriceRuleConditionType extends RuleConditionType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
 
@@ -35,7 +37,7 @@ final class ProductQuantityPriceRuleConditionType extends RuleConditionType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule_condition';
     }

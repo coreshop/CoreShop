@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Repository;
 
 use CoreShop\Component\Payment\Model\PayableInterface;
@@ -23,5 +25,5 @@ interface PaymentRepositoryInterface extends RepositoryInterface
      *
      * @return PaymentInterface[]
      */
-    public function findForPayable(PayableInterface $payable);
+    public function findForPayable(PayableInterface $payable): array;
 }

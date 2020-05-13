@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Metadata;
 
 interface MetadataInterface
@@ -17,37 +19,37 @@ interface MetadataInterface
     /**
      * @return string
      */
-    public function getAlias();
+    public function getAlias(): string;
 
     /**
      * @return string
      */
-    public function getApplicationName();
+    public function getApplicationName(): string;
 
     /**
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 
     /**
      * @return string
      */
-    public function getHumanizedName();
+    public function getHumanizedName(): string;
 
     /**
      * @return string
      */
-    public function getPluralName();
+    public function getPluralName(): string;
 
     /**
      * @return string
      */
-    public function getDriver();
+    public function getDriver(): string;
 
     /**
      * @return string
      */
-    public function getTemplatesNamespace();
+    public function getTemplatesNamespace(): string;
 
     /**
      * @param string $name
@@ -63,14 +65,14 @@ interface MetadataInterface
      *
      * @return array
      */
-    public function getParameters();
+    public function getParameters(): array;
 
     /**
      * @param string $name
      *
      * @return bool
      */
-    public function hasParameter($name);
+    public function hasParameter($name): bool;
 
     /**
      * @param string $name
@@ -86,19 +88,19 @@ interface MetadataInterface
      *
      * @return bool
      */
-    public function hasClass($name);
+    public function hasClass($name): bool;
 
     /**
      * @param string $serviceName
      *
      * @return string
      */
-    public function getServiceId($serviceName);
+    public function getServiceId($serviceName): string;
 
     /**
      * @param string $permissionName
      *
      * @return string
      */
-    public function getPermissionCode($permissionName);
+    public function getPermissionCode($permissionName): string;
 }

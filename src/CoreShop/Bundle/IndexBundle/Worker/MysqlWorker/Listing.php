@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 
 use CoreShop\Bundle\IndexBundle\Extension\MysqlIndexQueryExtensionInterface;
@@ -490,7 +492,7 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
             $variantMode = $this->getVariantMode();
         }
 
-        $queryBuilder->where($this->worker->renderCondition(new MatchCondition('active', 1), 'q'));
+        $queryBuilder->where($this->worker->renderCondition(new MatchCondition('active', '1'), 'q'));
 
         if ($this->getCategory()) {
             $categoryCondition = ',' . $this->getCategory()->getId() . ',';
@@ -571,8 +573,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     /**
      * @param QueryBuilder $queryBuilder
-     *
-     * @return string
      */
     public function addJoins(QueryBuilder $queryBuilder)
     {

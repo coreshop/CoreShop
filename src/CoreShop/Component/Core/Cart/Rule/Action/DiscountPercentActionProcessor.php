@@ -10,23 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 
 class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInterface
 {
-    /**
-     * @var CartRuleApplierInterface
-     */
     protected $cartRuleApplier;
 
-    /**
-     * @param CartRuleApplierInterface $cartRuleApplier
-     */
     public function __construct(CartRuleApplierInterface $cartRuleApplier)
     {
         $this->cartRuleApplier = $cartRuleApplier;
@@ -35,7 +31,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    public function applyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $discount = $this->getDiscount($cart, $configuration);
 
@@ -51,7 +47,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    public function unApplyRule(CartInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem)
+    public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }
@@ -59,7 +55,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(CartInterface $cart, array $configuration)
+    protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
@@ -74,13 +70,7 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
         return $this->getApplicableAmount($amount, $amount);
     }
 
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
+    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
     {
         return min($cartAmount, $ruleAmount);
     }

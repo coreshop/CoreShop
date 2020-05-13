@@ -10,60 +10,39 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 
 final class WorkflowTransitionEvent extends Event
 {
-    /**
-     * @var array
-     */
     protected $allowedTransitions;
-
-    /**
-     * @var string
-     */
     protected $workflowName;
 
-    /**
-     * @param array  $allowedTransitions
-     * @param string $workflowName
-     */
-    public function __construct(array $allowedTransitions, $workflowName)
+    public function __construct(array $allowedTransitions, string $workflowName)
     {
         $this->allowedTransitions = $allowedTransitions;
         $this->workflowName = $workflowName;
     }
 
-    /**
-     * @return string
-     */
-    public function getWorkflowName()
+    public function getWorkflowName(): string
     {
         return $this->workflowName;
     }
 
-    /**
-     * @param array $allowedTransitions
-     */
-    public function addAllowedTransitions(array $allowedTransitions)
+    public function addAllowedTransitions(array $allowedTransitions): void
     {
         $this->allowedTransitions = array_merge($this->allowedTransitions, $allowedTransitions);
     }
 
-    /**
-     * @param array $allowedTransitions
-     */
-    public function setAllowedTransitions(array $allowedTransitions)
+    public function setAllowedTransitions(array $allowedTransitions): void
     {
         $this->allowedTransitions = $allowedTransitions;
     }
 
-    /**
-     * @return array
-     */
-    public function getAllowedTransitions()
+    public function getAllowedTransitions(): array
     {
         return $this->allowedTransitions;
     }

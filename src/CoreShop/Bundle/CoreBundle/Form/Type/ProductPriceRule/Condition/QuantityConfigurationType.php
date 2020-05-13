@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition;
 
 use Symfony\Component\Form\AbstractType;
@@ -21,21 +23,34 @@ use Symfony\Component\Validator\Constraints\Type;
 final class QuantityConfigurationType extends AbstractType
 {
     /**
+     * @var string[]
+     */
+    protected $validationGroups = [];
+
+    /**
+     * @param string[] $validationGroups
+     */
+    public function __construct(array $validationGroups)
+    {
+        $this->validationGroups = $validationGroups;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('minQuantity', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ])
             ->add('maxQuantity', IntegerType::class, [
                 'constraints' => [
-                    new NotBlank(['groups' => ['coreshop']]),
-                    new Type(['type' => 'numeric', 'groups' => ['coreshop']]),
+                    new NotBlank(['groups' => $this->validationGroups]),
+                    new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                 ],
             ]);
     }
@@ -43,7 +58,7 @@ final class QuantityConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_condition_quantity';
     }

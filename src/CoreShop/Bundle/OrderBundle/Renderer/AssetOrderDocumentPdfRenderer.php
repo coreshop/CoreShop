@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Renderer;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
@@ -18,14 +20,7 @@ use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    /**
-     * @var OrderDocumentRendererInterface
-     */
     private $decoratedService;
-
-    /**
-     * @var string
-     */
     private $environment;
 
     /**
@@ -41,7 +36,7 @@ class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
     /**
      * {@inheritdoc}
      */
-    public function renderDocumentPdf(OrderDocumentInterface $orderDocument)
+    public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         // if in dev mode, do not store document
         if ($this->environment === 'dev') {

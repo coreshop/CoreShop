@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -22,53 +24,31 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pimcore\Tool\Console;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $countryFactory;
-
-    /**
-     * @var CountryRepositoryInterface
-     */
     private $countryRepository;
-
-    /**
-     * @var FixedCountryContext
-     */
     private $fixedCountryContext;
+    private $kernelRootDirectory;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param ObjectManager              $objectManager
-     * @param FactoryInterface           $countryFactory
-     * @param CountryRepositoryInterface $countryRepository
-     * @param FixedCountryContext        $fixedCountryContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $countryFactory,
         CountryRepositoryInterface $countryRepository,
-        FixedCountryContext $fixedCountryContext
+        FixedCountryContext $fixedCountryContext,
+        string $kernelRootDirectory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->countryFactory = $countryFactory;
         $this->countryRepository = $countryRepository;
         $this->fixedCountryContext = $fixedCountryContext;
+        $this->kernelRootDirectory = $kernelRootDirectory;
     }
 
     /**
@@ -139,6 +119,21 @@ final class CountryContext implements Context
         $country->setAddressFormat(str_replace("'", '"', $format));
 
         $this->saveCountry($country);
+    }
+
+    /**
+     * @Given /^I downloaded the GeoLite2 DB$/
+     */
+    public function iDownloadedTheGeoLite2DB()
+    {
+        $cmd = sprintf(
+            '%s/etc/geoipupdate/geoipupdate -f %s/etc/geoipupdate/GeoIP.conf -d %s/var/config/',
+            $this->kernelRootDirectory,
+            $this->kernelRootDirectory,
+            $this->kernelRootDirectory
+        );
+
+        Console::exec($cmd);
     }
 
     /**

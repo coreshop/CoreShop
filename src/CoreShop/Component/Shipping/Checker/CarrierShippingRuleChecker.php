@@ -10,23 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Checker;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 
 class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     protected $ruleValidationProcessor;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
@@ -35,12 +32,15 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
-    {
+    public function findValidShippingRule(
+        CarrierInterface $carrier,
+        ShippableInterface $shippable,
+        AddressInterface $address
+    ): ?ShippingRuleGroupInterface {
         $shippingRules = $carrier->getShippingRules();
 
         if (count($shippingRules) === 0) {
-            return true;
+            return null;
         }
 
         foreach ($shippingRules as $rule) {
@@ -51,12 +51,14 @@ class CarrierShippingRuleChecker implements CarrierShippingRuleCheckerInterface
             ]);
 
             if ($isValid === false && $rule->getStopPropagation() === true) {
-                return false;
-            } elseif ($isValid === true) {
+                return null;
+            }
+
+            if ($isValid === true) {
                 return $rule;
             }
         }
 
-        return false;
+        return null;
     }
 }

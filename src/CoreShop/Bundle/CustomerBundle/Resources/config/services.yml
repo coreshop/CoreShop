@@ -1,16 +1,14 @@
 imports:
-    - { resource: "services/form.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.context.customer.composite: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
-    CoreShop\Component\Customer\Context\CustomerContextInterface: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
     CoreShop\Component\Customer\Context\CompositeCustomerContext:
         public: false
 
-    coreshop.context.customer.request_based: '@CoreShop\Component\Customer\Context\RequestBased\CustomerContext'
     CoreShop\Component\Customer\Context\RequestBased\CustomerContext:
         public: false
         arguments:
@@ -19,17 +17,14 @@ services:
         tags:
             - { name: coreshop.context.customer }
 
-    coreshop.context.customer.fixed: '@CoreShop\Component\Customer\Context\FixedCustomerContext'
     CoreShop\Component\Customer\Context\FixedCustomerContext:
         tags:
             - { name: coreshop.context.customer }
 
     CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
-    coreshop.context.customer.request_based.resolver.composite: '@CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver'
     CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.customer.request_based.resolver.token_based: '@CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver'
     CoreShop\Component\Customer\Context\RequestBased\TokenBasedRequestResolver:
         public: false
         arguments:

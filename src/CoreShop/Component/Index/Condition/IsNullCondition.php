@@ -10,35 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 class IsNullCondition implements ConditionInterface
 {
-    /**
-     * @var string
-     */
     private $fieldName;
 
-    /**
-     * @param string $fieldName
-     */
-    public function __construct($fieldName)
+    public function __construct(string $fieldName)
     {
         $this->fieldName = $fieldName;
     }
 
-    /**
-     * @return string
-     */
-    public function getFieldName()
+    public function getFieldName(): string
     {
         return $this->fieldName;
     }
 
-    /**
-     * @param string $fieldName
-     */
-    public function setFieldName($fieldName)
+    public function setFieldName(string $fieldName): void
     {
         $this->fieldName = $fieldName;
     }

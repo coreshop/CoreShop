@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
@@ -36,7 +38,7 @@ final class TokenBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCustomer(Request $request)
+    public function findCustomer(Request $request): CustomerInterface
     {
         if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {
             return $this->tokenStorage->getToken()->getUser();

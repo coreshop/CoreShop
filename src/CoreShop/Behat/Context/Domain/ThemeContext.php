@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -20,28 +22,10 @@ use Webmozart\Assert\Assert;
 
 final class ThemeContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ThemeResolverInterface
-     */
     private $themeResolver;
-
-    /**
-     * @var ActiveThemeInterface
-     */
     private $activeTheme;
 
-    /**
-     * ThemeContext constructor.
-     *
-     * @param SharedStorageInterface $sharedStorage
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveThemeInterface   $activeTheme
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ThemeResolverInterface $themeResolver,

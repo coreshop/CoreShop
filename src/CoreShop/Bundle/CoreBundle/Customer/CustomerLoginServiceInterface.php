@@ -10,14 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface CustomerLoginServiceInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     */
-    public function loginCustomer(CustomerInterface $customer);
+    public function loginCustomer(CustomerInterface $customer): void;
 }

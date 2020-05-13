@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Worker;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +27,7 @@ final class MysqlWorkerTableIndexType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', ChoiceType::class, [
@@ -33,13 +36,16 @@ final class MysqlWorkerTableIndexType extends AbstractType
                     TableIndex::TABLE_INDEX_TYPE_UNIQUE,
                 ],
             ])
-            ->add('columns', TextType::class);
+            ->add('columns', CollectionType::class, [
+                'allow_delete' => true,
+                'allow_add' => true
+            ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', TableIndex::class);
 
@@ -49,7 +55,7 @@ final class MysqlWorkerTableIndexType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_worker_mysql';
     }

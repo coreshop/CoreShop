@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Locale\Context;
 
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
@@ -23,32 +25,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class PimcoreAdminLocaleContext implements LocaleContextInterface
 {
-    /**
-     * @var PimcoreContextResolver
-     */
     private $pimcoreContextResolver;
-
-    /**
-     * @var TokenStorageUserResolver
-     */
     private $tokenStorageUserResolver;
-
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
     private $localeProvider;
-
-    /**
-     * @var RequestStack
-     */
     private $requestStack;
 
-    /**
-     * @param PimcoreContextResolver             $pimcoreContextResolver
-     * @param TokenStorageUserResolver           $tokenStorageUserResolver
-     * @param TranslationLocaleProviderInterface $localeProvider
-     * @param RequestStack                       $requestStack
-     */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         TokenStorageUserResolver $tokenStorageUserResolver,
@@ -64,7 +45,7 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocaleCode()
+    public function getLocaleCode(): string
     {
         $request = $this->requestStack->getCurrentRequest();
 

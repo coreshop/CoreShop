@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Resource\Translation;
 
 use CoreShop\Component\Resource\Model\TranslatableInterface;
@@ -19,5 +21,5 @@ interface TranslatableEntityLocaleAssignerInterface
     /**
      * @param TranslatableInterface $translatableEntity
      */
-    public function assignLocale(TranslatableInterface $translatableEntity);
+    public function assignLocale(TranslatableInterface $translatableEntity): void;
 }

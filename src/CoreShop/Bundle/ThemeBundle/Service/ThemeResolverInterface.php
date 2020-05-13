@@ -10,14 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 interface ThemeResolverInterface
 {
     /**
      * Resolve Themes and ActiveTheme and stores it into ActiveThemeInterface $activeTheme.
+     *
+     * @param ActiveThemeInterface $activeTheme
      */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/);
+    public function resolveTheme(ActiveThemeInterface $activeTheme): void;
 }
-
-class_alias(ThemeResolverInterface::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolverInterface');

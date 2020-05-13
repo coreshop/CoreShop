@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
@@ -18,64 +20,31 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
+use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
     private $customerRepository;
-
-    /**
-     * @var ObjectServiceInterface
-     */
     private $objectService;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var string
-     */
     private $customerFolder;
-
-    /**
-     * @var string
-     */
     private $guestFolder;
-
-    /**
-     * @var string
-     */
     private $addressFolder;
+    private $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param ObjectServiceInterface      $objectService
-     * @param EventDispatcherInterface    $eventDispatcher
-     * @param LocaleContextInterface      $localeContext
-     * @param string                      $customerFolder
-     * @param string                      $guestFolder
-     * @param string                      $addressFolder
-     */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
         ObjectServiceInterface $objectService,
         EventDispatcherInterface $eventDispatcher,
         LocaleContextInterface $localeContext,
-        $customerFolder,
-        $guestFolder,
-        $addressFolder
+        string $customerFolder,
+        string $guestFolder,
+        string $addressFolder,
+        string $loginIdentifier
     ) {
         $this->customerRepository = $customerRepository;
         $this->objectService = $objectService;
@@ -84,6 +53,7 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->customerFolder = $customerFolder;
         $this->guestFolder = $guestFolder;
         $this->addressFolder = $addressFolder;
+        $this->loginIdentifier = $loginIdentifier;
     }
 
     /**
@@ -92,10 +62,11 @@ final class RegistrationService implements RegistrationServiceInterface
     public function registerCustomer(
         CustomerInterface $customer,
         AddressInterface $address,
-        $formData,
-        $isGuest = false
-    ) {
-        $existingCustomer = $this->customerRepository->findCustomerByEmail($customer->getEmail());
+        array $formData,
+        bool $isGuest = false
+    ): void {
+        $loginIdentifierValue = $this->loginIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
+        $existingCustomer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $loginIdentifierValue, $isGuest);
 
         if ($existingCustomer instanceof CustomerInterface && !$existingCustomer->getIsGuest()) {
             throw new CustomerAlreadyExistsException();
@@ -111,7 +82,11 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->setKey(Service::getUniqueKey($customer));
         $customer->setIsGuest($isGuest);
         $customer->setLocaleCode($this->localeContext->getLocaleCode());
-        $customer->save();
+
+        // save customer without version: the real one comes with the next save!
+        VersionHelper::useVersioning(function () use ($customer) {
+            $customer->save();
+        }, false);
 
         $address->setPublished(true);
         $address->setKey(uniqid());

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Calculator;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -17,15 +19,9 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $discountCalculator;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $discountCalculator
-     */
-    public function __construct($discountCalculator)
+    public function __construct(PrioritizedServiceRegistryInterface $discountCalculator)
     {
         $this->discountCalculator = $discountCalculator;
     }
@@ -33,7 +29,7 @@ class CompositeDiscountCalculator implements ProductDiscountCalculatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;
 

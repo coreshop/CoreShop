@@ -5,34 +5,32 @@ services:
     coreshop.order_shipment.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
         arguments:
-            - '@coreshop.sequence.generator'
+            - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
             - 'shipment'
 
-    coreshop.order_shipment.transformer.order_item_to_shipment_item: '@CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer'
     CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer:
         arguments:
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '%coreshop.folder.order_shipment_item%'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
-    coreshop.order.transformer.order_to_shipment: '@CoreShop\Component\Order\Transformer\OrderToShipmentTransformer'
     CoreShop\Component\Order\Transformer\OrderToShipmentTransformer:
         arguments:
-            - '@coreshop.order_shipment.transformer.order_item_to_shipment_item'
-            - '@coreshop.core.key_transformer'
+            - '@CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer'
+            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '@coreshop.order_shipment.number_generator.default'
             - '%coreshop.folder.order_shipment%'
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.repository.order_item'
             - '@coreshop.factory.order_shipment_item'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
     coreshop.order.transformer.order_to_shipment.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier
-        decorates: 'coreshop.order.transformer.order_to_shipment'
+        decorates: CoreShop\Component\Order\Transformer\OrderToShipmentTransformer
         arguments:
              - '@coreshop.order.transformer.order_to_shipment.state_applier.inner'
-             - '@coreshop.state_machine_manager'
+             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
              - !php/const CoreShop\Component\Order\ShipmentStates::STATE_NEW
              - !php/const CoreShop\Component\Order\ShipmentTransitions::IDENTIFIER
              - !php/const CoreShop\Component\Order\ShipmentTransitions::TRANSITION_CREATE

@@ -11,7 +11,7 @@
         <callout class="secondary">
             <row>
                 <columns large="6">
-                    {% if order.getPaymentProvider %}
+                    {% if order.paymentProvider %}
                     <p>
                         <strong>{{ 'coreshop.ui.payment_method'|trans }}</strong><br/>
                         {{ order.paymentProvider.title }}

@@ -13,6 +13,14 @@ pimcore.registerNS('pimcore.object.tags.coreShopSuperBoxSelect');
 pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.multihref, {
     type: 'coreShopSuperBoxSelect',
 
+     initialize: function (data, fieldConfig) {
+        this.data = data;
+        this.data_mapped = (data ? data : []).map(function(data) {
+            return parseInt(data.id);
+        });
+        this.fieldConfig = fieldConfig;
+    },
+
     getLayoutEdit: function () {
         this.options_store = new Ext.data.JsonStore({
             proxy: {
@@ -42,7 +50,7 @@ pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.mu
                     }
 
                     // FIXME is this necessary?
-                    this.component.setValue(this.data, null, true);
+                    this.component.setValue(this.data_mapped, null, true);
                 }.bind(this)
             },
             autoLoad: true

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Db\Db;
@@ -25,24 +27,9 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    /**
-     * @var ClassDefinition
-     */
     private $definition;
-
-    /**
-     * @var string
-     */
     private $oldFieldName;
-
-    /**
-     * @var string
-     */
     private $newFieldName;
-
-    /**
-     * @var Connection
-     */
     private $database;
 
     /**
@@ -61,7 +48,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
     /**
      * {@inheritdoc}
      */
-    public function rename()
+    public function rename(): void
     {
         $queries = $this->getRenameQueries();
 
@@ -103,7 +90,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
      *
      * @throws \Exception
      */
-    protected function getRenameQueries()
+    protected function getRenameQueries(): array
     {
         $fieldDefinition = $this->definition->getFieldDefinition($this->oldFieldName);
         $isLocalizedField = false;
@@ -161,7 +148,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 
         foreach ($storeTables as $storeTable) {
             if ($fieldDefinition instanceof Data\ResourcePersistenceAwareInterface) {
-                if (!$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
+                if ($fieldDefinition instanceof Data && !$fieldDefinition->isRelationType() && is_array($fieldDefinition->getColumnType())) {
                     foreach ($fieldDefinition->getColumnType() as $fkey => $fvalue) {
                         $columnName = $key.'__'.$fkey;
                         $newColumnName = $key.'__'.$this->newFieldName;
@@ -171,7 +158,7 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
                 }
 
                 if (!is_array($fieldDefinition->getColumnType())) {
-                    if ($fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
+                    if ($fieldDefinition instanceof Data && $fieldDefinition->getColumnType() && !$fieldDefinition->isRelationType()) {
                         $columnRenames[$storeTable][$key] = $this->newFieldName;
                     }
                 }

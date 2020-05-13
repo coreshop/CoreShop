@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -132,7 +134,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         if ($data instanceof Money) {
             if ($data->getCurrency()) {
                 $currency = $data->getCurrency();
-                $currency = $this->getEntityManager()->merge($currency);
 
                 return new Money($data->getValue(), $currency);
             }

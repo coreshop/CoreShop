@@ -2,44 +2,44 @@ services:
     _defaults:
         public: true
 
-    coreshop.admin_controller.settings: '@CoreShop\Bundle\CoreBundle\Controller\SettingsController'
     CoreShop\Bundle\CoreBundle\Controller\SettingsController:
         arguments:
-          - '@coreshop.resource_controller.view_handler'
+          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
           - [setContainer, ['@service_container']]
 
-    coreshop.admin_controller.reports: '@CoreShop\Bundle\CoreBundle\Controller\ReportsController'
     CoreShop\Bundle\CoreBundle\Controller\ReportsController:
         arguments:
-          - '@coreshop.resource_controller.view_handler'
+          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
           - [setContainer, ['@service_container']]
 
-    coreshop.admin_controller.portlets: '@CoreShop\Bundle\CoreBundle\Controller\PortletsController'
     CoreShop\Bundle\CoreBundle\Controller\PortletsController:
         arguments:
-          - '@coreshop.resource_controller.view_handler'
+          - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
           - [setContainer, ['@service_container']]
 
-    coreshop.admin_controller.product_preview: '@CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController'
     CoreShop\Bundle\CoreBundle\Controller\ProductPreviewController:
         arguments:
-            - '@coreshop.resource_controller.view_handler'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
             - [setContainer, ['@service_container']]
 
-    coreshop.admin_controller.product_validation: '@CoreShop\Bundle\CoreBundle\Controller\ProductValidationController'
     CoreShop\Bundle\CoreBundle\Controller\ProductValidationController:
         arguments:
-            - '@coreshop.resource_controller.view_handler'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
             - [setContainer, ['@service_container']]
 
-    coreshop.admin_controller.product_variant_unit_solidifer: '@CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController'
     CoreShop\Bundle\CoreBundle\Controller\ProductVariantUnitSolidifierController:
         arguments:
-            - '@coreshop.resource_controller.view_handler'
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
+        calls:
+            - [setContainer, ['@service_container']]
+
+    CoreShop\Bundle\CoreBundle\Controller\CustomerTransformerController:
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface'
         calls:
             - [setContainer, ['@service_container']]

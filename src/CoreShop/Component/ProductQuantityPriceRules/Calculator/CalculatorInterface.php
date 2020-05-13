@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Calculator;
 
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
@@ -36,7 +38,7 @@ interface CalculatorInterface
         float $quantity,
         int $originalPrice,
         array $context
-    );
+    ): int;
 
     /**
      * @param QuantityRangeInterface           $range
@@ -53,5 +55,5 @@ interface CalculatorInterface
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    );
+    ): int;
 }

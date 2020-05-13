@@ -1,22 +1,19 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
 
-    coreshop.context.locale.composite: '@CoreShop\Component\Locale\Context\CompositeLocaleContext'
-    CoreShop\Component\Locale\Context\LocaleContextInterface: '@CoreShop\Component\Locale\Context\CompositeLocaleContext'
     CoreShop\Component\Locale\Context\CompositeLocaleContext:
-        decorates: coreshop.context.locale
-        decoration_priority: 256
         public: false
 
-    coreshop.context.locale.pimcore: '@CoreShop\Component\Locale\Context\PimcoreLocaleContext'
     CoreShop\Component\Locale\Context\PimcoreLocaleContext:
         arguments:
             - '@pimcore.locale'
         tags:
             - { name: coreshop.context.locale, priority: 100 }
 
-    coreshop.context.locale.fixed: '@CoreShop\Component\Locale\Context\FixedLocaleContext'
     CoreShop\Component\Locale\Context\FixedLocaleContext:
         tags:
             - { name: coreshop.context.locale, priority: 200 }

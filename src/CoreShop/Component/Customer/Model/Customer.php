@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -75,6 +77,22 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function getCompany()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCompany($company)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGender()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
@@ -100,6 +118,14 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
      * {@inheritdoc}
      */
     public function setEmail($email)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUsername($username)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -187,6 +213,15 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     /**
      * {@inheritdoc}
      */
+    public function getUsername()
+    {
+        //This is just a fallback, if you want to use username for login, this method is overwritten by Pimcore's implementation
+        return $this->getEmail();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSalt()
     {
         // user has no salt as we use password_hash
@@ -214,8 +249,8 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     {
         $roles = $this->roles;
 
-        /** @var CustomerGroupInterface $group */
         if (is_array($this->getCustomerGroups())) {
+            /** @var CustomerGroupInterface $group */
             foreach ($this->getCustomerGroups() as $group) {
                 $groupRoles = $group->getRoles();
                 $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);
@@ -226,14 +261,6 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
         $roles[] = static::CORESHOP_ROLE_DEFAULT;
 
         return array_unique($roles);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getUsername()
-    {
-        return $this->getEmail();
     }
 
     /**

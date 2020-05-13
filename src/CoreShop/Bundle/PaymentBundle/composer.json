@@ -1,43 +1,39 @@
 {
-  "name": "coreshop/payment-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Payment Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/payment-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Payment Bundle",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "coreshop/payment": "^3.0",
+        "coreshop/currency-bundle": "^3.0",
+        "coreshop/resource-bundle": "^3.0",
+        "coreshop/workflow-bundle": "^3.0",
+        "pimcore/pimcore": "^6.6.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\PaymentBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "coreshop/payment": "^2.0",
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
-    "pimcore/pimcore": "^6.3.6"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\PaymentBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }

@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
+use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
 
 interface ObjectClonerInterface
@@ -19,11 +22,12 @@ interface ObjectClonerInterface
     /**
      * Clones an object and returns it unsaved.
      *
-     * @param Concrete $object
-     * @param Concrete $parent
-     * @param string   $key
+     * @param Concrete       $object
+     * @param AbstractObject $parent
+     * @param string         $key
+     * @param bool           $saveDirectly
      *
      * @return Concrete
      */
-    public function cloneObject(Concrete $object, $parent, $key);
+    public function cloneObject(Concrete $object, AbstractObject $parent, string $key, bool $saveDirectly = true): Concrete;
 }

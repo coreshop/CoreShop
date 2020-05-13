@@ -10,83 +10,63 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\Carrier;
-use CoreShop\Component\Core\Model\CartItemInterface;
-use CoreShop\Component\Taxation\Model\TaxRuleGroup;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
-use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
+use CoreShop\Component\Registry\ServiceRegistry;
+use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Pimcore\Model\DataObject\Fieldcollection;
 
 final class CartTaxProcessor implements CartProcessorInterface
 {
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
+    private $registry;
 
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
-    private $taxCalculationFactory;
-
-    /**
-     * @param TaxCollectorInterface         $taxCollector
-     * @param AddressProviderInterface      $defaultAddressProvider
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     */
     public function __construct(
         TaxCollectorInterface $taxCollector,
         AddressProviderInterface $defaultAddressProvider,
-        TaxCalculatorFactoryInterface $taxCalculatorFactory
+        ServiceRegistry $shippingTaxCalculationServices
     ) {
         $this->taxCollector = $taxCollector;
         $this->defaultAddressProvider = $defaultAddressProvider;
-        $this->taxCalculationFactory = $taxCalculatorFactory;
+        $this->registry = $shippingTaxCalculationServices;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->setTaxes(null);
 
         $usedTaxes = [];
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [], $usedTaxes);
+            $usedTaxes = $this->taxCollector->mergeTaxes($item->getTaxes() instanceof Fieldcollection ? $item->getTaxes()->getItems() : [],
+                $usedTaxes);
         }
 
-        $usedTaxes = $this->collectionShippingTaxes($cart, $usedTaxes);
+        $usedTaxes = $this->collectShippingTaxes($cart, $usedTaxes);
 
         $fieldCollection = new Fieldcollection();
         $fieldCollection->setItems($usedTaxes);
         $cart->setTaxes($fieldCollection);
     }
 
-    /**
-     * @param CartInterface $cart
-     * @param array         $usedTaxes
-     *
-     * @return array
-     */
-    private function collectionShippingTaxes(CartInterface $cart, array $usedTaxes = [])
+    private function collectShippingTaxes(OrderInterface $cart, array $usedTaxes = []): array
     {
-        if (!$cart instanceof \CoreShop\Component\Core\Model\CartInterface) {
+        if (!$cart instanceof \CoreShop\Component\Core\Model\OrderInterface) {
             return $usedTaxes;
         }
 
@@ -110,19 +90,25 @@ final class CartTaxProcessor implements CartProcessorInterface
             return $usedTaxes;
         }
 
-        $taxRule = $carrier->getTaxRule();
+        $shippingTaxCalculationStrategy = $carrier->getTaxCalculationStrategy() ?? 'taxRule';
 
-        if (!$taxRule instanceof TaxRuleGroup) {
-            return $usedTaxes;
-        }
+        if ($this->registry->has($shippingTaxCalculationStrategy)) {
+            /**
+             * @var TaxCalculationStrategyInterface $taxCalculationService
+             */
+            $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
+            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address,
+                $cart->getShipping(false));
 
-        $taxCalculator = $this->taxCalculationFactory->getTaxCalculatorForAddress($taxRule, $address);
+            if (1 === count($cartTax)) {
+                $cart->setShippingTaxRate(reset($cartTax)->getRate());
+            } elseif (0 === $cart->getShipping(false)) {
+                $cart->setShippingTaxRate(0);
+            } else {
+                $cart->setShippingTaxRate(round(100 * $cart->getShippingTax() / $cart->getShipping(false), 2));
+            }
 
-        if ($taxCalculator instanceof TaxCalculatorInterface) {
-            $cart->setShippingTaxRate($taxCalculator->getTotalRate());
-            $shipping = $cart->getShipping(false);
-
-            return $this->taxCollector->mergeTaxes($this->taxCollector->collectTaxes($taxCalculator, $shipping), $usedTaxes);
+            $usedTaxes = $this->taxCollector->mergeTaxes($cartTax, $usedTaxes);
         }
 
         return $usedTaxes;

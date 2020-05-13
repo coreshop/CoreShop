@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -50,58 +52,20 @@ final class ProductPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $actionFormTypeRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productPriceRuleFactory;
 
-    /**
-     * @var ProductPriceRuleRepositoryInterface
-     */
-    private $productPriceRuleRepository;
-
-    /**
-     * @param SharedStorageInterface              $sharedStorage
-     * @param ObjectManager                       $objectManager
-     * @param FormFactoryInterface                $formFactory
-     * @param FormTypeRegistryInterface           $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface           $actionFormTypeRegistry
-     * @param FactoryInterface                    $productPriceRuleFactory
-     * @param ProductPriceRuleRepositoryInterface $productPriceRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
-        FactoryInterface $productPriceRuleFactory,
-        ProductPriceRuleRepositoryInterface $productPriceRuleRepository
+        FactoryInterface $productPriceRuleFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
@@ -109,7 +73,6 @@ final class ProductPriceRuleContext implements Context
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->productPriceRuleFactory = $productPriceRuleFactory;
-        $this->productPriceRuleRepository = $productPriceRuleRepository;
     }
 
     /**

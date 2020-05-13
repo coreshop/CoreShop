@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\AddressesAwareTrait;
@@ -19,6 +21,22 @@ use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 class Customer extends BaseCustomer implements CustomerInterface
 {
     use AddressesAwareTrait;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAddressAccessType()
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAddressAccessType($addressAccessType)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
 
     /**
      * {@inheritdoc}

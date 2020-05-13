@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event;
 
 use Pimcore\Model\DataObject\Concrete;
@@ -17,20 +19,9 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ProductQuantityPriceRuleValidationEvent extends GenericEvent
 {
-    /**
-     * @var Concrete
-     */
     private $object;
-
-    /**
-     * @var array
-     */
     private $data;
 
-    /**
-     * @param Concrete $object
-     * @param array    $data
-     */
     public function __construct(Concrete $object, array $data)
     {
         parent::__construct($object);
@@ -39,26 +30,17 @@ final class ProductQuantityPriceRuleValidationEvent extends GenericEvent
         $this->data = $data;
     }
 
-    /**
-     * @return Concrete
-     */
-    public function getObject()
+    public function getObject(): Concrete
     {
         return $this->object;
     }
 
-    /**
-     * @param array $data
-     */
-    public function setData(array $data)
+    public function setData(array $data): void
     {
         $this->data = $data;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

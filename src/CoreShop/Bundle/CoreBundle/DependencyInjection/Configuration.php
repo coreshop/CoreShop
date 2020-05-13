@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStorePriceRepository;
@@ -114,6 +116,10 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('core')->defaultValue('/bundles/coreshopcore/pimcore/css/core.css')->end()
                         ->end()
                     ->end()
+                    ->scalarNode('permissions')
+                        ->cannotBeOverwritten()
+                        ->defaultValue(['ctc_assign_to_new', 'ctc_assign_to_existing'])
+                    ->end()
                     ->arrayNode('editmode_js')
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
@@ -121,6 +127,16 @@ final class Configuration implements ConfigurationInterface
                     ->arrayNode('editmode_css')
                         ->useAttributeAsKey('name')
                         ->prototype('scalar')->end()
+                    ->end()
+                    ->arrayNode('install')
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->arrayNode('admin_translations')
+                                ->treatNullLike([])
+                                ->scalarPrototype()->end()
+                                ->defaultValue(['@CoreShopCoreBundle/Resources/install/pimcore/admin-translations.yml'])
+                            ->end()
+                        ->end()
                     ->end()
                 ->end()
             ->end()

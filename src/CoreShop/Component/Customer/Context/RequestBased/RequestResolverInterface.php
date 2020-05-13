@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -20,7 +22,7 @@ interface RequestResolverInterface
     /**
      * @param Request $request
      *
-     * @return CustomerInterface|null
+     * @return CustomerInterface
      */
-    public function findCustomer(Request $request);
+    public function findCustomer(Request $request): CustomerInterface;
 }

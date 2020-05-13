@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Order\Mysql;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
@@ -36,7 +38,7 @@ class SimpleOrderRenderer extends AbstractMysqlDynamicRenderer
     /**
      * {@inheritdoc}
      */
-    public function supports(WorkerInterface $worker, OrderInterface $order)
+    public function supports(WorkerInterface $worker, OrderInterface $order): bool
     {
         return $worker instanceof MysqlWorker && $order instanceof SimpleOrder;
     }

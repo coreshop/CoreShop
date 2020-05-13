@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -23,14 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class StoreChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
 
-    /**
-     * @param RepositoryInterface $storeRepository
-     */
     public function __construct(RepositoryInterface $storeRepository)
     {
         $this->storeRepository = $storeRepository;
@@ -39,7 +35,7 @@ final class StoreChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
@@ -49,7 +45,7 @@ final class StoreChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -71,7 +67,7 @@ final class StoreChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -79,7 +75,7 @@ final class StoreChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_store_choice';
     }

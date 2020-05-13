@@ -10,12 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Listing\AbstractListing;
 
 class StackRepository extends PimcoreRepository
 {
@@ -80,7 +83,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function getList()
+    public function getList(): AbstractListing
     {
         $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
@@ -91,11 +94,15 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, $force = true)
+    public function forceFind($id, bool $force = true): ?DataObject\Concrete
     {
         $instance = DataObject::getById($id, $force);
 
         if (!in_array($this->interface, class_implements($instance), true)) {
+            return null;
+        }
+
+        if (!$instance instanceof DataObject\Concrete) {
             return null;
         }
 

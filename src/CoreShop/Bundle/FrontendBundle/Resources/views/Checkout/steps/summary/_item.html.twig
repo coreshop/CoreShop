@@ -1,40 +1,47 @@
 {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
-{% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
+{% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
 
 <tr class="shopping-cart-item">
     <td class="text-center">
-        {% if item.getProduct and item.getProduct.getImage() %}
-            <a class="" href="{{ productUrl }}">
-                {{ item.getProduct.getImage.getThumbnail('coreshop_productCart').getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+        {% if item.product and item.product.image is asset_image %}
+            <a href="{{ productUrl }}">
+                {{ item.product.image|image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
             </a>
         {% endif %}
     </td>
     <td class="text-center">
         <a href="{{ productUrl }}">
-            {{ item.getProduct.getName() }}
+            {{ item.product.name }}
         </a>
-        {% if item.getIsGiftItem %}
+        {% if item.isGiftItem %}
             <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
         {% endif %}
     </td>
     <td class="text-center">
-        <span>{{ item.getQuantity }}</span>
+        <span>{{ item.quantity }}</span>
         {% if item.hasUnitDefinition %}
-            <span class="unit-definition unit-name">{{ item.getUnitDefinition.getUnit.getName }}</span>
+            <span class="unit-definition unit-name">{{ item.unitDefinition.unit.name }}</span>
         {% endif %}
     </td>
     <td class="text-right cart-item-price">
-        {% set price = item.getItemPrice %}
-        {% set retailPrice = item.getItemRetailPrice %}
+        {% set price = item.itemPrice %}
+        {% set discount = item.itemDiscount %}
+        {% set discountPrice = item.itemDiscountPrice %}
+        {% set retailPrice = item.itemRetailPrice %}
 
-        {% if price != retailPrice %}
-            <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+        {% if price < retailPrice %}
+            {% if discountPrice > 0 %}
+                <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
+            {% endif %}
+            {% if discount > 0 %}
+                <span class="price-discount">(-{{ currency.convertAndFormat(discount) }})</span>
+            {% endif %}
         {% endif %}
 
         {{ currency.convertAndFormat(price) }}
     </td>
     <td class="text-right cart-item-total-price">
-        {{ currency.convertAndFormat(item.getTotal) }}
+        {{ currency.convertAndFormat(item.total) }}
     </td>
 </tr>

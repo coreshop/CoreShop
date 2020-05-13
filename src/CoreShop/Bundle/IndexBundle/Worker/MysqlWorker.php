@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Condition\ConditionRendererInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -232,6 +235,14 @@ class MysqlWorker extends AbstractWorker
         $table->addColumn('type', 'string');
         $table->setPrimaryKey(['src', 'dest', 'fieldname', 'type']);
 
+        foreach ($this->getExtensions($index) as $extension) {
+            if ($extension instanceof IndexRelationalColumnsExtensionInterface) {
+                foreach ($extension->getRelationalColumns() as $name => $type) {
+                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
+                }
+            }
+        }
+
         return $tableSchema;
     }
 
@@ -300,7 +311,7 @@ QUERY;
      */
     protected function handleArrayValues(IndexInterface $index, array $value)
     {
-        return ',' . implode($value, ',') . ',';
+        return ',' . implode(',', $value) . ',';
     }
 
     /**
@@ -338,7 +349,7 @@ QUERY;
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $doIndex = $object->getIndexable();
+        $doIndex = $object->getIndexable($index);
 
         if ($doIndex) {
             $preparedData = $this->prepareData($index, $object);
@@ -357,9 +368,8 @@ QUERY;
 
             try {
                 $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
-                foreach ($preparedData['relation'] as $rd) {
-                    $this->database->insert($this->getRelationTablename($index), $rd);
-                }
+
+                $this->doInsertRelationalData($index, $preparedData['relation']);
             } catch (\Exception $e) {
                 $this->logger->warning('Error during updating index relation table: ' . $e->getMessage(), [$e]);
             }
@@ -415,6 +425,13 @@ QUERY;
             . ' ON DUPLICATE KEY UPDATE ' . implode(',', $insertStatement);
 
         $this->database->executeQuery($insert, array_merge($updateData, $insertData));
+    }
+
+    protected function doInsertRelationalData(IndexInterface $index, $data)
+    {
+        foreach ($data as $rd) {
+            $this->database->insert($this->getRelationTablename($index), $rd);
+        }
     }
 
     /**

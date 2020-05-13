@@ -10,11 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\CoreBundle\Faker\Commerce;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
+use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
@@ -61,7 +64,7 @@ class CategoryFixture extends AbstractFixture implements ContainerAwareInterface
                  */
                 $category = $this->container->get('coreshop.factory.category')->createNew();
                 $category->setName($faker->department);
-                $category->setParent($this->container->get('coreshop.object_service')->createFolderByPath('/demo/categories'));
+                $category->setParent($this->container->get(ObjectServiceInterface::class)->createFolderByPath('/demo/categories'));
                 $category->setStores([$this->container->get('coreshop.repository.store')->findStandard()->getId()]);
                 $category->setPublished(true);
                 $category->setKey($category->getName());

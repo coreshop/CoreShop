@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
+use CoreShop\Bundle\StoreBundle\Collector\StoreCollector;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
 use CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface;
@@ -44,6 +47,12 @@ final class CoreShopStoreExtension extends AbstractModelExtension
         }
 
         $loader->load('services.yml');
+
+        if ($config['debug'] ?? $container->getParameter('kernel.debug')) {
+            $loader->load('services/debug.yml');
+
+            $container->getDefinition(StoreCollector::class)->replaceArgument(2, true);
+        }
 
         $container
             ->registerForAutoconfiguration(StoreContextInterface::class)

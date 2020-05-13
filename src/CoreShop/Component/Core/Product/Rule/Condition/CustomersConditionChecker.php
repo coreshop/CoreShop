@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Rule\Condition;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -22,8 +24,12 @@ final class CustomersConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
-    {
+    public function isValid(
+        ResourceInterface $subject,
+        RuleInterface $rule,
+        array $configuration,
+        array $params = []
+    ): bool {
         if (!array_key_exists('customer', $params) || !$params['customer'] instanceof CustomerInterface) {
             return false;
         }

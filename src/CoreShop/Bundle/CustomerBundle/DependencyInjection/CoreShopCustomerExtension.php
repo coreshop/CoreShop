@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection;
 
 use CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler\CompositeCustomerContextPass;
@@ -41,6 +43,8 @@ final class CoreShopCustomerExtension extends AbstractModelExtension
         if (array_key_exists('stack', $config)) {
             $this->registerStack('coreshop', $config['stack'], $container);
         }
+
+        $container->setParameter('coreshop.customer.security.login_identifier', $config['login_identifier']);
 
         $loader->load('services.yml');
 

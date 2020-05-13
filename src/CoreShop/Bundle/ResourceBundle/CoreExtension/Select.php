@@ -10,14 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface
+abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
 {
     /**
      * @var bool
@@ -56,6 +59,22 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         }
 
         return $this->getRepository()->find($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function marshalRecycleData($object, $data)
+    {
+        return $this->marshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unmarshalRecycleData($object, $data)
+    {
+        return $this->unmarshalVersion($object, $data);
     }
 
     /**
@@ -133,7 +152,13 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * @see ResourcePersistenceAwareInterface::getDataForResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
@@ -145,7 +170,13 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * @see ResourcePersistenceAwareInterface::getDataFromResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -156,8 +187,14 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return null;
     }
 
-    /**
-     * @return int|null
+     /**
+     * @see ResourcePersistenceAwareInterface::getDataForQueryResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -169,7 +206,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -177,7 +214,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {

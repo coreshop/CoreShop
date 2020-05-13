@@ -4,14 +4,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ coreshop_path('coreshop_index') }}">{{ 'coreshop.ui.home'|trans }}</a></li>
-            {% for cat in category.getHierarchy() %}
-                <li class="breadcrumb-item active"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.getName }}</a></li>
+            {% for cat in category.hierarchy %}
+                <li class="breadcrumb-item active"><a href="{{ coreshop_path(cat, 'coreshop_category_list') }}">{{ cat.name }}</a></li>
             {% endfor %}
         </ol>
     </nav>
 
     <h2 class="main-heading2">
-        {{ category.getName }}
+        {{ category.name }}
     </h2>
 
     <div class="product-filter">
@@ -47,8 +47,8 @@
             </div>
             <div class="col-md-2 text-right">
                 <select class="form-control site-reload" name="perPage">
-                    {% for perPage in perPageAllowed %}
-                        <option value="{{ perPage }}" {% if perPage == perPage %} selected="selected" {% endif %}>{{ perPage }}</option>
+                    {% for perPageList in perPageAllowed %}
+                        <option value="{{ perPageList }}" {% if perPageList == perPage %} selected="selected" {% endif %}>{{ perPageList }}</option>
                     {% endfor %}
                 </select>
             </div>
