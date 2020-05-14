@@ -5,7 +5,6 @@ imports:
     - { resource: payum.yml }
     - { resource: checkout.yml }
     - { resource: workflow.yml }
-    - { resource: seo.yml }
 
 jms_serializer:
     metadata:
