@@ -23,6 +23,8 @@ core_shop_order:
 #            sale_detail_abstract_block_detail: '/bundles/coreshoporder/pimcore/js/sale/detail/blocks/detail.js'
 #            sale_list: '/bundles/coreshoporder/pimcore/js/sale/list.js'
 #            sale_creation_panel: '/bundles/coreshoporder/pimcore/js/sale/create/panel.js'
+            order_creation_customer: '/bundles/coreshoporder/pimcore/js/order/create/customer.js'
+            order_creation_address: '/bundles/coreshoporder/pimcore/js/order/create/address.js'
             order_detail_abstract_block: '/bundles/coreshoporder/pimcore/js/order/detail/abstractBlock.js'
             order_creation_abstract_step: '/bundles/coreshoporder/pimcore/js/order/create/abstractStep.js'
             order_creation_step_base: '/bundles/coreshoporder/pimcore/js/order/create/step/base.js'

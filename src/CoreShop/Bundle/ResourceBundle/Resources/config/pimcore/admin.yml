@@ -16,6 +16,9 @@ core_shop_resource:
             core_extension_data_select: '/bundles/coreshopresource/pimcore/js/coreExtension/data/select.js'
             core_extension_tag_select: '/bundles/coreshopresource/pimcore/js/coreExtension/tags/select.js'
             core_extension_tag_multiselect: '/bundles/coreshopresource/pimcore/js/coreExtension/tags/multiselect.js'
+            selector_object: '/bundles/coreshopresource/pimcore/js/selector/object.js'
+            selector_selector: '/bundles/coreshopresource/pimcore/js/selector/selector.js'
+            resource_creation: '/bundles/coreshopresource/pimcore/js/resource/creation.js'
         css:
             resource: '/bundles/coreshopresource/pimcore/css/resource.css'
         editmode_js:

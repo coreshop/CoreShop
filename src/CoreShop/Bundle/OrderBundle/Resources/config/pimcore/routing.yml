@@ -141,3 +141,12 @@ coreshop_admin_order_add:
 coreshop_admin_order_remove:
     path: /%coreshop.admin.route.base%/order-edit/remove-item
     defaults: { _controller: 'coreshop.pimcore_controller.order_edit:removeItemAction'}
+
+##### CUSTOMER CREATION
+coreshop_admin_order_customer_creation:
+    path: /%coreshop.admin.route.base%/order/customer/create
+    defaults: { _controller: 'coreshop.pimcore_controller.order_customer_creation:createCustomerAction'}
+
+coreshop_admin_order_address_creation:
+    path: /%coreshop.admin.route.base%/order/address/create
+    defaults: { _controller: 'coreshop.pimcore_controller.order_address_creation:createAddressAction'}

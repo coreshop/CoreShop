@@ -14,7 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
+use CoreShop\Bundle\OrderBundle\Controller\AddressCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\CartPriceRuleController;
+use CoreShop\Bundle\OrderBundle\Controller\CustomerCreationController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCommentController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderController;
 use CoreShop\Bundle\OrderBundle\Controller\OrderCreationController;
@@ -213,6 +215,8 @@ final class Configuration implements ConfigurationInterface
                                                 ->scalarNode('edit')->defaultValue(OrderEditController::class)->end()
                                                 ->scalarNode('payment')->defaultValue(OrderPaymentController::class)->end()
                                                 ->scalarNode('comment')->defaultValue(OrderCommentController::class)->end()
+                                                ->scalarNode('customer_creation')->defaultValue(CustomerCreationController::class)->end()
+                                                ->scalarNode('address_creation')->defaultValue(AddressCreationController::class)->end()
                                             ->end()
                                         ->end()
                                     ->end()

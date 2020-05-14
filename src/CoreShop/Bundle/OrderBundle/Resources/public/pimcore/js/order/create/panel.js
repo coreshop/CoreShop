@@ -66,23 +66,36 @@ coreshop.order.order.create.panel = Class.create({
     },
 
     loadSaleRelator: function() {
-        var me = this;
+        var me = this,
+            toolbarConfig = [];
 
-        pimcore.helpers.itemselector(
+        toolbarConfig.push(new Ext.Button({
+            text: t("coreshop_order_create_customer"),
+            handler: this.createRelator.bind(this),
+            iconCls: "pimcore_icon_add",
+            enableToggle: true
+        }));
+
+        this.selector = new coreshop.selector.selector(
             false,
             function (customer) {
-                this.loadCustomerDetail(customer.id);
-            }.bind(me),
+                me.loadCustomerDetail(customer.id);
+            },
             {
-                type: ['object'],
-                subtype: {
-                    object: ['object']
-                },
-                specific: {
-                    classes: coreshop.stack.coreshop.customer
-                }
+                classes: coreshop.stack.coreshop.customer
+            },
+            {
+                toolbar: toolbarConfig
             }
         );
+    },
+
+    createRelator: function() {
+        var me = this;
+        new coreshop.order.order.create.customer({prefix: 'customer.'}, function(id) {
+            me.selector.window.close();
+            me.loadCustomerDetail(id);
+        }).show();
     },
 
     loadCustomerDetail: function (customerId) {

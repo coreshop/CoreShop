@@ -263,7 +263,7 @@ class OrderCreationController extends PimcoreController
         return [
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
-            'uso' => $currency->getIsoCode()
+            'iso' => $currency->getIsoCode()
         ];
     }
 

@@ -43,7 +43,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
     },
 
     setPreviewData: function(data) {
-
+        this.addressStore.setData(data.customer.addresses);
     },
 
     getValues: function (parent) {
@@ -87,6 +87,7 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                         xtype: 'combo',
                         fieldLabel: t('coreshop_address_' + type),
                         labelWidth: 150,
+                        itemId: 'address',
                         name: type + 'Address',
                         store: this.addressStore,
                         editable: false,
@@ -114,6 +115,25 @@ coreshop.order.order.create.step.address = Class.create(coreshop.order.order.cre
                                 this.eventManager.fireEvent('preview');
                             }.bind(this)
                         }
+                    },
+                    {
+                        xtype: 'button',
+                        iconCls: 'pimcore_icon_add',
+                        text: t('coreshop_address_create'),
+                        handler: function () {
+                            new coreshop.order.order.create.address(
+                                {
+                                    prefix: 'address.',
+                                    params: {
+                                        customer: this.creationPanel.customerId
+                                    }
+                                }, function(id) {
+                                    this[key].down('#address').setValue(id);
+
+                                    this.eventManager.fireEvent('preview');
+                                }.bind(this)
+                            ).show();
+                        }.bind(this)
                     },
                     this[addressDetailPanelKey]
                 ]
