@@ -34,6 +34,9 @@ imports:
     - { resource: services/taxation.yml }
 
 services:
+    _defaults:
+        public: true
+
     CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
     CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer: ~
 
