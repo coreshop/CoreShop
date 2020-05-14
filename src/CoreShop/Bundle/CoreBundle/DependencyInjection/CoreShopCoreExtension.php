@@ -21,7 +21,6 @@ use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
 use CoreShop\Component\Order\Checkout\DefaultCheckoutManagerFactory;
-use SeoBundle\SeoBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -66,8 +65,6 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
-
-        $this->registerDependantBundles('coreshop', [SeoBundle::class], $container);
 
         $container->setParameter('coreshop.after_logout_redirect_route', $config['after_logout_redirect_route']);
 

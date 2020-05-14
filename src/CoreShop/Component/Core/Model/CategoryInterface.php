@@ -16,6 +16,8 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
+use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
+use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
 
 interface CategoryInterface extends
     BaseCategoryInterface,

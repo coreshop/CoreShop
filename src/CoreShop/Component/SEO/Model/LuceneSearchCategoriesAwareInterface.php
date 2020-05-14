@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\SEO\Model;
 
 /**
- * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
+ * @deprecated Deprecated with 3.0 and will be removed with 3.1, Lucene Search is not supported anymore
  */
 interface LuceneSearchCategoriesAwareInterface
 {

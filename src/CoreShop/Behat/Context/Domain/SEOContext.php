@@ -17,9 +17,9 @@ namespace CoreShop\Behat\Context\Domain;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
+use CoreShop\Component\SEO\SEOPresentationInterface;
 use Pimcore\Templating\Helper\HeadMeta;
 use Pimcore\Templating\Helper\HeadTitle;
-use SeoBundle\MetaData\MetaDataProviderInterface;
 use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context
@@ -31,7 +31,7 @@ final class SEOContext implements Context
 
     public function __construct(
         SharedStorageInterface $sharedStorage,
-        MetaDataProviderInterface $seoPresentation,
+        SEOPresentationInterface $seoPresentation,
         HeadTitle $headTitle,
         HeadMeta $headMeta
     )
@@ -48,7 +48,7 @@ final class SEOContext implements Context
      */
     public function productShouldHaveMetaTitle(ProductInterface $product, string $title)
     {
-        $this->seoPresentation->updateSeoElement($product, 'en');
+        $this->seoPresentation->updateSeoMetadata($product);
 
         Assert::same($product->getMetaTitle(), $title);
         Assert::same($this->headTitle->toString(), sprintf('<title>%s</title>', $title));
@@ -60,7 +60,7 @@ final class SEOContext implements Context
      */
     public function productShouldHaveMetaDescription(ProductInterface $product, string $description)
     {
-        $this->seoPresentation->updateSeoElement($product, 'en');
+        $this->seoPresentation->updateSeoMetadata($product);
 
         $descriptionItem = null;
 

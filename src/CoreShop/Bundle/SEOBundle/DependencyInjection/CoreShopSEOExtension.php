@@ -37,10 +37,6 @@ final class CoreShopSEOExtension extends Extension
             $loader->load('services/lucene_search.yml');
         }
 
-        if (!array_key_exists('CoreShopCoreBundle', $bundles) && array_key_exists('SeoBundle', $bundles)) {
-            $loader->load('services/dachcom_seo.yml');
-        }
-
         $container
             ->registerForAutoconfiguration(ExtractorInterface::class)
             ->addTag(ExtractorRegistryServicePass::EXTRACTOR_TAG);

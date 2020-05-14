@@ -14,9 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\SEO\Model;
 
-/**
- * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
- */
 interface SEOMetadataInterface
 {
     /**

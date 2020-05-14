@@ -31,7 +31,6 @@ imports:
     - { resource: services/product-store-values.yml }
     - { resource: services/menu.yml }
     - { resource: services/shipping-taxation.yml }
-    - { resource: services/seo.yml }
 
 services:
     _defaults:
