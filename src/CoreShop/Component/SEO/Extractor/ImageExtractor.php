@@ -20,9 +20,6 @@ use Pimcore\Model\Asset\Image;
 use Pimcore\Tool;
 use Webmozart\Assert\Assert;
 
-/**
- * @deprecated Deprecated due to https://github.com/dachcom-digital/pimcore-seo, will be removed with 3.1
- */
 final class ImageExtractor implements ExtractorInterface
 {
     /**
