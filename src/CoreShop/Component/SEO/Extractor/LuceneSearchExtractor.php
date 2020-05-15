@@ -22,6 +22,9 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\AbstractElement;
 
+/**
+ * @deprecated Deprecated with 3.0 and will be removed with 3.1, Lucene Search is not supported anymore
+ */
 final class LuceneSearchExtractor implements ExtractorInterface
 {
     /**

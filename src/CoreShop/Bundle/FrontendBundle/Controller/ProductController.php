@@ -18,7 +18,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Pimcore\Http\RequestHelper;
 use Pimcore\Model\DataObject;
 use Symfony\Component\HttpFoundation\Request;

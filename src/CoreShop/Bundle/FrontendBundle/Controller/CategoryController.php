@@ -24,7 +24,6 @@ use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
 use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;

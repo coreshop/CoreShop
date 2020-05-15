@@ -60,6 +60,8 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
+        $container->setParameter('coreshop.all.dependant.bundles', []);
+
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {

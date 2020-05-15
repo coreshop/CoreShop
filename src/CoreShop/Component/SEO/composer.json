@@ -18,6 +18,9 @@
         "coreshop/registry": "^3.0",
         "webmozart/assert": "^1.2"
     },
+    "suggest": {
+        "dachcom-digital/seo": "For more advanced Pimcore SEO Features"
+    },
     "config": {
         "bin-dir": "bin"
     },

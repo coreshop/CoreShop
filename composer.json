@@ -180,7 +180,8 @@
         "coreshop/product-quantity-price-rules-bundle": "self.version"
     },
     "suggest": {
-        "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status."
+        "dpfaffenbauer/process-manager": "Allows to start Indexing from within Pimcore UI and also tracks the status.",
+        "dachcom-digital/seo": "For more advanced Pimcore SEO Features"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
