@@ -46,4 +46,12 @@ final class SharedStorageContext implements Context
     {
         return $this->getLatestResource() instanceof Concrete ? $this->getLatestResource() : null;
     }
+
+    /**
+     * @Transform /^(copied-object)$/
+     */
+    public function getCopiedObject()
+    {
+        return $this->sharedStorage->get('copied-object');
+    }
 }

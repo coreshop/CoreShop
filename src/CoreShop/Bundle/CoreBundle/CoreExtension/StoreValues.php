@@ -13,12 +13,14 @@
 namespace CoreShop\Bundle\CoreBundle\CoreExtension;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\Product\ProductStoreValuesType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\CloneDoctrineEntityTrait;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -32,9 +34,11 @@ use Webmozart\Assert\Assert;
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
     Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    CustomRecyclingMarshalInterface,
+    CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
+    use CloneDoctrineEntityTrait;
 
     /**
      * @var string
@@ -278,12 +282,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         if (!is_array($data)) {
             $data = [];
         }
-
-        foreach ($data as &$storeEntry) {
-            if ($storeEntry instanceof ProductStoreValuesInterface) {
-                $storeEntry->setProduct($object);
-            }
-        }
+//
+//        foreach ($data as &$storeEntry) {
+//            if ($storeEntry instanceof ProductStoreValuesInterface) {
+//                $storeEntry->setProduct($object);
+//            }
+//        }
 
         unset($storeEntry);
 
@@ -394,6 +398,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getEntityManager()->persist($storeEntity);
             $this->getEntityManager()->flush($storeEntity);
         }
+
+        //We have to set that here, values could change during persist due to copy or variant inheritance break
+        $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
     /**
@@ -461,6 +468,39 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         }
 
         return $entities;
+    }
+
+    public function createDataCopy($object, $data)
+    {
+        if (!$object instanceof ProductInterface) {
+            return [];
+        }
+
+        if (!is_array($data)) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($data as $value) {
+            if (!$value instanceof ProductStoreValuesInterface) {
+                continue;
+            }
+
+            /**
+             * @var ProductStoreValuesInterface $val
+             */
+            $val = $this->cloneEntity($value);
+            $val->setProduct($object);
+
+            foreach ($val->getProductUnitDefinitionPrices() as $productUnitDefinitionPrice) {
+                $val->removeProductUnitDefinitionPrice($productUnitDefinitionPrice);
+            }
+
+            $result[] = $val;
+        }
+
+        return $result;
     }
 
     /**

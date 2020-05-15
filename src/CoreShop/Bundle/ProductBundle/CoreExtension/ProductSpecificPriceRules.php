@@ -13,8 +13,10 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
+use CoreShop\Bundle\ResourceBundle\CoreExtension\CloneDoctrineEntityTrait;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
+use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
@@ -30,9 +32,11 @@ use Webmozart\Assert\Assert;
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    CustomRecyclingMarshalInterface,
+    CustomDataCopyInterface
 {
     use TempEntityManagerTrait;
+    use CloneDoctrineEntityTrait;
 
     /**
      * Static type of this element.
@@ -179,6 +183,28 @@ class ProductSpecificPriceRules extends Data implements
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createDataCopy($object, $data)
+    {
+        if (!$object instanceof ProductInterface) {
+            return null;
+        }
+
+        if (!$data instanceof ProductSpecificPriceRuleInterface) {
+            return null;
+        }
+
+        /**
+         * @var ProductSpecificPriceRuleInterface $clone
+         */
+        $clone = $this->cloneEntity($data);
+        $clone->setProduct($data);
+
+        return $clone;
     }
 
     /**
