@@ -182,6 +182,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                 name: 'quantity_amount',
                 getEditor: function () {
                     return new Ext.form.NumberField({
+                        decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision'),
                         minValue: 0
                     });
                 },
@@ -198,9 +199,9 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
                     }
 
                     if (value === undefined) {
-                        return coreshop.util.format.currency('', 0);
+                        return '0';
                     } else {
-                        return prefix + coreshop.util.format.currency('', parseFloat(value) * pimcore.globalmanager.get('coreshop.currency.decimal_factor'));
+                        return prefix + coreshop.util.format.number(parseFloat(value * pimcore.globalmanager.get('coreshop.currency.decimal_factor')));
                     }
                 }
             }],
