@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductTaxHelperInterface;
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use CoreShop\Component\Core\Provider\DefaultTaxAddressProviderInterface;

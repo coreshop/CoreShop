@@ -31,6 +31,7 @@ imports:
     - { resource: services/product-store-values.yml }
     - { resource: services/menu.yml }
     - { resource: services/shipping-taxation.yml }
+    - { resource: services/taxation.yml }
 
 services:
     _defaults:
@@ -38,19 +39,6 @@ services:
 
     CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface: '@CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer'
     CoreShop\Component\Core\Pimcore\PimcoreKeyTransformer: ~
-
-    CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface: '@CoreShop\Component\Core\Taxation\TaxCalculatorFactory'
-    CoreShop\Component\Core\Taxation\TaxCalculatorFactory:
-        arguments:
-            - '@coreshop.repository.tax_rule'
-
-    CoreShop\Component\Core\Taxation\TaxApplicatorInterface: '@CoreShop\Component\Core\Taxation\TaxApplicator'
-    CoreShop\Component\Core\Taxation\TaxApplicator: ~
-
-    CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory:
-        decorates: CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface
-        arguments:
-            - '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory.inner'
 
     CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider:
         arguments:

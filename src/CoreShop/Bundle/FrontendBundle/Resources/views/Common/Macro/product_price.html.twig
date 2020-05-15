@@ -2,7 +2,7 @@
     {% import '@CoreShopFrontend/Common/Macro/currency.html.twig' as currency %}
 
     {% if with_tax is null %}
-        {% set with_tax = true %}
+        {% set with_tax = coreshop_display_with_tax(coreshop.context) %}
     {% endif %}
 
     {% set priceUnformatted = product|coreshop_product_price(coreshop.context, with_tax) %}
