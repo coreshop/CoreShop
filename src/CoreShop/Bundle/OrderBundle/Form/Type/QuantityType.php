@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -26,7 +28,7 @@ final class QuantityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(new CallbackTransformer(
             function ($value) {
@@ -41,7 +43,7 @@ final class QuantityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -62,7 +64,7 @@ final class QuantityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['unit_definition'] instanceof ProductUnitDefinitionInterface) {
             $precision = $options['unit_definition']->getPrecision();
@@ -81,7 +83,7 @@ final class QuantityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return NumberType::class;
     }
@@ -89,7 +91,7 @@ final class QuantityType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_quantity';
     }

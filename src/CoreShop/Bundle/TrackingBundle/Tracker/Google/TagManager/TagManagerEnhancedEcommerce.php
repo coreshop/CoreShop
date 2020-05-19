@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -37,7 +39,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * @param TrackerInterface $tracker
      */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         // not implemented in GTM. Use CodeTracker instead.
     }
@@ -45,7 +47,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * @param CodeTracker $tracker
      */
-    public function setCodeTracker(CodeTracker $tracker)
+    public function setCodeTracker(CodeTracker $tracker): void
     {
         $this->codeTracker = $tracker;
     }
@@ -53,7 +55,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
@@ -61,7 +63,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -73,7 +75,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         $this->ensureDataLayer();
 
@@ -93,7 +95,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         $this->ensureDataLayer();
 
@@ -105,7 +107,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->codeTracker->addCodePart($result);
@@ -114,7 +116,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'add', $quantity);
@@ -123,7 +125,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'remove', $quantity);
@@ -132,7 +134,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         $this->ensureDataLayer();
 
@@ -140,16 +142,16 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
         $actionData['products'] = $cart['items'];
         $actionField = [];
 
-        if (!is_null($stepIdentifier) || !is_null($checkoutOption)) {
+        if (null !== $stepIdentifier || null !== $checkoutOption) {
             $actionField['step'] = $stepIdentifier + 1;
-            if (!is_null($checkoutOption)) {
+            if (null !== $checkoutOption) {
                 $actionField['option'] = $checkoutOption;
             }
         }
-
-        if (!empty($cartCoupon)) {
-            $actionData['coupon'] = $cartCoupon;
-        }
+//
+//        if (!empty($cartCoupon)) {
+//            $actionData['coupon'] = $cartCoupon;
+//        }
 
         if (!empty($actionField)) {
             $actionData['actionField'] = $actionField;
@@ -164,7 +166,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $this->ensureDataLayer();
 
@@ -183,7 +185,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, float $quantity = 1.0): void
     {
         $this->ensureDataLayer();
 
@@ -212,7 +214,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'id' => $actionData['id'],
@@ -231,7 +233,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
@@ -248,7 +250,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * Makes sure data layer is included once before any call.
      */
-    protected function ensureDataLayer()
+    protected function ensureDataLayer(): void
     {
         if ($this->dataLayerIncluded) {
             return;

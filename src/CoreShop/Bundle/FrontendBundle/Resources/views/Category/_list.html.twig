@@ -5,9 +5,9 @@
         <div class="row">
             <div class="col-12 col-sm-3">
                 <div class="image">
-                    {% if product.getImage() %}
+                    {% if product.image is asset_image %}
                         <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">
-                            {{ product.getImage().getThumbnail("coreshop_productList").getHtml({"class": "img-fluid"})|raw }}
+                            {{ product.image|image_thumbnail_html("coreshop_productList", {"class": "img-fluid"}) }}
                         </a>
                     {% endif %}
                 </div>
@@ -15,10 +15,10 @@
             <div class="col-12 col-sm-9">
                 <div class="caption">
                     <h4>
-                        <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">{{ product.getName }}</a>
+                        <a href="{{ coreshop_path(product, 'coreshop_product_detail') }}">{{ product.name }}</a>
                     </h4>
                     <div class="description">
-                        {{ product.getShortDescription }}
+                        {{ product.shortDescription }}
                     </div>
 
                     <div class="price">
@@ -29,7 +29,7 @@
                             <i class="fa fa-heart"></i>
                         </a>
                         {% if coreshop_inventory_is_available(product) %}
-                            {{ render(url('coreshop_cart_add', {'product': product.id})) }}
+                            {{ render(url('coreshop_partial_cart_add', {'product': product.id})) }}
                         {% endif %}
                     </div>
                 </div>

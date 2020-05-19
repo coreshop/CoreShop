@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Report;
 
 use Carbon\Carbon;
@@ -28,43 +30,13 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class SalesReport implements ReportInterface, ExportReportInterface, PortletInterface, ExportPortletInterface
 {
-    /**
-     * @var int
-     */
     private $totalRecords = 0;
-
-    /**
-     * @var RepositoryInterface
-     */
     private $storeRepository;
-
-    /**
-     * @var Connection
-     */
     private $db;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
     private $moneyFormatter;
-
-    /**
-     * @var LocaleContextInterface
-     */
     private $localeContext;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param RepositoryInterface        $storeRepository
-     * @param Connection                 $db
-     * @param MoneyFormatterInterface    $moneyFormatter
-     * @param LocaleContextInterface     $localeContext
-     * @param PimcoreRepositoryInterface $orderRepository,
-     */
     public function __construct(
         RepositoryInterface $storeRepository,
         Connection $db,
@@ -82,7 +54,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     /**
      * {@inheritdoc}
      */
-    public function getReportData(ParameterBag $parameterBag)
+    public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
@@ -90,7 +62,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     /**
      * {@inheritdoc}
      */
-    public function getPortletData(ParameterBag $parameterBag)
+    public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
@@ -100,7 +72,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
      *
      * @return array
      */
-    protected function getData(ParameterBag $parameterBag)
+    protected function getData(ParameterBag $parameterBag): array
     {
         $groupBy = $parameterBag->get('groupBy', 'day');
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -170,7 +142,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     /**
      * {@inheritdoc}
      */
-    public function getExportReportData(ParameterBag $parameterBag)
+    public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
 
@@ -189,15 +161,15 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
     /**
      * {@inheritdoc}
      */
-    public function getExportPortletData(ParameterBag $parameterBag)
+    public function getExportPortletData(ParameterBag $parameterBag): array
     {
         return $this->getExportReportData($parameterBag);
     }
 
     /**
-     * @return int
+     * {@inheritd}
      */
-    public function getTotal()
+    public function getTotal(): int
     {
         return $this->totalRecords;
     }

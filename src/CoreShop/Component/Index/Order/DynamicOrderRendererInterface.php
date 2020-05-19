@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Order;
 
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -27,11 +29,5 @@ interface DynamicOrderRendererInterface
      */
     public function render(WorkerInterface $worker, OrderInterface $order, string $prefix = null);
 
-    /**
-     * @param WorkerInterface $worker
-     * @param OrderInterface  $order
-     *
-     * @return bool
-     */
-    public function supports(WorkerInterface $worker, OrderInterface $order);
+    public function supports(WorkerInterface $worker, OrderInterface $order): bool;
 }

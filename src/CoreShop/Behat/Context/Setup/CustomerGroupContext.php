@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -21,20 +23,9 @@ use Pimcore\Model\DataObject\Folder;
 
 final class CustomerGroupContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $customerGroupFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $customerGroupFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $customerGroupFactory

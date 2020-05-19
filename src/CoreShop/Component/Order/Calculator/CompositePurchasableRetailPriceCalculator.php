@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Exception\NoPurchasableRetailPriceFoundException;
@@ -18,14 +20,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableRetailPriceCalculator implements PurchasableRetailPriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $calculators;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $calculators
-     */
     public function __construct(PrioritizedServiceRegistryInterface $calculators)
     {
         $this->calculators = $calculators;
@@ -34,7 +30,7 @@ class CompositePurchasableRetailPriceCalculator implements PurchasableRetailPric
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(PurchasableInterface $purchasable, array $context)
+    public function getRetailPrice(PurchasableInterface $purchasable, array $context): int
     {
         $price = null;
 

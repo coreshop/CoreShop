@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Tracking\Extractor;
 
 interface TrackingExtractorInterface
@@ -19,7 +21,7 @@ interface TrackingExtractorInterface
      *
      * @return bool
      */
-    public function supports($object);
+    public function supports($object): bool;
 
     /**
      * @param mixed $object

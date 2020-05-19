@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.order.cart.detail.blocks.info');
-coreshop.order.cart.detail.blocks.info = Class.create(coreshop.order.sale.detail.blocks.info, {
+coreshop.order.cart.detail.blocks.info = Class.create(coreshop.order.order.detail.blocks.info, {
     updateSale: function () {
         var me = this;
 

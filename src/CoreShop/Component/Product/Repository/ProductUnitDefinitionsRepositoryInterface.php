@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Repository;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -23,5 +25,5 @@ interface ProductUnitDefinitionsRepositoryInterface extends RepositoryInterface
      *
      * @return ProductUnitDefinitionsInterface
      */
-    public function findOneForProduct(ProductInterface $product);
+    public function findOneForProduct(ProductInterface $product): ?ProductUnitDefinitionsInterface;
 }

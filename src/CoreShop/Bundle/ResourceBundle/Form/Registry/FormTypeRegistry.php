@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Registry;
 
 final class FormTypeRegistry implements FormTypeRegistryInterface
@@ -22,7 +24,7 @@ final class FormTypeRegistry implements FormTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function add($identifier, $typeIdentifier, $formType)
+    public function add(string $identifier, string $typeIdentifier, string $formType): void
     {
         $this->formTypes[$identifier][$typeIdentifier] = $formType;
     }
@@ -30,7 +32,7 @@ final class FormTypeRegistry implements FormTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function get($identifier, $typeIdentifier)
+    public function get(string $identifier, string $typeIdentifier): ?string
     {
         if (!$this->has($identifier, $typeIdentifier)) {
             return null;
@@ -42,7 +44,7 @@ final class FormTypeRegistry implements FormTypeRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function has($identifier, $typeIdentifier)
+    public function has(string $identifier, string $typeIdentifier): bool
     {
         return isset($this->formTypes[$identifier][$typeIdentifier]);
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -23,10 +25,8 @@ interface ProductStorePriceRepositoryInterface extends RepositoryInterface
      * @param ProductInterface $product
      *
      * @return ProductStorePriceInterface[]
-     *
-     *  Won't get you the direct price anymore, use findForProductAndKey
      */
-    public function findForProduct(ProductInterface $product);
+    public function findForProduct(ProductInterface $product): array;
 
     /**
      * @param ProductInterface $product
@@ -34,7 +34,7 @@ interface ProductStorePriceRepositoryInterface extends RepositoryInterface
      *
      * @return ProductStorePriceInterface[]
      */
-    public function findForProductAndProperty(ProductInterface $product, string $property);
+    public function findForProductAndProperty(ProductInterface $product, string $property): array;
 
     /**
      * @param ProductInterface $product
@@ -43,5 +43,5 @@ interface ProductStorePriceRepositoryInterface extends RepositoryInterface
      *
      * @return ProductStorePriceInterface[]
      */
-    public function findForProductAndStoreAndProperty(ProductInterface $product, StoreInterface $store, string $property);
+    public function findForProductAndStoreAndProperty(ProductInterface $product, StoreInterface $store, string $property): array;
 }

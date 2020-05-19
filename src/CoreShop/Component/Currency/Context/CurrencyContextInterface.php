@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Context;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -21,5 +23,5 @@ interface CurrencyContextInterface
      *
      * @throws CurrencyNotFoundException
      */
-    public function getCurrency();
+    public function getCurrency(): CurrencyInterface;
 }

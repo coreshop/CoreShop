@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\Processor;
 
 use CoreShop\Bundle\NotificationBundle\Events;
@@ -44,7 +46,7 @@ final class EventedRuleProcessor implements RulesProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function applyRules($type, $subject, $params = [])
+    public function applyRules(string $type, $subject, array $params = []): void
     {
         $event = new GenericEvent($type, [
             'subject' => $subject,

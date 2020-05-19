@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection;
 
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\CartPriceRuleActionPass;
@@ -44,6 +46,8 @@ final class CoreShopOrderExtension extends AbstractModelExtension
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+
+        $loader->load('services.yml');
 
         $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);

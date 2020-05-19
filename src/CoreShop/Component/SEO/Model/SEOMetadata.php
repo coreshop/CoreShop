@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Model;
 
 class SEOMetadata implements SEOMetadataInterface
@@ -78,7 +80,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * @param string $locale
      */
-    public function setLocale($locale)
+    public function setLocale($locale): void
     {
         $this->locale = $locale;
     }
@@ -94,7 +96,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setMetaDescription($metaDescription)
+    public function setMetaDescription(string $metaDescription): void
     {
         $this->metaDescription = $metaDescription;
     }
@@ -102,7 +104,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetaDescription()
+    public function getMetaDescription(): ?string
     {
         return $this->metaDescription;
     }
@@ -110,7 +112,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setMetaKeywords($metaKeywords)
+    public function setMetaKeywords(string $metaKeywords): void
     {
         $this->metaKeywords = $metaKeywords;
     }
@@ -118,7 +120,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getMetaKeywords()
+    public function getMetaKeywords(): ?string
     {
         return $this->metaKeywords;
     }
@@ -126,7 +128,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setOriginalUrl($originalUrl)
+    public function setOriginalUrl(string $originalUrl): void
     {
         $this->originalUrl = $originalUrl;
     }
@@ -134,7 +136,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getOriginalUrl()
+    public function getOriginalUrl(): ?string
     {
         return $this->originalUrl;
     }
@@ -142,7 +144,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
@@ -150,7 +152,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -158,7 +160,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setExtraProperties($extraProperties)
+    public function setExtraProperties(array $extraProperties): void
     {
         $this->extraProperties = $this->toArray($extraProperties);
     }
@@ -166,7 +168,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtraProperties()
+    public function getExtraProperties(): array
     {
         return $this->extraProperties;
     }
@@ -174,15 +176,15 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function addExtraProperty($key, $value)
+    public function addExtraProperty(string $key, string $value): void
     {
-        $this->extraProperties[$key] = (string) $value;
+        $this->extraProperties[$key] = $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeExtraProperty($key)
+    public function removeExtraProperty(string $key)
     {
         if (array_key_exists($key, $this->extraProperties)) {
             unset($this->extraProperties[$key]);
@@ -192,7 +194,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setExtraNames($extraNames)
+    public function setExtraNames(array $extraNames): void
     {
         $this->extraNames = $this->toArray($extraNames);
     }
@@ -200,7 +202,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtraNames()
+    public function getExtraNames(): array
     {
         return $this->extraNames;
     }
@@ -208,15 +210,15 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function addExtraName($key, $value)
+    public function addExtraName(string $key, string $value): void
     {
-        $this->extraNames[$key] = (string) $value;
+        $this->extraNames[$key] = $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeExtraName($key)
+    public function removeExtraName($key): void
     {
         if (array_key_exists($key, $this->extraNames)) {
             unset($this->extraNames[$key]);
@@ -226,7 +228,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setExtraHttp($extraHttp)
+    public function setExtraHttp(array $extraHttp): void
     {
         $this->extraHttp = $this->toArray($extraHttp);
     }
@@ -234,7 +236,7 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getExtraHttp()
+    public function getExtraHttp(): array
     {
         return $this->extraHttp;
     }
@@ -242,15 +244,15 @@ class SEOMetadata implements SEOMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function addExtraHttp($key, $value)
+    public function addExtraHttp(string $key, string $value): void
     {
-        $this->extraHttp[$key] = (string) $value;
+        $this->extraHttp[$key] = $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeExtraHttp($key)
+    public function removeExtraHttp(string $key): void
     {
         if (array_key_exists($key, $this->extraHttp)) {
             unset($this->extraHttp[$key]);
@@ -262,7 +264,7 @@ class SEOMetadata implements SEOMetadataInterface
      *
      * @return array
      */
-    private function toArray($data)
+    private function toArray($data): array
     {
         if (is_array($data)) {
             return $data;

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -18,20 +20,9 @@ use CoreShop\Component\Locale\Context\FixedLocaleContext;
 
 final class LocaleContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FixedLocaleContext
-     */
     private $fixedLocaleContext;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FixedLocaleContext     $fixedLocaleContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FixedLocaleContext $fixedLocaleContext

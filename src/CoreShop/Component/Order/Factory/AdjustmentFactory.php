@@ -10,20 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Factory;
 
+use CoreShop\Component\Order\Model\AdjustmentInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class AdjustmentFactory implements AdjustmentFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param FactoryInterface $adjustmentFactory
-     */
     public function __construct(FactoryInterface $adjustmentFactory)
     {
         $this->adjustmentFactory = $adjustmentFactory;
@@ -40,7 +37,7 @@ class AdjustmentFactory implements AdjustmentFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false)
+    public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false): AdjustmentInterface
     {
         $adjustment = $this->createNew();
         $adjustment->setTypeIdentifier($type);

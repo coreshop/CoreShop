@@ -10,25 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoPriceFoundException;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
-use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
+use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class QuantityPriceFetcher
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $calculatorRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $calculatorRegistry
-     */
     public function __construct(ServiceRegistryInterface $calculatorRegistry)
     {
         $this->calculatorRegistry = $calculatorRegistry;
@@ -41,9 +37,8 @@ class QuantityPriceFetcher
      * @param int                               $originalPrice
      * @param array                             $context
      *
-     * @throws NoPriceFoundException
-     *
      * @return int
+     * @throws NoPriceFoundException
      */
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
@@ -51,7 +46,7 @@ class QuantityPriceFetcher
         float $quantity,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         /**
          * @var CalculatorInterface $service
          */
@@ -66,16 +61,15 @@ class QuantityPriceFetcher
      * @param int                              $originalPrice
      * @param array                            $context
      *
-     * @throws NoPriceFoundException
-     *
      * @return int
+     * @throws NoPriceFoundException
      */
     public function fetchRangePrice(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    ) {
+    ): int {
         /**
          * @var CalculatorInterface $service
          */

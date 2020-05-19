@@ -10,29 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
-use CoreShop\Behat\Service\NotificationRuleListenerInterface;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
 use Webmozart\Assert\Assert;
 
 final class NotificationContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var NotificationRuleListenerInterface
-     */
     private $notificationRuleListener;
 
-    /**
-     * @param SharedStorageInterface            $sharedStorage
-     * @param NotificationRuleListenerInterface $notificationRuleListener
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         NotificationRuleListenerInterface $notificationRuleListener

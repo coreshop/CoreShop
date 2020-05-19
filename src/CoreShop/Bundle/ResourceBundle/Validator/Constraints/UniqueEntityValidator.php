@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Validator\Constraints;
 
 use CoreShop\Component\Resource\Exception\UnexpectedTypeException;
@@ -25,20 +27,9 @@ use Webmozart\Assert\Assert;
 
 final class UniqueEntityValidator extends ConstraintValidator
 {
-    /**
-     * @var ExpressionLanguage
-     */
     protected $expressionLanguage;
-
-    /**
-     * @var ContainerInterface
-     */
     protected $container;
 
-    /**
-     * @param ExpressionLanguage $expressionLanguage
-     * @param ContainerInterface $container
-     */
     public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {
         $this->expressionLanguage = $expressionLanguage;
@@ -68,12 +59,11 @@ final class UniqueEntityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param Concrete   $entity
-     * @param Constraint $constraint
-     */
-    public function validate($entity, Constraint $constraint)
+    public function validate($entity, Constraint $constraint): void
     {
+        /**
+         * @var Concrete $entity
+         */
         Assert::isInstanceOf($entity, Concrete::class);
 
         if (!$constraint instanceof UniqueEntity) {
@@ -142,6 +132,7 @@ final class UniqueEntityValidator extends ConstraintValidator
          */
         $list = $entity::getList();
         $list->setCondition(implode(' AND ', $condition), $values);
+        $list->setUnpublished(true);
         $elements = $list->load();
 
         if (count($elements) > 0) {

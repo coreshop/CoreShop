@@ -10,17 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
 
 interface DataLoaderInterface
 {
-    /**
-     * @param DataObject\Concrete $data
-     * @param array               $loadedObjects
-     *
-     * @return mixed
-     */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = []);
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array;
 }

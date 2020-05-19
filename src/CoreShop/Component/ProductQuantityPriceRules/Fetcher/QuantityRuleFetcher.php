@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Fetcher;
 
 use CoreShop\Component\ProductQuantityPriceRules\Exception\NoRuleFoundException;
@@ -19,14 +21,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherI
 
 class QuantityRuleFetcher
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
     private $validRulesFetcher;
 
-    /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     */
     public function __construct(ValidRulesFetcherInterface $validRulesFetcher)
     {
         $this->validRulesFetcher = $validRulesFetcher;
@@ -40,7 +36,7 @@ class QuantityRuleFetcher
      *
      * @return ProductQuantityPriceRuleInterface
      */
-    public function fetch(QuantityRangePriceAwareInterface $subject, array $context)
+    public function fetch(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
 
@@ -61,7 +57,7 @@ class QuantityRuleFetcher
      *
      * @return array|ProductQuantityPriceRuleInterface[]
      */
-    public function getQuantityPriceRulesForSubject(QuantityRangePriceAwareInterface $subject, array $context)
+    public function getQuantityPriceRulesForSubject(QuantityRangePriceAwareInterface $subject, array $context): array
     {
         /** @var ProductQuantityPriceRuleInterface[] $rules */
         $rules = $this->validRulesFetcher->getValidRules($subject, $context);

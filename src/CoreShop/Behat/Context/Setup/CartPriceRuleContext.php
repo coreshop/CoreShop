@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -34,7 +36,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -46,7 +48,6 @@ use CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -60,74 +61,17 @@ final class CartPriceRuleContext implements Context
     use ConditionFormTrait;
     use ActionFormTrait;
 
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $conditionFormTypeRegistry;
-
-    /**
-     * @var FormTypeRegistryInterface
-     */
     private $actionFormTypeRegistry;
-
-    /**
-     * @var FactoryInterface
-     */
     private $cartPriceRuleFactory;
-
-    /**
-     * @var CartPriceRuleRepositoryInterface
-     */
-    private $cartPriceRuleRepository;
-
-    /**
-     * @var CartPriceRuleVoucherRepositoryInterface
-     */
     private $cartPriceRuleVoucherRepository;
-
-    /**
-     * @var CartPriceRuleProcessorInterface
-     */
     private $cartPriceRuleProcessor;
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $cartPriceRuleVoucherCodeFactory;
 
-    /**
-     * @param SharedStorageInterface                  $sharedStorage
-     * @param ObjectManager                           $objectManager
-     * @param FormFactoryInterface                    $formFactory
-     * @param FormTypeRegistryInterface               $conditionFormTypeRegistry
-     * @param FormTypeRegistryInterface               $actionFormTypeRegistry
-     * @param FactoryInterface                        $cartPriceRuleFactory
-     * @param CartPriceRuleRepositoryInterface        $cartPriceRuleRepository
-     * @param CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository
-     * @param CartPriceRuleProcessorInterface         $cartPriceRuleProcessor
-     * @param CartManagerInterface                    $cartManager
-     * @param FactoryInterface                        $cartPriceRuleVoucherCodeFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
@@ -135,7 +79,6 @@ final class CartPriceRuleContext implements Context
         FormTypeRegistryInterface $conditionFormTypeRegistry,
         FormTypeRegistryInterface $actionFormTypeRegistry,
         FactoryInterface $cartPriceRuleFactory,
-        CartPriceRuleRepositoryInterface $cartPriceRuleRepository,
         CartPriceRuleVoucherRepositoryInterface $cartPriceRuleVoucherRepository,
         CartPriceRuleProcessorInterface $cartPriceRuleProcessor,
         CartManagerInterface $cartManager,
@@ -147,7 +90,6 @@ final class CartPriceRuleContext implements Context
         $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->actionFormTypeRegistry = $actionFormTypeRegistry;
         $this->cartPriceRuleFactory = $cartPriceRuleFactory;
-        $this->cartPriceRuleRepository = $cartPriceRuleRepository;
         $this->cartPriceRuleVoucherRepository = $cartPriceRuleVoucherRepository;
         $this->cartPriceRuleProcessor = $cartPriceRuleProcessor;
         $this->cartManager = $cartManager;
@@ -157,7 +99,7 @@ final class CartPriceRuleContext implements Context
     /**
      * @Given /^I apply the voucher code "([^"]+)" to (my cart)$/
      */
-    public function iApplyTheCartRuleToMyCart($voucherCode, CartInterface $cart)
+    public function iApplyTheCartRuleToMyCart($voucherCode, OrderInterface $cart)
     {
         $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
 
@@ -462,14 +404,17 @@ final class CartPriceRuleContext implements Context
     /**
      * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off$/
      * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off$/
+     * @Given /^the (cart rule "[^"]+") has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
+     * @Given /^the (cart rule) has a action discount with ([^"]+) in (currency "[^"]+") off applied on ([^"]+)$/
      */
-    public function theCartPriceRuleHasADiscountAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency)
+    public function theCartPriceRuleHasADiscountAmountAction(CartPriceRuleInterface $rule, $amount, CurrencyInterface $currency, string $appliedOn = 'total')
     {
         $this->assertActionForm(DiscountAmountConfigurationType::class, 'discountAmount');
 
         $this->addAction($rule, $this->createActionWithForm('discountAmount', [
             'amount' => (int) $amount,
             'currency' => $currency->getId(),
+            'applyOn' => $appliedOn
         ]));
     }
 

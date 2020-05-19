@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Portlet;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -23,5 +25,5 @@ interface PortletInterface
      *
      * @return array
      */
-    public function getPortletData(ParameterBag $parameterBag);
+    public function getPortletData(ParameterBag $parameterBag): array;
 }

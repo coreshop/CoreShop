@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -60,7 +62,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($withTax = true)
+    public function getDiscount(bool $withTax = true): int
     {
         return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
     }
@@ -68,7 +70,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function setDiscount($discount, $withTax = true)
+    public function setDiscount(int $discount, bool $withTax = true)
     {
         return $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
     }
@@ -76,7 +78,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function getDiscountNet()
+    public function getDiscountNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -84,7 +86,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function setDiscountNet($discountNet)
+    public function setDiscountNet(int $discountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -92,7 +94,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function getDiscountGross()
+    public function getDiscountGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
@@ -100,7 +102,7 @@ class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implement
     /**
      * {@inheritdoc}
      */
-    public function setDiscountGross($discountGross)
+    public function setDiscountGross(int $discountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }

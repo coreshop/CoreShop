@@ -1,31 +1,16 @@
 services:
-    _defaults:
-        public: true
-
-    CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelperInterface: '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper'
-    CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper:
-        lazy: true
-        tags:
-            - { name: templating.helper, alias: coreshop_currency }
-
     CoreShop\Bundle\CurrencyBundle\Twig\CurrencyExtension:
-        public: false
-        arguments:
-            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\CurrencyHelper'
         tags:
             - { name: twig.extension }
 
-    CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelperInterface: '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper'
-    CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper:
-        lazy: true
+    CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension:
         arguments:
             - '@CoreShop\Component\Currency\Converter\CurrencyConverter'
         tags:
-            - { name: templating.helper, alias: coreshop_convert_currency }
+            - { name: twig.extension }
 
-    CoreShop\Bundle\CurrencyBundle\Twig\ConvertCurrencyExtension:
-        public: false
+    CoreShop\Bundle\CurrencyBundle\Twig\DisplayFractionExtension:
         arguments:
-            - '@CoreShop\Bundle\CurrencyBundle\Templating\Helper\ConvertCurrencyHelper'
+            - '@CoreShop\Component\Currency\Display\DefaultDisplayFractionProvider'
         tags:
             - { name: twig.extension }

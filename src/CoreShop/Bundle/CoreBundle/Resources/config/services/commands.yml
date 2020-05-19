@@ -3,7 +3,7 @@ services:
         abstract: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
 
     CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand
@@ -15,8 +15,8 @@ services:
         public: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
-            - '@coreshop.commands_provider.database_setup'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Provider\DatabaseSetupCommandsProvider'
         tags:
           - { name: console.command, command: coreshop:install:database }
 
@@ -36,8 +36,8 @@ services:
         public: true
         arguments:
             - '@kernel'
-            - '@coreshop.installer.checker.command_directory'
-            - '@coreshop.installer.executor.folder_installer'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
+            - '@CoreShop\Bundle\CoreBundle\Installer\Executor\FolderInstallerProvider'
         tags:
           - { name: console.command, command: coreshop:install:folders }
 
@@ -53,6 +53,8 @@ services:
 
     CoreShop\Bundle\CoreBundle\Command\MigrateCommand:
         public: true
+        arguments:
+            - '%coreshop.all.dependant.bundles%'
         tags:
             - { name: console.command, command: coreshop:migrate }
 

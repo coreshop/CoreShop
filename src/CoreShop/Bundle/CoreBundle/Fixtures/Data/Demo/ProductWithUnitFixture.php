@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
@@ -63,18 +65,20 @@ class ProductWithUnitFixture extends AbstractProductFixture
 
             /**
              * @var ProductUnitDefinitionInterface      $defaultDefinition
-             * @var ProductUnitDefinitionInterface      $cartonDefinition
-             * @var ProductUnitDefinitionInterface      $paletteDefinition
-             * @var ProductUnitDefinitionPriceInterface $cartonPrice
-             * @var ProductUnitDefinitionPriceInterface $palettePrice
              */
             $defaultDefinition = $productUnitDefinitionFactory->createNew();
             $defaultDefinition->setUnit($this->getReference('unit-piece'));
 
+            /**
+             * @var ProductUnitDefinitionInterface      $cartonDefinition
+             */
             $cartonDefinition = $productUnitDefinitionFactory->createNew();
             $cartonDefinition->setUnit($this->getReference('unit-carton'));
             $cartonDefinition->setConversionRate(24);
 
+            /**
+             * @var ProductUnitDefinitionInterface      $paletteDefinition
+             */
             $paletteDefinition = $productUnitDefinitionFactory->createNew();
             $paletteDefinition->setUnit($this->getReference('unit-palette'));
             $paletteDefinition->setConversionRate(24 * 40);
@@ -98,10 +102,16 @@ class ProductWithUnitFixture extends AbstractProductFixture
 
                 $storeValues->setPrice((int) $faker->randomFloat(2, 200, 400) * $decimalFactor);
 
+                /**
+                 * @var ProductUnitDefinitionPriceInterface $cartonPrice
+                 */
                 $cartonPrice = $productUnitDefinitionPriceFactory->createNew();
                 $cartonPrice->setUnitDefinition($cartonDefinition);
                 $cartonPrice->setPrice($product->getStorePrice($store) * 20);
 
+                /**
+                 * @var ProductUnitDefinitionPriceInterface $palettePrice
+                 */
                 $palettePrice = $productUnitDefinitionPriceFactory->createNew();
                 $palettePrice->setPrice($product->getStorePrice($store) * 20 * 38);
                 $palettePrice->setUnitDefinition($paletteDefinition);

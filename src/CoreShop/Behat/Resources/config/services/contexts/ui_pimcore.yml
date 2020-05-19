@@ -1,0 +1,11 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.behat.context.ui_pimcore.login:
+        class: CoreShop\Behat\Context\Ui\Pimcore\LoginContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\LoginPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+        tags:
+            - { name: fob.context_service }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Context\CountryNotFoundException;
@@ -41,11 +43,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      */
     private $geoDbFallbackFile;
 
-    /**
-     * @param CountryRepositoryInterface $countryRepository
-     * @param CoreHandlerInterface       $cache
-     * @param string                     $geoDbFile
-     */
     public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache, string $geoDbFile = null)
     {
         $this->countryRepository = $countryRepository;
@@ -57,11 +54,11 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCountry(Request $request)
+    public function findCountry(Request $request): CountryInterface
     {
         $geoDbFileLocation = $this->geoDbFile;
 
-        if (!file_exists($geoDbFileLocation)) {
+        if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             @trigger_error(
                 'You are still using the default search path for the MaxMind GEO DB File. Pimcore introduced a new parameter for the file, use that instead.',
                 E_USER_DEPRECATED
@@ -70,7 +67,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             $geoDbFileLocation = $this->geoDbFallbackFile;
         }
 
-        if (!file_exists($geoDbFileLocation)) {
+        if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             throw new CountryNotFoundException();
         }
 
@@ -115,7 +112,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      *
      * @return string|null
      */
-    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation)
+    private function guessCountryByGeoLite($clientIp, $geoDbFileLocation): ?string
     {
         try {
             $reader = new Reader($geoDbFileLocation);
@@ -135,7 +132,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
      *
      * @return bool
      */
-    private function checkIfIpIsPrivate($clientIp)
+    private function checkIfIpIsPrivate($clientIp): bool
     {
         $privateAddresses = [
             '10.0.0.0|10.255.255.255', // single class A network

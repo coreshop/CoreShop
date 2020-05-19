@@ -10,14 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ShippingBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShippingRuleController extends ResourceController
 {
-    public function getConfigAction(Request $request)
+    public function getConfigAction(Request $request): Response
     {
         $actions = $this->getConfigActions();
         $conditions = $this->getConfigConditions();
@@ -25,12 +28,12 @@ class ShippingRuleController extends ResourceController
         return $this->viewHandler->handle(['actions' => array_keys($actions), 'conditions' => array_keys($conditions)]);
     }
 
-    protected function getConfigActions()
+    protected function getConfigActions(): array
     {
         return $this->getParameter('coreshop.shipping_rule.actions');
     }
 
-    protected function getConfigConditions()
+    protected function getConfigConditions(): array
     {
         return $this->getParameter('coreshop.shipping_rule.conditions');
     }

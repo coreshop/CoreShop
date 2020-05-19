@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context;
 
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeCustomerContext implements CustomerContextInterface
@@ -30,7 +33,7 @@ final class CompositeCustomerContext implements CustomerContextInterface
      * @param CustomerContextInterface $customerContext
      * @param int                      $priority
      */
-    public function addContext(CustomerContextInterface $customerContext, $priority = 0)
+    public function addContext(CustomerContextInterface $customerContext, int $priority = 0)
     {
         $this->customerContexts->insert($customerContext, $priority);
     }
@@ -38,7 +41,7 @@ final class CompositeCustomerContext implements CustomerContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         foreach ($this->customerContexts as $customerContext) {
             try {

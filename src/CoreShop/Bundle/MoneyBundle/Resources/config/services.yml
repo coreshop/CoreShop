@@ -1,27 +1,19 @@
 imports:
-    - { resource: "services/form.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.money_formatter: '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
     CoreShop\Component\Currency\Formatter\MoneyFormatterInterface: '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
     CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter:
         arguments:
             - '%coreshop.currency.decimal_factor%'
 
-    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelperInterface: '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
-    CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper:
-        lazy: true
-        arguments:
-            - '@CoreShop\Bundle\MoneyBundle\Formatter\MoneyFormatter'
-        tags:
-            - { name: templating.helper, alias: coreshop_format_money }
-
     CoreShop\Bundle\MoneyBundle\Twig\FormatMoneyExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\MoneyBundle\Templating\Helper\FormatMoneyHelper'
+            - '@CoreShop\Component\Currency\Formatter\MoneyFormatterInterface'
         tags:
             - { name: twig.extension }

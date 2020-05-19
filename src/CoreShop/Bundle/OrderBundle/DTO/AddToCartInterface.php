@@ -10,20 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\DTO;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 
 interface AddToCartInterface
 {
     /**
-     * @return CartInterface
+     * @return OrderInterface
      */
-    public function getCart();
+    public function getCart(): OrderInterface;
 
     /**
-     * @return CartItemInterface
+     * @return OrderItemInterface
      */
-    public function getCartItem();
+    public function getCartItem(): OrderItemInterface;
 }

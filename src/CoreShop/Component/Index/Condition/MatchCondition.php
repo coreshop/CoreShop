@@ -10,15 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 class MatchCondition extends CompareCondition
 {
-    /**
-     * @param string $fieldName
-     * @param string $value
-     */
-    public function __construct($fieldName, $value)
+    public function __construct(string $fieldName, string $value)
     {
         parent::__construct($fieldName, '=', $value);
     }

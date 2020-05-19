@@ -1,0 +1,26 @@
+services:
+    _defaults:
+        public: true
+
+    CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface: '@CoreShop\Component\Core\Taxation\TaxCalculatorFactory'
+    CoreShop\Component\Core\Taxation\TaxCalculatorFactory:
+        arguments:
+            - '@coreshop.repository.tax_rule'
+
+    CoreShop\Component\Core\Taxation\TaxApplicatorInterface: '@CoreShop\Component\Core\Taxation\TaxApplicator'
+    CoreShop\Component\Core\Taxation\TaxApplicator: ~
+
+    CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory:
+        decorates: CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface
+        arguments:
+            - '@CoreShop\Component\Core\Taxation\CachedTaxCalculatorFactory.inner'
+
+
+    CoreShop\Component\Core\Taxation\TaxationDisplayProviderInterface: '@CoreShop\Component\Core\Taxation\DefaultTaxationDisplayProvider'
+    CoreShop\Component\Core\Taxation\DefaultTaxationDisplayProvider: ~
+
+    CoreShop\Bundle\CoreBundle\Twig\TaxationDisplayProviderExtension:
+        arguments:
+            - '@CoreShop\Component\Core\Taxation\TaxationDisplayProviderInterface'
+        tags:
+            - { name: twig.extension }

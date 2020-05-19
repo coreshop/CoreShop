@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Converter;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -34,10 +36,6 @@ final class CurrencyConverter implements CurrencyConverterInterface
      */
     private $cache;
 
-    /**
-     * @param ExchangeRateRepositoryInterface $exchangeRateRepository
-     * @param CurrencyRepositoryInterface     $currencyRepository
-     */
     public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {
         $this->exchangeRateRepository = $exchangeRateRepository;
@@ -47,7 +45,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert($amount, $fromCurrencyCode, $toCurrencyCode)
+    public function convert(int $amount, string $fromCurrencyCode, string $toCurrencyCode): int
     {
         if ($fromCurrencyCode === $toCurrencyCode) {
             return $amount;
@@ -70,9 +68,9 @@ final class CurrencyConverter implements CurrencyConverterInterface
      * @param string $fromCode
      * @param string $toCode
      *
-     * @return ExchangeRateInterface
+     * @return ExchangeRateInterface|null
      */
-    private function getExchangeRate($fromCode, $toCode)
+    private function getExchangeRate($fromCode, $toCode): ?ExchangeRateInterface
     {
         $fromToIndex = $this->createIndex($fromCode, $toCode);
 
@@ -86,16 +84,14 @@ final class CurrencyConverter implements CurrencyConverterInterface
             return $this->cache[$toFromIndex];
         }
 
-        /**
-         * @var CurrencyInterface
-         */
         $fromCurrency = $this->currencyRepository->getByCode($fromCode);
-        /**
-         * @var CurrencyInterface
-         */
         $toCurrency = $this->currencyRepository->getByCode($toCode);
 
-        return $this->cache[$toFromIndex] = $this->exchangeRateRepository->findOneWithCurrencyPair($fromCurrency, $toCurrency);
+        if (null !== $fromCurrency && null !== $toCurrency) {
+            return $this->cache[$toFromIndex] = $this->exchangeRateRepository->findOneWithCurrencyPair($fromCurrency, $toCurrency);
+        }
+
+        return null;
     }
 
     /**
@@ -104,7 +100,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
      *
      * @return string
      */
-    private function createIndex($prefix, $suffix)
+    private function createIndex($prefix, $suffix): string
     {
         return sprintf('%s-%s', $prefix, $suffix);
     }

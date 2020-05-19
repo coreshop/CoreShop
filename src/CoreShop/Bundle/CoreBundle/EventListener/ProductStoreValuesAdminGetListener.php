@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -20,14 +22,14 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ProductStoreValuesAdminGetListener implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             AdminEvents::OBJECT_GET_PRE_SEND_DATA => 'prepareData',
         ];
     }
 
-    public function prepareData(GenericEvent $event)
+    public function prepareData(GenericEvent $event): void
     {
         $object = $event->getArgument('object');
         if (!$object instanceof ProductInterface) {

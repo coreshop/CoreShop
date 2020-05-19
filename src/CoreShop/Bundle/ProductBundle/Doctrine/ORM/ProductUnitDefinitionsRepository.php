@@ -10,10 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 use CoreShop\Component\Product\Model\ProductInterface;
+use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Product\Repository\ProductUnitDefinitionsRepositoryInterface;
 
 class ProductUnitDefinitionsRepository extends EntityRepository implements ProductUnitDefinitionsRepositoryInterface
@@ -21,7 +24,7 @@ class ProductUnitDefinitionsRepository extends EntityRepository implements Produ
     /**
      * {@inheritdoc}
      */
-    public function findOneForProduct(ProductInterface $product)
+    public function findOneForProduct(ProductInterface $product): ?ProductUnitDefinitionsInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :product')

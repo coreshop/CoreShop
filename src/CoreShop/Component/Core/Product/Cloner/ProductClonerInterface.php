@@ -10,19 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
 
 interface ProductClonerInterface
 {
-    /**
-     * @param ProductInterface $product
-     * @param ProductInterface $referenceProduct
-     * @param bool             $resetExistingData
-     *
-     * @return void
-     * @throws \Exception
-     */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false);
+    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void;
 }

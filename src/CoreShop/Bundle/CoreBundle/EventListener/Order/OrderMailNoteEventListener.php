@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\Order;
 
 use CoreShop\Bundle\PimcoreBundle\Event\MailEvent;
@@ -21,23 +23,14 @@ use Pimcore\Model\Document\Email;
 
 final class OrderMailNoteEventListener
 {
-    /**
-     * @var NoteServiceInterface
-     */
     private $noteService;
 
-    /**
-     * @param NoteServiceInterface $noteService
-     */
     public function __construct(NoteServiceInterface $noteService)
     {
         $this->noteService = $noteService;
     }
 
-    /**
-     * @param MailEvent $mailEvent
-     */
-    public function onOrderMailSent(MailEvent $mailEvent)
+    public function onOrderMailSent(MailEvent $mailEvent): void
     {
         $subject = $mailEvent->getSubject();
         $params = $mailEvent->getParams();
@@ -47,15 +40,7 @@ final class OrderMailNoteEventListener
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     * @param Email          $emailDocument
-     * @param Mail           $mail
-     * @param array          $params
-     *
-     * @return bool
-     */
-    private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, $params = [])
+    private function addOrderNote(OrderInterface $order, Email $emailDocument, Mail $mail, array $params = []): void
     {
         $noteInstance = $this->noteService->createPimcoreNoteInstance($order, Notes::NOTE_EMAIL);
 
@@ -90,7 +75,5 @@ final class OrderMailNoteEventListener
         }
 
         $this->noteService->storeNoteForEmail($noteInstance, $emailDocument);
-
-        return true;
     }
 }

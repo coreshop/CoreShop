@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension\Document;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -87,6 +89,9 @@ class Select extends Tag
         return null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isEmpty()
     {
         return !$this->getResourceObject() instanceof ResourceInterface;
@@ -123,6 +128,8 @@ class Select extends Tag
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**
@@ -131,16 +138,8 @@ class Select extends Tag
     public function setDataFromResource($data)
     {
         $this->resource = $data;
-    }
 
-    /**
-     * @return array
-     */
-    public function getForWebserviceExport($document = null, $params = [])
-    {
-        return [
-            'id' => $this->resource->getId(),
-        ];
+        return $this;
     }
 
     /**

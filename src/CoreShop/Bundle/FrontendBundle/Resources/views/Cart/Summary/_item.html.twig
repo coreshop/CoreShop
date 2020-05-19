@@ -1,36 +1,38 @@
 {% import "@CoreShopFrontend/Common/Macro/currency.html.twig" as currency %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% set productUrl = coreshop_path(item.getProduct(), 'coreshop_product_detail') %}
+{% set productUrl = coreshop_path(item.product, 'coreshop_product_detail') %}
 
-<tr class="shopping-cart-item">
+<tr class="shopping-cart-item" {% if item.hasUnitDefinition %}{{ coreshop_test_html_attribute('cart-item-row-unit-' ~ item.unitDefinition.id, item.name) }}{% endif %}{{ coreshop_test_html_attribute('cart-item-row', item.name) }}>
     <td class="text-center">
-        {% if item.getProduct and item.getProduct.getImage() %}
-            <a class="" href="{{ productUrl }}">
-                {{ item.getProduct.getImage.getThumbnail("coreshop_productCart").getHtml({'class': 'img-fluid', 'alt': item.getProduct.getName, 'title': item.getProduct.getName})|raw }}
+        {% if item.product and item.product.image is asset_image %}
+            <a href="{{ productUrl }}">
+                {{ item.product.image|image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
             </a>
         {% endif %}
     </td>
     <td class="text-center">
-        <a href="{{ productUrl }}">
-            {{ item.getProduct.getName() }}
+        <a href="{{ productUrl }}" {{ coreshop_test_html_attribute('cart-item-name', item.name) }}>
+            {{ item.name }}
         </a>
-        {% if item.getIsGiftItem %}
+        {% if item.isGiftItem %}
             <br/><span>{{ 'coreshop.ui.gift_item'|trans }}</span>
         {% endif %}
     </td>
     <td class="text-center">
-        {% if item.getIsGiftItem %}
-            <span>{{ item.getQuantity }}</span>
+        {% if item.isGiftItem %}
+            <span>{{ item.quantity }}</span>
             {% if item.hasUnitDefinition %}
-                <span class="unit-definition unit-name">{{ item.getUnitDefinition.getUnit.getName }}</span>
+                <span class="unit-definition unit-name">{{ item.unitDefinition.unit.name }}</span>
             {% endif %}
         {% else %}
             <div class="input-group">
-                {{ form_widget(form.quantity) }}
+                {{ form_widget(form.quantity, coreshop_test_form_attribute('cart-item-quantity-input', item.name)) }}
                 {% if item.hasUnitDefinition %}
                     <div class="input-group-append">
-                        <span class="input-group-text">{{ item.getUnitDefinition.getUnit.getName }}</span>
+                        <span class="input-group-text" {{ coreshop_test_html_attribute('cart-item-unit-' ~ item.unitDefinition.id, item.name) }}>
+                            {{ item.unitDefinition.unit.name }}
+                        </span>
                     </div>
                 {% endif %}
 
@@ -39,12 +41,12 @@
         {% endif %}
     </td>
     <td class="text-right cart-item-price">
-        {% set price = item.getItemPrice %}
-        {% set discount = item.getItemDiscount %}
-        {% set discountPrice = item.getItemDiscountPrice %}
-        {% set retailPrice = item.getItemRetailPrice %}
+        {% set price = item.itemPrice %}
+        {% set discount = item.itemDiscount %}
+        {% set discountPrice = item.itemDiscountPrice %}
+        {% set retailPrice = item.itemRetailPrice %}
 
-        <span class="price-new">{{ currency.convertAndFormat(price) }}</span>
+        <span class="price-new" {{ coreshop_test_html_attribute('cart-item-unit-price', item.name) }}>{{ currency.convertAndFormat(price) }}</span>
         {% if price < retailPrice %}
             {% if discountPrice > 0 %}
                 <span class="price-old">{{ currency.convertAndFormat(retailPrice) }}</span>
@@ -54,13 +56,18 @@
             {% endif %}
         {% endif %}
     </td>
-    <td class="text-right cart-item-total-price">
-        {{ currency.convertAndFormat(item.getTotal) }}
+    <td class="text-right cart-item-total-price" {{ coreshop_test_html_attribute('cart-item-total-price', item.name) }}>
+        {{ currency.convertAndFormat(item.total) }}
     </td>
     <td class="text-center">
-        {% if not item.getIsGiftItem %}
-            <a href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.getId}) }}"
-               title="{{ 'coreshop.ui.remove'|trans }}" class="btn btn-danger tool-tip" data-id="{{ item.getId }}">
+        {% if not item.isGiftItem %}
+            <a
+                href="{{ coreshop_path(cart, 'coreshop_cart_remove', {cartItem: item.id}) }}"
+                title="{{ 'coreshop.ui.remove'|trans }}"
+                class="btn btn-danger tool-tip"
+                data-id="{{ item.id }}"
+                {{ coreshop_test_html_attribute('cart-remove-button', item.name) }}
+            >
                 <i class="fa fa-times-circle"></i>
             </a>
         {% endif %}

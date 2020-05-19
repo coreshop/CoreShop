@@ -10,43 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
-use CoreShop\Bundle\CoreBundle\Customer\CustomerLoginServiceInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Http\RequestHelper;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    /**
-     * @var RequestHelper
-     */
     protected $requestHelper;
-
-    /**
-     * @var CustomerRepositoryInterface
-     */
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
-
-    /**
-     * @var string
-     */
     protected $loginIdentifier;
 
-    /**
-     * @param RequestHelper               $requestHelper
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $loginIdentifier
-     */
     public function __construct(
         RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
@@ -82,6 +63,9 @@ final class CustomerSecurityValidationListener
 
         $identifierValue = $this->loginIdentifier === 'email' ? $object->getEmail() : $object->getUsername();
 
+        /**
+         * @var Listing $listing
+         */
         $listing = $this->customerRepository->getList();
         $listing->setUnpublished(true);
         $listing->addConditionParam(sprintf('%s = ?', $this->loginIdentifier), $identifierValue);
@@ -93,6 +77,12 @@ final class CustomerSecurityValidationListener
             return;
         }
 
-        throw new ValidationException(sprintf('%s "%s" is already used. Please use another one.', ucfirst($this->loginIdentifier), $identifierValue));
+        throw new ValidationException(
+            sprintf(
+                '%s "%s" is already used. Please use another one.',
+                ucfirst($this->loginIdentifier),
+                $identifierValue
+            )
+        );
     }
 }

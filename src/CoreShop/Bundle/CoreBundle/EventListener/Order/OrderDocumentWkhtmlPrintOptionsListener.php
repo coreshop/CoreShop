@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\Order;
 
 use CoreShop\Bundle\OrderBundle\Event\WkhtmlOptionsEvent;
@@ -17,20 +19,14 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 
 final class OrderDocumentWkhtmlPrintOptionsListener
 {
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationHelper;
 
-    /**
-     * @param ConfigurationServiceInterface $configurationHelper
-     */
     public function __construct(ConfigurationServiceInterface $configurationHelper)
     {
         $this->configurationHelper = $configurationHelper;
     }
 
-    public function resolveOptions(WkhtmlOptionsEvent $event)
+    public function resolveOptions(WkhtmlOptionsEvent $event): void
     {
         $orderDocument = $event->getOrderDocument();
 

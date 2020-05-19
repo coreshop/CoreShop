@@ -2,7 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.order.renderer.pdf: '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf'
     CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface: '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf'
     CoreShop\Bundle\OrderBundle\Renderer\Pdf\WkHtmlToPdf:
         arguments:
@@ -14,10 +13,9 @@ services:
         arguments:
             - '@fragment.renderer.inline'
             - '@event_dispatcher'
-            - '@coreshop.order.renderer.pdf'
-            - '@coreshop.theme.helper'
+            - '@CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
 
-    coreshop.renderer.order.pdf.asset: '@CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer'
     CoreShop\Bundle\OrderBundle\Renderer\AssetOrderDocumentPdfRenderer:
         decorates: coreshop.renderer.order.pdf
         arguments:

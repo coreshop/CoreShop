@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Repository;
 
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
@@ -23,10 +25,10 @@ interface PaymentProviderRepositoryInterface extends RepositoryInterface
      *
      * @return PaymentProviderInterface[]
      */
-    public function findByTitle($title, $locale);
+    public function findByTitle(string $title, string $locale): array;
 
     /**
      * @return PaymentProviderInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 }

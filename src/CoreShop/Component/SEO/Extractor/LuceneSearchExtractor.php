@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\LuceneSearchAwareInterface;
@@ -20,6 +22,9 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\AbstractElement;
 
+/**
+ * @deprecated Deprecated with 3.0 and will be removed with 3.1, Lucene Search is not supported anymore
+ */
 final class LuceneSearchExtractor implements ExtractorInterface
 {
     /**
@@ -35,14 +40,14 @@ final class LuceneSearchExtractor implements ExtractorInterface
         $this->crawlerState = $crawlerState;
     }
 
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof LuceneSearchAwareInterface ||
             $object instanceof LuceneSearchCategoriesAwareInterface ||
             $object instanceof AbstractElement;
     }
 
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         if (!class_exists(CrawlerState::class)) {
             throw new \LogicException(

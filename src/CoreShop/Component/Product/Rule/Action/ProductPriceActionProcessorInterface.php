@@ -10,16 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Action;
 
 interface ProductPriceActionProcessorInterface extends ActionProcessorInterface
 {
-    /**
-     * @param mixed $subject
-     * @param array $context
-     * @param array $configuration
-     *
-     * @return mixed
-     */
-    public function getPrice($subject, array $context, array $configuration);
+    public function getPrice($subject, array $context, array $configuration): int;
 }

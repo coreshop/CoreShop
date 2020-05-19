@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
+use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class FrontendController extends \Pimcore\Controller\FrontendController
@@ -40,6 +43,6 @@ class FrontendController extends \Pimcore\Controller\FrontendController
      */
     protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        return $this->container->get('coreshop.link_generator')->generate($object, $route, $parameters, $referenceType);
+        return $this->container->get(LinkGeneratorInterface::class)->generate($object, $route, $parameters, $referenceType);
     }
 }

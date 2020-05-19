@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Model;
 
 use CoreShop\Component\Resource\Model\AbstractTranslation;
@@ -69,7 +71,7 @@ class CarrierTranslation extends AbstractTranslation implements CarrierTranslati
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }

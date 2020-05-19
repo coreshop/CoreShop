@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
@@ -27,7 +29,7 @@ interface ExtractorInterface
      *
      * @return bool
      */
-    public function supports($object);
+    public function supports($object): bool;
 
     /**
      * Update the metadata with information from this content.
@@ -40,5 +42,5 @@ interface ExtractorInterface
      * @param object               $object
      * @param SEOMetadataInterface $seoMetadata
      */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata);
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void;
 }

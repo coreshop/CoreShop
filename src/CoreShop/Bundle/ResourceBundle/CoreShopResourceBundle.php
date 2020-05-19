@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
@@ -42,7 +44,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -70,7 +72,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Resource';
     }
@@ -78,7 +80,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Resource Bundle';
     }
@@ -86,7 +88,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getComposerPackageName(): string
     {
         if (isset(Versions::VERSIONS['coreshop/resource-bundle'])) {
             return 'coreshop/resource-bundle';

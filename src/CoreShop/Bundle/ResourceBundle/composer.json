@@ -1,56 +1,52 @@
 {
-  "name": "coreshop/resource-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Resource Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/resource-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Resource Bundle",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "doctrine/orm": "^2.5",
+        "doctrine/doctrine-bundle": "^1.6",
+        "jms/serializer-bundle": "^2.0",
+        "stof/doctrine-extensions-bundle": "^1.2",
+        "coreshop/pimcore-bundle": "^3.0",
+        "coreshop/registry": "^3.0",
+        "coreshop/resource": "^3.0",
+        "symfony/config": "^4.3",
+        "symfony/expression-language": "^4.3",
+        "symfony/form": "^4.3",
+        "symfony/framework-bundle": "^4.3",
+        "symfony/security-csrf": "^4.3",
+        "symfony/templating": "^4.3",
+        "symfony/twig-bundle": "^4.3",
+        "symfony/validator": "^4.3",
+        "symfony/yaml": "^4.3",
+        "gedmo/doctrine-extensions": "^2.4.12",
+        "pimcore/pimcore": "^6.6.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\ResourceBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "doctrine/orm": "^2.5",
-    "doctrine/doctrine-bundle": "^1.6",
-    "jms/serializer-bundle": "^2.0",
-    "stof/doctrine-extensions-bundle": "^1.2",
-    "coreshop/pimcore-bundle": "^2.1",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.1",
-    "symfony/config": "^3.4 | ^4.0",
-    "symfony/expression-language": "^3.4 | ^4.0",
-    "symfony/form": "^3.4 | ^4.0",
-    "symfony/framework-bundle": "^3.4.26 | ^4.1.12",
-    "symfony/security-csrf": "^3.4 | ^4.0",
-    "symfony/templating": "^3.4 | ^4.0",
-    "symfony/twig-bundle": "^3.4 | ^4.0",
-    "symfony/validator": "^3.4 | ^4.0",
-    "symfony/yaml": "^3.4 | ^4.0",
-    "gedmo/doctrine-extensions": "^2.4.12",
-    "pimcore/pimcore": "^6.6.0"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\ResourceBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }

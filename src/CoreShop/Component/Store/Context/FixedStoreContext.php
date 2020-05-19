@@ -10,21 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Store\Context;
 
 use CoreShop\Component\Store\Model\StoreInterface;
 
 final class FixedStoreContext implements StoreContextInterface
 {
-    /**
-     * @var StoreInterface
-     */
-    private $store = null;
+    private $store;
 
-    /**
-     * @param StoreInterface $store
-     */
-    public function setStore($store)
+    public function setStore(StoreInterface $store): void
     {
         $this->store = $store;
     }
@@ -32,7 +28,7 @@ final class FixedStoreContext implements StoreContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getStore()
+    public function getStore(): StoreInterface
     {
         if ($this->store instanceof StoreInterface) {
             return $this->store;

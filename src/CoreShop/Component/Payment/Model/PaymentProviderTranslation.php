@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Model;
 
 use CoreShop\Component\Resource\Model\AbstractTranslation;
@@ -74,7 +76,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }

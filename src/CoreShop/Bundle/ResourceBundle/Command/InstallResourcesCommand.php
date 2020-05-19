@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Command;
 
 use CoreShop\Bundle\ResourceBundle\Installer\ResourceInstallerInterface;
@@ -22,14 +24,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class InstallResourcesCommand extends Command
 {
-    /**
-     * @var ResourceInstallerInterface
-     */
     protected $resourceInstaller;
 
-    /**
-     * @param ResourceInstallerInterface $resourceInstaller
-     */
     public function __construct(ResourceInstallerInterface $resourceInstaller)
     {
         $this->resourceInstaller = $resourceInstaller;
@@ -40,7 +36,7 @@ final class InstallResourcesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:resources:install')
@@ -60,7 +56,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /**
          * @var Application $application

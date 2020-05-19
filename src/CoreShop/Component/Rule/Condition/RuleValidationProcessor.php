@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -17,14 +19,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleValidationProcessor implements RuleValidationProcessorInterface
 {
-    /**
-     * @var RuleConditionsValidationProcessorInterface
-     */
     private $ruleConditionsValidationProcessor;
 
-    /**
-     * @param RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor
-     */
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
@@ -33,7 +29,7 @@ class RuleValidationProcessor implements RuleValidationProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool
     {
         return $this->ruleConditionsValidationProcessor->isValid($subject, $rule, $rule->getConditions(), $params);
     }

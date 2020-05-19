@@ -1,28 +1,20 @@
 services:
-    _defaults:
-        public: true
-
-    coreshop.seo.extractor.description: '@CoreShop\Component\SEO\Extractor\DescriptionExtractor'
     CoreShop\Component\SEO\Extractor\DescriptionExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: description }
 
-    coreshop.seo.extractor.title: '@CoreShop\Component\SEO\Extractor\TitleExtractor'
     CoreShop\Component\SEO\Extractor\TitleExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: title }
 
-    coreshop.seo.extractor.og: '@CoreShop\Component\SEO\Extractor\OGExtractor'
     CoreShop\Component\SEO\Extractor\OGExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: opengraph }
 
-    coreshop.seo.extractor.image: '@CoreShop\Component\SEO\Extractor\ImageExtractor'
     CoreShop\Component\SEO\Extractor\ImageExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: image }
 
-    coreshop.seo.extractor.document: '@CoreShop\Component\SEO\Extractor\DocumentExtractor'
     CoreShop\Component\SEO\Extractor\DocumentExtractor:
         tags:
             - { name: coreshop.seo.extractor, type: document }

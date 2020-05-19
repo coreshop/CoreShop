@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListItemInterface
@@ -37,12 +39,12 @@ interface StorageListItemInterface
     public function setProduct($product);
 
     /**
-     * @return int
+     * @return float
      */
     public function getQuantity();
 
     /**
-     * @param int $quantity
+     * @param float $quantity
      */
     public function setQuantity($quantity);
 }

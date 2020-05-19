@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Matomo;
 
 use CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker;
@@ -37,7 +39,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * @param TrackerInterface $tracker
      */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
@@ -45,7 +47,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -66,7 +68,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * @param array $options
      */
-    protected function processOptions(array $options)
+    protected function processOptions(array $options): void
     {
         parent::processOptions($options);
 
@@ -79,7 +81,7 @@ final class Matomo extends AbstractEcommerceTracker
      *
      * {@inheritdoc}
      */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         $call = [
             'setEcommerceView',
@@ -98,7 +100,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         // not implemented
     }
@@ -106,7 +108,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         if ($this->handleCartAdd) {
             $this->trackCartAction($cart, 'add', $quantity);
@@ -116,7 +118,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         if ($this->handleCartRemove) {
             $this->trackCartAction($cart, 'remove', $quantity);
@@ -126,7 +128,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($cart, $action, $quantity = 1)
+    protected function trackCartAction($cart, $action, float $quantity = 1.0): void
     {
         $calls = $this->buildItemCalls($cart['items']);
         $calls[] = [
@@ -141,7 +143,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented (not supported by Matomo)
     }
@@ -149,7 +151,7 @@ final class Matomo extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $items = $order['items'];
 
@@ -226,7 +228,7 @@ final class Matomo extends AbstractEcommerceTracker
      *
      * @return string
      */
-    private function renderCalls(array $calls)
+    private function renderCalls(array $calls): string
     {
         return $this->renderTemplate('calls', [
             'calls' => $calls,

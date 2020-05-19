@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductPriceRuleConditionCollectionType;
@@ -37,7 +39,7 @@ final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurat
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -60,7 +62,7 @@ final class ProductPriceNestedConfigurationType extends AbstractNestedConfigurat
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_nested';
     }

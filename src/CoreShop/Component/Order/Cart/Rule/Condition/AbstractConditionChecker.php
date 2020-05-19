@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart\Rule\Condition;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -24,9 +26,9 @@ abstract class AbstractConditionChecker implements CartRuleConditionCheckerInter
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
-        Assert::isInstanceOf($subject, CartInterface::class);
+        Assert::isInstanceOf($subject, OrderInterface::class);
         Assert::keyExists($params, 'cartPriceRule');
         Assert::keyExists($params, 'voucher');
         Assert::nullOrIsInstanceOf($params['voucher'], CartPriceRuleVoucherCodeInterface::class);

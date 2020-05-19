@@ -10,8 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
+use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Checkout\CheckoutException;
 use CoreShop\Component\Order\Checkout\CheckoutManagerFactoryInterface;
@@ -19,8 +23,11 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\CheckoutEvents;
+use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
+use CoreShop\Component\Order\OrderSaleTransitions;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -124,7 +131,7 @@ class CheckoutController extends FrontendController
         }
 
         $isFirstStep = $checkoutManager->hasPreviousStep($stepIdentifier) === false;
-        $this->get('coreshop.tracking.manager')->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
+        $this->get(TrackerInterface::class)->trackCheckoutStep($cart, $checkoutManager->getCurrentStepIndex($stepIdentifier), $isFirstStep);
 
         $preparedData = array_merge($dataForStep, $checkoutManager->prepareStep($step, $cart, $request));
 
@@ -169,19 +176,20 @@ class CheckoutController extends FrontendController
     /**
      * @param Request $request
      *
-     * @return RedirectResponse
+     * @return Response
      *
      * @throws \Exception
      */
     public function doCheckoutAction(Request $request)
     {
-        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($this->getCart());
+        $cart = $this->getCart();
+        $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
 
         /*
          * after the last step, we come here
          *
          * what are we doing here?
-         *  1. Create Order
+         *  1. Commit Order (eg. change state)
          *  2. Use Payum and redirect to Payment Provider
          *  3. PayumBundle takes care about payment stuff
          *  4. After Payment is done, we return to PayumBundle PaymentController and further process it
@@ -194,10 +202,10 @@ class CheckoutController extends FrontendController
          * Check all previous steps if they are valid, if not, redirect back
          */
 
-        /**
-         * @var CheckoutStepInterface $step
-         */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
+            /**
+             * @var CheckoutStepInterface $step
+             */
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {
@@ -222,8 +230,12 @@ class CheckoutController extends FrontendController
         /**
          * If everything is valid, we continue with Order-Creation.
          */
-        $order = $this->getOrderFactory()->createNew();
-        $order = $this->getCartToOrderTransformer()->transform($this->getCart(), $order);
+        $order = $this->getCart();
+
+        $workflow = $this->get(StateMachineManagerInterface::class)->get($order, OrderSaleTransitions::IDENTIFIER);
+
+        $workflow->apply($order, OrderSaleTransitions::TRANSITION_ORDER);
+
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
@@ -302,11 +314,11 @@ class CheckoutController extends FrontendController
         $order = $this->get('coreshop.repository.order')->find($orderId);
         Assert::notNull($order);
 
-        $this->get('coreshop.tracking.manager')->trackCheckoutComplete($order);
+        $this->get(TrackerInterface::class)->trackCheckoutComplete($order);
 
         //After successfull payment, we log out the customer
-        if ($this->get('coreshop.context.shopper')->hasCustomer() &&
-            $this->get('coreshop.context.shopper')->getCustomer()->getIsGuest()) {
+        if ($this->get(ShopperContextInterface::class)->hasCustomer() &&
+            $this->get(ShopperContextInterface::class)->getCustomer()->getIsGuest()) {
             $this->get('security.token_storage')->setToken(null);
         }
 
@@ -337,7 +349,7 @@ class CheckoutController extends FrontendController
     }
 
     /**
-     * @return \CoreShop\Component\Order\Model\CartInterface
+     * @return \CoreShop\Component\Order\Model\OrderInterface
      */
     protected function getCart()
     {
@@ -349,31 +361,7 @@ class CheckoutController extends FrontendController
      */
     protected function getCartContext()
     {
-        return $this->get('coreshop.context.cart');
-    }
-
-    /**
-     * @return \CoreShop\Bundle\OrderBundle\Manager\CartManager
-     */
-    protected function getCartManager()
-    {
-        return $this->get('coreshop.cart.manager');
-    }
-
-    /**
-     * @return \CoreShop\Component\Order\Transformer\ProposalTransformerInterface
-     */
-    protected function getCartToOrderTransformer()
-    {
-        return $this->get('coreshop.order.transformer.cart_to_order');
-    }
-
-    /**
-     * @return \CoreShop\Component\Resource\Factory\PimcoreFactory
-     */
-    protected function getOrderFactory()
-    {
-        return $this->get('coreshop.factory.order');
+        return $this->get(CartContextInterface::class);
     }
 
     /**

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -21,23 +23,14 @@ use Webmozart\Assert\Assert;
 
 final class OrderCommentsListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function setOrderRepository(OrderRepositoryInterface $orderRepository)
     {
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function applyOrderCommentAddedNotifications(GenericEvent $event)
+    public function applyOrderCommentAddedNotifications(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), Note::class);
 

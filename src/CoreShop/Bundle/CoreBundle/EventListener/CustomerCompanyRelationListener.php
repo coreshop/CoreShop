@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
@@ -48,7 +50,7 @@ final class CustomerCompanyRelationListener
         $list->addConditionParam('company__id = ?', $object->getId());
 
         /** @var CustomerInterface $customer */
-        foreach ($list->getObjects() as $customer) {
+        foreach ($list->getData() as $customer) {
 
             $accessType = $customer->getAddressAccessType();
             if (empty($accessType)) {

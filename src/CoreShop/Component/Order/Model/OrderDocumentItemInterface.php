@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -18,7 +20,7 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 interface OrderDocumentItemInterface extends ResourceInterface, PimcoreModelInterface
 {
     /**
-     * @return OrderInterface
+     * @return OrderDocumentInterface
      */
     public function getDocument();
 

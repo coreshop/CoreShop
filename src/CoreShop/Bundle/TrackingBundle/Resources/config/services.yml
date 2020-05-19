@@ -1,3 +1,6 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     coreshop.registry.tracking.tracker:
         class: CoreShop\Component\Registry\ServiceRegistry
@@ -17,7 +20,6 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: trackingExtractors }
 
-    coreshop.tracking.resolver.tracking_config: '@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface'
     CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface: '@CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver'
     CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolver:
         public: true
@@ -25,13 +27,11 @@ services:
             - '@Pimcore\Analytics\SiteId\SiteIdProvider'
             - '@Pimcore\Analytics\Google\Config\ConfigProvider'
 
-    coreshop.tracking.tracker.ecommerce_tracker: '@CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker'
     CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker:
         abstract: true
         arguments:
             - '@templating.engine.delegating'
 
-    coreshop.tracking.event.gtm_code_tracker: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker:
         public: true
 
@@ -47,7 +47,6 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -100 }
 
-    coreshop.tracking.tracker.google.analytics.enhanced_ecommerce: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\AnalyticsEnhancedEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -57,7 +56,6 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-enhanced-ecommerce }
 
-    coreshop.tracking.tracker.google.analytics.universal_ecommerce: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -67,7 +65,6 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-analytics-universal-ecommerce }
 
-    coreshop.tracking.tracker.google.analytics.gtag_enhanced_ecommerce: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -77,7 +74,6 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-gtag-enhanced-ecommerce }
 
-    coreshop.tracking.tracker.google.analytics.gtm_classic_ecommerce: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -87,7 +83,6 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-gtm-classic-ecommerce }
 
-    coreshop.tracking.tracker.google.analytics.gtm_enhanced_ecommerce: '@CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce'
     CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -97,7 +92,7 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-gtm-enhanced-ecommerce }
 
-    coreshop.tracking.tracker.matomo: '@CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo'
+
     CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo:
         parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
         public: true
@@ -106,15 +101,10 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: matomo }
 
-    coreshop.tracking.extractor: '@CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface'
     CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface: '@CoreShop\Component\Tracking\Extractor\CompositeExtractor'
     CoreShop\Component\Tracking\Extractor\CompositeExtractor:
         arguments:
             - '@coreshop.registry.tracking.extractor'
-
-    coreshop.tracking.manager:
-        alias: 'CoreShop\Component\Tracking\Tracker\TrackerInterface'
-        public: true
 
     CoreShop\Component\Tracking\Tracker\TrackerInterface:
         alias: 'CoreShop\Component\Tracking\Tracker\CompositeTracker'
@@ -123,5 +113,5 @@ services:
     CoreShop\Component\Tracking\Tracker\CompositeTracker:
         public: true
         arguments:
-            - '@coreshop.tracking.extractor'
+            - '@CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface'
             - '@coreshop.registry.tracking.tracker'

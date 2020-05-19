@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Fetcher;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -33,7 +35,7 @@ final class CompositeValidRuleFetcher implements ValidRulesFetcherInterface
     /**
      * {@inheritdoc}
      */
-    public function getValidRules(ProductInterface $product, array $context)
+    public function getValidRules(ProductInterface $product, array $context): array
     {
         $rules = [];
 

@@ -10,21 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class SettingsController extends AdminController
 {
-    /**
-     * @param FilterControllerEvent $event
-     *
-     * @throws \Exception
-     */
     public function onKernelController(FilterControllerEvent $event)
     {
         $user = $this->getUser();
@@ -35,7 +33,7 @@ class SettingsController extends AdminController
         }
     }
 
-    public function getSettingsAction(Request $request)
+    public function getSettingsAction(Request $request): Response
     {
         $settings = [
             'bundle' => [

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
 use CoreShop\Bundle\PimcoreBundle\Event\MailEvent;
@@ -20,14 +22,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class MailProcessor implements MailProcessorInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -36,7 +32,7 @@ final class MailProcessor implements MailProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = [])
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool
     {
         $mailHasBeenSent = false;
 

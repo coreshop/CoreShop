@@ -10,18 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Checkout;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface ValidationCheckoutStepInterface
 {
     /**
      * Validates Step.
      *
-     * @param CartInterface $cart
+     * @param OrderInterface $cart
      *
-     * @returns bool
+     * @return bool
      **/
-    public function validate(CartInterface $cart);
+    public function validate(OrderInterface $cart): bool;
 }

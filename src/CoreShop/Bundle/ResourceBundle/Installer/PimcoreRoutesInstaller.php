@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\RouteConfiguration;
@@ -22,14 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreRoutesInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -38,7 +34,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.routes', $applicationName) : 'coreshop.all.pimcore.admin.install.routes';
 
@@ -89,15 +85,7 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
         }
     }
 
-    /**
-     * Check if route is already installed.
-     *
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return Staticroute
-     */
-    private function installRoute($name, $properties)
+    private function installRoute(string $name, array $properties): Staticroute
     {
         $route = new Staticroute();
 
@@ -107,6 +95,9 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             //Route does not exist, so we install it
             $route = Staticroute::create();
             $route->setName($name);
+            if (method_exists($route, 'setMethods')) {
+                $route->setMethods($properties['methods']);
+            }
             $route->setPattern($properties['pattern']);
             $route->setReverse($properties['reverse']);
             $route->setModule($properties['module']);

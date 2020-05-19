@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\DependencyInjection\Compiler;
 
 use CoreShop\Bundle\RuleBundle\Collector\RuleCollector;
@@ -39,6 +41,10 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
             }
 
             $definition = $container->getDefinition($serviceId);
+
+            if (null === $definition->getClass()) {
+                continue;
+            }
 
             if (!@class_exists($definition->getClass())) {
                 continue;

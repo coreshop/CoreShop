@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Templating\Helper;
 
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
@@ -19,14 +21,8 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $linkGenerator;
 
-    /**
-     * @param LinkGeneratorInterface $linkGenerator
-     */
     public function __construct(LinkGeneratorInterface $linkGenerator)
     {
         $this->linkGenerator = $linkGenerator;
@@ -35,21 +31,31 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false)
+    public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
-        return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+        return $this->linkGenerator->generate(
+            $object,
+            $routeName,
+            $params,
+            $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false)
+    public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
 
-        return $this->linkGenerator->generate($object, $routeName, $params, $relative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
+        return $this->linkGenerator->generate(
+            $object,
+            $routeName,
+            $params,
+            $relative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 
     /**
@@ -57,7 +63,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
      *
      * @return array
      */
-    protected function prepareParameters($arguments)
+    protected function prepareParameters($arguments): array
     {
         $object = null;
         $routeName = null;
@@ -110,7 +116,7 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop_link';
     }

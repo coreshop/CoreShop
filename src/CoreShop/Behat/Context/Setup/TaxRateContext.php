@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -21,42 +23,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $taxRateFactory;
 
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
-
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param ObjectManager          $objectManager
-     * @param FactoryInterface       $taxRateFactory
-     * @param RepositoryInterface    $taxRateRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
-        FactoryInterface $taxRateFactory,
-        RepositoryInterface $taxRateRepository
+        FactoryInterface $taxRateFactory
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->taxRateFactory = $taxRateFactory;
-        $this->taxRateRepository = $taxRateRepository;
     }
 
     /**

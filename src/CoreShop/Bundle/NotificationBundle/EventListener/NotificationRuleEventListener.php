@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -18,20 +20,14 @@ use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterfa
 
 class NotificationRuleEventListener
 {
-    /**
-     * @var NotificationRuleRepositoryInterface
-     */
     private $repository;
 
-    /**
-     * @param NotificationRuleRepositoryInterface $repository
-     */
     public function __construct(NotificationRuleRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    public function preCreate(ResourceControllerEvent $event)
+    public function preCreate(ResourceControllerEvent $event): void
     {
         $object = $event->getSubject();
 

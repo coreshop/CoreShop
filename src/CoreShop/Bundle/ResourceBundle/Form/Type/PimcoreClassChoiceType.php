@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -22,7 +24,7 @@ final class PimcoreClassChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $classes = new ClassDefinition\Listing();
         $classes = $classes->load();
@@ -41,7 +43,7 @@ final class PimcoreClassChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -49,7 +51,7 @@ final class PimcoreClassChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_resource_pimcore_class_choice';
     }

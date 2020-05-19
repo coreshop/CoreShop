@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CustomerBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -36,7 +38,7 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $loginIdentifierLabel = sprintf('coreshop.form.login.%s', $this->loginIdentifier);
 
@@ -56,7 +58,7 @@ class CustomerLoginType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_customer_login';
     }

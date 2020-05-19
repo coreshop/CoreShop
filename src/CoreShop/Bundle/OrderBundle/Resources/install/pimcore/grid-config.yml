@@ -493,7 +493,7 @@ grid_config:
 
     quote_en:
         name: 'Quote Overview'
-        class: coreshop.quote
+        class: coreshop.order
         data:
             language: en
             sortinfo:
@@ -672,7 +672,7 @@ grid_config:
 
     quote_de:
         name: Angebotsübersicht
-        class: coreshop.quote
+        class: coreshop.order
         data:
             language: de
             sortinfo:
@@ -849,7 +849,7 @@ grid_config:
 
     cart_en:
         name: 'Cart Overview'
-        class: coreshop.cart
+        class: coreshop.order
         data:
             language: en
             sortinfo:
@@ -949,7 +949,7 @@ grid_config:
 
     cart_de:
         name: 'Warenkorb Übersicht'
-        class: coreshop.cart
+        class: coreshop.order
         data:
             language: de
             sortinfo:

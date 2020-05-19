@@ -1,6 +1,8 @@
 <?php
 
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Type;
 
 
@@ -12,9 +14,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PimcoreAssetChoiceType extends AbstractType
 {
-    /**
-     * @var PimcoreAssetDataTransformer
-     */
     private $transformer;
 
     public function __construct(PimcoreAssetDataTransformer $transformer)
@@ -22,19 +21,28 @@ class PimcoreAssetChoiceType extends AbstractType
         $this->transformer = $transformer;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer($this->transformer);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'invalid_message' => 'Pimcore Asset does not exist'
         ]);
     }
 
-    public function getParent()
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent(): string
     {
         return IntegerType::class;
     }

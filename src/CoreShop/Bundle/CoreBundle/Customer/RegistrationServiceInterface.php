@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Customer;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -17,13 +19,5 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 interface RegistrationServiceInterface
 {
-    /**
-     * @param CustomerInterface $customer
-     * @param AddressInterface  $address
-     * @param array             $formData
-     * @param bool              $isGuest
-     *
-     * @return mixed
-     */
-    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, $formData, $isGuest = false);
+    public function registerCustomer(CustomerInterface $customer, AddressInterface $address, array $formData, bool $isGuest = false): void;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition\Assessor;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
@@ -19,12 +21,12 @@ interface RuleAvailabilityAssessorInterface
     /**
      * @return RuleInterface[]
      */
-    public function getRules();
+    public function getRules(): array;
 
     /**
      * @param RuleInterface $rule
      *
      * @return bool
      */
-    public function isValid(RuleInterface $rule);
+    public function isValid(RuleInterface $rule): bool;
 }

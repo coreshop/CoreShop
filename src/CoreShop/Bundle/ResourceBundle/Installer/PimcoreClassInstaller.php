@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
@@ -20,35 +22,12 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    /**
-     * @var array
-     */
+    private $kernel;
+    private $classInstaller;
     private $installedClasses = [];
-
-    /**
-     * @var array
-     */
     private $installedCollections = [];
-
-    /**
-     * @var array
-     */
     private $installedBricks = [];
 
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**
-     * @var ClassInstallerInterface
-     */
-    private $classInstaller;
-
-    /**
-     * @param KernelInterface         $kernel
-     * @param ClassInstallerInterface $classInstaller
-     */
     public function __construct(
         KernelInterface $kernel,
         ClassInstallerInterface $classInstaller
@@ -60,7 +39,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
 
@@ -145,7 +124,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * @return array
      */
-    public function getInstalledClasses()
+    public function getInstalledClasses(): array
     {
         return $this->installedClasses;
     }
@@ -153,7 +132,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * @return array
      */
-    public function getInstalledCollections()
+    public function getInstalledCollections(): array
     {
         return $this->installedCollections;
     }
@@ -161,7 +140,7 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
     /**
      * @return array
      */
-    public function getInstalledBricks()
+    public function getInstalledBricks(): array
     {
         return $this->installedBricks;
     }

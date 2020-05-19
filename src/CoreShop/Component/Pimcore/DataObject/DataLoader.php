@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Bundle\MoneyBundle\CoreExtension\Money;
@@ -20,7 +22,7 @@ class DataLoader implements DataLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getDataForObject(DataObject\Concrete $data, $loadedObjects = [])
+    public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
         if (!$data instanceof DataObject\AbstractObject) {
             return [];

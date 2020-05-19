@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
 use CoreShop\Component\Customer\Context\CustomerContextInterface;
@@ -43,7 +45,7 @@ final class CustomerContext implements CustomerContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         try {
             return $this->getCustomerForRequest($this->getMasterRequest());

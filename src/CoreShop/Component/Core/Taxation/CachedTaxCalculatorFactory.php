@@ -10,28 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Model\StateInterface;
+use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
 {
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var array
-     */
     private $cache = [];
 
-    /**
-     * @param TaxCalculatorFactoryInterface $taxCalculatorFactory
-     */
     public function __construct(TaxCalculatorFactoryInterface $taxCalculatorFactory)
     {
         $this->taxCalculatorFactory = $taxCalculatorFactory;
@@ -40,8 +33,10 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getTaxCalculatorForAddress(TaxRuleGroupInterface $taxRuleGroup, AddressInterface $address)
-    {
+    public function getTaxCalculatorForAddress(
+        TaxRuleGroupInterface $taxRuleGroup,
+        AddressInterface $address
+    ): TaxCalculatorInterface {
         $cacheIdentifier = sprintf(
             '%s.%s.%s',
             $taxRuleGroup->getId(),
@@ -50,7 +45,10 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
         );
 
         if (!array_key_exists($cacheIdentifier, $this->cache)) {
-            $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress($taxRuleGroup, $address);
+            $this->cache[$cacheIdentifier] = $this->taxCalculatorFactory->getTaxCalculatorForAddress(
+                $taxRuleGroup,
+                $address
+            );
         }
 
         return $this->cache[$cacheIdentifier];

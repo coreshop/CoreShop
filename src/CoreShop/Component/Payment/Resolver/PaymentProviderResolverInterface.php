@@ -10,16 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Payment\Resolver;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 
 interface PaymentProviderResolverInterface
 {
-    /**
-     * @param ResourceInterface $subject
-     *
-     * @return mixed
-     */
-    public function resolvePaymentProviders(ResourceInterface $subject = null);
+    public function resolvePaymentProviders(ResourceInterface $subject = null): array;
 }

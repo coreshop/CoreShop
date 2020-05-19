@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
@@ -22,15 +24,11 @@ use Doctrine\Common\Collections\Collection;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductUnitDefinitionsController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productUnitDefinitionsListAction(Request $request)
+    public function productUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -47,12 +45,7 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function productAdditionalUnitDefinitionsListAction(Request $request)
+    public function productAdditionalUnitDefinitionsListAction(Request $request): Response
     {
         $definitions = [];
 
@@ -73,13 +66,7 @@ class ProductUnitDefinitionsController extends ResourceController
         return $this->viewHandler->handle($definitions);
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param string           $type
-     *
-     * @return Collection
-     */
-    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all')
+    protected function getUnitDefinitionsForProduct(ProductInterface $product, string $type = 'all'): Collection
     {
         $definitions = new ArrayCollection();
 
@@ -99,7 +86,7 @@ class ProductUnitDefinitionsController extends ResourceController
         });
     }
 
-    protected function getLatestVersion(Concrete $object)
+    protected function getLatestVersion(Concrete $object): Concrete
     {
         $modificationDate = $object->getModificationDate();
         $latestVersion = $object->getLatestVersion();

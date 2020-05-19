@@ -23,24 +23,18 @@ class AppKernel extends Kernel
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
     }
 
+    protected function getEnvironmentsForDevBundles(): array
+    {
+        return array_merge(
+            ['test_precision'],
+            parent::getEnvironmentsForDevBundles()
+        );
+    }
+
     public function boot()
     {
         \Pimcore::setKernel($this);
 
         parent::boot();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function registerContainerConfiguration(\Symfony\Component\Config\Loader\LoaderInterface $loader)
-    {
-        parent::registerContainerConfiguration($loader);
-
-        $loader->load(function (\Symfony\Component\DependencyInjection\ContainerBuilder $container) use ($loader) {
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakeServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MakePimcoreServicesPublicPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, -100000);
-            $container->addCompilerPass(new \CoreShop\Test\DependencyInjection\MonologChannelLoggerPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
-        });
     }
 }

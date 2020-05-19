@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
@@ -150,7 +152,13 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * @see ResourcePersistenceAwareInterface::getDataForResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
@@ -162,7 +170,13 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * @see ResourcePersistenceAwareInterface::getDataFromResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -173,8 +187,14 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return null;
     }
 
-    /**
-     * @return int|null
+     /**
+     * @see ResourcePersistenceAwareInterface::getDataForQueryResource
+     *
+     * @param string $data
+     * @param null|Model\DataObject\AbstractObject $object
+     * @param mixed $params
+     *
+     * @return string|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -186,7 +206,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -194,7 +214,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {

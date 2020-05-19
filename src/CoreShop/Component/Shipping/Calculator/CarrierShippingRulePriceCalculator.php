@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -21,20 +23,9 @@ use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterf
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
 {
-    /**
-     * @var CarrierShippingRuleCheckerInterface
-     */
     protected $carrierShippingRuleChecker;
-
-    /**
-     * @var ShippingRuleActionProcessorInterface
-     */
     protected $shippingRuleProcessor;
 
-    /**
-     * @param CarrierShippingRuleCheckerInterface  $carrierShippingRuleChecker
-     * @param ShippingRuleActionProcessorInterface $shippingRuleProcessor
-     */
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
         ShippingRuleActionProcessorInterface $shippingRuleProcessor
@@ -46,17 +37,30 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address)
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
         /**
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
          * get the first valid one, and process it for the price.
          */
-        $shippingRuleGroup = $this->carrierShippingRuleChecker->isShippingRuleValid($carrier, $shippable, $address);
+        $shippingRuleGroup = $this->carrierShippingRuleChecker->findValidShippingRule($carrier, $shippable, $address);
 
         if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
-            $price = $this->shippingRuleProcessor->getPrice($shippingRuleGroup->getShippingRule(), $carrier, $shippable, $address);
-            $modifications = $this->shippingRuleProcessor->getModification($shippingRuleGroup->getShippingRule(), $carrier, $shippable, $address, $price);
+            $price = $this->shippingRuleProcessor->getPrice(
+                $shippingRuleGroup->getShippingRule(),
+                $carrier,
+                $shippable,
+                $address,
+                $context
+            );
+            $modifications = $this->shippingRuleProcessor->getModification(
+                $shippingRuleGroup->getShippingRule(),
+                $carrier,
+                $shippable,
+                $address,
+                $price,
+                $context
+            );
 
             return $price + $modifications;
         }

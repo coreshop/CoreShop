@@ -17,4 +17,4 @@ default:
 
                 - coreshop.behat.context.domain.seo
             filters:
-                tags: "@seo"
+                tags: "@domain && @seo"

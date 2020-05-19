@@ -1,42 +1,38 @@
 {
-  "name": "coreshop/theme-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Theme Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/theme-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Theme Bundle",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "coreshop/registry": "^3.0",
+        "coreshop/pimcore-bundle": "^3.0",
+        "liip/theme-bundle": "^1.4",
+        "pimcore/pimcore": "^6.6.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\ThemeBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "coreshop/registry": "^2.0",
-    "coreshop/pimcore-bundle": "^2.1",
-    "liip/theme-bundle": "^1.4",
-    "pimcore/pimcore": "^6.6.0"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\ThemeBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }

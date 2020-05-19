@@ -10,18 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * @property ContainerInterface $container
+ */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
-    /**
-     * @var ViewHandlerInterface
-     */
     protected $viewHandler;
 
-    /**
-     * @param ViewHandlerInterface $viewHandler
-     */
     public function __construct(ViewHandlerInterface $viewHandler)
     {
         $this->viewHandler = $viewHandler;

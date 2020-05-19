@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Pimcore;
 
+use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -21,6 +24,7 @@ use CoreShop\Component\Resource\Factory\PimcoreRepositoryFactory;
 use CoreShop\Component\Resource\Factory\RepositoryFactory;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -83,15 +87,27 @@ final class PimcoreDriver extends AbstractDriver
     protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, $classValue, $suffix = null)
     {
         $definition = new Definition($classValue);
+
+        $classes = array_merge([$classValue], class_parents($classValue));
+        foreach ($classes as $parent) {
+            if ($container->hasDefinition($parent)) {
+                $definition = new ChildDefinition($parent);
+                break;
+            }
+        }
+
         $definition
+            ->setClass($classValue)
             ->setPublic(true)
             ->setArguments([
                 $this->getMetadataDefinition($metadata),
                 new Reference($metadata->getServiceId('repository')),
                 new Reference($metadata->getServiceId('factory')),
-                new Reference('coreshop.resource_controller.view_handler'),
+                new Reference(ViewHandlerInterface::class),
             ])
-            ->addMethodCall('setContainer', [new Reference('service_container')]);
+            ->addMethodCall('setContainer', [new Reference('service_container')])
+            ->addTag('controller.service_arguments')
+        ;
 
         $serviceId = $metadata->getServiceId('pimcore_controller');
 
@@ -217,7 +233,7 @@ final class PimcoreDriver extends AbstractDriver
      */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
     {
-        $alias = new Alias('pimcore.dao.object_manager');
+        $alias = new Alias(ObjectManager::class);
         $alias->setPublic(true);
 
         $container->setAlias(

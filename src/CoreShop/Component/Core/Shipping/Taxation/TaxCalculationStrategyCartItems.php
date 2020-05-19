@@ -10,11 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface;
@@ -61,9 +63,9 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         int $shippingAmountNet
     ): array {
         /**
-         * @var CartInterface $shippable
+         * @var OrderInterface $shippable
          */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        Assert::isInstanceOf($shippable, OrderInterface::class);
 
         $store = $shippable->getStore();
 
@@ -83,13 +85,13 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
     }
 
-    private function collectCartItemsTaxRules(CartInterface $cart): array
+    private function collectCartItemsTaxRules(OrderInterface $cart): array
     {
         $totalAmount = [];
         $taxRules = [];
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if ($item->getDigitalProduct() === true) {

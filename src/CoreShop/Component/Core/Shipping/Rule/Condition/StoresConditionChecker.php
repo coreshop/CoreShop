@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -28,7 +30,7 @@ final class StoresConditionChecker extends AbstractConditionChecker
         ShippableInterface $shippable,
         AddressInterface $address,
         array $configuration
-    ) {
+    ): bool {
         if (!$shippable instanceof StoreAwareInterface) {
             return false;
         }

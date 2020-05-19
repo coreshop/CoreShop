@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -23,38 +25,12 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 final class CurrencyContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ObjectManager
-     */
     private $objectManager;
-
-    /**
-     * @var FactoryInterface
-     */
     private $currencyFactory;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     private $currencyRepository;
-
-    /**
-     * @var FixedCurrencyContext
-     */
     private $fixedCurrencyContext;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param ObjectManager               $objectManager
-     * @param FactoryInterface            $currencyFactory
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param FixedCurrencyContext        $fixedCurrencyContext
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,

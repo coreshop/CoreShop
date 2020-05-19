@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -19,14 +21,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BodyListener
 {
-    /**
-     * Core request handler.
-     *
-     * @param GetResponseEvent $event
-     *
-     * @throws BadRequestHttpException
-     */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $request = $event->getRequest();
         $contentType = $request->headers->get('Content-Type');
@@ -50,14 +45,7 @@ class BodyListener
         }
     }
 
-    /**
-     * Check if we should try to decode the body.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    protected function isDecodeable(Request $request)
+    protected function isDecodeable(Request $request): bool
     {
         if (!in_array($request->getMethod(), ['POST', 'PUT', 'PATCH', 'DELETE'])) {
             return false;
@@ -66,15 +54,12 @@ class BodyListener
         return !$this->isFormRequest($request);
     }
 
-    /**
-     * Check if the content type indicates a form submission.
-     *
-     * @param Request $request
-     *
-     * @return bool
-     */
-    private function isFormRequest(Request $request)
+    private function isFormRequest(Request $request): bool
     {
+        if (null === $request->headers->get('Content-Type')) {
+            return false;
+        }
+
         $contentTypeParts = explode(';', $request->headers->get('Content-Type'));
 
         if (isset($contentTypeParts[0])) {
