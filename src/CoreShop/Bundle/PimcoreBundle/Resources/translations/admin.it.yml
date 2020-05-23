@@ -2,3 +2,7 @@
 coreshop_order_list_filter: 'Filtro'
 coreshop_order_list_filter_empty: 'Nessun filtro'
 coreshop_dynamic_dropdown_sort_by: 'Ordina per'
+coreshop_dynamic_dropdown_item_selector_available: 'Disponibile'
+coreshop_dynamic_dropdown_item_selector_selected: 'Selezionato'
+coreshop_dynamic_dropdown_choose_tags: 'Scegli tag'
+coreshop_dynamic_dropdown_error_loading_options: 'Errore durante il caricamento delle opzioni'
