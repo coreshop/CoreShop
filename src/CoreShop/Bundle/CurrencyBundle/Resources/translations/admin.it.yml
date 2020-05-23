@@ -1,1 +1,7 @@
 ---
+coreshop_currency: 'Valuta'
+coreshop_currency_isoCode: 'Codice ISO'
+coreshop_currency_numericIsoCode: 'Codice ISO numerico'
+coreshop_currency_symbol: 'Simbolo'
+coreshop_currency_multiselect: 'Selezione multipla della valuta'
+coreshop_from_currency: 'Dalla valuta'
