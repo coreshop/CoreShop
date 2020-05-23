@@ -1,1 +1,7 @@
 ---
+coreshop_product_quantity_price_rules: 'Regole di prezzo delle quantità di prodotto'
+coreshop_product_quantity_price_rules_calculation_behaviour: 'Comportamento del calcolo'
+coreshop_product_quantity_price_rules_ranges: 'Intervalli di prezzo quantità'
+coreshop_product_quantity_price_rules_range_starting_from: 'A partire da'
+coreshop_product_quantity_price_rules_highlight: 'Evidenzia'
+coreshop_product_quantity_price_rules_quantity_amount: 'Unità'
