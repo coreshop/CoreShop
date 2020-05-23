@@ -1,1 +1,6 @@
 ---
+coreshop_condition_no_configuration: 'Nessuna configurazione disponibile'
+coreshop_condition_conditions_operator_and: 'E'
+coreshop_condition_conditions_operator_or: 'O'
+coreshop_condition_conditions_operator_not: 'Non'
+coreshop_condition_conditions_operator: 'Operatore'
