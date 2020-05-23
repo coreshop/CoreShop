@@ -1,1 +1,10 @@
 ---
+coreshop_condition_timespan_dateFrom: 'Data inizio'
+coreshop_condition_timespan_dateTo: 'Data fine'
+coreshop_action_discountAmount_amount: 'Importo'
+coreshop_action_discountPercent_percent: 'Percentuale'
+coreshop_product_list: 'Elenco prodotti'
+coreshop_product_quantity: 'Quantità'
+coreshop_product_price: 'Prezzo'
+coreshop_product_specific_price_rules: 'Prezzo specifico'
+coreshop_inherit: 'Eredita'
