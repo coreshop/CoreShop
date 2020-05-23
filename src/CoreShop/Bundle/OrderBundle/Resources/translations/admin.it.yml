@@ -1,1 +1,5 @@
 ---
+coreshop_save_error: 'Errore durante il salvataggio dell''elemento'
+coreshop_product: 'Prodotto'
+coreshop_product_count: 'Prodotto(i)'
+coreshop_currency: 'Valuta'
