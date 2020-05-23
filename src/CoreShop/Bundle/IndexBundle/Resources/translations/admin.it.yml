@@ -1,1 +1,12 @@
 ---
+coreshop_save_error: 'Errore durante il salvataggio dell''elemento'
+coreshop_index_field_type: 'Tipo'
+coreshop_index_field: 'Campo'
+coreshop_indexes_selected_fields: 'Campi indicizzati'
+coreshop_indexes_fields: 'Campi'
+coreshop_indexes_type: 'Tipo'
+coreshop_filters: 'Filtro'
+coreshop_filter: 'Filtro'
+coreshop_filters_resultsPerPage: 'Risultati per pagina'
+coreshop_filters_order_desc: 'decrescente'
+coreshop_filters_order_asc: 'crescente'
