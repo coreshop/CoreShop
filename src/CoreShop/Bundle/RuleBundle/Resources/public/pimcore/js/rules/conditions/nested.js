@@ -28,7 +28,7 @@ coreshop.rules.conditions.nested = Class.create(coreshop.rules.conditions.abstra
         // add saved conditions
         if (this.data && this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 
