@@ -17,7 +17,6 @@ services:
     CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer:
         arguments:
             - '@CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer'
-            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '@coreshop.order_invoice.number_generator.default'
             - '%coreshop.folder.order_invoice%'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
