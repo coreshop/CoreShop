@@ -133,7 +133,7 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
 
         if ($data instanceof Money) {
             if ($data->getCurrency()) {
-                $currency = $data->getCurrency();
+                $currency = $this->getCurrencyById($data->getCurrency()->getId());
 
                 return new Money($data->getValue(), $currency);
             }
