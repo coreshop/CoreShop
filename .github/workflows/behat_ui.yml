@@ -1,9 +1,9 @@
 name: Behat UI
 on:
   push:
-    branches: [ '3.0' ]
+    branches: [ 'master' ]
   pull_request:
-    branches: [ '3.0' ]
+    branches: [ 'master' ]
 
 jobs:
   behat:
