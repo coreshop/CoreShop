@@ -1,6 +1,6 @@
 default:
     suites:
-        domain_product:
+        domain_recycle_bin:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
