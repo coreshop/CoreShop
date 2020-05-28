@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle;
 
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
@@ -50,7 +52,7 @@ final class CoreShopOrderBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 

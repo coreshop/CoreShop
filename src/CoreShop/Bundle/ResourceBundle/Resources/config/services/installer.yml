@@ -17,7 +17,7 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller:
         arguments:
             - '@kernel'
-            - '@coreshop.class_installer'
+            - '@CoreShop\Component\Pimcore\DataObject\ClassInstallerInterface'
         tags:
             - { name: coreshop.resource.installer, type: classes, priority: 100}
 
@@ -102,11 +102,18 @@ services:
         arguments:
             - '@kernel'
             - '@CoreShop\Component\Resource\Metadata\RegistryInterface'
-            - '@pimcore.dao.object_manager'
+            - '@CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager'
             - '@CoreShop\Component\Pimcore\DataObject\GridConfigInstaller'
             - '@CoreShop\Bundle\ResourceBundle\Installer\PimcoreClassInstaller'
         tags:
             - { name: coreshop.resource.installer, type: grid_config, priority: 200}
+
+    CoreShop\Bundle\ResourceBundle\Installer\PimcoreDependantBundleInstaller:
+        arguments:
+            - '@kernel'
+            - '@Pimcore\Extension\Bundle\PimcoreBundleManager'
+        tags:
+            - { name: coreshop.resource.installer, type: dependant_bundles, priority: 550}
 
     coreshop.resource.installer:
         alias: 'CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller'
@@ -116,3 +123,4 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\CompositeResourceInstaller:
         arguments:
             - '@coreshop.registry.resource.installers'
+

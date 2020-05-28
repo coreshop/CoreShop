@@ -29,7 +29,7 @@ services:
     coreshop.form.type.edit_cart:
         class: CoreShop\Bundle\OrderBundle\Form\Type\EditCartType
         arguments:
-            - '%coreshop.model.cart.class%'
+            - '%coreshop.model.order.class%'
             - '%coreshop.form.type.edit_cart.validation_groups%'
         tags:
             - { name: form.type }

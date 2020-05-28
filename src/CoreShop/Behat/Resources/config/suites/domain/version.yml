@@ -1,6 +1,6 @@
 default:
     suites:
-        domain_product:
+        domain_version:
             contexts:
                 - coreshop.behat.context.hook.pimcore_setup
                 - coreshop.behat.context.hook.coreshop_setup
@@ -49,4 +49,4 @@ default:
                 - coreshop.behat.context.domain.link_generator
                 - coreshop.behat.context.domain.product_unit
             filters:
-                tags: "@version"
+                tags: "@domain && @version"

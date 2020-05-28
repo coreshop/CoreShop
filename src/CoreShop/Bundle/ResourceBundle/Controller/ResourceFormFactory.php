@@ -10,22 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 final class ResourceFormFactory implements ResourceFormFactoryInterface
 {
-    /**
-     * @var FormFactoryInterface
-     */
     private $formFactory;
 
-    /**
-     * @param FormFactoryInterface $formFactory
-     */
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -34,7 +31,7 @@ final class ResourceFormFactory implements ResourceFormFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(MetadataInterface $metadata, ResourceInterface $resource)
+    public function create(MetadataInterface $metadata, ResourceInterface $resource): FormInterface
     {
         $formType = $metadata->getClass('form');
 

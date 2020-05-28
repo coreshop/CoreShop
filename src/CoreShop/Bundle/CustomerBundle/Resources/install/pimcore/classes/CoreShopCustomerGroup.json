@@ -1,4 +1,5 @@
 {
+    "id": "cs_customer_group",
     "description": null,
     "parentClass": "CoreShop\\Component\\Customer\\Model\\CustomerGroup",
     "useTraits": null,
@@ -43,7 +44,7 @@
                         "columnLength": 190,
                         "regex": "",
                         "name": "name",
-                        "title": "Name",
+                        "title": "coreshop.customer_group.name",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
@@ -66,7 +67,7 @@
                         "optionsProviderClass": "CoreShop\\Bundle\\CustomerBundle\\CoreExtension\\Provider\\RoleOptionsProvider",
                         "optionsProviderData": "",
                         "name": "roles",
-                        "title": "roles",
+                        "title": "coreshop.customer_group.roles",
                         "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,

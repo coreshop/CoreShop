@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Helper;
 
 use Symfony\Component\Form\FormError;
@@ -17,12 +19,7 @@ use Symfony\Component\Form\FormInterface;
 
 final class ErrorSerializer
 {
-    /**
-     * @param FormInterface $handledForm
-     *
-     * @return array
-     */
-    public function serializeErrorFromHandledForm(FormInterface $handledForm)
+    public function serializeErrorFromHandledForm(FormInterface $handledForm): array
     {
         $errors = [];
 

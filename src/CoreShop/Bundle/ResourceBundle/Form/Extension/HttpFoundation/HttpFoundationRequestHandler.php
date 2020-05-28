@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation;
 
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
@@ -46,7 +48,7 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
     /**
      * {@inheritdoc}
      */
-    public function handleRequest(FormInterface $form, $request = null)
+    public function handleRequest(FormInterface $form, $request = null): void
     {
         if (!$request instanceof Request) {
             throw new UnexpectedTypeException($request, 'Symfony\Component\HttpFoundation\Request');

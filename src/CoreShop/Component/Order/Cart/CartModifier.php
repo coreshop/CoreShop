@@ -10,41 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
-use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
-use CoreShop\Component\StorageList\StorageListModifierInterface;
+use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
-class CartModifier implements StorageListModifierInterface
+class CartModifier implements CartModifierInterface
 {
-    /**
-     * @var StorageListItemQuantityModifierInterface
-     */
     protected $cartItemQuantityModifier;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param StorageListItemQuantityModifierInterface $cartItemQuantityModifier
-     * @param EventDispatcherInterface                 $eventDispatcher
-     * @param StorageListItemResolverInterface         $cartItemResolver
-     */
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         EventDispatcherInterface $eventDispatcher,
@@ -60,8 +45,7 @@ class CartModifier implements StorageListModifierInterface
             );
 
             $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
+        } else {
             $this->cartItemResolver = $cartItemResolver;
         }
     }
@@ -69,22 +53,22 @@ class CartModifier implements StorageListModifierInterface
     /**
      * {@inheritdoc}
      */
-    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
-        return $this->resolveItem($storageList, $item);
+        $this->resolveItem($storageList, $item);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item)
+    public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         /**
-         * @var $storageList CartInterface
-         * @var $item        CartItemInterface
+         * @var $storageList OrderInterface
+         * @var $item        OrderItemInterface
          */
-        Assert::isInstanceOf($storageList, CartInterface::class);
-        Assert::isInstanceOf($item, CartItemInterface::class);
+        Assert::isInstanceOf($storageList, OrderInterface::class);
+        Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $this->eventDispatcher->dispatch(
             'coreshop.cart.remove_add_pre',
@@ -104,7 +88,7 @@ class CartModifier implements StorageListModifierInterface
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $storageListItem
      */
-    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem)
+    private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
     {
         foreach ($storageList->getItems() as $item) {
             if ($this->cartItemResolver->equals($item, $storageListItem)) {

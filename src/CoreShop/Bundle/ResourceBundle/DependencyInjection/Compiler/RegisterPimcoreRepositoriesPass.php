@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,7 +27,7 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has('pimcore.dao.object_manager')) {
+        if (!$container->has(ObjectManager::class)) {
             return;
         }
 
@@ -37,7 +40,7 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
 
             $metadata = $registry->get($attributes[0]['alias']);
 
-            $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
+            $container->findDefinition(ObjectManager::class)->addMethodCall(
                 'registerRepository',
                 [
                     $metadata->getClass('model'),

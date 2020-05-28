@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\Core\AbstractConfigurationCollectionType;
@@ -17,7 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionCollectionType extends AbstractConfigurationCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
     }
@@ -25,7 +30,7 @@ class RuleConditionCollectionType extends AbstractConfigurationCollectionType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_collection';
     }

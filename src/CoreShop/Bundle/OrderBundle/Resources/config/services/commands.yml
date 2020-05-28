@@ -4,7 +4,7 @@ services:
 
     CoreShop\Bundle\OrderBundle\Command\CartExpireCommand:
         arguments:
-            - '@coreshop.cart.expire'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
             - '%coreshop.cart.expiration.days%'
             - { anonymous: '%coreshop.cart.expiration.anonymous%', customer: '%coreshop.cart.expiration.customer%'}
         tags:
@@ -12,7 +12,7 @@ services:
 
     CoreShop\Bundle\OrderBundle\Command\OrderExpireCommand:
         arguments:
-            - '@coreshop.order.expire'
+            - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'
             - '%coreshop.order.expiration.days%'
         tags:
           - { name: console.command, command: 'coreshop:order:expire' }

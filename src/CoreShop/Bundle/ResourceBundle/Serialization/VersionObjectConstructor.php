@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -28,10 +30,6 @@ class VersionObjectConstructor implements ObjectConstructorInterface
     private $fallbackConstructor;
     private $fallbacksFallbackConstructor;
 
-    /**
-     * @param ObjectConstructorInterface $fallbackConstructor
-     * @param ObjectConstructorInterface $fallbacksFallbackConstructor
-     */
     public function __construct(ObjectConstructorInterface $fallbackConstructor, ObjectConstructorInterface $fallbacksFallbackConstructor)
     {
         $this->fallbackConstructor = $fallbackConstructor;

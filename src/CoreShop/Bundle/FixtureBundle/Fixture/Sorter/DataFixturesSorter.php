@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FixtureBundle\Fixture\Sorter;
 
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -62,8 +64,6 @@ final class DataFixturesSorter
 
     /**
      * Order fixtures by priority.
-     *
-     * @return array
      */
     private function orderFixturesByNumber()
     {
@@ -90,8 +90,6 @@ final class DataFixturesSorter
 
     /**
      * @param bool $usedPrioritySorting
-     *
-     * @return array
      *
      * @throws CircularReferenceException
      *

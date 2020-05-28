@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Repository;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -23,5 +25,5 @@ interface TaxRateRepositoryInterface extends RepositoryInterface
      *
      * @return TaxRateInterface[]
      */
-    public function findByName($name, $locale);
+    public function findByName($name, $locale): array;
 }

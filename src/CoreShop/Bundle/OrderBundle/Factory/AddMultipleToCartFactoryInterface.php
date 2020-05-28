@@ -10,12 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Factory;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Order\Model\CartInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 
 interface AddMultipleToCartFactoryInterface
 {
@@ -24,5 +24,5 @@ interface AddMultipleToCartFactoryInterface
      *
      * @return AddMultipleToCartInterface
      */
-    public function createWithMultipleAddToCarts(array $addToCarts);
+    public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface;
 }

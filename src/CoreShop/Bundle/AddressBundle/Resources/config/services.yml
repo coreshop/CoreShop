@@ -1,19 +1,16 @@
 imports:
-    - { resource: 'services/form.yml' }
-    - { resource: 'services/profiler.yml' }
-    - { resource: 'services/pimcore.yml' }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/profiler.yml }
+    - { resource: services/pimcore.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.context.country.composite: '@CoreShop\Component\Address\Context\CompositeCountryContext'
     CoreShop\Component\Address\Context\CompositeCountryContext:
         public: false
 
-    CoreShop\Component\Address\Context\CountryContextInterface: '@CoreShop\Component\Address\Context\CompositeCountryContext'
-
-    coreshop.context.country.request_based: '@CoreShop\Component\Address\Context\RequestBased\CountryContext'
     CoreShop\Component\Address\Context\RequestBased\CountryContext:
         public: false
         arguments:
@@ -22,18 +19,13 @@ services:
         tags:
             - { name: coreshop.context.country }
 
-    coreshop.context.country.fixed: '@CoreShop\Component\Address\Context\FixedCountryContext'
     CoreShop\Component\Address\Context\FixedCountryContext:
         tags:
             - { name: coreshop.context.country }
 
-    coreshop.context.country.request_based.resolver.composite: '@CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver'
-    CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver'
-
     CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.country.request_based.resolver.geo_lite: '@CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver'
     CoreShop\Component\Address\Context\RequestBased\GeoLiteBasedRequestResolver:
         public: false
         arguments:
@@ -43,31 +35,21 @@ services:
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
 
-    coreshop.context.country.cached: '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext'
     CoreShop\Component\Address\Context\RequestBased\CachedCountryContext:
-        decorates: coreshop.context.country.request_based.resolver.composite
+        decorates: CoreShop\Component\Address\Context\RequestBased\CompositeRequestResolver
         decoration_priority: 255
         arguments:
             - '@CoreShop\Component\Address\Context\RequestBased\CachedCountryContext.inner'
 
-    coreshop.address.formatter: '@CoreShop\Component\Address\Formatter\AddressFormatter'
     CoreShop\Component\Address\Formatter\AddressFormatterInterface: '@CoreShop\Component\Address\Formatter\AddressFormatter'
     CoreShop\Component\Address\Formatter\AddressFormatter:
         arguments:
             - '@pimcore.translator'
 
-    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelperInterface: '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper'
-    CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper:
-        arguments:
-            - '@CoreShop\Component\Address\Formatter\AddressFormatter'
-        lazy: true
-        tags:
-            - { name: templating.helper, alias: coreshop_format_address }
-
     CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension:
         public: false
         arguments:
-            - '@CoreShop\Bundle\AddressBundle\Templating\Helper\FormatAddressHelper'
+            - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
         tags:
             - { name: twig.extension }
 
@@ -75,4 +57,4 @@ services:
         arguments:
             - '@coreshop.repository.address_identifier'
         tags:
-            - { name: validator.constraint_validator, alias: 'coreshop_address_valid_identifier' }
+            - { name: validator.constraint_validator, alias: coreshop_address_valid_identifier }

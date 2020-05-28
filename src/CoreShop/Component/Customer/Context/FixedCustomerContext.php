@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -19,12 +21,9 @@ final class FixedCustomerContext implements CustomerContextInterface
     /**
      * @var CustomerInterface
      */
-    private $customer = null;
+    private $customer;
 
-    /**
-     * @param CustomerInterface $customer
-     */
-    public function setCustomer($customer)
+    public function setCustomer(CustomerInterface $customer)
     {
         $this->customer = $customer;
     }
@@ -32,7 +31,7 @@ final class FixedCustomerContext implements CustomerContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         if ($this->customer instanceof CustomerInterface) {
             return $this->customer;

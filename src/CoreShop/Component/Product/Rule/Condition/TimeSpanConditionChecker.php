@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Condition;
 
 use Carbon\Carbon;
@@ -22,7 +24,7 @@ class TimeSpanConditionChecker implements ConditionCheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);
         $dateTo = Carbon::createFromTimestamp($configuration['dateTo'] / 1000);

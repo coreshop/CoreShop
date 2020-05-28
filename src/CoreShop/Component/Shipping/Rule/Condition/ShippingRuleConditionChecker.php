@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -21,20 +23,9 @@ use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 
 class ShippingRuleConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * @var RuleValidationProcessorInterface
-     */
     protected $ruleValidationProcessor;
-
-    /**
-     * @var RepositoryInterface
-     */
     protected $shippingRuleRepository;
 
-    /**
-     * @param RuleValidationProcessorInterface $ruleValidationProcessor
-     * @param RepositoryInterface              $shippingRuleRepository
-     */
     public function __construct(RuleValidationProcessorInterface $ruleValidationProcessor, RepositoryInterface $shippingRuleRepository)
     {
         $this->ruleValidationProcessor = $ruleValidationProcessor;
@@ -44,7 +35,7 @@ class ShippingRuleConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $shippingRuleId = $configuration['shippingRule'];
         $shippingRule = $this->shippingRuleRepository->find($shippingRuleId);

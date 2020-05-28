@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\DataObject;
@@ -26,22 +28,22 @@ final class ObjectHelperExtensions extends AbstractExtension
     public function getTests()
     {
         return [
-            new TwigTest('object', function ($object) {
+            new TwigTest('object', static function ($object) {
                 return is_object($object) && $object instanceof DataObject\Concrete;
             }),
-            new TwigTest('object_folder', function ($object) {
+            new TwigTest('object_folder', static function ($object) {
                 return is_object($object) && $object instanceof DataObject\Folder;
             }),
-            new TwigTest('object_class', function ($object, $className) {
+            new TwigTest('object_class', static function ($object, $className) {
                 $className = ucfirst($className);
                 $className = 'Pimcore\\Model\\DataObject\\' . $className;
 
                 return class_exists($className) && $object instanceof $className;
             }),
-            new TwigTest('object_gallery', function ($object) {
+            new TwigTest('object_gallery', static function ($object) {
                 return $object instanceof DataObject\Data\ImageGallery;
             }),
-            new TwigTest('object_hotspot_image', function ($object) {
+            new TwigTest('object_hotspot_image', static function ($object) {
                 return $object instanceof DataObject\Data\Hotspotimage;
             }),
         ];
@@ -50,13 +52,13 @@ final class ObjectHelperExtensions extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
-            new TwigFunction('object_method', function ($object, $methodName) {
+            new TwigFunction('object_method', static function ($object, $methodName) {
                 return is_object($object) && method_exists($object, $methodName);
             }),
-            new TwigFunction('object_select_options', function ($object, $field) {
+            new TwigFunction('object_select_options', static function ($object, $field) {
                 return DataObject\Service::getOptionsForSelectField($object, $field);
             }),
         ];
@@ -65,10 +67,10 @@ final class ObjectHelperExtensions extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
-            new TwigFilter('object_gallery_images', function (DataObject\Data\ImageGallery $gallery = null) {
+            new TwigFilter('object_gallery_images', static function (DataObject\Data\ImageGallery $gallery = null) {
                 if (null === $gallery) {
                     return [];
                 }

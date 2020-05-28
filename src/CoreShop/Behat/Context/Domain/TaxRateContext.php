@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -19,20 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class TaxRateContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var TaxRateRepositoryInterface
-     */
     private $taxRateRepository;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param TaxRateRepositoryInterface $taxRateRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         TaxRateRepositoryInterface $taxRateRepository

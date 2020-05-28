@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order;
 
 use CoreShop\Component\Order\Model\OrderInterface;
@@ -17,12 +19,5 @@ use Pimcore\Model\Document\Email;
 
 interface OrderMailProcessorInterface
 {
-    /**
-     * @param Email          $emailDocument
-     * @param OrderInterface $order
-     * @param bool           $sendInvoices
-     * @param bool           $sendShipments
-     * @param array          $params
-     */
-    public function sendOrderMail($emailDocument, OrderInterface $order, $sendInvoices = false, $sendShipments = false, $params = []);
+    public function sendOrderMail(Email $emailDocument, OrderInterface $order, bool $sendInvoices = false, bool $sendShipments = false, array $params = []): bool;
 }

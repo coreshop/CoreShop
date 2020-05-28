@@ -10,41 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Order;
 
 class SimpleOrder implements OrderInterface
 {
-    /**
-     * @var string
-     */
     protected $key;
-
-    /**
-     * @var string
-     */
     protected $direction;
 
-    /**
-     * @param string $key
-     * @param string $direction
-     */
     public function __construct(string $key, string $direction)
     {
         $this->key = $key;
         $this->direction = $direction;
     }
 
-    /**
-     * @return string
-     */
     public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
     public function getDirection(): string
     {
         return $this->direction;

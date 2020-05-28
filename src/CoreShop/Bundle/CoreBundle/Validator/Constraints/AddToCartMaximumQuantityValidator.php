@@ -10,12 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\CoreBundle\Validator\QuantityValidatorService;
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\Cart\CartItemResolver;
@@ -27,44 +29,18 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartMaximumQuantityValidator extends ConstraintValidator
 {
-    /**
-     * @var QuantityValidatorService
-     */
     private $quantityValidatorService;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param QuantityValidatorService         $quantityValidatorService
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         QuantityValidatorService $quantityValidatorService,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->quantityValidatorService = $quantityValidatorService;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
@@ -84,11 +60,14 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
         }
 
         /**
-         * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
+         * @var OrderInterface      $cart
+         */
+        $cart = $addToCartDto->getCart();
+
+        /**
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $addToCartDto->getCartItem();
-        $cart = $addToCartDto->getCart();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $maxLimit = $purchasable->getMaximumQuantityToOrder();
@@ -104,19 +83,13 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {

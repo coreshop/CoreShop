@@ -10,24 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\StoreBundle\Helper;
 
 use Pimcore\Model\Site;
 
 class PimcoreSiteHelper implements PimcoreSiteHelperInterface
 {
-    /**
-     * @return bool
-     */
-    public function isSiteRequest()
+    public function isSiteRequest(): bool
     {
         return Site::isSiteRequest();
     }
 
-    /**
-     * @return Site
-     */
-    public function getCurrentSite()
+    public function getCurrentSite(): Site
     {
         return Site::getCurrentSite();
     }

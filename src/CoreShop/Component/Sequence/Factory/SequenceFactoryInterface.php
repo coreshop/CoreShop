@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Sequence\Factory;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -17,10 +19,5 @@ use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 interface SequenceFactoryInterface extends FactoryInterface
 {
-    /**
-     * @param string $type
-     *
-     * @return SequenceInterface
-     */
-    public function createWithType($type);
+    public function createWithType(string $type): SequenceInterface;
 }

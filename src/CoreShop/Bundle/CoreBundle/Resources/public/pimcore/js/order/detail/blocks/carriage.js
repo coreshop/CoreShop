@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.order.sale.detail.blocks.carriage');
-coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.sale.detail.abstractBlock, {
+coreshop.order.order.detail.blocks.carriage = Class.create(coreshop.order.order.detail.abstractBlock, {
     saleInfo: null,
 
     initBlock: function () {

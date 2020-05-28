@@ -10,16 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends ResourceController
 {
-    public function removeStoreValuesAction(Request $request)
+    public function removeStoreValuesAction(Request $request): Response
     {
         $product = $this->findOr404($request->get('id'));
         $storeValue = $this->get('coreshop.repository.product_store_values')->find($request->get('storeValuesId'));

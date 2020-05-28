@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Event;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -22,29 +24,10 @@ class CheckoutEvent extends GenericEvent
     public const TYPE_INFO = 'info';
     public const TYPE_SUCCESS = 'success';
 
-    /**
-     * @var string
-     */
     private $messageType = '';
-
-    /**
-     * @var string
-     */
     private $message = '';
-
-    /**
-     * @var array
-     */
     private $messageParameters = [];
-
-    /**
-     * @var int
-     */
     private $errorCode = 500;
-
-    /**
-     * @var Response
-     */
     private $response;
 
     public function stop(string $message, string $type = self::TYPE_ERROR, array $parameters = [], int $errorCode = 500)
@@ -56,62 +39,62 @@ class CheckoutEvent extends GenericEvent
         $this->stopPropagation();
     }
 
-    public function isStopped()
+    public function isStopped(): bool
     {
         return $this->isPropagationStopped();
     }
 
-    public function getMessageType()
+    public function getMessageType(): string
     {
         return $this->messageType;
     }
 
-    public function setMessageType($messageType)
+    public function setMessageType(string $messageType): void
     {
         $this->messageType = $messageType;
     }
 
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
 
-    public function setMessage(string $message)
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
 
-    public function getMessageParameters()
+    public function getMessageParameters(): array
     {
         return $this->messageParameters;
     }
 
-    public function setMessageParameters(array $messageParameters)
+    public function setMessageParameters(array $messageParameters): void
     {
         $this->messageParameters = $messageParameters;
     }
 
-    public function getErrorCode()
+    public function getErrorCode(): int
     {
         return $this->errorCode;
     }
 
-    public function setErrorCode(int $errorCode)
+    public function setErrorCode(int $errorCode): void
     {
         $this->errorCode = $errorCode;
     }
 
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): void
     {
         $this->response = $response;
     }
 
-    public function hasResponse()
+    public function hasResponse(): bool
     {
         return null !== $this->response;
     }
 
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
     }

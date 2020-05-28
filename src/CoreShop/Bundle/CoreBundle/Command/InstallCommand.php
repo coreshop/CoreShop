@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer;
@@ -24,9 +26,6 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
-    /**
-     * @var array
-     */
     private $commands = [
         [
             'command' => 'resources',
@@ -42,28 +41,10 @@ final class InstallCommand extends AbstractInstallCommand
         ],
     ];
 
-    /**
-     * @var Installer
-     */
     private $installer;
-
-    /**
-     * @var MigrationManager
-     */
     private $migrationManager;
-
-    /**
-     * @var Bundle
-     */
     private $bundle;
 
-    /**
-     * @param KernelInterface         $kernel
-     * @param CommandDirectoryChecker $directoryChecker
-     * @param Installer               $installer
-     * @param MigrationManager        $migrationManager
-     * @param Bundle                  $bundle
-     */
     public function __construct(
         KernelInterface $kernel,
         CommandDirectoryChecker $directoryChecker,
@@ -81,7 +62,7 @@ final class InstallCommand extends AbstractInstallCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('coreshop:install')
@@ -95,7 +76,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
 
@@ -132,6 +113,8 @@ EOT
         $outputStyle->writeln(sprintf(
             'You can now open your store at the following path under the website root: <info>/</info>'
         ));
+
+        return 0;
     }
 
     /**
@@ -151,7 +134,7 @@ EOT
     /**
      * @return string
      */
-    private function getCoreShopLogo()
+    private function getCoreShopLogo(): string
     {
         return '<fg=red>                                          
                                        %%%%%%%%%%                                    

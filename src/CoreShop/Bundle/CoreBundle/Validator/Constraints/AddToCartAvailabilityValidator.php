@@ -10,14 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Validator\Constraints;
 
 use CoreShop\Bundle\OrderBundle\DTO\AddToCartInterface;
-use CoreShop\Component\Core\Model\CartInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
-use CoreShop\Component\Order\Cart\CartItemResolver;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,44 +27,18 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    /**
-     * @var AvailabilityCheckerInterface
-     */
     private $availabilityChecker;
-
-    /**
-     * @var StorageListItemResolverInterface
-     */
     protected $cartItemResolver;
 
-    /**
-     * @param AvailabilityCheckerInterface     $availabilityChecker
-     * @param StorageListItemResolverInterface $cartItemResolver
-     */
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
-        StorageListItemResolverInterface $cartItemResolver = null
+        StorageListItemResolverInterface $cartItemResolver
     )
     {
         $this->availabilityChecker = $availabilityChecker;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as second argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
-    /**
-     * @param mixed      $addToCartDto
-     * @param Constraint $constraint
-     */
     public function validate($addToCartDto, Constraint $constraint): void
     {
         Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
@@ -79,8 +54,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
 
         /**
-         * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
+         * @var OrderItemInterface $cartItem
          */
         $cartItem = $addToCartDto->getCartItem();
         $cart = $addToCartDto->getCart();
@@ -98,19 +72,13 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    /**
-     * @param CartInterface     $cart
-     * @param CartItemInterface $cartItem
-     *
-     * @return int
-     */
-    private function getExistingCartItemQuantityFromCart(CartInterface $cart, CartItemInterface $cartItem)
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
 
         /**
-         * @var CartItemInterface $item
+         * @var OrderItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
             if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {

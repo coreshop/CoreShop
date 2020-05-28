@@ -10,26 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Rule\Action;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 
-class DiscountPercentActionProcessor implements CarrierPriceActionProcessorInterface
+class DiscountPercentActionProcessor implements CarrierPriceModificationActionProcessorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, $price, array $configuration)
+    public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
         return (int) round(-1 * ($price * ($configuration['percent'] / 100)));
     }

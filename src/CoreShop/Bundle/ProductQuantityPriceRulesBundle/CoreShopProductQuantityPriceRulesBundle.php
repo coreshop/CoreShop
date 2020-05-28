@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
@@ -31,7 +33,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         ];
     }
 
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -43,7 +45,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Product Quantity Price Rules';
     }
@@ -51,7 +53,7 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Product Quantity Price Rules Bundle';
     }

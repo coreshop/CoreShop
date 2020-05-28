@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -26,38 +28,12 @@ use Webmozart\Assert\Assert;
 
 final class CountryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CountryRepositoryInterface
-     */
     private $countryRepository;
-
-    /**
-     * @var CountryContextInterface
-     */
     private $countryContext;
-
-    /**
-     * @var AddressFormatterInterface
-     */
     private $addressFormatter;
-
-    /**
-     * @var GeoLiteBasedRequestResolver
-     */
     private $geoLiteResolver;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CountryRepositoryInterface  $countryRepository
-     * @param CountryContextInterface     $countryContext
-     * @param AddressFormatterInterface   $addressFormatter
-     * @param GeoLiteBasedRequestResolver $geoLiteResolver
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         CountryRepositoryInterface $countryRepository,

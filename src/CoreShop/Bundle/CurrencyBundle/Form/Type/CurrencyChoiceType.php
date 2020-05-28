@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CurrencyBundle\Form\Type;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -22,14 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CurrencyChoiceType extends AbstractType
 {
-    /**
-     * @var RepositoryInterface
-     */
     private $currencyRepository;
 
-    /**
-     * @param RepositoryInterface $currencyRepository
-     */
     public function __construct(RepositoryInterface $currencyRepository)
     {
         $this->currencyRepository = $currencyRepository;
@@ -38,7 +34,7 @@ final class CurrencyChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
             $builder->addModelTransformer(new CollectionToArrayTransformer());
@@ -48,7 +44,7 @@ final class CurrencyChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -64,7 +60,7 @@ final class CurrencyChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -72,7 +68,7 @@ final class CurrencyChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_currency_choice';
     }

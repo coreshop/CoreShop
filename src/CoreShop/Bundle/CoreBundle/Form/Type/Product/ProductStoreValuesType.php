@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Product;
 
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
@@ -27,7 +29,7 @@ final class ProductStoreValuesType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
 
@@ -52,7 +54,7 @@ final class ProductStoreValuesType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_store_values';
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -247,8 +249,8 @@ class Customer extends AbstractPimcoreModel implements CustomerInterface
     {
         $roles = $this->roles;
 
-        /** @var CustomerGroupInterface $group */
         if (is_array($this->getCustomerGroups())) {
+            /** @var CustomerGroupInterface $group */
             foreach ($this->getCustomerGroups() as $group) {
                 $groupRoles = $group->getRoles();
                 $roles = array_merge($roles, is_array($groupRoles) ? $groupRoles : []);

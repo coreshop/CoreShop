@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Processable;
 
 use CoreShop\Component\Order\OrderStates;
@@ -19,20 +21,9 @@ use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 class ProcessableOrderItems implements ProcessableInterface
 {
-    /**
-     * @var OrderDocumentRepositoryInterface
-     */
     protected $documentsRepository;
-
-    /**
-     * @var string
-     */
     protected $stateCancelled;
 
-    /**
-     * @param OrderDocumentRepositoryInterface $documentsRepository
-     * @param string                           $stateCancelled
-     */
     public function __construct(OrderDocumentRepositoryInterface $documentsRepository, $stateCancelled)
     {
         $this->documentsRepository = $documentsRepository;
@@ -42,7 +33,7 @@ class ProcessableOrderItems implements ProcessableInterface
     /**
      * {@inheritdoc}
      */
-    public function getProcessableItems(OrderInterface $order)
+    public function getProcessableItems(OrderInterface $order): array
     {
         $items = $order->getItems();
         $processedItems = $this->getProcessedItems($order);
@@ -74,7 +65,7 @@ class ProcessableOrderItems implements ProcessableInterface
     /**
      * {@inheritdoc}
      */
-    public function getProcessedItems(OrderInterface $order)
+    public function getProcessedItems(OrderInterface $order): array
     {
         $documents = $this->documentsRepository->getDocumentsNotInState($order, $this->stateCancelled);
         $processedItems = [];
@@ -102,7 +93,7 @@ class ProcessableOrderItems implements ProcessableInterface
     /**
      * {@inheritdoc}
      */
-    public function isFullyProcessed(OrderInterface $order)
+    public function isFullyProcessed(OrderInterface $order): bool
     {
         return count($this->getProcessableItems($order)) === 0;
     }
@@ -110,7 +101,7 @@ class ProcessableOrderItems implements ProcessableInterface
     /**
      * {@inheritdoc}
      */
-    public function isProcessable(OrderInterface $order)
+    public function isProcessable(OrderInterface $order): bool
     {
         return !$this->isFullyProcessed($order) && $order->getOrderState() !== OrderStates::STATE_CANCELLED;
     }

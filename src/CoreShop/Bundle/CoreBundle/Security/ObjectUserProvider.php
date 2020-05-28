@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Security;
 
 use CoreShop\Component\Core\Model\CustomerInterface;
@@ -21,30 +23,14 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
     protected $customerRepository;
-
-    /**
-     * @var string
-     */
     protected $className;
-
-    /**
-     * @var string
-     */
     protected $loginIdentifier;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     * @param string                      $className
-     * @param string                      $loginIdentifier
-     */
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
-        $className,
-        $loginIdentifier
+        string $className,
+        string $loginIdentifier
     )
     {
         $this->customerRepository = $customerRepository;

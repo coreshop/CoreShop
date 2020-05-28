@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Assessor;
 
 use Carbon\Carbon;
@@ -20,14 +22,8 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterface
 {
-    /**
-     * @var RuleRepositoryInterface
-     */
     private $ruleRepository;
 
-    /**
-     * @param RuleRepositoryInterface $ruleRepository
-     */
     public function __construct(RuleRepositoryInterface $ruleRepository)
     {
         $this->ruleRepository = $ruleRepository;
@@ -36,7 +32,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function getRules()
+    public function getRules(): array
     {
         return $this->ruleRepository->findActive();
     }
@@ -44,7 +40,7 @@ final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterfac
     /**
      * {@inheritdoc}
      */
-    public function isValid(RuleInterface $rule)
+    public function isValid(RuleInterface $rule): bool
     {
         /** @var Condition $condition */
         foreach ($rule->getConditions() as $id => $condition) {

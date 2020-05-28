@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSelectionType;
@@ -24,18 +26,9 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 final class ProductUnitDefinitionsType extends AbstractResourceType
 {
     /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     */
-    public function __construct($dataClass, array $validationGroups)
-    {
-        parent::__construct($dataClass, $validationGroups);
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::SUBMIT, [$this, 'onSubmit']);
 
@@ -52,7 +45,7 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
     /**
      * @param FormEvent $event
      */
-    public function onSubmit(FormEvent $event)
+    public function onSubmit(FormEvent $event): void
     {
         /** @var ProductUnitDefinitionsInterface $unitDefinitions */
         $unitDefinitions = $event->getData();
@@ -80,7 +73,7 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definitions';
     }

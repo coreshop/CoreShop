@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Shipping\Rule\Action;
 
 use CoreShop\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
@@ -38,7 +40,7 @@ class PriceActionConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('price', MoneyType::class, [
@@ -73,7 +75,7 @@ class PriceActionConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_action_price';
     }

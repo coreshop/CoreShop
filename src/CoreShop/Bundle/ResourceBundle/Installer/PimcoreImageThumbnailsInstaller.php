@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\ImageThumbnailConfiguration;
@@ -22,14 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
 
-    /**<
-     * @param KernelInterface $kernel
-     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -38,7 +34,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.image_thumbnails', $applicationName) : 'coreshop.all.pimcore.admin.install.image_thumbnails';
 
@@ -86,15 +82,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
         }
     }
 
-    /**
-     * Check if Image Thumbnail is already installed.
-     *
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return Config
-     */
-    private function installThumbnail($name, $properties)
+    private function installThumbnail(string $name, array $properties): Config
     {
         $thumbnailConfig = new Config();
 

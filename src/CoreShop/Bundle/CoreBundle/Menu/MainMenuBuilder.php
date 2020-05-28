@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Menu;
 
 use CoreShop\Bundle\MenuBundle\Builder\MenuBuilderInterface;
@@ -18,7 +20,7 @@ use Knp\Menu\ItemInterface;
 
 class MainMenuBuilder implements MenuBuilderInterface
 {
-    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type)
+    public function buildMenu(ItemInterface $menuItem, FactoryInterface $factory, string $type): void
     {
         $menuItem->setLabel('coreshop');
         $menuItem->setAttributes([

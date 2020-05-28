@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -20,14 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class EventDispatcher implements EventDispatcherInterface
 {
-    /**
-     * @var SymfonyEventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param SymfonyEventDispatcherInterface $eventDispatcher
-     */
     public function __construct(SymfonyEventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -36,7 +32,7 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request)
+    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
 
@@ -49,7 +45,7 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request)
+    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
 
@@ -62,7 +58,7 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request)
+    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
 
@@ -75,7 +71,7 @@ final class EventDispatcher implements EventDispatcherInterface
     /**
      * {@inheritdoc}
      */
-    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request)
+    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void
     {
         $event = $this->getEvent($resource, $request);
 
@@ -85,13 +81,7 @@ final class EventDispatcher implements EventDispatcherInterface
         );
     }
 
-    /**
-     * @param ResourceInterface $resource
-     * @param Request           $request
-     *
-     * @return ResourceControllerEvent
-     */
-    private function getEvent(ResourceInterface $resource, Request $request)
+    private function getEvent(ResourceInterface $resource, Request $request): ResourceControllerEvent
     {
         return new ResourceControllerEvent($resource, ['request' => $request]);
     }

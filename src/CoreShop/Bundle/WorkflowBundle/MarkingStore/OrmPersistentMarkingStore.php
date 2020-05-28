@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\MarkingStore;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -18,24 +20,9 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class OrmPersistentMarkingStore implements MarkingStoreInterface
 {
-    /**
-     * Origin marking store.
-     *
-     * @var MarkingStoreInterface
-     */
     private $originMarkingStore;
-
-    /**
-     * Doctrine registry.
-     *
-     * @var Registry
-     */
     private $doctrineRegistry;
 
-    /**
-     * @param MarkingStoreInterface $originMarkingStore origin marking store
-     * @param Registry              $doctrineRegistry   doctrine registry
-     */
     public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
     {
         $this->originMarkingStore = $originMarkingStore;
@@ -45,7 +32,7 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
     /**
      * {@inheritdoc}
      */
-    public function getMarking($subject)
+    public function getMarking($subject): Marking
     {
         return $this->originMarkingStore->getMarking($subject);
     }
@@ -53,10 +40,11 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
     /**
      * {@inheritdoc}
      */
-    public function setMarking($subject, Marking $marking)
+    public function setMarking($subject, Marking $marking): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
         $manager = $this->doctrineRegistry->getManagerForClass(get_class($subject));
+
         $manager->persist($subject);
         $manager->flush();
     }

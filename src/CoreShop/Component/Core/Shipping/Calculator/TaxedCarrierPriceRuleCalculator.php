@@ -10,35 +10,27 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
+use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Webmozart\Assert\Assert;
 
-final class TaxedCarrierPriceRuleCalculator implements \CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface
+final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorInterface
 {
-    /**
-     * @var CarrierPriceCalculatorInterface
-     */
     private $carrierPriceCalculator;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $taxCalculatorStrategyRegistry;
 
-    /**
-     * @param CarrierPriceCalculatorInterface $carrierPriceCalculator
-     * @param ServiceRegistryInterface        $taxCalculatorStrategyRegistry
-     */
     public function __construct(
         CarrierPriceCalculatorInterface $carrierPriceCalculator,
         ServiceRegistryInterface $taxCalculatorStrategyRegistry
@@ -47,19 +39,18 @@ final class TaxedCarrierPriceRuleCalculator implements \CoreShop\Component\Shipp
         $this->taxCalculatorStrategyRegistry = $taxCalculatorStrategyRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(
         BaseCarrierInterface $carrier,
         ShippableInterface $shippable,
         AddressInterface $address,
-        $withTax = true
-    ) {
+        bool $withTax = true,
+        array $context = []
+    ): int
+    {
         /**
-         * @var CartInterface $shippable
+         * @var OrderInterface $shippable
          */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        Assert::isInstanceOf($shippable, OrderInterface::class);
 
         $store = $shippable->getStore();
 
@@ -70,7 +61,7 @@ final class TaxedCarrierPriceRuleCalculator implements \CoreShop\Component\Shipp
 
         $useGrossPrice = $store->getUseGrossPrice();
 
-        $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address);
+        $price = $this->carrierPriceCalculator->getPrice($carrier, $shippable, $address, $context);
 
         if ($useGrossPrice && $withTax) {
             return $price;

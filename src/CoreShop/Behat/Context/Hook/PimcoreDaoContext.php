@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
@@ -25,20 +27,9 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
 {
-    /**
-     * @var KernelInterface
-     */
     private $kernel;
-
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param KernelInterface          $kernel
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function __construct(KernelInterface $kernel, OrderRepositoryInterface $orderRepository)
     {
         $this->kernel = $kernel;

@@ -1,0 +1,67 @@
+services:
+    _defaults:
+        public: true
+
+    coreshop.shipping.carrier.validator.composite:
+        alias: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator instead'
+
+    coreshop.carrier.resolver:
+        alias: CoreShop\Component\Shipping\Resolver\CarriersResolver
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Resolver\CarriersResolver instead'
+
+    coreshop.carrier.price_calculator.shipping_rules:
+        alias: CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Calculator\CarrierShippingRulePriceCalculator instead'
+
+    coreshop.carrier.price_calculator:
+        alias: CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculator instead'
+
+    coreshop.carrier.price_calculator.default:
+        alias: CoreShop\Component\Shipping\Calculator\CompositePriceCalculator
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Calculator\CompositePriceCalculator instead'
+
+    coreshop.shipping_rule.condition.amount:
+        alias: CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker instead'
+
+    coreshop.shipping_rule.condition.postcodes:
+        alias: CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker instead'
+
+    coreshop.shipping_rule.condition.weight:
+        alias: CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker instead'
+
+    coreshop.shipping_rule.condition.dimension:
+        alias: CoreShop\Component\Shipping\Rule\Condition\DimensionConditionChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Condition\DimensionConditionChecker instead'
+
+    coreshop.shipping_rule.condition.shipping_rule:
+        alias: CoreShop\Component\Shipping\Rule\Condition\ShippingRuleConditionChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Condition\ShippingRuleConditionChecker instead'
+
+    coreshop.shipping_rule.action.addition_percent:
+        alias: CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor instead'
+
+    coreshop.shipping_rule.action.discount_percent:
+        alias: CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor instead'
+
+    coreshop.shipping_rule.action.shipping_rule:
+        alias: CoreShop\Component\Shipping\Rule\Action\ShippingRuleActionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Rule\Action\ShippingRuleActionProcessor instead'
+
+    coreshop.carrier.processor.shipping_rules:
+        alias: CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor instead'
+
+    coreshop.shippable_carrier.shipping_rule.validator:
+        alias: CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator instead'
+
+    coreshop.carrier.shipping_rule.checker:
+        alias: CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker instead'

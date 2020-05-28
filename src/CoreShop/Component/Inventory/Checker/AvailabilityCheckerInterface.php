@@ -10,24 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Inventory\Checker;
 
 use CoreShop\Component\Inventory\Model\StockableInterface;
 
 interface AvailabilityCheckerInterface
 {
-    /**
-     * @param StockableInterface $stockable
-     *
-     * @return bool
-     */
-    public function isStockAvailable(StockableInterface $stockable);
+    public function isStockAvailable(StockableInterface $stockable): bool;
 
-    /**
-     * @param StockableInterface $stockable
-     * @param int                $quantity
-     *
-     * @return bool
-     */
-    public function isStockSufficient(StockableInterface $stockable, $quantity);
+    public function isStockSufficient(StockableInterface $stockable, float $quantity): bool;
 }

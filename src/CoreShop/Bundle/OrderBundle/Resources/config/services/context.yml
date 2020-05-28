@@ -2,46 +2,41 @@ services:
     _defaults:
         public: true
 
-    coreshop.context.cart.fixed: '@CoreShop\Component\Order\Context\FixedCartContext'
     CoreShop\Component\Order\Context\FixedCartContext:
         tags:
             - { name: coreshop.context.cart, priority: -100 }
 
-    coreshop.context.cart.customer_and_store_based: '@CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext'
     CoreShop\Bundle\OrderBundle\Context\CustomerAndStoreBasedCartContext:
         arguments:
-            - '@coreshop.context.customer'
-            - '@coreshop.context.store'
-            - '@coreshop.repository.cart'
+            - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
+            - '@coreshop.repository.order'
             - '@pimcore.http.request_helper'
         tags:
             - { name: coreshop.context.cart, priority: -777 }
 
-    coreshop.context.cart.session_based: '@CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext'
     CoreShop\Bundle\OrderBundle\Context\SessionAndStoreBasedCartContext:
         arguments:
             - '@session'
             - '%coreshop.session.cart%'
-            - '@coreshop.repository.cart'
-            - '@coreshop.context.store'
+            - '@coreshop.repository.order'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
         tags:
             - { name: coreshop.context.cart, priority: -555 }
 
-    coreshop.context.cart.new: '@CoreShop\Component\Order\Context\CartContext'
     CoreShop\Component\Order\Context\CartContext:
         arguments:
-            - '@coreshop.factory.cart'
+            - '@coreshop.factory.order'
         tags:
             - { name: coreshop.context.cart, priority: -999 }
 
-    coreshop.context.cart.composite: '@CoreShop\Component\Order\Context\CompositeCartContext'
     CoreShop\Component\Order\Context\CartContextInterface: '@CoreShop\Component\Order\Context\CompositeCartContext'
     CoreShop\Component\Order\Context\CompositeCartContext: ~
 
     CoreShop\Bundle\OrderBundle\EventListener\SessionCartSubscriber:
         arguments:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
-            - '@coreshop.context.cart'
+            - '@CoreShop\Component\Order\Context\CartContextInterface'
             - '%coreshop.session.cart%'
         tags:
             - { name: kernel.event_subscriber }

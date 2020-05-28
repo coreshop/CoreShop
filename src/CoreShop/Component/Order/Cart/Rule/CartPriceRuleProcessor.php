@@ -10,28 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart\Rule;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
 {
-    /**
-     * @var CartPriceRuleValidationProcessorInterface
-     */
     private $cartPriceRuleValidator;
-
-    /**
-     * @var ProposalCartPriceRuleCalculatorInterface
-     */
     private $proposalCartPriceRuleCalculator;
 
-    /**
-     * @param CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator
-     * @param ProposalCartPriceRuleCalculatorInterface  $proposalCartPriceRuleCalculator
-     */
     public function __construct(
         CartPriceRuleValidationProcessorInterface $cartPriceRuleValidator,
         ProposalCartPriceRuleCalculatorInterface $proposalCartPriceRuleCalculator
@@ -43,7 +34,7 @@ class CartPriceRuleProcessor implements CartPriceRuleProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(CartInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null)
+    public function process(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         if ($this->cartPriceRuleValidator->isValidCartRule($cart, $cartPriceRule, $voucherCode)) {
             $this->proposalCartPriceRuleCalculator->calculatePriceRule($cart, $cartPriceRule, $voucherCode);

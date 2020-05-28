@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -20,20 +22,9 @@ use Webmozart\Assert\Assert;
 
 final class ProductSpecificPriceRuleContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ProductSpecificPriceRuleRepositoryInterface
-     */
     private $productSpecificPriceRuleRepository;
 
-    /**
-     * @param SharedStorageInterface                      $sharedStorage
-     * @param ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ProductSpecificPriceRuleRepositoryInterface $productSpecificPriceRuleRepository

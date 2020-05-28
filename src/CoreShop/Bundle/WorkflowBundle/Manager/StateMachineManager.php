@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\Manager;
 
 use Symfony\Component\Workflow\Registry;
@@ -34,7 +36,7 @@ final class StateMachineManager implements StateMachineManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($subject, $workflowName = null)
+    public function get($subject, string $workflowName = null): Workflow
     {
         return $this->registry->get($subject, $workflowName);
     }
@@ -42,7 +44,7 @@ final class StateMachineManager implements StateMachineManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState)
+    public function getTransitionFromState(Workflow $workflow, $subject, string $fromState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {
@@ -57,7 +59,7 @@ final class StateMachineManager implements StateMachineManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransitionToState(Workflow $workflow, $subject, string $toState)
+    public function getTransitionToState(Workflow $workflow, $subject, string $toState): ?string
     {
         /** @var Transition $transition */
         foreach ($workflow->getEnabledTransitions($subject) as $transition) {

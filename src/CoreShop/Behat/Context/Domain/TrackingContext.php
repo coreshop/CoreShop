@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -22,7 +24,6 @@ use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEc
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
@@ -35,26 +36,10 @@ use Webmozart\Assert\Assert;
 
 final class TrackingContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var TrackingExtractorInterface
-     */
     private $trackingExtractor;
-
-    /**
-     * @var ServiceRegistry
-     */
     private $trackerRegistry;
 
-    /**
-     * @param SharedStorageInterface     $sharedStorage
-     * @param TrackingExtractorInterface $trackingExtractor
-     * @param ServiceRegistry            $trackerRegistry
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         TrackingExtractorInterface $trackingExtractor,
@@ -115,7 +100,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking cart-add for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartAdd(CartInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartAdd(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
@@ -123,7 +108,7 @@ final class TrackingContext implements Context
 
         $params = ['cart' => $cart, 'product' => $product];
 
-        if ($cart->getItems() > 0) {
+        if (count($cart->getItems()) > 0) {
             $params['cartItem'] = $cart->getItems()[0];
         }
 
@@ -136,7 +121,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking cart-remove for (my cart) with (product) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCartRemove(CartInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
+    public function trackCartRemove(OrderInterface $cart, ProductInterface $product, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
@@ -151,7 +136,7 @@ final class TrackingContext implements Context
     /**
      * @Then /^tracking checkout step for (my cart) with tracker "([^"]+)" should generate:$/
      */
-    public function trackCheckoutStep(CartInterface $cart, $tracker, PyStringNode $code)
+    public function trackCheckoutStep(OrderInterface $cart, $tracker, PyStringNode $code)
     {
         $tracker = $this->getTracker($tracker);
 
@@ -216,7 +201,7 @@ final class TrackingContext implements Context
 
             $codePartsProperty->setAccessible(false);
 
-            if ($tracker instanceof  UniversalEcommerce) {
+            if ($tracker instanceof UniversalEcommerce) {
                 $code = implode(
                     PHP_EOL,
                     $blocks[CodeCollector::CONFIG_KEY_GLOBAL][Tracker::BLOCK_AFTER_TRACK]['append']

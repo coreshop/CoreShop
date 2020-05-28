@@ -10,18 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentProviderController extends ResourceController
 {
-    /**
-     * Get Gateway Factories.
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function getConfigAction()
+    public function getConfigAction(): Response
     {
         $factoryResults = [];
 

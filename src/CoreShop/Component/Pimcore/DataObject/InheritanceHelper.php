@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
@@ -25,7 +27,7 @@ class InheritanceHelper
      *
      * @return mixed
      */
-    public static function useInheritedValues(\Closure $function, $inheritValues = true)
+    public static function useInheritedValues(\Closure $function, bool $inheritValues = true)
     {
         $backup = DataObject\AbstractObject::getGetInheritedValues();
         DataObject\AbstractObject::setGetInheritedValues($inheritValues);

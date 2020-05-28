@@ -10,45 +10,31 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Order\NumberGenerator;
 
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
-use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class SaleNumberGenerator implements NumberGeneratorInterface
 {
-    /**
-     * @var NumberGeneratorInterface
-     */
     private $numberGenerator;
-
-    /**
-     * @var ConfigurationServiceInterface
-     */
     private $configurationService;
-
-    /**
-     * @var string
-     */
     private $prefixConfigurationKey;
-
-    /**
-     * @var string
-     */
     private $suffixConfigurationKey;
 
-    /**
-     * @param NumberGeneratorInterface      $numberGenerator
-     * @param ConfigurationServiceInterface $configurationService
-     * @param string                        $prefixConfigurationKey
-     * @param string                        $suffixConfigurationKey
-     */
-    public function __construct(NumberGeneratorInterface $numberGenerator, ConfigurationServiceInterface $configurationService, $prefixConfigurationKey, $suffixConfigurationKey)
+    public function __construct(
+        NumberGeneratorInterface $numberGenerator,
+        ConfigurationServiceInterface $configurationService,
+        string $prefixConfigurationKey,
+        string $suffixConfigurationKey
+    )
     {
         $this->numberGenerator = $numberGenerator;
         $this->configurationService = $configurationService;
@@ -59,11 +45,11 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ResourceInterface $model)
+    public function generate(ResourceInterface $model): string
     {
         $store = null;
 
-        if ($model instanceof SaleInterface) {
+        if ($model instanceof OrderInterface) {
             $store = $model->getStore();
         } elseif ($model instanceof OrderDocumentInterface) {
             $store = $model->getOrder()->getStore();

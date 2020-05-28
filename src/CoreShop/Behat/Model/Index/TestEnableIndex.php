@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Model\Index;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
+use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
@@ -21,17 +24,42 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
     /**
      * {@inheritdoc}
      */
-    public function getIndexable()
+    public function getIndexable(IndexInterface $index): bool
     {
-        return $this->getIndexableEnabled() && $this->getPublished();
+        return $this->getIndexableEnabled($index) && $this->getPublished();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIndexableEnabled()
+    public function getIndexableEnabled(IndexInterface $index): bool
     {
-        return $this->getEnabled();
+        $enabled = $this->getEnabled();
+
+        if (is_bool($enabled)) {
+            return $enabled;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexableName(IndexInterface $index, string $language): string
+    {
+        $name = $this->getName($language);
+
+        if (null === $name) {
+            return '';
+        }
+
+        if (!is_string($name)) {
+            return '';
+        }
+
+        return $name;
     }
 
     /**
@@ -41,20 +69,11 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-
     /**
      * {@inheritdoc}
      */
     public function getName($language)
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIndexableName($language)
-    {
-        return $this->getName($language);
     }
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 use CoreShop\Bundle\TrackingBundle\Resolver\ConfigResolverInterface;
@@ -37,7 +39,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * @param TrackerInterface $tracker
      */
-    public function setTracker(TrackerInterface $tracker)
+    public function setTracker(TrackerInterface $tracker): void
     {
         // not implemented in GTM. Use CodeTracker instead.
     }
@@ -45,7 +47,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * @param CodeTracker $tracker
      */
-    public function setCodeTracker(CodeTracker $tracker)
+    public function setCodeTracker(CodeTracker $tracker): void
     {
         $this->codeTracker = $tracker;
     }
@@ -53,7 +55,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * @param ConfigResolverInterface $config
      */
-    public function setConfigResolver(ConfigResolverInterface $config)
+    public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
@@ -61,7 +63,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -73,7 +75,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         // not implemented
     }
@@ -81,7 +83,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         // not implemented
     }
@@ -89,7 +91,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
@@ -97,7 +99,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
@@ -105,7 +107,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented
     }
@@ -113,7 +115,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $this->ensureDataLayer();
 
@@ -138,7 +140,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformOrder($actionData)
+    protected function transformOrder(array $actionData): array
     {
         return [
             'transactionId' => $actionData['id'],
@@ -157,7 +159,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformProductAction($item)
+    protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
@@ -172,7 +174,7 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
     /**
      * Makes sure data layer is included once before any call.
      */
-    protected function ensureDataLayer()
+    protected function ensureDataLayer(): void
     {
         if ($this->dataLayerIncluded) {
             return;

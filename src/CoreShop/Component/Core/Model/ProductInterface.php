@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\IndexableInterface;
@@ -20,7 +22,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOImageAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 
 interface ProductInterface extends

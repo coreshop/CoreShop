@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Component\Index\Condition\ConditionInterface;
@@ -139,7 +141,7 @@ abstract class AbstractWorker implements WorkerInterface
         $extensions = $this->getExtensions($index);
 
         $virtualObjectId = $object->getId();
-        $virtualObjectActive = $object->getIndexableEnabled();
+        $virtualObjectActive = $object->getIndexableEnabled($index);
 
         if ($object->getType() === Concrete::OBJECT_TYPE_VARIANT) {
             /**
@@ -152,7 +154,7 @@ abstract class AbstractWorker implements WorkerInterface
             }
 
             $virtualObjectId = $parent->getId();
-            $virtualObjectActive = $object->getIndexableEnabled();
+            $virtualObjectActive = $object->getIndexableEnabled($index);
         }
 
         $data = [
@@ -171,7 +173,7 @@ abstract class AbstractWorker implements WorkerInterface
             }
         }
 
-        $data['active'] = $object->getIndexableEnabled();
+        $data['active'] = $object->getIndexableEnabled($index);
 
         if (!is_bool($data['active'])) {
             $data['active'] = false;
@@ -183,7 +185,7 @@ abstract class AbstractWorker implements WorkerInterface
         ];
 
         foreach (Tool::getValidLanguages() as $language) {
-            $localizedData['values'][$language]['name'] = $object->getIndexableName($language);
+            $localizedData['values'][$language]['name'] = $object->getIndexableName($index, $language);
         }
 
         $relationData = [];
@@ -334,16 +336,16 @@ abstract class AbstractWorker implements WorkerInterface
 
         if ($interpreterClass instanceof LocalizedInterpreterInterface) {
             foreach (Tool::getValidLanguages() as $language) {
-                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig());
+                $localizedData['values'][$language][$column->getName()] = $interpreterClass->interpretForLanguage($language, $value, $object, $column, $column->getInterpreterConfig() ?? []);
             }
             //reset value here, we only populate localized values here
             $value = null;
             $isLocalizedValue = true;
         } elseif ($interpreterClass instanceof InterpreterInterface) {
-            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig());
+            $value = $interpreterClass->interpret($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
 
             if ($interpreterClass instanceof RelationInterpreterInterface) {
-                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig());
+                $relationalValue = $interpreterClass->interpretRelational($originalValue, $object, $column, $column->getInterpreterConfig() ?? []);
 
                 $relationData = array_merge_recursive($relationData, $this->processRelationalData($column, $object, $relationalValue, $virtualObjectId));
             }

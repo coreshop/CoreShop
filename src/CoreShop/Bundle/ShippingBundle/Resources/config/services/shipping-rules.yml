@@ -16,7 +16,7 @@ services:
     coreshop.registry.shipping_rule.actions:
         class: CoreShop\Component\Registry\ServiceRegistry
         arguments:
-            - CoreShop\Component\Shipping\Rule\Action\CarrierPriceActionProcessorInterface
+            - CoreShop\Component\Shipping\Rule\Action\CarrierActionProcessorInterface
             - shipping-rule-action
         tags:
             - { name: coreshop.registry, type_hint: shippingRuleActions }
@@ -39,22 +39,18 @@ services:
             - '@coreshop.shipping_rule.conditions.processor'
 
     # Shipping CONDITIONS
-    coreshop.shipping_rule.condition.amount: '@CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker'
     CoreShop\Component\Shipping\Rule\Condition\AmountConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: amount, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\AmountConfigurationType }
 
-    coreshop.shipping_rule.condition.postcodes: '@CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker'
     CoreShop\Component\Shipping\Rule\Condition\PostcodeConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: postcodes, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\PostcodeConfigurationType }
 
-    coreshop.shipping_rule.condition.weight: '@CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker'
     CoreShop\Component\Shipping\Rule\Condition\WeightConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: weight, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\WeightConfigurationType }
 
-    coreshop.shipping_rule.condition.dimension: '@CoreShop\Component\Shipping\Rule\Condition\DimensionConditionChecker'
     CoreShop\Component\Shipping\Rule\Condition\DimensionConditionChecker:
         tags:
             - { name: coreshop.shipping_rule.condition, type: dimension, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\DimensionConfigurationType }
@@ -66,7 +62,6 @@ services:
         tags:
             - { name: coreshop.shipping_rule.condition, type: nested, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
-    coreshop.shipping_rule.condition.shipping_rule: '@CoreShop\Component\Shipping\Rule\Condition\ShippingRuleConditionChecker'
     CoreShop\Component\Shipping\Rule\Condition\ShippingRuleConditionChecker:
         arguments:
             - '@coreshop.shipping_rule.processor'
@@ -75,25 +70,21 @@ services:
             - { name: coreshop.shipping_rule.condition, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType }
 
     # Shipping Rule ACTIONS
-    coreshop.shipping_rule.action.addition_percent: '@CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor'
     CoreShop\Component\Shipping\Rule\Action\AdditionPercentActionProcessor:
         tags:
             - { name: coreshop.shipping_rule.action, type: additionPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\AdditionPercentActionConfigurationType }
 
-    coreshop.shipping_rule.action.discount_percent: '@CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor'
     CoreShop\Component\Shipping\Rule\Action\DiscountPercentActionProcessor:
         tags:
             - { name: coreshop.shipping_rule.action, type: discountPercent, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action\DiscountPercentActionConfigurationType }
 
-    coreshop.shipping_rule.action.shipping_rule: '@CoreShop\Component\Shipping\Rule\Action\ShippingRuleActionProcessor'
     CoreShop\Component\Shipping\Rule\Action\ShippingRuleActionProcessor:
         arguments:
-            - '@coreshop.carrier.processor.shipping_rules'
+            - '@CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface'
             - '@coreshop.repository.shipping_rule'
         tags:
             - { name: coreshop.shipping_rule.action, type: shippingRule, form-type: CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Common\ShippingRuleConfigurationType}
 
-    coreshop.carrier.processor.shipping_rules: '@CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor'
     CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface: '@CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor'
     CoreShop\Component\Shipping\Processor\ShippingRuleActionProcessor:
         shared: false
@@ -101,14 +92,12 @@ services:
             - '@coreshop.registry.shipping_rule.actions'
 
     # Validators
-    coreshop.shippable_carrier.shipping_rule.validator: '@CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator'
     CoreShop\Component\Shipping\Validator\ShippingRuleCarrierValidator:
         arguments:
             - '@CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker'
         tags:
             - { name: coreshop.shipping.carrier.validator, priority: 10 }
 
-    coreshop.carrier.shipping_rule.checker: '@CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker'
     CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface: '@CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker'
     CoreShop\Component\Shipping\Checker\CarrierShippingRuleChecker:
         arguments:

@@ -117,7 +117,6 @@ services:
             - '@coreshop.registry.cart_price_rule.conditions'
             - 'Cart Price Rules'
 
-    coreshop.cart_price_rule.rule_validation.processor: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessor:
         arguments:
@@ -131,54 +130,46 @@ services:
         tags:
             - { name: coreshop.cart_price_rule.condition, type: nested, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\NestedConfigurationType }
 
-    coreshop.cart_price_rule.condition.timespan: '@CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker'
     CoreShop\Component\Order\Cart\Rule\Condition\TimeSpanConditionChecker:
         tags:
             - { name: coreshop.cart_price_rule.condition, type: timespan, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType }
 
-    coreshop.cart_price_rule.condition.voucher: '@CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker'
     CoreShop\Component\Order\Cart\Rule\Condition\VoucherConditionChecker:
         arguments:
             - '@coreshop.repository.cart_price_rule_voucher_code'
         tags:
             - { name: coreshop.cart_price_rule.condition, type: voucher, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\VoucherConfigurationType }
 
-    coreshop.cart_price_rule.condition.amount: '@CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker'
     CoreShop\Component\Order\Cart\Rule\Condition\AmountConditionChecker:
         tags:
             - { name: coreshop.cart_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }
 
     # Voucher Code Generator
-    coreshop.generator.cart_price_rule_voucher_codes: '@CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator'
     CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator:
         arguments:
             - '@coreshop.factory.cart_price_rule_voucher_code'
 
     # Processor
-    coreshop.proposal.cart_price_rule.calculator: '@CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculator'
     CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface: '@CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculator'
     CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculator:
         arguments:
             - '@coreshop.factory.cart_price_rule_item'
             - '@coreshop.registry.cart_price_rule.actions'
 
-    coreshop.cart_price_rule.processor: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessorInterface: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleProcessor:
         arguments:
-            - '@coreshop.cart_price_rule.rule_validation.processor'
-            - '@coreshop.proposal.cart_price_rule.calculator'
+            - '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface'
+            - '@CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface'
 
-    coreshop.cart_price_rule.un_processor: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessorInterface: '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessor'
     CoreShop\Component\Order\Cart\Rule\CartPriceRuleUnProcessor:
         arguments:
             - '@coreshop.registry.cart_price_rule.actions'
 
-    coreshop.validator.cart_price_rule: '@CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator'
     CoreShop\Bundle\OrderBundle\Validator\Constraints\CartPriceRuleValidator:
         arguments:
-            - '@coreshop.cart_price_rule.rule_validation.processor'
+            - '@CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface'
             - '@coreshop.repository.cart_price_rule_voucher_code'
         tags:
             - { name: validator.constraint_validator, alias: 'coreshop_cart_rule_valid' }
@@ -191,7 +182,6 @@ services:
             - { name: coreshop.registry.rule_availability_assessor, type: cart_price }
 
     # Modifier
-    coreshop.voucher.modifier: '@CoreShop\Component\Order\Modifier\VoucherModifier'
     CoreShop\Component\Order\Modifier\VoucherModifierInterface: '@CoreShop\Component\Order\Modifier\VoucherModifier'
     CoreShop\Component\Order\Modifier\VoucherModifier:
         arguments:

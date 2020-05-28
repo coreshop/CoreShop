@@ -1,5 +1,5 @@
 imports:
-    - { resource: "admin.yml" }
+    - { resource: admin.yml }
 
 jms_serializer:
     metadata:
@@ -44,7 +44,7 @@ doctrine:
 doctrine_cache:
     custom_providers:
         coreshop_pimcore_cache:
-            prototype: coreshop.doctrine.cache.pimcore
+            prototype: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
 
     providers:
         coreshop_pimcore_metadata_cache:

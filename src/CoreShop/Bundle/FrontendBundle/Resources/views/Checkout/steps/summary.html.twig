@@ -10,20 +10,35 @@
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         {{ form_errors(form) }}
 
-        {% if cart.hasItems() %}
+        {% if cart.hasItems %}
             <div class="cart-summary">
                 {% include '@CoreShopFrontend/Checkout/steps/summary/_list.html.twig' %}
             </div>
         {% endif %}
 
-        {{ form_row(form.acceptTerms) }}
+        {{ form_row(form.acceptTerms, coreshop_test_form_attribute('accept-terms')) }}
 
         <div class="row">
             <div class="col-12 col-sm-1 offset-sm-10">
-                <button type="submit" name="checkout_finisher" value="{{ coreshop_path(cart, 'coreshop_cart_create_qoute') }}" class="btn btn-success w-100">{{ 'coreshop.ui.quote'|trans }}</button>
+                <button
+                        type="submit"
+                        name="checkout_finisher"
+                        value="{{ coreshop_path(cart, 'coreshop_cart_create_qoute') }}"
+                        class="btn btn-success w-100"
+                        {{  coreshop_test_html_attribute('submit-quote') }}
+                >
+                    {{ 'coreshop.ui.quote'|trans }}
+                </button>
             </div>
             <div class="col-12 col-sm-1">
-                <button type="submit" name="checkout_finisher" value="{{ coreshop_path(cart, 'coreshop_checkout_do') }}" class="btn btn-success w-100">{{ 'coreshop.ui.buy'|trans }}</button>
+                <button
+                        type="submit"
+                        name="checkout_finisher"
+                        value="{{ coreshop_path(cart, 'coreshop_checkout_do') }}"
+                        class="btn btn-success w-100"
+                        {{ coreshop_test_html_attribute('submit-order') }}>
+                    {{ 'coreshop.ui.buy'|trans }}
+                </button>
             </div>
         </div>
 

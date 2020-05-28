@@ -4,35 +4,35 @@ services:
 
     coreshop.order_invoice.number_generator.default:
         class: CoreShop\Component\Order\NumberGenerator\SequenceNumberGenerator
-        arguments: ['@coreshop.sequence.generator', 'invoice']
+        arguments:
+            - '@CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface'
+            - 'invoice'
 
-    coreshop.order_invoice.transformer.cart_item_to_order_item: '@CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer'
     CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer:
         arguments:
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '%coreshop.folder.order_invoice_item%'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
 
-    coreshop.order.transformer.order_to_invoice: '@CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer'
     CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer:
         arguments:
-            - '@coreshop.order_invoice.transformer.cart_item_to_order_item'
-            - '@coreshop.core.key_transformer'
+            - '@CoreShop\Component\Order\Transformer\OrderItemToInvoiceItemTransformer'
+            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '@coreshop.order_invoice.number_generator.default'
             - '%coreshop.folder.order_invoice%'
-            - '@coreshop.object_service'
+            - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.repository.order_item'
             - '@coreshop.factory.order_invoice_item'
             - '@coreshop.repository.order_invoice'
-            - '@coreshop.transformer.event_dispatcher'
+            - '@CoreShop\Component\Order\Transformer\TransformerEventDispatcherInterface'
             - '@coreshop.factory.adjustment'
 
     coreshop.order.transformer.order_to_invoice.state_applier:
         class: CoreShop\Component\Order\Transformer\OrderToOrderDocumentTransformerWorkflowApplier
-        decorates: 'coreshop.order.transformer.order_to_invoice'
+        decorates: CoreShop\Component\Order\Transformer\OrderToInvoiceTransformer
         arguments:
              - '@coreshop.order.transformer.order_to_invoice.state_applier.inner'
-             - '@coreshop.state_machine_manager'
+             - '@CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface'
              - !php/const CoreShop\Component\Order\InvoiceStates::STATE_NEW
              - !php/const CoreShop\Component\Order\InvoiceTransitions::IDENTIFIER
              - !php/const CoreShop\Component\Order\InvoiceTransitions::TRANSITION_CREATE

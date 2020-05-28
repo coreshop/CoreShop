@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\ClassDefinition;
@@ -24,17 +26,17 @@ interface DefinitionFieldReNamerInterface
     /**
      * Executes the renaming.
      */
-    public function rename();
+    public function rename(): void;
 
     /**
      * @return string
      */
-    public function getOldFieldName();
+    public function getOldFieldName(): string;
 
     /**
      * @return string
      */
-    public function getNewFieldName();
+    public function getNewFieldName(): string;
 
     /**
      * @return ClassDefinition|Fieldcollection\Definition|Objectbrick\Definition

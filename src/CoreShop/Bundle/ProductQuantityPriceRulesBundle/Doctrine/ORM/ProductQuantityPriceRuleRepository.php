@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -21,7 +23,7 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
     /**
      * {@inheritdoc}
      */
-    public function findActive()
+    public function findActive(): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.active = 1')
@@ -32,7 +34,7 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
     /**
      * {@inheritdoc}
      */
-    public function findForProduct(QuantityRangePriceAwareInterface $product)
+    public function findForProduct(QuantityRangePriceAwareInterface $product): array
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.product = :productId')
@@ -44,7 +46,7 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
     /**
      * {@inheritdoc}
      */
-    public function findWithConditionOfType($conditionType)
+    public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.conditions', 'condition')
@@ -57,7 +59,7 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
     /**
      * {@inheritdoc}
      */
-    public function findWithActionOfType($actionType)
+    public function findWithActionOfType($actionType): array
     {
         throw new \Exception('actions are not supported in product quantity price rules.');
     }

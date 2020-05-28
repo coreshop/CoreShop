@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Notification\Condition;
 
 use CoreShop\Bundle\StoreBundle\Form\Type\StoreChoiceType;
@@ -21,7 +23,7 @@ final class StoresConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('stores', StoreChoiceType::class, [
@@ -32,7 +34,7 @@ final class StoresConfigurationType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_condition_stores';
     }

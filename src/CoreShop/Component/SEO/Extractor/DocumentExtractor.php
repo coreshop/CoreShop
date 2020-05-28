@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Extractor;
 
 use CoreShop\Component\SEO\Model\SEOMetadataInterface;
@@ -21,7 +23,7 @@ final class DocumentExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object)
+    public function supports($object): bool
     {
         return $object instanceof Page;
     }
@@ -29,7 +31,7 @@ final class DocumentExtractor implements ExtractorInterface
     /**
      * {@inheritdoc}
      */
-    public function updateMetadata($object, SEOMetadataInterface $seoMetadata)
+    public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, Page::class);
 

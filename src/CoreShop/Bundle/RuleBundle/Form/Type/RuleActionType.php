@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,7 +21,7 @@ class RuleActionType extends AbstractConfigurableRuleElementType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options = [])
+    public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
     }
@@ -27,7 +29,7 @@ class RuleActionType extends AbstractConfigurableRuleElementType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action';
     }

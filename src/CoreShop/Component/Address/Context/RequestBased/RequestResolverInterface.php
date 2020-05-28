@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Model\CountryInterface;
@@ -20,7 +22,7 @@ interface RequestResolverInterface
     /**
      * @param Request $request
      *
-     * @return CountryInterface|null
+     * @return CountryInterface
      */
-    public function findCountry(Request $request);
+    public function findCountry(Request $request): CountryInterface;
 }

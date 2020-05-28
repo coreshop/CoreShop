@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 interface PimcoreClassInstallerInterface extends ResourceInstallerInterface
@@ -17,15 +19,15 @@ interface PimcoreClassInstallerInterface extends ResourceInstallerInterface
     /**
      * @return array
      */
-    public function getInstalledClasses();
+    public function getInstalledClasses(): array;
 
     /**
      * @return array
      */
-    public function getInstalledCollections();
+    public function getInstalledCollections(): array;
 
     /**
      * @return array
      */
-    public function getInstalledBricks();
+    public function getInstalledBricks(): array;
 }

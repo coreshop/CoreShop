@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityRangeCollectionType;
@@ -27,7 +29,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
             /** @var ArrayCollection $data */
@@ -54,14 +56,10 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 ];
             }
 
-            /**
-             * @var QuantityRangeInterface $quantityRange
-             */
             foreach ($dataCheck as $unitName => $quantityRangesToCheck) {
                 $lastEnd = -1;
 
                 /**
-                 * @var int    $rowIndex
                  * @var array $quantityRangeToCheck
                  */
                 foreach ($quantityRangesToCheck as $quantityRangeToCheck) {
@@ -89,7 +87,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType()
+    public function getExtendedType(): string
     {
         return ProductQuantityRangeCollectionType::class;
     }
@@ -97,7 +95,7 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes()
+    public static function getExtendedTypes(): array
     {
         return [ProductQuantityRangeCollectionType::class];
     }

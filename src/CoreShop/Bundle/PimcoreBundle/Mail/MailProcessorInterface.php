@@ -10,20 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
 use Pimcore\Model\Document\Email;
 
 interface MailProcessorInterface
 {
-    /**
-     * @param Email $emailDocument
-     * @param null  $subject
-     * @param mixed $recipients
-     * @param array $attachments
-     * @param array $params
-     *
-     * @return bool
-     */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = []);
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool;
 }

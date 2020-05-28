@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleType;
@@ -22,17 +24,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ProductQuantityPriceRuleType extends RuleType
 {
-    /**
-     * @var array
-     */
     protected $calculatorTypes;
 
-    /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     * @param array  $calculatorTypes
-     */
-    public function __construct($dataClass, array $validationGroups, array $calculatorTypes)
+    public function __construct(string $dataClass, array $validationGroups, array $calculatorTypes)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -42,7 +36,7 @@ final class ProductQuantityPriceRuleType extends RuleType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextareaType::class)
@@ -61,7 +55,7 @@ final class ProductQuantityPriceRuleType extends RuleType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule';
     }

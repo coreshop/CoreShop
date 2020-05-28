@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartPriceRuleConditionCollectionType;
@@ -37,7 +39,7 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 

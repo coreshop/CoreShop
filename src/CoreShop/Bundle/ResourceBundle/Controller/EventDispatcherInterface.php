@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
@@ -24,7 +26,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatch($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -32,7 +34,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchPreEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -40,7 +42,7 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchPostEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 
     /**
      * @param string            $eventName
@@ -48,5 +50,5 @@ interface EventDispatcherInterface
      * @param ResourceInterface $resource
      * @param Request           $request
      */
-    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request);
+    public function dispatchInitializeEvent($eventName, MetadataInterface $metadata, ResourceInterface $resource, Request $request): void;
 }

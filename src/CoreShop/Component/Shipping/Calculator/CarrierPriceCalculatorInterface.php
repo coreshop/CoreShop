@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -18,12 +20,5 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 interface CarrierPriceCalculatorInterface
 {
-    /**
-     * @param CarrierInterface   $carrier
-     * @param ShippableInterface $shippable
-     * @param AddressInterface   $address
-     *
-     * @return mixed
-     */
-    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address);
+    public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int;
 }

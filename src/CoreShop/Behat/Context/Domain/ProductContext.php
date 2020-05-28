@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -25,48 +27,19 @@ use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var ShopperContextInterface
-     */
     private $shopperContext;
-
-    /**
-     * @var ProductRepositoryInterface
-     */
-    private $productRepository;
-
-    /**
-     * @var ProductPriceCalculatorInterface
-     */
     private $productPriceCalculator;
-
-    /**
-     * @var TaxedProductPriceCalculatorInterface
-     */
     private $taxedProductPriceCalculator;
 
-    /**
-     * @param SharedStorageInterface               $sharedStorage
-     * @param ShopperContextInterface              $shopperContext,
-     * @param ProductRepositoryInterface           $productRepository
-     * @param ProductPriceCalculatorInterface      $productPriceCalculator
-     * @param TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         ShopperContextInterface $shopperContext,
-        ProductRepositoryInterface $productRepository,
         ProductPriceCalculatorInterface $productPriceCalculator,
         TaxedProductPriceCalculatorInterface $taxedProductPriceCalculator
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->shopperContext = $shopperContext;
-        $this->productRepository = $productRepository;
         $this->productPriceCalculator = $productPriceCalculator;
         $this->taxedProductPriceCalculator = $taxedProductPriceCalculator;
     }

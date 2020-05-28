@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\Resource\Factory\FactoryInterface;
@@ -18,26 +20,10 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStorageManager implements StorageListManagerInterface
 {
-    /**
-     * @var SessionInterface
-     */
     private $session;
-
-    /**
-     * @var string
-     */
     private $name;
-
-    /**
-     * @var FactoryInterface
-     */
     private $sessionListFactory;
 
-    /**
-     * @param SessionInterface $session
-     * @param string           $name
-     * @param FactoryInterface $sessionListFactory
-     */
     public function __construct(SessionInterface $session, string $name, FactoryInterface $sessionListFactory)
     {
         $this->session = $session;
@@ -46,9 +32,9 @@ class SessionStorageManager implements StorageListManagerInterface
     }
 
     /**
-     * @return StorageListInterface
+     * {@inheritdoc}
      */
-    public function getStorageList()
+    public function getStorageList(): StorageListInterface
     {
         $list = $this->session->get($this->name);
 
@@ -60,22 +46,18 @@ class SessionStorageManager implements StorageListManagerInterface
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    public function hasStorageList()
+    public function hasStorageList(): bool
     {
         return $this->session->has($this->name);
     }
 
     /**
-     * @param StorageListInterface $storageList
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function persist(StorageListInterface $storageList)
+    public function persist(StorageListInterface $storageList): void
     {
         $this->session->set($this->name, $storageList);
-
-        return true;
     }
 }

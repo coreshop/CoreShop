@@ -10,10 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderItemInterface;
@@ -104,7 +105,7 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
     public function transform(OrderInterface $order, OrderDocumentInterface $shipment, $itemsToTransform)
     {
         /**
-         * @var $cart CartInterface
+         * @var $cart OrderInterface
          */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($shipment, OrderShipmentInterface::class);

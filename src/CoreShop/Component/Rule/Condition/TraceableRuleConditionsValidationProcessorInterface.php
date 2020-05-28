@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Rule\Condition;
 
 interface TraceableRuleConditionsValidationProcessorInterface extends RuleConditionsValidationProcessorInterface
 {
-    /**
-     * @return mixed
-     */
-    public function getValidatedConditions();
+    public function getValidatedConditions(): array;
 }

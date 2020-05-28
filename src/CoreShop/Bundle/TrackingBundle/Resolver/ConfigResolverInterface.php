@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TrackingBundle\Resolver;
 
 use Pimcore\Config\Config as ConfigObject;
@@ -17,7 +19,7 @@ use Pimcore\Config\Config as ConfigObject;
 interface ConfigResolverInterface
 {
     /**
-     * @return bool|ConfigObject
+     * @return ConfigObject|null
      */
-    public function getGoogleConfig();
+    public function getGoogleConfig(): ?ConfigObject;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Address\Model\Country as BaseCountry;
@@ -25,11 +27,6 @@ class Country extends BaseCountry implements CountryInterface
      * @var CurrencyInterface
      */
     protected $currency;
-
-    /**
-     * @var Collection|StoreInterface[]
-     */
-    protected $stores;
 
     public function __construct()
     {

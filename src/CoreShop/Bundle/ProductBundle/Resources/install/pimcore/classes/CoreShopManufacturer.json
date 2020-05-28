@@ -1,4 +1,5 @@
 {
+    "id": "cs_manufacturer",
     "description": null,
     "parentClass": "\\CoreShop\\Component\\Product\\Model\\Manufacturer",
     "useTraits": null,
@@ -58,7 +59,7 @@
                                 "columnLength": 190,
                                 "regex": "",
                                 "name": "name",
-                                "title": "Name",
+                                "title": "coreshop.manufacturer.name",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,
@@ -78,7 +79,7 @@
                                 "height": "",
                                 "uploadPath": "",
                                 "name": "image",
-                                "title": "Image",
+                                "title": "coreshop.manufacturer.image",
                                 "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;

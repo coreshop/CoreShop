@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
@@ -17,38 +19,21 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {
-    /**
-     * @var CustomerInterface
-     */
     private $customer;
-
-    /**
-     * @var string
-     */
     private $confirmLink;
 
-    /**
-     * @param CustomerInterface $customer
-     * @param string            $confirmLink
-     */
-    public function __construct(CustomerInterface $customer, $confirmLink)
+    public function __construct(CustomerInterface $customer, string $confirmLink)
     {
         $this->customer = $customer;
         $this->confirmLink = $confirmLink;
     }
 
-    /**
-     * @return CustomerInterface
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         return $this->customer;
     }
 
-    /**
-     * @return string
-     */
-    public function getConfirmLink()
+    public function getConfirmLink(): string
     {
         return $this->confirmLink;
     }

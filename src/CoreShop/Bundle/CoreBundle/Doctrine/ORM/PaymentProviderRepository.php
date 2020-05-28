@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\PaymentBundle\Doctrine\ORM\PaymentProviderRepository as BasePaymentProviderRepository;
@@ -21,7 +23,7 @@ class PaymentProviderRepository extends BasePaymentProviderRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findActiveForStore(StoreInterface $store)
+    public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.stores', 's')

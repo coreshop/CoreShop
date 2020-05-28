@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\RequestNewsletterConfirmationEvent;
@@ -23,26 +25,10 @@ use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $linkGenerator;
-
-    /**
-     * @var RequestStack
-     */
     private $requestStack;
-
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param LinkGeneratorInterface   $linkGenerator
-     * @param RequestStack             $requestStack
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
         RequestStack $requestStack,
@@ -53,10 +39,7 @@ final class CustomerNewsletterConfirmListener
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
-    public function checkCustomerNewsletterConfirmation(GenericEvent $event)
+    public function checkCustomerNewsletterConfirmation(GenericEvent $event): void
     {
         Assert::isInstanceOf($event->getSubject(), CustomerInterface::class);
 

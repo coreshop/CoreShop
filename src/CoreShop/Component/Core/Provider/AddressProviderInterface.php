@@ -10,17 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Provider;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 interface AddressProviderInterface
 {
-    /**
-     * @param CartInterface $cart
-     *
-     * @return AddressInterface|null
-     */
-    public function getAddress(CartInterface $cart);
+    public function getAddress(OrderInterface $cart): ?AddressInterface;
 }

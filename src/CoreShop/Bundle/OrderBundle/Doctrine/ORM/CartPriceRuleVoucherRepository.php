@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class CartPriceRuleVoucherRepository extends EntityRepository implements CartPriceRuleVoucherRepositoryInterface
@@ -20,7 +23,7 @@ class CartPriceRuleVoucherRepository extends EntityRepository implements CartPri
     /**
      * {@inheritdoc}
      */
-    public function findByCode($code)
+    public function findByCode(string $code): CartPriceRuleVoucherCodeInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.code = :code')

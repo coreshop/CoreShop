@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -25,7 +27,7 @@ interface DynamicRendererInterface
      *
      * @return mixed
      */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null);
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null);
 
     /**
      * @param WorkerInterface    $worker
@@ -33,5 +35,5 @@ interface DynamicRendererInterface
      *
      * @return bool
      */
-    public function supports(WorkerInterface $worker, ConditionInterface $condition);
+    public function supports(WorkerInterface $worker, ConditionInterface $condition): bool;
 }

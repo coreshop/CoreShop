@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Hook;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Service\Setup;
 
 final class PimcoreSetupContext implements Context
 {
@@ -25,6 +28,6 @@ final class PimcoreSetupContext implements Context
             return;
         }
 
-        \CoreShop\Test\Setup::setupPimcore();
+        Setup::setupPimcore();
     }
 }

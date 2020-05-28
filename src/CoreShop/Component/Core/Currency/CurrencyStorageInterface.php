@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Currency;
 
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -22,7 +24,7 @@ interface CurrencyStorageInterface
      * @param StoreInterface    $store
      * @param CurrencyInterface $currency
      */
-    public function set(StoreInterface $store, CurrencyInterface $currency);
+    public function set(StoreInterface $store, CurrencyInterface $currency): void;
 
     /**
      * @param StoreInterface $store
@@ -31,5 +33,5 @@ interface CurrencyStorageInterface
      *
      * @throws CurrencyNotFoundException
      */
-    public function get(StoreInterface $store);
+    public function get(StoreInterface $store): CurrencyInterface;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Routing;
 
 use Symfony\Component\Routing\Route;
@@ -20,7 +22,7 @@ interface RouteFactoryInterface
     /**
      * @return RouteCollection
      */
-    public function createRouteCollection();
+    public function createRouteCollection(): RouteCollection;
 
     /**
      * @param string       $path         The path pattern to match
@@ -34,5 +36,5 @@ interface RouteFactoryInterface
      *
      * @return Route
      */
-    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', $schemes = [], $methods = [], $condition = '');
+    public function createRoute($path, array $defaults = [], array $requirements = [], array $options = [], $host = '', $schemes = [], $methods = [], $condition = ''): Route;
 }

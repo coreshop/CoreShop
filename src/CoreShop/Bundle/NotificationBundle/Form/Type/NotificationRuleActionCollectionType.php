@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\NotificationBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionCollectionType;
@@ -17,7 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class NotificationRuleActionCollectionType extends RuleActionCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -27,7 +32,7 @@ final class NotificationRuleActionCollectionType extends RuleActionCollectionTyp
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_notification_action_collection';
     }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Context\CountryContextInterface;
@@ -30,10 +32,6 @@ final class CountryContext implements CountryContextInterface
      */
     private $requestStack;
 
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
-     */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
         $this->requestResolver = $requestResolver;
@@ -43,7 +41,7 @@ final class CountryContext implements CountryContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCountry()
+    public function getCountry(): CountryInterface
     {
         try {
             return $this->getCountryForRequest($this->getMasterRequest());
@@ -57,7 +55,7 @@ final class CountryContext implements CountryContextInterface
      *
      * @return CountryInterface
      */
-    private function getCountryForRequest(Request $request)
+    private function getCountryForRequest(Request $request): CountryInterface
     {
         $country = $this->requestResolver->findCountry($request);
 
@@ -69,7 +67,7 @@ final class CountryContext implements CountryContextInterface
     /**
      * @return Request
      */
-    private function getMasterRequest()
+    private function getMasterRequest(): Request
     {
         $masterRequest = $this->requestStack->getMasterRequest();
         if (null === $masterRequest) {
@@ -82,7 +80,7 @@ final class CountryContext implements CountryContextInterface
     /**
      * @param CountryInterface|null $country
      */
-    private function assertCountryWasFound(CountryInterface $country = null)
+    private function assertCountryWasFound(CountryInterface $country = null): void
     {
         if (null === $country) {
             throw new \UnexpectedValueException('Country was not found for given request');

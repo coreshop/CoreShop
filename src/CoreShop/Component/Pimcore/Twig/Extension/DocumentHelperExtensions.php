@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\Document;
@@ -18,43 +20,43 @@ use Twig\TwigTest;
 
 final class DocumentHelperExtensions extends AbstractExtension
 {
-    public function getTests()
+    public function getTests(): array
     {
         return [
-            new TwigTest('document', function ($object) {
+            new TwigTest('document', static function ($object) {
                 return is_object($object) && $object instanceof Document;
             }),
-            new TwigTest('document_email', function ($object) {
+            new TwigTest('document_email', static function ($object) {
                 return is_object($object) && $object instanceof Document\Email;
             }),
-            new TwigTest('document_folder', function ($object) {
+            new TwigTest('document_folder', static function ($object) {
                 return is_object($object) && $object instanceof Document\Folder;
             }),
-            new TwigTest('document_hardlink', function ($object) {
+            new TwigTest('document_hardlink', static function ($object) {
                 return is_object($object) && $object instanceof Document\Hardlink;
             }),
-            new TwigTest('document_newsletter', function ($object) {
+            new TwigTest('document_newsletter', static function ($object) {
                 return is_object($object) && $object instanceof Document\Newsletter;
             }),
-            new TwigTest('document_page', function ($object) {
+            new TwigTest('document_page', static function ($object) {
                 return is_object($object) && $object instanceof Document\Page;
             }),
-            new TwigTest('document_link', function ($object) {
+            new TwigTest('document_link', static function ($object) {
                 return is_object($object) && $object instanceof Document\Link;
             }),
-            new TwigTest('document_page_snippet', function ($object) {
+            new TwigTest('document_page_snippet', static function ($object) {
                 return is_object($object) && $object instanceof Document\PageSnippet;
             }),
-            new TwigTest('document_print', function ($object) {
+            new TwigTest('document_print',static  function ($object) {
                 return is_object($object) && $object instanceof Document\PrintAbstract;
             }),
-            new TwigTest('document_print_container', function ($object) {
+            new TwigTest('document_print_container', static function ($object) {
                 return is_object($object) && $object instanceof Document\Printcontainer;
             }),
-            new TwigTest('document_print_page', function ($object) {
+            new TwigTest('document_print_page', static function ($object) {
                 return is_object($object) && $object instanceof Document\Printpage;
             }),
-            new TwigTest('document_snippet', function ($object) {
+            new TwigTest('document_snippet', static function ($object) {
                 return is_object($object) && $object instanceof Document\Snippet;
             }),
         ];

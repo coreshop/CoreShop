@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Shipping\Rule\Condition;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -21,7 +23,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
     /**
      * {@inheritdoc}
      */
-    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration)
+    public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $postcodes = explode(',', $configuration['postcodes']);
 
@@ -44,7 +46,7 @@ final class PostcodeConditionChecker extends AbstractConditionChecker
      *
      * @return bool
      */
-    private function checkPostCode($postcode, $deliveryPostcode)
+    private function checkPostCode($postcode, $deliveryPostcode): bool
     {
         //Check if postcode has a range
         $deliveryPostcode = str_replace(' ', '', $deliveryPostcode);

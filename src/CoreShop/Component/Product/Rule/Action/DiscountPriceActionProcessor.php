@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -19,21 +21,13 @@ use Webmozart\Assert\Assert;
 
 class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     protected $moneyConverter;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
     protected $currencyRepository;
 
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
-    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
+    public function __construct(
+        CurrencyRepositoryInterface $currencyRepository,
+        CurrencyConverterInterface $moneyConverter
+    )
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
@@ -42,17 +36,19 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice($subject, array $context, array $configuration)
+    public function getDiscountPrice($subject, array $context, array $configuration): int
     {
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
         /**
-         * @var CurrencyInterface $currency
          * @var CurrencyInterface $contextCurrency
          */
         $contextCurrency = $context['currency'];
         $price = $configuration['price'];
+        /**
+         * @var CurrencyInterface $currency
+         */
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);

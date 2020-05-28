@@ -10,15 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Context;
 
+use CoreShop\Component\Order\Model\OrderInterface;
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
 {
-    /**
-     * @var PriorityQueue|CartContextInterface[]
-     */
     private $cartContexts;
 
     public function __construct()
@@ -26,11 +26,7 @@ final class CompositeCartContext implements CartContextInterface
         $this->cartContexts = new PriorityQueue();
     }
 
-    /**
-     * @param CartContextInterface $cartContext
-     * @param int                  $priority
-     */
-    public function addContext(CartContextInterface $cartContext, $priority = 0)
+    public function addContext(CartContextInterface $cartContext, int $priority = 0): void
     {
         $this->cartContexts->insert($cartContext, $priority);
     }
@@ -38,7 +34,7 @@ final class CompositeCartContext implements CartContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
         foreach ($this->cartContexts as $cartContext) {
             try {

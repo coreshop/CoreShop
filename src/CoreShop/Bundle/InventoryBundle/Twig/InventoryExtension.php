@@ -10,25 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\InventoryBundle\Twig;
 
-use CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper;
+use CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface;
+use CoreShop\Component\Inventory\Model\StockableInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class InventoryExtension extends AbstractExtension
 {
-    /**
-     * @var InventoryHelper
-     */
-    private $helper;
+    private $checker;
 
-    /**
-     * @param InventoryHelper $helper
-     */
-    public function __construct(InventoryHelper $helper)
+    public function __construct(AvailabilityCheckerInterface $checker)
     {
-        $this->helper = $helper;
+        $this->checker = $checker;
     }
 
     /**
@@ -37,8 +34,13 @@ final class InventoryExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('coreshop_inventory_is_available', [$this->helper, 'isStockAvailable']),
-            new TwigFunction('coreshop_inventory_is_sufficient', [$this->helper, 'isStockSufficient']),
+            new TwigFunction('coreshop_inventory_is_available', [$this->checker, 'isStockAvailable']),
+            new TwigFunction('coreshop_inventory_is_sufficient', [$this, 'isStockSufficient']),
         ];
+    }
+
+    public function isStockSufficient(StockableInterface $stockable, $quantity = 1)
+    {
+        return $this->checker->isStockSufficient($stockable, $quantity);
     }
 }

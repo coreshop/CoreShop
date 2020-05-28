@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\NumberGenerator;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -17,21 +19,10 @@ use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
 class SequenceNumberGenerator implements NumberGeneratorInterface
 {
-    /**
-     * @var SequenceGeneratorInterface
-     */
     protected $sequenceNumberGenerator;
-
-    /**
-     * @var string
-     */
     protected $type;
 
-    /**
-     * @param SequenceGeneratorInterface $sequenceNumberGenerator
-     * @param string                     $type
-     */
-    public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, $type)
+    public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, string $type)
     {
         $this->sequenceNumberGenerator = $sequenceNumberGenerator;
         $this->type = $type;
@@ -40,8 +31,8 @@ class SequenceNumberGenerator implements NumberGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(ResourceInterface $model)
+    public function generate(ResourceInterface $model): string
     {
-        return $this->sequenceNumberGenerator->getNextSequenceForType($this->type);
+        return (string)$this->sequenceNumberGenerator->getNextSequenceForType($this->type);
     }
 }

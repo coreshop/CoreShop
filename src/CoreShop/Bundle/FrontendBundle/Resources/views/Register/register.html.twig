@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form '@CoreShopFrontend/Common/theme.html.twig' %}
 
 {% block center %}
     <div id="main-container" class="container p-0">
@@ -21,7 +21,38 @@
                 <div class="col-sm-12">
                     <div class="card card-smart">
                         <div class="card-body">
-                            {{ form(form, {'method': 'POST'}) }}
+                            {{ form_start(form, {'method': 'POST', attr: {'novalidate': 'novalidate'}}) }}
+                                {{ form_label(form.customer) }}
+
+                                {{ form_row(form.customer.salutation, coreshop_test_form_attribute('register-salutation')) }}
+                                {{ form_row(form.customer.gender, coreshop_test_form_attribute('register-gender')) }}
+                                {{ form_row(form.customer.firstname, coreshop_test_form_attribute('register-firstname')) }}
+                                {{ form_row(form.customer.lastname, coreshop_test_form_attribute('register-lastname')) }}
+                                {{ form_row(form.customer.email.first, coreshop_test_form_attribute('register-email-first')) }}
+                                {{ form_row(form.customer.email.second, coreshop_test_form_attribute('register-email-second')) }}
+                                {{ form_row(form.customer.password.first, coreshop_test_form_attribute('register-password-first')) }}
+                                {{ form_row(form.customer.password.second, coreshop_test_form_attribute('register-password-second')) }}
+                                {{ form_row(form.customer.newsletterActive, coreshop_test_form_attribute('register-newsletter-active')) }}
+
+                                {{ form_label(form.address) }}
+
+                                {{ form_row(form.address.company, coreshop_test_form_attribute('register-address-company')) }}
+                                {{ form_row(form.address.salutation, coreshop_test_form_attribute('register-address-salutation')) }}
+                                {{ form_row(form.address.firstname, coreshop_test_form_attribute('register-address-firstname')) }}
+                                {{ form_row(form.address.lastname, coreshop_test_form_attribute('register-address-lastname')) }}
+                                {{ form_row(form.address.street, coreshop_test_form_attribute('register-address-street')) }}
+                                {{ form_row(form.address.number, coreshop_test_form_attribute('register-address-number')) }}
+                                {{ form_row(form.address.postcode, coreshop_test_form_attribute('register-address-post-code')) }}
+                                {{ form_row(form.address.city, coreshop_test_form_attribute('register-address-city')) }}
+                                {{ form_row(form.address.country, coreshop_test_form_attribute('register-address-country')) }}
+                                {{ form_row(form.address.phoneNumber, coreshop_test_form_attribute('register-address-phone-number')) }}
+
+                                {{ form_row(form.termsAccepted, coreshop_test_form_attribute('register-terms')) }}
+
+                                {{ form_row(form.submit, coreshop_test_form_attribute('register-button')) }}
+
+                                {{ form_row(form._token) }}
+                            {{ form_end(form, {'method': 'POST', 'render_rest': false}) }}
                         </div>
                     </div>
                 </div>

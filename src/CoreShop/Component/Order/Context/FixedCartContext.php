@@ -10,33 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Context;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class FixedCartContext implements CartContextInterface
 {
-    /**
-     * @var CartInterface
-     */
-    private $cart = null;
+    private $cart ;
 
     /**
      * {@inheritdoc}
      */
-    public function getCart()
+    public function getCart(): OrderInterface
     {
-        if ($this->cart instanceof CartInterface) {
+        if ($this->cart instanceof OrderInterface) {
             return $this->cart;
         }
 
         throw new CartNotFoundException();
     }
 
-    /**
-     * @param CartInterface $cart
-     */
-    public function setCart(CartInterface $cart)
+    public function setCart(OrderInterface $cart)
     {
         $this->cart = $cart;
     }

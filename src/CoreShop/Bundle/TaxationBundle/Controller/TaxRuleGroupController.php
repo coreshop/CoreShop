@@ -10,20 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TaxationBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
+use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TaxRuleGroupController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listRulesAction(Request $request)
+    public function listRulesAction(Request $request): Response
     {
         $ruleGroup = $this->findOr404($request->get('id'));
         $data = $this->getTaxRulesRepository()->findByGroup($ruleGroup);
@@ -31,7 +30,7 @@ class TaxRuleGroupController extends ResourceController
         return $this->viewHandler->handle($data);
     }
 
-    protected function getTaxRulesRepository()
+    protected function getTaxRulesRepository(): TaxRuleRepositoryInterface
     {
         return $this->get('coreshop.repository.tax_rule');
     }

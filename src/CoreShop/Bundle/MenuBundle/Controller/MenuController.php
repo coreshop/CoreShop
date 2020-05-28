@@ -10,18 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MenuBundle\Controller;
 
 use Pimcore\Bundle\AdminBundle\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class MenuController extends Controller\AdminController
 {
-    /**
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Exception
-     */
-    public function menuAction($type)
+    public function menuAction($type): Response
     {
         $response = $this->render('@CoreShopMenu/menu.js.twig', [
             'type' => $type,

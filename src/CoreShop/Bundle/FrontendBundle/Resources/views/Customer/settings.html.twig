@@ -1,5 +1,5 @@
 {% extends '@CoreShopFrontend/layout-full.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form '@CoreShopFrontend/Common/theme.html.twig' %}
 
 {% block center %}
     <div id="main-container" class="container p-0">
@@ -21,15 +21,23 @@
                 <div class="col-sm-12">
                     <div class="card card-smart">
                         <div class="card-body">
-                            {{ form_start(form) }}
-                                {{ form_rest(form) }}
+                            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                                {{ form_row(form.salutation, coreshop_test_form_attribute('salutation')) }}
+                                {{ form_row(form.gender, coreshop_test_form_attribute('gender')) }}
+                                {{ form_row(form.firstname, coreshop_test_form_attribute('firstname')) }}
+                                {{ form_row(form.lastname, coreshop_test_form_attribute('lastname')) }}
+                                {{ form_row(form.email.first, coreshop_test_form_attribute('email-first')) }}
+                                {{ form_row(form.email.second, coreshop_test_form_attribute('email-second')) }}
+                                {{ form_row(form.newsletterActive, coreshop_test_form_attribute('newsletter-active')) }}
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success">
+                                    <button type="submit" class="btn btn-success" {{ coreshop_test_html_attribute('save-changes') }}>
                                         {{ 'coreshop.ui.save'|trans }}
                                     </button>
                                 </div>
-                            {{ form_end(form) }}
+
+                                {{ form_row(form._token) }}
+                            {{ form_end(form, {'render_rest': false}) }}
                         </div>
                     </div>
                 </div>

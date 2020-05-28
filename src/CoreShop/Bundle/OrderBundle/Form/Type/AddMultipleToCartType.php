@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
@@ -23,7 +25,7 @@ final class AddMultipleToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('items', CollectionType::class, [
             'entry_type' => AddToCartType::class,
@@ -37,7 +39,7 @@ final class AddMultipleToCartType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('csrf_protection', false);
         $resolver->setDefault('allow_extra_fields', true);

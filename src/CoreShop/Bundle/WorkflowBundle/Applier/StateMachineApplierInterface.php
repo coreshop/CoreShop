@@ -10,15 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\Applier;
 
 interface StateMachineApplierInterface
 {
     /**
-     * @param mixed $subject
-     * @param null  $workflowName
-     * @param null  $transition
-     * @param bool  $soft
+     * @param mixed       $subject
+     * @param string|null $workflowName
+     * @param string|null $transition
+     * @param bool        $soft
      */
-    public function apply($subject, $workflowName = null, $transition = null, $soft = true);
+    public function apply($subject, ?string $workflowName = null, ?string $transition = null, bool $soft = true): void;
 }

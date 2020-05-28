@@ -10,13 +10,14 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Product\Model\CategoryInterface as BaseCategoryInterface;
 use CoreShop\Component\SEO\Model\PimcoreSEOAwareInterface;
 use CoreShop\Component\SEO\Model\SEOOpenGraphAwareInterface;
-use CoreShop\Component\Store\Model\StoresAwareInterface;
 
 interface CategoryInterface extends
     BaseCategoryInterface,

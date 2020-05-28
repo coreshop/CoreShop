@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type\Worker;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
@@ -25,7 +27,7 @@ final class MysqlWorkerTableIndexType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('type', ChoiceType::class, [
@@ -43,7 +45,7 @@ final class MysqlWorkerTableIndexType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('data_class', TableIndex::class);
 
@@ -53,7 +55,7 @@ final class MysqlWorkerTableIndexType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_worker_mysql';
     }

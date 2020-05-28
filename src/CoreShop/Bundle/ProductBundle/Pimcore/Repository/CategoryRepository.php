@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
@@ -21,7 +23,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     /**
      * {@inheritdoc}
      */
-    public function findFirstLevel()
+    public function findFirstLevel(): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id is null');
@@ -32,7 +34,7 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
     /**
      * {@inheritdoc}
      */
-    public function findChildCategories(CategoryInterface $category)
+    public function findChildCategories(CategoryInterface $category): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id = ?', [$category->getId()]);

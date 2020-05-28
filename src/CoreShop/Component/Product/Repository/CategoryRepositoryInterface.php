@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Repository;
 
 use CoreShop\Component\Product\Model\CategoryInterface;
@@ -20,12 +22,12 @@ interface CategoryRepositoryInterface extends PimcoreRepositoryInterface
     /**
      * @return CategoryInterface[]
      */
-    public function findFirstLevel();
+    public function findFirstLevel(): array;
 
     /**
      * @param CategoryInterface $category
      *
      * @return CategoryInterface[]
      */
-    public function findChildCategories(CategoryInterface $category);
+    public function findChildCategories(CategoryInterface $category): array;
 }

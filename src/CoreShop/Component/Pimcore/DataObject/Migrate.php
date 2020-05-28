@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use CoreShop\Component\Pimcore\Db\Db;
@@ -34,7 +36,7 @@ final class Migrate
      * @throws ClassDefinitionAlreadyExistsException
      * @throws ClassDefinitionNotFoundException
      */
-    public static function migrateClass($fromClass, $toClass, $options = [])
+    public static function migrateClass(string $fromClass, string $toClass, array $options = []): ClassDefinition
     {
         $newClassDefinition = ClassDefinition::getByName($toClass);
 
@@ -128,7 +130,7 @@ final class Migrate
      *
      * @throws \Exception
      */
-    public static function migrateData($oldPimcoreClass, $newPimcoreClass)
+    public static function migrateData(string $oldPimcoreClass, string $newPimcoreClass): void
     {
         $oldClassDefinition = ClassDefinition::getByName($oldPimcoreClass);
         $newClassDefinition = ClassDefinition::getByName($newPimcoreClass);
