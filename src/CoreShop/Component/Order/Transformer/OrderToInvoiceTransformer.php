@@ -28,76 +28,23 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
-    /**
-     * @var OrderDocumentItemTransformerInterface
-     */
     protected $orderItemToInvoiceItemTransformer;
-
-    /**
-     * @var ItemKeyTransformerInterface
-     */
-    protected $keyTransformer;
-
-    /**
-     * @var NumberGeneratorInterface
-     */
     protected $numberGenerator;
-
-    /**
-     * @var string
-     */
     protected $invoiceFolderPath;
-
-    /**
-     * @var ObjectServiceInterface
-     */
     protected $objectService;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     protected $orderItemRepository;
-
-    /**
-     * @var PimcoreFactoryInterface
-     */
     protected $invoiceItemFactory;
-
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
     protected $invoiceRepository;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     protected $adjustmentFactory;
 
-    /**
-     * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface           $keyTransformer
-     * @param NumberGeneratorInterface              $numberGenerator
-     * @param string                                $invoiceFolderPath
-     * @param ObjectServiceInterface                $objectService
-     * @param PimcoreRepositoryInterface            $orderItemRepository
-     * @param PimcoreFactoryInterface               $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
-     * @param TransformerEventDispatcherInterface   $eventDispatcher
-     * @param AdjustmentFactoryInterface            $adjustmentFactory
-     */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
-        ItemKeyTransformerInterface $keyTransformer,
         NumberGeneratorInterface $numberGenerator,
         $invoiceFolderPath,
         ObjectServiceInterface $objectService,
@@ -108,7 +55,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
-        $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
         $this->invoiceFolderPath = $invoiceFolderPath;
         $this->objectService = $objectService;
@@ -141,7 +87,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         /**
          * @var OrderInvoiceInterface $invoice
          */
-        $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
+        $invoice->setKey(Service::getValidKey($invoiceNumber, 'object'));
         $invoice->setInvoiceNumber($invoiceNumber);
         $invoice->setParent($invoiceFolder);
         $invoice->setPublished(true);

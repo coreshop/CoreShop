@@ -15,24 +15,17 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Order\Committer;
 
 use Carbon\Carbon;
-use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplierInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Committer\QuoteCommitterInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\NumberGenerator\NumberGeneratorInterface;
-use CoreShop\Component\Order\OrderInvoiceStates;
-use CoreShop\Component\Order\OrderPaymentStates;
 use CoreShop\Component\Order\OrderSaleStates;
-use CoreShop\Component\Order\OrderShipmentStates;
-use CoreShop\Component\Order\OrderStates;
-use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
-use Pimcore\Model\DataObject\Folder;
+use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
@@ -57,10 +50,6 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
      */
     protected $objectCloner;
 
-    /**
-     * @var ItemKeyTransformerInterface
-     */
-    protected $keyTransformer;
 
     /**
      * @var string
@@ -72,14 +61,12 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         ObjectServiceInterface $objectService,
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
-        ItemKeyTransformerInterface $keyTransformer,
         string $orderFolderPath
     ) {
         $this->cartManager = $cartManager;
         $this->objectService = $objectService;
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
-        $this->keyTransformer = $keyTransformer;
         $this->orderFolderPath = $orderFolderPath;
     }
 
@@ -103,7 +90,7 @@ class QuoteCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $order->setSaleState(OrderSaleStates::STATE_QUOTE);
         $order->setOrderDate(Carbon::now());
         $order->setOrderNumber($orderNumber);
-        $order->setKey($this->keyTransformer->transform($orderNumber));
+        $order->setKey(Service::getValidKey($orderNumber, 'object'));
 
         $this->cartManager->persistCart($order);
 

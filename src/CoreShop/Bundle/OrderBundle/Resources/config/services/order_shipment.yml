@@ -17,7 +17,6 @@ services:
     CoreShop\Component\Order\Transformer\OrderToShipmentTransformer:
         arguments:
             - '@CoreShop\Component\Order\Transformer\OrderItemToShipmentItemTransformer'
-            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '@coreshop.order_shipment.number_generator.default'
             - '%coreshop.folder.order_shipment%'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'

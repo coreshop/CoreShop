@@ -31,8 +31,8 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
 use Pimcore\Model\DataObject\Folder;
+use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
@@ -58,11 +58,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
     protected $objectCloner;
 
     /**
-     * @var ItemKeyTransformerInterface
-     */
-    protected $keyTransformer;
-
-    /**
      * @var StateMachineApplierInterface
      */
     private $stateMachineApplier;
@@ -77,7 +72,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         ObjectServiceInterface $objectService,
         NumberGeneratorInterface $numberGenerator,
         ObjectClonerInterface $objectCloner,
-        ItemKeyTransformerInterface $keyTransformer,
         StateMachineApplierInterface $stateMachineApplier,
         string $orderFolderPath
     ) {
@@ -85,7 +79,6 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $this->objectService = $objectService;
         $this->numberGenerator = $numberGenerator;
         $this->objectCloner = $objectCloner;
-        $this->keyTransformer = $keyTransformer;
         $this->stateMachineApplier = $stateMachineApplier;
         $this->orderFolderPath = $orderFolderPath;
     }
@@ -110,7 +103,7 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $order->setSaleState(OrderSaleStates::STATE_ORDER);
         $order->setOrderDate(Carbon::now());
         $order->setOrderNumber($orderNumber);
-        $order->setKey($this->keyTransformer->transform($orderNumber));
+        $order->setKey(Service::getValidKey($orderNumber, 'object'));
         $order->setOrderState(OrderStates::STATE_INITIALIZED);
         $order->setShippingState(OrderShipmentStates::STATE_NEW);
         $order->setPaymentState(OrderPaymentStates::STATE_NEW);

@@ -109,7 +109,6 @@ services:
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.order.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
-            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '@CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier'
             - '%coreshop.folder.order%'
 
@@ -120,5 +119,4 @@ services:
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '@coreshop.quote.number_generator.default'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface'
-            - '@CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface'
             - '%coreshop.folder.quote%'
