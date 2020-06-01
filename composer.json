@@ -18,7 +18,7 @@
         "doctrine/common": "^2.6",
         "doctrine/data-fixtures": "^1.0",
         "doctrine/dbal": "^2.1",
-        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-bundle": "^1.11.0",
         "doctrine/orm": "^2.5",
         "fzaninotto/faker": "^1.6",
         "gedmo/doctrine-extensions": "^2.4.12",

@@ -18,16 +18,12 @@ doctrine:
         types:
             pimcoreObject:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
-                commented: true
             pimcoreDocument:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
-                commented: true
             pimcoreAsset:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
-                commented: true
             pimcoreSite:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
-                commented: true
         mapping_types:
             enum: string
     orm:
