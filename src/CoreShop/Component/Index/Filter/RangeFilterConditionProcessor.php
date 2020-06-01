@@ -57,7 +57,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $values = explode(',', $parameterBag->get($field));
 
             $parameterBag->set($field . '-min', $values[0]);
-            $parameterBag->set($field . '-max', $values[0]);
+            $parameterBag->set($field . '-max', $values[1]);
         }
 
         $valueMin = $parameterBag->get($field . '-min');
