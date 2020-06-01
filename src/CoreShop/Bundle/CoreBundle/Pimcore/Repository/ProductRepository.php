@@ -45,7 +45,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
 
         if ($recursive) {
-            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%s']);
+            $list->setCondition('o_path LIKE ?', [$product->getRealFullPath() . '/%']);
         } else {
             $list->setCondition('o_parentId =', [$product->getId()]);
         }
