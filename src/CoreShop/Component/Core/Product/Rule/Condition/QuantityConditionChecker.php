@@ -26,7 +26,7 @@ final class QuantityConditionChecker implements ConditionCheckerInterface
      */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
     {
-        if (array_key_exists('cart', $params) || !$params['cart'] instanceof CartInterface) {
+        if (!array_key_exists('cart', $params) || !$params['cart'] instanceof CartInterface) {
             return false;
         }
 

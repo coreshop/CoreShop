@@ -14,6 +14,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use CoreShop\Bundle\CoreBundle\Form\Type\ProductPriceRule\Condition\QuantityConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CategoriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CountriesConfigurationType;
 use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\CurrenciesConfigurationType;
@@ -446,6 +447,25 @@ final class ProductPriceRuleContext implements Context
             'price' => (int) $price,
             'currency' => $currency->getId(),
         ]));
+    }
+
+    /**
+     * @Given /^the (price rule "[^"]+") has a condition quantity with min (\d+) and max (\d+)$/
+     * @Given /^the (price rule) has a condition quantity with min (\d+) and max (\d+)$/
+     */
+    public function theProductPriceRuleHasAQuantityCondition(
+        ProductPriceRuleInterface $rule,
+        int $min,
+        int $max
+    ) {
+        $this->assertConditionForm(QuantityConfigurationType::class, 'quantity');
+
+        $configuration = [
+            'minQuantity' => $min,
+            'maxQuantity' => $max,
+        ];
+
+        $this->addCondition($rule, $this->createConditionWithForm('quantity', $configuration));
     }
 
     /**
