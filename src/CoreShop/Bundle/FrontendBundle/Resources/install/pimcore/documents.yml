@@ -47,6 +47,20 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Registrierung erfolgreich abgeschlossen'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);,<br/>
+              grazie per esserti registrato al nostro negozio.
+            </p>
+        head:
+          type: 'input'
+          value: 'Registrazione completata'
+        subject:
+          type: 'objectProperty'
+          value: 'Registrazione completata'
 
   -
     key: 'user-reset-password'
@@ -86,6 +100,21 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Reset Password'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              clicca sul link per reimpostare la password: %Text(resetLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Resetta la password'
+        subject:
+          type: 'objectProperty'
+          value: 'Resetta la password'
 
   -
     key: 'user-newsletter-confirm'
@@ -125,6 +154,21 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Confirm Newsletter'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              clicca sul link per confermare l'iscrizione alla newsletter: %Text(confirmLink);
+            </p>
+        head:
+          type: 'input'
+          value: 'Conferma newsletter'
+        subject:
+          type: 'objectProperty'
+          value: 'Conferma newsletter'
 
   -
     key: 'user-newsletter-confirmed'
@@ -164,6 +208,21 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Newsletter subscription confirmed'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);<br/>
+              <br/>
+              la tua iscrizione alla newsletter è stata confermata.
+            </p>
+        head:
+          type: 'input'
+          value: 'Iscrizione alla newsletter confermata'
+        subject:
+          type: 'objectProperty'
+          value: 'Iscrizione alla newsletter confermata'
 
   -
     key: 'order-confirmation'
@@ -201,6 +260,20 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Order Confirmation %Text(orderNumber);'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);,<br/>
+              il tuo ordine con riferimento %Text(orderNumber); è stato ricevuto.
+            </p>
+        head:
+          type: 'input'
+          value: 'Conferma ordine %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Conferma ordine %Text(orderNumber);'
 
   -
     key: 'order-shipped'
@@ -238,6 +311,20 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Your order has been shipped %Text(orderNumber);'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>
+              Ciao %Text(firstname); %Text(lastname);,<br/>
+              il tuo ordine %Text(orderNumber); è stato spedito.
+            </p>
+        head:
+          type: 'input'
+          value: 'Il tuo ordine è stato spedito %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Il tuo ordine è stato spedito %Text(orderNumber);'
   -
     key: 'user-order-comment'
     type: 'email'
@@ -270,3 +357,15 @@ documents:
         subject:
           type: 'objectProperty'
           value: 'Notes on your order %Text(orderNumber);'
+      it:
+        text:
+          type: 'wysiwyg'
+          value: >
+            <p>Note sul tuo ordine:</p>
+            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+        head:
+          type: 'input'
+          value: 'Note sul suo ordine %Text(orderNumber);'
+        subject:
+          type: 'objectProperty'
+          value: 'Note sul suo ordine %Text(orderNumber);'

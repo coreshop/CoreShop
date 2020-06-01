@@ -1,1 +1,7 @@
 ---
+coreshop_store: 'Negozio'
+coreshop_store_multiselect: 'Negozio multiselezione'
+coreshop_store_site: 'Sito'
+coreshop_store_template: 'Template'
+coreshop_permission_store: 'CoreShop: Negozio'
+coreshop_stores: 'Negozi'

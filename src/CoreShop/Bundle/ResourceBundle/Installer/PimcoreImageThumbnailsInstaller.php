@@ -78,7 +78,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             $progress->finish();
             $progress->clear();
 
-            $output->writeln('  - <info>Grid Configs have been installed successfully</info>');
+            $output->writeln('  - <info>Image Thumbnails have been installed successfully</info>');
         }
     }
 
