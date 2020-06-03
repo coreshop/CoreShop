@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.2",
         "doctrine/common": "^2.6",
-        "pimcore/pimcore": "^6.6.0",
+        "pimcore/pimcore": "^6.7.0",
         "webmozart/assert": "^1.2"
     },
     "config": {

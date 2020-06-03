@@ -209,7 +209,7 @@ coreshop.resource.panel = Class.create({
 
         if (button === 'ok') {
             Ext.Ajax.request({
-                url: this.url.add,
+                url: this.routing.add ? Routing.generate(this.routing.add) : this.url.add,
                 jsonData: jsonData,
                 method: 'post',
                 success: function (response) {
@@ -233,7 +233,7 @@ coreshop.resource.panel = Class.create({
 
     deleteItem: function (record) {
         Ext.Ajax.request({
-            url: this.url.delete,
+            url: this.routing.delete ? Routing.generate(this.routing.delete) : this.url.delete,
             method: 'DELETE',
             params: {
                 id: record.id
@@ -263,7 +263,7 @@ coreshop.resource.panel = Class.create({
         }
         else {
             Ext.Ajax.request({
-                url: this.url.get,
+                url: this.routing.get ? Routing.generate(this.routing.get) : this.url.get,
                 params: {
                     id: record.id
                 },

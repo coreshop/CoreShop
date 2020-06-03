@@ -12,7 +12,7 @@
 
 pimcore.registerNS('coreshop.order.order.create.customer');
 coreshop.order.order.create.customer = Class.create(coreshop.resource.creation, {
-    url: '/admin/coreshop/order/customer/create',
+    route: 'coreshop_admin_order_customer_creation',
     type: 'customer',
 
     getSettings: function() {

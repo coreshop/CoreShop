@@ -41,6 +41,18 @@ final class LoginContext implements Context
     }
 
     /**
+     * @When I log into the Pimcore backend
+     */
+    public function ILogIntoPimcoreBackend(): void
+    {
+        $this->adminLoginPage->open();
+        $this->adminLoginPage->specifyUsername('admin');
+        $this->adminLoginPage->specifyPassword('coreshop');
+        $this->adminLoginPage->logIn();
+        $this->iShouldBeLoggedIn();
+    }
+
+    /**
      * @When I specify the username as :username
      * @When I do not specify the username
      */
@@ -72,8 +84,19 @@ final class LoginContext implements Context
      */
     public function iShouldBeLoggedIn(): void
     {
+        $this->pwaPage->waitTillLoaded();
         $this->pwaPage->verify();
 
         Assert::true($this->pwaPage->hasLogoutButton());
+    }
+
+    /**
+     * @When I open Pimcore
+     */
+    public function iLoadPimcore(): void
+    {
+        $this->pwaPage->open();
+        $this->pwaPage->waitTillLoaded();
+        $this->pwaPage->verify();
     }
 }

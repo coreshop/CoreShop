@@ -1,4 +1,9 @@
 services:
+    CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage:
+        arguments:
+            $session: '@behat.mink.default_session'
+            $minkParameters: '@behat.mink.parameters'
+
     CoreShop\Behat\Page\Pimcore\AbstractPimcorePage:
         parent: FriendsOfBehat\PageObjectExtension\Page\SymfonyPage
 
@@ -6,7 +11,10 @@ services:
     CoreShop\Behat\Page\Pimcore\LoginPage:
         parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage
 
-
     CoreShop\Behat\Page\Pimcore\PWAPageInterface: '@CoreShop\Behat\Page\Pimcore\PWAPage'
     CoreShop\Behat\Page\Pimcore\PWAPage:
         parent: CoreShop\Behat\Page\Pimcore\AbstractPimcorePage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage

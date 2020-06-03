@@ -24,7 +24,7 @@ ui:
                 default:
                     panther:
                         options:
-                            browser: chrome
+                            browser: firefox
 #                            external_converted_uri: "http://localhost:9080/app_test.php"
             show_auto: false
 

@@ -1,3 +1,5 @@
 coreshop_menu:
     path:     /admin/coreshop/{type}/menu.js
     defaults: { _controller: CoreShopMenuBundle:Menu:menu }
+    options:
+        expose: true

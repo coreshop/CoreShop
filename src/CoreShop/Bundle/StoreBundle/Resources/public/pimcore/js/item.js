@@ -15,8 +15,8 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_store',
 
-    url: {
-        save: '/admin/coreshop/stores/save'
+    routing: {
+        save: 'coreshop_store_save'
     },
 
     getItems: function () {
@@ -30,7 +30,7 @@ coreshop.store.item = Class.create(coreshop.resource.item, {
             remoteSort: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/stores/list-sites',
+                url: Routing.generate('coreshop_store_listSites'),
                 reader: {
                     type: 'json'
                 }

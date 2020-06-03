@@ -16,8 +16,8 @@ coreshop.notification.rule.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_notification_rule',
 
-    url: {
-        save: '/admin/coreshop/notification_rules/save'
+    routing: {
+        save: 'coreshop_notification_rule_save'
     },
 
     getPanel: function () {

@@ -1,4 +1,5 @@
-/*
+<?php
+/**
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -7,18 +8,17 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
- *
  */
 
-pimcore.registerNS('coreshop.customer.resource');
-coreshop.customer.resource = Class.create(coreshop.resource, {
-    initialize: function () {
-        coreshop.global.addStore('coreshop_customergroups', 'coreshop/customer_groups');
+declare(strict_types=1);
 
-        coreshop.broker.fireEvent('resource.register', 'coreshop.customer', this);
-    }
-});
+namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-coreshop.broker.addListener('pimcore.ready', function() {
-    new coreshop.customer.resource();
-});
+use CoreShop\Behat\Page\Pimcore\AbstractPimcorePage;
+use CoreShop\Behat\Page\Pimcore\PimcoreTabPageInterface;
+use FriendsOfBehat\PageObjectExtension\Page\UnexpectedPageException;
+
+interface CurrencyPageInterface extends PimcoreTabPageInterface
+{
+
+}

@@ -20,6 +20,9 @@ class AppKernel extends Kernel
     public function registerBundlesToCollection(\Pimcore\HttpKernel\BundleCollection\BundleCollection $collection)
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
+        $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0, [
+            'test'
+        ]);
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
     }
 

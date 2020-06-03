@@ -22,7 +22,7 @@ coreshop.core.customer.customerToCompanyTransformer = Class.create(coreshop.core
         this.customerId = data.id;
         this.customerData = data;
 
-        this.validateAssignment([this.customerId])
+        this.validateAssignment({customerId: this.customerId})
     },
 
     buildAssignerLayout: function (data) {
@@ -36,7 +36,7 @@ coreshop.core.customer.customerToCompanyTransformer = Class.create(coreshop.core
             autoLoad: false,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/customer-company-modifier/duplication-name-check',
+                url: Routing.generate('coreshop_admin_customer_company_name_duplication_check'),
                 reader: {
                     type: 'json',
                     rootProperty: 'list'
@@ -258,8 +258,7 @@ coreshop.core.customer.customerToCompanyTransformer = Class.create(coreshop.core
         };
 
         this.submitForm(
-            'dispatch-new-assignment',
-            [this.customerId],
+            Routing.generate('coreshop_admin_customer_company_modifier_dispatch_new_assignment', {customerId: this.customerId}),
             submitValues,
             windowPanel
         );

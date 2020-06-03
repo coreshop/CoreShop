@@ -1,7 +1,11 @@
 coreshop_helper_get_nice_path:
     path: /%coreshop.admin.route.base%/helper/get-nice-path
     defaults: { _controller: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController::getNicePathAction }
-
+    options:
+        expose: true
+        
 coreshop_resource_class_map:
     path: /%coreshop.admin.route.base%/resource/config
     defaults: { _controller: CoreShop\Bundle\ResourceBundle\Controller\ResourceSettingsController::getConfigAction }
+    options:
+        expose: true

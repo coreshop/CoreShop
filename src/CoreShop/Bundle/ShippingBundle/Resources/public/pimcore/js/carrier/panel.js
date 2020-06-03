@@ -22,11 +22,11 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
     type: 'coreshop_carriers',
 
     url: {
-        add: '/admin/coreshop/carriers/add',
-        delete: '/admin/coreshop/carriers/delete',
-        get: '/admin/coreshop/carriers/get',
-        list: '/admin/coreshop/carriers/list',
-        config: '/admin/coreshop/carriers/get-config'
+        add: 'coreshop_carrier_add',
+        delete: 'coreshop_carrier_delete',
+        get: 'coreshop_carrier_get',
+        list: 'coreshop_carrier_list',
+        config: 'coreshop_carrier_getConfig'
     },
 
     /**
@@ -46,7 +46,7 @@ coreshop.carrier.panel = Class.create(coreshop.resource.panel, {
         pimcore.globalmanager.add('coreshop_shipping_tax_calculation_strategies', this.taxCalculationStrategyStore);
 
         Ext.Ajax.request({
-            url: this.url.config,
+            url: Routing.generate(this.routing.config),
             method: 'get',
             success: function (response) {
                 try {

@@ -26,7 +26,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: field.layout.folderName,
                     methodName: field.layout.methodName,
@@ -94,7 +94,7 @@ pimcore.object.tags.coreShopDynamicDropdown = Class.create(pimcore.object.tags.s
         this.options_store = new Ext.data.JsonStore({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/options',
+                url: Routing.generate('coreshop_dynamic_dropdown_options'),
                 extraParams: {
                     folderName: this.fieldConfig.folderName,
                     methodName: this.fieldConfig.methodName,

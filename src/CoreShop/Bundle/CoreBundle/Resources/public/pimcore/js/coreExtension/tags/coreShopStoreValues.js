@@ -39,7 +39,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/product_unit_definitions/get-product-additional-unit-definitions',
+                url: Routing.generate('coreshop_product_unit_definitions_productAdditionalUnitDefinitionsList'),
                 extraParams: {
                     productId: this.object.id
                 },
@@ -87,7 +87,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
     reloadStoreValuesData: function (object, task, fieldName) {
         this.component.setLoading(true);
         Ext.Ajax.request({
-            url: '/admin/object/get',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_get'),
             params: {id: object.id},
             ignoreErrors: true,
             success: function (response) {
@@ -219,7 +219,7 @@ pimcore.object.tags.coreShopStoreValues = Class.create(pimcore.object.tags.abstr
                                 this.component.setLoading(true);
 
                                 Ext.Ajax.request({
-                                    url: '/admin/coreshop/products/remove-store-values',
+                                    url: Routing.generate('coreshop_product_removeStoreValues'),
                                     method: 'post',
                                     params: {id: this.object.id, storeValuesId: data.values.id},
                                     ignoreErrors: true,

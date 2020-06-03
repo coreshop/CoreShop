@@ -19,7 +19,7 @@
         "coreshop/currency-bundle": "^3.0",
         "coreshop/theme-bundle": "^3.0",
         "coreshop/store": "^3.0",
-        "pimcore/pimcore": "^6.6.0"
+        "pimcore/pimcore": "^6.7.0"
     },
     "config": {
         "bin-dir": "bin"

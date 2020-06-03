@@ -27,7 +27,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                     store: {
                         proxy: {
                             type: 'ajax',
-                            url: '/admin/coreshop/countries/list-active',
+                            url: Routing.generate('coreshop_country_listActive'),
                             reader: {
                                 type: 'json',
                             }

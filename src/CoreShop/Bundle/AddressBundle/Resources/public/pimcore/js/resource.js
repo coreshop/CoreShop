@@ -13,14 +13,14 @@
 pimcore.registerNS('coreshop.address.resource');
 coreshop.address.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_zones', 'coreshop/zones', [
+        coreshop.global.addStoreWithRoute('coreshop_zones', 'coreshop_zone_list', [
             {name: 'id'},
             {name: 'name'},
             {name: 'active'}
         ]);
-        coreshop.global.addStore('coreshop_countries', 'coreshop/countries', null, 'name');
-        coreshop.global.addStore('coreshop_address_identifier', 'coreshop/address_identifiers', null, 'name');
-        coreshop.global.addStore('coreshop_states', 'coreshop/states');
+        coreshop.global.addStoreWithRoute('coreshop_countries', 'coreshop_country_list', null, 'name');
+        coreshop.global.addStoreWithRoute('coreshop_address_identifier', 'coreshop_address_identifier_list', null, 'name');
+        coreshop.global.addStoreWithRoute('coreshop_states', 'coreshop_state_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.address', this);
     },

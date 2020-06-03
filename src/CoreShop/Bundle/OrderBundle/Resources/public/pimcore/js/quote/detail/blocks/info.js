@@ -63,7 +63,7 @@ coreshop.order.quote.detail.blocks.info = Class.create(coreshop.order.order.deta
                 changeStateRequest = function (context, btn, transitionInfo) {
                     btn.disable();
                     Ext.Ajax.request({
-                        url: '/admin/coreshop/order/update-order-state',
+                        url: Routing.generate('coreshop_admin_order_update_order_state'),
                         params: {
                             transition: transitionInfo.transition,
                             o_id: context.sale.o_id

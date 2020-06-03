@@ -47,12 +47,8 @@ abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInt
         if ($condition === null) {
             $defaultCondition = true;
             $conditions = [
-                "document.readyState == 'complete'",           // Page is ready
-                "typeof $ != 'undefined'",                     // jQuery is loaded
-                "!$.active",                                   // No ajax request is active
-                "$('#page').css('display') == 'block'",        // Page is displayed (no progress bar)
-                "$('.loading-mask').css('display') == 'none'", // Page is not loading (no black mask loading page)
-                "$('.jstree-loading').length == 0",            // Jstree has finished loading
+                "document.readyState == 'complete'",
+                "document.body.classList.contains('coreshop_loaded')",
             ];
             $condition = implode(' && ', $conditions);
         } else {

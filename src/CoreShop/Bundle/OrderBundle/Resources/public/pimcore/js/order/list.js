@@ -24,7 +24,7 @@ coreshop.order.order.list = Class.create({
 
     initialize: function () {
         Ext.Ajax.request({
-            url: '/admin/coreshop/order/get-folder-configuration',
+            url: Routing.generate('coreshop_admin_order_get_folder_configuration'),
             ignoreErrors: true,
             params: {
                 saleType: this.type
@@ -55,7 +55,7 @@ coreshop.order.order.list = Class.create({
 
     setClassFolder: function () {
         Ext.Ajax.request({
-            url: '/admin/object/get-folder',
+            url: Routing.generate('pimcore_admin_dataobject_dataobject_getfolder'),
             params: {id: this.gridConfig.folderId},
             ignoreErrors: true,
             success: function (response) {
@@ -65,7 +65,7 @@ coreshop.order.order.list = Class.create({
                 // since multiple user may want to have access to it at the same time
                 if (typeof data.editlock === 'object') {
                     Ext.Ajax.request({
-                        url: '/admin/element/unlock-element',
+                        url: Routing.generate('pimcore_admin_element_unlockelement'),
                         method: 'PUT',
                         params: {
                             id: data.editlock.cid,
@@ -392,7 +392,7 @@ coreshop.order.order.list = Class.create({
         var filterStore = new Ext.data.Store({
             restful: false,
             proxy: new Ext.data.HttpProxy({
-                url: '/admin/coreshop/grid/filters/coreshop_' + this.type
+                url: Routing.generate('coreshop_pimcore_grid_get_filters', {listType: 'coreshop_' + this.type})
             }),
             reader: new Ext.data.JsonReader({}, [
                 {name: 'id'},

@@ -27,7 +27,7 @@ coreshop.order.order.create.panel = Class.create({
             me.layout.setLoading(true);
 
             Ext.Ajax.request({
-                url: '/admin/coreshop/order-creation/preview',
+                url: Routing.generate('coreshop_admin_order_preview'),
                 method: 'post',
                 jsonData: me.getPreviewValues(),
                 callback: function (request, success, response) {
@@ -102,7 +102,7 @@ coreshop.order.order.create.panel = Class.create({
         this.customerId = customerId;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-creation/get-customer-details',
+            url: Routing.generate('coreshop_admin_order_get_customer_details'),
             method: 'post',
             params: {
                 customerId: customerId
@@ -295,7 +295,7 @@ coreshop.order.order.create.panel = Class.create({
         this.layout.setLoading(t('coreshop_creating_' + this.type));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-creation/create',
+            url: Routing.generate('coreshop_admin_order_create'),
             method: 'post',
             jsonData: this.getValues(),
             callback: function (request, success, response) {

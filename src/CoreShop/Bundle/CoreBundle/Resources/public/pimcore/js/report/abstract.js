@@ -243,12 +243,10 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
         var operation = this.getStore().createOperation('read', options);
         var request = this.getStore().getProxy().buildRequest(operation);
 
-        var url = '/admin/coreshop/report/export?report=' + me.reportType;
         var filterParams = request.getParams();
+        filterParams['report'] = me.reportType;
 
-        url += '&' + Ext.urlEncode(filterParams);
-
-        pimcore.helpers.download(url);
+        pimcore.helpers.download(Routing.generate('coreshop_admin_report_export', filterParams));
     },
 
     getStore: function () {
@@ -266,7 +264,7 @@ coreshop.report.abstract = Class.create(pimcore.report.abstract, {
                 pageSize: 50,
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/coreshop/report/get-data?report=' + this.reportType,
+                    url: Routing.generate('coreshop_admin_report_get_data', { report: this.reportType }),
                     actionMethods: {
                         read: 'GET'
                     },

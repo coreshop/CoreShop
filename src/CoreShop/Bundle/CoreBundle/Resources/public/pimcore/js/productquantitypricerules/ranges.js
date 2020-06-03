@@ -23,7 +23,7 @@ coreshop.product_quantity_price_rules.ranges = Class.create(coreshop.product_qua
         unitDefinitionModelName = 'coreshop.product.model.productUnitDefinitions';
         proxy = {
             type: 'ajax',
-            url: '/admin/coreshop/product_unit_definitions/get-product-unit-definitions',
+            url: Routing.generate('coreshop_product_unit_definitions_productUnitDefinitionsList'),
             extraParams: {
                 productId: this.objectId
             },

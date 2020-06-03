@@ -70,6 +70,9 @@ final class ResourceLoader implements LoaderInterface
                 'path' => $route,
                 'action' => $route,
                 'methods' => $methods,
+                'options' => [
+                    'expose' => $configuration['expose']
+                ]
             ];
         }
 
@@ -88,7 +91,7 @@ final class ResourceLoader implements LoaderInterface
         $rootPath .= '/' . $metadata->getPluralName() . '/';
 
         foreach ($routesToGenerate as $route) {
-            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods']);
+            $indexRoute = $this->createRoute($metadata, $configuration, $rootPath . $route['path'], $route['action'], $route['methods'], $route['options'] ?? []);
             $routes->add($this->getRouteName($metadata, $configuration, $route['action']), $indexRoute);
         }
 
@@ -119,13 +122,13 @@ final class ResourceLoader implements LoaderInterface
         // Intentionally left blank.
     }
 
-    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods): Route
+    private function createRoute(MetadataInterface $metadata, array $configuration, $path, $actionName, array $methods, array $options): Route
     {
         $defaults = [
             '_controller' => $metadata->getServiceId('admin_controller') . sprintf(':%sAction', $actionName),
         ];
 
-        return $this->routeFactory->createRoute($path, $defaults, [], [], '', [], $methods);
+        return $this->routeFactory->createRoute($path, $defaults, [], $options, '', [], $methods);
     }
 
     private function getRouteName(MetadataInterface $metadata, array $configuration, $actionName): string

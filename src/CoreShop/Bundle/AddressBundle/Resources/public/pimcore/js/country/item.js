@@ -15,8 +15,8 @@ coreshop.country.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_country',
 
-    url: {
-        save: '/admin/coreshop/countries/save'
+    routing: {
+        save: 'coreshop_country_save'
     },
 
     getItems: function () {

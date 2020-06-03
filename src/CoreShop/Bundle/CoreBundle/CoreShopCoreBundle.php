@@ -169,9 +169,7 @@ final class CoreShopCoreBundle extends AbstractResourceBundle implements Pimcore
      */
     public function getJsPaths()
     {
-        return [
-            '/admin/coreshop/coreshop.main/menu.js',
-        ];
+        return [];
     }
 
     /**

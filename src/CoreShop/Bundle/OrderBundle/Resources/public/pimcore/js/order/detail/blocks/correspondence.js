@@ -82,7 +82,7 @@ coreshop.order.order.detail.blocks.correspondence = Class.create(coreshop.order.
                                                         xtype: 'box',
                                                         autoEl: {
                                                             tag: 'iframe',
-                                                            src: '/admin/email/show-email-log?id=' + rec.get('email-log') + '&type=html'
+                                                            src: Routing.generate('pimcore_admin_email_showemaillog', {id : rec.get('email-log'), 'type': 'html'})
                                                         }
                                                     }
                                                 ]
