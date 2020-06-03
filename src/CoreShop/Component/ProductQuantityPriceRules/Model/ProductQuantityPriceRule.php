@@ -27,7 +27,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     use ToggleableTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
