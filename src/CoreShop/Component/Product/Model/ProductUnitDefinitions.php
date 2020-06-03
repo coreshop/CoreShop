@@ -230,8 +230,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
         $additionalUnits = $this->getAdditionalUnitDefinitions();
 
-        //Doctrine internally does that
-        //$this->id = null;
+        $this->id = null;
         $this->unitDefinitions =  new ArrayCollection();
         $this->defaultUnitDefinition = null;
 

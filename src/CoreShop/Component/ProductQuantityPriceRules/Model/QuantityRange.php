@@ -157,6 +157,6 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         }
 
         $this->rule = null;
-        //$this->id = null;
+        $this->id = null;
     }
 }
