@@ -426,7 +426,7 @@ abstract class AbstractSaleDetailController extends AbstractSaleController
         return [
             'name' => $currency->getName(),
             'symbol' => $currency->getSymbol(),
-            'iso' => $currency->getIsoCode()
+            'isoCode' => $currency->getIsoCode()
         ];
     }
 
