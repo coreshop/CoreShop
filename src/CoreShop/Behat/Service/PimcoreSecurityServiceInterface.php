@@ -27,11 +27,4 @@ interface PimcoreSecurityServiceInterface
     public function logIn(User $user): void;
 
     public function logOut(): void;
-
-    /**
-     * @throws TokenNotFoundException
-     */
-    public function getCurrentToken(): TokenInterface;
-
-    public function restoreToken(TokenInterface $token): void;
 }

@@ -26,62 +26,27 @@ use Symfony\Component\Security\Core\Exception\TokenNotFoundException;
 
 final class PimcoreSecurityService implements PimcoreSecurityServiceInterface
 {
-    private $session;
     private $cookieSetter;
-    private $sessionTokenVariable;
-    private $firewallContextName;
 
     public function __construct(
-        SessionInterface $session,
-        CookieSetterInterface $cookieSetter,
-        string $firewallContextName
+        CookieSetterInterface $cookieSetter
     )
     {
-        $this->session = $session;
         $this->cookieSetter = $cookieSetter;
-        $this->sessionTokenVariable = '_pimcore_admin';
-        $this->firewallContextName = $firewallContextName;
     }
 
     public function logIn(User $user): void
     {
+        Session::invalidate();
         Session::useSession(static function (AttributeBagInterface $adminSession) use ($user) {
-            Session::regenerateId();
             $adminSession->set('user', $user);
         });
 
         $this->cookieSetter->setCookie(Session::getSessionName(), Session::getSessionId());
-
-        Session::writeClose();
     }
 
     public function logOut(): void
     {
         Session::invalidate();
-    }
-
-    public function getCurrentToken(): TokenInterface
-    {
-        $serializedToken = $this->session->get($this->sessionTokenVariable);
-
-        if (null === $serializedToken) {
-            throw new TokenNotFoundException();
-        }
-
-        return unserialize($serializedToken);
-    }
-
-    public function restoreToken(TokenInterface $token): void
-    {
-        $this->setToken($token);
-    }
-
-    private function setToken(TokenInterface $token)
-    {
-        $serializedToken = serialize($token);
-        $this->session->set($this->sessionTokenVariable, $serializedToken);
-        $this->session->save();
-
-        $this->cookieSetter->setCookie($this->session->getName(), Session::getSessionId());
     }
 }

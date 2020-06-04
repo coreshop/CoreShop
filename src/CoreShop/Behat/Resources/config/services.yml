@@ -50,9 +50,7 @@ services:
     coreshop.security_service.backend:
         class: CoreShop\Behat\Service\PimcoreSecurityService
         arguments:
-            - '@session'
             - '@CoreShop\Behat\Service\PimcoreCookieSetter'
-            - 'admin'
 
     CoreShop\Behat\Service\NotificationAccessorInterface: '@CoreShop\Behat\Service\NotificationAccessor'
     CoreShop\Behat\Service\NotificationAccessor:
