@@ -145,7 +145,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_wholesale_price'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -153,7 +153,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_price_without_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso),
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode),
                     field: {
                         xtype: 'numberfield',
                         decimalPrecision: 4
@@ -165,7 +165,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_price_with_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -184,7 +184,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     text: t('coreshop_total'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode)
                 },
                 {
                     menuDisabled: true,
