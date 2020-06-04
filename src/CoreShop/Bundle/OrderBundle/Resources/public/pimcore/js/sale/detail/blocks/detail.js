@@ -118,7 +118,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                             if (row.type === 'string') {
                                 value = row.value;
                             } else if (row.type === 'price') {
-                                value = coreshop.util.format.currency(_.sale.currency.iso, row.value)
+                                value = coreshop.util.format.currency(_.sale.currency.isoCode, row.value)
                             } else {
                                 value = '--';
                             }
@@ -228,7 +228,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                         var factor = record.get('factor') ?? pimcore.globalmanager.get('coreshop.currency.decimal_factor');
                         var precision = record.get('precision') ?? pimcore.globalmanager.get('coreshop.currency.decimal_precision');
 
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency_precision(this.sale.currency.iso, value, precision, factor) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency_precision(this.sale.currency.isoCode, value, precision, factor) + '</span>';
                     }.bind(this)
                 }
             ]
@@ -262,7 +262,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -271,7 +271,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.isoCode, value) + '</span>';
                     }.bind(this)
                 }
             ]
