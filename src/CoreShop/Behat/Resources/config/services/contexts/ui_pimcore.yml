@@ -40,3 +40,43 @@ services:
             - '@CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.state:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\StateContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.exchange_rate:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\ExchangeRateContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.tax_rate:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\TaxRateContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.tax_rule_group:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\TaxRuleGroupContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface'
+        tags:
+            - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.zone:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\ZoneContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\ZonePageInterface'
+        tags:
+            - { name: fob.context_service }

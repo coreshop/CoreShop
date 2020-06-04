@@ -22,3 +22,23 @@ services:
     CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage'
     CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage:
         parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\StatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\StatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\TaxRuleGroupPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\ZonePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\ZonePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\ZonePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage

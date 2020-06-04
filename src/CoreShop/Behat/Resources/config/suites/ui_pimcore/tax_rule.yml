@@ -10,7 +10,11 @@ default:
 
                 - coreshop.behat.context.transform.shared_storage
 
+                - coreshop.behat.context.setup.backend_security
+
                 - coreshop.behat.context.ui_pimcore.login
                 - coreshop.behat.context.ui_pimcore.menu
+                - coreshop.behat.context.ui_pimcore.pwa
+                - coreshop.behat.context.ui_pimcore.coreshop.tax_rule_group
             filters:
                 tags: "@ui_pimcore && @tax_rule"

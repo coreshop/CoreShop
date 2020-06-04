@@ -15,29 +15,32 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Context\Ui\Pimcore\CoreShop;
 
 use Behat\Behat\Context\Context;
+use CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface;
 use CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface;
+use CoreShop\Behat\Page\Pimcore\CoreShop\ExchangeRatePageInterface;
+use CoreShop\Behat\Page\Pimcore\CoreShop\StatePageInterface;
 use CoreShop\Behat\Page\Pimcore\PWAPageInterface;
 use Webmozart\Assert\Assert;
 
-final class CurrencyContext implements Context
+final class StateContext implements Context
 {
     private $pwaPage;
-    private $currencyPage;
+    private $statePage;
 
     public function __construct(
         PWAPageInterface $pwaPage,
-        CurrencyPageInterface $currencyPage
+        StatePageInterface $statePage
     )
     {
         $this->pwaPage = $pwaPage;
-        $this->currencyPage = $currencyPage;
+        $this->statePage= $statePage;
     }
 
     /**
-     * @When currencies tab is open
+     * @When states tab is open
      */
-    public function currenciesTabIsOpen(): void
+    public function statesTabIsOpen(): void
     {
-        Assert::true($this->currencyPage->isActiveOpen());
+        Assert::true($this->statePage->isActiveOpen());
     }
 }
