@@ -11,7 +11,7 @@ CoreShop\Component\Currency\Model\Currency:
             expose: true
             type: string
             groups: [List, Detailed]
-        iso:
+        isoCode:
             expose: true
             type: string
             groups: [Detailed]
