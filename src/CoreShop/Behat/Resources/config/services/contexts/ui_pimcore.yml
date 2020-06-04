@@ -32,3 +32,11 @@ services:
             - '@CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui_pimcore.coreshop.country:
+        class: CoreShop\Behat\Context\Ui\Pimcore\CoreShop\CountryContext
+        arguments:
+            - '@CoreShop\Behat\Page\Pimcore\PWAPageInterface'
+            - '@CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface'
+        tags:
+            - { name: fob.context_service }

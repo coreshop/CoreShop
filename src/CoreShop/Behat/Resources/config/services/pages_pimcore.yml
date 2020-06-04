@@ -18,3 +18,7 @@ services:
     CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage'
     CoreShop\Behat\Page\Pimcore\CoreShop\CurrencyPage:
         parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
+
+    CoreShop\Behat\Page\Pimcore\CoreShop\CountryPageInterface: '@CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage'
+    CoreShop\Behat\Page\Pimcore\CoreShop\CountryPage:
+        parent: CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage
