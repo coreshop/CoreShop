@@ -17,7 +17,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 class QuantityRange extends AbstractResource implements QuantityRangeInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -157,6 +157,6 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         }
 
         $this->rule = null;
-        //$this->id = null;
+        $this->id = null;
     }
 }
