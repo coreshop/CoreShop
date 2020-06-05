@@ -230,7 +230,7 @@ abstract class AbstractCartCreationController extends AbstractSaleController
             ],
             [
                 'key' => 'discount_tax',
-                'value' => -1 * $cart->getDiscount(true) - $cart->getDiscount(false),
+                'value' => -1 * ($cart->getDiscount(true) - $cart->getDiscount(false)),
             ],
             [
                 'key' => 'discount',
