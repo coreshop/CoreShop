@@ -35,10 +35,26 @@ final class CountryContext implements Context
     }
 
     /**
+     * @When I open the countries tab
+     */
+    public function iOpenTheCountriesTab(): void
+    {
+        $this->pwaPage->openResource('coreshop.address', 'country');
+    }
+
+    /**
      * @When countries tab is open
      */
     public function countriesTabIsOpen(): void
     {
         Assert::true($this->countryPage->isActiveOpen());
+    }
+
+    /**
+     * @Given /^I create a new country named "([^"]+)"$/
+     */
+    public function createNewCountry($name): void
+    {
+        $this->countryPage->create($name);
     }
 }

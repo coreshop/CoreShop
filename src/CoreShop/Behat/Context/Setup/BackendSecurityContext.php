@@ -42,6 +42,7 @@ final class BackendSecurityContext implements Context
             ->setName('behat-admin')
             ->setPassword('behat-admin')
             ->setAdmin(true)
+            ->setCloseWarning(false)
             ->save();
 
         $this->securityService->logIn($user);

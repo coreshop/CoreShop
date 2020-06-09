@@ -21,4 +21,6 @@ interface PimcoreTabPageInterface
     public function makeActive(): void;
 
     public function close(): void;
+
+    public function create(string $name): void;
 }

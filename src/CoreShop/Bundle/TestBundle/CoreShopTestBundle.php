@@ -54,6 +54,7 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
     {
         return [
             '/bundles/coreshoptest/pimcore/js/plugin.js',
+            '/bundles/coreshoptest/pimcore/js/xpath.js',
         ];
     }
 }

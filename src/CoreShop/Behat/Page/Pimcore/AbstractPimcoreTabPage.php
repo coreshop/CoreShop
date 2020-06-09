@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Page\Pimcore;
 
 use Behat\Mink\Element\DocumentElement;
 use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Session;
 
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
@@ -88,5 +89,43 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
         $id = $element->getAttribute('id');
 
         $this->session->executeScript(sprintf('Ext.getCmp(\'%s\').destroy()', $id));
+    }
+
+    public function create(string $name): void
+    {
+        $addButton = $this->extjsComponentQuery('[itemId=add-button]');
+        $addButton->click();
+
+        $newDialog = $this->extsDocumentQuery('[itemId='.$this->getLayoutId().'-new-dialog]');
+        $newDialog->find('css', 'input')->setValue($name);
+
+        $okButton = $this->extjsComponentQuery('[itemId=ok]', $newDialog->getAttribute('id'));
+        $okButton->click();
+    }
+
+    protected function extjsComponentQuery(string $query, string $componentId = null): NodeElement
+    {
+        $js = "Elements.DOMPath.xPath(Ext.getCmp('".($componentId ?? $this->getLayoutId())."').query('".$query."')[0].el.dom, true)";
+
+        $xpath = $this->session->evaluateScript($js);
+
+        if (!$this->getDocument()->has('xpath', $xpath)) {
+            throw new ElementNotFoundException($this->session ,'Element add-button not found', 'xpath', $js);
+        }
+
+        return $this->getDocument()->find('xpath', $xpath);
+    }
+
+    protected function extsDocumentQuery(string $query): NodeElement
+    {
+        $js = "Elements.DOMPath.xPath(Ext.ComponentQuery.query('".$query."')[0].el.dom, true)";
+
+        $xpath = $this->session->evaluateScript($js);
+
+        if (!$this->getDocument()->has('xpath', $xpath)) {
+            throw new ElementNotFoundException($this->session ,'Element add-button not found', 'xpath', $js);
+        }
+
+        return $this->getDocument()->find('xpath', $xpath);
     }
 }

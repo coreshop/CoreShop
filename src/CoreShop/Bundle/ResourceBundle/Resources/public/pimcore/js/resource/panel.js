@@ -137,7 +137,9 @@ coreshop.resource.panel = Class.create({
         if (!this.grid) {
 
             this.grid = Ext.create('Ext.grid.Panel',
-                Ext.apply({},
+                Ext.apply({
+                        itemId: this.layoutId + '-navigation',
+                    },
                     this.getGridConfiguration(),
                     this.getDefaultGridConfiguration()
                 )
@@ -164,6 +166,7 @@ coreshop.resource.panel = Class.create({
                 // add button
                 text: t('add'),
                 iconCls: 'pimcore_icon_add',
+                itemId: 'add-button',
                 handler: this.addItem.bind(this)
             }
         ];
@@ -195,7 +198,19 @@ coreshop.resource.panel = Class.create({
     },
 
     addItem: function () {
-        Ext.MessageBox.prompt(t('add'), t('coreshop_enter_the_name'), this.addItemComplete.bind(this), null, null, '');
+        Ext.create('Ext.window.MessageBox', {
+            itemId: this.layoutId + '-new-dialog'
+        }).show({
+            title: t('add'),
+            message: t('coreshop_enter_the_name'),
+            prompt: true,
+            minWidth: Ext.MessageBox.minPromptWidth,
+            buttons: Ext.MessageBox.OKCANCEL,
+            callback: this.addItemComplete.bind(this),
+            scope: null,
+            multiline: null,
+            value: '',
+        });
     },
 
     addItemComplete: function (button, value, object) {
