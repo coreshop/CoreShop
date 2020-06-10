@@ -34,8 +34,7 @@ class CartModifier implements CartModifierInterface
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         EventDispatcherInterface $eventDispatcher,
         StorageListItemResolverInterface $cartItemResolver = null
-    )
-    {
+    ) {
         $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
 
