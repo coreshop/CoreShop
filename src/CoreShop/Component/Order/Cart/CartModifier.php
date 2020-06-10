@@ -34,7 +34,8 @@ class CartModifier implements CartModifierInterface
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
         EventDispatcherInterface $eventDispatcher,
         StorageListItemResolverInterface $cartItemResolver = null
-    ) {
+    )
+    {
         $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
 
@@ -71,7 +72,7 @@ class CartModifier implements CartModifierInterface
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_pre',
+            'coreshop.cart.pre_remove_item',
             new GenericEvent($storageList, ['item' => $item])
         );
 
@@ -79,13 +80,13 @@ class CartModifier implements CartModifierInterface
         $item->delete();
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_post',
+            'coreshop.cart.post_remove_item',
             new GenericEvent($storageList, ['item' => $item])
         );
     }
 
     /**
-     * @param StorageListInterface     $storageList
+     * @param StorageListInterface $storageList
      * @param StorageListItemInterface $storageListItem
      */
     private function resolveItem(StorageListInterface $storageList, StorageListItemInterface $storageListItem): void
@@ -101,6 +102,16 @@ class CartModifier implements CartModifierInterface
             }
         }
 
+        $this->eventDispatcher->dispatch(
+            'coreshop.cart.pre_add_item',
+            new GenericEvent($storageList, ['item' => $storageListItem])
+        );
+
         $storageList->addItem($storageListItem);
+
+        $this->eventDispatcher->dispatch(
+            'coreshop.cart.post_add_item',
+            new GenericEvent($storageList, ['item' => $storageListItem])
+        );
     }
 }
