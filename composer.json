@@ -40,7 +40,7 @@
     "require-dev": {
         "behat/behat": "^3.3",
         "friends-of-behat/symfony-extension": "^2.0.0",
-        "phpstan/phpstan": "^0.12.5",
+        "phpstan/phpstan": "0.12.25",
         "phpstan/phpstan-doctrine": "^0.12",
         "phpstan/phpstan-symfony": "^0.12",
         "phpstan/phpstan-webmozart-assert": "^0.12",
