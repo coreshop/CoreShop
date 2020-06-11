@@ -56,6 +56,7 @@ coreshop.resource.item = Class.create({
 
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
+            itemId: this.panelKey,
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',

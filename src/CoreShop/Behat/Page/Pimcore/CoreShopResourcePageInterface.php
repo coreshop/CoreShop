@@ -12,14 +12,9 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Page\Pimcore\CoreShop;
+namespace CoreShop\Behat\Page\Pimcore;
 
-use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
-
-class CountryPage extends AbstractCoreShopResourcePage implements CountryPageInterface
+interface CoreShopResourcePageInterface
 {
-    protected function getLayoutId(): string
-    {
-        return 'coreshop_countries_panel';
-    }
+    public function makeActive(): void;
 }

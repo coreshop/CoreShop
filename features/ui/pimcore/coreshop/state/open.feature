@@ -1,4 +1,4 @@
-@ui @ui_pimcore @state
+@ui @ui_pimcore @state @wip
 Feature: Test if I can open the States Panel
     Scenario:
         Given I am a logged in admin

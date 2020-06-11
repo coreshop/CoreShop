@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage;
+use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
 
-class ExchangeRatePage extends AbstractPimcoreTabPage implements ExchangeRatePageInterface
+class ExchangeRatePage extends AbstractCoreShopResourcePage implements ExchangeRatePageInterface
 {
     protected function getLayoutId(): string
     {

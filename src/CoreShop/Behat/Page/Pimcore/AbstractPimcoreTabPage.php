@@ -22,16 +22,16 @@ use Behat\Mink\Session;
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
     /** @var Session */
-    private $session;
+    protected $session;
 
     /** @var array */
-    private $parameters;
+    protected $parameters;
 
     /** @var DocumentElement|null */
-    private $document;
+    protected $document;
 
     /** @var NodeElement|null */
-    private $tabElement;
+    protected $tabElement;
 
     /**
      * @param array|\ArrayAccess $minkParameters
@@ -50,6 +50,8 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
         $this->parameters = $minkParameters;
     }
 
+    abstract protected function getLayoutId(): string;
+
     protected function getDocument(): DocumentElement
     {
         if (null === $this->document) {
@@ -58,8 +60,6 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 
         return $this->document;
     }
-
-    abstract protected function getLayoutId(): string;
 
     protected function getTabElement(): NodeElement
     {
@@ -89,18 +89,6 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
         $id = $element->getAttribute('id');
 
         $this->session->executeScript(sprintf('Ext.getCmp(\'%s\').destroy()', $id));
-    }
-
-    public function create(string $name): void
-    {
-        $addButton = $this->extjsComponentQuery('[itemId=add-button]');
-        $addButton->click();
-
-        $newDialog = $this->extsDocumentQuery('[itemId='.$this->getLayoutId().'-new-dialog]');
-        $newDialog->find('css', 'input')->setValue($name);
-
-        $okButton = $this->extjsComponentQuery('[itemId=ok]', $newDialog->getAttribute('id'));
-        $okButton->click();
     }
 
     protected function extjsComponentQuery(string $query, string $componentId = null): NodeElement

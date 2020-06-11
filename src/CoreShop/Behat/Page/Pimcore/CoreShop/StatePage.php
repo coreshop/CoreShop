@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage;
+use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
 
-class StatePage extends AbstractPimcoreTabPage implements StatePageInterface
+class StatePage extends AbstractCoreShopResourcePage implements StatePageInterface
 {
     protected function getLayoutId(): string
     {

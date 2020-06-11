@@ -267,7 +267,7 @@ coreshop.resource.panel = Class.create({
     },
 
     getPanelKey: function (record) {
-        return this.layoutId + record.id;
+        return this.layoutId + '_' + record.id;
     },
 
     openItem: function (record) {
@@ -306,7 +306,8 @@ coreshop.resource.panel = Class.create({
         if (!this.panel) {
             this.panel = new Ext.TabPanel({
                 region: 'center',
-                border: false
+                border: false,
+                itemId: this.layoutId + '_tabs'
             });
         }
 

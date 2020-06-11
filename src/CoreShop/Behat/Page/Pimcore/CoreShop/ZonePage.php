@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage;
+use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
 
-class ZonePage extends AbstractPimcoreTabPage implements ZonePageInterface
+class ZonePage extends AbstractCoreShopResourcePage implements ZonePageInterface
 {
     protected function getLayoutId(): string
     {

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage;
+use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
 
-class CurrencyPage extends AbstractPimcoreTabPage implements CurrencyPageInterface
+class CurrencyPage extends AbstractCoreShopResourcePage implements CurrencyPageInterface
 {
     protected function getLayoutId(): string
     {

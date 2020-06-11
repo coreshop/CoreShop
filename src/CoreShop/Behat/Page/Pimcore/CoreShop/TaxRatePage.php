@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore\CoreShop;
 
-use CoreShop\Behat\Page\Pimcore\AbstractPimcoreTabPage;
+use CoreShop\Behat\Page\Pimcore\AbstractCoreShopResourcePage;
 
-class TaxRatePage extends AbstractPimcoreTabPage implements TaxRatePageInterface
+class TaxRatePage extends AbstractCoreShopResourcePage implements TaxRatePageInterface
 {
     protected function getLayoutId(): string
     {

@@ -1,4 +1,4 @@
-@ui @ui_pimcore @tax_rate
+@ui @ui_pimcore @tax_rate @wip
 Feature: Test if I can open the Tax Rates Panel
     Scenario:
         Given I am a logged in admin

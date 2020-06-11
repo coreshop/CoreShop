@@ -1,4 +1,4 @@
-@ui @ui_pimcore @country
+@ui @ui_pimcore @country @wip
 Feature: Test if I can open the Countries Panel
     Scenario:
         Given I am a logged in admin

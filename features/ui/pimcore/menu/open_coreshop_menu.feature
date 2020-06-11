@@ -1,4 +1,4 @@
-@ui @ui_pimcore @menu
+@ui @ui_pimcore @menu @wip
 Feature: Test if I can open the CoreShop Menu
 
     Background: Sign in with email and password

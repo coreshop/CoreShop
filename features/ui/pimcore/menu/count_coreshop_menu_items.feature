@@ -1,4 +1,4 @@
-@ui @ui_pimcore @menu
+@ui @ui_pimcore @menu @wip
 Feature: Count CoreShop Menu Items
 
     Background: Sign in with email and password
