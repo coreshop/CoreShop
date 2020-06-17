@@ -21,16 +21,13 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
-use Faker\Provider\Image;
 use Faker\Provider\Lorem;
 use Pimcore\Model\Asset;
 use Pimcore\Model\DataObject\Service;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 abstract class AbstractProductFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface

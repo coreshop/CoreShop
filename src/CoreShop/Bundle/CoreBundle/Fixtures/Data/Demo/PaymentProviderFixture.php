@@ -18,7 +18,7 @@ use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Bundle\PayumBundle\Model\GatewayConfig;
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Lorem;
 use Pimcore\Tool;

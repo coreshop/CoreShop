@@ -19,7 +19,7 @@
         "symfony/framework-bundle": "^4.3",
         "symfony/doctrine-bridge": "^4.3",
         "symfony/twig-bundle": "^4.3",
-        "doctrine/data-fixtures": "^1.0",
+        "doctrine/data-fixtures": "^1.4",
         "doctrine/dbal": "^2.1",
         "doctrine/orm": "^2.5"
     },
