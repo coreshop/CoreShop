@@ -51,7 +51,7 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface, Timestamp
     public function setUses($uses);
 
     /**
-     * @return $bol
+     * @return bool
      */
     public function isCreditCode();
 
