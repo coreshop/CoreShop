@@ -98,11 +98,11 @@ class StackRepository extends PimcoreRepository
     {
         $instance = DataObject::getById($id, $force);
 
-        if (!in_array($this->interface, class_implements($instance), true)) {
+        if (!$instance instanceof DataObject\Concrete) {
             return null;
         }
 
-        if (!$instance instanceof DataObject\Concrete) {
+        if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
         }
 
