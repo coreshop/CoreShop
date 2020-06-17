@@ -76,7 +76,7 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
     /**
      * {@inheritdoc}
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
