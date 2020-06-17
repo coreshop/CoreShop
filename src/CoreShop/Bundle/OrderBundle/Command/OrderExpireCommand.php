@@ -36,8 +36,8 @@ final class OrderExpireCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('coreshop:cart:expire')
-            ->setDescription('Expire abandoned Carts')
+            ->setName('coreshop:order:expire')
+            ->setDescription('Expire abandoned orders')
             ->addOption(
                 'days',
                 'days',

@@ -119,15 +119,15 @@ coreshop.order.order.detail.blocks.header = Class.create(coreshop.order.order.de
         me.datePanel.setHtml(t('coreshop_date') + '<br/><span class="coreshop_order_big">' + Ext.Date.format(new Date(me.sale.saleDate * 1000), t('coreshop_date_time_format')) + '</span>');
 
         if (me.sale.currency.id === me.sale.baseCurrency.id) {
-            me.totalPanel.setHtml(t('coreshop_sale_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(me.sale.currency.iso, me.sale.totalGross) + '</span>');
+            me.totalPanel.setHtml(t('coreshop_sale_total') + '<br/><span class="coreshop_order_big">' + coreshop.util.format.currency(me.sale.currency.isoCode, me.sale.totalGross) + '</span>');
         }
         else {
             me.totalPanel.setHtml(
                 t('coreshop_sale_total') +
                 '<br/><span class="coreshop_order_big">' +
-                coreshop.util.format.currency(me.sale.baseCurrency.iso, me.sale.totalGross) +
+                coreshop.util.format.currency(me.sale.baseCurrency.isoCode, me.sale.totalGross) +
                 ' / ' +
-                coreshop.util.format.currency(me.sale.currency.iso, me.sale.convertedTotalGross) +
+                coreshop.util.format.currency(me.sale.currency.isoCode, me.sale.convertedTotalGross) +
                 '</span>');
         }
 

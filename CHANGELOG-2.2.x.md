@@ -1,5 +1,23 @@
 # Within 2.2
 
+## 2.2.2
+ - Bugs:
+    - [IndexBundle] fix range filter condition (https://github.com/coreshop/CoreShop/pull/1416, https://github.com/coreshop/CoreShop/issues/1387)
+    - [OrderBundle] Fix currency formatting in sale detail related components (https://github.com/coreshop/CoreShop/pull/1421)
+    - [OrderBundle] Fix order expire command (https://github.com/coreshop/CoreShop/pull/1422)
+    - [Product] re-add id reset on entity clone (https://github.com/coreshop/CoreShop/pull/1419)
+    - [ProductBundle] fix quantity price rule condition (https://github.com/coreshop/CoreShop/pull/1412)
+    - [Installer] fix output of thumbnail installer (https://github.com/coreshop/CoreShop/pull/1413)
+    - [IndexBundle] fix saving of nested filters (https://github.com/coreshop/CoreShop/pull/1415, https://github.com/coreshop/CoreShop/issues/1414)
+    - [CoreBundle] fix typo in query condition to fetch product variants (https://github.com/coreshop/CoreShop/pull/1418)
+    - [FrontendBundle] Fixed issue with saving address changes (https://github.com/coreshop/CoreShop/pull/1408)
+    - [RuleBundle] improve dirty detection (https://github.com/coreshop/CoreShop/pull/1410)
+    - [CurrencyBundle] fix cache issue with money-currency type (https://github.com/coreshop/CoreShop/pull/1406)
+    - [QuantityPriceRules] fix decimal precision display (https://github.com/coreshop/CoreShop/pull/1398, https://github.com/coreshop/CoreShop/issues/1395) 
+ 
+ - Features:
+    - [FrontendBundle] add italian translations (https://github.com/coreshop/CoreShop/pull/1417) big thanks to @ramundomario
+    
 ## 2.2.1
  - Bugs:
     - [CoreBundle] fix registration service (https://github.com/coreshop/CoreShop/pull/1391)

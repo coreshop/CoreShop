@@ -118,7 +118,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                             if (row.type === 'string') {
                                 value = row.value;
                             } else if (row.type === 'price') {
-                                value = coreshop.util.format.currency(_.sale.baseCurrency.iso, row.value)
+                                value = coreshop.util.format.currency(_.sale.baseCurrency.isoCode, row.value)
                             } else {
                                 value = '--';
                             }
@@ -145,7 +145,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     text: t('coreshop_price_without_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.iso),
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.isoCode),
                     field: {
                         xtype: 'numberfield',
                         decimalPrecision: 4
@@ -158,7 +158,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     hidden: this.sale.currency.id === this.sale.baseCurrency.id,
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso),
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode),
                 },
                 {
                     xtype: 'gridcolumn',
@@ -166,7 +166,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     text: t('coreshop_price_with_tax'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -175,7 +175,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     hidden: this.sale.currency.id === this.sale.baseCurrency.id,
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -194,7 +194,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     text: t('coreshop_total'),
                     width: 150,
                     align: 'right',
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.baseCurrency.isoCode)
                 },
                 {
                     xtype: 'gridcolumn',
@@ -203,7 +203,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     hidden: this.sale.currency.id === this.sale.baseCurrency.id,
-                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.iso)
+                    renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode)
                 },
                 {
                     menuDisabled: true,
@@ -244,7 +244,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -254,7 +254,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     align: 'right',
                     hidden: this.sale.currency.id === this.sale.baseCurrency.id,
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.currency.isoCode, value) + '</span>';
                     }.bind(this)
                 }
             ]
@@ -288,7 +288,7 @@ coreshop.order.order.detail.blocks.detail = Class.create(coreshop.order.order.de
                     width: 150,
                     align: 'right',
                     renderer: function (value) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(this.sale.baseCurrency.isoCode, value) + '</span>';
                     }.bind(this)
                 }
             ]
