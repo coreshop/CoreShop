@@ -132,6 +132,15 @@ services:
         tags:
             - { name: coreshop.cart_price_rule.action, type: discountAmount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\DiscountAmountConfigurationType }
 
+    coreshop.cart_price_rule.action.voucher_credit:
+        class: CoreShop\Component\Core\Cart\Rule\Action\VoucherCreditActionProcessor
+        arguments:
+            - '@CoreShop\Component\Currency\Converter\CurrencyConverterInterface'
+            - '@coreshop.cart_price_rule.cart_rule_applier'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+        tags:
+            - { name: coreshop.cart_price_rule.action, type: voucherCredit }
+
     coreshop.cart_price_rule.action.surcharge_amount:
         class: CoreShop\Component\Core\Cart\Rule\Action\SurchargeAmountActionProcessor
         arguments:
