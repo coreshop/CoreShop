@@ -19,5 +19,5 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
-    public function findByCode(string $code): CartPriceRuleVoucherCodeInterface;
+    public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface;
 }

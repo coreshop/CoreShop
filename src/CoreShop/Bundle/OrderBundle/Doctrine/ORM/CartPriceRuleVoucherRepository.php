@@ -23,7 +23,7 @@ class CartPriceRuleVoucherRepository extends EntityRepository implements CartPri
     /**
      * {@inheritdoc}
      */
-    public function findByCode(string $code): CartPriceRuleVoucherCodeInterface
+    public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.code = :code')
