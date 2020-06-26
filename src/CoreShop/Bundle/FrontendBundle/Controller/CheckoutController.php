@@ -23,10 +23,11 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\RedirectCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\CheckoutEvents;
-use CoreShop\Component\Order\Committer\OrderCommitterInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Event\CheckoutEvent;
+use CoreShop\Component\Order\OrderPaymentTransitions;
 use CoreShop\Component\Order\OrderSaleTransitions;
+use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Payum\Core\Payum;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -239,6 +240,17 @@ class CheckoutController extends FrontendController
         $response = $this->redirectToRoute('coreshop_payment', ['order' => $order->getId()]);
 
         if (0 === $order->getTotal()) {
+            $orderStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order');
+            $orderPaymentStateMachine = $this->get(StateMachineManagerInterface::class)->get($order, 'coreshop_order_payment');
+
+            if ($orderStateMachine->can($order, OrderTransitions::TRANSITION_CONFIRM)) {
+                $orderStateMachine->apply($order, OrderTransitions::TRANSITION_CONFIRM);
+            }
+
+            if ($orderPaymentStateMachine->can($order, OrderPaymentTransitions::TRANSITION_PAY)) {
+                $orderPaymentStateMachine->apply($order, OrderPaymentTransitions::TRANSITION_PAY);
+            }
+
             $request->getSession()->set('coreshop_order_id', $order->getId());
 
             $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, new CheckoutEvent($this->getCart(), ['order' => $order]));
