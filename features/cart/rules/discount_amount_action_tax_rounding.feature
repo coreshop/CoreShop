@@ -35,7 +35,7 @@ Feature: Adding a new cart rule
     And I apply the voucher code "TEI6CXCBAL" to my cart
     Then the cart discount should be "-840" excluding tax
     Then the cart discount should be "-1000" including tax
-    Then the cart total tax should be "4739"
+    Then the cart total tax should be "4738"
     Then the cart subtotal should be "25501" excluding tax
     Then the cart subtotal should be "30400" including tax
     Then the cart total should be "24661" excluding tax
