@@ -18,6 +18,15 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
         uses:
             column: uses
             type: integer
+        creditUsed:
+            column: creditUsed
+            type: integer
+        creditAvailable:
+            column: creditAvailable
+            type: integer
+        isCreditCode:
+            column: isCreditCode
+            type: boolean
         creationDate:
             type: datetime
             gedmo:
@@ -36,6 +45,12 @@ CoreShop\Component\Order\Model\CartPriceRuleVoucherCode:
             inversedBy: voucherCodes
             joinColumn:
                 name: cartPriceRuleId
+        creditCurrency:
+            targetEntity: CoreShop\Component\Currency\Model\CurrencyInterface
+            joinColumn:
+                name: currencyId
+                referencedColumnName: id
+                onDelete: 'SET NULL'
     uniqueConstraints:
         code:
             columns: [code]

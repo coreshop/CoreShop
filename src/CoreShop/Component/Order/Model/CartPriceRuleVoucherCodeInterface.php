@@ -12,6 +12,7 @@
 
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\TimestampableInterface;
 
@@ -46,6 +47,46 @@ interface CartPriceRuleVoucherCodeInterface extends ResourceInterface, Timestamp
      * @param int $uses
      */
     public function setUses($uses);
+
+    /**
+     * @return bool
+     */
+    public function isCreditCode();
+
+    /**
+     * @param bool $isCreditCode
+     */
+    public function setIsCreditCode($isCreditCode);
+
+    /**
+     * @return int
+     */
+    public function getCreditAvailable();
+
+    /**
+     * @param int $creditAvailable
+     */
+    public function setCreditAvailable($creditAvailable);
+
+    /**
+     * @return CurrencyInterface|null
+     */
+    public function getCreditCurrency();
+
+    /**
+     * @param CurrencyInterface|null $creditCurrency
+     */
+    public function setCreditCurrency(?CurrencyInterface $creditCurrency);
+
+    /**
+     * @return int
+     */
+    public function getCreditUsed();
+
+    /**
+     * @param int $creditUsed
+     */
+    public function setCreditUsed($creditUsed);
 
     /**
      * @return CartPriceRuleInterface

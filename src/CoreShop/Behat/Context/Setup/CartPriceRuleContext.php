@@ -33,6 +33,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action\SurchargePercentConfigurat
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType;
 use CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
+use CoreShop\Bundle\RuleBundle\Form\Type\Rule\EmptyConfigurationFormType;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
@@ -522,6 +523,41 @@ final class CartPriceRuleContext implements Context
             'amount' => (int) $amount,
             'currency' => $currency->getId(),
         ]));
+    }
+
+    /**
+     * @Given /^the (cart rule "[^"]+") has a action voucher credit$/
+     * @Given /^the (cart rule) has a action voucher credit$/
+     */
+    public function theCartPriceRuleHasAVoucherCreditAction(CartPriceRuleInterface $rule)
+    {
+        $this->addAction($rule, $this->createActionWithForm('voucherCredit'));
+    }
+
+    /**
+     * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+")$/
+     * @Given /^the voucher code "([^"]+)" is a credit voucher with credit "([^"]+)" in (currency "[^"]+") and credit used "([^"]+)"$/
+     */
+    public function theVoucherCodeIsACreditCodeWithCreditInCurrency($voucherCode, int $credit, CurrencyInterface $currency, int $used = null)
+    {
+        $voucherCode = $this->cartPriceRuleVoucherRepository->findByCode($voucherCode);
+
+        /**
+         * @var $voucherCode   CartPriceRuleVoucherCodeInterface
+         * @var $cartPriceRule CartPriceRuleInterface
+         */
+        Assert::isInstanceOf($voucherCode, CartPriceRuleVoucherCodeInterface::class);
+
+        $voucherCode->setIsCreditCode(true);
+        $voucherCode->setCreditAvailable($credit);
+        $voucherCode->setCreditCurrency($currency);
+
+        if (null !== $used) {
+            $voucherCode->setCreditUsed($used);
+        }
+
+        $this->objectManager->persist($voucherCode);
+        $this->objectManager->flush();
     }
 
     /**
