@@ -16,7 +16,9 @@ use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
+use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,7 +34,7 @@ final class AddressType extends AbstractResourceType
     private $addressFormatHelper;
 
     /**
-     * @param string                    $dataClass           FQCN
+     * @param string                    $dataClass
      * @param string[]                  $validationGroups
      * @param AddressFormatterInterface $addressFormatHelper
      */
@@ -70,7 +72,7 @@ final class AddressType extends AbstractResourceType
 
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
-                'constraints' => [new NotBlank()],
+                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.shipping',
                 'allowed_address_identifier' => [null, 'shipping'],
@@ -87,7 +89,7 @@ final class AddressType extends AbstractResourceType
                 'empty_data' => $defaultShippingAddress,
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
-                'constraints' => [new NotBlank()],
+                'constraints' => [new NotBlank(['groups' => $this->validationGroups])],
                 'customer' => $options['customer']->getId(),
                 'label' => 'coreshop.form.address.invoice',
                 'allowed_address_identifier' => [null, 'invoice'],
@@ -104,16 +106,29 @@ final class AddressType extends AbstractResourceType
                 'empty_data' => $defaultInvoiceAddress,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+                /** @var CartInterface $cart */
                 $cart = $event->getData();
                 $checkboxData = true;
+                $checkboxDisabled = false;
+
+                if ($event->getForm()->has('shippingAddress') && $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')) {
+                    $choiceList = $event->getForm()->get('shippingAddress')->getConfig()->getOption('choices');
+                    if (!is_array($choiceList) || count($choiceList) === 0) {
+                        $checkboxData = null;
+                        $checkboxDisabled = true;
+                    }
+                }
+
                 if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface) {
                     if ($cart->getShippingAddress()->getId() !== $cart->getInvoiceAddress()->getId()) {
                         $checkboxData = null;
                     }
                 }
+
                 $event->getForm()->add('useInvoiceAsShipping', CheckboxType::class, [
                     'required' => false,
                     'mapped' => false,
+                    'disabled' => $checkboxDisabled,
                     'label' => 'coreshop.form.address.use_invoice_as_shipping',
                     'data' => $checkboxData,
                 ]);
