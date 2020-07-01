@@ -17,8 +17,8 @@ namespace CoreShop\Component\Core\Cart\Rule\Action;
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
@@ -42,10 +42,10 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
      * {@inheritdoc}
      */
     public function applyRule(
-        OrderInterface $cart,
+        CartInterface $cart,
         array $configuration,
         ProposalCartPriceRuleItemInterface $cartPriceRuleItem
-    ): bool {
+    ) {
         if (!$cartPriceRuleItem->getVoucherCode()) {
             return false;
         }
@@ -80,17 +80,17 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
      * {@inheritdoc}
      */
     public function unApplyRule(
-        OrderInterface $cart,
+        CartInterface $cart,
         array $configuration,
         ProposalCartPriceRuleItemInterface $cartPriceRuleItem
-    ): bool {
+    ) {
         return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(OrderInterface $cart, CartPriceRuleVoucherCodeInterface $voucherCode): int
+    protected function getDiscount(CartInterface $cart, CartPriceRuleVoucherCodeInterface $voucherCode): int
     {
         return min($cart->getTotal(), $voucherCode->getCreditAvailable() - $voucherCode->getCreditUsed());
     }
