@@ -51,6 +51,23 @@ final class AddressType extends AbstractResourceType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $defaultShippingAddress = null;
+        $defaultInvoiceAddress = null;
+
+        if ($options['customer']->getDefaultAddress() instanceof AddressInterface) {
+            /** @var AddressInterface $address */
+            $address = $options['customer']->getDefaultAddress();
+
+            if (!$address->hasAddressIdentifier()) {
+                $defaultShippingAddress = $address;
+                $defaultInvoiceAddress = $address;
+            } else {
+                $addressIdentifier = $address->getAddressIdentifier();
+                $defaultShippingAddress = $addressIdentifier->getName() === 'shipping' ? $address : null;
+                $defaultInvoiceAddress = $addressIdentifier->getName() === 'invoice' ? $address : null;
+            }
+        }
+
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
                 'constraints' => [new NotBlank()],
@@ -67,7 +84,7 @@ final class AddressType extends AbstractResourceType
 
                     return [];
                 },
-                'empty_data' => $options['customer']->getDefaultAddress(),
+                'empty_data' => $defaultShippingAddress,
             ])
             ->add('invoiceAddress', AddressChoiceType::class, [
                 'constraints' => [new NotBlank()],
@@ -84,7 +101,7 @@ final class AddressType extends AbstractResourceType
 
                     return [];
                 },
-                'empty_data' => $options['customer']->getDefaultAddress(),
+                'empty_data' => $defaultInvoiceAddress,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
                 $cart = $event->getData();
