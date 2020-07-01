@@ -136,8 +136,26 @@ final class AddressType extends AbstractResourceType
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $formData = $event->getData();
                 if (isset($formData['invoiceAddress']) && (isset($formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping'])) {
-                    $formData['shippingAddress'] = $formData['invoiceAddress'];
-                    $event->setData($formData);
+
+                    $valid = true;
+                    if ($event->getForm()->has('shippingAddress') && $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')) {
+                        $invoiceAddressId = $formData['invoiceAddress'];
+                        $choiceList = $event->getForm()->get('shippingAddress')->getConfig()->getOption('choices');
+                        if (is_array($choiceList) && count($choiceList) > 0) {
+                            $valid = count(array_filter($choiceList, function (AddressInterface $address) use ($invoiceAddressId) {
+                                    return $address->getId() === (int) $invoiceAddressId;
+                                })) > 0;
+                        }
+                    }
+
+                    if ($valid === true) {
+                        $formData['shippingAddress'] = $formData['invoiceAddress'];
+                        $event->setData($formData);
+                    } else {
+                        $message = 'Using the invoice address as shipping address is not possible. Maybe your selected invoice address is a strict type of invoice address?';
+                        $event->getForm()->addError(new FormError($message));
+                    }
+
                 }
             });
     }
