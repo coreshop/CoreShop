@@ -126,9 +126,10 @@ class CartRuleApplier implements CartRuleApplierInterface
 
         $totalDiscountNet = (int) round($totalDiscountNet);
         $totalDiscountGross = (int) round($totalDiscountGross);
+        $totalDiscountFloat = (int) round($totalDiscountFloat);
 
         //Add missing cents caused by rounding issues
-        if ((int)$totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
+        if ($totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
             if ($withTax) {
                 $totalDiscountNet += (int)$totalDiscountFloat - $totalDiscountNet;
             }
