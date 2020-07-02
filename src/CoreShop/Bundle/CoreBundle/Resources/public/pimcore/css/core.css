@@ -87,6 +87,10 @@ body.pimcore_version_6 .coreshop_nav_icon_customer_to_company_assign_to_existing
     background: url(../img/free-shipping.svg) center center no-repeat !important;
 }
 
+.coreshop_rule_icon_action_voucherCredit {
+    background: url(../img/voucher.svg) center center no-repeat !important;
+}
+
 .coreshop_rule_icon_condition_currencies {
     background: url(../img/currencies.svg) center center no-repeat !important;
 }
