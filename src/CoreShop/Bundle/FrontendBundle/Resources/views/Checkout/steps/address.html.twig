@@ -23,8 +23,8 @@
                     </div>
 
                     {% if hasShippableItems %}
-                        <div class="col-12 col-sm-6 shipping-address-selector"
-                             style="{% if hasShippableItems == true and form.useInvoiceAsShipping.vars.data %} display:none; {% endif %}">
+                        {% set hideShipmentSelector = form.shippingAddress.vars.choices|length > 0 and form.useInvoiceAsShipping is defined and form.useInvoiceAsShipping.vars.data and form.shippingAddress.vars.valid != false %}
+                        <div class="col-12 col-sm-6 shipping-address-selector" style="{% if hideShipmentSelector == true %} display:none; {% endif %}">
                             {{ form_row(form.shippingAddress) }}
                         </div>
                     {% endif %}
