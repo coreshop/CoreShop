@@ -1,6 +1,7 @@
 ---
 coreshop_currency_isoCode: 'ISO-kod'
 coreshop_currency_numericIsoCode: 'Numerisk ISO-kod'
+coreshop_currency_symbol: 'Symbol'
 coreshop_from_currency: 'Från valuta'
 coreshop_to_currency: 'Till valuta'
 coreshop_exchange_rate: 'Växelkurs'
