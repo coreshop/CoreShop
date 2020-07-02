@@ -40,3 +40,4 @@ Feature: Adding a new cart rule
     Then the cart subtotal should be "30400" including tax
     Then the cart total should be "24661" excluding tax
     Then the cart total should be "29400" including tax
+  
