@@ -21,9 +21,11 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AddressType extends AbstractResourceType
@@ -34,18 +36,26 @@ final class AddressType extends AbstractResourceType
     private $addressFormatHelper;
 
     /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @param string                    $dataClass
      * @param string[]                  $validationGroups
      * @param AddressFormatterInterface $addressFormatHelper
+     * @param TranslatorInterface $translator
      */
     public function __construct(
         $dataClass,
         array $validationGroups,
-        AddressFormatterInterface $addressFormatHelper
+        AddressFormatterInterface $addressFormatHelper,
+        TranslatorInterface $translator
     ) {
         parent::__construct($dataClass, $validationGroups);
 
         $this->addressFormatHelper = $addressFormatHelper;
+        $this->translator = $translator;
     }
 
     /**
@@ -59,12 +69,12 @@ final class AddressType extends AbstractResourceType
         if ($options['customer']->getDefaultAddress() instanceof AddressInterface) {
             /** @var AddressInterface $address */
             $address = $options['customer']->getDefaultAddress();
+            $addressIdentifier = $address->getAddressIdentifier();
 
-            if (!$address->hasAddressIdentifier()) {
+            if (null === $addressIdentifier) {
                 $defaultShippingAddress = $address;
                 $defaultInvoiceAddress = $address;
             } else {
-                $addressIdentifier = $address->getAddressIdentifier();
                 $defaultShippingAddress = $addressIdentifier->getName() === 'shipping' ? $address : null;
                 $defaultInvoiceAddress = $addressIdentifier->getName() === 'invoice' ? $address : null;
             }
@@ -105,24 +115,28 @@ final class AddressType extends AbstractResourceType
                 },
                 'empty_data' => $defaultInvoiceAddress,
             ])
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $event) {
                 /** @var CartInterface $cart */
                 $cart = $event->getData();
                 $checkboxData = true;
                 $checkboxDisabled = false;
 
-                if ($event->getForm()->has('shippingAddress') && $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')) {
+                if ($event->getForm()->has('shippingAddress') &&
+                    $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')
+                ) {
                     $choiceList = $event->getForm()->get('shippingAddress')->getConfig()->getOption('choices');
+
                     if (!is_array($choiceList) || count($choiceList) === 0) {
                         $checkboxData = null;
                         $checkboxDisabled = true;
                     }
                 }
 
-                if ($cart->getShippingAddress() instanceof AddressInterface && $cart->getInvoiceAddress() instanceof AddressInterface) {
-                    if ($cart->getShippingAddress()->getId() !== $cart->getInvoiceAddress()->getId()) {
-                        $checkboxData = null;
-                    }
+                if ($cart->getShippingAddress() instanceof AddressInterface &&
+                    $cart->getInvoiceAddress() instanceof AddressInterface &&
+                    $cart->getShippingAddress()->getId() !== $cart->getInvoiceAddress()->getId()
+                ) {
+                    $checkboxData = null;
                 }
 
                 $event->getForm()->add('useInvoiceAsShipping', CheckboxType::class, [
@@ -135,14 +149,18 @@ final class AddressType extends AbstractResourceType
             })
             ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
                 $formData = $event->getData();
-                if (isset($formData['invoiceAddress']) && (isset($formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping'])) {
 
+                if (isset($formData['invoiceAddress'], $formData['useInvoiceAsShipping']) && '1' === $formData['useInvoiceAsShipping']) {
                     $valid = true;
-                    if ($event->getForm()->has('shippingAddress') && $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')) {
+
+                    if ($event->getForm()->has('shippingAddress') &&
+                        $event->getForm()->get('shippingAddress')->getConfig()->hasOption('choices')
+                    ) {
                         $invoiceAddressId = $formData['invoiceAddress'];
                         $choiceList = $event->getForm()->get('shippingAddress')->getConfig()->getOption('choices');
+
                         if (is_array($choiceList) && count($choiceList) > 0) {
-                            $valid = count(array_filter($choiceList, function (AddressInterface $address) use ($invoiceAddressId) {
+                            $valid = count(array_filter($choiceList, static function (AddressInterface $address) use ($invoiceAddressId) {
                                     return $address->getId() === (int) $invoiceAddressId;
                                 })) > 0;
                         }
@@ -152,7 +170,7 @@ final class AddressType extends AbstractResourceType
                         $formData['shippingAddress'] = $formData['invoiceAddress'];
                         $event->setData($formData);
                     } else {
-                        $message = 'Using the invoice address as shipping address is not possible. Maybe your selected invoice address is a strict type of invoice address?';
+                        $message = $this->translator->trans('coreshop.checkout.address.invoice_as_shipping_invalid');
                         $event->getForm()->addError(new FormError($message));
                     }
 

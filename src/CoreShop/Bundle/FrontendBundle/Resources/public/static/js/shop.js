@@ -78,22 +78,20 @@ $(document).ready(function () {
             $shippingAddAddressButton = $shippingPanel.parent().find('.card-footer'),
             $useIasS = $addressStep.find('[name="useInvoiceAsShipping"]');
 
-        if ($invoiceAddress.find('option:selected').length) {
-            var address = $invoiceAddress.find('option:selected').data('address');
-            if (address) {
-                $invoicePanel.html(address.html);
-            }
-        }
-
-        if ($shippingAddress.find('option:selected').length) {
-            var address = $shippingAddress.find('option:selected').data('address');
-            if (address) {
-                $shippingPanel.html(address.html);
-            }
-        }
-
         $invoiceAddress.on('change', function () {
-            var address = $(this).find('option:selected').data('address');
+            var selected = $(this).find('option:selected');
+            var address = selected.data('address');
+            var addressType = selected.data('address-type');
+
+            if ($useIasS) {
+                if (addressType === 'invoice') {
+                    $useIasS.prop("disabled", true);
+                    $useIasS.prop("checked", false);
+                    $useIasS.change();
+                } else {
+                    $useIasS.prop("disabled", false);
+                }
+            }
 
             if (address) {
                 address = address.html;
@@ -144,6 +142,32 @@ $(document).ready(function () {
                 }
             }
         });
+
+        if ($invoiceAddress.find('option:selected').length) {
+            var address = $invoiceAddress.find('option:selected').data('address');
+            var addressType = $invoiceAddress.find('option:selected').data('address-type');
+
+            if ($useIasS) {
+                if (addressType === 'invoice') {
+                    $useIasS.prop("disabled", true);
+                    $useIasS.prop("checked", false);
+                    $useIasS.change();
+                } else {
+                    $useIasS.prop("disabled", false);
+                }
+            }
+
+            if (address) {
+                $invoicePanel.html(address.html);
+            }
+        }
+
+        if ($shippingAddress.find('option:selected').length) {
+            var address = $shippingAddress.find('option:selected').data('address');
+            if (address) {
+                $shippingPanel.html(address.html);
+            }
+        }
     };
 
 }(window.shop = window.shop || {}, jQuery));

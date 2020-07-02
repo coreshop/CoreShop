@@ -65,6 +65,7 @@ services:
             - '%coreshop.model.cart.class%'
             - '%coreshop.form.type.checkout.address.validation_groups%'
             - '@coreshop.address.formatter'
+            - '@translator'
         tags:
             - {name: form.type}
 
