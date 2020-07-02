@@ -11,6 +11,10 @@ CoreShop\Component\Order\Model\Sale:
             exp: object.getConvertedTaxes()
             type: array
             groups: [Detailed]
+        currency:
+            serialized_name: currency
+            exp: object.getCurrency()
+            groups: [Detailed]
         backendCreated:
             serialized_name: backendCreated
             exp: object.getBackendCreated()

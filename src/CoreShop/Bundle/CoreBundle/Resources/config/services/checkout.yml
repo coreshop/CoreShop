@@ -51,8 +51,9 @@ services:
             - '%coreshop.model.order.class%'
             - '%coreshop.form.type.checkout.address.validation_groups%'
             - '@CoreShop\Component\Address\Formatter\AddressFormatterInterface'
+            - '@translator'
         tags:
-            - {name: form.type}
+            - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\Checkout\PaymentType:
         arguments:
@@ -62,21 +63,21 @@ services:
             - '@coreshop.repository.payment_provider'
             - '%coreshop.gateway_factories%'
         tags:
-            - {name: form.type}
+            - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\Checkout\SummaryType:
         arguments:
             - '%coreshop.model.order.class%'
             - '%coreshop.form.type.checkout.summary.validation_groups%'
         tags:
-            - {name: form.type}
+            - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierType:
         arguments:
             - '%coreshop.model.order.class%'
             - '%coreshop.form.type.checkout.carrier.validation_groups%'
         tags:
-            - {name: form.type}
+            - { name: form.type }
 
     CoreShop\Bundle\CoreBundle\Form\Type\Checkout\CarrierChoiceType:
         arguments:
@@ -87,4 +88,4 @@ services:
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
             - '@CoreShop\Component\Order\Cart\CartContextResolverInterface'
         tags:
-            - {name: form.type}
+            - { name: form.type }

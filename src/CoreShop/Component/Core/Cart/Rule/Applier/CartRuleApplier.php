@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Distributor\IntegerDistributor;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -100,8 +99,6 @@ class CartRuleApplier implements CartRuleApplierInterface
             );
 
             if ($taxCalculator instanceof TaxCalculatorInterface) {
-                $taxItems = $item->getTaxes();
-
                 if ($withTax) {
                     $discountFloat = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
                     $itemDiscountNet = (int)$discountFloat;

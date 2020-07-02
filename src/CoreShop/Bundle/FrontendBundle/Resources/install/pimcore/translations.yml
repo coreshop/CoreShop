@@ -1573,3 +1573,10 @@ translations:
           en: 'Total to be paid'
           de: 'Zu zahlender Betrag'
           it: 'Totale da pagare'
+
+  coreshop.checkout.address.invoice_as_shipping_invalid:
+      languages:
+          de_CH: 'Die Verwendung der Rechnungsadresse als Versandadresse ist hier nicht möglich. Haben Sie eine Adresse gewählt die strikt als Rechnungsadresse deklariert ist?'
+          de: 'Die Verwendung der Rechnungsadresse als Versandadresse ist hier nicht möglich. Haben Sie eine Adresse gewählt die strikt als Rechnungsadresse deklariert ist?'
+          en: 'Using the invoice address as shipping address is not possible. Maybe your selected invoice address is a strict type of invoice address?'
+          it: ''
