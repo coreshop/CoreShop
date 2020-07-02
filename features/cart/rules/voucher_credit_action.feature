@@ -22,8 +22,8 @@ Feature: Adding a new cart rule
     And the cart rule has a action voucher credit
     And I apply the voucher code "asdf" to my cart
     Then the cart discount should be "-2000" including tax
-    Then the cart discount should be "-1666" excluding tax
-    Then the cart total should be "8334" excluding tax
+    Then the cart discount should be "-1667" excluding tax
+    Then the cart total should be "8333" excluding tax
     Then the cart total should be "10000" including tax
 
   Scenario: Add a new voucher credit rule with 200 euro
