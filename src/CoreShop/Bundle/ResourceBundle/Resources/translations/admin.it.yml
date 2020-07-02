@@ -1,8 +1,1 @@
 ---
-coreshop: 'CoreShop'
-coreshop_save_success: 'Elemento salvato con successo'
-coreshop_enter_the_name: 'Inserisci nome'
-coreshop_save_error: 'Errore durante il salvataggio dell''elemento'
-coreshop_multistore: 'Multi-negozio'
-coreshop_total_items: 'Totale {0}'
-coreshop_permission_group_coreshop: 'CoreShop'
