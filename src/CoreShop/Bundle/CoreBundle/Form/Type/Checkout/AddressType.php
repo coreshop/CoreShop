@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Form\Type\Checkout;
 
 use CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType;
@@ -26,18 +28,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class AddressType extends AbstractResourceType
 {
-    /**
-     * @var AddressFormatterInterface
-     */
     private $addressFormatHelper;
 
-    /**
-     * @param string                    $dataClass           FQCN
-     * @param string[]                  $validationGroups
-     * @param AddressFormatterInterface $addressFormatHelper
-     */
     public function __construct(
-        $dataClass,
+        string $dataClass,
         array $validationGroups,
         AddressFormatterInterface $addressFormatHelper
     ) {
@@ -49,7 +43,7 @@ final class AddressType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('shippingAddress', AddressChoiceType::class, [
@@ -113,7 +107,7 @@ final class AddressType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -124,7 +118,7 @@ final class AddressType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_address';
     }

@@ -1,61 +1,57 @@
 {
-  "name": "coreshop/core-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Core Bundle (Glue Bundle)",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/core-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Core Bundle (Glue Bundle)",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "coreshop/order-bundle": "^3.0",
+        "coreshop/customer-bundle": "^3.0",
+        "coreshop/inventory-bundle": "^3.0",
+        "coreshop/product-bundle": "^3.0",
+        "coreshop/address-bundle": "^3.0",
+        "coreshop/currency-bundle": "^3.0",
+        "coreshop/money-bundle": "^3.0",
+        "coreshop/taxation-bundle": "^3.0",
+        "coreshop/store-bundle": "^3.0",
+        "coreshop/index-bundle": "^3.0",
+        "coreshop/payment-bundle": "^3.0",
+        "coreshop/seo-bundle": "^3.0",
+        "coreshop/sequence-bundle": "^3.0",
+        "coreshop/payum-bundle": "^3.0",
+        "coreshop/configuration-bundle": "^3.0",
+        "coreshop/notification-bundle": "^3.0",
+        "coreshop/fixture-bundle": "^3.0",
+        "coreshop/workflow-bundle": "^3.0",
+        "coreshop/menu-bundle": "^3.0",
+        "coreshop/core": "^3.0",
+        "fzaninotto/faker": "^1.6",
+        "rinvex/countries": "^6.0",
+        "pimcore/pimcore": "^6.6.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\CoreBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "coreshop/order-bundle": "^2.0",
-    "coreshop/customer-bundle": "^2.0",
-    "coreshop/inventory-bundle": "^2.0",
-    "coreshop/product-bundle": "^2.0",
-    "coreshop/address-bundle": "^2.0",
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0",
-    "coreshop/taxation-bundle": "^2.0",
-    "coreshop/store-bundle": "^2.0",
-    "coreshop/index-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/seo-bundle": "^2.0",
-    "coreshop/sequence-bundle": "^2.0",
-    "coreshop/payum-bundle": "^2.0",
-    "coreshop/configuration-bundle": "^2.0",
-    "coreshop/notification-bundle": "^2.0",
-    "coreshop/fixture-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
-    "coreshop/menu-bundle": "^2.0",
-    "coreshop/core": "^2.0",
-    "fzaninotto/faker": "^1.6",
-    "rinvex/countries": "^5.0",
-    "pimcore/pimcore": "^6.6.0"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\CoreBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }

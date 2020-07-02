@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -20,14 +22,8 @@ use Webmozart\Assert\Assert;
 
 class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCalculatorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
     private $currencyConverter;
 
-    /**
-     * @param CurrencyConverterInterface $currencyConverter
-     */
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
@@ -36,7 +32,7 @@ class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCa
     /**
      * {@inheritdoc}
      */
-    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context)
+    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int
     {
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);

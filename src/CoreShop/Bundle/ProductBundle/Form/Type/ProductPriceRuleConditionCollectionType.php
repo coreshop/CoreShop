@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type;
 
 use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionCollectionType;
@@ -17,7 +19,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductPriceRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    public function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -27,7 +32,7 @@ class ProductPriceRuleConditionCollectionType extends RuleConditionCollectionTyp
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_condition_collection';
     }

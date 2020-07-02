@@ -17,9 +17,9 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getItemTax()
             type: integer
             groups: [Detailed]
-        baseItemTax:
-            serialized_name: baseItemTax
-            exp: object.getBaseItemTax()
+        convertedItemTax:
+            serialized_name: convertedItemTax
+            exp: object.getConvertedItemTax()
             type: integer
             groups: [Detailed]
         itemWholesalePrice:
@@ -27,9 +27,9 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getItemWholesalePrice()
             type: integer
             groups: [Detailed]
-        baseItemWholesalePrice:
-            serialized_name: baseItemWholesalePrice
-            exp: object.getBaseItemWholesalePrice()
+        convertedItemWholesalePrice:
+            serialized_name: convertedItemWholesalePrice
+            exp: object.getConvertedItemWholesalePrice()
             type: integer
             groups: [Detailed]
         taxes:
@@ -37,9 +37,9 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getTaxes()
             type: array
             groups: [Detailed]
-        baseTaxes:
-            serialized_name: baseTaxes
-            exp: object.getBaseTaxes()
+        convertedTaxes:
+            serialized_name: convertedTaxes
+            exp: object.getConvertedTaxes()
             type: array
             groups: [Detailed]
         product:
@@ -56,9 +56,9 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getTotalTax()
             type: integer
             groups: [Detailed]
-        baseTotalTax:
-            serialized_name: baseTotalTax
-            exp: object.getBaseTotalTax(true)
+        convertedTotalTax:
+            serialized_name: convertedTotalTax
+            exp: object.getConvertedTotalTax(true)
             type: integer
             groups: [Detailed]
         itemPriceNet:
@@ -71,14 +71,14 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getItemPrice(true)
             type: integer
             groups: [Detailed]
-        baseItemPriceNet:
-            serialized_name: baseItemPriceNet
-            exp: object.getBaseItemPrice(false)
+        convertedItemPriceNet:
+            serialized_name: convertedItemPriceNet
+            exp: object.getConvertedItemPrice(false)
             type: integer
             groups: [Detailed]
-        baseItemPriceGross:
-            serialized_name: baseItemPriceGross
-            exp: object.getBaseItemPrice(true)
+        convertedItemPriceGross:
+            serialized_name: convertedItemPriceGross
+            exp: object.getConvertedItemPrice(true)
             type: integer
             groups: [Detailed]
         itemRetailPriceNet:
@@ -91,14 +91,14 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getItemRetailPrice(true)
             type: integer
             groups: [Detailed]
-        baseItemRetailPriceNet:
-            serialized_name: baseItemRetailPriceNet
-            exp: object.getBaseItemRetailPrice(false)
+        convertedItemRetailPriceNet:
+            serialized_name: convertedItemRetailPriceNet
+            exp: object.getConvertedItemRetailPrice(false)
             type: integer
             groups: [Detailed]
-        baseItemRetailPriceGross:
-            serialized_name: baseItemRetailPriceGross
-            exp: object.getBaseItemRetailPrice(true)
+        convertedItemRetailPriceGross:
+            serialized_name: convertedItemRetailPriceGross
+            exp: object.getConvertedItemRetailPrice(true)
             type: integer
             groups: [Detailed]
         itemDiscountPriceNet:
@@ -131,14 +131,14 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getTotal(true)
             type: integer
             groups: [Detailed]
-        baseTotalNet:
-            serialized_name: baseTotalNet
-            exp: object.getBaseTotal(false)
+        convertedTotalNet:
+            serialized_name: convertedTotalNet
+            exp: object.getConvertedTotal(false)
             type: integer
             groups: [Detailed]
-        baseTotalGross:
-            serialized_name: baseTotalGross
-            exp: object.getBaseTotal(true)
+        convertedTotalGross:
+            serialized_name: convertedTotalGross
+            exp: object.getConvertedTotal(true)
             type: integer
             groups: [Detailed]
         adjustments:
@@ -146,8 +146,8 @@ CoreShop\Component\Order\Model\SaleItem:
             exp: object.getAdjustments()
             type: array
             groups: [Detailed]
-        baseAdjustments:
-            serialized_name: baseAdjustments
-            exp: object.getBaseAdjustments()
+        convertedAdjustments:
+            serialized_name: convertedAdjustments
+            exp: object.getConvertedAdjustments()
             type: array
             groups: [Detailed]

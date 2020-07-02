@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Taxation\Model;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -39,10 +41,10 @@ interface TaxItemInterface extends ResourceInterface
     /**
      * @return int
      */
-    public function getAmount();
+    public function getAmount(): int;
 
     /**
      * @param int $amount
      */
-    public function setAmount($amount);
+    public function setAmount(int $amount);
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\CurrencyBundle\Doctrine\ORM\CurrencyRepository as BaseCurrencyRepository;
@@ -21,7 +23,7 @@ class CurrencyRepository extends BaseCurrencyRepository implements CurrencyRepos
     /**
      * {@inheritdoc}
      */
-    public function findActiveForStore(StoreInterface $store)
+    public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')
             ->leftJoin('o.countries', 'c')

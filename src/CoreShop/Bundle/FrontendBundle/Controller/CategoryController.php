@@ -10,17 +10,23 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
+use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Core\Model\CategoryInterface;
 use CoreShop\Component\Core\Repository\CategoryRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Index\Condition\LikeCondition;
+use CoreShop\Component\Index\Factory\FilteredListingFactoryInterface;
+use CoreShop\Component\Index\Filter\FilterProcessorInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
-use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
+use CoreShop\Component\SEO\SEOPresentationInterface;
+use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -140,7 +146,7 @@ class CategoryController extends FrontendController
         $viewParameters = [];
 
         if ($category->getFilter() instanceof FilterInterface) {
-            $filteredList = $this->get('coreshop.factory.filter.list')->createList($category->getFilter(), $request->request);
+            $filteredList = $this->get(FilteredListingFactoryInterface::class)->createList($category->getFilter(), $request->request);
             $filteredList->setLocale($request->getLocale());
             $filteredList->setVariantMode($variantMode ? $variantMode : ListingInterface::VARIANT_MODE_HIDE);
             $filteredList->addCondition(new LikeCondition('stores', 'both', sprintf('%1$s%2$s%1$s', ',', $this->getContext()->getStore()->getId())), 'stores');
@@ -156,8 +162,8 @@ class CategoryController extends FrontendController
             $filteredList->setOrderKey($sortParsed['name']);
             $filteredList->setOrder($sortParsed['direction']);
 
-            $currentFilter = $this->get('coreshop.filter.processor')->processConditions($category->getFilter(), $filteredList, $request->query);
-            $preparedConditions = $this->get('coreshop.filter.processor')->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
+            $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
+            $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
 
             $paginator = new Paginator($filteredList);
             $paginator->setCurrentPageNumber($page);
@@ -193,7 +199,7 @@ class CategoryController extends FrontendController
                 $options['object_types'] = [AbstractObject::OBJECT_TYPE_OBJECT, AbstractObject::OBJECT_TYPE_VARIANT];
             }
 
-            $list = $this->getProductRepository()->getProducts($options);
+            $list = $this->getProductRepository()->getProductsListing($options);
 
             $paginator = new Paginator($list);
             $paginator->setItemCountPerPage($perPage);
@@ -211,10 +217,10 @@ class CategoryController extends FrontendController
         $viewParameters['validSortElements'] = $this->validSortProperties;
 
         foreach ($paginator as $product) {
-            $this->get('coreshop.tracking.manager')->trackProductImpression($product);
+            $this->get(TrackerInterface::class)->trackProductImpression($product);
         }
 
-        $this->get('coreshop.seo.presentation')->updateSeoMetadata($category);
+        $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
 
         return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
@@ -269,16 +275,16 @@ class CategoryController extends FrontendController
     /**
      * @return \CoreShop\Component\Core\Configuration\ConfigurationService
      */
-    protected function getConfigurationService()
+    protected function getConfigurationService(): ConfigurationServiceInterface
     {
-        return $this->get('coreshop.configuration.service');
+        return $this->get(ConfigurationServiceInterface::class);
     }
 
     /**
      * @return ShopperContextInterface
      */
-    protected function getContext()
+    protected function getContext(): ShopperContextInterface
     {
-        return $this->get('coreshop.context.shopper');
+        return $this->get(ShopperContextInterface::class);
     }
 }

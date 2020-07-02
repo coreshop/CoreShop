@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
@@ -20,5 +22,5 @@ interface StorageListItemQuantityModifierInterface
      * @param StorageListItemInterface $item
      * @param float                    $targetQuantity
      */
-    public function modify(StorageListItemInterface $item, float $targetQuantity);
+    public function modify(StorageListItemInterface $item, float $targetQuantity): void;
 }

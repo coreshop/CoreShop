@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
@@ -33,38 +35,12 @@ use Pimcore\Tool;
 
 final class ProductContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productFactory;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinitions;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinition;
-
-    /**
-     * @var FactoryInterface
-     */
     private $productUnitDefinitionPriceFactory;
 
-    /**
-     * @param SharedStorageInterface $sharedStorage
-     * @param FactoryInterface       $productFactory
-     * @param FactoryInterface       $productUnitDefinitions
-     * @param FactoryInterface       $productUnitDefinition
-     * @param FactoryInterface       $productUnitDefinitionPriceFactory
-     */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
@@ -112,7 +88,8 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the site has a product "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+)$/
+     * @Given /^the site has a product "([^"]+)" priced at (\d+) for (store "[^"]+")$/
      */
     public function theSiteHasAProductPricedAt(string $productName, int $price = 100, StoreInterface $store = null)
     {
@@ -122,7 +99,20 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is (:?also) priced at (\d+) for (store "[^"]+")$/
+     * @Given /^the (product) is priced at (\d+) for (store "[^"]+")$/
+     */
+    public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store)
+    {
+        $product->setStores(array_merge($product->getStores(), [$store->getId()]));
+        $product->setStorePrice($price, $store);
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+)$/
+     * @Given /^the (product "[^"]+") has a variant "([^"]+)" priced at ([^"]+) for (store "[^"]+")$/
      * @Given /^the (product) has a variant "([^"]+)" priced at ([^"]+)$/
      */
     public function theProductHasAVariantPricedAt(
@@ -207,6 +197,23 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available for (store "[^"]+")$/
+     * @Given /^the (product) is active and published and available$/
+     */
+    public function theProductIsActivePublishedAndAvailableForStore(ProductInterface $product, StoreInterface $store = null)
+    {
+        $product->setActive(true);
+        $product->setPublished(true);
+
+        if (null !== $store) {
+            $product->setStores([$store->getId()]);
+        }
+
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product "[^"]+") ean is "([^"]+)"$/
      * @Given /^the (products) ean is "([^"]+)"$/
      */
@@ -235,6 +242,50 @@ final class ProductContext implements Context
     public function theProductIsNotActive(ProductInterface $product)
     {
         $product->setActive(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is stock tracked$/
+     * @Given /^the (product) is stock tracked$/
+     */
+    public function theProductIsTracked(ProductInterface $product)
+    {
+        $product->setIsTracked(true);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") is not stock tracked$/
+     * @Given /^the (product) is not stock tracked$/
+     */
+    public function theProductIsNotTracked(ProductInterface $product)
+    {
+        $product->setIsTracked(false);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hand$/
+     * @Given /^the (product) has (\d+) on hand$/
+     */
+    public function theProductHasOnHand(ProductInterface $product, int $onHand)
+    {
+        $product->setOnHand($onHand);
+
+        $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^the (product "[^"]+") has (\d+) on hold$/
+     * @Given /^the (product) has (\d+) on hold$/
+     */
+    public function theProductHasOnHold(ProductInterface $product, int $onHold)
+    {
+        $product->setOnHold($onHold);
 
         $this->saveProduct($product);
     }
@@ -316,6 +367,16 @@ final class ProductContext implements Context
     }
 
     /**
+     * @Given /^the (product "[^"]+") has a maximum order quantity of "([^"]+)"$/
+     * @Given /^the (product) has a maximum order quantity of "([^"]+)"$/
+     */
+    public function theProductHasAMaximumOrderQuantity(ProductInterface $product, int $maximumQuantity)
+    {
+        $product->setMaximumQuantityToOrder($maximumQuantity);
+        $this->saveProduct($product);
+    }
+
+    /**
      * @Given /^the (product) has the default (unit "[^"]+")$/
      * @Given /^the (product "[^"]+") has the default (unit "[^"]+")"$/
      */
@@ -337,12 +398,12 @@ final class ProductContext implements Context
     }
 
     /**
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d++")$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+")$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
-     * @Given /^the (product) has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
-     * @Given /^the (product "[^"]+") has and additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+")$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("[^"]+") and price (\d+)$/
+     * @Given /^the (product) has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+)$/
+     * @Given /^the (product "[^"]+") has an additional (unit "[^"]+") with conversion rate ("\d+") and price (\d+) and precision (\d+)$/
      */
     public function theProductHasAnAdditionalUnit(
         ProductInterface $product,
@@ -373,7 +434,7 @@ final class ProductContext implements Context
              */
             $productUnitDefinitionPrice = $this->productUnitDefinitionPriceFactory->createNew();
             $productUnitDefinitionPrice->setUnitDefinition($defaultUnitDefinition);
-            $productUnitDefinitionPrice->setPrice((int) $price);
+            $productUnitDefinitionPrice->setPrice($price);
 
             /**
              * @var ProductStoreValuesInterface $storeValues

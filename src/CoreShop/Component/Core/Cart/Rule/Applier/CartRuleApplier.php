@@ -10,52 +10,29 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
+use CoreShop\Component\Order\Distributor\IntegerDistributor;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 
 class CartRuleApplier implements CartRuleApplierInterface
 {
-    /**
-     * @var ProportionalIntegerDistributor
-     */
     private $distributor;
-
-    /**
-     * @var ProductTaxCalculatorFactoryInterface
-     */
     private $taxCalculatorFactory;
-
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var AddressProviderInterface
-     */
     private $defaultAddressProvider;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     private $adjustmentFactory;
 
-    /**
-     * @param ProportionalIntegerDistributor       $distributor
-     * @param ProductTaxCalculatorFactoryInterface $taxCalculatorFactory
-     * @param TaxCollectorInterface                $taxCollector
-     * @param AddressProviderInterface             $defaultAddressProvider
-     * @param AdjustmentFactoryInterface           $adjustmentFactory
-     */
     public function __construct(
         ProportionalIntegerDistributor $distributor,
         ProductTaxCalculatorFactoryInterface $taxCalculatorFactory,
@@ -73,7 +50,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applyDiscount(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applyDiscount(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, false);
     }
@@ -81,15 +58,12 @@ class CartRuleApplier implements CartRuleApplierInterface
     /**
      * {@inheritdoc}
      */
-    public function applySurcharge(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false)
+    public function applySurcharge(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, bool $withTax = false): void
     {
         $this->apply($cart, $cartPriceRuleItem, $discount, $withTax, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
+    protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         $totalAmount = [];
 
@@ -99,6 +73,7 @@ class CartRuleApplier implements CartRuleApplierInterface
 
         $distributedAmount = $this->distributor->distribute($totalAmount, $discount);
 
+        $totalDiscountFloat = 0;
         $totalDiscountNet = 0;
         $totalDiscountGross = 0;
         $i = 0;
@@ -107,6 +82,7 @@ class CartRuleApplier implements CartRuleApplierInterface
             $applicableAmount = $distributedAmount[$i++];
             $itemDiscountGross = 0;
             $itemDiscountNet = 0;
+            $discountFloat = 0;
 
             if (0 === $applicableAmount) {
                 continue;
@@ -127,28 +103,40 @@ class CartRuleApplier implements CartRuleApplierInterface
                 $taxItems = $item->getTaxes();
 
                 if ($withTax) {
-                    $itemDiscountNet = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
-
-                    $taxItems->setItems($this->taxCollector->collectTaxes($taxCalculator, ($positive ? $itemDiscountNet : -1 * $itemDiscountNet), $taxItems->getItems()));
+                    $discountFloat = $applicableAmount / (1 + $taxCalculator->getTotalRate() / 100);
+                    $itemDiscountNet = (int)$discountFloat;
                 } else {
-                    $itemDiscountGross = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
-
-                    $taxItems->setItems($this->taxCollector->collectTaxesFromGross($taxCalculator, ($positive ? $itemDiscountGross : -1 * $itemDiscountGross), $taxItems->getItems()));
+                    $discountFloat = $applicableAmount * (1 + ($taxCalculator->getTotalRate() / 100));
+                    $itemDiscountGross = (int)$discountFloat;
                 }
             } else {
                 if ($withTax) {
                     $itemDiscountNet = $applicableAmount;
+                    $discountFloat = $applicableAmount;
                 } else {
                     $itemDiscountGross = $applicableAmount;
+                    $discountFloat = $applicableAmount;
                 }
             }
 
+            $totalDiscountFloat += $discountFloat;
             $totalDiscountNet += $itemDiscountNet;
             $totalDiscountGross += $itemDiscountGross;
         }
 
         $totalDiscountNet = (int) round($totalDiscountNet);
         $totalDiscountGross = (int) round($totalDiscountGross);
+        $totalDiscountFloat = (int) round($totalDiscountFloat);
+
+        //Add missing cents caused by rounding issues
+        if ($totalDiscountFloat > ($withTax ? $totalDiscountNet : $totalDiscountGross)) {
+            if ($withTax) {
+                $totalDiscountNet += (int)$totalDiscountFloat - $totalDiscountNet;
+            }
+            else {
+                $totalDiscountGross += (int)$totalDiscountFloat - $totalDiscountGross;
+            }
+        }
 
         $totalAmountNet = [];
         $totalAmountGross = [];
@@ -167,6 +155,33 @@ class CartRuleApplier implements CartRuleApplierInterface
 
             if ($amountNet === 0) {
                 continue;
+            }
+
+             $taxCalculator = $this->taxCalculatorFactory->getTaxCalculator(
+                $item->getProduct(),
+                $cart->getShippingAddress() ?: $this->defaultAddressProvider->getAddress($cart)
+            );
+
+            if ($taxCalculator instanceof TaxCalculatorInterface) {
+                $taxItems = $item->getTaxes();
+
+                if ($withTax) {
+                    $taxItems->setItems(
+                        $this->taxCollector->collectTaxes(
+                            $taxCalculator,
+                            ($positive ? $amountNet : -1 * $amountNet),
+                            $taxItems->getItems()
+                        )
+                    );
+                } else {
+                    $taxItems->setItems(
+                        $this->taxCollector->collectTaxesFromGross(
+                            $taxCalculator,
+                            ($positive ? $amountGross : -1 * $amountGross),
+                            $taxItems->getItems()
+                        )
+                    );
+                }
             }
 
             $item->addAdjustment($this->adjustmentFactory->createWithData(
@@ -191,5 +206,3 @@ class CartRuleApplier implements CartRuleApplierInterface
         );
     }
 }
-
-class_alias(CartRuleApplier::class, 'CoreShop\Component\Core\Cart\Rule\Applier\DiscountApplier');

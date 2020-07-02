@@ -33,7 +33,7 @@ coreshop.rules.condition = Class.create({
             addMenu.push({
                 iconCls: _this.getConditionStyleClass(condition),
                 text: t('coreshop_condition_' + condition),
-                handler: _this.addCondition.bind(_this, condition, null)
+                handler: _this.addCondition.bind(_this, condition, null, true)
             });
 
         });
@@ -84,7 +84,7 @@ coreshop.rules.condition = Class.create({
         return coreshop.rules.conditions.abstract;
     },
 
-    addCondition: function (type, data) {
+    addCondition: function (type, data, dirty) {
         // create condition
         var conditionClass = this.getConditionClassItem(type);
         var item = new conditionClass(this, type, data);
@@ -94,7 +94,10 @@ coreshop.rules.condition = Class.create({
 
         this.conditionsContainer.add(item.getLayout());
         this.conditionsContainer.updateLayout();
-        this.setDirty(true);
+
+        if (dirty) {
+            this.setDirty(true);
+        }
     },
 
     getConditionsData: function () {

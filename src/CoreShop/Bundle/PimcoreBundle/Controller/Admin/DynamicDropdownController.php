@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
@@ -17,19 +19,13 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class DynamicDropdownController extends AdminController
 {
     private $separator = ' - ';
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     *
-     * @throws \Exception
-     */
-    public function optionsAction(Request $request)
+    public function optionsAction(Request $request): Response
     {
         $folderName = $request->get('folderName');
         $parts = array_map(static function ($part) {
@@ -89,12 +85,7 @@ final class DynamicDropdownController extends AdminController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function methodsAction(Request $request)
+    public function methodsAction(Request $request): Response
     {
         $availableMethods = [];
 
@@ -118,17 +109,7 @@ final class DynamicDropdownController extends AdminController
         return $this->json($availableMethods);
     }
 
-    /**
-     * @param Request                   $request
-     * @param DataObject\AbstractObject $folder
-     * @param array                     $options
-     * @param string                    $path
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    private function walkPath(Request $request, DataObject\AbstractObject $folder, $options = [], $path = '')
+    private function walkPath(Request $request, DataObject\AbstractObject $folder, array $options = [], string $path = ''): array
     {
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
@@ -190,13 +171,7 @@ final class DynamicDropdownController extends AdminController
         return $options;
     }
 
-    /**
-     * @param DataObject\Concrete $object
-     * @param string              $method
-     *
-     * @return bool
-     */
-    private function isUsingI18n(DataObject\Concrete $object, $method)
+    private function isUsingI18n(DataObject\Concrete $object, string $method)
     {
         $classDefinition = $object->getClass();
         $definitionFile = $classDefinition->getDefinitionFile();
@@ -211,12 +186,6 @@ final class DynamicDropdownController extends AdminController
         return $definition[$method];
     }
 
-    /**
-     * @param mixed $tree
-     * @param mixed $definition
-     *
-     * @return mixed
-     */
     private function parseTree($tree, $definition)
     {
         if ($tree instanceof DataObject\ClassDefinition\Layout || $tree instanceof DataObject\ClassDefinition\Data\Localizedfields) { // Did I forget something?

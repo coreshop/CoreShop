@@ -1,45 +1,41 @@
 {
-  "name": "coreshop/fixture-bundle",
-  "type": "pimcore-bundle",
-  "description": "CoreShop - Fixture Bundle",
-  "keywords": [
-    "coreshop",
-    "pimcore",
-    "ecommerce"
-  ],
-  "homepage": "http://www.coreshop.org",
-  "license": "GPL-3.0-or-later",
-  "authors": [
-    {
-      "name": "Dominik Pfaffenbauer",
-      "email": "dominik@pfaffenbauer.at",
-      "homepage": "https://www.pfaffenbauer.at/",
-      "role": "Developer"
+    "name": "coreshop/fixture-bundle",
+    "type": "pimcore-bundle",
+    "description": "CoreShop - Fixture Bundle",
+    "keywords": ["coreshop", "pimcore", "ecommerce"],
+    "homepage": "http://www.coreshop.org",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Dominik Pfaffenbauer",
+            "email": "dominik@pfaffenbauer.at",
+            "homepage": "https://www.pfaffenbauer.at/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "coreshop/resource-bundle": "^3.0",
+        "symfony/framework-bundle": "^4.3",
+        "symfony/doctrine-bridge": "^4.3",
+        "symfony/twig-bundle": "^4.3",
+        "doctrine/data-fixtures": "^1.4",
+        "doctrine/dbal": "^2.1",
+        "doctrine/orm": "^2.5"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "CoreShop\\Bundle\\FixtureBundle\\": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": "^7.2",
-    "coreshop/resource-bundle": "^2.0",
-    "symfony/framework-bundle": "^3.4.26 | ^4.1.12",
-    "symfony/doctrine-bridge": "^3.4 | ^4.0",
-    "symfony/twig-bundle": "^3.4 | ^4.0",
-    "doctrine/data-fixtures": "^1.0",
-    "doctrine/dbal": "^2.1",
-    "doctrine/orm": "^2.1"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "CoreShop\\Bundle\\FixtureBundle\\": ""
-    }
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "extra": {
-    "branch-alias": {
-      "dev-master": "2.2-dev"
-    }
-  }
 }

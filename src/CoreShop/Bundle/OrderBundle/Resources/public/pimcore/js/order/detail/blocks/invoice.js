@@ -10,8 +10,8 @@
  *
  */
 
-pimcore.registerNS('coreshop.order.sale.detail.blocks.invoice');
-coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.sale.detail.abstractBlock, {
+pimcore.registerNS('coreshop.order.order.detail.blocks.invoice');
+coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.order.detail.abstractBlock, {
     saleInfo: null,
 
     initBlock: function () {
@@ -52,7 +52,7 @@ coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.sale.de
                             text: t('coreshop_total_without_tax'),
                             flex: 1,
                             renderer: function (value) {
-                                return coreshop.util.format.currency(me.sale.currency.iso, value);
+                                return coreshop.util.format.currency(me.sale.currency.isoCode, value);
                             }
                         },
                         {
@@ -61,7 +61,7 @@ coreshop.order.order.detail.blocks.invoice = Class.create(coreshop.order.sale.de
                             text: t('coreshop_total'),
                             flex: 1,
                             renderer: function (value) {
-                                return coreshop.util.format.currency(me.sale.currency.iso, value);
+                                return coreshop.util.format.currency(me.sale.currency.isoCode, value);
                             }
                         },
                         {

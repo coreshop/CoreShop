@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Component\Core\Model\StoreInterface;
@@ -17,40 +19,20 @@ use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    /**
-     * @var LinkGeneratorInterface
-     */
     private $linkGenerator;
-
-    /**
-     * @var string
-     */
     private $routeName;
-
-    /**
-     * @var SessionInterface
-     */
     private $session;
-
-    /**
-     * @var StoreContextInterface
-     */
     private $storeContext;
 
-    /**
-     * @param LinkGeneratorInterface $linkGenerator
-     * @param string                 $routeName
-     * @param SessionInterface       $session
-     * @param StoreContextInterface  $storeContext
-     */
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
-        $routeName,
+        string $routeName,
         SessionInterface $session,
         StoreContextInterface $storeContext
     ) {
@@ -63,7 +45,7 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function onLogoutSuccess(Request $request)
+    public function onLogoutSuccess(Request $request): Response
     {
         $store = $this->storeContext->getStore();
 

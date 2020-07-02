@@ -1,0 +1,9 @@
+imports:
+    - ui/homepage.yml
+    - ui/login.yml
+    - ui/register.yml
+    - ui/reset.yml
+    - ui/customer_profile.yml
+    - ui/product.yml
+    - ui/cart.yml
+    - ui/checkout.yml

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Notification\Rule\Condition;
 
 use CoreShop\Component\Core\Model\OrderInterface;
@@ -17,29 +19,14 @@ use CoreShop\Component\Core\Model\PaymentInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
-use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoresChecker extends AbstractConditionChecker
 {
     /**
-     * @var OrderRepositoryInterface
-     */
-    private $orderRepository;
-
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
-    public function __construct(
-        OrderRepositoryInterface $orderRepository
-    ) {
-        $this->orderRepository = $orderRepository;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function isNotificationRuleValid($subject, $params, array $configuration)
+    public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         $store = null;
 

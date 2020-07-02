@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle;
 
 final class Events
@@ -18,4 +20,14 @@ final class Events
      * Fired before a Sale (Cart, Order, Quote) is passed to the client
      */
     const SALE_DETAIL_PREPARE = 'coreshop.sale.detail.prepare';
+
+    /**
+     * Fired when an Admin creates a new Customer via a CoreShop UI
+     */
+    const ADMIN_CUSTOMER_CREATION = 'coreshop.customer.admin_creation';
+
+    /**
+     * Fired when an Admin creates a new Address via a CoreShop UI
+     */
+    const ADMIN_ADDRESS_CREATION = 'coreshop.address.admin_creation';
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Filter;
 
 use CoreShop\Component\Index\Condition\RangeCondition;
@@ -24,7 +26,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter)
+    public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
         $rawValues = $list->getGroupByValues($field, true);
@@ -49,7 +51,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, $currentFilter, ParameterBag $parameterBag, $isPrecondition = false)
+    public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];
 
@@ -57,7 +59,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $values = explode(',', $parameterBag->get($field));
 
             $parameterBag->set($field . '-min', $values[0]);
-            $parameterBag->set($field . '-max', $values[0]);
+            $parameterBag->set($field . '-max', $values[1]);
         }
 
         $valueMin = $parameterBag->get($field . '-min');

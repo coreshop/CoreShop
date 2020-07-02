@@ -290,7 +290,7 @@ coreshop.product.unit.builder = Class.create({
 
     dispatchUnitDefinitionChangeEvent: function () {
 
-        var values = this.convertDotNotationToObject(this.getValues()),
+        var values = coreshop.helpers.convertDotNotationToObject(this.getValues()),
             additionalUnitDefinitions = this.getAdditionalUnitDefinitions();
 
         if (values.hasOwnProperty('additionalUnitDefinitions')) {
@@ -490,25 +490,5 @@ coreshop.product.unit.builder = Class.create({
 
     getValues: function () {
         return this.form.getForm().getFieldValues();
-    },
-
-    convertDotNotationToObject: function (data) {
-        var obj = {};
-
-        Object.keys(data).forEach(function (key) {
-            var val = data[key],
-                step = obj;
-
-            key.split('.').forEach(function (part, index, arr) {
-                if (index === arr.length - 1) {
-                    step[part] = val;
-                } else if (step[part] === undefined) {
-                    step[part] = {};
-                }
-                step = step[part];
-            });
-        });
-
-        return obj;
     }
 });

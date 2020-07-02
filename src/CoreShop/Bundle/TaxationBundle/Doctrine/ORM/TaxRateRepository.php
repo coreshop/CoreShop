@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\TaxationBundle\Doctrine\ORM;
 
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
@@ -20,15 +22,7 @@ class TaxRateRepository extends EntityRepository implements TaxRateRepositoryInt
     /**
      * {@inheritdoc}
      */
-    public function createListQueryBuilder()
-    {
-        return $this->createQueryBuilder('o');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findByName($name, $locale)
+    public function findByName($name, $locale): array
     {
         return $this->createQueryBuilder('o')
             ->innerJoin('o.translations', 'translation')

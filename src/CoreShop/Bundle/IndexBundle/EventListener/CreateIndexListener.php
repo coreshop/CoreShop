@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\EventListener;
 
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
@@ -21,14 +23,8 @@ use Webmozart\Assert\Assert;
 
 final class CreateIndexListener
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->workerServiceRegistry = $workerServiceRegistry;
@@ -39,7 +35,7 @@ final class CreateIndexListener
      *
      * @param ResourceControllerEvent $event
      */
-    public function onIndexSavePost(ResourceControllerEvent $event)
+    public function onIndexSavePost(ResourceControllerEvent $event): void
     {
         $resource = $event->getSubject();
 

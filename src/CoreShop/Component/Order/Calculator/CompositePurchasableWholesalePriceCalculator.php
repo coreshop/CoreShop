@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Exception\NoPurchasableWholesalePriceFoundException;
@@ -18,14 +20,8 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCalculatorInterface
 {
-    /**
-     * @var PrioritizedServiceRegistryInterface
-     */
     protected $wholesalePriceCalculators;
 
-    /**
-     * @param PrioritizedServiceRegistryInterface $wholesalePriceCalculators
-     */
     public function __construct(PrioritizedServiceRegistryInterface $wholesalePriceCalculators)
     {
         $this->wholesalePriceCalculators = $wholesalePriceCalculators;
@@ -34,7 +30,7 @@ class CompositePurchasableWholesalePriceCalculator implements PurchasableWholesa
     /**
      * {@inheritdoc}
      */
-    public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context)
+    public function getPurchasableWholesalePrice(PurchasableInterface $purchasable, array $context): int
     {
         $price = null;
 

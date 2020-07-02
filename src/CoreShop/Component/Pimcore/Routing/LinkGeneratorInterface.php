@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Routing;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -17,12 +19,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 interface LinkGeneratorInterface
 {
     /**
-     * @param mixed  $object
-     * @param string $routeName
-     * @param array  $params
-     * @param int    $referenceType
-     *
-     * @return mixed
+     * @param mixed       $object
+     * @param string|null $routeName
+     * @param array       $params
+     * @param int         $referenceType
+     * @return string
      */
-    public function generate($object, $routeName = null, $params = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH);
+    public function generate($object, ?string $routeName = null, array $params = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string;
 }

@@ -73,7 +73,7 @@ coreshop.order.order.invoice = Class.create({
                 text: t('coreshop_price'),
                 width: 100,
                 align: 'right',
-                renderer: coreshop.util.format.currency.bind(this, this.order.currency.iso)
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.isoCode)
             },
             {
                 xtype: 'gridcolumn',
@@ -106,7 +106,7 @@ coreshop.order.order.invoice = Class.create({
                 text: t('coreshop_tax'),
                 width: 100,
                 align: 'right',
-                renderer: coreshop.util.format.currency.bind(this, this.order.currency.iso)
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.isoCode)
             },
             {
                 xtype: 'gridcolumn',
@@ -114,7 +114,7 @@ coreshop.order.order.invoice = Class.create({
                 text: t('coreshop_total'),
                 width: 100,
                 align: 'right',
-                renderer: coreshop.util.format.currency.bind(this, this.order.currency.iso)
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.isoCode)
             }
         ];
     },

@@ -5,7 +5,7 @@ services:
     CoreShop\Bundle\StoreBundle\Collector\StoreCollector:
         arguments:
             - '@coreshop.repository.store'
-            - '@coreshop.context.store'
+            - '@CoreShop\Component\Store\Context\StoreContextInterface'
             - false
         tags:
             - { name: data_collector, template: 'CoreShopStoreBundle:Collector:store.html.twig', id: coreshop.store_collector }

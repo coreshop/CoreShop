@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -19,7 +21,7 @@ use Doctrine\Common\Collections\Collection;
 class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefinitionsInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -230,8 +232,7 @@ class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefi
 
         $additionalUnits = $this->getAdditionalUnitDefinitions();
 
-        //Doctrine internally does that
-        //$this->id = null;
+        $this->id = null;
         $this->unitDefinitions =  new ArrayCollection();
         $this->defaultUnitDefinition = null;
 

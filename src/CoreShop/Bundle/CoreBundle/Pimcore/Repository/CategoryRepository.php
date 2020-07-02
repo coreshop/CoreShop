@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\CategoryRepository as BaseCategoryRepository;
@@ -23,7 +25,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findForStore(StoreInterface $store)
+    public function findForStore(StoreInterface $store): array
     {
         $list = $this->getList();
         $list->setCondition('stores LIKE ?', ['%,' . $store->getId() . ',%']);
@@ -35,7 +37,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findFirstLevelForStore(StoreInterface $store)
+    public function findFirstLevelForStore(StoreInterface $store): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id is null AND stores LIKE "%,' . $store->getId() . ',%"');
@@ -48,7 +50,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
         $list->setCondition('parentCategory__id = ? AND stores LIKE "%,' . $store->getId() . ',%"', [$category->getId()]);
@@ -61,7 +63,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store)
+    public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
         $dao = $list->getDao();
@@ -84,7 +86,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
     /**
      * {@inheritdoc}
      */
-    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store)
+    public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $childIds = $this->findRecursiveChildCategoryIdsForStore($category, $store);
 
@@ -100,11 +102,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * @param Listing           $list
-     * @param CategoryInterface $category
-     */
-    private function setSortingForListing(Listing $list, CategoryInterface $category)
+    private function setSortingForListing(Listing $list, CategoryInterface $category): void
     {
         if (method_exists($category, 'getChildrenSortBy')) {
             $list->setOrderKey(
@@ -119,10 +117,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         }
     }
 
-    /**
-     * @param Listing $list
-     */
-    private function setSortingForListingWithoutCategory(Listing $list)
+    private function setSortingForListingWithoutCategory(Listing $list): void
     {
         $list->setOrderKey(
             'o_key ASC',

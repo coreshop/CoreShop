@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
 */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Service;
 
 use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
@@ -18,12 +20,12 @@ use CoreShop\Component\Index\Model\IndexInterface;
 
 class RelationalIndexExtension implements IndexRelationalColumnsExtensionInterface
 {
-    public function supports(IndexInterface $index)
+    public function supports(IndexInterface $index): bool
     {
         return $index->getName() === 'relational_extension';
     }
 
-    public function getRelationalColumns()
+    public function getRelationalColumns(): array
     {
         return [
             'custom_col' => IndexColumnInterface::FIELD_TYPE_STRING,

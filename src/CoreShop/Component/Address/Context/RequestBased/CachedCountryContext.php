@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Address\Context\RequestBased;
 
 use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
@@ -39,7 +41,7 @@ final class CachedCountryContext implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCountry(Request $request)
+    public function findCountry(Request $request): CountryInterface
     {
         if (null === $this->country) {
             $this->country = $this->inner->findCountry($request);

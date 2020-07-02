@@ -10,9 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Factory;
 
 use CoreShop\Component\Index\Factory\ListingFactoryInterface;
+use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
@@ -20,14 +23,8 @@ use Symfony\Component\Intl\Exception\InvalidArgumentException;
 
 class ListingFactory implements ListingFactoryInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $workerServiceRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $workerServiceRegistry
-     */
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->workerServiceRegistry = $workerServiceRegistry;
@@ -36,7 +33,7 @@ class ListingFactory implements ListingFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function createList(IndexInterface $index)
+    public function createList(IndexInterface $index): ListingInterface
     {
         $worker = $index->getWorker();
 

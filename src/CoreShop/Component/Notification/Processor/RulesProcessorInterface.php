@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Notification\Processor;
 
 interface RulesProcessorInterface
@@ -19,7 +21,7 @@ interface RulesProcessorInterface
      * @param mixed  $subject
      * @param array  $params
      *
-     * @return mixed
+     * @return void
      */
-    public function applyRules($type, $subject, $params = []);
+    public function applyRules(string $type, $subject, array $params = []): void;
 }

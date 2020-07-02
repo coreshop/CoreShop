@@ -1,44 +1,38 @@
 imports:
-    - { resource: "services/form.yml" }
-    - { resource: "services/profiler.yml" }
-    - { resource: "services/theme.yml" }
-    - { resource: "services/pimcore.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/form.yml }
+    - { resource: services/profiler.yml }
+    - { resource: services/theme.yml }
+    - { resource: services/pimcore.yml }
 
 services:
     _defaults:
         public: true
 
-    coreshop.context.store.composite: '@CoreShop\Component\Store\Context\CompositeStoreContext'
-    CoreShop\Component\Store\Context\StoreContextInterface: '@CoreShop\Component\Store\Context\CompositeStoreContext'
     CoreShop\Component\Store\Context\CompositeStoreContext:
         public: false
 
-    coreshop.context.store.request_based: '@CoreShop\Component\Store\Context\RequestBased\StoreContext'
     CoreShop\Component\Store\Context\RequestBased\StoreContext:
         public: false
         arguments:
-            - '@coreshop.context.store.request_based.resolver'
+            - '@CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface'
             - '@request_stack'
         tags:
             - { name: coreshop.context.store, priority: 1 }
 
-    coreshop.context.store.request_based.cached: '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext'
     CoreShop\Component\Store\Context\RequestBased\CachedStoreContext:
-        decorates: coreshop.context.store.request_based
+        decorates: CoreShop\Component\Store\Context\RequestBased\StoreContext
         arguments:
             - '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext.inner'
 
-    coreshop.context.store.fixed: '@CoreShop\Component\Store\Context\FixedStoreContext'
     CoreShop\Component\Store\Context\FixedStoreContext:
         tags:
             - { name: coreshop.context.store, priority: 2 }
 
-    coreshop.context.store.request_based.resolver.composite: '@CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver'
     CoreShop\Component\Store\Context\RequestBased\RequestResolverInterface: '@CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver'
     CoreShop\Component\Store\Context\RequestBased\CompositeRequestResolver:
         public: false
 
-    coreshop.context.store.request_based.resolver.admin: '@CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver'
     CoreShop\Component\Store\Context\RequestBased\PimcoreAdminSiteBasedRequestResolver:
         public: false
         arguments:
@@ -48,7 +42,6 @@ services:
         tags:
             - { name: coreshop.context.store.request_based.resolver, priority: 200 }
 
-    coreshop.context.store.request_based.resolver.hostname_based: '@CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver'
     CoreShop\Component\Store\Context\RequestBased\SiteBasedRequestResolver:
         public: false
         arguments:

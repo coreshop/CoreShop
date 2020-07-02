@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Model;
 
 use CoreShop\Component\Resource\Model\ToggleableInterface;
@@ -43,12 +45,12 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
     /**
      * @return int
      */
-    public function getWholesalePrice();
+    public function getWholesalePrice(): int;
 
     /**
      * @param int $wholesalePrice
      */
-    public function setWholesalePrice($wholesalePrice);
+    public function setWholesalePrice(int $wholesalePrice);
 
     /**
      * @return null|int
@@ -104,22 +106,6 @@ interface ProductInterface extends PimcoreModelInterface, ToggleableInterface
      * @param string $ean
      */
     public function setEan($ean);
-
-    /**
-     * @return ProductInterface
-     */
-    public function getVariantMaster();
-
-    /**
-     * Get all Variants Differences.
-     *
-     * @param string $language
-     * @param string $type
-     * @param string $field
-     *
-     * @return array|bool
-     */
-    public function getVariantDifferences($language, $type = 'objectbricks', $field = 'variants');
 
     /**
      * @param string $language

@@ -1,27 +1,22 @@
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
 
-    coreshop.inventory.availability_checker.default: '@CoreShop\Component\Inventory\Checker\AvailabilityChecker'
     CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface: '@CoreShop\Component\Inventory\Checker\AvailabilityChecker'
     CoreShop\Component\Inventory\Checker\AvailabilityChecker: ~
 
     CoreShop\Bundle\InventoryBundle\Validator\Constraints\InStockValidator:
         arguments:
-          - '@coreshop.inventory.availability_checker'
+          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
            - { name: validator.constraint_validator, alias: coreshop_in_stock }
-
-    CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelperInterface: '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper'
-    CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper:
-        arguments:
-          - '@coreshop.inventory.availability_checker'
-        tags:
-            - { name: templating.helper, alias: coreshop_inventory }
 
     CoreShop\Bundle\InventoryBundle\Twig\InventoryExtension:
         public: false
         arguments:
-          - '@CoreShop\Bundle\InventoryBundle\Templating\Helper\InventoryHelper'
+          - '@CoreShop\Component\Inventory\Checker\AvailabilityCheckerInterface'
         tags:
             - { name: twig.extension }

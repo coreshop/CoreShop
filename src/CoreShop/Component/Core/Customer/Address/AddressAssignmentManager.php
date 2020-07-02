@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Customer\Address;
 
 use CoreShop\Component\Address\Model\AddressInterface;
@@ -126,6 +128,12 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
             throw new \InvalidArgumentException(
                 sprintf('Could not determine address path for customer with id %d with affiliation "%s"', $customer->getId(), $affiliation)
             );
+        }
+
+        //If it's a customer address, and the customer doesn't have one yet, use this address as default and allow it for all types
+        if ($affiliation === CustomerAddressAllocatorInterface::ADDRESS_AFFILIATION_TYPE_OWN && 0 === count($customer->getAddresses())) {
+            $address->setAddressIdentifier(null);
+            $customer->setDefaultAddress($address);
         }
 
         $address = $this->customerTransformHelper->moveAddressToNewAddressStack($address, $relationEntity);

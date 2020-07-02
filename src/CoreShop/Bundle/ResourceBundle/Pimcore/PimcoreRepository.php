@@ -10,12 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Listing;
+use Pimcore\Model\Listing\AbstractListing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
@@ -42,7 +47,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function add(ResourceInterface $resource)
+    public function add(ResourceInterface $resource): void
     {
         throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
@@ -50,7 +55,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function remove(ResourceInterface $resource)
+    public function remove(ResourceInterface $resource): void
     {
         throw new NotImplementedException(sprintf('%s:%s not supported', __CLASS__, __METHOD__));
     }
@@ -58,7 +63,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getClassId()
+    public function getClassId(): string
     {
         $class = $this->metadata->getClass('model');
 
@@ -83,9 +88,9 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return Listing
      */
-    public function getList()
+    public function getList(): AbstractListing
     {
         $className = $this->metadata->getClass('model');
 
@@ -121,7 +126,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, $force = true)
+    public function forceFind($id, bool $force = true): ?Concrete
     {
         $class = $this->metadata->getClass('model');
 

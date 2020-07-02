@@ -10,8 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
+use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use CoreShop\Component\Resource\Model\TimestampableTrait;
 
@@ -44,6 +47,26 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
      * @var CartPriceRuleInterface
      */
     protected $cartPriceRule;
+
+    /**
+     * @var bool
+     */
+    protected $isCreditCode = false;
+
+    /**
+     * @var int
+     */
+    protected $creditAvailable = 0;
+
+    /**
+     * @var CurrencyInterface|null
+     */
+    protected $creditCurrency;
+
+    /**
+     * @var int
+     */
+    protected $creditUsed = 0;
 
     /**
      * {@inheritdoc}
@@ -99,6 +122,70 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
     public function setUses($uses)
     {
         $this->uses = $uses;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isCreditCode()
+    {
+        return $this->isCreditCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setIsCreditCode($isCreditCode)
+    {
+        $this->isCreditCode = $isCreditCode;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreditAvailable()
+    {
+        return $this->creditAvailable;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreditAvailable($creditAvailable)
+    {
+        $this->creditAvailable = $creditAvailable;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreditCurrency()
+    {
+        return $this->creditCurrency;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreditCurrency(?CurrencyInterface $creditCurrency)
+    {
+        $this->creditCurrency = $creditCurrency;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCreditUsed()
+    {
+        return $this->creditUsed;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCreditUsed($creditUsed)
+    {
+        $this->creditUsed = $creditUsed;
     }
 
     /**

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Command;
 
 use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
@@ -20,21 +22,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class OrderExpireCommand extends Command
 {
-    /**
-     * @var ProposalExpirationInterface
-     */
     protected $orderExpiration;
-
-    /**
-     * @var int
-     */
     protected $days;
 
-    /**
-     * @param ProposalExpirationInterface $orderExpiration
-     * @param int                         $days
-     */
-    public function __construct(ProposalExpirationInterface $orderExpiration, $days = 0)
+    public function __construct(ProposalExpirationInterface $orderExpiration, int $days = 0)
     {
         parent::__construct();
 
@@ -42,14 +33,11 @@ final class OrderExpireCommand extends Command
         $this->days = $days;
     }
 
-    /**
-     * configure command.
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setName('coreshop:cart:expire')
-            ->setDescription('Expire abandoned Carts')
+            ->setName('coreshop:order:expire')
+            ->setDescription('Expire abandoned orders')
             ->addOption(
                 'days',
                 'days',
@@ -58,15 +46,7 @@ final class OrderExpireCommand extends Command
             );
     }
 
-    /**
-     * Execute command.
-     *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $days = $this->days;
 

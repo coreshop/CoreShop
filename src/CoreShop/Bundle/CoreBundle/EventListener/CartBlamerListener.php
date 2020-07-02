@@ -10,38 +10,24 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener;
 
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
-    /**
-     * @var CartProcessorInterface
-     */
     private $cartProcessor;
-
-    /**
-     * @var CartContextInterface
-     */
     private $cartContext;
-
-    /**
-     * @var CartManagerInterface
-     */
     private $cartManager;
 
-    /**
-     * @param CartProcessorInterface $cartProcessor
-     * @param CartContextInterface   $cartContext
-     * @param CartManagerInterface   $cartManager
-     */
     public function __construct(
         CartProcessorInterface $cartProcessor,
         CartContextInterface $cartContext,
@@ -52,10 +38,7 @@ final class CartBlamerListener
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * @param InteractiveLoginEvent $interactiveLoginEvent
-     */
-    public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent)
+    public function onInteractiveLogin(InteractiveLoginEvent $interactiveLoginEvent): void
     {
         $user = $interactiveLoginEvent->getAuthenticationToken()->getUser();
         if (!$user instanceof CustomerInterface) {
@@ -65,10 +48,7 @@ final class CartBlamerListener
         $this->blame($user);
     }
 
-    /**
-     * @param CustomerRegistrationEvent $event
-     */
-    public function onRegisterEvent(CustomerRegistrationEvent $event)
+    public function onRegisterEvent(CustomerRegistrationEvent $event): void
     {
         $user = $event->getCustomer();
 
@@ -79,10 +59,7 @@ final class CartBlamerListener
         $this->blame($user);
     }
 
-    /**
-     * @param CustomerInterface $user
-     */
-    private function blame(CustomerInterface $user)
+    private function blame(CustomerInterface $user): void
     {
         $cart = $this->getCart();
 
@@ -111,10 +88,7 @@ final class CartBlamerListener
         $this->cartProcessor->process($cart);
     }
 
-    /**
-     * @return CartInterface
-     */
-    private function getCart()
+    private function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
     }

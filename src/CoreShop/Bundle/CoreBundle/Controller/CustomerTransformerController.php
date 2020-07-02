@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
@@ -18,6 +20,7 @@ use CoreShop\Component\Core\Model\CompanyInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CompanyRepositoryInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
+use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\Element\ValidationException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,7 +43,7 @@ class CustomerTransformerController extends AdminController
         if ($value !== null) {
             $list = $this->getCompanyRepository()->getList();
             $list->addConditionParam(sprintf('name LIKE "%%%s%%"', $value));
-            $foundObjects = $list->getObjects();
+            $foundObjects = $list->getData();
         }
 
         /** @var CompanyInterface $maybeDuplicate */
@@ -66,7 +69,7 @@ class CustomerTransformerController extends AdminController
      *
      * @return JsonResponse
      */
-    public function getEntityDetailsAction(Request $request, string $type, $objectId)
+    public function getEntityDetailsAction(Request $request, string $type, int $objectId)
     {
         $error = false;
         $message = null;
@@ -112,7 +115,7 @@ class CustomerTransformerController extends AdminController
      *
      * @return JsonResponse
      */
-    public function validateAssignmentAction(Request $request, $customerId, $companyId)
+    public function validateAssignmentAction(Request $request, int $customerId, int $companyId = null)
     {
         $error = false;
         $message = null;

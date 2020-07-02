@@ -10,29 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 use Zend\Stdlib\PriorityQueue;
 
 final class CompositeThemeResolver implements ThemeResolverInterface
 {
-    /**
-     * @var PriorityQueue|ThemeResolverInterface[]
-     */
     private $themeResolvers;
 
-    /**
-     * @var ActiveThemeInterface $activeTheme
-     */
-    private $activeTheme;
-
-    /**
-     * @param ActiveThemeInterface $activeTheme
-     */
-    public function __construct(ActiveThemeInterface $activeTheme)
+    public function __construct()
     {
         $this->themeResolvers = new PriorityQueue();
-        $this->activeTheme = $activeTheme;
     }
 
     /**
@@ -47,20 +37,8 @@ final class CompositeThemeResolver implements ThemeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme(/*ActiveThemeInterface $activeTheme*/)
+    public function resolveTheme(ActiveThemeInterface $activeTheme): void
     {
-        $activeTheme = null;
-
-        if (\func_num_args() === 0) {
-            trigger_error(
-                'Calling CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface::resolveTheme without the CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface Service is deprecated since 2.1 and will be removed in 3.0.',
-                E_USER_DEPRECATED
-            );
-            $activeTheme = $this->activeTheme;
-        } else {
-            $activeTheme = func_get_arg(0);
-        }
-
         foreach ($this->themeResolvers as $themeResolver) {
             try {
                 $themeResolver->resolveTheme($activeTheme);
@@ -70,5 +48,3 @@ final class CompositeThemeResolver implements ThemeResolverInterface
         }
     }
 }
-
-class_alias(CompositeThemeResolver::class, 'CoreShop\Bundle\StoreBundle\Theme\ThemeResolver');

@@ -101,7 +101,7 @@ coreshop.product_quantity_price_rules.object.item = Class.create(coreshop.rules.
         // add saved conditions
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition) {
-                this.conditions.addCondition(condition.type, condition);
+                this.conditions.addCondition(condition.type, condition, false);
             }.bind(this));
         }
 

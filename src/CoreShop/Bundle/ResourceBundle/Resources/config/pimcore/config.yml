@@ -1,5 +1,5 @@
 imports:
-    - { resource: "admin.yml" }
+    - { resource: admin.yml }
 
 jms_serializer:
     metadata:
@@ -18,16 +18,12 @@ doctrine:
         types:
             pimcoreObject:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreObject
-                commented: true
             pimcoreDocument:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreDocument
-                commented: true
             pimcoreAsset:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreAsset
-                commented: true
             pimcoreSite:
                 class: CoreShop\Component\Resource\Doctrine\Type\PimcoreSite
-                commented: true
         mapping_types:
             enum: string
     orm:
@@ -48,7 +44,7 @@ doctrine:
 doctrine_cache:
     custom_providers:
         coreshop_pimcore_cache:
-            prototype: coreshop.doctrine.cache.pimcore
+            prototype: CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache
 
     providers:
         coreshop_pimcore_metadata_cache:

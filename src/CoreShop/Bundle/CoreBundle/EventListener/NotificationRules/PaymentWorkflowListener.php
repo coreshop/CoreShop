@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\EventListener\NotificationRules;
 
 use CoreShop\Component\Core\Model\PaymentInterface;
@@ -19,14 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class PaymentWorkflowListener extends AbstractNotificationRuleListener
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     */
     public function setOrderRepository(OrderRepositoryInterface $orderRepository)
     {
         $this->orderRepository = $orderRepository;
@@ -35,7 +31,7 @@ final class PaymentWorkflowListener extends AbstractNotificationRuleListener
     /**
      * @param Event $event
      */
-    public function applyPaymentWorkflowTransitionCompleted(Event $event)
+    public function applyPaymentWorkflowTransitionCompleted(Event $event): void
     {
         Assert::isInstanceOf($event->getSubject(), PaymentInterface::class);
 

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer\Configuration;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -20,7 +22,7 @@ final class RouteConfiguration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('staticroutes');
@@ -41,6 +43,10 @@ final class RouteConfiguration implements ConfigurationInterface
                             ->scalarNode('variables')->defaultValue('')->end()
                             ->scalarNode('defaults')->defaultValue(null)->end()
                             ->integerNode('priority')->defaultValue(1)->end()
+                            ->arrayNode('methods')
+                                ->useAttributeAsKey('name')
+                                ->prototype('scalar')->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()

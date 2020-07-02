@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product\Cloner;
 
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -23,7 +25,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
     /**
      * {@inheritDoc}
      */
-    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false)
+    public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
         if ($product->getId() === null) {
             throw new \Exception(sprintf('cannot clone quantity price rules on a un-stored product (reference product id: %d.', $referenceProduct->getId()));
@@ -53,14 +55,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         }
     }
 
-    /**
-     * @param ProductInterface                  $product
-     * @param ProductQuantityPriceRuleInterface $quantityPriceRule
-     *
-     * @return ProductQuantityPriceRuleInterface
-     * @throws \Exception
-     */
-    protected function cloneAndReallocateRangeQuantityUnit(ProductInterface $product, ProductQuantityPriceRuleInterface $quantityPriceRule)
+    protected function cloneAndReallocateRangeQuantityUnit(ProductInterface $product, ProductQuantityPriceRuleInterface $quantityPriceRule): ProductQuantityPriceRuleInterface
     {
         $newQuantityPriceRule = clone $quantityPriceRule;
 
@@ -101,13 +96,7 @@ class ProductQuantityPriceRulesCloner implements ProductClonerInterface
         return $newQuantityPriceRule;
     }
 
-    /**
-     * @param ProductInterface $product
-     * @param string           $unitName
-     *
-     * @return ProductUnitDefinitionInterface|null
-     */
-    protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName)
+    protected function findMatchingUnitDefinitionByUnitName(ProductInterface $product, string $unitName): ?ProductUnitDefinitionInterface
     {
         if ($product->hasUnitDefinitions() === false) {
             return null;

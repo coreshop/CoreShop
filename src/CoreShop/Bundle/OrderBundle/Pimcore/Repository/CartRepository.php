@@ -10,12 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Pimcore\Repository;
 
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Repository\CartRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
@@ -25,14 +26,14 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findForCustomer(CustomerInterface $customer)
+    public function findForCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND order__id is null', [$customer->getId()]);
         $list->load();
 
         /**
-         * @var CartInterface[] $carts
+         * @var OrderInterface[] $carts
          */
         $carts = $list->getObjects();
 
@@ -42,7 +43,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findNamedForCustomer(CustomerInterface $customer, $name)
+    public function findNamedForCustomer(CustomerInterface $customer, $name): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND name = ? AND order__id is null', [$customer->getId(), $name]);
@@ -50,7 +51,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -60,7 +61,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer)
+    public function findLatestByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('customer__id = ? AND store = ? AND order__id is null ', [$customer->getId(), $store->getId()]);
@@ -70,7 +71,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -80,7 +81,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findCartById($id)
+    public function findCartById($id): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('o_id = ? AND order__id is null ', [$id]);
@@ -88,7 +89,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -98,7 +99,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findCartByOrder(OrderInterface $order)
+    public function findCartByOrder(OrderInterface $order): ?OrderInterface
     {
         $list = $this->getList();
         $list->setCondition('order__id = ? ', [$order->getId()]);
@@ -107,7 +108,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
 
         $objects = $list->getObjects();
 
-        if (count($objects) === 1 && $objects[0] instanceof CartInterface) {
+        if (count($objects) === 1 && $objects[0] instanceof OrderInterface) {
             return $objects[0];
         }
 
@@ -117,7 +118,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
     /**
      * {@inheritdoc}
      */
-    public function findExpiredCarts($days, $anonymous, $customer)
+    public function findExpiredCarts($days, $anonymous, $customer): array
     {
         $list = $this->getList();
 
@@ -156,7 +157,7 @@ class CartRepository extends PimcoreRepository implements CartRepositoryInterfac
         $list->setCondition($sql, $params);
 
         /**
-         * @var CartInterface[] $result
+         * @var OrderInterface[] $result
          */
         $result = $list->getObjects();
 

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
@@ -42,7 +44,7 @@ trait ProposalPriceRuleTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @return ProposalCartPriceRuleItem[]
      */
     public function getPriceRules()
     {
@@ -56,6 +58,9 @@ trait ProposalPriceRuleTrait
             }
         }
 
+        /**
+         * @var ProposalCartPriceRuleItem[] $rules
+         */
         return $rules;
     }
 

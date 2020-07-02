@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
 use CoreShop\Component\Rule\Model\ActionInterface;
@@ -27,7 +29,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
     use ToggleableTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -291,7 +293,7 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         $conditions = $this->getConditions();
         $ranges = $this->getRanges();
 
-        //$this->id = null;
+        $this->id = null;
         $this->product = null;
         $this->conditions = new ArrayCollection();
         $this->ranges = new ArrayCollection();

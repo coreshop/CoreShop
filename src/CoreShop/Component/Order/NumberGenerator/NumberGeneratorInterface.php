@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\NumberGenerator;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -19,7 +21,7 @@ interface NumberGeneratorInterface
     /**
      * @param ResourceInterface $model
      *
-     * @return mixed
+     * @return string
      */
-    public function generate(ResourceInterface $model);
+    public function generate(ResourceInterface $model): string;
 }

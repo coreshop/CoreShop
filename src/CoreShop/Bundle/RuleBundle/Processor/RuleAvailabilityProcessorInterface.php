@@ -10,9 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\RuleBundle\Processor;
 
 interface RuleAvailabilityProcessorInterface
 {
-    public function process();
+    public function process(): void;
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 use CoreShop\Bundle\WorkflowBundle\Applier\StateMachineApplier;
@@ -20,30 +22,14 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {
-    /**
-     * @var OrderRepositoryInterface
-     */
     private $orderRepository;
-
-    /**
-     * @var StateMachineApplier
-     */
     private $stateMachineApplier;
-
-    /**
-     * @var HistoryLoggerInterface
-     */
     private $historyLogger;
 
-    /**
-     * @param OrderRepositoryInterface $orderRepository
-     * @param StateMachineApplier      $stateMachineApplier
-     * @param HistoryLoggerInterface   $historyLogger
-     */
     public function __construct(
         OrderRepositoryInterface $orderRepository,
         StateMachineApplier $stateMachineApplier,
-        HistoryLoggerInterface $historyLogger = null
+        HistoryLoggerInterface $historyLogger
     ) {
         $this->orderRepository = $orderRepository;
         $this->stateMachineApplier = $stateMachineApplier;
@@ -53,7 +39,7 @@ final class OrderExpiration implements ProposalExpirationInterface
     /**
      * {@inheritdoc}
      */
-    public function expire($days, $params = [])
+    public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {
             return;
@@ -64,7 +50,7 @@ final class OrderExpiration implements ProposalExpirationInterface
         if (is_array($orders)) {
             foreach ($orders as $order) {
                 $this->stateMachineApplier->apply(
-                    $order, 
+                    $order,
                     OrderTransitions::IDENTIFIER,
                     OrderTransitions::TRANSITION_CANCEL
                 );

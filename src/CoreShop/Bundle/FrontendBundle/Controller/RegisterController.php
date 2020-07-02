@@ -10,14 +10,18 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\CoreBundle\Customer\CustomerAlreadyExistsException;
+use CoreShop\Bundle\CoreBundle\Customer\RegistrationServiceInterface;
 use CoreShop\Bundle\CoreBundle\Form\Type\CustomerRegistrationType;
 use CoreShop\Bundle\CustomerBundle\Event\RequestPasswordChangeEvent;
 use CoreShop\Bundle\CustomerBundle\Form\Type\RequestResetPasswordType;
 use CoreShop\Bundle\CustomerBundle\Form\Type\ResetPasswordType;
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Customer\Context\CustomerContextInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -62,7 +66,7 @@ class RegisterController extends FrontendController
                     ]);
                 }
 
-                $registrationService = $this->get('coreshop.customer.registration_service');
+                $registrationService = $this->get(RegistrationServiceInterface::class);
 
                 try {
                     $registrationService->registerCustomer($customer, $address, $formData, false);
@@ -176,7 +180,7 @@ class RegisterController extends FrontendController
     protected function getCustomer()
     {
         try {
-            return $this->get('coreshop.context.customer')->getCustomer();
+            return $this->get(CustomerContextInterface::class)->getCustomer();
         } catch (\Exception $ex) {
         }
 

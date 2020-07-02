@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Worker;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
@@ -347,7 +349,7 @@ QUERY;
      */
     public function updateIndex(IndexInterface $index, IndexableInterface $object)
     {
-        $doIndex = $object->getIndexable();
+        $doIndex = $object->getIndexable($index);
 
         if ($doIndex) {
             $preparedData = $this->prepareData($index, $object);

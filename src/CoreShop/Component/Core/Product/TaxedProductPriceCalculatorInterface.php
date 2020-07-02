@@ -10,45 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Product;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 
 interface TaxedProductPriceCalculatorInterface
 {
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     * @param bool                 $withTax
-     *
-     * @return int
-     */
-    public function getPrice(PurchasableInterface $product, array $context, $withTax = true);
+    public function getPrice(PurchasableInterface $product, array $context, bool $withTax = true): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     * @param bool                 $withTax
-     *
-     * @return int
-     */
-    public function getDiscountPrice(PurchasableInterface $product, array $context, $withTax = true);
+    public function getDiscountPrice(PurchasableInterface $product, array $context, bool $withTax = true): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     * @param bool                 $withTax
-     *
-     * @return int
-     */
-    public function getDiscount(PurchasableInterface $product, array $context, $withTax = true);
+    public function getDiscount(PurchasableInterface $product, array $context, bool $withTax = true): int;
 
-    /**
-     * @param PurchasableInterface $product
-     * @param array                $context
-     * @param bool                 $withTax
-     *
-     * @return int
-     */
-    public function getRetailPrice(PurchasableInterface $product, array $context, $withTax = true);
+    public function getRetailPrice(PurchasableInterface $product, array $context, bool $withTax = true): int;
 }

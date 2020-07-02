@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Calculator;
 
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
@@ -26,22 +28,14 @@ use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Rule\Model\ActionInterface;
 
-final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInterface, ProductRetailPriceCalculatorInterface, ProductDiscountPriceCalculatorInterface
+final class ProductPriceRuleCalculator implements
+    ProductDiscountCalculatorInterface,
+    ProductRetailPriceCalculatorInterface,
+    ProductDiscountPriceCalculatorInterface
 {
-    /**
-     * @var ValidRulesFetcherInterface
-     */
     private $validRulesFetcher;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
     private $actionServiceRegistry;
 
-    /**
-     * @param ValidRulesFetcherInterface $validRulesFetcher
-     * @param ServiceRegistryInterface   $actionServiceRegistry
-     */
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
         ServiceRegistryInterface $actionServiceRegistry
@@ -53,7 +47,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getRetailPrice(ProductInterface $subject, array $context)
+    public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -97,7 +91,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice(ProductInterface $subject, array $context)
+    public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
 
@@ -108,7 +102,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
 
         foreach ($rules as $rule) {
             /**
-             * @var ActionInterface
+             * @var ActionInterface $action
              */
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());
@@ -140,7 +134,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
     /**
      * {@inheritdoc}
      */
-    public function getDiscount(ProductInterface $subject, array $context, $price)
+    public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;
 

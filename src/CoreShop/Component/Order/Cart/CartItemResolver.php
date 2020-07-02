@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart;
 
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
@@ -17,7 +19,7 @@ use CoreShop\Component\StorageList\StorageListItemResolverInterface;
 
 class CartItemResolver implements StorageListItemResolverInterface
 {
-    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB)
+    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB): bool
     {
         return $itemA->equals($itemB);
     }

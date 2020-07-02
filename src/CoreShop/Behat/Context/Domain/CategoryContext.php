@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Domain;
 
 use Behat\Behat\Context\Context;
@@ -21,20 +23,9 @@ use Webmozart\Assert\Assert;
 
 final class CategoryContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var CategoryRepositoryInterface
-     */
     private $categoryRepository;
 
-    /**
-     * @param SharedStorageInterface      $sharedStorage
-     * @param CategoryRepositoryInterface $categoryRepository
-     */
     public function __construct(SharedStorageInterface $sharedStorage, CategoryRepositoryInterface $categoryRepository)
     {
         $this->sharedStorage = $sharedStorage;

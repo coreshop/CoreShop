@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Order\Mysql;
 
 use CoreShop\Component\Index\Order\DynamicOrderRendererInterface;
@@ -32,7 +34,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function quoteIdentifier($identifier)
+    protected function quoteIdentifier($identifier): string
     {
         return $this->connection->quoteIdentifier($identifier);
     }
@@ -42,7 +44,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function renderPrefix($prefix = null)
+    protected function renderPrefix(?string $prefix): string
     {
         if (null === $prefix) {
             return '';
@@ -57,7 +59,7 @@ abstract class AbstractMysqlDynamicRenderer implements DynamicOrderRendererInter
      *
      * @return string
      */
-    protected function quoteFieldName($fieldName, $prefix = null)
+    protected function quoteFieldName(string $fieldName, ?string $prefix = null): string
     {
         return $this->renderPrefix($prefix) . $this->quoteIdentifier($fieldName);
     }

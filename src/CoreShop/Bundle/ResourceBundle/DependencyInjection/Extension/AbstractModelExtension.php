@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension;
 
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Extension\AbstractPimcoreExtension;
@@ -166,6 +168,27 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
 
             $container->setParameter($globalParameter, $globalPermissions);
             $container->setParameter($applicationParameter, array_merge($applicationPermissions, $permissions));
+        }
+    }
+
+    /**
+     * @param string           $applicationName
+     * @param array            $bundles
+     * @param ContainerBuilder $container
+     */
+    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container)
+    {
+        $appParameterName = sprintf('%s.dependant.bundles', $applicationName);
+        $globalParameterName = 'coreshop.all.dependant.bundles';
+
+        foreach ([$appParameterName, $globalParameterName] as $parameterName) {
+            $bundleConfig = $container->hasParameter($parameterName) ? $container->getParameter($parameterName) : [];
+
+            foreach ($bundles as $bundleName) {
+                $bundleConfig[] = $bundleName;
+            }
+
+            $container->setParameter($parameterName, $bundleConfig);
         }
     }
 }

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
@@ -25,7 +27,7 @@ use Pimcore\Model\DataObject;
 
 class ProductPreviewController extends AdminController
 {
-    public function previewAction(Request $request)
+    public function previewAction(Request $request): Response
     {
         if (!$request->get('store')) {
             return new Response('No Store selected');

@@ -37,7 +37,7 @@ coreshop.filter.condition = Class.create({
             addMenu.push({
                 iconCls: 'coreshop_filters_icon_conditions_' + condition,
                 text: t('coreshop_filters_' + condition),
-                handler: _this.addCondition.bind(_this, condition, {})
+                handler: _this.addCondition.bind(_this, condition, {}, true)
             });
 
         });

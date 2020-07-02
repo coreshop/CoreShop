@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Context;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -33,10 +35,6 @@ final class CachedCurrencyContext implements CurrencyContextInterface
      */
     private $requestStack;
 
-    /**
-     * @param CurrencyContextInterface $inner
-     * @param RequestStack             $requestStack
-     */
     public function __construct(CurrencyContextInterface $inner, RequestStack $requestStack)
     {
         $this->inner = $inner;
@@ -46,7 +44,7 @@ final class CachedCurrencyContext implements CurrencyContextInterface
     /**
      * {@inheritdoc}
      */
-    public function getCurrency()
+    public function getCurrency(): CurrencyInterface
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {
             if (null === $this->currency) {

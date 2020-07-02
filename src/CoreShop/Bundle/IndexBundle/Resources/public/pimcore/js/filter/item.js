@@ -56,13 +56,13 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
         // add saved conditions
         if (this.data.preConditions) {
             Ext.each(this.data.preConditions, function (condition, index) {
-                this.preConditions.addCondition(condition.type, condition, index);
+                this.preConditions.addCondition(condition.type, condition, index, false);
             }.bind(this));
         }
 
         if (this.data.conditions) {
             Ext.each(this.data.conditions, function (condition, index) {
-                this.conditions.addCondition(condition.type, condition, index);
+                this.conditions.addCondition(condition.type, condition, index, false);
             }.bind(this));
         }
 

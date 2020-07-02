@@ -10,19 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Notification\Rule\Action;
 
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
 
 interface NotificationRuleProcessorInterface
 {
-    /**
-     * @param mixed                     $subject
-     * @param NotificationRuleInterface $rule
-     * @param array                     $configuration
-     * @param array                     $params
-     *
-     * @return mixed
-     */
-    public function apply($subject, NotificationRuleInterface $rule, array $configuration, $params = []);
+    public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void;
 }

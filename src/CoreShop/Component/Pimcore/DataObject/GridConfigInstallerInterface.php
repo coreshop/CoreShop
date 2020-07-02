@@ -10,15 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 interface GridConfigInstallerInterface
 {
-    /**
-     * @param array  $config
-     * @param string $name
-     * @param string $class
-     * @param bool   $overwrite
-     */
-    public function installGridConfig($config, $name, $class, $overwrite = false);
+    public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void;
 }

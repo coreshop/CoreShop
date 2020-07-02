@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Currency\Repository;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
@@ -21,17 +23,17 @@ interface CurrencyRepositoryInterface extends RepositoryInterface
     /**
      * @return QueryBuilder
      */
-    public function createListQueryBuilder();
+    public function createListQueryBuilder(): QueryBuilder;
 
     /**
      * @return CurrencyInterface[]
      */
-    public function findActive();
+    public function findActive(): array;
 
     /**
      * @param string $currencyCode
      *
      * @return CurrencyInterface
      */
-    public function getByCode($currencyCode);
+    public function getByCode(string $currencyCode): ?CurrencyInterface;
 }

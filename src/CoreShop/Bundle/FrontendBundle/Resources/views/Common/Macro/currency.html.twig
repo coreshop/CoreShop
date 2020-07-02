@@ -1,59 +1,59 @@
 {%- macro format(amount, currency_code, fraction, factor) -%}
-    {% if fraction is null %}
-        {% set fraction = 2 %}
-    {% endif %}
+    {%- if fraction is null -%}
+        {%- set fraction = coreshop_currency_display_fraction(coreshop.context) -%}
+    {%- endif -%}
 
-    {{ amount|coreshop_format_money(currency_code, coreshop.localeCode, fraction, factor) }}
+    {{ amount|coreshop_format_money(currency_code, coreshop.localeCode, fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro convertAndFormat(amount, fraction, factor) -%}
-    {% from _self import format %}
+    {%- from _self import format -%}
 
-    {{- format(amount|coreshop_convert_currency(coreshop.store.getCurrency.isoCode, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode, fraction, factor) }}
+    {{- format(amount|coreshop_convert_currency(coreshop.store.currency.isoCode, coreshop.currency.isoCode), coreshop.currency.isoCode, fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro convertAndFormatFromCustomCurrency(fromCurrencyIso, amount, fraction, factor) -%}
-    {% from _self import format %}
+    {%- from _self import format -%}
 
-    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.getCurrency.isoCode), coreshop.getCurrency.isoCode, fraction, factor) }}
+    {{- format(amount|coreshop_convert_currency(fromCurrencyIso, coreshop.currency.isoCode), coreshop.currency.isoCode, fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro getPrice(product, with_tax, fraction, factor) -%}
-    {% from _self import convertAndFormat %}
+    {%- from _self import convertAndFormat -%}
 
-    {% if with_tax is null %}
-        {% set with_tax = true %}
-    {% endif %}
+    {%- if with_tax is null -%}
+        {%- set with_tax = true -%}
+    {%- endif -%}
 
-    {{- convertAndFormat(product|coreshop_product_price(with_tax, coreshop.context), fraction, factor) }}
+    {{- convertAndFormat(product|coreshop_product_price(coreshop.context, with_tax), fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro getRetailPrice(product, with_tax, fraction, factor) -%}
-    {% from _self import convertAndFormat %}
+    {%- from _self import convertAndFormat -%}
 
-    {% if with_tax is null %}
-        {% set with_tax = true %}
-    {% endif %}
+    {%- if with_tax is null -%}
+        {%- set with_tax = true -%}
+    {%- endif -%}
 
-    {{- convertAndFormat(product|coreshop_product_retail_price(with_tax, coreshop.context), fraction, factor) }}
+    {{- convertAndFormat(product|coreshop_product_retail_price(coreshop.context, with_tax), fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro getDiscount(product, with_tax, fraction, factor) -%}
-    {% from _self import convertAndFormat %}
+    {%- from _self import convertAndFormat -%}
 
-    {% if with_tax is null %}
-        {% set with_tax = true %}
-    {% endif %}
+    {%- if with_tax is null -%}
+        {%- set with_tax = true -%}
+    {%- endif -%}
 
-    {{- convertAndFormat(product|coreshop_product_discount(with_tax, coreshop.context), fraction, factor) }}
+    {{- convertAndFormat(product|coreshop_product_discount(coreshop.context, with_tax), fraction, factor) -}}
 {%- endmacro -%}
 
 {%- macro getDiscountPrice(product, with_tax, fraction, factor) -%}
-    {% from _self import convertAndFormat %}
+    {%- from _self import convertAndFormat -%}
 
-    {% if with_tax is null %}
-        {% set with_tax = true %}
-    {% endif %}
+    {%- if with_tax is null -%}
+        {%- set with_tax = true -%}
+    {%- endif %}
 
-    {{- convertAndFormat(product|coreshop_product_discount_price(with_tax, coreshop.context), fraction, factor) }}
+    {{- convertAndFormat(product|coreshop_product_discount_price(coreshop.context, with_tax), fraction, factor) -}}
 {%- endmacro -%}

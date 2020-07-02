@@ -10,30 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Interpreter;
 
 class RelationalValue implements RelationalValueInterface
 {
-    /**
-     * @var int
-     */
     protected $destinationId;
-
-    /**
-     * @var string
-     */
     protected $type;
-
-    /**
-     * @var array
-     */
     protected $params;
 
-    /**
-     * @param int    $destinationId
-     * @param string $type
-     * @param array $params
-     */
     public function __construct(int $destinationId, string $type, array $params = [])
     {
         $this->destinationId = $destinationId;
@@ -41,50 +27,32 @@ class RelationalValue implements RelationalValueInterface
         $this->params = $params;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDestinationId()
+    public function getDestinationId(): int
     {
         return $this->destinationId;
     }
 
-    /**
-     * @param int $destinationId
-     */
-    public function setDestinationId($destinationId)
+    public function setDestinationId(int $destinationId): void
     {
         $this->destinationId = $destinationId;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     */
-    public function setType(string $type)
+    public function setType(string $type): void
     {
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
 
-    /**
-     * @param array $params
-     */
-    public function setParams(array $params)
+    public function setParams(array $params): void
     {
         $this->params = $params;
     }

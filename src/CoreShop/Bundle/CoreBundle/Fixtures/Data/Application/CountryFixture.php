@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
@@ -17,7 +19,7 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
@@ -109,6 +111,10 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
+                if (!$country->getCurrency()['iso_4217_code']) {
+                    continue;
+                }
+
                 /**
                  * @var CountryInterface $newCountry
                  */

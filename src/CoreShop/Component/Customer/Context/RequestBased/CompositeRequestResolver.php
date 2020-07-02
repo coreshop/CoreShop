@@ -10,8 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Customer\Context\RequestBased;
 
+use CoreShop\Component\Customer\Context\CustomerNotFoundException;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Zend\Stdlib\PriorityQueue;
 
@@ -39,16 +43,17 @@ final class CompositeRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findCustomer(Request $request)
+    public function findCustomer(Request $request): CustomerInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {
-            $customer = $requestResolver->findCustomer($request);
-
-            if (null !== $customer) {
-                return $customer;
+            try {
+                return $requestResolver->findCustomer($request);
+            }
+            catch (CustomerNotFoundException $ex) {
+                //Ignore and continue
             }
         }
 
-        return null;
+        throw new CustomerNotFoundException();
     }
 }

@@ -72,7 +72,7 @@ coreshop.order.order.shipment = Class.create({
                 text: t('coreshop_price'),
                 width: 100,
                 align: 'right',
-                renderer: coreshop.util.format.currency.bind(this, this.order.currency.iso)
+                renderer: coreshop.util.format.currency.bind(this, this.order.currency.isoCode)
             },
             {
                 xtype: 'gridcolumn',

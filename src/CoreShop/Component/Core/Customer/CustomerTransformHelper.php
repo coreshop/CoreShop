@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Customer;
 
 use CoreShop\Component\Address\Model\AddressesAwareInterface;
@@ -172,18 +174,15 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
             return $address;
         }
 
-        // no affiliation has changed, return
-        if ($this->isNewEntity($address) === false && $address->getParent()->getId() === $newParent->getId()) {
-            return $address;
-        }
-
         // set new or changed parent
-        $address->setParent($newParent);
-        $address->setKey($this->getSaveKeyForMoving($address, $newParent));
+        if ($this->isNewEntity($address) === true || $address->getParent()->getId() !== $newParent->getId()) {
+            $address->setParent($newParent);
+            $address->setKey($this->getSaveKeyForMoving($address, $newParent));
 
-        // remove old relations
-        if ($removeOldRelations === true) {
-            $this->removeAddressRelations($address);
+            // remove old relations
+            if ($removeOldRelations === true) {
+                $this->removeAddressRelations($address);
+            }
         }
 
         $this->forceSave($address, false);

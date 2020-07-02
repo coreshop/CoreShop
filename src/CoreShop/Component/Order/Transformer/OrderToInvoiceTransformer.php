@@ -10,11 +10,12 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Transformer;
 
 use Carbon\Carbon;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
-use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
@@ -27,76 +28,23 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use CoreShop\Component\Resource\Factory\PimcoreFactoryInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
-use CoreShop\Component\Resource\Transformer\ItemKeyTransformerInterface;
+use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
-    /**
-     * @var OrderDocumentItemTransformerInterface
-     */
     protected $orderItemToInvoiceItemTransformer;
-
-    /**
-     * @var ItemKeyTransformerInterface
-     */
-    protected $keyTransformer;
-
-    /**
-     * @var NumberGeneratorInterface
-     */
     protected $numberGenerator;
-
-    /**
-     * @var string
-     */
     protected $invoiceFolderPath;
-
-    /**
-     * @var ObjectServiceInterface
-     */
     protected $objectService;
-
-    /**
-     * @var PimcoreRepositoryInterface
-     */
     protected $orderItemRepository;
-
-    /**
-     * @var PimcoreFactoryInterface
-     */
     protected $invoiceItemFactory;
-
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
     protected $invoiceRepository;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var AdjustmentFactoryInterface
-     */
     protected $adjustmentFactory;
 
-    /**
-     * @param OrderDocumentItemTransformerInterface $orderDocumentItemTransformer
-     * @param ItemKeyTransformerInterface           $keyTransformer
-     * @param NumberGeneratorInterface              $numberGenerator
-     * @param string                                $invoiceFolderPath
-     * @param ObjectServiceInterface                $objectService
-     * @param PimcoreRepositoryInterface            $orderItemRepository
-     * @param PimcoreFactoryInterface               $invoiceItemFactory
-     * @param OrderInvoiceRepositoryInterface       $invoiceRepository
-     * @param TransformerEventDispatcherInterface   $eventDispatcher
-     * @param AdjustmentFactoryInterface            $adjustmentFactory
-     */
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
-        ItemKeyTransformerInterface $keyTransformer,
         NumberGeneratorInterface $numberGenerator,
         $invoiceFolderPath,
         ObjectServiceInterface $objectService,
@@ -107,7 +55,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         AdjustmentFactoryInterface $adjustmentFactory
     ) {
         $this->orderItemToInvoiceItemTransformer = $orderDocumentItemTransformer;
-        $this->keyTransformer = $keyTransformer;
         $this->numberGenerator = $numberGenerator;
         $this->invoiceFolderPath = $invoiceFolderPath;
         $this->objectService = $objectService;
@@ -123,6 +70,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
+        /**
+         * @var OrderInterface $order
+         */
         Assert::isInstanceOf($order, OrderInterface::class);
         Assert::isInstanceOf($invoice, OrderInvoiceInterface::class);
 
@@ -136,9 +86,8 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
         /**
          * @var OrderInvoiceInterface $invoice
-         * @var OrderInterface        $order
          */
-        $invoice->setKey($this->keyTransformer->transform($invoiceNumber));
+        $invoice->setKey(Service::getValidKey($invoiceNumber, 'object'));
         $invoice->setInvoiceNumber($invoiceNumber);
         $invoice->setParent($invoiceFolder);
         $invoice->setPublished(true);
@@ -154,7 +103,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $items = [];
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var OrderItemInterface $item
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();
@@ -204,9 +153,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 
     /**
      * @param OrderInvoiceInterface $invoice
-     * @param bool                  $base    Calculate Subtotal for Base Values
+     * @param bool                  $converted    Calculate Subtotal for Base Values
      */
-    private function calculateSubtotal(OrderInvoiceInterface $invoice, $base = true)
+    private function calculateSubtotal(OrderInvoiceInterface $invoice, $converted = true)
     {
         $subtotalWithTax = 0;
         $subtotalWithoutTax = 0;
@@ -215,18 +164,18 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
          * @var OrderInvoiceItemInterface $item
          */
         foreach ($invoice->getItems() as $item) {
-            if ($base) {
-                $subtotalWithTax += $item->getBaseTotal();
-                $subtotalWithoutTax += $item->getBaseTotal(false);
+            if ($converted) {
+                $subtotalWithTax += $item->getConvertedTotal();
+                $subtotalWithoutTax += $item->getConvertedTotal(false);
             } else {
                 $subtotalWithTax += $item->getTotal();
                 $subtotalWithoutTax += $item->getTotal(false);
             }
         }
 
-        if ($base) {
-            $invoice->setBaseSubtotal($subtotalWithTax);
-            $invoice->setBaseSubtotal($subtotalWithoutTax, false);
+        if ($converted) {
+            $invoice->setConvertedSubtotal($subtotalWithTax);
+            $invoice->setConvertedSubtotal($subtotalWithoutTax, false);
         } else {
             $invoice->setSubtotal($subtotalWithTax);
             $invoice->setSubtotal($subtotalWithoutTax, false);
@@ -237,23 +186,23 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * Calculate all Adjustments for Invoice.
      *
      * @param OrderInvoiceInterface $invoice
-     * @param bool                  $base
+     * @param bool                  $converted
      */
-    private function calculateAdjustments(OrderInvoiceInterface $invoice, $base = true)
+    private function calculateAdjustments(OrderInvoiceInterface $invoice, $converted = true)
     {
         $order = $invoice->getOrder();
 
-        foreach ($base ? $order->getBaseAdjustments() : $order->getAdjustments() as $adjustment) {
-            $orderAdjustmentsGross = $base ? $order->getBaseAdjustmentsTotal($adjustment->getTypeIdentifier()) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier());
-            $orderAdjustmentsNet = $base ? $order->getBaseAdjustmentsTotal($adjustment->getTypeIdentifier(), false) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier(), false);
+        foreach ($converted ? $order->getConvertedAdjustments() : $order->getAdjustments() as $adjustment) {
+            $orderAdjustmentsGross = $converted ? $order->getConvertedAdjustmentsTotal($adjustment->getTypeIdentifier()) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier());
+            $orderAdjustmentsNet = $converted ? $order->getConvertedAdjustmentsTotal($adjustment->getTypeIdentifier(), false) : $order->getAdjustmentsTotal($adjustment->getTypeIdentifier(), false);
 
-            $adjustmentValueToProcessGross = $orderAdjustmentsGross - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), true, $base);
-            $adjustmentValueToProcessNet = $orderAdjustmentsNet - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), false, $base);
+            $adjustmentValueToProcessGross = $orderAdjustmentsGross - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), true, $converted);
+            $adjustmentValueToProcessNet = $orderAdjustmentsNet - $this->getProcessedAdjustmentValue($order, $adjustment->getTypeIdentifier(), false, $converted);
 
             if (0 !== $adjustmentValueToProcessGross) {
                 $newAdjustment = $this->adjustmentFactory->createWithData($adjustment->getTypeIdentifier(), $adjustment->getLabel(), $adjustmentValueToProcessGross, $adjustmentValueToProcessNet, $adjustment->getNeutral());
 
-                $base ? $invoice->addBaseAdjustment($newAdjustment) : $invoice->addAdjustment($newAdjustment);
+                $converted ? $invoice->addConvertedAdjustment($newAdjustment) : $invoice->addAdjustment($newAdjustment);
             }
         }
     }
@@ -262,16 +211,16 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * Calculate Total for invoice.
      *
      * @param OrderInvoiceInterface $invoice
-     * @param bool                  $base    Calculate Totals for Base Values
+     * @param bool                  $converted    Calculate Totals for Base Values
      */
-    private function calculateTotal(OrderInvoiceInterface $invoice, $base = true)
+    private function calculateTotal(OrderInvoiceInterface $invoice, $converted = true)
     {
-        if ($base) {
-            $subtotalWithTax = $invoice->getBaseSubtotal();
-            $adjustmentsTotal = $invoice->getBaseAdjustmentsTotal();
+        if ($converted) {
+            $subtotalWithTax = $invoice->getConvertedSubtotal();
+            $adjustmentsTotal = $invoice->getConvertedAdjustmentsTotal();
 
-            $subtotalWithoutTax = $invoice->getBaseSubtotal(false);
-            $adjustmentsTotalWithoutTax = $invoice->getBaseAdjustmentsTotal(null, false);
+            $subtotalWithoutTax = $invoice->getConvertedSubtotal(false);
+            $adjustmentsTotalWithoutTax = $invoice->getConvertedAdjustmentsTotal(null, false);
         } else {
             $subtotalWithTax = $invoice->getSubtotal();
             $adjustmentsTotal = $invoice->getAdjustmentsTotal();
@@ -283,9 +232,9 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $total = $subtotalWithTax + $adjustmentsTotal;
         $totalWithoutTax = $subtotalWithoutTax + $adjustmentsTotalWithoutTax;
 
-        if ($base) {
-            $invoice->setBaseTotal($total);
-            $invoice->setBaseTotal($totalWithoutTax, false);
+        if ($converted) {
+            $invoice->setConvertedTotal($total);
+            $invoice->setConvertedTotal($totalWithoutTax, false);
         } else {
             $invoice->setTotal($total);
             $invoice->setTotal($totalWithoutTax, false);
@@ -296,11 +245,11 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
      * @param OrderInterface $order
      * @param string         $adjustmentIdentifier
      * @param bool           $withTax
-     * @param bool           $base
+     * @param bool           $converted
      *
      * @return int
      */
-    private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $base)
+    private function getProcessedAdjustmentValue(OrderInterface $order, $adjustmentIdentifier, bool $withTax, bool $converted)
     {
         $invoices = $this->invoiceRepository->getDocumentsNotInState($order, OrderInvoiceStates::STATE_CANCELLED);
         $processedValue = 0;
@@ -309,7 +258,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
          * @var OrderInvoiceInterface $invoice
          */
         foreach ($invoices as $invoice) {
-            foreach ($base ? $invoice->getBaseAdjustments() : $invoice->getAdjustments() as $adjustment) {
+            foreach ($converted ? $invoice->getConvertedAdjustments() : $invoice->getAdjustments() as $adjustment) {
                 if ($adjustment->getTypeIdentifier() === $adjustmentIdentifier) {
                     $processedValue += $adjustment->getAmount($withTax);
                 }

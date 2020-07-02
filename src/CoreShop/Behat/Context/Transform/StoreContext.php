@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Behat\Context\Transform;
 
 use Behat\Behat\Context\Context;
@@ -19,20 +21,9 @@ use Webmozart\Assert\Assert;
 
 final class StoreContext implements Context
 {
-    /**
-     * @var SharedStorageInterface
-     */
     private $sharedStorage;
-
-    /**
-     * @var StoreRepositoryInterface
-     */
     private $storeRepository;
 
-    /**
-     * @param SharedStorageInterface   $sharedStorage,
-     * @param StoreRepositoryInterface $storeRepository
-     */
     public function __construct(SharedStorageInterface $sharedStorage, StoreRepositoryInterface $storeRepository)
     {
         $this->sharedStorage = $sharedStorage;
@@ -41,6 +32,7 @@ final class StoreContext implements Context
 
     /**
      * @Transform /^store(?:|s) "([^"]+)"$/
+     * @Transform /^store to "([^"]+)"$/
      */
     public function getStoreByName($name)
     {

@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\TranslationConfiguration;
@@ -25,21 +27,10 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
     protected $kernel;
-
-    /**
-     * @var string
-     */
     protected $translationClass;
 
-    /**
-     * @param KernelInterface $kernel
-     * @param string          $translationClass
-     */
-    public function __construct(KernelInterface $kernel, $translationClass = Website::class)
+    public function __construct(KernelInterface $kernel, string $translationClass = Website::class)
     {
         $this->kernel = $kernel;
         $this->translationClass = $translationClass;
@@ -50,7 +41,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
+    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $this->getIdentifier($applicationName);
 
@@ -98,20 +89,9 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         }
     }
 
-    /**
-     * @param string $applicationName
-     *
-     * @return mixed
-     */
-    abstract protected function getIdentifier($applicationName = null);
+    abstract protected function getIdentifier(?string $applicationName = null): string;
 
-    /**
-     * @param string $name
-     * @param array  $properties
-     *
-     * @return AbstractTranslation
-     */
-    private function installTranslation($name, $properties)
+    private function installTranslation(string $name, array $properties): AbstractTranslation
     {
         /** @var AbstractTranslation $translation */
         $translation = $this->translationClass::getByKey($name, true);

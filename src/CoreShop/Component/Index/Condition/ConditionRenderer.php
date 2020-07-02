@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Index\Condition;
 
 use CoreShop\Component\Index\Worker\WorkerInterface;
@@ -22,10 +24,15 @@ final class ConditionRenderer implements ConditionRendererInterface
      */
     private $registry;
 
+    public function __construct(ServiceRegistryInterface $registry)
+    {
+        $this->registry = $registry;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function render(WorkerInterface $worker, ConditionInterface $condition, $prefix = null)
+    public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
          * @var DynamicRendererInterface $renderer
@@ -39,13 +46,5 @@ final class ConditionRenderer implements ConditionRendererInterface
         throw new \InvalidArgumentException(
             sprintf('No Renderer found for condition with type %s', get_class($condition))
         );
-    }
-
-    /**
-     * @param ServiceRegistryInterface $registry
-     */
-    public function __construct(ServiceRegistryInterface $registry)
-    {
-        $this->registry = $registry;
     }
 }

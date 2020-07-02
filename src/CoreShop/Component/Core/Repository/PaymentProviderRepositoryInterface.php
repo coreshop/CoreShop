@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Repository;
 
 use CoreShop\Component\Core\Model\PaymentProviderInterface;
@@ -23,5 +25,5 @@ interface PaymentProviderRepositoryInterface extends BasePaymentProviderReposito
      *
      * @return PaymentProviderInterface[]
      */
-    public function findActiveForStore(StoreInterface $store);
+    public function findActiveForStore(StoreInterface $store): array;
 }

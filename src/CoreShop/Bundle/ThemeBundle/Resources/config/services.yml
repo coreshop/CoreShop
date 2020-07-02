@@ -1,5 +1,6 @@
 imports:
-    - { resource: "services/profiler.yml" }
+    - { resource: services_alias.yml }
+    - { resource: services/profiler.yml }
 
 services:
     _defaults:
@@ -13,44 +14,36 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: themeResolvers }
 
-    coreshop.theme.active_theme: '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
     CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface: '@CoreShop\Bundle\ThemeBundle\Service\ActiveTheme'
     CoreShop\Bundle\ThemeBundle\Service\ActiveTheme:
         arguments:
             - '@liip_theme.active_theme'
 
-    coreshop.theme.resolver.composite: '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
     CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface: '@CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver'
     CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver:
-        arguments:
-            - '@coreshop.theme.active_theme'
         tags:
             - '@coreshop.theme.resolver.registry'
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreSiteThemeResolver:
-        arguments:
-            - '@coreshop.theme.active_theme'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_site, priority: 10 }
 
     CoreShop\Bundle\ThemeBundle\Service\PimcoreDocumentPropertyResolver:
         arguments:
-            - '@coreshop.theme.active_theme'
             - '@Pimcore\Http\Request\Resolver\DocumentResolver'
         tags:
             - { name: coreshop.theme.resolver, type: pimcore_document_property, priority: 15 }
 
-    coreshop.theme.helper: '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface'
     CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface: '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelper'
     CoreShop\Bundle\ThemeBundle\Service\ThemeHelper:
         arguments:
             - '@coreshop.theme.resolver'
-            - '@coreshop.theme.active_theme'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
 
     CoreShop\Bundle\ThemeBundle\EventListener\ThemeRequestListener:
         arguments:
             - '@coreshop.theme.resolver'
-            - '@coreshop.theme.active_theme'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
         tags:
             - { name: kernel.event_subscriber }
 

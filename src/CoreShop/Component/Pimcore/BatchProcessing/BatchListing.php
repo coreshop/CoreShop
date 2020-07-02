@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\BatchProcessing;
 
 use Iterator;
@@ -48,10 +50,6 @@ final class BatchListing implements Iterator, Countable
      */
     private $items = [];
 
-    /**
-     * @param AbstractListing $list
-     * @param int             $batchSize
-     */
     public function __construct(AbstractListing $list, int $batchSize)
     {
         $this->list = $list;

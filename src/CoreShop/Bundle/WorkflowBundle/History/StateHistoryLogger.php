@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
@@ -19,26 +21,10 @@ use Symfony\Component\Workflow\Event\Event;
 
 final class StateHistoryLogger implements StateHistoryLoggerInterface
 {
-    /**
-     * @var NoteServiceInterface
-     */
     private $noteService;
-
-    /**
-     * @var TranslatorInterface
-     */
     private $translator;
-
-    /**
-     * @var string
-     */
     private $noteIdentifier;
 
-    /**
-     * @param NoteServiceInterface $noteService
-     * @param TranslatorInterface  $translator
-     * @param string               $noteIdentifier
-     */
     public function __construct(
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
@@ -52,7 +38,7 @@ final class StateHistoryLogger implements StateHistoryLoggerInterface
     /**
      * {@inheritdoc}
      */
-    public function log(Concrete $object, Event $event)
+    public function log(Concrete $object, Event $event): void
     {
         $transition = $event->getTransition();
 
@@ -83,21 +69,11 @@ final class StateHistoryLogger implements StateHistoryLoggerInterface
         $this->noteService->storeNote($note);
     }
 
-    /**
-     * @param array $froms
-     *
-     * @return mixed
-     */
     private function getFrom(array $froms)
     {
         return reset($froms);
     }
 
-    /**
-     * @param array $tos
-     *
-     * @return mixed
-     */
     private function getTo(array $tos)
     {
         return reset($tos);

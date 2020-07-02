@@ -43,7 +43,7 @@ coreshop.store.item = Class.create(coreshop.store.item, {
                 },
                 {
                     xtype: 'checkbox',
-                    fieldLabel: t('coreshop_base_use_gross_prices'),
+                    fieldLabel: t('coreshop_use_gross_prices'),
                     value: this.data.useGrossPrice,
                     name: 'useGrossPrice'
                 },

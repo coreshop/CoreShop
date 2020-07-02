@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Calculator;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
@@ -22,5 +24,5 @@ interface PurchasableWholesalePriceCalculatorInterface
      *
      * @return int
      */
-    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context);
+    public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int;
 }

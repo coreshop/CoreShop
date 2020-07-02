@@ -20,9 +20,10 @@ coreshop.order.helper.openSale = function (id, type, callback) {
         pimcore.globalmanager.add(cacheIdentifier, true);
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/'+type+'/detail',
+            url: '/admin/coreshop/order/detail',
             params: {
-                id: id
+                id: id,
+                saleType: type
             },
             success: function (response) {
                 var res = Ext.decode(response.responseText);

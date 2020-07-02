@@ -10,8 +10,13 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\SEO\Model;
 
+/**
+ * @deprecated Deprecated with 3.0 and will be removed with 3.1, Lucene Search is not supported anymore
+ */
 interface LuceneSearchCategoriesAwareInterface
 {
     /**

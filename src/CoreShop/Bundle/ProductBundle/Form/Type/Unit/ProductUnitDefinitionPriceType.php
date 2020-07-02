@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
@@ -22,23 +24,10 @@ use Symfony\Component\Form\FormEvents;
 
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
-    /**
-     * @var int
-     */
     protected $decimalFactor;
-
-    /**
-     * @var int
-     */
     protected $decimalPrecision;
 
-    /**
-     * @param string $dataClass
-     * @param array  $validationGroups
-     * @param int    $decimalFactor
-     * @param int    $decimalPrecision
-     */
-    public function __construct($dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
+    public function __construct(string $dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
     {
         parent::__construct($dataClass, $validationGroups);
 
@@ -49,7 +38,7 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('price', MoneyType::class)
@@ -59,7 +48,7 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_price';
     }

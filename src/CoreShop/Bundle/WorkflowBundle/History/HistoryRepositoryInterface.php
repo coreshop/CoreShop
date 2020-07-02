@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use Pimcore\Model\DataObject;
@@ -22,5 +24,5 @@ interface HistoryRepositoryInterface
      *
      * @return Note[]
      */
-    public function getHistory(DataObject\Concrete $object);
+    public function getHistory(DataObject\Concrete $object): array;
 }

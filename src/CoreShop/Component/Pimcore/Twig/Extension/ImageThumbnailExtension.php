@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Twig\Extension;
 
 use Pimcore\Model\Asset\Image;
@@ -22,7 +24,7 @@ final class ImageThumbnailExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
@@ -33,7 +35,7 @@ final class ImageThumbnailExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('image_thumbnail', [$this, 'getImageThumbnail'], ['is_safe' => ['html']]),
@@ -48,7 +50,7 @@ final class ImageThumbnailExtension extends AbstractExtension
      *
      * @return Image\Thumbnail
      */
-    public function getImageThumbnail(Image $image, $thumbnail, $deferred = true)
+    public function getImageThumbnail(Image $image, string $thumbnail, bool $deferred = true): Image\Thumbnail
     {
         return $image->getThumbnail($thumbnail, $deferred);
     }
@@ -64,11 +66,11 @@ final class ImageThumbnailExtension extends AbstractExtension
      */
     public function getImageThumbnailHtml(
         Image $image,
-        $thumbnail,
-        $options = [],
-        $removeAttributes = [],
-        $deferred = true
-    ) {
+        string $thumbnail,
+        array $options = [],
+        array $removeAttributes = [],
+        bool $deferred = true
+    ): string {
         return $this->getImageThumbnail($image, $thumbnail, $deferred)->getHTML($options, $removeAttributes);
     }
 }

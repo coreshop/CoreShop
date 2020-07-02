@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Product\Model\ProductInterface;
@@ -20,7 +22,7 @@ class DiscountPercentActionProcessor implements ProductDiscountActionProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function getDiscount($subject, $price, array $context, array $configuration)
+    public function getDiscount($subject, int $price, array $context, array $configuration): int
     {
         Assert::isInstanceOf($subject, ProductInterface::class);
 

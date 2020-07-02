@@ -10,8 +10,9 @@
         </ol>
     </nav>
 
-    <h2 class="main-heading text-center">
+    <h2 class="main-heading text-center" {{ coreshop_test_html_attribute('customer-information') }}>
         {{ 'coreshop.ui.account'|trans }}
+        {{ customer.firstname }} {{ customer.lastname }} ({{ customer.email }})
     </h2>
 
     {% include '@CoreShopFrontend/Common/flash_messages.html.twig' %}

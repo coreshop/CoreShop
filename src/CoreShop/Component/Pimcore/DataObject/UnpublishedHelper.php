@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\Concrete;
@@ -25,7 +27,7 @@ class UnpublishedHelper
      *
      * @return mixed
      */
-    public static function hideUnpublished(\Closure $function, $hide = false)
+    public static function hideUnpublished(\Closure $function, bool $hide = false)
     {
         $backup = Concrete::getHideUnpublished();
 

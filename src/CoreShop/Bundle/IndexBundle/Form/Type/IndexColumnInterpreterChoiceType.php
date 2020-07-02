@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\IndexBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -18,14 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexColumnInterpreterChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
     private $interpreters;
 
-    /**
-     * @param array $interpreters
-     */
     public function __construct(array $interpreters)
     {
         $this->interpreters = $interpreters;
@@ -34,7 +30,7 @@ final class IndexColumnInterpreterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'choices' => array_flip($this->interpreters),
@@ -44,7 +40,7 @@ final class IndexColumnInterpreterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getParent()
+    public function getParent(): string
     {
         return ChoiceType::class;
     }
@@ -52,7 +48,7 @@ final class IndexColumnInterpreterChoiceType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'coreshop_index_interpreter_choice';
     }

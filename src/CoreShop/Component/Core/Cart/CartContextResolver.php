@@ -10,29 +10,25 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Cart;
 
 use CoreShop\Component\Order\Cart\CartContextResolverInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use Webmozart\Assert\Assert;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    /**
-     * @var CartContextResolverInterface
-     */
     private $inner;
 
-    /**
-     * @param CartContextResolverInterface $inner
-     */
     public function __construct(CartContextResolverInterface $inner)
     {
         $this->inner = $inner;
     }
 
-    public function resolveCartContext(CartInterface $cart)
+    public function resolveCartContext(OrderInterface $cart): array
     {
         $context = $this->inner->resolveCartContext($cart);
 

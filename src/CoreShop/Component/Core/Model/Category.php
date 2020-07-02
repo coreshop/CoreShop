@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Product\Model\Category as BaseCategory;
@@ -30,7 +32,15 @@ class Category extends BaseCategory implements CategoryInterface
      */
     public function getMetaDescription($language = null)
     {
-        return $this->getPimcoreMetaDescription($language) ?: strip_tags($this->getDescription($language));
+        if (null !== $this->getPimcoreMetaDescription($language)) {
+            return $this->getPimcoreMetaDescription($language);
+        }
+
+        if (null !== $this->getDescription($language)) {
+            return strip_tags($this->getDescription($language));
+        }
+
+        return null;
     }
 
     /**

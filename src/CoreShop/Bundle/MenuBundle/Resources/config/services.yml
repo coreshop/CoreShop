@@ -1,6 +1,9 @@
 parameters:
     coreshop.menu.json.template: '@@CoreShopMenu/knp_menu.js.twig'
 
+imports:
+    - { resource: services_alias.yml }
+
 services:
     _defaults:
         public: true
@@ -13,7 +16,6 @@ services:
         tags:
             - { name: coreshop.registry, type_hint: menues }
 
-    coreshop.menu.renderer.json: '@CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer'
     CoreShop\Bundle\MenuBundle\Renderer\JsonRenderer:
         arguments:
             - '@twig'

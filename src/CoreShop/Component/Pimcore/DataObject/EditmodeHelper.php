@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Bundle\AdminBundle\Controller\Admin\DataObject\DataObjectController;
@@ -17,7 +19,7 @@ use Pimcore\Model\DataObject;
 
 class EditmodeHelper
 {
-    public function getDataForObject(DataObject\Concrete $object, $objectFromVersion = false)
+    public function getDataForObject(DataObject\Concrete $object, bool $objectFromVersion = false): array
     {
         $dataObjectController = new DataObjectController();
         $trackerReflector = new \ReflectionClass(DataObjectController::class);

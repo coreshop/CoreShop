@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Pimcore\Db;
 
 use Doctrine\DBAL\Connection;
@@ -20,7 +22,7 @@ final class Db extends \Pimcore\Db
     /**
      * @return Connection
      */
-    public static function getDoctrineConnection()
+    public static function getDoctrineConnection(): Connection
     {
         /**
          * @var Connection $connection
@@ -37,7 +39,7 @@ final class Db extends \Pimcore\Db
      *
      * @return array
      */
-    public static function getColumns($table)
+    public static function getColumns($table): array
     {
         $db = static::get();
 
@@ -58,7 +60,7 @@ final class Db extends \Pimcore\Db
      *
      * @return bool
      */
-    public static function tableExists($table)
+    public static function tableExists($table): bool
     {
         $db = static::get();
 

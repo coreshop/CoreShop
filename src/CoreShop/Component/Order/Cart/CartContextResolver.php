@@ -10,17 +10,19 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Order\Cart;
 
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 
 final class CartContextResolver implements CartContextResolverInterface
 {
-    public function resolveCartContext(CartInterface $cart)
+    public function resolveCartContext(OrderInterface $cart): array
     {
         return [
             'customer' => $cart->getCustomer() ?: null,
-            'currency' => $cart->getCurrency(),
+            'currency' => $cart->getStore()->getCurrency(),
             'cart' => $cart,
         ];
     }

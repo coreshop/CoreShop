@@ -10,23 +10,15 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
 class ActiveTheme implements ActiveThemeInterface
 {
-    /**
-     * @var \Liip\ThemeBundle\ActiveTheme
-     */
     protected $activeTheme;
-
-    /**
-     * @var array
-     */
     protected $themes = array();
 
-    /**
-     * @param \Liip\ThemeBundle\ActiveTheme $activeTheme
-     */
     public function __construct(\Liip\ThemeBundle\ActiveTheme $activeTheme)
     {
         $this->activeTheme = $activeTheme;
@@ -35,7 +27,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function getActiveTheme()
+    public function getActiveTheme(): ?string
     {
         return $this->activeTheme->getName();
     }
@@ -43,7 +35,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function setActiveTheme($activeTheme)
+    public function setActiveTheme($activeTheme): void
     {
         $this->activeTheme->setName($activeTheme);
     }
@@ -51,7 +43,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * @return array
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         return $this->themes;
     }
@@ -59,7 +51,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function setThemes(array $themes)
+    public function setThemes(array $themes): void
     {
         $this->themes = $themes;
 
@@ -69,7 +61,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function addTheme($theme)
+    public function addTheme($theme): void
     {
         if (!in_array($theme, $this->themes, true)) {
             $this->themes[] = $theme;
@@ -81,7 +73,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeTheme($theme)
+    public function removeTheme($theme): void
     {
         if (in_array($theme, $this->themes, true)) {
             $this->themes = array_filter($this->themes, function ($e) use ($theme) {
@@ -95,7 +87,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function addThemes(array $themes)
+    public function addThemes(array $themes): void
     {
         foreach ($themes as $theme) {
             $this->addTheme($theme);
@@ -105,7 +97,7 @@ class ActiveTheme implements ActiveThemeInterface
     /**
      * {@inheritdoc}
      */
-    public function removeThemes(array $themes)
+    public function removeThemes(array $themes): void
     {
         foreach ($themes as $theme) {
             $this->removeTheme($theme);

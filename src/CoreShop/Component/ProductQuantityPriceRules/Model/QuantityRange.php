@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\ProductQuantityPriceRules\Model;
 
 use CoreShop\Component\Resource\Model\AbstractResource;
@@ -17,7 +19,7 @@ use CoreShop\Component\Resource\Model\AbstractResource;
 class QuantityRange extends AbstractResource implements QuantityRangeInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -157,6 +159,6 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
         }
 
         $this->rule = null;
-        //$this->id = null;
+        $this->id = null;
     }
 }

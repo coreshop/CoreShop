@@ -10,20 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
 use Metadata\Driver\DriverInterface;
+use Metadata\NullMetadata;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
-    /**
-     * @var DriverInterface
-     */
     protected $decorated;
 
-    /**
-     * @param DriverInterface $decorated
-     */
     public function __construct(DriverInterface $decorated)
     {
         $this->decorated = $decorated;

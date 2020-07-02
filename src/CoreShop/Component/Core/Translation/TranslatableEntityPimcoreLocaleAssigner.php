@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Component\Core\Translation;
 
 use CoreShop\Component\Resource\Model\TranslatableInterface;
@@ -20,14 +22,8 @@ use Pimcore\Tool;
 
 final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    /**
-     * @var LocaleServiceInterface
-     */
     private $pimcoreServiceLocale;
 
-    /**
-     * @param LocaleServiceInterface $pimcoreServiceLocale
-     */
     public function __construct(LocaleServiceInterface $pimcoreServiceLocale)
     {
         $this->pimcoreServiceLocale = $pimcoreServiceLocale;
@@ -36,16 +32,13 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
     /**
      * {@inheritdoc}
      */
-    public function assignLocale(TranslatableInterface $translatableEntity)
+    public function assignLocale(TranslatableInterface $translatableEntity): void
     {
         $translatableEntity->setCurrentLocale($this->getPimcoreLanguage());
         $translatableEntity->setFallbackLocale(Tool::getDefaultLanguage());
     }
 
-    /**
-     * @return null|string
-     */
-    private function getPimcoreLanguage()
+    private function getPimcoreLanguage(): string
     {
         $locale = null;
 
@@ -58,7 +51,7 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
         }
 
         if (Tool::isValidLanguage($locale)) {
-            return (string) $locale;
+            return (string)$locale;
         }
 
         return Tool::getDefaultLanguage();

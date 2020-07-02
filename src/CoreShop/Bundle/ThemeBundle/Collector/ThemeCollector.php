@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\ThemeBundle\Collector;
 
 use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
@@ -20,20 +22,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class ThemeCollector extends DataCollector
 {
-    /**
-     * @var ActiveThemeInterface
-     */
     private $activeTheme;
-
-    /**
-     * @var ThemeResolverInterface
-     */
     private $themeResolver;
 
-    /**
-     * @param ActiveThemeInterface   $activeTheme
-     * @param ThemeResolverInterface $themeResolver
-     */
     public function __construct(
         ActiveThemeInterface $activeTheme,
         ThemeResolverInterface $themeResolver
@@ -50,7 +41,7 @@ final class ThemeCollector extends DataCollector
     /**
      * @return string
      */
-    public function getActiveTheme()
+    public function getActiveTheme(): string
     {
         return $this->data['active_theme'];
     }
@@ -58,7 +49,7 @@ final class ThemeCollector extends DataCollector
     /**
      * @return string[]
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         return $this->data['themes'];
     }
@@ -66,7 +57,7 @@ final class ThemeCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, \Exception $exception = null): void
     {
         try {
             $activeTheme = $this->activeTheme;
@@ -83,7 +74,7 @@ final class ThemeCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function reset()
+    public function reset(): void
     {
         $this->data = [];
     }
@@ -91,7 +82,7 @@ final class ThemeCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.theme_collector';
     }
