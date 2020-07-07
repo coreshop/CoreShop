@@ -23,6 +23,10 @@ CoreShop\Component\Product\Model\AbstractPriceRule:
             expose: true
             type: integer
             groups: [Detailed, Version]
+        translations:
+            expose: true
+            type: array
+            groups: [Detailed]
         conditions:
             expose: true
             type: ArrayCollection<CoreShop\Component\Rule\Model\Condition>
