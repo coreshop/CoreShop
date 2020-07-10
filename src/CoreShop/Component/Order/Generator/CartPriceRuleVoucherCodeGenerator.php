@@ -77,7 +77,11 @@ class CartPriceRuleVoucherCodeGenerator
 
     protected static function generateCode(string $letters, int $length): string
     {
-        mt_srand(intval(microtime() * 1000000));
+        $rand = (int) microtime()*1000000;
+        if ($rand === 0) {
+            $rand = intval(microtime()*1000000);
+        }
+        mt_srand($rand);
         $i = 0;
         $code = '';
 
