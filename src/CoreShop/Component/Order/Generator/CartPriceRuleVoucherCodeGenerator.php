@@ -96,17 +96,13 @@ class CartPriceRuleVoucherCodeGenerator
      *
      * @return string
      */
-    protected static function generateCode($letters, $length)
+    protected static function generateCode(string $letters, int $length): string
     {
-        srand((float) microtime() * 1000000);
-        $i = 0;
-        $code = '';
+        $code = "";
+        $max = strlen($letters);
 
-        while ($i < $length) {
-            $num = rand() % (strlen($letters));
-            $tmp = substr($letters, $num, 1);
-            $code = $code . $tmp;
-            $i++;
+        for ($i=0; $i < $length; $i++) {
+            $code .= $letters[random_int(0, $max-1)];
         }
 
         return $code;
