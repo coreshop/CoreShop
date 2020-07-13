@@ -81,26 +81,10 @@ class CartPriceRuleVoucherCodeGenerator
         $max = strlen($letters);
 
         for ($i=0; $i < $length; $i++) {
-            $letter = self::cryptoRandSecure(0, $max-1);
-            $code .= $letters[$letter];
+            $code .= $letters[random_int(0, $max-1)];
         }
 
         return $code;
-    }
-
-    protected static function cryptoRandSecure($min, $max)
-    {
-        $range = $max - $min;
-        if ($range < 1) return $min;
-        $log = ceil(log($range, 2));
-        $bytes = (int) ($log / 8) + 1;
-        $bits = (int) $log + 1;
-        $filter = (int) (1 << $bits) - 1;
-        do {
-            $rnd = hexdec(bin2hex(openssl_random_pseudo_bytes($bytes)));
-            $rnd = $rnd & $filter;
-        } while ($rnd > $range);
-        return $min + $rnd;
     }
 
 }
