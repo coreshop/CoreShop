@@ -91,7 +91,7 @@ class CartPriceRuleVoucherCodeGenerator
     /**
      * Generates a code.
      *
-     * @param int $letters
+     * @param string $letters
      * @param int $length
      *
      * @return string
