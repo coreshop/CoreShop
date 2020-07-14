@@ -21,7 +21,9 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 class CartPriceRuleVoucherCodeGenerator
 {
     const FORMAT_ALPHANUMERIC = 'alphanumeric';
+
     const FORMAT_ALPHABETIC = 'alphabetic';
+
     const FORMAT_NUMERIC = 'numeric';
 
     private $voucherCodeFactory;
@@ -77,15 +79,11 @@ class CartPriceRuleVoucherCodeGenerator
 
     protected static function generateCode(string $letters, int $length): string
     {
-        mt_srand((int)microtime() * 1000000);
-        $i = 0;
-        $code = '';
+        $code = "";
+        $max = strlen($letters);
 
-        while ($i < $length) {
-            $num = mt_rand() % (strlen($letters));
-            $tmp = substr($letters, $num, 1);
-            $code = $code . $tmp;
-            $i++;
+        for ($i=0; $i < $length; $i++) {
+            $code .= $letters[random_int(0, $max-1)];
         }
 
         return $code;

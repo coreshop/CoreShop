@@ -1,5 +1,18 @@
 # Within 2.2
 
+## 2.2.3
+ - Bugs:
+    - [FrontendBundle] apply confirm and pay transition for orders with value of 0 (https://github.com/coreshop/CoreShop/pull/1442)
+    - [Core] create default address if customer doesn't have one (https://github.com/coreshop/CoreShop/pull/1444)
+    - [OrderBundle] Values should be zero, if amount should not be defined (https://github.com/coreshop/CoreShop/pull/1443)
+    - [OrderBundle] Voucher Credit and Tax rounding issue (https://github.com/coreshop/CoreShop/pull/1441)
+    - [OrderBundle] Add currency property (https://github.com/coreshop/CoreShop/pull/1436)
+    - [Docs] Fix typo in the docs (https://github.com/coreshop/CoreShop/pull/1426)
+    - [CoreBundle] assert default address type (https://github.com/coreshop/CoreShop/pull/1440, https://github.com/coreshop/CoreShop/issues/1257)
+    
+ - Features:
+    - [OrderBundle] Voucher Credit and Tax rounding issue (https://github.com/coreshop/CoreShop/pull/1441)
+    
 ## 2.2.2
  - Bugs:
     - [IndexBundle] fix range filter condition (https://github.com/coreshop/CoreShop/pull/1416, https://github.com/coreshop/CoreShop/issues/1387)
