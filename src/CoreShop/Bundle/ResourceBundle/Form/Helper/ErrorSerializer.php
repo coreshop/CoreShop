@@ -14,9 +14,20 @@ namespace CoreShop\Bundle\ResourceBundle\Form\Helper;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 final class ErrorSerializer
 {
+    /**
+     * @var TranslatorInterface
+     */
+    protected $trans;
+
+    public function __construct(TranslatorInterface $trans)
+    {
+        $this->trans = $trans;
+    }
+
     /**
      * @param FormInterface $handledForm
      *
@@ -32,11 +43,19 @@ final class ErrorSerializer
         foreach ($handledForm->getErrors(true, true) as $e) {
             if ($e instanceof FormError) {
                 $errorMessageTemplate = $e->getMessageTemplate();
+                $errorMessageTemplate = $this->trans->trans($errorMessageTemplate);
+
                 foreach ($e->getMessageParameters() as $key => $value) {
                     $errorMessageTemplate = str_replace($key, $value, $errorMessageTemplate);
                 }
 
-                $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+
+                if ($e->getOrigin()->getConfig()->getName()) {
+                    $errors[] = sprintf('%s: %s', $e->getOrigin()->getConfig()->getName(), $errorMessageTemplate);
+                }
+                else {
+                    $errors[] = sprintf($errorMessageTemplate);
+                }
             }
         }
 
