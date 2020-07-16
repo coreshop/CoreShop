@@ -20,7 +20,7 @@ interface CodeGeneratorCheckerInterface
 {
     /**
      * @param CartPriceRuleVoucherGeneratorInterface $generator
-     * @return int
+     * @return bool
      */
     public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator);
 
