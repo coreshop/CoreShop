@@ -73,6 +73,7 @@ final class CartItemsProcessor implements CartProcessorInterface
             }
 
             $product = $item->getProduct();
+            $product::setGetInheritedValues(true);
 
             if ($item->hasUnitDefinition()) {
                 $context['unitDefinition'] = $item->getUnitDefinition();
