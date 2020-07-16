@@ -222,6 +222,13 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.domain.cart_price_rule_voucher_code:
+        class: CoreShop\Behat\Context\Domain\CartPriceRuleVoucherCodeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.domain.theme:
         class: CoreShop\Behat\Context\Domain\ThemeContext
         arguments:
