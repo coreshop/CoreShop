@@ -14,10 +14,8 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRuleValidationEvent;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
-use CoreShop\Bundle\ResourceBundle\CoreExtension\CloneDoctrineEntityTrait;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
@@ -37,11 +35,9 @@ use function League\Uri\merge_query;
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface,
-    CustomDataCopyInterface
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
-    use CloneDoctrineEntityTrait;
 
     /**
      * Static type of this element.
@@ -182,28 +178,6 @@ class ProductQuantityPriceRules extends Data implements
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function createDataCopy($object, $data)
-    {
-        if (!$object instanceof QuantityRangePriceAwareInterface) {
-            return null;
-        }
-
-        if (!$data instanceof ProductQuantityPriceRuleInterface) {
-            return null;
-        }
-
-        /**
-         * @var ProductQuantityPriceRuleInterface $clone
-         */
-        $clone = $this->cloneEntity($data);
-        $clone->setProduct($data);
-
-        return $clone;
     }
 
     /**

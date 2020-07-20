@@ -13,10 +13,8 @@
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
-use CoreShop\Bundle\ResourceBundle\CoreExtension\CloneDoctrineEntityTrait;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomDataCopyInterface;
 use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
@@ -36,11 +34,9 @@ use Webmozart\Assert\Assert;
 class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface,
-    CustomDataCopyInterface
+    CustomRecyclingMarshalInterface
 {
     use TempEntityManagerTrait;
-    use CloneDoctrineEntityTrait;
 
     /**
      * @var string
@@ -218,46 +214,6 @@ class ProductUnitDefinitions extends Data implements
         }
 
         return $entityData;
-    }
-
-    public function createDataCopy($object, $data)
-    {
-        if (!$data instanceof ProductUnitDefinitionsInterface) {
-            return null;
-        }
-
-        if (!$object instanceof ProductInterface) {
-            return null;
-        }
-
-        /**
-         * @var ProductUnitDefinitionsInterface $newUnitDefinitions
-         */
-        $newUnitDefinitions = $this->getProductUnitDefinitionsFactory()->createNew();
-        $newUnitDefinitions->setProduct($object);
-        $allUnitDefinitions = $data->getUnitDefinitions();
-        $defaultUnitDefinition = $data->getDefaultUnitDefinition();
-        $copiedDefaultDefinition = null;
-
-        foreach ($allUnitDefinitions as $definition) {
-            if (!$definition instanceof ProductUnitDefinitionInterface) {
-                continue;
-            }
-
-            /**
-             * @var ProductUnitDefinitionInterface $newUnitDefinition
-             */
-            $newUnitDefinition = $this->cloneEntity($definition);
-
-            if ($definition === $defaultUnitDefinition) {
-                $newUnitDefinitions->setDefaultUnitDefinition($newUnitDefinition);
-            }
-            else {
-                $newUnitDefinitions->addAdditionalUnitDefinition($newUnitDefinition);
-            }
-        }
-
-        return $newUnitDefinitions;
     }
 
     /**
@@ -583,14 +539,6 @@ class ProductUnitDefinitions extends Data implements
     protected function getProductUnitDefinitionsRepositoryFactory()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.factory.product_unit_definitions');
-    }
-
-    /**
-     * @return FactoryInterface
-     */
-    protected function getProductUnitDefinitionsFactory()
-    {
-        return \Pimcore::getContainer()->get('coreshop.factory.product_unit_definitions');
     }
 
     /**

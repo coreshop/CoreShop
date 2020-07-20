@@ -130,4 +130,9 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     {
         return sprintf('Price: %s (Store: %d)', $this->getPrice(), $this->getStore()->getId());
     }
+
+    public function __clone()
+    {
+        $this->id = null;
+    }
 }

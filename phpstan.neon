@@ -44,7 +44,6 @@ parameters:
         - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
         - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
         - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomVersionMarshalInterface not found/'
-        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomDataCopyInterface not found/'
         - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
         - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
 
