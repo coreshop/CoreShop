@@ -336,13 +336,13 @@ coreshop.order.order.list = Class.create({
             var justChildrenCheckbox = toolbar.down('[name=onlyDirectChildren]');
 
             if (searchAndMove) {
-                searchAndMove.next().destroy();
-                searchAndMove.destroy();
+                searchAndMove.next().hide();
+                searchAndMove.hide();
             }
 
             if (justChildrenCheckbox) {
-                justChildrenCheckbox.next().destroy();
-                justChildrenCheckbox.destroy();
+                justChildrenCheckbox.next().hide();
+                justChildrenCheckbox.hide();
             }
         } catch (ex) {
             // fail silently.

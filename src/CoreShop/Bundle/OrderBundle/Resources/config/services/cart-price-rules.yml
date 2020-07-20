@@ -145,9 +145,26 @@ services:
             - { name: coreshop.cart_price_rule.condition, type: amount, form-type: CoreShop\Bundle\OrderBundle\Form\Type\Rule\Condition\AmountConfigurationType }
 
     # Voucher Code Generator
+    CoreShop\Component\Order\Generator\CodeGeneratorLetterResolver: ~
+
     CoreShop\Component\Order\Generator\CartPriceRuleVoucherCodeGenerator:
         arguments:
             - '@coreshop.factory.cart_price_rule_voucher_code'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface'
+            - '@CoreShop\Component\Order\Generator\CodeGeneratorLetterResolver'
+
+    CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface: '@CoreShop\Component\Order\Generator\CodeGeneratorChecker'
+    CoreShop\Component\Order\Generator\CodeGeneratorChecker:
+        arguments:
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@CoreShop\Component\Order\Generator\CodeGeneratorLetterResolver'
+
+    CoreShop\Bundle\OrderBundle\Validator\Constraints\VoucherAmountValidator:
+        arguments:
+            - '@CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface'
+        tags:
+            - { name: validator.constraint_validator, alias: 'coreshop_voucher_amount_validator' }
 
     # Processor
     CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculatorInterface: '@CoreShop\Component\Order\Cart\Rule\ProposalCartPriceRuleCalculator'

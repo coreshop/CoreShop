@@ -76,7 +76,9 @@ services:
         calls:
           - [setContainer, ['@service_container']]
 
-    CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer: ~
+    CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer:
+        arguments:
+            - '@translator'
 
     CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:
         arguments:

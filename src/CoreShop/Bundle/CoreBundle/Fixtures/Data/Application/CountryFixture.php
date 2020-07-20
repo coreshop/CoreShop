@@ -144,7 +144,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                 foreach ($addressFormatReplaces as $replaceKey => $replaces) {
                     if (!is_array($replaces)) {
-                        $replaces = [];
+                        $replaces = [$replaces];
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));

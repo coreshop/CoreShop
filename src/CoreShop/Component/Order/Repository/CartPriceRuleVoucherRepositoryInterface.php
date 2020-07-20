@@ -20,4 +20,6 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
 {
     public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface;
+
+    public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null): int;
 }
