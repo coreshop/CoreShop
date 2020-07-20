@@ -37,6 +37,7 @@ default:
                 - coreshop.behat.context.setup.customer
                 - coreshop.behat.context.setup.customer_group
                 - coreshop.behat.context.setup.cart_price_rule
+                - coreshop.behat.context.setup.cart_price_rule_voucher_code
                 - coreshop.behat.context.setup.zone
                 - coreshop.behat.context.setup.shipping
                 - coreshop.behat.context.setup.product_specific_price_rule
@@ -44,5 +45,6 @@ default:
                 - coreshop.behat.context.domain.cart
                 - coreshop.behat.context.domain.link_generator
                 - coreshop.behat.context.domain.cart_price_rule
+                - coreshop.behat.context.domain.cart_price_rule_voucher_code
             filters:
                 tags: "@cart"

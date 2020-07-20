@@ -79,7 +79,9 @@ services:
           - [setContainer, ['@service_container']]
 
     coreshop.resource.helper.form_error_serializer: '@CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer'
-    CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer: ~
+    CoreShop\Bundle\ResourceBundle\Form\Helper\ErrorSerializer:
+        arguments:
+            - '@translator'
 
     coreshop.doctrine.cache.pimcore: '@CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache'
     CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:

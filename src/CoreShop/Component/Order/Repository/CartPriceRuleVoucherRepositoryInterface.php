@@ -22,4 +22,12 @@ interface CartPriceRuleVoucherRepositoryInterface extends RepositoryInterface
      * @return mixed
      */
     public function findByCode($code);
+
+    /**
+     * @param int    $length
+     * @param string|null $prefix
+     * @param string|null $suffix
+     * @return int
+     */
+    public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null);
 }

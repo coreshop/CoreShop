@@ -12,9 +12,13 @@
 
 namespace CoreShop\Component\Order\Generator;
 
+use CoreShop\Component\Order\Exception\FailedCodeGenerationException;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
+use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGenerator;
+use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
@@ -30,11 +34,37 @@ class CartPriceRuleVoucherCodeGenerator
     private $voucherCodeFactory;
 
     /**
-     * @param FactoryInterface $voucherCodeFactory
+     * @var CartPriceRuleVoucherRepositoryInterface
      */
-    public function __construct(FactoryInterface $voucherCodeFactory)
+    private $voucherCodeRepository;
+
+    /**
+     * @var CodeGeneratorCheckerInterface
+     */
+    private $checker;
+
+    /**
+     * @var CodeGeneratorLetterResolver
+     */
+    private $letterResolver;
+
+    /**
+     * @param FactoryInterface                        $voucherCodeFactory
+     * @param CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository
+     * @param CodeGeneratorCheckerInterface           $checker
+     * @param CodeGeneratorLetterResolver             $letterResolver
+     */
+    public function __construct(
+        FactoryInterface $voucherCodeFactory,
+        CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
+        CodeGeneratorCheckerInterface $checker,
+        CodeGeneratorLetterResolver $letterResolver
+    )
     {
         $this->voucherCodeFactory = $voucherCodeFactory;
+        $this->voucherCodeRepository = $voucherCodeRepository;
+        $this->checker = $checker;
+        $this->letterResolver = $letterResolver;
     }
 
     /**
@@ -46,27 +76,13 @@ class CartPriceRuleVoucherCodeGenerator
      */
     public function generateCodes(CartPriceRuleVoucherGeneratorInterface $generator)
     {
+        $this->assert($generator);
+
         $generatedVouchers = [];
-
-        switch ($generator->getFormat()) {
-            case self::FORMAT_ALPHABETIC:
-                $lettersToUse = implode('', range(chr(65), chr(90)));
-
-                break;
-            case self::FORMAT_NUMERIC:
-                $lettersToUse = implode('', range(chr(48), chr(57)));
-
-                break;
-
-            case self::FORMAT_ALPHANUMERIC:
-            default:
-                $lettersToUse = implode('', range(chr(65), chr(90))) . implode('', range(chr(48), chr(57)));
-
-                break;
-        }
+        $lettersToUse = $this->letterResolver->findLetters($generator);
 
         for ($i = 0; $i < $generator->getAmount(); $i++) {
-            $code = sprintf('%s%s%s', $generator->getPrefix(), self::generateCode($lettersToUse, $generator->getLength()), $generator->getSuffix());
+            $code = $this->generateCode($lettersToUse, $generator->getLength(), $generator->getPrefix(), $generator->getSuffix(), $generatedVouchers);
 
             if ($generator->getHyphensOn() > 0) {
                 $code = implode('-', str_split($code, $generator->getHyphensOn()));
@@ -82,29 +98,62 @@ class CartPriceRuleVoucherCodeGenerator
             $codeObject->setUses(0);
             $codeObject->setCartPriceRule($generator->getCartPriceRule());
 
-            $generatedVouchers[] = $codeObject;
+            $generatedVouchers[$code] = $codeObject;
         }
 
         return $generatedVouchers;
     }
 
     /**
-     * Generates a code.
-     *
-     * @param string $letters
-     * @param int $length
-     *
+     * @param string      $letters
+     * @param int         $length
+     * @param string|null $prefix
+     * @param string|null $suffix
+     * @param array       $generatedCoupons
      * @return string
+     * @throws \Exception
      */
-    protected static function generateCode(string $letters, int $length): string
+    protected function generateCode(string $letters, int $length, ?string $prefix, ?string $suffix, array $generatedCoupons): string
     {
-        $code = "";
-        $max = strlen($letters);
+         Assert::nullOrRange($length, 1, 40, 'Invalid %d code length should be between %d and %d');
 
-        for ($i=0; $i < $length; $i++) {
-            $code .= $letters[random_int(0, $max-1)];
-        }
+        do {
+            $code = '';
+            $max = strlen($letters);
+
+            if (null !== $prefix) {
+                $code = $prefix;
+            }
+
+            for ($i=0; $i < $length; $i++) {
+                $code .= $letters[random_int(0, $max - 1)];
+            }
+
+            if (null !== $suffix) {
+                $code .= $suffix;
+            }
+
+        } while ($this->isUsedCode($code, $generatedCoupons));
 
         return $code;
+    }
+
+    private function isUsedCode(string $code, array $generatedCoupons): bool
+    {
+        if (isset($generatedCoupons[$code])) {
+            return true;
+        }
+
+        return null !== $this->voucherCodeRepository->findOneBy(['code' => $code]);
+    }
+
+    /**
+     * @throws FailedCodeGenerationException
+     */
+    private function assert(CartPriceRuleVoucherGeneratorInterface $generator): void
+    {
+        if (!$this->checker->isGenerationPossible($generator)) {
+            throw new FailedCodeGenerationException($generator);
+        }
     }
 }

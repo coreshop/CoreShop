@@ -396,7 +396,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                                     this.getVoucherCodes().down('grid').getStore().load();
                                 } else {
                                     btn.setDisabled(false);
-                                    pimcore.helpers.showNotification(t('error'), 'error', 'error');
+                                    Ext.Msg.alert(t('error'), res.message);
                                 }
                             }.bind(this),
                             failure: function(response) {
