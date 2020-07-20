@@ -83,14 +83,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
      */
     protected function getDiscount(CartInterface $cart, array $configuration)
     {
-        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
-
-        if ('total' === $applyOn) {
-            $cartAmount = $cart->getTotal($configuration['gross']);
-        } else {
-            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
-        }
-
         /**
          * @var CurrencyInterface $currency
          */
@@ -99,17 +91,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
-        return (int) $this->moneyConverter->convert($this->getApplicableAmount($cartAmount, $amount), $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
-    }
-
-    /**
-     * @param int $cartAmount
-     * @param int $ruleAmount
-     *
-     * @return int
-     */
-    protected function getApplicableAmount($cartAmount, $ruleAmount)
-    {
-        return min($cartAmount, $ruleAmount);
+        return (int) $this->moneyConverter->convert($amount, $currency->getIsoCode(), $cart->getCurrency()->getIsoCode());
     }
 }

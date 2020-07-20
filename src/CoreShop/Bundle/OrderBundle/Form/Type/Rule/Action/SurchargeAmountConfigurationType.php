@@ -54,12 +54,6 @@ final class SurchargeAmountConfigurationType extends AbstractType
             ])
             ->add('gross', CheckboxType::class, [
             ])
-            ->add('applyOn', ChoiceType::class, [
-                'choices' => [
-                    'total' => 'total',
-                    'subtotal' => 'subtotal',
-                ],
-            ])
             ->add('currency', CurrencyChoiceType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
