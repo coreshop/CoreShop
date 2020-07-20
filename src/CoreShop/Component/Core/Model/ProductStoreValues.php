@@ -22,7 +22,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     use StoreAwareTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 

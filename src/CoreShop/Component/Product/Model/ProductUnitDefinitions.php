@@ -19,7 +19,7 @@ use Doctrine\Common\Collections\Collection;
 class ProductUnitDefinitions extends AbstractResource implements ProductUnitDefinitionsInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 

@@ -15,6 +15,11 @@ namespace CoreShop\Component\Product\Model;
 class ProductSpecificPriceRule extends AbstractPriceRule implements ProductSpecificPriceRuleInterface
 {
     /**
+     * @var int|null
+     */
+    protected $id;
+    
+    /**
      * @var int
      */
     protected $product;
