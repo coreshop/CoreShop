@@ -36,7 +36,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findStore(Request $request): StoreInterface
+    public function findStore(Request $request): ?StoreInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {
             try {

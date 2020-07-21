@@ -26,5 +26,5 @@ interface RequestResolverInterface
      * @return StoreInterface
      * @throws StoreNotFoundException
      */
-    public function findStore(Request $request): StoreInterface;
+    public function findStore(Request $request): ?StoreInterface;
 }
