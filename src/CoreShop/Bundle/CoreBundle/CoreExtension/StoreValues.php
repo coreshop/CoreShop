@@ -394,6 +394,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getEntityManager()->persist($storeEntity);
             $this->getEntityManager()->flush($storeEntity);
         }
+
+        //We have to set that here, values could change during persist due to copy or variant inheritance break
+        $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
     /**

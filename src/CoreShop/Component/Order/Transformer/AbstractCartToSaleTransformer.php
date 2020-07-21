@@ -225,7 +225,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         foreach ($cart->getItems() as $cartItem) {
             $saleItem = $this->saleItemFactory->createNew();
 
-            $sale->addItem($this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem));
+            $this->cartItemToSaleItemTransformer->transform($sale, $cartItem, $saleItem);
         }
 
         $baseTaxesFieldCollection = new Fieldcollection();

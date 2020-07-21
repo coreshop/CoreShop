@@ -22,7 +22,7 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     use StoreAwareTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -129,5 +129,10 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
     public function __toString()
     {
         return sprintf('Price: %s (Store: %d)', $this->getPrice(), $this->getStore()->getId());
+    }
+
+    public function __clone()
+    {
+        $this->id = null;
     }
 }
