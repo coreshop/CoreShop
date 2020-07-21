@@ -52,7 +52,7 @@ interface ProductStoreValuesInterface extends ResourceInterface, StoreAwareInter
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice);
 
     /**
-     * @return Collection<ProductUnitDefinitionPriceInterface>
+     * @return Collection<ProductUnitDefinitionPriceInterface>|ProductUnitDefinitionPriceInterface[]
      */
     public function getProductUnitDefinitionPrices();
 }
