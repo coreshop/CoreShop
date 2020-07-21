@@ -63,11 +63,11 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(function() use ($cart) {
+            $json = InheritanceHelper::useInheritedValues(function() use ($cart) {
                 $this->get('coreshop.cart_processor')->process($cart);
-            }, true);
 
-            $json = $this->getCartDetails($cart);
+                return $this->getCartDetails($cart);
+            }, true);
 
             return $this->viewHandler->handle(['success' => true, 'data' => $json]);
         }
@@ -103,11 +103,11 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
             $cart = $handledForm->getData();
 
-            InheritanceHelper::useInheritedValues(function() use ($cart) {
+            $saleResponse = InheritanceHelper::useInheritedValues(function() use ($cart) {
                 $this->get('coreshop.cart_processor')->process($cart);
-            }, true);
 
-            $saleResponse = $this->persistCart($cart);
+                return $this->persistCart($cart);
+            }, true);
 
             return $this->viewHandler->handle($saleResponse);
         }
