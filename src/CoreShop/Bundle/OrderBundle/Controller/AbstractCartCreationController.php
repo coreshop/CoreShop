@@ -20,6 +20,7 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,8 +63,11 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
             $cart = $handledForm->getData();
 
-            $this->get('coreshop.cart_processor')->process($cart);
-            $json = $this->getCartDetails($cart);
+            $json = InheritanceHelper::useInheritedValues(function() use ($cart) {
+                $this->get('coreshop.cart_processor')->process($cart);
+
+                return $this->getCartDetails($cart);
+            }, true);
 
             return $this->viewHandler->handle(['success' => true, 'data' => $json]);
         }
@@ -99,9 +103,11 @@ abstract class AbstractCartCreationController extends AbstractSaleController
 
             $cart = $handledForm->getData();
 
-            $this->get('coreshop.cart_processor')->process($cart);
+            $saleResponse = InheritanceHelper::useInheritedValues(function() use ($cart) {
+                $this->get('coreshop.cart_processor')->process($cart);
 
-            $saleResponse = $this->persistCart($cart);
+                return $this->persistCart($cart);
+            }, true);
 
             return $this->viewHandler->handle($saleResponse);
         }
