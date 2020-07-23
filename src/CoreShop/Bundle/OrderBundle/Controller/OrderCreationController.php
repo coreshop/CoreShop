@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Order\OrderTransitions;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Webmozart\Assert\Assert;
 
@@ -35,8 +36,10 @@ class OrderCreationController extends AbstractSaleCreationController
     {
         Assert::isInstanceOf($sale, OrderInterface::class);
 
-        $this->get('coreshop.state_machine_applier')->apply($sale, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
-
+        InheritanceHelper::useInheritedValues(function() use ($sale) {
+            $this->get('coreshop.state_machine_applier')->apply($sale, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
+        }, true);
+        
         $routeParams = [
             '_locale' => $sale->getLocaleCode(),
             'token' => $sale->getToken(),

@@ -9,6 +9,7 @@ use CoreShop\Bundle\OrderBundle\Form\Type\EditCartType;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,7 +56,9 @@ class CartEditController extends AbstractSaleController
 
         $cart = $form->getData();
 
-        $this->get('coreshop.cart.manager')->persistCart($cart);
+        InheritanceHelper::useInheritedValues(function() use ($cart) {
+            $this->get('coreshop.cart_processor')->process($cart);
+        }, true);
 
         return $this->viewHandler->handle(['success' => true]);
     }
