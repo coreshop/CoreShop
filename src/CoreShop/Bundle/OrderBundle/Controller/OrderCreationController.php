@@ -31,6 +31,7 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 use CoreShop\Component\Order\OrderSaleTransitions;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
+use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\Concrete;
@@ -81,7 +82,10 @@ class OrderCreationController extends PimcoreController
 
             $cart = $handledForm->getData();
 
-            $cartProcessor->process($cart);
+            InheritanceHelper::useInheritedValues(static function() use ($cartProcessor, $cart) {
+                $cartProcessor->process($cart);
+            });
+
             $json = $this->getCartDetails($cart);
 
             return $this->viewHandler->handle(['success' => true, 'data' => $json]);
@@ -95,7 +99,6 @@ class OrderCreationController extends PimcoreController
         FactoryInterface $orderFactory,
         FormFactoryInterface $formFactory,
         CartManagerInterface $cartManager,
-        CartProcessorInterface $cartProcessor,
         ErrorSerializer $errorSerializer,
         StateMachineManagerInterface $manager
     ): Response {
@@ -128,9 +131,11 @@ class OrderCreationController extends PimcoreController
                 throw new HttpException(500);
             }
 
-            $workflow->apply($cart, $type);
+            InheritanceHelper::useInheritedValues(static function() use ($workflow, $cart, $type, $cartManager) {
+                $workflow->apply($cart, $type);
 
-            $cartManager->persistCart($cart);
+                $cartManager->persistCart($cart);
+            });
 
             return $this->viewHandler->handle([
                 'success' => true,
