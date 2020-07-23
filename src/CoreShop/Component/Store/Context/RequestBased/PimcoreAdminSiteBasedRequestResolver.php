@@ -42,7 +42,7 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
     /**
      * {@inheritdoc}
      */
-    public function findStore(Request $request): StoreInterface
+    public function findStore(Request $request): ?StoreInterface
     {
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {
             $document = $this->documentService->getNearestDocumentByPath($request->getPathInfo());
