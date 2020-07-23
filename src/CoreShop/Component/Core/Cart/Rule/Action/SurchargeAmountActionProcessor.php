@@ -77,8 +77,8 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         /**
          * @var CurrencyInterface $currency
          */
-        $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
+        $amount = $configuration['amount'];
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
