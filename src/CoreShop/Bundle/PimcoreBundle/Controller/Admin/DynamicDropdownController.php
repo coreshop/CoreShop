@@ -34,7 +34,7 @@ final class DynamicDropdownController extends AdminController
         $folderName = $request->get('folderName');
         $parts = array_map(static function ($part) {
             return Service::getValidKey($part, 'object');
-        }, preg_split('/\//', $folderName, null, PREG_SPLIT_NO_EMPTY));
+        }, preg_split('/\//', $folderName, 0, PREG_SPLIT_NO_EMPTY));
         $parentFolderPath = sprintf('/%s', implode('/', $parts));
         $sort = $request->get('sortBy');
         $options = [];
