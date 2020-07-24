@@ -27,7 +27,7 @@ class QuantityValidatorService
      */
     public function isHigherThenMaxLimit($maximumLimit, $quantity)
     {
-        if(!is_numeric($maximumLimit)) {
+        if (!is_numeric($maximumLimit)) {
             return false;
         }
 

@@ -93,6 +93,14 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $minLimit = $purchasable->getMinimumQuantityToOrder();
 
+        if (null === $minLimit) {
+            return;
+        }
+
+        if (0 <= $minLimit) {
+            return;
+        }
+
         if ($this->quantityValidatorService->isLowerThenMinLimit($minLimit, $quantity)) {
             $this->context->addViolation(
                 $constraint->messageBelowMinimum,
