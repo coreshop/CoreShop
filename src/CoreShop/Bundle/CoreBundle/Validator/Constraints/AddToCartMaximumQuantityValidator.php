@@ -97,7 +97,7 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
             return;
         }
 
-        if (0 <= $maxLimit) {
+        if ($maxLimit <= 0) {
             return;
         }
 

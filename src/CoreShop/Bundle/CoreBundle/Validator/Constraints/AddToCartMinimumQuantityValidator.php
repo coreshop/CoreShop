@@ -97,7 +97,7 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
             return;
         }
 
-        if (0 <= $minLimit) {
+        if ($minLimit <= 0) {
             return;
         }
 
