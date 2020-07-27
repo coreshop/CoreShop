@@ -76,6 +76,10 @@ final class CartMaximumQuantityValidator extends ConstraintValidator
                 continue;
             }
 
+            if ($product->getMaximumQuantityToOrder() <= 0) {
+                continue;
+            }
+
             $maxLimit = (int)$product->getMaximumQuantityToOrder();
             $higherThenMaximum = $this->quantityValidatorService->isHigherThenMaxLimit(
                 $maxLimit,

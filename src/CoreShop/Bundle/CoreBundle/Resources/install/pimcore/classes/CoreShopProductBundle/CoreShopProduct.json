@@ -690,7 +690,7 @@
                                         "phpdocType": "float",
                                         "integer": true,
                                         "unsigned": false,
-                                        "minValue": 1,
+                                        "minValue": 0,
                                         "maxValue": null,
                                         "unique": false,
                                         "decimalSize": 1,
