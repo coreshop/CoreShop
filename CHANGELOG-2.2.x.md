@@ -1,5 +1,20 @@
 # Within 2.2
 
+## 2.2.4
+ - Bugs:
+    - [CoreBundle] Don't validate maximum or minimum order quantity when value is 0 (https://github.com/coreshop/CoreShop/issues/1467, https://github.com/coreshop/CoreShop/pull/1468)
+    - [Specific Price Rule] Unable to edit saved rule (https://github.com/coreshop/CoreShop/issues/1437, https://github.com/coreshop/CoreShop/pull/1452)
+    - [Pimcore] Fix Ext Item Selector (https://github.com/coreshop/CoreShop/pull/1465)
+    - [Core, Order] fix surchage amount processor and remove apply-on (https://github.com/coreshop/CoreShop/pull/1462)
+    - [All] fix for copying data-objects with complex doctrine entities (https://github.com/coreshop/CoreShop/pull/1404)
+    - [CoreBundle] fix installation of address format (https://github.com/coreshop/CoreShop/pull/1455, https://github.com/coreshop/CoreShop/issues/1432)
+    - [Orders] Unable to edit grid options to add/remove fields (https://github.com/coreshop/CoreShop/issues/1438, https://github.com/coreshop/CoreShop/pull/1454)
+    - [Voucher] Voucher code generator returns always the same code (https://github.com/coreshop/CoreShop/issues/1448, https://github.com/coreshop/CoreShop/pull/1451)
+    - [ProductBundle] fix serialization of translation labels in product-price rules (https://github.com/coreshop/CoreShop/pull/1447)
+    
+ - Features:
+    - [OrderBundle] check if generation of a certain amount of codes is possible before actually generating them (https://github.com/coreshop/CoreShop/pull/1456, https://github.com/coreshop/CoreShop/issues/1453)
+      
 ## 2.2.3
  - Bugs:
     - [FrontendBundle] apply confirm and pay transition for orders with value of 0 (https://github.com/coreshop/CoreShop/pull/1442)
