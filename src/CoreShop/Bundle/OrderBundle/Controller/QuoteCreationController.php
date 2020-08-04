@@ -37,6 +37,6 @@ class QuoteCreationController extends AbstractSaleCreationController
      */
     protected function getPermission()
     {
-        return 'coreshop_quote_create';
+        return 'coreshop_permission_quote_create';
     }
 }
