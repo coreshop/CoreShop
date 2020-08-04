@@ -157,9 +157,7 @@ coreshop.product.specificprice.object.item = Class.create(coreshop.rules.item, {
             saveData['id'] = this.data.id;
         }
 
-        saveData = coreshop.helpers.convertDotNotationToObject(saveData);
-
-        return saveData;
+        return coreshop.helpers.convertDotNotationToObject(saveData);
     },
 
     getId: function () {
