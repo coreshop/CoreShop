@@ -47,12 +47,6 @@ final class SurchargePercentConfigurationType extends AbstractType
                     new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                     new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
                 ],
-            ])
-            ->add('applyOn', ChoiceType::class, [
-                'choices' => [
-                    'total' => 'total',
-                    'subtotal' => 'subtotal',
-                ],
             ]);
     }
 
