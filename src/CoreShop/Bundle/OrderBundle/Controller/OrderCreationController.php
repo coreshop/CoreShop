@@ -39,7 +39,7 @@ class OrderCreationController extends AbstractSaleCreationController
         InheritanceHelper::useInheritedValues(function() use ($sale) {
             $this->get('coreshop.state_machine_applier')->apply($sale, OrderTransitions::IDENTIFIER, OrderTransitions::TRANSITION_CONFIRM);
         }, true);
-        
+
         $routeParams = [
             '_locale' => $sale->getLocaleCode(),
             'token' => $sale->getToken(),
@@ -63,6 +63,6 @@ class OrderCreationController extends AbstractSaleCreationController
      */
     protected function getPermission()
     {
-        return 'coreshop_order_create';
+        return 'coreshop_permission_order_create';
     }
 }

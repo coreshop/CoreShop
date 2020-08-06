@@ -39,4 +39,12 @@ class CartCreationController extends AbstractCartCreationController
             'id' => $cart->getId(),
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getPermission()
+    {
+        return 'coreshop_permission_cart_create';
+    }
 }
