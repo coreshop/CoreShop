@@ -1,4 +1,4 @@
-f# CoreShop Pimcore Component
+# CoreShop Pimcore Component
 
 ## Features
 
