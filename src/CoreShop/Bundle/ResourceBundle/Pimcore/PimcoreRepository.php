@@ -18,26 +18,15 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Doctrine\DBAL\Connection;
-use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Listing;
-use Pimcore\Model\Listing\AbstractListing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
 class PimcoreRepository implements PimcoreRepositoryInterface
 {
-    /**
-     * @var MetadataInterface
-     */
     protected $metadata;
-
-    /**
-     * @var Connection
-     */
     protected $connection;
 
-    /**
-     * @param MetadataInterface $metadata
-     */
     public function __construct(MetadataInterface $metadata, Connection $connection)
     {
         $this->metadata = $metadata;
@@ -88,9 +77,9 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     }
 
     /**
-     * @return Listing
+     * @return Listing|AbstractModel
      */
-    public function getList(): AbstractListing
+    public function getList()
     {
         $className = $this->metadata->getClass('model');
 
@@ -126,7 +115,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, bool $force = true): ?Concrete
+    public function forceFind($id, bool $force = true): ?AbstractModel
     {
         $class = $this->metadata->getClass('model');
 
