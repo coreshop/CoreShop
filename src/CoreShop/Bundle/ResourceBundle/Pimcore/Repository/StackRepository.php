@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore\Repository;
 use CoreShop\Bundle\ResourceBundle\Pimcore\PimcoreRepository;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
+use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Listing\AbstractListing;
 
@@ -83,7 +84,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function getList(): AbstractListing
+    public function getList()
     {
         $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
@@ -94,7 +95,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, bool $force = true): ?DataObject\Concrete
+    public function forceFind($id, bool $force = true): ?AbstractModel
     {
         $instance = DataObject::getById($id, $force);
 
