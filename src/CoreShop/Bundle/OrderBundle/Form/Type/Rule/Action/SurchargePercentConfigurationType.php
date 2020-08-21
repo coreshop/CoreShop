@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\OrderBundle\Form\Type\Rule\Action;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -43,17 +44,11 @@ final class SurchargePercentConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('percent', IntegerType::class, [
+            ->add('percent', NumberType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
                     new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
                     new Range(['min' => 0, 'max' => 100, 'groups' => $this->validationGroups]),
-                ],
-            ])
-            ->add('applyOn', ChoiceType::class, [
-                'choices' => [
-                    'total' => 'total',
-                    'subtotal' => 'subtotal',
                 ],
             ]);
     }

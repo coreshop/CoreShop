@@ -1,5 +1,9 @@
 # Within 2.1
 
+## 2.1.9
+ - Bugs:
+    - [OrderBundle] fix usage of inherited values in backend-cart/order controllers (https://github.com/coreshop/CoreShop/pull/1461, https://github.com/coreshop/CoreShop/issues/1459)
+    
 ## 2.1.8
  - Bugs:
     - [ResourceBundle] Fix unique entity validator (https://github.com/coreshop/CoreShop/pull/1385)

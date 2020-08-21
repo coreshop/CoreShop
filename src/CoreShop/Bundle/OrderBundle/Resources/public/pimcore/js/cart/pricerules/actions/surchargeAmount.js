@@ -31,7 +31,7 @@ coreshop.cart.pricerules.actions.surchargeAmount = Class.create(coreshop.rules.a
             fieldLabel: t('coreshop_action_surcharge_amount'),
             name: 'amount',
             value: amountValue,
-            decimalPrecision: 2
+            decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
         var gross = new Ext.form.Checkbox({

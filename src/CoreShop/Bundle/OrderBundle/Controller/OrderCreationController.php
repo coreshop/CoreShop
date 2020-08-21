@@ -149,6 +149,7 @@ class OrderCreationController extends PimcoreController
 
     protected function getCartDetails(OrderInterface $cart): array
     {
+
         $jsonCart = $this->getDataForObject($cart);
 
         $jsonCart['o_id'] = $cart->getId();
@@ -294,5 +295,10 @@ class OrderCreationController extends PimcoreController
     public function setAddressFormatter(AddressFormatterInterface $addressFormatter): void
     {
         $this->addressFormatter = $addressFormatter;
+    }
+
+    protected function getPermission()
+    {
+        return 'coreshop_permission_order_create';
     }
 }

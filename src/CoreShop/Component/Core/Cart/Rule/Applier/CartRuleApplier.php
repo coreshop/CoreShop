@@ -64,6 +64,9 @@ class CartRuleApplier implements CartRuleApplierInterface
 
     protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
+        /**
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         */
         $totalAmount = [];
 
         foreach ($cart->getItems() as $item) {
@@ -164,17 +167,17 @@ class CartRuleApplier implements CartRuleApplierInterface
 
                 if ($withTax) {
                     $taxItems->setItems(
-                        $this->taxCollector->collectTaxes(
+                        $this->taxCollector->collectTaxesFromGross(
                             $taxCalculator,
-                            ($positive ? $amountNet : -1 * $amountNet),
+                            ($positive ? $amountGross : -1 * $amountGross),
                             $taxItems->getItems()
                         )
                     );
                 } else {
                     $taxItems->setItems(
-                        $this->taxCollector->collectTaxesFromGross(
+                        $this->taxCollector->collectTaxes(
                             $taxCalculator,
-                            ($positive ? $amountGross : -1 * $amountGross),
+                            ($positive ? $amountNet : -1 * $amountNet),
                             $taxItems->getItems()
                         )
                     );

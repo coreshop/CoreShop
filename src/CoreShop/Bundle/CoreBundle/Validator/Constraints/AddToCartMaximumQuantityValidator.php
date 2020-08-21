@@ -72,6 +72,14 @@ final class AddToCartMaximumQuantityValidator extends ConstraintValidator
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $maxLimit = $purchasable->getMaximumQuantityToOrder();
 
+        if (null === $maxLimit) {
+            return;
+        }
+
+        if ($maxLimit <= 0) {
+            return;
+        }
+
         if($this->quantityValidatorService->isHigherThenMaxLimit($maxLimit, $quantity)) {
             $this->context->addViolation(
                 $constraint->messageAboveMaximum,

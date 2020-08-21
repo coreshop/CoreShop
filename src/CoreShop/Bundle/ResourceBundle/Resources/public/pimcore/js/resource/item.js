@@ -141,5 +141,9 @@ coreshop.resource.item = Class.create({
 
     isValid: function () {
         return true;
+    },
+
+    convertDotNotationToObject: function (data) {
+        return coreshop.helpers.convertDotNotationToObject(data);
     }
 });
