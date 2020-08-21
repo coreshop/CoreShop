@@ -39,17 +39,21 @@ final class LocaleChoiceType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'choices' => function (Options $options) {
+                'choices' => static function (Options $options) {
                     $locales = Tool::getValidLanguages();
 
-                    usort($locales, function ($a, $b): int {
+                    usort($locales, static function ($a, $b): int {
                         return $a <=> $b;
                     });
 
                     return $locales;
                 },
-                'choice_value' => 'id',
-                'choice_label' => 'name',
+                'choice_value' => static function ($value) {
+                    return $value;
+                },
+                'choice_label' => static function($value) {
+                    return $value;
+                },
                 'choice_translation_domain' => false,
             ]);
     }
