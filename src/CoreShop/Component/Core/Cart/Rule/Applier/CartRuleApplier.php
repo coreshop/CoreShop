@@ -14,7 +14,6 @@ namespace CoreShop\Component\Core\Cart\Rule\Applier;
 
 use CoreShop\Component\Core\Product\ProductTaxCalculatorFactoryInterface;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
-use CoreShop\Component\Order\Distributor\IntegerDistributor;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributor;
 use CoreShop\Component\Order\Factory\AdjustmentFactoryInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
@@ -92,6 +91,9 @@ class CartRuleApplier implements CartRuleApplierInterface
      */
     protected function apply(CartInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false)
     {
+        /**
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         */
         $totalAmount = [];
 
         foreach ($cart->getItems() as $item) {
@@ -193,17 +195,17 @@ class CartRuleApplier implements CartRuleApplierInterface
 
                 if ($withTax) {
                     $taxItems->setItems(
-                        $this->taxCollector->collectTaxes(
+                        $this->taxCollector->collectTaxesFromGross(
                             $taxCalculator,
-                            ($positive ? $amountNet : -1 * $amountNet),
+                            ($positive ? $amountGross : -1 * $amountGross),
                             $taxItems->getItems()
                         )
                     );
                 } else {
                     $taxItems->setItems(
-                        $this->taxCollector->collectTaxesFromGross(
+                        $this->taxCollector->collectTaxes(
                             $taxCalculator,
-                            ($positive ? $amountGross : -1 * $amountGross),
+                            ($positive ? $amountNet : -1 * $amountNet),
                             $taxItems->getItems()
                         )
                     );

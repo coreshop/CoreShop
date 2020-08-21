@@ -14,6 +14,7 @@ namespace CoreShop\Component\Core\Order\Processor;
 
 use CoreShop\Component\Core\Model\Carrier;
 use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Core\Provider\AddressProviderInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -89,6 +90,11 @@ final class CartTaxProcessor implements CartProcessorInterface
             return $usedTaxes;
         }
 
+        /**
+         * @var StoreInterface $store
+         */
+        $store = $cart->getStore();
+
         if (null === $cart->getCarrier()) {
             return $usedTaxes;
         }
@@ -116,7 +122,7 @@ final class CartTaxProcessor implements CartProcessorInterface
              * @var TaxCalculationStrategyInterface $taxCalculationService
              */
             $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
-            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping(false));
+            $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping($store->getUseGrossPrice()));
 
             if (1 === count($cartTax)) {
                 $cart->setShippingTaxRate(reset($cartTax)->getRate());
