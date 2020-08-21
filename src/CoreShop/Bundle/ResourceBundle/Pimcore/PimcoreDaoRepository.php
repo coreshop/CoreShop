@@ -16,13 +16,12 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
+use CoreShop\Component\Resource\Repository\PimcoreDaoRepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\AbstractModel;
-use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 
-class PimcoreRepository implements PimcoreRepositoryInterface
+class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
 {
     protected $metadata;
     protected $connection;
@@ -52,34 +51,15 @@ class PimcoreRepository implements PimcoreRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getClassId(): string
-    {
-        $class = $this->metadata->getClass('model');
-
-        if (!method_exists($class, 'classId')) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Class %s has no classId function and is therefore not considered as a valid Pimcore DataObject',
-                    $class
-                )
-            );
-        }
-
-        return $class::classId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         return $this->metadata->getClass('model');
     }
 
     /**
-     * @return Listing|AbstractModel
+     * @return mixed
      */
-    public function getList(): Listing
+    public function getList()
     {
         $className = $this->metadata->getClass('model');
 
@@ -87,13 +67,14 @@ class PimcoreRepository implements PimcoreRepositoryInterface
             return $className::getList();
         }
 
-        $listClass = $className . '\\Listing';
+        $listClass = $className.'\\Listing';
 
         if (class_exists($className)) {
             return new $listClass();
         }
 
-        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here', $className));
+        throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here',
+            $className));
     }
 
     /**
@@ -148,7 +129,8 @@ class PimcoreRepository implements PimcoreRepositoryInterface
 
         if (is_array($criteria) && count($criteria) > 0) {
             foreach ($criteria as $criterion) {
-                $list->addConditionParam($criterion['condition'], array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
+                $list->addConditionParam($criterion['condition'],
+                    array_key_exists('variable', $criterion) ? $criterion['variable'] : null);
             }
         }
 
@@ -230,7 +212,7 @@ class PimcoreRepository implements PimcoreRepositoryInterface
                         $normalizedCriterion['condition'] = $criterion;
                     }
                 } else {
-                    $normalizedCriterion['condition'] = $key . ' = ?';
+                    $normalizedCriterion['condition'] = $key.' = ?';
                     $normalizedCriterion['variable'] = [$criterion];
                 }
 

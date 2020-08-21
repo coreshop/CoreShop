@@ -19,30 +19,14 @@ use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use Doctrine\DBAL\Connection;
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject;
-use Pimcore\Model\Listing\AbstractListing;
+use Pimcore\Model\DataObject\Listing;
 
 class StackRepository extends PimcoreRepository
 {
-    /**
-     * @var array
-     */
     private $classNames = [];
-
-    /**
-     * @var array
-     */
     private $fqnStackClasses = [];
-
-    /**
-     * @var string
-     */
     private $interface;
 
-    /**
-     * @param MetadataInterface $metadata
-     * @param string            $interface
-     * @param array             $stackClasses
-     */
     public function __construct(MetadataInterface $metadata, Connection $connection, $interface, array $stackClasses)
     {
         parent::__construct($metadata, $connection);
@@ -53,7 +37,7 @@ class StackRepository extends PimcoreRepository
         foreach ($stackClasses as $class) {
             $namespaces = explode('\\', $class);
 
-            $this->classNames[] = '"' . end($namespaces) . '"';
+            $this->classNames[] = '"'.end($namespaces).'"';
         }
     }
 
@@ -84,7 +68,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function getList()
+    public function getList(): Listing
     {
         $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));

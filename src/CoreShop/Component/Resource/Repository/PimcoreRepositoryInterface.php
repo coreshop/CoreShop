@@ -14,13 +14,14 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Repository;
 
-use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\DataObject\Listing;
 
-interface PimcoreRepositoryInterface extends RepositoryInterface
+interface PimcoreRepositoryInterface extends PimcoreDaoRepositoryInterface
 {
     public function getClassId(): string;
 
-    public function getList();
+    public function getList(): Listing;
 
-    public function forceFind($id, bool $force = true): ?AbstractModel;
+    public function forceFind($id, bool $force = true): ?Concrete;
 }
