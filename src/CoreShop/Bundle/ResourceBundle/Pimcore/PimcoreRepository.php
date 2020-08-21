@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Pimcore\Model\AbstractModel;
+use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Listing;
 
 class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositoryInterface
@@ -40,7 +41,7 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
     }
 
     /**
-     * @return Listing|AbstractModel
+     * @return Listing
      */
     public function getList(): Listing
     {
@@ -58,5 +59,16 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
 
         throw new \InvalidArgumentException(sprintf('Class %s has no getList or a Listing Class function and thus is not supported here',
             $className));
+    }
+
+    public function forceFind($id, bool $force = true): ?Concrete
+    {
+        $concrete = parent::forceFind($id, $force);
+
+        if ($concrete instanceof Concrete) {
+            return $concrete;
+        }
+
+        return null;
     }
 }

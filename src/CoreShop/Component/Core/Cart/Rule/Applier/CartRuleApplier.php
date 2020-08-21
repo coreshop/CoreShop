@@ -65,7 +65,7 @@ class CartRuleApplier implements CartRuleApplierInterface
     protected function apply(OrderInterface $cart, ProposalCartPriceRuleItemInterface $cartPriceRuleItem, int $discount, $withTax = false, $positive = false): void
     {
         /**
-         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         * @var \CoreShop\Component\Core\Model\OrderInterface $cart
          */
         $totalAmount = [];
 
