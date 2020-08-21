@@ -123,7 +123,7 @@ coreshop.order.order.createPayment = {
                         xtype: 'numberfield',
                         name: 'amount',
                         fieldLabel: t('coreshop_amount'),
-                        decimalPrecision: 4,
+                        decimalPrecision: 2,
                         afterLabelTextTpl: [
                             '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>'
                         ],

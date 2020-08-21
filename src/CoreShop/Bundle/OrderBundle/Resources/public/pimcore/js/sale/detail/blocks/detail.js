@@ -156,7 +156,7 @@ coreshop.order.sale.detail.blocks.detail = Class.create(coreshop.order.sale.deta
                     renderer: coreshop.util.format.currency.bind(this, this.sale.currency.isoCode),
                     field: {
                         xtype: 'numberfield',
-                        decimalPrecision: 4
+                        decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
                     }
                 },
                 {

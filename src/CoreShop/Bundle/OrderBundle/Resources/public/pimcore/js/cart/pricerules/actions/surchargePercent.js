@@ -29,7 +29,7 @@ coreshop.cart.pricerules.actions.surchargePercent = Class.create(coreshop.rules.
             value: percentValue,
             minValue: 0,
             maxValue: 100,
-            decimalPrecision: 0
+            decimalPrecision: 2
         });
 
         var applyOn = new Ext.form.ComboBox({

@@ -14,6 +14,7 @@ namespace CoreShop\Bundle\ShippingBundle\Form\Type\Rule\Action;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Range;
@@ -40,7 +41,7 @@ class AdditionPercentActionConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('percent', IntegerType::class, [
+            ->add('percent', NumberType::class, [
                 'constraints' => [
                     new NotBlank(['groups' => $this->validationGroups]),
                     new Type(['type' => 'numeric', 'groups' => $this->validationGroups]),
