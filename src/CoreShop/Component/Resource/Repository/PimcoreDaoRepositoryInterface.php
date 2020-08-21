@@ -20,5 +20,5 @@ interface PimcoreDaoRepositoryInterface extends RepositoryInterface
 {
     public function getList();
 
-    public function forceFind($id, bool $force = true): ?AbstractModel;
+    public function forceFind($id, bool $force = true);
 }

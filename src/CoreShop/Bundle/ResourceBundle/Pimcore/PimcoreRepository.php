@@ -61,7 +61,7 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
             $className));
     }
 
-    public function forceFind($id, bool $force = true): ?Concrete
+    public function forceFind($id, bool $force = true)
     {
         $concrete = parent::forceFind($id, $force);
 

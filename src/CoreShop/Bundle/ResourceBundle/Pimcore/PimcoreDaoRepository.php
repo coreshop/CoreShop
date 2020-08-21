@@ -96,14 +96,14 @@ class PimcoreDaoRepository implements PimcoreDaoRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, bool $force = true): ?AbstractModel
+    public function forceFind($id, bool $force = true)
     {
         $class = $this->metadata->getClass('model');
 
         if (!method_exists($class, 'getById')) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DataObject',
+                    'Class %s has no getById function and is therefore not considered as a valid Pimcore DAO Object',
                     $class
                 )
             );
