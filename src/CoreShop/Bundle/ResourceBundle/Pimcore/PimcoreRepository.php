@@ -43,7 +43,7 @@ class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositor
     /**
      * @return Listing
      */
-    public function getList(): Listing
+    public function getList()
     {
         $className = $this->metadata->getClass('model');
 

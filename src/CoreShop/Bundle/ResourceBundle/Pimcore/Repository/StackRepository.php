@@ -68,7 +68,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function getList(): Listing
+    public function getList()
     {
         $list = new DataObject\Listing();
         $list->addConditionParam(sprintf('o_className IN (%s)', implode(',', $this->classNames)));
@@ -79,7 +79,7 @@ class StackRepository extends PimcoreRepository
     /**
      * {@inheritdoc}
      */
-    public function forceFind($id, bool $force = true): ?DataObject\Concrete
+    public function forceFind($id, bool $force = true)
     {
         $instance = DataObject::getById($id, $force);
 
