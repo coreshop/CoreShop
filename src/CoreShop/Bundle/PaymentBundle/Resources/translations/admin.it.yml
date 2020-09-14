@@ -1,8 +1,1 @@
 ---
-coreshop_save_error: 'Errore durante il salvataggio dell''elemento'
-coreshop_payment_provider: 'Provider di pagamento'
-coreshop_identifier: 'Identificativo'
-coreshop_position: 'Posizione'
-coreshop_instructions: 'Istruzioni'
-coreshop_payment_provider_factory: 'Tipo'
-coreshop_permission_payment_provider: 'CoreShop: Provider di pagamento'
