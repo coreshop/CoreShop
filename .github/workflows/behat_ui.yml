@@ -88,4 +88,4 @@ jobs:
       run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
 
     - name: Run Behat
-      run: PANTHER_CHROME_DRIVER_BINARY=$CHROMEWEBDRIVER vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+      run: PANTHER_CHROME_DRIVER_BINARY=$CHROMEDRIVER_BIN vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
