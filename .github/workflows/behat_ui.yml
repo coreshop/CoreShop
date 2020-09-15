@@ -13,7 +13,6 @@ jobs:
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
-      PANTHER_CHROME_DRIVER_BINARY: "bin/chromedriver-bin/chromedriver_linux64"
     services:
       mysql:
         image: mysql:5.7
@@ -31,9 +30,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - uses: nanasess/setup-chromedriver@master
-      with:
-        chromedriver-version: '83.0.4103.14'
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2
@@ -92,4 +88,4 @@ jobs:
       run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
 
     - name: Run Behat
-      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+      run: PANTHER_CHROME_DRIVER_BINARY=$CHROMEWEBDRIVER vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
