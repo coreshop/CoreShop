@@ -13,6 +13,8 @@ jobs:
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
+      PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
+      PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
     services:
       mysql:
         image: mysql:5.7
@@ -88,4 +90,4 @@ jobs:
       run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
 
     - name: Run Behat
-      run: PANTHER_CHROME_DRIVER_BINARY=$CHROMEDRIVER_BIN vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
