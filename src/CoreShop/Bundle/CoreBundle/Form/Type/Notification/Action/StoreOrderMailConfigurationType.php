@@ -20,7 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class StoreMailConfigurationType extends AbstractType
+class StoreOrderMailConfigurationType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -38,6 +38,8 @@ class StoreMailConfigurationType extends AbstractType
                     'entry_type' => NumberType::class,
                 ],
             ])
+            ->add('sendInvoices', CheckboxType::class)
+            ->add('sendShipments', CheckboxType::class)
             ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }
 
