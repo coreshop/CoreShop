@@ -256,4 +256,3 @@ services:
             - { name: kernel.event_listener, event: coreshop.customer.register, method: applyRegisterCustomerRule }
             - { name: kernel.event_listener, event: coreshop.customer.request_newsletter_confirm, method: applyNewsletterConfirmRequestRule }
             - { name: kernel.event_listener, event: coreshop.customer.newsletter_confirm_post, method: applyNewsletterConfirmed }
-so
