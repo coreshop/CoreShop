@@ -43,7 +43,7 @@ abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has($this->implementationLoader)) {
+        if (!$container->hasDefinition($this->implementationLoader)) {
             return;
         }
 
