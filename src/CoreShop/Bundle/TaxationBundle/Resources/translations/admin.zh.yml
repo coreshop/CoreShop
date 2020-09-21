@@ -1,1 +1,4 @@
 ---
+coreshop_tax_rate: '税率'
+coreshop_tax_rule_group: '税法'
+coreshop_tax_rule_behavior_disable: '仅该税'
