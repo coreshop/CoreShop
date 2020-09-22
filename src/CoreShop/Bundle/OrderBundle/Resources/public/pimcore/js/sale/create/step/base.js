@@ -15,7 +15,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
     isValid: function () {
         var values = this.getValues();
 
-        return values.currency && values.language;
+        return values.currency && values.localeCode;
     },
 
     getPriority: function () {
@@ -81,7 +81,7 @@ coreshop.order.sale.create.step.base = Class.create(coreshop.order.sale.create.a
             },
             new Ext.form.ComboBox({
                 fieldLabel: t('language'),
-                name: "language",
+                name: "localeCode",
                 store: languageStore,
                 editable: false,
                 triggerAction: 'all',
