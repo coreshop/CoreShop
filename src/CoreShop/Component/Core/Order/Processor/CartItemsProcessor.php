@@ -120,6 +120,8 @@ final class CartItemsProcessor implements CartProcessorInterface
                 unset($context['unitDefinition']);
             }
 
+            $context['cartItem'] = $item;
+
             $itemPrice = $this->productPriceCalculator->getPrice($product, $context, true);
 
             // respect item quantity factor
