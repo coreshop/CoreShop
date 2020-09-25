@@ -587,6 +587,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
             }
 
+            if ($storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
+                $storeValuesEntity = clone $storeValuesEntity;
+                $storeValuesEntity->setProduct($object);
+            }
+
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
 
             $parsedData = $this->expandDotNotationKeys($storeData);
