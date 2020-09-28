@@ -278,12 +278,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         if (!is_array($data)) {
             $data = [];
         }
-
-        foreach ($data as &$storeEntry) {
-            if ($storeEntry instanceof ProductStoreValuesInterface) {
-                $storeEntry->setProduct($object);
-            }
-        }
+//
+//        foreach ($data as &$storeEntry) {
+//            if ($storeEntry instanceof ProductStoreValuesInterface) {
+//                $storeEntry->setProduct($object);
+//            }
+//        }
 
         unset($storeEntry);
 
