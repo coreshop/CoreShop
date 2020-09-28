@@ -353,22 +353,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $entityMerger->merge($productStoreValue);
 
             if ($productStoreValue->getProduct() && $productStoreValue->getProduct()->getId() !== $object->getId()) {
-                $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
-                    $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
-                    $productStoreValue
-                );
-                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
-                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($productStoreValue));
+                if ($productStoreValue->getId()) {
+                    $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
+                        $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
+                        $productStoreValue
+                    );
+                    $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
 
-                //This means that we inherited store values and also changed something, thus we break the inheritance and
-                //give the product its own record
-                if (count($changeSet) > 0) {
-                    $productStoreValue = clone $productStoreValue;
+                    //This means that we inherited store values and also changed something, thus we break the inheritance and
+                    //give the product its own record
+                    if (count($changeSet) > 0) {
+                        $productStoreValue = clone $productStoreValue;
+                        $productStoreValue->setProduct($object);
+                    }
+                }
+                else {
                     $productStoreValue->setProduct($object);
                 }
             }
 
-            if (!$productStoreValue->getProduct()) {
+            if (null === $productStoreValue->getProduct()) {
                 $productStoreValue->setProduct($object);
             }
 
@@ -380,8 +384,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             $allStoreValues[] = $productStoreValue;
         }
-
-        unset($productStoreValue);
 
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
