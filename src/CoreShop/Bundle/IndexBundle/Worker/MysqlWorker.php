@@ -15,7 +15,9 @@ namespace CoreShop\Bundle\IndexBundle\Worker;
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\TableIndex;
 use CoreShop\Component\Index\Condition\ConditionRendererInterface;
 use CoreShop\Component\Index\Extension\IndexColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexColumnTypeConfigExtension;
 use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
+use CoreShop\Component\Index\Extension\IndexSystemColumnTypeConfigExtension;
 use CoreShop\Component\Index\Interpreter\LocalizedInterpreterInterface;
 use CoreShop\Component\Index\Model\IndexableInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
@@ -134,7 +136,7 @@ class MysqlWorker extends AbstractWorker
                 $type = $column->getObjectType();
                 $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
                 if ($type !== 'localizedfields' && !$interpreterClass instanceof LocalizedInterpreterInterface) {
-                    $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
+                    $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
                 }
             }
         }
@@ -142,7 +144,7 @@ class MysqlWorker extends AbstractWorker
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
                 foreach ($extension->getSystemColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
+                    $table->addColumn($name, $this->renderFieldType($type), $this->getFieldTypeConfig($column));
                 }
             }
         }
@@ -187,14 +189,20 @@ class MysqlWorker extends AbstractWorker
             $type = $column->getObjectType();
             $interpreterClass = $column->hasInterpreter() ? $this->getInterpreterObject($column) : null;
             if ($type === 'localizedfields' || $interpreterClass instanceof LocalizedInterpreterInterface) {
-                $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), ['notnull' => false]);
+                $table->addColumn($column->getName(), $this->renderFieldType($column->getColumnType()), $this->getFieldTypeConfig($column));
             }
         }
 
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
                 foreach ($extension->getLocalizedSystemColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
+                    $config = ['notnull' => false];
+
+                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
+                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                    }
+
+                    $table->addColumn($name, $this->renderFieldType($type), $config);
                 }
             }
         }
@@ -236,7 +244,13 @@ class MysqlWorker extends AbstractWorker
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexRelationalColumnsExtensionInterface) {
                 foreach ($extension->getRelationalColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), ['notnull' => false]);
+                    $config = ['notnull' => false];
+
+                    if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
+                        $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
+                    }
+
+                    $table->addColumn($name, $this->renderFieldType($type), $config);
                 }
             }
         }
@@ -517,6 +531,22 @@ QUERY;
         }
 
         throw new \Exception($type . ' is not supported by MySQL Index');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldTypeConfig(IndexColumnInterface $column)
+    {
+        $config = ['notnull' => false];
+
+        foreach ($this->getExtensions($column->getIndex()) as $extension) {
+            if ($extension instanceof IndexColumnTypeConfigExtension) {
+                $config = array_merge($config, $extension->getColumnConfig($column));
+            }
+        }
+
+        return $config;
     }
 
     /**
