@@ -144,7 +144,7 @@ class MysqlWorker extends AbstractWorker
         foreach ($this->getExtensions($index) as $extension) {
             if ($extension instanceof IndexColumnsExtensionInterface) {
                 foreach ($extension->getSystemColumns() as $name => $type) {
-                    $table->addColumn($name, $this->renderFieldType($type), $this->getFieldTypeConfig($column));
+                    $table->addColumn($name, $this->renderFieldType($type), $this->getSystemFieldTypeConfig($index, $name, $type));
                 }
             }
         }
@@ -543,6 +543,22 @@ QUERY;
         foreach ($this->getExtensions($column->getIndex()) as $extension) {
             if ($extension instanceof IndexColumnTypeConfigExtension) {
                 $config = array_merge($config, $extension->getColumnConfig($column));
+            }
+        }
+
+        return $config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSystemFieldTypeConfig(IndexInterface $index, string $name, string $type)
+    {
+        $config = ['notnull' => false];
+
+        foreach ($this->getExtensions($index) as $extension) {
+            if ($extension instanceof IndexSystemColumnTypeConfigExtension) {
+                $config = array_merge($config, $extension->getSystemColumnConfig($name, $type));
             }
         }
 

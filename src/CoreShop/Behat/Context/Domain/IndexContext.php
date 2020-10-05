@@ -282,7 +282,8 @@ final class IndexContext implements Context
 
     /**
      * @param string $tableName
-     * @param array  $columns
+     * @param string $column
+     * @param string $type
      */
     private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type)
     {
