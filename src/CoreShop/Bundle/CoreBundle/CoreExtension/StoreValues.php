@@ -563,6 +563,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
+        /**
+         * @var ProductInterface $object
+         */
         $errors = [];
         $storeValues = [];
 
@@ -587,7 +590,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
             }
 
-            if ($storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
+            if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
                 $storeValuesEntity = clone $storeValuesEntity;
                 $storeValuesEntity->setProduct($object);
             }
