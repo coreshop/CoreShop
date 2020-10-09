@@ -194,10 +194,10 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Notification\Rule\Action\Order\OrderMailActionProcessor'
         tags:
-            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
-            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
-            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
-            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\OrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: order, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: payment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: shipment, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
+            - { name: coreshop.notification_rule.action, type: storeOrderMail, notification-type: invoice, form-type: CoreShop\Bundle\CoreBundle\Form\Type\Notification\Action\StoreOrderMailConfigurationType }
 
     # Listeners -> here the actual magic happens
     CoreShop\Bundle\CoreBundle\EventListener\NotificationRules\AbstractNotificationRuleListener:

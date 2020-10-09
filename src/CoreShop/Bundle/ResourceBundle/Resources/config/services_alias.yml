@@ -1,4 +1,7 @@
 services:
+    _defaults:
+        public: true
+
     coreshop.resource_registry:
         alias: CoreShop\Component\Resource\Metadata\RegistryInterface
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Resource\Metadata\RegistryInterface instead'

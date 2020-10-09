@@ -4,4 +4,4 @@ CoreShop\Component\Order\Model\Cart:
 
     getters:
         items:
-            - Valid: ~
+            - Valid: { groups: ['coreshop'] }

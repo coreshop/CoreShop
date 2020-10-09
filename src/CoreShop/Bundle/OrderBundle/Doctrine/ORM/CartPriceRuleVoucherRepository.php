@@ -23,12 +23,35 @@ class CartPriceRuleVoucherRepository extends EntityRepository implements CartPri
     /**
      * {@inheritdoc}
      */
-    public function findByCode(string $code): CartPriceRuleVoucherCodeInterface
+    public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface
     {
         return $this->createQueryBuilder('o')
             ->andWhere('o.code = :code')
             ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function countCodes(int $length, ?string $prefix = null, ?string $suffix = null): int
+    {
+        if ($prefix !== null) {
+            $length += strlen($prefix);
+        }
+
+        if ($suffix !== null) {
+            $length += strlen($suffix);
+        }
+
+        $code = $prefix . '%' . $suffix;
+
+        return (int) $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->andWhere('LENGTH(o.code) = :length')
+            ->andWhere('o.code LIKE :code')
+            ->setParameter('length', $length)
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
     }
 }

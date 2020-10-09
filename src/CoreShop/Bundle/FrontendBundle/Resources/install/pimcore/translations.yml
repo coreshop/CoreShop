@@ -1573,3 +1573,52 @@ translations:
           en: 'Total to be paid'
           de: 'Zu zahlender Betrag'
           it: 'Totale da pagare'
+
+  coreshop.checkout.address.invoice_as_shipping_invalid:
+      languages:
+          de_CH: 'Die Verwendung der Rechnungsadresse als Versandadresse ist hier nicht möglich. Haben Sie eine Adresse gewählt die strikt als Rechnungsadresse deklariert ist?'
+          de: 'Die Verwendung der Rechnungsadresse als Versandadresse ist hier nicht möglich. Haben Sie eine Adresse gewählt die strikt als Rechnungsadresse deklariert ist?'
+          en: 'Using the invoice address as shipping address is not possible. Maybe your selected invoice address is a strict type of invoice address?'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.amount.not_blank:
+      languages:
+          de_CH: 'Die Anzahl der zu erstellenden Gutscheincodes muss mindestens {{ limit }} sein.'
+          de: 'Die Anzahl der zu erstellenden Gutscheincodes muss mindestens {{ limit }} sein.'
+          en: 'Amount of coupons to generate must be at least {{ limit }}.'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.amount.min:
+      languages:
+          de_CH: 'Bitte geben Sie die Anzahl der zu generierenden Gutscheincodes ein.'
+          de: 'Bitte geben Sie die Anzahl der zu generierenden Gutscheincodes ein.'
+          en: 'Please enter amount of coupons to generate.'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.length.not_blank:
+      languages:
+          de_CH: 'Bitte geben Sie eine Gutscheincodelänge ein.'
+          de: 'Bitte geben Sie eine Gutscheincodelänge ein.'
+          en: 'Please enter coupon code length.'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.length.min:
+      languages:
+          de_CH: 'Der Gutscheincode muss mindestens {{ limit }} Zeichen lang sein.'
+          de: 'Der Gutscheincode muss mindestens {{ limit }} Zeichen lang sein.'
+          en: 'Coupon code must be at least {{ limit }} characters long.'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.length.max:
+      languages:
+          de_CH: 'Der Gutscheincode darf nicht länger als {{ limit }} Zeichen lang sein.'
+          de: 'Der Gutscheincode darf nicht länger als {{ limit }} Zeichen lang sein.'
+          en: 'Coupon code must not be longer than {{ limit }} characters.'
+          it: ''
+
+  coreshop.cart_price_rule_voucher_generator.possible_generation_amount:
+      languages:
+          de_CH: 'Ungültige Gutscheincodelänge oder ungültiger Gutscheinbetrag. Es ist nicht möglich %expectedAmount% einzigartige Gutscheincodes mit einer Länge von %codeLength% Zeichen zu generieren. Es können maximal %possibleAmount% Gutscheincodes generiert werden.'
+          de: 'Ungültige Gutscheincodelänge oder ungültiger Gutscheinbetrag. Es ist nicht möglich %expectedAmount% einzigartige Gutscheincodes mit einer Länge von %codeLength% Zeichen zu generieren. Es können maximal %possibleAmount% Gutscheincodes generiert werden.'
+          en: 'Invalid coupons code length or coupons amount. It is not possible to generate %expectedAmount% unique coupons with code length %codeLength%. The possible amount to generate is %possibleAmount%.'
+          it: ''

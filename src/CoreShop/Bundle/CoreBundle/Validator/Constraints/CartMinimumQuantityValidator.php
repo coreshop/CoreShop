@@ -68,6 +68,10 @@ class CartMinimumQuantityValidator extends ConstraintValidator
                 continue;
             }
 
+            if ($product->getMinimumQuantityToOrder() <= 0) {
+                continue;
+            }
+
             $minLimit = (int) $product->getMinimumQuantityToOrder();
             $lowerThenMinimum = $this->quantityValidatorService->isLowerThenMinLimit(
                 $minLimit,

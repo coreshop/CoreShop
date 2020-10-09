@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Application;
 use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Bundle\NotificationBundle\Form\Type\NotificationRuleType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Model\Document;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

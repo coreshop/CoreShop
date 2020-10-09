@@ -105,7 +105,7 @@ interface AddressInterface extends ResourceInterface, PimcoreModelInterface
     public function getCountry();
 
     /**
-     * @param string $country
+     * @param CountryInterface $country
      */
     public function setCountry($country);
 

@@ -13,6 +13,7 @@ jobs:
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
+      PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "bin/chromedriver-bin/chromedriver_linux64"
     services:
       mysql:
@@ -27,13 +28,10 @@ jobs:
       matrix:
         php: [7.2, 7.3, 7.4]
         symfony: [^4.0]
-        pimcore: [~6.6.0, dev-master]
+        pimcore: [7.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2
-    - uses: nanasess/setup-chromedriver@master
-      with:
-        chromedriver-version: '83.0.4103.14'
 
     - name: Install PHP
       uses: shivammathur/setup-php@v2

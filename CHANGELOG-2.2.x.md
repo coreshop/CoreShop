@@ -1,5 +1,51 @@
 # Within 2.2
 
+## 2.2.4
+ - Bugs:
+    - [CoreBundle] Don't validate maximum or minimum order quantity when value is 0 (https://github.com/coreshop/CoreShop/issues/1467, https://github.com/coreshop/CoreShop/pull/1468)
+    - [Specific Price Rule] Unable to edit saved rule (https://github.com/coreshop/CoreShop/issues/1437, https://github.com/coreshop/CoreShop/pull/1452)
+    - [Pimcore] Fix Ext Item Selector (https://github.com/coreshop/CoreShop/pull/1465)
+    - [Core, Order] fix surchage amount processor and remove apply-on (https://github.com/coreshop/CoreShop/pull/1462)
+    - [All] fix for copying data-objects with complex doctrine entities (https://github.com/coreshop/CoreShop/pull/1404)
+    - [CoreBundle] fix installation of address format (https://github.com/coreshop/CoreShop/pull/1455, https://github.com/coreshop/CoreShop/issues/1432)
+    - [Orders] Unable to edit grid options to add/remove fields (https://github.com/coreshop/CoreShop/issues/1438, https://github.com/coreshop/CoreShop/pull/1454)
+    - [Voucher] Voucher code generator returns always the same code (https://github.com/coreshop/CoreShop/issues/1448, https://github.com/coreshop/CoreShop/pull/1451)
+    - [ProductBundle] fix serialization of translation labels in product-price rules (https://github.com/coreshop/CoreShop/pull/1447)
+    
+ - Features:
+    - [OrderBundle] check if generation of a certain amount of codes is possible before actually generating them (https://github.com/coreshop/CoreShop/pull/1456, https://github.com/coreshop/CoreShop/issues/1453)
+      
+## 2.2.3
+ - Bugs:
+    - [FrontendBundle] apply confirm and pay transition for orders with value of 0 (https://github.com/coreshop/CoreShop/pull/1442)
+    - [Core] create default address if customer doesn't have one (https://github.com/coreshop/CoreShop/pull/1444)
+    - [OrderBundle] Values should be zero, if amount should not be defined (https://github.com/coreshop/CoreShop/pull/1443)
+    - [OrderBundle] Voucher Credit and Tax rounding issue (https://github.com/coreshop/CoreShop/pull/1441)
+    - [OrderBundle] Add currency property (https://github.com/coreshop/CoreShop/pull/1436)
+    - [Docs] Fix typo in the docs (https://github.com/coreshop/CoreShop/pull/1426)
+    - [CoreBundle] assert default address type (https://github.com/coreshop/CoreShop/pull/1440, https://github.com/coreshop/CoreShop/issues/1257)
+    
+ - Features:
+    - [OrderBundle] Voucher Credit and Tax rounding issue (https://github.com/coreshop/CoreShop/pull/1441)
+    
+## 2.2.2
+ - Bugs:
+    - [IndexBundle] fix range filter condition (https://github.com/coreshop/CoreShop/pull/1416, https://github.com/coreshop/CoreShop/issues/1387)
+    - [OrderBundle] Fix currency formatting in sale detail related components (https://github.com/coreshop/CoreShop/pull/1421)
+    - [OrderBundle] Fix order expire command (https://github.com/coreshop/CoreShop/pull/1422)
+    - [Product] re-add id reset on entity clone (https://github.com/coreshop/CoreShop/pull/1419)
+    - [ProductBundle] fix quantity price rule condition (https://github.com/coreshop/CoreShop/pull/1412)
+    - [Installer] fix output of thumbnail installer (https://github.com/coreshop/CoreShop/pull/1413)
+    - [IndexBundle] fix saving of nested filters (https://github.com/coreshop/CoreShop/pull/1415, https://github.com/coreshop/CoreShop/issues/1414)
+    - [CoreBundle] fix typo in query condition to fetch product variants (https://github.com/coreshop/CoreShop/pull/1418)
+    - [FrontendBundle] Fixed issue with saving address changes (https://github.com/coreshop/CoreShop/pull/1408)
+    - [RuleBundle] improve dirty detection (https://github.com/coreshop/CoreShop/pull/1410)
+    - [CurrencyBundle] fix cache issue with money-currency type (https://github.com/coreshop/CoreShop/pull/1406)
+    - [QuantityPriceRules] fix decimal precision display (https://github.com/coreshop/CoreShop/pull/1398, https://github.com/coreshop/CoreShop/issues/1395) 
+ 
+ - Features:
+    - [FrontendBundle] add italian translations (https://github.com/coreshop/CoreShop/pull/1417) big thanks to @ramundomario
+    
 ## 2.2.1
  - Bugs:
     - [CoreBundle] fix registration service (https://github.com/coreshop/CoreShop/pull/1391)

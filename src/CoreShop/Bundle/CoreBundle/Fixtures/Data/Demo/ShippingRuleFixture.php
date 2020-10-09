@@ -18,7 +18,7 @@ use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
 use CoreShop\Component\Rule\Model\Action;
 use CoreShop\Component\Rule\Model\Condition;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -65,12 +65,6 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'maxAmount' => 15000,
                             ],
                         ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
                     ],
                     'actions' => [
                         [
@@ -92,12 +86,6 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                                 'maxAmount' => 200000,
                             ],
                         ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
-                            ],
-                        ],
                     ],
                     'actions' => [
                         [
@@ -117,12 +105,6 @@ class ShippingRuleFixture extends AbstractFixture implements ContainerAwareInter
                             'config' => [
                                 'minAmount' => 200000,
                                 'maxAmount' => 300000,
-                            ],
-                        ],
-                        [
-                            'type' => 'zones',
-                            'config' => [
-                                'zones' => [4],
                             ],
                         ],
                     ],

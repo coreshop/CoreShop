@@ -38,8 +38,6 @@ class StoreMailConfigurationType extends AbstractType
                     'entry_type' => NumberType::class,
                 ],
             ])
-            ->add('sendInvoices', CheckboxType::class)
-            ->add('sendShipments', CheckboxType::class)
             ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }
 

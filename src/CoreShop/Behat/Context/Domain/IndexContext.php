@@ -87,6 +87,16 @@ final class IndexContext implements Context
     }
 
     /**
+     * @Then /^the (index) should have a column "([^"]+)" of type "([^"]+)"$/
+     */
+    public function theIndexShouldHaveAColumnOfType(IndexInterface $index, $column, $type)
+    {
+        $tableName = sprintf('coreshop_index_mysql_%s', $index->getName());
+
+        $this->indexShouldHaveColumnOfType($tableName, $column, $type);
+    }
+
+    /**
      * @Then /^the (index) should have indexed the (product "[^"]+")$/
      * @Then /^the (index) should have indexed the (object)$/
      */
@@ -254,6 +264,23 @@ final class IndexContext implements Context
 
             Assert::true($found, sprintf('Table column %s not found, found columns %s', $col, implode(', ', $columns)));
         }
+    }
+
+    /**
+     * @param string $tableName
+     * @param string $column
+     * @param string $type
+     */
+    private function indexShouldHaveColumnOfType(string $tableName, string $column, string $type)
+    {
+        $schemaManager = $this->entityManager->getConnection()->getSchemaManager();
+
+        Assert::true($schemaManager->tablesExist([$tableName]), sprintf('Table with name %s should exist but was not found', $tableName));
+
+        $doctrineCol = $schemaManager->listTableDetails($tableName)->getColumn($column);
+        $actualType = $schemaManager->getDatabasePlatform()->getColumnDeclarationSQL($column, $doctrineCol->toArray());
+
+        Assert::eq($type, $actualType);
     }
 
     /**

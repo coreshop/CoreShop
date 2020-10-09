@@ -31,7 +31,7 @@ final class AddMultipleToCartType extends AbstractResourceType
             'entry_type' => AddToCartType::class,
             'allow_add' => true,
             'constraints' => [
-                new Valid()
+                new Valid(['groups' => $this->validationGroups])
             ]
         ]);
     }
@@ -41,6 +41,8 @@ final class AddMultipleToCartType extends AbstractResourceType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
+        parent::configureOptions($resolver);
+
         $resolver->setDefault('csrf_protection', false);
         $resolver->setDefault('allow_extra_fields', true);
     }

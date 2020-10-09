@@ -42,7 +42,7 @@ final class AddressAllocatorExtension extends AbstractExtension
     public function getFilters()
     {
         return [
-            new TwigFilter('coreshop_allocate_valid_addresses', [$this->customerAddressAllocator, 'allocateAddresses']),
+            new TwigFilter('coreshop_allocate_valid_addresses', [$this->customerAddressAllocator, 'allocateForCustomer']),
         ];
     }
 }

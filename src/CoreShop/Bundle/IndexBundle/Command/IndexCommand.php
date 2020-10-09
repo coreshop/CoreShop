@@ -179,7 +179,7 @@ final class IndexCommand extends Command
         return 0;
     }
 
-    private function dispatchInfo(string $type, string $info): void
+    private function dispatchInfo(string $type, $info): void
     {
         $this->eventDispatcher->dispatch(sprintf('coreshop.index.%s', $type), new GenericEvent($info));
     }

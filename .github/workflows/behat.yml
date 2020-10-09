@@ -25,7 +25,7 @@ jobs:
       matrix:
         php: [7.2, 7.3, 7.4]
         symfony: [^4.0]
-        pimcore: [~6.6.0, dev-master]
+        pimcore: [7.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2
@@ -44,6 +44,7 @@ jobs:
 
     - name: Verify MySQL connection from host
       run: |
+        sudo apt-get update
         sudo apt-get install -y mysql-client
         mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
 

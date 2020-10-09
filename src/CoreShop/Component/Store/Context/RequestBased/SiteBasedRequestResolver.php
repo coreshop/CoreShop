@@ -32,7 +32,7 @@ final class SiteBasedRequestResolver implements RequestResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function findStore(Request $request): StoreInterface
+    public function findStore(Request $request): ?StoreInterface
     {
         if (Site::isSiteRequest()) {
             return $this->storeRepository->findOneBySite(Site::getCurrentSite()->getId());

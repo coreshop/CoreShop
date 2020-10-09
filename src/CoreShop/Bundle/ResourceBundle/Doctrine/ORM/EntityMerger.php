@@ -124,6 +124,9 @@ class EntityMerger
             if ($assoc['type'] === ClassMetadata::MANY_TO_MANY) {
                 $newCollection = $origData;
 
+                //Reset new Data, for some reason the line above resets newData
+                $newData = $class->reflFields[$assoc['fieldName']]->getValue($entity);
+
                 $this->mergeCollection($origData, $newData, $assoc, static function ($foundEntry) use ($newCollection) {
                     $newCollection->removeElement($foundEntry);
                 }, $visited);

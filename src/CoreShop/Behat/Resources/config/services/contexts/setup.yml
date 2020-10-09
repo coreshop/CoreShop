@@ -282,6 +282,18 @@ services:
         tags:
             - { name: fob.context_service }
 
+    coreshop.behat.context.setup.cart_price_rule_voucher_code:
+        class: CoreShop\Behat\Context\Setup\CartPriceRuleVoucherCodeContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@doctrine.orm.entity_manager'
+            - '@coreshop.repository.cart_price_rule_voucher_code'
+            - '@coreshop.factory.cart_price_rule_voucher_code'
+            - '@coreshop.generator.cart_price_rule_voucher_codes'
+            - '@CoreShop\Component\Order\Generator\CodeGeneratorCheckerInterface'
+        tags:
+            - { name: fob.context_service }
+
     coreshop.behat.context.setup.product_quantity_price_rule:
         class: CoreShop\Behat\Context\Setup\ProductQuantityPriceRuleContext
         arguments:

@@ -280,12 +280,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         if (!is_array($data)) {
             $data = [];
         }
-
-        foreach ($data as &$storeEntry) {
-            if ($storeEntry instanceof ProductStoreValuesInterface) {
-                $storeEntry->setProduct($object);
-            }
-        }
+//
+//        foreach ($data as &$storeEntry) {
+//            if ($storeEntry instanceof ProductStoreValuesInterface) {
+//                $storeEntry->setProduct($object);
+//            }
+//        }
 
         unset($storeEntry);
 
@@ -355,22 +355,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $entityMerger->merge($productStoreValue);
 
             if ($productStoreValue->getProduct() && $productStoreValue->getProduct()->getId() !== $object->getId()) {
-                $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
-                    $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
-                    $productStoreValue
-                );
-                $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
-                $this->getEntityManager()->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($productStoreValue));
+                if ($productStoreValue->getId()) {
+                    $this->getEntityManager()->getUnitOfWork()->computeChangeSet(
+                        $this->getEntityManager()->getClassMetadata($this->getProductStoreValuesRepository()->getClassName()),
+                        $productStoreValue
+                    );
+                    $changeSet = $this->getEntityManager()->getUnitOfWork()->getEntityChangeSet($productStoreValue);
 
-                //This means that we inherited store values and also changed something, thus we break the inheritance and
-                //give the product its own record
-                if (count($changeSet) > 0) {
-                    $productStoreValue = clone $productStoreValue;
+                    //This means that we inherited store values and also changed something, thus we break the inheritance and
+                    //give the product its own record
+                    if (count($changeSet) > 0) {
+                        $productStoreValue = clone $productStoreValue;
+                        $productStoreValue->setProduct($object);
+                    }
+                }
+                else {
                     $productStoreValue->setProduct($object);
                 }
             }
 
-            if (!$productStoreValue->getProduct()) {
+            if (null === $productStoreValue->getProduct()) {
                 $productStoreValue->setProduct($object);
             }
 
@@ -383,8 +387,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $allStoreValues[] = $productStoreValue;
         }
 
-        unset($productStoreValue);
-
         foreach ($availableStoreValues as $availableStoreValuesEntity) {
             if (!in_array($availableStoreValuesEntity->getId(), $validStoreValues, true)) {
                 $this->getEntityManager()->remove($availableStoreValuesEntity);
@@ -396,6 +398,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             $this->getEntityManager()->persist($storeEntity);
             $this->getEntityManager()->flush($storeEntity);
         }
+
+        //We have to set that here, values could change during persist due to copy or variant inheritance break
+        $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
     /**
@@ -562,6 +567,9 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
+        /**
+         * @var ProductInterface $object
+         */
         $errors = [];
         $storeValues = [];
 
@@ -584,6 +592,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
             if ($storeValuesId !== null) {
                 $storeValuesEntity = $productStoreValuesRepository->find($storeValuesId);
+            }
+
+            if ($storeValuesEntity instanceof ProductStoreValuesInterface && $storeValuesEntity->getProduct() && $storeValuesEntity->getProduct()->getId() !== $object->getId()) {
+                $storeValuesEntity = clone $storeValuesEntity;
+                $storeValuesEntity->setProduct($object);
             }
 
             $form = $this->getFormFactory()->createNamed('', ProductStoreValuesType::class, $storeValuesEntity);
@@ -818,7 +831,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
 
         while (count($array)) {
             $value = reset($array);
-            $key = key($array);
+            $key = (string)key($array);
             unset($array[$key]);
 
             if (strpos($key, '.') !== false) {

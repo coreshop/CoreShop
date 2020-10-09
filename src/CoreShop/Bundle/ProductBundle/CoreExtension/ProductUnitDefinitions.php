@@ -490,7 +490,7 @@ class ProductUnitDefinitions extends Data implements
 
         while (count($array)) {
             $value = reset($array);
-            $key = key($array);
+            $key = (string)key($array);
             unset($array[$key]);
 
             if (strpos($key, '.') !== false) {

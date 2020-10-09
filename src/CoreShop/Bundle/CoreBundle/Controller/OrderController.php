@@ -52,9 +52,11 @@ class OrderController extends BaseOrderController
                 'cost' => $sale->getShipping(),
             ];
 
-            $json['carrierInfo'] = [
-                'name' => $sale->getCarrier()->getTitle(),
-            ];
+            if ($sale->getCarrier()) {
+                $json['carrierInfo'] = [
+                    'name' => $sale->getCarrier()->getTitle(),
+                ];
+            }
         }
 
         return $json;

@@ -120,7 +120,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     align: 'right',
                     text: t('coreshop_custom_item_price'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.isoCode, value) + '</span>';
                     }.bind(this),
                     field : {
                         xtype: 'numberfield',
@@ -134,7 +134,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     align: 'right',
                     text: t('coreshop_price'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -144,7 +144,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     align: 'right',
                     text: t('coreshop_converted_price'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -164,7 +164,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     align: 'right',
                     text: t('coreshop_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.baseCurrency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {
@@ -174,7 +174,7 @@ coreshop.order.order.create.step.products = Class.create(coreshop.order.order.cr
                     align: 'right',
                     text: t('coreshop_converted_total'),
                     renderer: function (value, metaData, record) {
-                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.iso, value) + '</span>';
+                        return '<span style="font-weight:bold">' + coreshop.util.format.currency(me.sale.currency.isoCode, value) + '</span>';
                     }.bind(this)
                 },
                 {

@@ -15,7 +15,11 @@ services:
     coreshop.behat.class_storage:
         class: CoreShop\Behat\Service\ClassStorage
 
-    CoreShop\Behat\Service\RelationalIndexExtension:
+    CoreShop\Behat\Service\Index\RelationalIndexExtension:
+        tags:
+            - { name: coreshop.index.extension }
+
+    CoreShop\Behat\Service\Index\IndexColumnExtension:
         tags:
             - { name: coreshop.index.extension }
 

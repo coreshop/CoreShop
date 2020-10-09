@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
+use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Order\Cart\Rule\Action\CartPriceRuleActionProcessorInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
@@ -33,13 +34,18 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
      */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
-        $discount = $this->getDiscount($cart, $configuration);
+        /**
+         * @var StoreInterface $store
+         */
+        $store = $cart->getStore();
+
+        $discount = $this->getDiscount($cart, $configuration, $store->getUseGrossPrice());
 
         if ($discount <= 0) {
             return false;
         }
 
-        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, false);
+        $this->cartRuleApplier->applyDiscount($cart, $cartPriceRuleItem, $discount, $store->getUseGrossPrice());
 
         return true;
     }
@@ -55,15 +61,9 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
     /**
      * {@inheritdoc}
      */
-    protected function getDiscount(OrderInterface $cart, array $configuration): int
+    protected function getDiscount(OrderInterface $cart, array $configuration, $withTax = false)
     {
-        $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
-
-        if ('total' === $applyOn) {
-            $total = $cart->getTotal(false);
-        } else {
-            $total = $cart->getSubtotal(false);
-        }
+        $total = $cart->getSubtotal($withTax);
 
         $amount = (int) round(($configuration['percent'] / 100) * $total);
 

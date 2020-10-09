@@ -31,6 +31,7 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Pimcore\DataObject\ObjectClonerInterface;
 use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
+use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\DataObject\Service;
 use Webmozart\Assert\Assert;
@@ -108,6 +109,9 @@ class OrderCommitter implements OrderCommitterInterface, QuoteCommitterInterface
         $order->setShippingState(OrderShipmentStates::STATE_NEW);
         $order->setPaymentState(OrderPaymentStates::STATE_NEW);
         $order->setInvoiceState(OrderInvoiceStates::STATE_NEW);
+
+        $tokenGenerator = new UniqueTokenGenerator();
+        $order->setToken($tokenGenerator->generate(10));
 
         $this->cartManager->persistCart($order);
 

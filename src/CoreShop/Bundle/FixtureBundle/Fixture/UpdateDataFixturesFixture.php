@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\FixtureBundle\Fixture;
 use CoreShop\Bundle\FixtureBundle\Repository\DataFixtureRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class UpdateDataFixturesFixture extends AbstractFixture
 {

@@ -31,6 +31,7 @@ use CoreShop\Component\Taxation\Model\TaxRuleGroupInterface;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
+use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
 
 final class ProductContext implements Context
@@ -446,6 +447,17 @@ final class ProductContext implements Context
         }
 
         $this->saveProduct($product);
+    }
+
+    /**
+     * @Given /^I copy the (product)$/
+     */
+    public function iCopyTheProduct(ProductInterface $product)
+    {
+        $objectService = new Service();
+        $newObject = $objectService->copyAsChild($product->getParent(), $product);
+
+        $this->sharedStorage->set('copied-object', $newObject);
     }
 
     private function getOrCreateUnitDefinitions(ProductUnitDefinitionsInterface $definitions = null)

@@ -28,7 +28,7 @@ coreshop.shippingrule.actions.additionPercent = Class.create(coreshop.rules.acti
             value: percentValue,
             minValue: 0,
             maxValue: 100,
-            decimalPrecision: 0
+            decimalPrecision: 2
         });
         this.form = new Ext.form.Panel({
             items: [

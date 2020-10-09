@@ -19,7 +19,7 @@ use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Pimcore\Tool;
 use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
@@ -144,7 +144,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
                 foreach ($addressFormatReplaces as $replaceKey => $replaces) {
                     if (!is_array($replaces)) {
-                        $replaces = [];
+                        $replaces = [$replaces];
                     }
 
                     $replaceTo = trim(implode(' ', $replaces));

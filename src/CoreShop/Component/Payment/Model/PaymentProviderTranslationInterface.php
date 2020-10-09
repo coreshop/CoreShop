@@ -32,7 +32,7 @@ interface PaymentProviderTranslationInterface extends ResourceInterface, Timesta
     /**
      * @return string
      */
-    public function getDescription(): string;
+    public function getDescription();
 
     /**
      * @param string $description
