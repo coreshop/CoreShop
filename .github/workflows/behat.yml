@@ -25,7 +25,7 @@ jobs:
       matrix:
         php: [7.2, 7.3, 7.4]
         symfony: [^4.0]
-        pimcore: [~6.6.0, dev-master]
+        pimcore: [7.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2

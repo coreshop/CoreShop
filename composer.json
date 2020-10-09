@@ -121,7 +121,8 @@
     },
     "conflict": {
         "dpfaffenbauer/process-manager": "<2.4",
-        "monolog/monolog": ">=2"
+        "monolog/monolog": ">=2",
+        "symfony/monolog-bundle": "3.6.0"
     },
     "replace": {
         "coreshop/resource": "self.version",

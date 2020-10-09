@@ -12,7 +12,7 @@
 
 declare(strict_types=1);
 
-namespace CoreShop\Behat\Service;
+namespace CoreShop\Behat\Service\Index;
 
 use CoreShop\Component\Index\Extension\IndexRelationalColumnsExtensionInterface;
 use CoreShop\Component\Index\Model\IndexColumnInterface;
