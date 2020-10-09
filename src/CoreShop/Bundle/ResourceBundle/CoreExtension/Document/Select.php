@@ -45,6 +45,8 @@ class Select extends Tag
      */
     public function __construct(string $repositoryName, string $nameProperty, string $type)
     {
+        parent::__construct();
+
         $this->repositoryName = $repositoryName;
         $this->nameProperty = $nameProperty;
         $this->type = $type;
