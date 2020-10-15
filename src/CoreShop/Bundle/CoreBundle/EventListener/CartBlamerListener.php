@@ -113,7 +113,7 @@ final class CartBlamerListener
     }
 
     /**
-     * @return CartInterface
+     * @return CartInterface|null
      */
     private function getCart()
     {
