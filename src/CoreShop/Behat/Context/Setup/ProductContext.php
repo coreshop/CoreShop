@@ -19,6 +19,8 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
+use CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner;
+use CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner;
 use CoreShop\Component\Product\Model\ManufacturerInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -31,6 +33,7 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\DataObject\Folder;
 use Pimcore\Model\DataObject\Service;
 use Pimcore\Tool;
+use Webmozart\Assert\Assert;
 
 final class ProductContext implements Context
 {
@@ -60,24 +63,40 @@ final class ProductContext implements Context
     private $productUnitDefinitionPriceFactory;
 
     /**
+     * @var ProductUnitDefinitionsCloner
+     */
+    private $unitDefinitionsCloner;
+
+    /**
+     * @var ProductQuantityPriceRulesCloner
+     */
+    private $quantityPriceRulesCloner;
+
+    /**
      * @param SharedStorageInterface $sharedStorage
      * @param FactoryInterface       $productFactory
      * @param FactoryInterface       $productUnitDefinitions
      * @param FactoryInterface       $productUnitDefinition
      * @param FactoryInterface       $productUnitDefinitionPriceFactory
+     * @param ProductUnitDefinitionsCloner $unitDefinitionsCloner
+     * @param ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
      */
     public function __construct(
         SharedStorageInterface $sharedStorage,
         FactoryInterface $productFactory,
         FactoryInterface $productUnitDefinitions,
         FactoryInterface $productUnitDefinition,
-        FactoryInterface $productUnitDefinitionPriceFactory
+        FactoryInterface $productUnitDefinitionPriceFactory,
+        ProductUnitDefinitionsCloner $unitDefinitionsCloner,
+        ProductQuantityPriceRulesCloner $quantityPriceRulesCloner
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->productFactory = $productFactory;
         $this->productUnitDefinitions = $productUnitDefinitions;
         $this->productUnitDefinition = $productUnitDefinition;
         $this->productUnitDefinitionPriceFactory = $productUnitDefinitionPriceFactory;
+        $this->unitDefinitionsCloner = $unitDefinitionsCloner;
+        $this->quantityPriceRulesCloner = $quantityPriceRulesCloner;
     }
 
     /**
@@ -397,6 +416,27 @@ final class ProductContext implements Context
         $newObject = $objectService->copyAsChild($product->getParent(), $product);
 
         $this->sharedStorage->set('copied-object', $newObject);
+    }
+    /**
+     * @Given /^I copy the (products) unit-definitions and quantity-price-rules to all variants$/
+     */
+    public function iCopyTheUnitDefinitionsAndQuantityPriceRulesToAllVariants(ProductInterface $product)
+    {
+        /**
+         * @var Concrete $product
+         */
+        Assert::isInstanceOf($product, Concrete::class);
+
+        foreach ($product->getChildren([AbstractObject::OBJECT_TYPE_VARIANT], true) as $variant) {
+
+            if (!$variant instanceof ProductInterface) {
+                continue;
+            }
+
+            $this->unitDefinitionsCloner->clone($variant, $product, false);
+            $this->quantityPriceRulesCloner->clone($variant, $product, false);
+            $variant->save();
+        }
     }
 
     private function getOrCreateUnitDefinitions(ProductUnitDefinitionsInterface $definitions = null)
