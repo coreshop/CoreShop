@@ -302,6 +302,8 @@ services:
             - '@coreshop.behat.shared_storage'
             - '@doctrine.orm.entity_manager'
             - '@coreshop.factory.product_quantity_price_rule_range'
+            - '@form.factory'
+            - '@coreshop.form_registry.product_quantity_price_rules.conditions'
             - '@coreshop.factory.product_quantity_price_rule'
             - '@coreshop.repository.product'
         tags:

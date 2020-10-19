@@ -25,6 +25,7 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
+use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -39,6 +40,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductQuantityPriceRuleContext implements Context
@@ -57,12 +59,16 @@ final class ProductQuantityPriceRuleContext implements Context
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $rangeFactory,
+        FormFactoryInterface $formFactory,
+        FormTypeRegistryInterface $conditionFormTypeRegistry,
         FactoryInterface $productQuantityPriceRuleFactory,
         ProductRepositoryInterface $productRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->rangeFactory = $rangeFactory;
+        $this->formFactory = $formFactory;
+        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->productQuantityPriceRuleFactory = $productQuantityPriceRuleFactory;
         $this->productRepository = $productRepository;
     }
