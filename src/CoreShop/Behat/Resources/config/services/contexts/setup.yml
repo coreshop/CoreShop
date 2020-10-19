@@ -10,6 +10,8 @@ services:
             - '@coreshop.factory.product_unit_definitions'
             - '@coreshop.factory.product_unit_definition'
             - '@coreshop.factory.product_unit_definition_price'
+            - '@CoreShop\Component\Core\Product\Cloner\ProductUnitDefinitionsCloner'
+            - '@CoreShop\Component\Core\Product\Cloner\ProductQuantityPriceRulesCloner'
         tags:
             - { name: fob.context_service }
 
@@ -321,6 +323,7 @@ services:
             - '@form.factory'
             - '@coreshop.form_registry.product_quantity_price_rules.conditions'
             - '@coreshop.factory.product_quantity_price_rule'
+            - '@coreshop.repository.product'
         tags:
             - { name: fob.context_service }
 
