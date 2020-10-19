@@ -21,7 +21,7 @@ class Condition implements ConditionInterface
     use SetValuesTrait;
 
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -77,5 +77,14 @@ class Condition implements ConditionInterface
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $this->id = null;
     }
 }

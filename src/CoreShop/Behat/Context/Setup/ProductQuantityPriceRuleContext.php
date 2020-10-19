@@ -25,7 +25,6 @@ use CoreShop\Bundle\CoreBundle\Form\Type\Rule\Condition\ZonesConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleConditionType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\ProductSpecificPriceNestedConfigurationType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Rule\Condition\TimespanConfigurationType;
-use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistryInterface;
 use CoreShop\Component\Address\Model\ZoneInterface;
 use CoreShop\Component\Core\Model\CountryInterface;
 use CoreShop\Component\Core\Model\CurrencyInterface;
@@ -36,11 +35,10 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Customer\Model\CustomerGroupInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
+use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Rule\Model\ConditionInterface;
-use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Form\FormFactoryInterface;
 use Webmozart\Assert\Assert;
 
 final class ProductQuantityPriceRuleContext implements Context
@@ -59,16 +57,12 @@ final class ProductQuantityPriceRuleContext implements Context
         SharedStorageInterface $sharedStorage,
         ObjectManager $objectManager,
         FactoryInterface $rangeFactory,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $conditionFormTypeRegistry,
         FactoryInterface $productQuantityPriceRuleFactory,
         ProductRepositoryInterface $productRepository
     ) {
         $this->sharedStorage = $sharedStorage;
         $this->objectManager = $objectManager;
         $this->rangeFactory = $rangeFactory;
-        $this->formFactory = $formFactory;
-        $this->conditionFormTypeRegistry = $conditionFormTypeRegistry;
         $this->productQuantityPriceRuleFactory = $productQuantityPriceRuleFactory;
         $this->productRepository = $productRepository;
     }
@@ -77,8 +71,11 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^adding a quantity price rule to (product "[^"]+") named "([^"]+)" and with calculation-behaviour "([^"]+)"$/
      * @Given /^adding a quantity price rule to this (product) named "([^"]+)" with calculation-behaviour "([^"]+)"$/
      */
-    public function addingAProductQuantityPriceRuleToProduct(ProductInterface $product, $ruleName, $calculationBehaviourName)
-    {
+    public function addingAProductQuantityPriceRuleToProduct(
+        ProductInterface $product,
+        $ruleName,
+        $calculationBehaviourName
+    ) {
         /**
          * @var ProductQuantityPriceRuleInterface $rule
          */
@@ -125,8 +122,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductQuantityPriceRuleInterface $rule,
         int $from,
         float $percentage
-    )
-    {
+    ) {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -148,8 +144,7 @@ final class ProductQuantityPriceRuleContext implements Context
         ProductQuantityPriceRuleInterface $rule,
         int $from,
         float $percentage
-    )
-    {
+    ) {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -220,8 +215,7 @@ final class ProductQuantityPriceRuleContext implements Context
         int $from,
         int $amount,
         CurrencyInterface $currency
-    )
-    {
+    ) {
         /**
          * @var QuantityRangeInterface $range
          */
@@ -230,6 +224,132 @@ final class ProductQuantityPriceRuleContext implements Context
         $range->setAmount($amount);
         $range->setRangeStartingFrom($from);
         $range->setCurrency($currency);
+
+        $this->addRange($rule, $range);
+    }
+
+    /**
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)% for (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-decrease of ([^"]+)% for (unit "[^"]+")$/
+     */
+    public function theProductQuantityPriceRuleHasRangePercentageDecreaseForUnit(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        $percentage,
+        ProductUnitInterface $unit
+    ) {
+        $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
+
+        /**
+         * @var QuantityRangeInterface $range
+         */
+        $range = $this->rangeFactory->createNew();
+        $range->setPricingBehaviour('percentage_decrease');
+        $range->setPercentage($percentage);
+        $range->setRangeStartingFrom($from);
+        $range->setUnitDefinition($unitDefinition);
+
+        $this->addRange($rule, $range);
+    }
+
+    /**
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from to ([^"]+) with behaviour percentage-increase of ([^"]+)% (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour percentage-increase of ([^"]+)% (unit "[^"]+")$/
+     */
+    public function theProductQuantityPriceRuleHasRangePercentageIncreaseForUnit(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        $percentage,
+        ProductUnitInterface $unit
+    ) {
+        $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
+
+        /**
+         * @var QuantityRangeInterface $range
+         */
+        $range = $this->rangeFactory->createNew();
+        $range->setPricingBehaviour('percentage_increase');
+        $range->setPercentage($percentage);
+        $range->setRangeStartingFrom($from);
+        $range->setUnitDefinition($unitDefinition);
+
+        $this->addRange($rule, $range);
+    }
+
+    /**
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-decrease of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     */
+    public function theProductQuantityPriceRuleHasRangeAmountDecreaseForUnit(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        $amount,
+        CurrencyInterface $currency,
+        ProductUnitInterface $unit
+    ) {
+        $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
+
+        /**
+         * @var QuantityRangeInterface $range
+         */
+        $range = $this->rangeFactory->createNew();
+        $range->setPricingBehaviour('amount_decrease');
+        $range->setAmount($amount);
+        $range->setRangeStartingFrom($from);
+        $range->setCurrency($currency);
+        $range->setUnitDefinition($unitDefinition);
+
+        $this->addRange($rule, $range);
+    }
+
+    /**
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour amount-increase of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     */
+    public function theProductQuantityPriceRuleHasRangeAmountIncreaseForUnit(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        $amount,
+        CurrencyInterface $currency,
+        ProductUnitInterface $unit
+    ) {
+        $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
+
+        /**
+         * @var QuantityRangeInterface $range
+         */
+        $range = $this->rangeFactory->createNew();
+        $range->setPricingBehaviour('amount_increase');
+        $range->setAmount($amount);
+        $range->setRangeStartingFrom($from);
+        $range->setCurrency($currency);
+        $range->setUnitDefinition($unitDefinition);
+
+        $this->addRange($rule, $range);
+    }
+
+    /**
+     * @Given /^the (quantity price rule "[^"]+") has a range starting from ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     * @Given /^the (quantity price rule) has a range starting from ([^"]+) with behaviour fixed of ([^"]+) in (currency "[^"]+") (unit "[^"]+")$/
+     */
+    public function theProductQuantityPriceRuleHasRangeFixedForUnit(
+        ProductQuantityPriceRuleInterface $rule,
+        int $from,
+        $amount,
+        CurrencyInterface $currency,
+        ProductUnitInterface $unit
+    ) {
+        $unitDefinition = $this->getUnitDefinitionFromProduct($rule->getProduct(), $unit);
+
+        /**
+         * @var QuantityRangeInterface $range
+         */
+        $range = $this->rangeFactory->createNew();
+        $range->setPricingBehaviour('fixed');
+        $range->setAmount($amount);
+        $range->setRangeStartingFrom($from);
+        $range->setCurrency($currency);
+        $range->setUnitDefinition($unitDefinition);
 
         $this->addRange($rule, $range);
 
@@ -264,8 +384,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACountriesCondition(
         ProductQuantityPriceRuleInterface $rule,
         CountryInterface $country
-    )
-    {
+    ) {
         $this->assertConditionForm(CountriesConfigurationType::class, 'countries');
 
         $this->addCondition($rule, $this->createConditionWithForm('countries', [
@@ -282,8 +401,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACustomerCondition(
         ProductQuantityPriceRuleInterface $rule,
         CustomerInterface $customer
-    )
-    {
+    ) {
         $this->assertConditionForm(CustomersConfigurationType::class, 'customers');
 
         $this->addCondition($rule, $this->createConditionWithForm('customers', [
@@ -297,8 +415,11 @@ final class ProductQuantityPriceRuleContext implements Context
      * @Given /^the (quantity price rule "[^"]+") has a condition timespan which is valid from "([^"]+") to "([^"]+)"$/
      * @Given /^the (quantity price rule) has a condition timespan which is valid from "([^"]+)" to "([^"]+)"$/
      */
-    public function theProductQuantityPriceRuleHasATimeSpanCondition(ProductQuantityPriceRuleInterface $rule, $from, $to)
-    {
+    public function theProductQuantityPriceRuleHasATimeSpanCondition(
+        ProductQuantityPriceRuleInterface $rule,
+        $from,
+        $to
+    ) {
         $this->assertConditionForm(TimespanConfigurationType::class, 'timespan');
 
         $from = new \DateTime($from);
@@ -317,8 +438,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasACustomerGroupCondition(
         ProductQuantityPriceRuleInterface $rule,
         CustomerGroupInterface $group
-    )
-    {
+    ) {
         $this->assertConditionForm(CustomerGroupsConfigurationType::class, 'customerGroups');
 
         $this->addCondition($rule, $this->createConditionWithForm('customerGroups', [
@@ -335,8 +455,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasAStoreCondition(
         ProductQuantityPriceRuleInterface $rule,
         StoreInterface $store
-    )
-    {
+    ) {
         $this->assertConditionForm(StoresConfigurationType::class, 'stores');
 
         $this->addCondition($rule, $this->createConditionWithForm('stores', [
@@ -353,8 +472,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductQuantityPriceRuleHasAZoneCondition(
         ProductQuantityPriceRuleInterface $rule,
         ZoneInterface $zone
-    )
-    {
+    ) {
         $this->assertConditionForm(ZonesConfigurationType::class, 'zones');
 
         $this->addCondition($rule, $this->createConditionWithForm('zones', [
@@ -371,8 +489,7 @@ final class ProductQuantityPriceRuleContext implements Context
     public function theProductsQuantityPriceRuleHasACurrencyCondition(
         ProductQuantityPriceRuleInterface $rule,
         CurrencyInterface $currency
-    )
-    {
+    ) {
         $this->assertConditionForm(CurrenciesConfigurationType::class, 'currencies');
 
         $this->addCondition($rule, $this->createConditionWithForm('currencies', [
@@ -450,6 +567,22 @@ final class ProductQuantityPriceRuleContext implements Context
                 ],
             ],
         ]));
+    }
+
+    private function getUnitDefinitionFromProduct(int $productId, ProductUnitInterface $unit)
+    {
+        $product = $this->productRepository->find($productId);
+
+        Assert::isInstanceOf($product, ProductInterface::class);
+
+        foreach ($product->getUnitDefinitions()->getUnitDefinitions() as $unitDefinition) {
+            if ($unitDefinition->getUnit()->getName() === $unit->getName()) {
+                return $unitDefinition;
+            }
+        }
+
+        throw new \Exception(sprintf('Unit %s in product %s (%s) not found', $unit->getName(), $product->getName(),
+            $product->getId()));
     }
 
     /**

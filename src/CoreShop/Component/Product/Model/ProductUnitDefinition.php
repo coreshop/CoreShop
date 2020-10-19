@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\Collection;
 class ProductUnitDefinition extends AbstractResource implements ProductUnitDefinitionInterface
 {
     /**
-     * @var int
+     * @var int|null
      */
     protected $id;
 
@@ -131,9 +131,9 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     {
         if ($unit = $this->getUnit()) {
             return $unit->getName();
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -142,5 +142,14 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
     public function __toString()
     {
         return sprintf('%s, (Conversion Rate: %s)', $this->getUnitName(), $this->getConversionRate());
+    }
+
+    public function __clone()
+    {
+        if ($this->id === null) {
+            return;
+        }
+
+        $this->id = null;
     }
 }
