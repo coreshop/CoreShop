@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\CoreBundle\EventListener;
 use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Order\Context\CartContextInterface;
+use CoreShop\Component\Order\Context\CartNotFoundException;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Processor\CartProcessorInterface;
@@ -112,10 +113,15 @@ final class CartBlamerListener
     }
 
     /**
-     * @return CartInterface
+     * @return CartInterface|null
      */
     private function getCart()
     {
-        return $this->cartContext->getCart();
+        try {
+            return $this->cartContext->getCart();
+        }
+        catch (CartNotFoundException $ex) {
+            return null;
+        }
     }
 }
