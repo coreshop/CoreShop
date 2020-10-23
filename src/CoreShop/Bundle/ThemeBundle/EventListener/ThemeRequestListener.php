@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ThemeBundle\EventListener;
 use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
+use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -25,22 +26,13 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class ThemeRequestListener implements EventSubscriberInterface
 {
-    /**
-     * @var ThemeResolverInterface
-     */
+    private $pimcoreContext;
     private $themeResolver;
-
-    /**
-     * @var ActiveThemeInterface
-     */ 
     private $activeTheme;
 
-    /**
-     * @param ThemeResolverInterface $themeResolver
-     * @param ActiveThemeInterface   $activeTheme
-     */
-    public function __construct(ThemeResolverInterface $themeResolver, ActiveThemeInterface $activeTheme)
+    public function __construct(PimcoreContextResolver $pimcoreContextResolver, ThemeResolverInterface $themeResolver, ActiveThemeInterface $activeTheme)
     {
+        $this->pimcoreContext = $pimcoreContextResolver;
         $this->themeResolver = $themeResolver;
         $this->activeTheme = $activeTheme;
     }
@@ -67,6 +59,10 @@ final class ThemeRequestListener implements EventSubscriberInterface
 
     protected function resolveTheme(KernelEvent $event)
     {
+        if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {
+            return;
+        }
+
         if (!$event->isMasterRequest()) {
             $exception = $event->getRequest()->get('exception', null);
 
