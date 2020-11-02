@@ -37,14 +37,16 @@ final class CompositeThemeResolver implements ThemeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme(ActiveThemeInterface $activeTheme): void
+    public function resolveTheme(): string
     {
         foreach ($this->themeResolvers as $themeResolver) {
             try {
-                $themeResolver->resolveTheme($activeTheme);
+                return $themeResolver->resolveTheme();
             } catch (ThemeNotResolvedException $exception) {
                 continue;
             }
         }
+
+        throw new ThemeNotResolvedException();
     }
 }

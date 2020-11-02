@@ -14,54 +14,30 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\StoreBundle\Theme;
 
-use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeNotResolvedException;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
-use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoreThemeResolver implements ThemeResolverInterface
 {
     private $storeContext;
-    private $storeRepository;
 
-    public function __construct(
-        StoreContextInterface $storeContext,
-        RepositoryInterface $storeRepository
-    ) {
+    public function __construct(StoreContextInterface $storeContext)
+    {
         $this->storeContext = $storeContext;
-        $this->storeRepository = $storeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme(ActiveThemeInterface $activeTheme): void
+    public function resolveTheme(): string
     {
-        $themes = [];
-
-        /**
-         * @var StoreInterface $store
-         */
-        foreach ($this->storeRepository->findAll() as $store) {
-            $storeTheme = $store->getTemplate();
-
-            if ($storeTheme) {
-                $themes[] = $storeTheme;
-            }
-        }
-
-        $activeTheme->addThemes($themes);
-
         try {
             $store = $this->storeContext->getStore();
 
             if ($theme = $store->getTemplate()) {
-                $activeTheme->setActiveTheme($theme);
-
-                return;
+                return $theme;
             }
         } catch (StoreNotFoundException $exception) {
             throw new ThemeNotResolvedException($exception);

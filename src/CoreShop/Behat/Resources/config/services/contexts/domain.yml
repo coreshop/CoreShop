@@ -234,7 +234,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@coreshop.theme.resolver'
-            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
         tags:
             - { name: fob.context_service }
 

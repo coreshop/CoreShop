@@ -17,7 +17,7 @@
         "php": "^7.2",
         "coreshop/registry": "^3.0",
         "coreshop/pimcore-bundle": "^3.0",
-        "liip/theme-bundle": "^1.4",
+        "sylius/theme-bundle": "^2.0",
         "pimcore/pimcore": "^6.6.0"
     },
     "config": {

@@ -2,10 +2,6 @@ services:
     _defaults:
         public: true
 
-    coreshop.theme.active_theme:
-        alias: CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface
-        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface instead'
-
     coreshop.theme.resolver.composite:
         alias: CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface instead'
