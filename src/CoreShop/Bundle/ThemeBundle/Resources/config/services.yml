@@ -42,6 +42,7 @@ services:
 
     CoreShop\Bundle\ThemeBundle\EventListener\ThemeRequestListener:
         arguments:
+            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@coreshop.theme.resolver'
             - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
         tags:
