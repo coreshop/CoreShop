@@ -1,5 +1,10 @@
 # Within 2.2
 
+## 2.2.6
+ - Bugs:
+     - [Product] fix cloning of ProductUnitDefinitions and add test for it. (https://github.com/coreshop/CoreShop/pull/1502)
+     - [CoreBundle] interactive login: cart might not be available for several reasons, ignore exception and don't assign a cart (https://github.com/coreshop/CoreShop/pull/1500)
+     
 ## 2.2.5
  - Bugs:
      - [OrderBundle] fix permission keys for order-creation (https://github.com/coreshop/CoreShop/pull/1474)
