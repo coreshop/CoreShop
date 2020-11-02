@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
@@ -28,7 +29,6 @@ use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -105,7 +105,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/index-bundle')) {
             return 'coreshop/index-bundle';
         }
 

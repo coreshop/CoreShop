@@ -23,6 +23,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
     protected $enabled = false;
     protected $templatingEngine;
     protected $templatePrefix;
+    protected $templateExtension;
     protected $twig;
 
     public function __construct(

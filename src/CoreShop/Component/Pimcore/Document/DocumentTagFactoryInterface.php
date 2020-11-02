@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Document;
 
-use Pimcore\Model\Document\Tag\TagInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 interface DocumentTagFactoryInterface
 {
@@ -22,7 +22,7 @@ interface DocumentTagFactoryInterface
      * @param string $type
      * @param array  $params
      *
-     * @return TagInterface
+     * @return EditableInterface
      */
-    public function create(string $type, array $params): TagInterface;
+    public function create(string $type, array $params): EditableInterface;
 }

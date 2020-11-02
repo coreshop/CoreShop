@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\SEOBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler\ExtractorRegistryServicePass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
@@ -55,7 +56,7 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/seo-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/seo-bundle')) {
             return 'coreshop/seo-bundle';
         }
 

@@ -86,7 +86,7 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
             $progress->finish();
             $progress->clear();
 
-            $output->writeln(sprintf('  - <info>%s Translations have been installed successfully</info>', end($exploded)));
+            $output->writeln(sprintf('  - <info>Translations have been installed successfully</info>'));
         }
     }
 

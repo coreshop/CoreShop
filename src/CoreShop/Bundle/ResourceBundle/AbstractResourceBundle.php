@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Exception\UnknownDriverException;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PackageVersions\Versions;
@@ -89,7 +90,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
         }
 
         return $this->getComposerVersion();
@@ -102,9 +103,9 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     {
         $version = '';
 
-        if ($this instanceof ComposerPackageBundleInterface && isset(Versions::VERSIONS[$this->getPackageName()])) {
+        if ($this instanceof ComposerPackageBundleInterface && InstalledVersions::isInstalled($this->getPackageName())) {
             $version = Versions::getVersion($this->getPackageName());
-        } elseif (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+        } elseif (InstalledVersions::isInstalled('coreshop/core-shop')) {
             $version = Versions::getVersion('coreshop/core-shop');
         }
 

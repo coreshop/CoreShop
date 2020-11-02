@@ -390,7 +390,7 @@ class ProductSpecificPriceRules extends Data implements
      */
     public function getForCsvExport($object, $params = [])
     {
-        return null;
+        return '';
     }
 
     /**

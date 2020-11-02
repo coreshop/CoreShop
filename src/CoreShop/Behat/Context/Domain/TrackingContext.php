@@ -139,7 +139,7 @@ final class TrackingContext implements Context
         $tracker->trackCheckoutStep($this->trackingExtractor->updateMetadata($cart));
 
         $result = str_replace('##id##', $cart->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', $cart->getItems()[0]->getId()->getId(), $result);
+        $result = str_replace('##item_id##', $cart->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -154,7 +154,7 @@ final class TrackingContext implements Context
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
         $result = str_replace('##id##', $order->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', $order->getItems()[0]->getId()->getId(), $result);
+        $result = str_replace('##item_id##', $order->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }
@@ -213,7 +213,7 @@ final class TrackingContext implements Context
     }
 
     /**
-     * @param string $tracker
+     * @param string $trackerIdentifier
      *
      * @return TrackerInterface
      */

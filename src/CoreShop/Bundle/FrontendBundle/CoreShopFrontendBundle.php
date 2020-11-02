@@ -14,10 +14,10 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\FrontendBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\CoreShopCoreBundle;
 use CoreShop\Bundle\FrontendBundle\DependencyInjection\CompilerPass\RegisterFrontendControllerPass;
 use EmailizrBundle\EmailizrBundle;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
@@ -68,7 +68,7 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/frontend-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/frontend-bundle')) {
             return 'coreshop/frontend-bundle';
         }
 
