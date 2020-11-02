@@ -63,6 +63,15 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $this->loadPersistence($config['drivers'], $config['resources'], $loader);
 
+        $bodyListener = new Definition(BodyListener::class);
+        $bodyListener->addTag('kernel.event_listener', [
+            'event' => 'kernel.request',
+            'method' => 'onKernelRequest',
+            'priority' => 10,
+        ]);
+
+        $container->setDefinition('coreshop.body_listener', $bodyListener);
+
         $container
             ->registerForAutoconfiguration(ResourceInstallerInterface::class)
             ->addTag(RegisterInstallersPass::INSTALLER_TAG);
