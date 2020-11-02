@@ -24,8 +24,8 @@ final class RouteConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('staticroutes');
+        $treeBuilder = new TreeBuilder('staticroutes');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

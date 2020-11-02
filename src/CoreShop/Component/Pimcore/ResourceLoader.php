@@ -38,6 +38,6 @@ final class ResourceLoader
             }
         }
 
-        return [Admin::getMinimizedScriptPath($scriptContents)];
+        return [Admin::getMinimizedScriptPath($scriptContents)['scripts']];
     }
 }

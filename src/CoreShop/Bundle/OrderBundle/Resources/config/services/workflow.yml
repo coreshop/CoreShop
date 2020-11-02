@@ -32,7 +32,7 @@ services:
             - '@coreshop.order.invoice.processable'
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - paymentState
 
@@ -42,7 +42,7 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
 
     coreshop.state_machine.marking_store.single_state.order_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - orderState
 
@@ -52,7 +52,7 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_state'
 
     coreshop.state_machine.marking_store.single_state.order_shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - shippingState
 
@@ -63,7 +63,7 @@ services:
             - false
 
     coreshop.state_machine.marking_store.single_state.order_sales_type_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - saleState
 
@@ -73,7 +73,7 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
 
     coreshop.state_machine.marking_store.single_state.order_invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - invoiceState
 
@@ -83,12 +83,12 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
     coreshop.state_machine.marking_store.single_state.shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - state
 
     coreshop.state_machine.marking_store.single_state.invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - state
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Shipping\Model\Carrier"
+                       table="coreshop_carrier">
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="identifier" column="identifier" nullable="true"/>
+        <field name="trackingUrl" column="trackingUrl" nullable="true"/>
+        <field name="isFree" column="isFree" type="boolean"/>
+        <field name="logo" column="logo" type="pimcoreAsset" nullable="true"/>
+        <field name="taxCalculationStrategy" column="taxCalculationStrategy" nullable="true"/>
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <one-to-many field="shippingRules" target-entity="CoreShop\Component\Shipping\Model\ShippingRuleGroup" mapped-by="carrier" orphan-removal="true">
+            <cascade>
+                <cascade-all/>
+            </cascade>
+            <order-by>
+                <order-by-field name="priority">ASC</order-by-field>
+            </order-by>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

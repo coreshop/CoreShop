@@ -57,17 +57,6 @@ final class CoreShopResourceExtension extends AbstractModelExtension
 
         $bundles = $container->getParameter('kernel.bundles');
 
-        if (!array_key_exists('FOSRestBundle', $bundles)) {
-            $bodyListener = new Definition(BodyListener::class);
-            $bodyListener->addTag('kernel.event_listener', [
-                'event' => 'kernel.request',
-                'method' => 'onKernelRequest',
-                'priority' => 10,
-            ]);
-
-            $container->setDefinition('coreshop.body_listener', $bodyListener);
-        }
-
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
             $loader->load('services/data_hub.yml');
         }

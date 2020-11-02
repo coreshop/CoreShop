@@ -17,6 +17,7 @@ namespace CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesActionPass;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesCalculatorPass;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesConditionPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Component\ProductQuantityPriceRules\Calculator\CalculatorInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPriceRuleActionInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Rule\Condition\QuantityRuleConditionCheckerInterface;
@@ -35,7 +36,7 @@ class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
         $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
 
         $container->setParameter('coreshop.product_quantity_price_rules.ranges.action_constraints', $config['action_constraints']);

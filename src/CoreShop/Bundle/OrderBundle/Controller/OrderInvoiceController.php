@@ -39,7 +39,7 @@ class OrderInvoiceController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function getInvoiceAbleItemsAction(Request $request)
     {
@@ -79,7 +79,7 @@ class OrderInvoiceController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch('coreshop.order.invoice.prepare_invoice_able', $event);
+                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.invoice.prepare_invoice_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }

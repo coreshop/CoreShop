@@ -5,6 +5,7 @@ documents:
     module: 'CoreShopFrontendBundle'
     controller: '@coreshop.frontend.controller.index'
     action: 'index'
+    path: ''
 
   -
     key: 'email'
@@ -338,7 +339,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>Hinweise zu Ihrer Bestellung:</p>
-            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+            <p>{{ comment.description }}</p>
         head:
           type: 'input'
           value: 'Hinweise zu Ihrer Bestellung %Text(orderNumber);'
@@ -350,7 +351,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>Notes on your order:</p>
-            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+            <p>{{ comment.description }}</p>
         head:
           type: 'input'
           value: 'Notes on your order %Text(orderNumber);'
@@ -362,7 +363,7 @@ documents:
           type: 'wysiwyg'
           value: >
             <p>Note sul tuo ordine:</p>
-            <p>%DataObject(comment,{"method" : "getDescription"});</p>
+            <p>{{ comment.description }}</p>
         head:
           type: 'input'
           value: 'Note sul suo ordine %Text(orderNumber);'

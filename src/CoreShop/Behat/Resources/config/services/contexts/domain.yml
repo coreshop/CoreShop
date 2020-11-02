@@ -154,8 +154,8 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\SEO\SEOPresentationInterface'
-            - '@Pimcore\Templating\Helper\HeadTitle'
-            - '@Pimcore\Templating\Helper\HeadMeta'
+            - '@Pimcore\Twig\Extension\Templating\HeadTitle'
+            - '@Pimcore\Twig\Extension\Templating\HeadMeta'
         tags:
             - { name: fob.context_service }
 
@@ -164,13 +164,6 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface'
-        tags:
-            - { name: fob.context_service }
-
-    coreshop.behat.context.domain.placeholder:
-        class: CoreShop\Behat\Context\Domain\PlaceholderContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
         tags:
             - { name: fob.context_service }
 

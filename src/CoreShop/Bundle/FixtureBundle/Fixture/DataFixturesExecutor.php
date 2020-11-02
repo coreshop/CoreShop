@@ -18,7 +18,7 @@ use CoreShop\Bundle\FixtureBundle\Event\DataFixturesEvent;
 use CoreShop\Bundle\FixtureBundle\Event\FixturesEvents;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DataFixturesExecutor implements DataFixturesExecutorInterface
 {
@@ -47,7 +47,7 @@ final class DataFixturesExecutor implements DataFixturesExecutorInterface
     public function execute(array $fixtures, $fixturesType)
     {
         $event = new DataFixturesEvent($this->em, $fixturesType, $this->logger);
-        $this->eventDispatcher->dispatch(FixturesEvents::DATA_FIXTURES_PRE_LOAD, $event);
+        $this->eventDispatcher->dispatch($event, FixturesEvents::DATA_FIXTURES_PRE_LOAD);
 
         $executor = new ORMExecutor($this->em);
         if (null !== $this->logger) {
@@ -55,7 +55,7 @@ final class DataFixturesExecutor implements DataFixturesExecutorInterface
         }
         $executor->execute($fixtures, true);
 
-        $this->eventDispatcher->dispatch(FixturesEvents::DATA_FIXTURES_POST_LOAD, $event);
+        $this->eventDispatcher->dispatch($event, FixturesEvents::DATA_FIXTURES_POST_LOAD);
     }
 
     /**

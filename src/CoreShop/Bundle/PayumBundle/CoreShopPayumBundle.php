@@ -20,12 +20,15 @@ use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\PayumReplyToSymfony
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPayumBundle extends AbstractResourceBundle
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */

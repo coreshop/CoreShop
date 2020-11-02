@@ -7,4 +7,4 @@ services:
             - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
             - '@coreshop.theme.resolver'
         tags:
-            - { name: data_collector, template: 'CoreShopThemeBundle:Collector:theme.html.twig', id: coreshop.theme_collector }
+            - { name: data_collector, template: '@CoreShopTheme/Collector/theme.html.twig', id: coreshop.theme_collector }

@@ -23,6 +23,7 @@ use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableRetailPr
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\PurchasableWholesalePriceCalculatorsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartContextsPass;
 use CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler\RegisterCartProcessorPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountCalculatorInterface;
 use CoreShop\Component\Order\Calculator\PurchasableDiscountPriceCalculatorInterface;
@@ -49,7 +50,7 @@ final class CoreShopOrderExtension extends AbstractModelExtension
 
         $loader->load('services.yml');
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {

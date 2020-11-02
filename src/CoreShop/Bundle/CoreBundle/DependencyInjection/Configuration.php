@@ -14,11 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
-use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStorePriceRepository;
 use CoreShop\Bundle\CoreBundle\Doctrine\ORM\ProductStoreValuesRepository;
-use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Component\Core\Model\ProductStorePrice;
-use CoreShop\Component\Core\Model\ProductStorePriceInterface;
 use CoreShop\Component\Core\Model\ProductStoreValues;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Resource\Factory\Factory;
@@ -33,12 +29,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_core');
+        $treeBuilder = new TreeBuilder('core_shop_core');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->scalarNode('send_usage_log')->defaultValue(true)->end()
                 ->scalarNode('checkout_manager_factory')->cannotBeEmpty()->end()
                 ->scalarNode('after_logout_redirect_route')->defaultValue('coreshop_index')->cannotBeEmpty()->end()
@@ -60,22 +55,6 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('resources')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        // deprecated
-                        ->arrayNode('product_store_price')
-                            ->addDefaultsIfNotSet()
-                            ->children()
-                                ->variableNode('options')->end()
-                                ->arrayNode('classes')
-                                    ->addDefaultsIfNotSet()
-                                    ->children()
-                                        ->scalarNode('model')->defaultValue(ProductStorePrice::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('interface')->defaultValue(ProductStorePriceInterface::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('factory')->defaultValue(Factory::class)->cannotBeEmpty()->end()
-                                        ->scalarNode('repository')->defaultValue(ProductStorePriceRepository::class)->end()
-                                    ->end()
-                                ->end()
-                            ->end()
-                        ->end()
                         ->arrayNode('product_store_values')
                             ->addDefaultsIfNotSet()
                             ->children()

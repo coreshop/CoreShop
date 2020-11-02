@@ -40,14 +40,13 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\User;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,53 +54,15 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends PimcoreController
 {
-    /**
-     * @var EventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var NoteServiceInterface
-     */
     protected $objectNoteService;
-    /**
-     * @var AddressFormatterInterface
-     */
     protected $addressFormatter;
-
-    /**
-     * @var ArrayTransformerInterface
-     */
     protected $serializer;
-
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
     protected $workflowStateManager;
-
-    /**
-     * @var ProcessableInterface
-     */
     protected $invoiceProcessableHelper;
-
-    /**
-     * @var ProcessableInterface
-     */
     protected $shipmentProcessableHelper;
-
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
     protected $orderInvoiceRepository;
-
-    /**
-     * @var OrderShipmentRepositoryInterface
-     */
     protected $orderShipmentRepository;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
     protected $paymentRepository;
 
     public function getStatesAction(Request $request): Response

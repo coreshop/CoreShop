@@ -15,32 +15,32 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product Impression
     Then tracking product impression with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : {"impressions":{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1},"currencyCode":"EUR"} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : {"impressions":{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1},"currencyCode":"EUR"} });
       """
 
   Scenario: Track Product
     Then tracking product with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce': {'detail': {"actionField":[],"products":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1}]} }});
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce': {'detail': {"actionField":[],"products":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1}]} }});
       """
 
   Scenario: Track Cart Add
     Then tracking cart-add for my cart with product with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csAddToCart', 'ecommerce' : {"add":{"products":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","sku":null,"price":24,"currency":"EUR","categories":[],"quantity":1}]},"currencyCode":"EUR"} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csAddToCart', 'ecommerce' : {"add":{"products":[{"id":##id##,"name":"T-Shirt","category":"","sku":null,"price":24,"currency":"EUR","categories":[],"quantity":1}]},"currencyCode":"EUR"} });
       """
 
   Scenario: Track Cart Add
     Then tracking cart-remove for my cart with product with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csRemoveFromCart', 'ecommerce' : {"remove":{"products":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","sku":null,"price":24,"currency":"EUR","categories":[],"quantity":1}]}} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'event': 'csRemoveFromCart', 'ecommerce' : {"remove":{"products":[{"id":##id##,"name":"T-Shirt","category":"","sku":null,"price":24,"currency":"EUR","categories":[],"quantity":1}]}} });
       """
 
   Scenario: Track Checkout Step
     Given I add the product "T-Shirt" to my cart
     Then tracking checkout step for my cart with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({ 'event': 'csCheckout', 'checkout': {"products":[{"id":%DataObject(cartItem, {"method": "getId"});,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({ 'event': 'csCheckout', 'checkout': {"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} });
       """
 
   Scenario: Track Checkout Complete
@@ -53,5 +53,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-gtm-enhanced-ecommerce" should generate:
       """
-      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : { 'purchase' : {"actionField":{"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"},"products":[{"id":%DataObject(orderItem, {"method": "getId"});,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
+      window.dataLayer = window.dataLayer || [];dataLayer.push({'ecommerce' : { 'purchase' : {"actionField":{"id":##id##,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"},"products":[{"id":##item_id##,"sku":null,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]} } });
       """

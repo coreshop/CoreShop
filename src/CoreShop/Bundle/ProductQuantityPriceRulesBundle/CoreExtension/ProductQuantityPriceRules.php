@@ -30,9 +30,8 @@ use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
-use function League\Uri\merge_query;
 
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
@@ -244,7 +243,7 @@ class ProductQuantityPriceRules extends Data implements
         $specificPriceRuleRepository = $this->getProductQuantityPriceRuleRepositoryFactory()->createNewRepository($tempEntityManager);
 
         $event = new ProductQuantityPriceRuleValidationEvent($object, $data);
-        $this->getEventDispatcher()->dispatch(Events::RULES_DATA_FROM_EDITMODE_VALIDATION, $event);
+        $this->getEventDispatcher()->dispatch($event, Events::RULES_DATA_FROM_EDITMODE_VALIDATION);
 
         foreach ($event->getData() as $rule) {
 
@@ -451,6 +450,13 @@ class ProductQuantityPriceRules extends Data implements
         return $storedRule;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getForCsvExport($object, $params = [])
+    {
+        return null;
+    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface

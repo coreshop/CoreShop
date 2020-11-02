@@ -26,8 +26,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_workflow');
+        $treeBuilder = new TreeBuilder('core_shop_workflow');
+        $rootNode = $treeBuilder->getRootNode();
 
         $smNode = $rootNode
             ->children()

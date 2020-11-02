@@ -33,12 +33,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_product_quantity_price_rules');
+        $treeBuilder = new TreeBuilder('core_shop_product_quantity_price_rules');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->arrayNode('action_constraints')
                     ->prototype('array')
                     ->children()

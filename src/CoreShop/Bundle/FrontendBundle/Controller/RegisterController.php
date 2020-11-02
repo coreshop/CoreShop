@@ -113,7 +113,7 @@ class RegisterController extends FrontendController
                 $resetLink = $this->generateCoreShopUrl(null, 'coreshop_customer_password_reset', ['token' => $customer->getPasswordResetHash()], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $dispatcher = $this->container->get('event_dispatcher');
-                $dispatcher->dispatch('coreshop.customer.request_password_reset', new RequestPasswordChangeEvent($customer, $resetLink));
+                $dispatcher->dispatch(new RequestPasswordChangeEvent($customer, $resetLink), 'coreshop.customer.request_password_reset');
 
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_request_success'));
 
@@ -152,7 +152,7 @@ class RegisterController extends FrontendController
                     $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.password_reset_success'));
 
                     $dispatcher = $this->container->get('event_dispatcher');
-                    $dispatcher->dispatch('coreshop.customer.password_reset', new GenericEvent($customer));
+                    $dispatcher->dispatch(new GenericEvent($customer), 'coreshop.customer.password_reset');
 
                     return $this->redirectToRoute('coreshop_login');
                 }

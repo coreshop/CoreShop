@@ -18,8 +18,8 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\SEO\SEOPresentationInterface;
-use Pimcore\Templating\Helper\HeadMeta;
-use Pimcore\Templating\Helper\HeadTitle;
+use Pimcore\Twig\Extension\Templating\HeadMeta;
+use Pimcore\Twig\Extension\Templating\HeadTitle;
 use Webmozart\Assert\Assert;
 
 final class SEOContext implements Context

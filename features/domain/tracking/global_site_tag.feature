@@ -14,25 +14,25 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product Impression
     Then tracking product impression with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'view_item_list', {"items":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'view_item_list', {"items":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """
 
   Scenario: Track Product
     Then tracking product with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'view_item', {"items":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'view_item', {"items":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """
 
   Scenario: Track Cart Add
     Then tracking cart-add for my cart with product with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'add_to_cart', {"items":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'add_to_cart', {"items":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """
 
   Scenario: Track Cart Add
     Then tracking cart-remove for my cart with product with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'remove_from_cart', {"items":[{"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'remove_from_cart', {"items":[{"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """
 
   Scenario: Track Checkout Step
@@ -52,5 +52,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-gtag-enhanced-ecommerce" should generate:
       """
-      gtag('event', 'purchase', {"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR","items":[{"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
+      gtag('event', 'purchase', {"id":##id##,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR","items":[{"id":##item_id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}]});
       """

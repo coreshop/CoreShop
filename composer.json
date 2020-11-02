@@ -17,7 +17,6 @@
         "dachcom-digital/emailizr": "^1.0.6",
         "doctrine/common": "^2.6",
         "doctrine/data-fixtures": "^1.4",
-        "doctrine/dbal": "^2.1",
         "doctrine/doctrine-bundle": "^1.11.0",
         "doctrine/orm": "^2.5",
         "fzaninotto/faker": "^1.6",
@@ -29,12 +28,10 @@
         "payum/paypal-express-checkout-nvp": "^1.4",
         "payum/payum-bundle": "^2.2",
         "payum/sofort": "^1.4",
-        "php": "^7.2",
         "php-http/guzzle6-adapter": "^2.0",
-        "pimcore/pimcore": "^6.6.0",
+        "pimcore/pimcore": "^7.0.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
-        "symfony/symfony": "^4.4",
         "webmozart/assert": "^1.2"
     },
     "require-dev": {

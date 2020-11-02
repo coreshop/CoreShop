@@ -25,8 +25,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_tracking');
+        $treeBuilder = new TreeBuilder('core_shop_tracking');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->buildTrackingNode($rootNode);
 

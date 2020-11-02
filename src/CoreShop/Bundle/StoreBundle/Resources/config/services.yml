@@ -37,8 +37,8 @@ services:
         public: false
         arguments:
             - '@coreshop.repository.store'
-            - '@pimcore.http.request_helper'
-            - '@pimcore.document_service'
+            - '@Pimcore\Http\RequestHelper'
+            - '@Pimcore\Model\Document\Service'
         tags:
             - { name: coreshop.context.store.request_based.resolver, priority: 200 }
 

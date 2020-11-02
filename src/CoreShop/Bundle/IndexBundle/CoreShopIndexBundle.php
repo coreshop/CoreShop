@@ -27,6 +27,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRender
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
@@ -35,6 +36,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     use PackageVersionTrait;
 
     public static function registerDependentBundles(BundleCollection $collection)

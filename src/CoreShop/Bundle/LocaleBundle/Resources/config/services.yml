@@ -10,7 +10,7 @@ services:
 
     CoreShop\Component\Locale\Context\PimcoreLocaleContext:
         arguments:
-            - '@pimcore.locale'
+            - '@Pimcore\Localization\LocaleServiceInterface'
         tags:
             - { name: coreshop.context.locale, priority: 100 }
 

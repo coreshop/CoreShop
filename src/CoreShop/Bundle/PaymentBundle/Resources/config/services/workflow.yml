@@ -3,7 +3,7 @@ services:
         public: true
 
     coreshop.state_machine.marking_store.single_state.state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
             - state
 

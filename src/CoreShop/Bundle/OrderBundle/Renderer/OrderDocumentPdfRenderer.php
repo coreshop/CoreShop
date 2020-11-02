@@ -19,7 +19,7 @@ use CoreShop\Bundle\OrderBundle\Renderer\Pdf\PdfRendererInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
 use CoreShop\Component\Order\Renderer\OrderDocumentRendererInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
 use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
@@ -78,7 +78,10 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 
             $event = new WkhtmlOptionsEvent($orderDocument);
 
-            $this->eventDispatcher->dispatch(sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType()), $event);
+            $this->eventDispatcher->dispatch(
+                $event,
+                sprintf('coreshop.order.%s.wkhtml.options', $orderDocument::getDocumentType())
+            );
 
             return $this->renderer->fromString($content, $contentHeader, $contentFooter, ['options' => [$event->getOptions()]]);
         });

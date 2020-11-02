@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\Pimcore\Repository\StackRepository;
 use CoreShop\Component\Resource\Metadata\Metadata;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -41,7 +42,7 @@ final class StackRepositoryPass implements CompilerPassInterface
             $definition = new Definition(Metadata::class);
             $definition
                 ->setFactory([Metadata::class, 'fromAliasAndConfiguration'])
-                ->setArguments([$alias, []]);
+                ->setArguments([$alias, ['driver' => CoreShopResourceBundle::DRIVER_PIMCORE]]);
 
             $repositoryDefinition = new Definition(StackRepository::class);
             $repositoryDefinition->setArguments([

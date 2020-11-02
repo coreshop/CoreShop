@@ -29,8 +29,6 @@ class AddressIdentifierRepository extends EntityRepository implements AddressIde
             ->andWhere('o.name = :name')
             ->setParameter('name', $name)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 }

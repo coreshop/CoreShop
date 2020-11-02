@@ -93,7 +93,7 @@ class CartController extends FrontendController
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
             }
 
-            $this->get('event_dispatcher')->dispatch('coreshop.cart.update', new GenericEvent($cart));
+            $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
             $this->getCartManager()->persistCart($cart);
         } else {
             if ($cart->getId()) {

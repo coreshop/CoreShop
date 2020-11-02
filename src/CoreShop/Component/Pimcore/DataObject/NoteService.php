@@ -18,7 +18,7 @@ use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Document;
 use Pimcore\Model\Element\Note;
 use Pimcore\Model\Tool\Email\Log;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
@@ -105,8 +105,8 @@ class NoteService implements NoteServiceInterface
         $note->save();
 
         $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.post_add', $note->getType()),
-            new GenericEvent($note, $eventParams)
+            new GenericEvent($note, $eventParams),
+            sprintf('coreshop.note.%s.post_add', $note->getType())
         );
 
         return $note;
@@ -130,8 +130,8 @@ class NoteService implements NoteServiceInterface
         }
 
         $this->eventDispatcher->dispatch(
-            sprintf('coreshop.note.%s.pot_delete', $noteType),
-            new GenericEvent($note, $eventParams)
+            new GenericEvent($note, $eventParams),
+            sprintf('coreshop.note.%s.pot_delete', $noteType)
         );
     }
 }

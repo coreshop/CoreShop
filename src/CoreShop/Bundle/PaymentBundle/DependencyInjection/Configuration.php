@@ -39,12 +39,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_payment');
+        $treeBuilder = new TreeBuilder('core_shop_payment');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->arrayNode('gateways')
                     ->useAttributeAsKey('name')
                     ->prototype('scalar')

@@ -22,7 +22,7 @@ class OrderDocumentPrintController extends FrontendController
 {
     public function invoiceAction(Request $request, OrderDocumentInterface $document, $order)
     {
-        return $this->render('CoreShopOrderBundle:OrderDocumentPrint:invoice.html.twig', [
+        return $this->render('@CoreShopOrder/OrderDocumentPrint/invoice.html.twig', [
             'document' => $document,
             'order' => $order,
             'type' => $document::getDocumentType(),
@@ -31,7 +31,7 @@ class OrderDocumentPrintController extends FrontendController
 
     public function shipmentAction(Request $request, OrderDocumentInterface $document, $order)
     {
-        return $this->render('CoreShopOrderBundle:OrderDocumentPrint:shipment.html.twig', [
+        return $this->render('@CoreShopOrder/OrderDocumentPrint/shipment.html.twig', [
             'document' => $document,
             'order' => $order,
             'type' => $document::getDocumentType(),
@@ -40,7 +40,7 @@ class OrderDocumentPrintController extends FrontendController
 
     public function headerAction(Request $request, OrderDocumentInterface $document, $order)
     {
-        return $this->render('CoreShopOrderBundle:OrderDocumentPrint:header.html.twig', [
+        return $this->render('@CoreShopOrder/OrderDocumentPrint/header.html.twig', [
             'document' => $document,
             'order' => $order,
             'type' => $document::getDocumentType(),
@@ -49,7 +49,7 @@ class OrderDocumentPrintController extends FrontendController
 
     public function footerAction(Request $request, OrderDocumentInterface $document, $order)
     {
-        return $this->render('CoreShopOrderBundle:OrderDocumentPrint:footer.html.twig', [
+        return $this->render('@CoreShopOrder/OrderDocumentPrint/footer.html.twig', [
             'document' => $document,
             'order' => $order,
             'type' => $document::getDocumentType(),

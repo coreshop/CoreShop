@@ -24,8 +24,8 @@ final class GridConfigConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('grid_config');
+        $treeBuilder = new TreeBuilder('grids');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

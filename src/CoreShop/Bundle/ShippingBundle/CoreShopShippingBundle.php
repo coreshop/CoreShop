@@ -19,6 +19,7 @@ use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use CoreShop\Bundle\RuleBundle\CoreShopRuleBundle;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippableValidatorPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
@@ -30,6 +31,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopShippingBundle extends AbstractResourceBundle
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */

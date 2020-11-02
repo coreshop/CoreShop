@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection;
 
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\CompositeShippableValidatorPass;
 use CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler\ShippingPriceCalculatorsPass;
@@ -41,7 +42,7 @@ final class CoreShopShippingExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

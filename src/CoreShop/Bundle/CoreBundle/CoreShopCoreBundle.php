@@ -37,6 +37,7 @@ use CoreShop\Bundle\PayumBundle\CoreShopPayumBundle;
 use CoreShop\Bundle\ProductBundle\CoreShopProductBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use CoreShop\Bundle\SEOBundle\CoreShopSEOBundle;
 use CoreShop\Bundle\SequenceBundle\CoreShopSequenceBundle;
 use CoreShop\Bundle\ShippingBundle\CoreShopShippingBundle;
@@ -51,6 +52,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCoreBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */

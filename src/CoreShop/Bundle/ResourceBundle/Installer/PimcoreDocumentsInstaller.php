@@ -190,7 +190,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                                 if ($type === 'objectProperty') {
                                     $document->setValue($key, $content);
                                 } else {
-                                    $document->setRawElement($key, $type, $content);
+                                    $document->setRawEditable($key, $type, $content);
                                 }
                             }
                         }

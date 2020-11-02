@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Resource\Metadata;
 
 use Doctrine\Common\Inflector\Inflector;
+use Doctrine\Inflector\InflectorFactory;
 
 final class Metadata implements MetadataInterface
 {
@@ -109,7 +110,9 @@ final class Metadata implements MetadataInterface
      */
     public function getPluralName(): string
     {
-        return Inflector::pluralize($this->name);
+        $inflector = InflectorFactory::create()->build();
+
+        return $inflector->pluralize($this->name);
     }
 
     /**

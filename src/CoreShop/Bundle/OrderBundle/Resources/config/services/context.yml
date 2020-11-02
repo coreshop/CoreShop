@@ -11,7 +11,7 @@ services:
             - '@CoreShop\Component\Customer\Context\CustomerContextInterface'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
             - '@coreshop.repository.order'
-            - '@pimcore.http.request_helper'
+            - '@Pimcore\Http\RequestHelper'
         tags:
             - { name: coreshop.context.cart, priority: -777 }
 

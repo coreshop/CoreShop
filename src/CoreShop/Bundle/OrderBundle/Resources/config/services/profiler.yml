@@ -8,4 +8,4 @@ services:
             - '@CoreShop\Component\Locale\Context\LocaleContextInterface'
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
         tags:
-            - { name: data_collector, template: 'CoreShopOrderBundle:Collector:cart.html.twig', id: coreshop.cart_collector }
+            - { name: data_collector, template: '@CoreShopOrder/Collector/cart.html.twig', id: coreshop.cart_collector }

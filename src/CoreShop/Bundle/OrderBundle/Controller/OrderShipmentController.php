@@ -42,7 +42,7 @@ class OrderShipmentController extends PimcoreController
     /**
      * @param Request $request
      *
-     * @return \Pimcore\Bundle\AdminBundle\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
     public function getShipAbleItemsAction(Request $request)
     {
@@ -82,7 +82,7 @@ class OrderShipmentController extends PimcoreController
 
                 $event = new GenericEvent($orderItem, $itemToReturn);
 
-                $this->get('event_dispatcher')->dispatch('coreshop.order.shipment.prepare_ship_able', $event);
+                $this->get('event_dispatcher')->dispatch($event, 'coreshop.order.shipment.prepare_ship_able');
 
                 $itemsToReturn[] = $event->getArguments();
             }

@@ -65,13 +65,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_product');
-
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
+        $treeBuilder = new TreeBuilder('core_shop_product');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);

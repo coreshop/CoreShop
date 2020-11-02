@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\ResourceBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class EventDispatcher implements EventDispatcherInterface
@@ -37,8 +37,8 @@ final class EventDispatcher implements EventDispatcherInterface
         $event = $this->getEvent($resource, $request);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.%s', $metadata->getApplicationName(), $metadata->getName(), $eventName),
-            $event
+            $event,
+            sprintf('%s.%s.%s', $metadata->getApplicationName(), $metadata->getName(), $eventName)
         );
     }
 
@@ -50,8 +50,8 @@ final class EventDispatcher implements EventDispatcherInterface
         $event = $this->getEvent($resource, $request);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.pre_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName),
-            $event
+            $event,
+            sprintf('%s.%s.pre_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName)
         );
     }
 
@@ -63,8 +63,8 @@ final class EventDispatcher implements EventDispatcherInterface
         $event = $this->getEvent($resource, $request);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.post_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName),
-            $event
+            $event,
+            sprintf('%s.%s.post_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName)
         );
     }
 
@@ -76,8 +76,8 @@ final class EventDispatcher implements EventDispatcherInterface
         $event = $this->getEvent($resource, $request);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.initialize_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName),
-            $event
+            $event,
+            sprintf('%s.%s.initialize_%s', $metadata->getApplicationName(), $metadata->getName(), $eventName)
         );
     }
 

@@ -20,7 +20,7 @@ use CoreShop\Component\Resource\Model\ToggleableInterface;
 use CoreShop\Component\Rule\Condition\Assessor\RuleAvailabilityAssessorInterface;
 use CoreShop\Component\Rule\Model\RuleInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterface
 {
@@ -58,8 +58,8 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
     {
         /** @var RuleAvailabilityCheckEvent $event */
         $event = $this->eventDispatcher->dispatch(
-            'coreshop.rule.availability_check',
-            new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable)
+            new RuleAvailabilityCheckEvent($rule, get_class($rule), $ruleIsAvailable),
+            'coreshop.rule.availability_check'
         );
 
         if ($event->isAvailable() === false) {

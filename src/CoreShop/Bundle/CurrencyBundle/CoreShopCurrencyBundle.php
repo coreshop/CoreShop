@@ -17,10 +17,13 @@ namespace CoreShop\Bundle\CurrencyBundle;
 use CoreShop\Bundle\CurrencyBundle\DependencyInjection\Compiler\CompositeCurrencyContextPass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopCurrencyBundle extends AbstractResourceBundle
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */

@@ -18,7 +18,7 @@ use CoreShop\Bundle\PimcoreBundle\Event\MailEvent;
 use CoreShop\Bundle\PimcoreBundle\Events;
 use CoreShop\Component\Pimcore\Mail;
 use Pimcore\Model\Document\Email;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class MailProcessor implements MailProcessorInterface
 {
@@ -29,9 +29,6 @@ final class MailProcessor implements MailProcessorInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool
     {
         $mailHasBeenSent = false;
@@ -47,7 +44,7 @@ final class MailProcessor implements MailProcessorInterface
         $mail->setDocument($emailDocument);
         $mail->setParams($params);
         $mail->addRecipients($recipients);
-        $mail->setEnableLayoutOnPlaceholderRendering(false);
+        $mail->setEnableLayoutOnRendering(false);
 
         $mailEvent = new MailEvent(
             $subject,
@@ -56,14 +53,14 @@ final class MailProcessor implements MailProcessorInterface
             $params
         );
 
-        $this->eventDispatcher->dispatch(Events::PRE_MAIL_SEND, $mailEvent);
+        $this->eventDispatcher->dispatch($mailEvent, Events::PRE_MAIL_SEND);
 
         if ($mailEvent->getShouldSendMail()) {
             $mail->send();
             $mailHasBeenSent = true;
         }
 
-        $this->eventDispatcher->dispatch(Events::POST_MAIL_SEND, $mailEvent);
+        $this->eventDispatcher->dispatch($mailEvent, Events::POST_MAIL_SEND);
 
         return $mailHasBeenSent;
     }

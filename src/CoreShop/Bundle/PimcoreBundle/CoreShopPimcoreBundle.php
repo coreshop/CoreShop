@@ -24,7 +24,6 @@ use CoreShop\Component\Pimcore\ResourceLoader;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
-use Pimcore\Placeholder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
@@ -57,16 +56,6 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         }
 
         return 'coreshop/core-shop';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        Placeholder::addPlaceholderClassPrefix('CoreShop\Component\Pimcore\Placeholder\\');
     }
 
     /**

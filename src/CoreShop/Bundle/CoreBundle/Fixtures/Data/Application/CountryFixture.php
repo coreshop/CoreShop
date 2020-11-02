@@ -76,21 +76,21 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         $addressFormatReplaces = [
             'recipient' => [
-                '%Text(company);',
+                '{{ company }};',
                 PHP_EOL,
-                '%Text(salutation);',
-                '%Text(firstname);',
-                '%Text(lastname);',
+                '{{ salutation }}',
+                '{{ firstname }}',
+                '{{ lastname }}',
             ],
             'street' => [
-                '%Text(street);',
-                '%Text(number);',
+                '{{ street}}',
+                '{{ number }}',
             ],
-            'postalcode' => ' %Text(postcode); ',
-            'city' => '%Text(city);',
+            'postalcode' => ' {{ postcode }}',
+            'city' => '{{ city }}',
             'country' => [
-                '%DataObject(country,{"method" : "getName"});',
-                '%Text(phone);',
+                '{{ country.name }}',
+                '{{ phone }}',
             ],
             'region' => '',
         ];
@@ -111,7 +111,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
-                if (!$country->getCurrency()['iso_4217_code']) {
+                if (null === $country->getCurrency() || !isset($country->getCurrency()['iso_4217_code'])) {
                     continue;
                 }
 

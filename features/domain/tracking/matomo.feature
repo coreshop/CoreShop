@@ -14,14 +14,14 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product
     Then tracking product with tracker "matomo" should generate:
       """
-      _paq.push(["setEcommerceView",%DataObject(product, {"method": "getId"});,"T-Shirt","",[],24]);
+      _paq.push(["setEcommerceView",##id##,"T-Shirt","",[],24]);
       """
 
   Scenario: Track Cart Add
     Given I add the product "T-Shirt" to my cart
     Then tracking cart-add for my cart with product with tracker "matomo" should generate:
       """
-      _paq.push(["addEcommerceItem",%DataObject(cartItem, {"method": "getId"});,"T-Shirt","",24,1]); _paq.push(["trackEcommerceCartUpdate",24]);
+      _paq.push(["addEcommerceItem",##item_id##,"T-Shirt","",24,1]); _paq.push(["trackEcommerceCartUpdate",24]);
       """
 
   Scenario: Track Cart Add
@@ -40,5 +40,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "matomo" should generate:
       """
-      _paq.push(["addEcommerceItem",%DataObject(orderItem, {"method": "getId"});,"T-Shirt","",24,1]); _paq.push(["trackEcommerceOrder",%DataObject(order, {"method": "getId"});,24,24,4,0,0]);
+      _paq.push(["addEcommerceItem",##item_id##,"T-Shirt","",24,1]); _paq.push(["trackEcommerceOrder",##id##,24,24,4,0,0]);
       """

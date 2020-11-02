@@ -16,9 +16,12 @@ namespace CoreShop\Bundle\FixtureBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 
 class CoreShopFixtureBundle extends AbstractResourceBundle
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */
