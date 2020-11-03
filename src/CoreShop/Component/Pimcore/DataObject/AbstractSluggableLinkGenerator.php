@@ -16,10 +16,23 @@ namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject\ClassDefinition\LinkGeneratorInterface;
 
+/**
+ * Class AbstractSluggableLinkGenerator
+ * @package CoreShop\Component\Pimcore\DataObject
+ */
 abstract class AbstractSluggableLinkGenerator implements LinkGeneratorInterface
 {
+
+    /**
+     * @param $string
+     * @return string
+     */
     protected function slugify($string): string
     {
+        if ($string === null) {
+            return '';
+        }
+
         return strtolower(
             trim(
                 preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(
@@ -35,4 +48,5 @@ abstract class AbstractSluggableLinkGenerator implements LinkGeneratorInterface
             )
         );
     }
+
 }
