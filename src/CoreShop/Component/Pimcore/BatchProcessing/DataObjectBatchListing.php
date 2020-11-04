@@ -52,6 +52,11 @@ final class DataObjectBatchListing implements Iterator, Countable
      * @var array
      */
     private $items = [];
+    
+    /**
+     * @var array
+     */
+    private $ids = [];
 
     public function __construct(DataObject\Listing $list, int $batchSize)
     {
