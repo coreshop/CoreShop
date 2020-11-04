@@ -48,6 +48,8 @@ final class BatchListing implements Iterator, Countable
      */
     private $items = [];
 
+    private $ids = [];
+
     /**
      * @param AbstractListing $list
      * @param int             $batchSize
