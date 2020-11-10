@@ -20,6 +20,10 @@ abstract class AbstractSluggableLinkGenerator implements LinkGeneratorInterface
 {
     protected function slugify($string): string
     {
+        if ($string === null) {
+            return '';
+        }
+
         return strtolower(
             trim(
                 preg_replace('~[^0-9a-z]+~i', '-', html_entity_decode(
