@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Component\Address\Model\AddressInterface;
+use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -51,11 +52,14 @@ final class AddressChoiceType extends AbstractType
                             throw new \InvalidArgumentException('Customer needs to be set');
                         }
 
+                        $customerAddressAllocator = new CustomerAddressAllocator();
+                        $addresses = $customerAddressAllocator->allocateForCustomer($customer);
+
                         if (empty($allowedAddressIdentifier)) {
-                            return $customer->getAddresses();
+                            return $addresses;
                         }
 
-                        return array_filter($customer->getAddresses(), function (AddressInterface $address) use ($allowedAddressIdentifier) {
+                        return array_filter($addresses, function (AddressInterface $address) use ($allowedAddressIdentifier) {
                             $addressIdentifierName = $address->hasAddressIdentifier() ? $address->getAddressIdentifier()->getName() : null;
 
                             return in_array($addressIdentifierName, $allowedAddressIdentifier);
