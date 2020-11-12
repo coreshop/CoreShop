@@ -97,7 +97,7 @@ final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterfac
             $thumbnailConfig = new Config();
             $thumbnailConfig->setName($name);
             $thumbnailConfig->setItems($properties['items']);
-            $thumbnailConfig->setDescription($properties['description']);
+            $thumbnailConfig->setDescription($properties['description'] ?? '');
             $thumbnailConfig->setGroup($properties['group']);
             $thumbnailConfig->setFormat($properties['format']);
             $thumbnailConfig->setQuality($properties['quality']);
