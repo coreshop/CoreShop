@@ -73,7 +73,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $variantIds = [];
 
-        foreach ($query->execute()->fetchAll() as $column) {
+        foreach ($query->execute()->fetchAllAssociative() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 

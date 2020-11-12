@@ -16,13 +16,14 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Db;
 
 class Dao
 {
     /**
-     * @var \Pimcore\Db\ConnectionInterface
+     * @var Connection
      */
     private $database;
 
@@ -74,9 +75,11 @@ class Dao
             $queryBuilder->select('DISTINCT q.o_id');
         }
         $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $this->lastRecordCount = $result->rowCount();
+        $resultSet = $result->fetchAllAssociative();
 
-        return $result->fetchAll();
+        $this->lastRecordCount = count($resultSet);
+
+        return $resultSet;
     }
 
     /**
@@ -102,23 +105,23 @@ class Dao
             }
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier($fieldName));
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-            $result = [];
-
-            foreach ($queryResult as $row) {
-                if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
-                }
-            }
+            $result = $stmt->fetchAllAssociative();
 
             return $result;
         }
+
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
+        $queryResult = $stmt->fetchAllAssociative();
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row[$fieldName]) {
+                $result[] = $row[$fieldName];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -175,7 +178,7 @@ class Dao
             $queryBuilder->groupBy('dest');
 
             $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
+            $result = $stmt->fetchAllAssociative();
 
             return $result;
         }
@@ -195,7 +198,7 @@ class Dao
         $queryBuilder->groupBy('dest');
 
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAll();
+        $queryResult = $stmt->fetchAllAssociative();
 
         $result = [];
 

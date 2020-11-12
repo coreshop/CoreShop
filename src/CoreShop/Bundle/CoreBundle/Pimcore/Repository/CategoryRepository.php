@@ -76,7 +76,7 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $childIds = [];
 
-        foreach ($query->execute()->fetchAll() as $column) {
+        foreach ($query->execute()->fetchAllAssociative() as $column) {
             $childIds[] = $column['oo_id'];
         }
 

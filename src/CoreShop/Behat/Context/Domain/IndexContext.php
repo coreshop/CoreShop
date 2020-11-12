@@ -226,17 +226,17 @@ final class IndexContext implements Context
 
         if ($object instanceof Concrete) {
             if ($localized) {
-                return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $object->getId()));
+                return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s WHERE oo_id = %s', $tableName, $object->getId()));
             }
 
             if ($relational) {
-                return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE src = %s', $tableName, $object->getId()));
+                return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s WHERE src = %s', $tableName, $object->getId()));
             }
 
-            return $this->entityManager->getConnection()->fetchAssoc(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $object->getId()));
+            return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s WHERE o_id = %s', $tableName, $object->getId()));
         }
 
-        return $this->entityManager->getConnection()->fetchAll(sprintf('SELECT * FROM %s', $tableName));
+        return $this->entityManager->getConnection()->fetchAllAssociative(sprintf('SELECT * FROM %s', $tableName));
     }
 
     /**

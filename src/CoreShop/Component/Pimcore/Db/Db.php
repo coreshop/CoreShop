@@ -43,7 +43,7 @@ final class Db extends \Pimcore\Db
     {
         $db = static::get();
 
-        $data = $db->fetchAll('SHOW COLUMNS FROM ' . $table);
+        $data = $db->fetchAllAssociative('SHOW COLUMNS FROM ' . $table);
         $columns = [];
 
         foreach ($data as $d) {
@@ -64,7 +64,7 @@ final class Db extends \Pimcore\Db
     {
         $db = static::get();
 
-        $result = $db->fetchAll("SHOW TABLES LIKE '$table'");
+        $result = $db->fetchAllAssociative("SHOW TABLES LIKE '$table'");
 
         return count($result) > 0;
     }

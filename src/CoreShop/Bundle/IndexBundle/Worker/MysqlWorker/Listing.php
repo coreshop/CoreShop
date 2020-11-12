@@ -32,7 +32,6 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
-use Zend\Paginator\Adapter\AdapterInterface;
 
 class Listing extends AbstractListing implements OrderAwareListingInterface, ExtendedListingInterface
 {
@@ -640,27 +639,14 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     }
 
     /**
-     * @param int $offset
-     * @param int $itemCountPerPage
-     *
-     * @return PimcoreModelInterface[]|null
+     * @inheritdoc
      */
-    public function getItems($offset, $itemCountPerPage)
+    public function getItems(int $offset, int $itemCountPerPage)
     {
         $this->setOffset($offset);
         $this->setLimit($itemCountPerPage);
 
         return $this->getObjects();
-    }
-
-    /**
-     * Return a fully configured Paginator Adapter from this method.
-     *
-     * @return AdapterInterface
-     */
-    public function getPaginatorAdapter()
-    {
-        return $this;
     }
 
     /**

@@ -20,10 +20,8 @@ use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
 
-interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
+interface ListingInterface extends \Countable, \Iterable
 {
     /**
      * Order Key Price.
@@ -60,6 +58,13 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * @return PimcoreModelInterface[]
      */
     public function getObjects();
+
+    /**
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return PimcoreModelInterface[]
+     */
+    public function getItems(int $offset, int $itemCountPerPage);
 
     /**
      * Adds filter condition to product list

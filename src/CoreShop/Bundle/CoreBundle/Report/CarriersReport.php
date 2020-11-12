@@ -84,7 +84,7 @@ class CarriersReport implements ReportInterface
                 ) t 
               WHERE store = $storeId AND carrier IS NOT NULL AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp GROUP BY carrier";
 
-        $results = $this->db->fetchAll($sql);
+        $results = $this->db->fetchAllAssociative($sql);
         $data = [];
 
         foreach ($results as $result) {

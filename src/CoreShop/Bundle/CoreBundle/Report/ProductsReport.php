@@ -141,7 +141,7 @@ class ProductsReport implements ReportInterface, ExportReportInterface
                 LIMIT $offset,$limit";
         }
 
-        $productSales = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $productSales = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 

@@ -85,7 +85,7 @@ class PaymentProvidersReport implements ReportInterface
           WHERE store = $storeId AND o_creationDate > $fromTimestamp AND o_creationDate < $toTimestamp 
           GROUP BY paymentProvider";
 
-        $results = $this->db->fetchAll($sql);
+        $results = $this->db->fetchAllAssociative($sql);
         $data = [];
 
         foreach ($results as $result) {
