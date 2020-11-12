@@ -21,7 +21,7 @@ use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use Pimcore\Model\DataObject\Concrete;
 
-interface ListingInterface extends \Countable, \Iterable
+interface ListingInterface extends \Countable, \Traversable
 {
     /**
      * Order Key Price.

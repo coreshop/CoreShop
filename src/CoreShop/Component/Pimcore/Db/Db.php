@@ -41,7 +41,7 @@ final class Db extends \Pimcore\Db
      */
     public static function getColumns($table): array
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
         $data = $db->fetchAllAssociative('SHOW COLUMNS FROM ' . $table);
         $columns = [];
@@ -62,7 +62,7 @@ final class Db extends \Pimcore\Db
      */
     public static function tableExists($table): bool
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
         $result = $db->fetchAllAssociative("SHOW TABLES LIKE '$table'");
 

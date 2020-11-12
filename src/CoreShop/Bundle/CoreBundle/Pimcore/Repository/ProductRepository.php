@@ -64,8 +64,8 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list = $this->getList();
         $dao = $list->getDao();
 
-        $db = \Pimcore\Db::get();
-        $query = $db->select()
+        $qb = $this->connection->createQueryBuilder();
+        $qb
             ->from($dao->getTableName(), ['oo_id'])
             ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
             ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
@@ -73,7 +73,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $variantIds = [];
 
-        foreach ($query->execute()->fetchAllAssociative() as $column) {
+        foreach ($qb->execute()->fetchAllAssociative() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
