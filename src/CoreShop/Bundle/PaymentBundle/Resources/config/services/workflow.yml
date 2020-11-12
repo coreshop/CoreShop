@@ -5,6 +5,7 @@ services:
     coreshop.state_machine.marking_store.single_state.state:
         class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - state
 
     coreshop.state_machine.marking_store.payment_orm_marketing_store:
