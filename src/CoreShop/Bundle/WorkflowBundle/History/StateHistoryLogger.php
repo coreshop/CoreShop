@@ -16,8 +16,8 @@ namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Pimcore\Model\DataObject\Concrete;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Workflow\Event\Event;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StateHistoryLogger implements StateHistoryLoggerInterface
 {
