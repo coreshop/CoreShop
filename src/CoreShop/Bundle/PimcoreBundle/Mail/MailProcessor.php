@@ -44,7 +44,14 @@ final class MailProcessor implements MailProcessorInterface
         $mail->setDocument($emailDocument);
         $mail->setParams($params);
         $mail->addRecipients($recipients);
-        $mail->setEnableLayoutOnRendering(false);
+
+        //BC Remove with 3.1
+        if (method_exists($mail, 'setEnableLayoutOnPlaceholderRendering')) {
+            $mail->setEnableLayoutOnPlaceholderRendering(false);
+        }
+        else {
+            $mail->setEnableLayoutOnRendering(false);
+        }
 
         $mailEvent = new MailEvent(
             $subject,
