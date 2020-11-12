@@ -71,9 +71,12 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
 
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->from($dao->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
+            ->select('oo_id')
+            ->from($dao->getTableName())
+            ->where('o_path LIKE :path')
+            ->andWhere('stores LIKE :stores')
+            ->setParameter('path', $category->getRealFullPath() . '/%')
+            ->setParameter('stores', '%,' . $store->getId() . ',%');
 
         $childIds = [];
 

@@ -66,10 +66,14 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
 
         $qb = $this->connection->createQueryBuilder();
         $qb
-            ->from($dao->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
-            ->where('o_type = ?', 'variant');
+            ->select('oo_id')
+            ->from($dao->getTableName())
+            ->where('o_path LIKE :path')
+            ->andWhere('stores LIKE :stores')
+            ->andWhere('o_type = :type')
+            ->setParameter('path', $product->getRealFullPath() . '/%')
+            ->setParameter('stores', '%,' . $store->getId() . ',%')
+            ->setParameter('type', 'variant');
 
         $variantIds = [];
 
