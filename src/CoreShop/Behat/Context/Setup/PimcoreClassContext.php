@@ -351,7 +351,7 @@ final class PimcoreClassContext implements Context
     {
         $jsonDefinition = sprintf('
             {
-                "fieldtype": "relation",
+                "fieldtype": "manyToOneRelation",
                 "width": "",
                 "assetUploadPath": "",
                 "relationType": true,
