@@ -29,6 +29,7 @@ use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Order\SimpleOrder;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Model\DataObject\AbstractObject;
 use Pimcore\Model\DataObject\Concrete;
@@ -111,18 +112,13 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $queryJoins = [];
 
     /**
-     * @var MysqlWorker
-     */
-    protected $worker;
-
-    /**
      * {@inheritdoc}
      */
-    public function __construct(IndexInterface $index, WorkerInterface $worker)
+    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
-        parent::__construct($index, $worker);
+        parent::__construct($index, $worker, $connection);
 
-        $this->dao = new Dao($this);
+        $this->dao = new Dao($this, $connection);
     }
 
     /**

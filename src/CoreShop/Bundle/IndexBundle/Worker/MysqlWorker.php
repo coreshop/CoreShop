@@ -572,7 +572,7 @@ QUERY;
      */
     public function getList(IndexInterface $index)
     {
-        return new MysqlWorker\Listing($index, $this);
+        return new MysqlWorker\Listing($index, $this, $this->database);
     }
 
     /**

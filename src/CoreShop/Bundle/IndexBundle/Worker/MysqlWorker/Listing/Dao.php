@@ -40,10 +40,10 @@ class Dao
     /**
      * @param MysqlWorker\Listing $model
      */
-    public function __construct(MysqlWorker\Listing $model)
+    public function __construct(MysqlWorker\Listing $model, Connection  $connection)
     {
         $this->model = $model;
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
