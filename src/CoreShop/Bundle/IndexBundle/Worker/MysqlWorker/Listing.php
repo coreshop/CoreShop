@@ -112,6 +112,11 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected $queryJoins = [];
 
     /**
+     * @var MysqlWorker
+     */
+    protected $worker;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)

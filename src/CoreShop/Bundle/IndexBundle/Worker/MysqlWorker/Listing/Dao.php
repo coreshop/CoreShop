@@ -40,7 +40,7 @@ class Dao
     /**
      * @param MysqlWorker\Listing $model
      */
-    public function __construct(MysqlWorker\Listing $model, Connection  $connection)
+    public function __construct(MysqlWorker\Listing $model, Connection $connection)
     {
         $this->model = $model;
         $this->database = $connection;
@@ -74,8 +74,8 @@ class Dao
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
         }
-        $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $resultSet = $result->fetchAllAssociative();
+
+        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
 
         $this->lastRecordCount = count($resultSet);
 
@@ -104,15 +104,12 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAllAssociative();
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 
         $queryBuilder->select($this->quoteIdentifier($fieldName));
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAllAssociative();
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
         $result = [];
 
         foreach ($queryResult as $row) {
@@ -177,10 +174,7 @@ class Dao
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAllAssociative();
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 
         $queryBuilder->select($this->quoteIdentifier('dest'));
@@ -197,8 +191,7 @@ class Dao
         $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
         $queryBuilder->groupBy('dest');
 
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAllAssociative();
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
 
         $result = [];
 
