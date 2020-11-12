@@ -155,7 +155,9 @@ final class CartContext implements Context
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
-        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $address = $customer->getAddresses();
+
+        $this->cartContext->getCart()->setShippingAddress(reset($address));
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 

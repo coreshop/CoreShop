@@ -49,7 +49,8 @@ final class OrderShipmentContext implements Context
      */
     public function iCreateAFullShipmentForOrder(OrderInterface $order)
     {
-        $orderItem = reset($order->getItems());
+        $items = $order->getItems();
+        $orderItem = reset($items);
 
         $orderShipment = $this->orderShipmentFactory->createNew();
         $orderShipment = $this->shipmentTransformer->transform($order, $orderShipment, [
