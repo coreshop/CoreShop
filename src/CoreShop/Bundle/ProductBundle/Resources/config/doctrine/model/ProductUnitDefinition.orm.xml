@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Product\Model\ProductUnitDefinition"
+                       table="coreshop_product_unit_definition">
+        <unique-constraints>
+            <unique-constraint name="definitions_and_unit" columns="product_unit_definitions,unit"/>
+        </unique-constraints>
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="conversionRate" column="conversion_rate" type="float" nullable="true"/>
+        <field name="precision" column="`precision`" type="integer" nullable="false"/>
+
+        <many-to-one field="unit" target-entity="CoreShop\Component\Product\Model\ProductUnitInterface" fetch="EAGER">
+            <join-column name="unit" referenced-column-name="id"/>
+            <cascade>
+                <cascade-merge/>
+            </cascade>
+        </many-to-one>
+
+        <many-to-one field="productUnitDefinitions" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitions" inversed-by="unitDefinitions">
+            <join-column name="product_unit_definitions" referenced-column-name="id" on-delete="CASCADE"/>
+            <cascade>
+                <cascade-merge/>
+                <cascade-persist/>
+            </cascade>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

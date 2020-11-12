@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\AddressBundle\DependencyInjection;
 
 use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeCountryContextPass;
 use CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Address\Context\CountryContextInterface;
 use CoreShop\Component\Address\Context\RequestBased\RequestResolverInterface;
@@ -33,7 +34,7 @@ final class CoreShopAddressExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {

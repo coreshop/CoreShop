@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
@@ -27,7 +28,7 @@ use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterOrderRender
 use CoreShop\Bundle\MenuBundle\CoreShopMenuBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use PackageVersions\Versions;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
@@ -35,6 +36,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     use PackageVersionTrait;
 
     public static function registerDependentBundles(BundleCollection $collection)
@@ -102,7 +105,7 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/index-bundle')) {
             return 'coreshop/index-bundle';
         }
 

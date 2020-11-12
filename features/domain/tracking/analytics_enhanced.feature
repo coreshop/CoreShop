@@ -15,25 +15,25 @@ Feature: In order to track ecommerce sales
   Scenario: Track Product Impression
     Then tracking product impression with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addImpression', {"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"});
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addImpression', {"id": ##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"});
       """
 
   Scenario: Track Product
     Then tracking product with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","quantity":1,"currency":"EUR"}); ga('ec:setAction', 'detail');
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":##id##,"name":"T-Shirt","category":"","quantity":1,"currency":"EUR"}); ga('ec:setAction', 'detail');
       """
 
   Scenario: Track Cart Add
     Then tracking cart-add for my cart with product with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'add');
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'add');
       """
 
   Scenario: Track Cart Add
     Then tracking cart-remove for my cart with product with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":%DataObject(product, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'remove');
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":##id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'remove');
       """
 
   Scenario: Track Checkout Step
@@ -53,5 +53,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-analytics-enhanced-ecommerce" should generate:
       """
-      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'purchase', {"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"});
+      ga('require', 'ec'); ga('set', 'currencyCode', 'EUR'); ga('ec:addProduct', {"id":##item_id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ec:setAction', 'purchase', {"id":##id##,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"});
       """

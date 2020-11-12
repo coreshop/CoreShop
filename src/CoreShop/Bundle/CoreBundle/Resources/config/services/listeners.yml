@@ -53,7 +53,7 @@ services:
            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
            - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
-           - '@pimcore.http.request_helper'
+           - '@Pimcore\Http\RequestHelper'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkPriceRuleState, priority: 0 }
 
@@ -61,7 +61,7 @@ services:
         arguments:
            - '@CoreShop\Component\Order\Manager\CartManagerInterface'
            - '@CoreShop\Component\Core\Context\ShopperContextInterface'
-           - '@pimcore.http.request_helper'
+           - '@Pimcore\Http\RequestHelper'
            - '@session'
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: checkCartAvailability, priority: 7 }

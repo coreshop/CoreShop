@@ -385,6 +385,13 @@ class ProductSpecificPriceRules extends Data implements
         return $array;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface

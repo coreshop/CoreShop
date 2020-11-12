@@ -55,7 +55,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
@@ -544,7 +544,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",

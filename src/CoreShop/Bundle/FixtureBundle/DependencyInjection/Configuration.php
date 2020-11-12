@@ -30,13 +30,9 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_fixture');
+        $treeBuilder = new TreeBuilder('core_shop_fixture');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
         $this->addModelsSection($rootNode);
 
         return $treeBuilder;

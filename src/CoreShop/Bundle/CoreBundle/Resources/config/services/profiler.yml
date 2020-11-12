@@ -9,4 +9,4 @@ services:
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
             - false
         tags:
-            - { name: data_collector, template: 'CoreShopCoreBundle:Collector:currency.html.twig', id: coreshop.currency_collector}
+            - { name: data_collector, template: '@CoreShopCore/Collector/currency.html.twig', id: coreshop.currency_collector}

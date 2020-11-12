@@ -15,40 +15,22 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\TrackingBundle\Tracker;
 
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
-    /**
-     * @var bool
-     */
     protected $enabled = false;
-
-    /**
-     * @var EngineInterface
-     */
     protected $templatingEngine;
-
-    /**
-     * @var string
-     */
     protected $templatePrefix;
-
-    /**
-     * @var string
-     */
     protected $templateExtension;
+    protected $twig;
 
-    /**
-     * @param EngineInterface $templatingEngine
-     * @param array           $options
-     */
     public function __construct(
-        EngineInterface $templatingEngine,
+        Environment $twig,
         array $options = []
     ) {
-        $this->templatingEngine = $templatingEngine;
+        $this->twig = $twig;
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -119,7 +101,7 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
      */
     protected function renderTemplate(string $name, array $parameters): string
     {
-        return $this->templatingEngine->render(
+        return $this->twig->render(
             $this->getTemplatePath($name),
             $parameters
         );

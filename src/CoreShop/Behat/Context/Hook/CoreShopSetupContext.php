@@ -17,25 +17,19 @@ namespace CoreShop\Behat\Context\Hook;
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\Setup;
 use CoreShop\Bundle\CoreBundle\Test\Service\NotificationRuleListenerInterface;
-use CoreShop\Bundle\NotificationBundle\Events;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CoreShopSetupContext implements Context
 {
     private $entityManager;
     private $notificationRuleListener;
-    private $eventDispatcher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        NotificationRuleListenerInterface $notificationRuleListener,
-        EventDispatcherInterface $eventDispatcher
+        NotificationRuleListenerInterface $notificationRuleListener
     ) {
         $this->entityManager = $entityManager;
         $this->notificationRuleListener = $notificationRuleListener;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

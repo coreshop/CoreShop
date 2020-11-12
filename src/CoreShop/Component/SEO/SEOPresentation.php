@@ -17,8 +17,8 @@ namespace CoreShop\Component\SEO;
 use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use CoreShop\Component\SEO\Extractor\ExtractorInterface;
 use CoreShop\Component\SEO\Model\SEOMetadata;
-use Pimcore\Templating\Helper\HeadMeta;
-use Pimcore\Templating\Helper\HeadTitle;
+use Pimcore\Twig\Extension\Templating\HeadMeta;
+use Pimcore\Twig\Extension\Templating\HeadTitle;
 
 class SEOPresentation implements SEOPresentationInterface
 {

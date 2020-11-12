@@ -14,23 +14,12 @@ namespace CoreShop\Bundle\OrderBundle\Event;
 
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class AdminAddressCreationEvent extends Event
 {
-    /**
-     * @var AddressInterface
-     */
     private $address;
-
-    /**
-     * @var CustomerInterface
-     */
     private $customer;
-
-    /**
-     * @var array
-     */
     private $data;
 
     public function __construct(AddressInterface $address, CustomerInterface $customer, array $data)
@@ -40,26 +29,17 @@ final class AdminAddressCreationEvent extends Event
         $this->data = $data;
     }
 
-    /**
-     * @return AddressInterface
-     */
-    public function getAddress()
+    public function getAddress(): AddressInterface
     {
         return $this->address;
     }
 
-    /**
-     * @return CustomerInterface
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         return $this->customer;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

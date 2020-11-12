@@ -16,10 +16,13 @@ namespace CoreShop\Bundle\SequenceBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
+use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSequenceBundle extends AbstractResourceBundle
 {
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
     /**
      * {@inheritdoc}
      */

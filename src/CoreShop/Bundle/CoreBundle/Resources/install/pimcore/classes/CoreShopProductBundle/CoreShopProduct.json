@@ -227,7 +227,7 @@
                                         "visibleSearch": false
                                     },
                                     {
-                                        "fieldtype": "href",
+                                        "fieldtype": "manyToOneRelation",
                                         "width": "",
                                         "assetUploadPath": "",
                                         "relationType": true,
@@ -449,7 +449,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
@@ -501,7 +501,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",

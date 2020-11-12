@@ -8,4 +8,4 @@ services:
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
             - false
         tags:
-            - { name: data_collector, template: 'CoreShopStoreBundle:Collector:store.html.twig', id: coreshop.store_collector }
+            - { name: data_collector, template: '@CoreShopStore/Collector/store.html.twig', id: coreshop.store_collector }

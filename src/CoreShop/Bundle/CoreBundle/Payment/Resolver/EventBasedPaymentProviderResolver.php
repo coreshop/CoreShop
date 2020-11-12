@@ -18,14 +18,17 @@ use CoreShop\Bundle\CoreBundle\Event\PaymentProviderSupportsEvent;
 use CoreShop\Component\Core\Events;
 use CoreShop\Component\Payment\Resolver\PaymentProviderResolverInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
     private $inner;
     private $eventDispatcher;
 
-    public function __construct(PaymentProviderResolverInterface $inner, EventDispatcherInterface $eventDispatcher)
+    public function __construct(
+        PaymentProviderResolverInterface $inner,
+        EventDispatcherInterface $eventDispatcher
+    )
     {
         $this->inner = $inner;
         $this->eventDispatcher = $eventDispatcher;
@@ -41,7 +44,7 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
         foreach ($this->inner->resolvePaymentProviders($subject) as $paymentProvider) {
             $event = new PaymentProviderSupportsEvent($paymentProvider, $subject);
 
-            $this->eventDispatcher->dispatch(Events::SUPPORTS_PAYMENT_PROVIDER, $event);
+            $this->eventDispatcher->dispatch($event, Events::SUPPORTS_PAYMENT_PROVIDER);
 
             if ($event->isSupported()) {
                 $allowedPaymentProviders[] = $paymentProvider;

@@ -1,5 +1,25 @@
 # Within 2.2
 
+## 2.2.6
+ - Bugs:
+     - [Product] fix cloning of ProductUnitDefinitions and add test for it. (https://github.com/coreshop/CoreShop/pull/1502)
+     - [CoreBundle] interactive login: cart might not be available for several reasons, ignore exception and don't assign a cart (https://github.com/coreshop/CoreShop/pull/1500)
+     
+## 2.2.5
+ - Bugs:
+     - [OrderBundle] fix permission keys for order-creation (https://github.com/coreshop/CoreShop/pull/1474)
+     - [ProductBundle] fix persistance of spefiic-product-price-rule label (https://github.com/coreshop/CoreShop/pull/1472)
+     - [OrderBundle] remove 'applyOn' from DiscountPercent and SurchagePercent (https://github.com/coreshop/CoreShop/pull/1479)
+     - [QPR] Wrong Pseudo-Price in Grid-View (https://github.com/coreshop/CoreShop/issues/1488)
+     - [Pimcore] fix hasDefinition with pimcore.implementation_loader.document.tag (https://github.com/coreshop/CoreShop/pull/1490)
+     - [OrderBundle, LocaleBundle] fix backend order-creation localeCode selection (https://github.com/coreshop/CoreShop/pull/1481)
+     - [CoreBundle] fix setting price-values for inherited store-values (https://github.com/coreshop/CoreShop/pull/1491)
+     - [CoreBundle] don't set product for store-values on pre-get-data (https://github.com/coreshop/CoreShop/pull/1492)
+     
+ - Features:
+     - [Core] pass cart-item to price calculation context (https://github.com/coreshop/CoreShop/pull/1482)
+     - [Index] allow to define column config with index-extensions (https://github.com/coreshop/CoreShop/pull/1494)
+ 
 ## 2.2.4
  - Bugs:
     - [CoreBundle] Don't validate maximum or minimum order quantity when value is 0 (https://github.com/coreshop/CoreShop/issues/1467, https://github.com/coreshop/CoreShop/pull/1468)

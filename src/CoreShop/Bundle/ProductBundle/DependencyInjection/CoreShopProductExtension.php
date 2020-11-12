@@ -21,6 +21,7 @@ use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductPriceRuleC
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductRetailPriceCalculatorsPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleActionPass;
 use CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler\ProductSpecificPriceRuleConditionPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Product\Calculator\ProductDiscountCalculatorInterface;
 use CoreShop\Component\Product\Calculator\ProductDiscountPriceCalculatorInterface;
@@ -44,7 +45,7 @@ final class CoreShopProductExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
         $this->registerPimcoreModels('coreshop', $config['pimcore'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {

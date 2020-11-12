@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\NotificationBundle\DependencyInjection;
 
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleActionPass;
 use CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler\NotificationRuleConditionPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Notification\Rule\Action\NotificationRuleProcessorInterface;
 use CoreShop\Component\Notification\Rule\Condition\NotificationConditionCheckerInterface;
@@ -33,7 +34,7 @@ final class CoreShopNotificationExtension extends AbstractModelExtension
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

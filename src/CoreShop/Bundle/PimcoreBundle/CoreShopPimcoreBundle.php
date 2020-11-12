@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\ExpressionLanguageServicePass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridActionPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterGridFilterPass;
@@ -21,10 +22,8 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDo
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDocumentTagPass;
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterTypeHintRegistriesPass;
 use CoreShop\Component\Pimcore\ResourceLoader;
-use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
-use Pimcore\Placeholder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
@@ -52,21 +51,11 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/pimcore-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/pimcore-bundle')) {
             return 'coreshop/pimcore-bundle';
         }
 
         return 'coreshop/core-shop';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
-    {
-        parent::boot();
-
-        Placeholder::addPlaceholderClassPrefix('CoreShop\Component\Pimcore\Placeholder\\');
     }
 
     /**

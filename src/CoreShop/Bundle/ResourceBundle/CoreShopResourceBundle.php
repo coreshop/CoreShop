@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
@@ -90,7 +91,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/resource-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/resource-bundle')) {
             return 'coreshop/resource-bundle';
         }
 

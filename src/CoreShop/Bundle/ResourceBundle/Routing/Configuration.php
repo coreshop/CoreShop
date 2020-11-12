@@ -24,8 +24,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('routing');
+        $treeBuilder = new TreeBuilder('routing');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

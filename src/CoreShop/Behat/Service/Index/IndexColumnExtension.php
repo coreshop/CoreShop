@@ -29,7 +29,7 @@ class IndexColumnExtension implements IndexColumnTypeConfigExtension
         return $config;
     }
 
-    public function supports(IndexInterface $index)
+    public function supports(IndexInterface $index): bool
     {
         return $index->getName() === 'extension_column_config';
     }

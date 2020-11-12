@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping">
+    <mapped-superclass name="CoreShop\Component\Core\Model\QuantityRange" table="coreshop_product_quantity_price_rule_range">
+        <field name="amount" column="amount" type="bigint"/>
+        <field name="pseudoPrice" column="pseudo_price" type="bigint"/>
+
+        <many-to-one field="currency" target-entity="CoreShop\Component\Currency\Model\CurrencyInterface">
+            <join-column name="currencyId" referenced-column-name="id" on-delete="SET NULL"/>
+        </many-to-one>
+        <many-to-one field="unitDefinition" target-entity="CoreShop\Component\Product\Model\ProductUnitDefinitionInterface">
+            <join-column name="unit_definition" referenced-column-name="id" on-delete="SET NULL"/>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

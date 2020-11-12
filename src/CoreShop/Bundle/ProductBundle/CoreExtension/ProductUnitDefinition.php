@@ -240,6 +240,14 @@ class ProductUnitDefinition extends Data implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
+    }
+
+    /**
      * @return RepositoryInterface
      */
     protected function getRepository()

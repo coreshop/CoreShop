@@ -385,7 +385,7 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -414,7 +414,7 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
@@ -464,7 +464,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,

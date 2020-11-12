@@ -39,7 +39,7 @@ final class StoreCollector extends DataCollector
         ];
     }
 
-    public function getStore(): StoreInterface
+    public function getStore(): ?StoreInterface
     {
         return $this->data['store'];
     }

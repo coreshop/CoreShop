@@ -91,7 +91,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $stack
      * @param ContainerBuilder $container
      */
-    public function registerStack($applicationName, $stack, ContainerBuilder $container)
+    public function registerStack(string $applicationName, array $stack, ContainerBuilder $container)
     {
         $appParameterName = sprintf('%s.stack', $applicationName);
         $globalParameterName = 'coreshop.all.stack';

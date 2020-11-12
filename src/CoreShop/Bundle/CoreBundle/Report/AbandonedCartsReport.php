@@ -115,8 +115,8 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
                      ORDER BY cart.o_creationDate DESC
                      LIMIT $offset,$limit";
 
-        $data = $this->db->fetchAll($sqlQuery, [$fromTimestamp, $toTimestamp]);
-        $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
+        $data = $this->db->fetchAllAssociative($sqlQuery, [$fromTimestamp, $toTimestamp]);
+        $this->totalRecords = (int) $this->db->fetchOne('SELECT FOUND_ROWS()');
 
         foreach ($data as &$entry) {
             $entry['itemsInCart'] = count(array_filter(explode(',', $entry['items'])));

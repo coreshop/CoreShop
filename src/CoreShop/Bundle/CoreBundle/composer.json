@@ -37,7 +37,7 @@
         "coreshop/core": "^3.0",
         "fzaninotto/faker": "^1.6",
         "rinvex/countries": "^6.0",
-        "pimcore/pimcore": "^6.7.0"
+        "pimcore/pimcore": "^7.0.0"
     },
     "config": {
         "bin-dir": "bin"

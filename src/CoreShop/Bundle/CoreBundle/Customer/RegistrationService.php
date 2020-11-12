@@ -23,7 +23,7 @@ use CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface;
 use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 use Pimcore\File;
 use Pimcore\Model\DataObject\Service;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
@@ -101,8 +101,8 @@ final class RegistrationService implements RegistrationServiceInterface
         $customer->addAddress($address);
 
         $this->eventDispatcher->dispatch(
-            'coreshop.customer.register',
-            new CustomerRegistrationEvent($customer, $formData)
+            new CustomerRegistrationEvent($customer, $formData),
+            'coreshop.customer.register'
         );
 
         $customer->save();

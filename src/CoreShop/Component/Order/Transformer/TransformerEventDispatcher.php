@@ -14,19 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Transformer;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class TransformerEventDispatcher implements TransformerEventDispatcherInterface
 {
-    /**
-     * @var EventDispatcherInterface
-     */
     private $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
@@ -40,8 +34,8 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         $event = $this->getEvent($model, $params);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.pre_%s', 'coreshop', $modelName, 'transform'),
-            $event
+            $event,
+            sprintf('%s.%s.pre_%s', 'coreshop', $modelName, 'transform')
         );
     }
 
@@ -53,8 +47,8 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         $event = $this->getEvent($model, $params);
 
         $this->eventDispatcher->dispatch(
-            sprintf('%s.%s.post_%s', 'coreshop', $modelName, 'transform'),
-            $event
+            $event,
+            sprintf('%s.%s.post_%s', 'coreshop', $modelName, 'transform')
         );
     }
 

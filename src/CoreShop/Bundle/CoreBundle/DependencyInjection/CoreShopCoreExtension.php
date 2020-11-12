@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\DependencyInjection;
 
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterPortletsPass;
 use CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler\RegisterReportsPass;
+use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Component\Core\Portlet\PortletInterface;
 use CoreShop\Component\Core\Report\ReportInterface;
@@ -62,7 +63,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
 
         $container->setParameter('coreshop.all.dependant.bundles', []);
 
-        $this->registerResources('coreshop', $config['driver'], $config['resources'], $container);
+        $this->registerResources('coreshop', CoreShopResourceBundle::DRIVER_DOCTRINE_ORM, $config['resources'], $container);
 
         if (array_key_exists('pimcore_admin', $config)) {
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);

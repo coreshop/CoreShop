@@ -61,12 +61,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_order');
+        $treeBuilder = new TreeBuilder('core_shop_order');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
             ->end();
         $this->addModelsSection($rootNode);
@@ -115,7 +114,6 @@ final class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
-
                 ->end()
             ->end()
         ->end();

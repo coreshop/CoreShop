@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle;
 
+use Composer\InstalledVersions;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
 use Liip\ThemeBundle\LiipThemeBundle;
 use PackageVersions\Versions;
@@ -66,7 +67,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
      */
     public function getComposerPackageName(): string
     {
-        if (isset(Versions::VERSIONS['coreshop/theme-bundle'])) {
+        if (InstalledVersions::isInstalled('coreshop/theme-bundle')) {
             return 'coreshop/theme-bundle';
         }
 
