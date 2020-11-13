@@ -61,7 +61,7 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
 
         $values = $parameterBag->get($field);
 
-        if (empty($values)) {
+        if (empty($values) && isset($condition->getConfiguration()['preSelects'])) {
             $values = $condition->getConfiguration()['preSelects'];
         }
 

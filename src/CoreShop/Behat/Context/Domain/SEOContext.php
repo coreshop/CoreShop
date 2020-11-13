@@ -64,8 +64,8 @@ final class SEOContext implements Context
 
         $descriptionItem = null;
 
-        foreach ($this->headMeta as $item) {
-            if ($item->name === 'description') {
+        foreach ($this->headMeta->getContainer()->getArrayCopy() as $key => $item) {
+            if ($key === 'description') {
                 $descriptionItem = $item;
 
                 break;

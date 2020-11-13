@@ -60,7 +60,7 @@ class RelationalSelectConditionProcessor implements FilterConditionProcessorInte
         $field = $condition->getConfiguration()['field'];
         $value = $parameterBag->get($field);
 
-        if (empty($value)) {
+        if (empty($value) && isset($condition->getConfiguration()['preSelect'])) {
             $value = $condition->getConfiguration()['preSelect'];
         }
 
