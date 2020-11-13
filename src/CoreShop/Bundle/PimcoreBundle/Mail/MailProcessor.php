@@ -49,7 +49,7 @@ final class MailProcessor implements MailProcessorInterface
         if (method_exists($mail, 'setEnableLayoutOnPlaceholderRendering')) {
             $mail->setEnableLayoutOnPlaceholderRendering(false);
         }
-        else {
+        elseif (method_exists($mail, 'setEnableLayoutOnRendering')) {
             $mail->setEnableLayoutOnRendering(false);
         }
 
