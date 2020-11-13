@@ -44,7 +44,7 @@ class RelationalSelectConditionProcessor implements FilterConditionProcessorInte
         return [
             'type' => 'relational_select',
             'label' => $condition->getLabel(),
-            'currentValues' => $currentFilter[$field],
+            'currentValues' => $currentFilter[$field] ?? [],
             'values' => $rawValues,
             'objects' => $objects,
             'fieldName' => $field,
