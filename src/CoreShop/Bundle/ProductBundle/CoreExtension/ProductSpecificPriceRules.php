@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\ProductSpecificPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductSpecificPriceRuleInterface;
 use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInterface;
@@ -31,8 +30,7 @@ use Webmozart\Assert\Assert;
 
 class ProductSpecificPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 

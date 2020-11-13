@@ -14,13 +14,12 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
+abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface
 {
     /**
      * @var bool

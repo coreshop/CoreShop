@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
@@ -23,8 +22,7 @@ use Pimcore\Model\Element\ValidationException;
 class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.

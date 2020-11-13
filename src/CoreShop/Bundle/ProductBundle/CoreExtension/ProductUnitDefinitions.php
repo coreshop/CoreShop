@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -33,8 +32,7 @@ use Webmozart\Assert\Assert;
 
 class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 

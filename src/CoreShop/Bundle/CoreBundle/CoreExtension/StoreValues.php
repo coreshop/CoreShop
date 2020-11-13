@@ -21,7 +21,6 @@ use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\ProductStoreValuesRepositoryInterface;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Factory\RepositoryFactoryInterface;
@@ -33,8 +32,7 @@ use Webmozart\Assert\Assert;
 
 class StoreValues extends Model\DataObject\ClassDefinition\Data implements
     Model\DataObject\ClassDefinition\Data\CustomResourcePersistingInterface,
-    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Model\DataObject\ClassDefinition\Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 

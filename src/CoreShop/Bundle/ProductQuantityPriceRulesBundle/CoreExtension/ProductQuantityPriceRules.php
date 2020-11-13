@@ -18,7 +18,6 @@ use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Event\ProductQuantityPriceRu
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\Form\Type\ProductQuantityPriceRuleType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Events;
 use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
@@ -35,8 +34,7 @@ use Webmozart\Assert\Assert;
 
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 

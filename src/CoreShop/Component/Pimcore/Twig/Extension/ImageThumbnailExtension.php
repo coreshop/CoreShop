@@ -52,6 +52,11 @@ final class ImageThumbnailExtension extends AbstractExtension
      */
     public function getImageThumbnail(Image $image, string $thumbnail, bool $deferred = true): Image\Thumbnail
     {
+        @trigger_error(
+            'image_thumbnail 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail instead.',
+            E_USER_DEPRECATED
+        );
+
         return $image->getThumbnail($thumbnail, $deferred);
     }
 
@@ -71,6 +76,11 @@ final class ImageThumbnailExtension extends AbstractExtension
         array $removeAttributes = [],
         bool $deferred = true
     ): string {
+        @trigger_error(
+        'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+        E_USER_DEPRECATED
+        );
+
         return $this->getImageThumbnail($image, $thumbnail, $deferred)->getHTML($options, $removeAttributes);
     }
 }

@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -24,8 +23,7 @@ use Pimcore\Model\DataObject\Concrete;
 class ProductUnitDefinition extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
