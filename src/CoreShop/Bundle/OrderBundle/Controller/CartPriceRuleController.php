@@ -159,7 +159,7 @@ class CartPriceRuleController extends ResourceController
             header('Content-Encoding: UTF-8');
             header('Content-type: text/csv; charset=UTF-8');
             header("Content-Disposition: attachment; filename=\"$fileName.csv\"");
-            ini_set('display_errors', false); //to prevent warning messages in csv
+            ini_set('display_errors', 'off'); //to prevent warning messages in csv
             echo "\xEF\xBB\xBF";
             echo $csv;
             die();
