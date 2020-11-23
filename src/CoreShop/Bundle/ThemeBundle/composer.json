@@ -17,8 +17,8 @@
         "php": "^7.2",
         "coreshop/registry": "^3.0",
         "coreshop/pimcore-bundle": "^3.0",
-        "liip/theme-bundle": "^1.4",
-        "pimcore/pimcore": "^6.9.0 | ^7.0.0"
+        "sylius/theme-bundle": "^2.0",
+        "pimcore/pimcore": "^7.0.0"
     },
     "config": {
         "bin-dir": "bin"

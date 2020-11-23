@@ -1,6 +1,5 @@
 imports:
     - { resource: services_alias.yml }
-    - { resource: services/profiler.yml }
 
 services:
     _defaults:
@@ -13,11 +12,6 @@ services:
             - 'Theme Resolver'
         tags:
             - { name: coreshop.registry, type_hint: themeResolvers }
-
-    CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface: '@CoreShop\Bundle\ThemeBundle\Service\ActiveTheme'
-    CoreShop\Bundle\ThemeBundle\Service\ActiveTheme:
-        arguments:
-            - '@liip_theme.active_theme'
 
     CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface: '@CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver'
     CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver:
@@ -37,14 +31,11 @@ services:
     CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface: '@CoreShop\Bundle\ThemeBundle\Service\ThemeHelper'
     CoreShop\Bundle\ThemeBundle\Service\ThemeHelper:
         arguments:
-            - '@coreshop.theme.resolver'
-            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
+            - '@Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface'
+            - '@Sylius\Bundle\ThemeBundle\Context\SettableThemeContext'
 
-    CoreShop\Bundle\ThemeBundle\EventListener\ThemeRequestListener:
+    CoreShop\Bundle\ThemeBundle\Context\ThemeContext:
         arguments:
-            - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
-            - '@coreshop.theme.resolver'
-            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
-        tags:
-            - { name: kernel.event_subscriber }
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
+            - '@Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface'
 

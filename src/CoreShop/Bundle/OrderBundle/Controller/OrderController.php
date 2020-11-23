@@ -609,7 +609,19 @@ class OrderController extends PimcoreController
                         continue;
                     }
                     if (is_array($detailValue)) {
-                        $detailValue = join(', ', $detailValue);
+                        $detailValue = implode(', ', $detailValue);
+                    }
+
+                    if (true === is_bool($detailValue)) {
+                        if (true === $detailValue) {
+                            $detailValue = 'true';
+                        } else {
+                            $detailValue = 'false';
+                        }
+                    }
+
+                    if (false === is_string($detailValue)) {
+                        $detailValue = (string)$detailValue;
                     }
 
                     $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];

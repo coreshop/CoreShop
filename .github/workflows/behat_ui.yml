@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         php: [7.3, 7.4]
-        pimcore: [^6.9, 7.0.x-dev]
+        pimcore: [7.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2

@@ -18,30 +18,21 @@ use Pimcore\Model\Site;
 
 final class PimcoreSiteThemeResolver implements ThemeResolverInterface
 {
-    public function resolveTheme(ActiveThemeInterface $activeTheme): void
+    public function resolveTheme(): string
     {
-        $themes = [];
         $list = new Site\Listing();
         $list->load();
-        $sites = $list->getSites();
-
-        /**
-         * @var Site $site
-         */
-        foreach ($sites as $site) {
-            $themes[] = $site->getRootDocument()->getKey();
-        }
-
-        $activeTheme->addThemes($themes);
 
         try {
             $currentSite = Site::getCurrentSite();
 
             if ($theme = $currentSite->getRootDocument()->getKey()) {
-                $activeTheme->setActiveTheme($theme);
+                return $theme;
             }
         } catch (\Exception $exception) {
             throw new ThemeNotResolvedException($exception);
         }
+
+        throw new ThemeNotResolvedException();
     }
 }

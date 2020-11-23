@@ -7,7 +7,7 @@ build:
                     - php-scrutinizer-run
             dependencies:
                 override:
-                    - composer install --no-interaction --no-scripts
+                    - COMPOSER_MEMORY_LIMIT=-1 composer install --no-interaction --no-scripts
 tools:
   php_mess_detector:
     config:

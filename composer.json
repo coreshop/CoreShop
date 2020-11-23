@@ -22,7 +22,7 @@
         "gedmo/doctrine-extensions": "^2.4.12",
         "jms/serializer-bundle": "^2.0",
         "knplabs/knp-menu-bundle": "^2.2.0",
-        "liip/theme-bundle": "^1.4",
+        "sylius/theme-bundle": "^2.0",
         "payum/offline": "^1.4",
         "payum/paypal-express-checkout-nvp": "^1.4",
         "payum/payum-bundle": "^2.2",
