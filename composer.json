@@ -20,15 +20,15 @@
         "doctrine/orm": "^2.5",
         "fzaninotto/faker": "^1.6",
         "gedmo/doctrine-extensions": "^2.4.12",
-        "jms/serializer-bundle": "^2.0",
-        "knplabs/knp-menu-bundle": "^2.2.0",
+        "jms/serializer-bundle": "^3.7",
+        "knplabs/knp-menu-bundle": "^3.0.0",
         "sylius/theme-bundle": "^2.0",
         "payum/offline": "^1.4",
         "payum/paypal-express-checkout-nvp": "^1.4",
         "payum/payum-bundle": "^2.2",
         "payum/sofort": "^1.4",
         "php-http/guzzle6-adapter": "^2.0",
-        "pimcore/pimcore": "^6.9.0 | ^7.0.0",
+        "pimcore/pimcore": "^7.0.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "webmozart/assert": "^1.2"
@@ -47,7 +47,7 @@
         "friends-of-behat/page-object-extension": "^0.3.1",
         "behat/mink": "^1.8",
         "friends-of-behat/mink-extension": "^2.4",
-        "coreshop/behat-panther-extension": "^1.0.3",
+        "robertfausk/behat-panther-extension": "^1.0.3",
         "lakion/mink-debug-extension": "^1.2"
     },
     "autoload": {

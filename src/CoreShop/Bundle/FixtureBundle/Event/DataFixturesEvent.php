@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\FixtureBundle\Event;
 
 use CoreShop\Bundle\FixtureBundle\Fixture\DataFixturesExecutorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class DataFixturesEvent extends Event
 {

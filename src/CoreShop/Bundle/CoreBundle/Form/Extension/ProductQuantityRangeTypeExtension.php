@@ -94,15 +94,7 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType(): string
-    {
-        return ProductQuantityRangeType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes(): array
+    public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeType::class];
     }

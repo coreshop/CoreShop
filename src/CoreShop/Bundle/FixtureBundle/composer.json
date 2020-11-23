@@ -16,9 +16,7 @@
     "require": {
         "php": "^7.2",
         "coreshop/resource-bundle": "^3.0",
-        "symfony/framework-bundle": "^4.3",
-        "symfony/doctrine-bridge": "^4.3",
-        "symfony/twig-bundle": "^4.3",
+        "pimcore/pimcore": "^7.0.0",
         "doctrine/data-fixtures": "^1.4",
         "doctrine/dbal": "^2.1",
         "doctrine/orm": "^2.5"

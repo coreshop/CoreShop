@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CustomerBundle\Event;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestPasswordChangeEvent extends Event
 {

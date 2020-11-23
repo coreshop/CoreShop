@@ -41,8 +41,6 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->setParameter('name', $name)
             ->setParameter('locale', $locale)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getResult();
     }
 
@@ -55,8 +53,6 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->andWhere('o.isoCode= :isoCode')
             ->setParameter('isoCode', $code)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 }

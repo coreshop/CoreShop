@@ -49,7 +49,7 @@ final class CountryCollector extends DataCollector
     /**
      * {@inheritdoc}
      */
-    public function collect(Request $request, Response $response, \Exception $exception = null): void
+    public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
             $this->data['country'] = $this->countryContext->getCountry();

@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer;
 use CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker;
-use Pimcore\Migrations\MigrationManager;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -40,24 +39,6 @@ final class InstallCommand extends AbstractInstallCommand
             'message' => 'Install CoreShop Object Folders.',
         ],
     ];
-
-    private $installer;
-    private $migrationManager;
-    private $bundle;
-
-    public function __construct(
-        KernelInterface $kernel,
-        CommandDirectoryChecker $directoryChecker,
-        Installer $installer,
-        MigrationManager $migrationManager,
-        Bundle $bundle
-    ) {
-        parent::__construct($kernel, $directoryChecker);
-
-        $this->installer = $installer;
-        $this->migrationManager = $migrationManager;
-        $this->bundle = $bundle;
-    }
 
     /**
      * {@inheritdoc}
@@ -101,12 +82,6 @@ EOT
                 $errored = true;
             }
         }
-
-        $installConfiguration = $this->installer->getInstallMigrationConfiguration();
-        $this->migrationManager->markVersionAsMigrated($installConfiguration->getVersion($installConfiguration->getLatestVersion()));
-
-        $migrationConfiguration = $this->migrationManager->getBundleConfiguration($this->bundle);
-        $this->migrationManager->markVersionAsMigrated($migrationConfiguration->getVersion($migrationConfiguration->getLatestVersion()));
 
         $outputStyle->newLine(2);
         $outputStyle->success($this->getProperFinalMessage($errored));

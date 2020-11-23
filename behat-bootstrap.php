@@ -26,6 +26,10 @@ if (!defined('TESTS_PATH')) {
 define('PIMCORE_CLASS_DIRECTORY', __DIR__ . '/var/tmp/behat/var/classes');
 define('PIMCORE_TEST', true);
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once __DIR__ .'/app/BehatAppKernel.php';
 
 if (file_exists(PIMCORE_PROJECT_ROOT.'/pimcore/config/bootstrap.php')) {

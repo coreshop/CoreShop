@@ -51,7 +51,7 @@ final class CartItemType extends AbstractResourceType
                 'html5' => true,
                 'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
                 'label' => 'coreshop.ui.quantity',
-                'disabled' => $data->getIsGiftItem(),
+                'disabled' => $data->getIsGiftItem() ?? false,
             ]);
         });
 

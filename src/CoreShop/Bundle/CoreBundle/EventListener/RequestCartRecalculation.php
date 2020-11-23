@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use CoreShop\Component\Core\Context\ShopperContextInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartRecalculation
 {
@@ -39,7 +39,7 @@ final class RequestCartRecalculation
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
-    public function checkPriceRuleState(GetResponseEvent $event): void
+    public function checkPriceRuleState(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

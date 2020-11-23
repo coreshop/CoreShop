@@ -22,9 +22,6 @@
         "php": "^7.2",
         "coreshop/pimcore": "^3.0",
         "coreshop/registry": "^3.0",
-        "symfony/config": "^4.3",
-        "symfony/workflow": "^4.3",
-        "symfony/yaml": "^4.3",
         "pimcore/pimcore": "^7.0.0"
     },
     "config": {

@@ -38,8 +38,6 @@ class ProductUnitRepository extends EntityRepository implements ProductUnitRepos
             ->andWhere('o.name = :name')
             ->setParameter('name', $name)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 }

@@ -26,11 +26,11 @@ use Payum\Core\Model\GatewayConfigInterface;
 use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PaymentController extends Controller
+class PaymentController extends AbstractController
 {
     /**
      * @var OrderPaymentProviderInterface

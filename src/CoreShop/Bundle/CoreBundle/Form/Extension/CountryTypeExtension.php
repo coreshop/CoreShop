@@ -32,15 +32,7 @@ final class CountryTypeExtension extends AbstractTypeExtension
     /**
      * {@inheritdoc}
      */
-    public function getExtendedType(): string
-    {
-        return CountryType::class;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getExtendedTypes(): array
+    public static function getExtendedTypes(): iterable
     {
         return [CountryType::class];
     }

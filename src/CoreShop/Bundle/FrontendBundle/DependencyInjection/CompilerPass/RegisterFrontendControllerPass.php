@@ -80,7 +80,9 @@ class RegisterFrontendControllerPass implements CompilerPassInterface
                     break;
             }
 
-            $container->setDefinition($controllerKey, $controllerDefinition);
+            $controllerDefinition->addTag('controller.service_arguments');
+
+            $container->setDefinition($controllerClass, $controllerDefinition);
         }
     }
 }
