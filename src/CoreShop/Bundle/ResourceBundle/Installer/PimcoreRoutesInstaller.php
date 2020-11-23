@@ -100,11 +100,10 @@ final class PimcoreRoutesInstaller implements ResourceInstallerInterface
             }
             $route->setPattern($properties['pattern']);
             $route->setReverse($properties['reverse']);
-            $route->setModule($properties['module']);
             $route->setController($properties['controller']);
-            $route->setAction($properties['action']);
             $route->setVariables($properties['variables']);
             $route->setPriority($properties['priority']);
+
             $route->save();
         }
 

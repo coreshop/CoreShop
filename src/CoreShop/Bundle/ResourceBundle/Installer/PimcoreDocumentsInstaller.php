@@ -159,14 +159,8 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 if (isset($properties['title'])) {
                     $document->setTitle($properties['title']);
                 }
-                if (isset($properties['module'])) {
-                    $document->setModule($properties['module']);
-                }
                 if (isset($properties['controller'])) {
                     $document->setController($properties['controller']);
-                }
-                if (isset($properties['action'])) {
-                    $document->setAction($properties['action']);
                 }
                 if (isset($properties['template'])) {
                     $document->setTemplate($properties['template']);

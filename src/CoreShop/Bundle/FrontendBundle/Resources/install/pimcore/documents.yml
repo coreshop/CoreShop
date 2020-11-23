@@ -2,9 +2,7 @@ documents:
   -
     key: 'shop'
     type: 'page'
-    module: 'CoreShopFrontendBundle'
-    controller: '@coreshop.frontend.controller.index'
-    action: 'index'
+    controller: '@coreshop.frontend.controller.index:index'
     path: ''
 
   -
@@ -15,9 +13,7 @@ documents:
   -
     key: 'user-registered'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
@@ -66,9 +62,7 @@ documents:
   -
     key: 'user-reset-password'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
@@ -120,9 +114,7 @@ documents:
   -
     key: 'user-newsletter-confirm'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
@@ -174,9 +166,7 @@ documents:
   -
     key: 'user-newsletter-confirmed'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
@@ -228,9 +218,7 @@ documents:
   -
     key: 'order-confirmation'
     type: 'email'
-    action: 'order-confirmation'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:order-confirmation'
     path: 'shop/email'
     content:
       de:
@@ -279,9 +267,7 @@ documents:
   -
     key: 'order-shipped'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
@@ -329,9 +315,7 @@ documents:
   -
     key: 'user-order-comment'
     type: 'email'
-    action: 'mail'
-    controller: '@coreshop.frontend.controller.mail'
-    module: 'CoreShopFrontendBundle'
+    controller: '@coreshop.frontend.controller.mail:mail'
     path: 'shop/email'
     content:
       de:
