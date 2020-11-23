@@ -449,7 +449,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 
