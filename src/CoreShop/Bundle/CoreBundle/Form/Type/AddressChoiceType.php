@@ -13,7 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Type;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocator;
+use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use CoreShop\Component\Core\Model\CustomerInterface;
 use CoreShop\Component\Resource\Repository\PimcoreRepositoryInterface;
 use Symfony\Component\Form\AbstractType;
@@ -29,11 +29,18 @@ final class AddressChoiceType extends AbstractType
     private $customerRepository;
 
     /**
-     * @param PimcoreRepositoryInterface $customerRepository
+     * @var CustomerAddressAllocatorInterface
      */
-    public function __construct(PimcoreRepositoryInterface $customerRepository)
+    private $customerAddressAllocator;
+
+    /**
+     * @param PimcoreRepositoryInterface $customerRepository
+     * @param CustomerAddressAllocatorInterface $customerAddressAllocator
+     */
+    public function __construct(PimcoreRepositoryInterface $customerRepository, CustomerAddressAllocatorInterface $customerAddressAllocator)
     {
         $this->customerRepository = $customerRepository;
+        $this->customerAddressAllocator = $customerAddressAllocator;
     }
 
     /**
@@ -55,10 +62,9 @@ final class AddressChoiceType extends AbstractType
                         if (!$customer instanceof CustomerInterface) {
                             throw new \InvalidArgumentException('Customer needs to be set');
                         }
-                        
-                        $customerAddressAllocator = new CustomerAddressAllocator();
-                        $addresses = $customerAddressAllocator->allocateForCustomer($customer);
-                        
+
+                        $addresses = $this->customerAddressAllocator->allocateForCustomer($customer);
+
                         if (empty($allowedAddressIdentifier)) {
                             return $addresses;
                         }
