@@ -49,11 +49,31 @@ final class OptimisticEntityLockContext implements Context
 
     /**
      * @Given /^I unsuccessfully lock the (object-instance) with the current version$/
+     * @Given /^I unsuccessfully lock the (object-instance-2) with the current version$/
      */
     public function iUnsuccessfullyLockTheObjectInstanceWithCurrentVersion(Concrete $dataObject)
     {
         Assert::throws(function () use ($dataObject) {
             $this->entityLockManager->lock($dataObject, $dataObject->getValueForFieldName('optimisticLockVersion'));
         }, OptimisticLockException::class);
+    }
+
+    /**
+     * @Given /^I unsuccessfully save versioned (object-instance)$/
+     * @Given /^I unsuccessfully save versioned (object-instance-2)$/
+     */
+    public function iUnsuccessfullySaveTheObject(Concrete $dataObject)
+    {
+        Assert::throws(function () use ($dataObject) {
+            $dataObject->save();
+        }, OptimisticLockException::class);
+    }
+    /**
+     * @Given /^I successfully save versioned (object-instance)$/
+     * @Given /^I successfully save versioned (object-instance-2)$/
+     */
+    public function iSuccessfullySaveTheObject(Concrete $dataObject)
+    {
+        $dataObject->save();
     }
 }

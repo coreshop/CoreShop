@@ -18,3 +18,12 @@ Feature: Locking an Entity to not overwrite it again
       | key               | value                                                             | type   |
       | name              | test                                                              | input  |
     Then I unsuccessfully lock the object-instance with the current version
+
+  Scenario:
+    Given I successfully lock the object-instance with the current version
+    And I reload the object-instance into object-instance-2
+    And I change the object-instance-2 values:
+      | key               | value                                                             | type   |
+      | name              | test                                                              | input  |
+    Then I successfully save versioned object-instance-2
+    Then I unsuccessfully save versioned object-instance
