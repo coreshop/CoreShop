@@ -20,3 +20,4 @@ imports:
     - suites/domain/menu.yml
     - suites/domain/version.yml
     - suites/domain/recycle_bin.yml
+    - suites/domain/optimistic_entity_lock.yml
