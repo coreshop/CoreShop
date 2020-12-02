@@ -51,16 +51,20 @@ final class CoreShopTrackingExtension extends AbstractModelExtension
     protected function configureTrackers(array $config, ContainerBuilder $container)
     {
         foreach ($container->findTaggedServiceIds(TrackerPass::TRACKER_TAG) as $id => $attributes) {
-            if (!isset($attributes[0]['type'])) {
-                continue;
-            }
+            foreach ($attributes as $tag) {
+                if (!isset($tag['type'])) {
+                    continue;
+                }
 
-            $type = $attributes[0]['type'];
+                $type = $tag['type'];
 
-            if (!array_key_exists($type, $config['trackers'])) {
-                $container->getDefinition($id)->addMethodCall('setEnabled', [false]);
-            } else {
-                $container->getDefinition($id)->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+                if (!array_key_exists($type, $config['trackers'])) {
+                    $container->getDefinition($id)
+                        ->addMethodCall('setEnabled', [false]);
+                } else {
+                    $container->getDefinition($id)
+                        ->addMethodCall('setEnabled', [$config['trackers'][$type]['enabled']]);
+                }
             }
         }
     }

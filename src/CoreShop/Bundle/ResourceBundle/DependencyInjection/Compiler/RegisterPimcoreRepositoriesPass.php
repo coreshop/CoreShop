@@ -31,19 +31,21 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
         $registry = $container->get(RegistryInterface::class);
 
         foreach ($container->findTaggedServiceIds('coreshop.pimcore.repository') as $id => $attributes) {
-            if (!isset($attributes[0]['alias'])) {
-                throw new \InvalidArgumentException('Tagged Repository `' . $id . '` needs to have `type` and `priority` attributes.');
+            foreach ($attributes as $tag) {
+                if (!isset($tag['alias'])) {
+                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type` and `priority` attributes.');
+                }
+
+                $metadata = $registry->get($tag['alias']);
+
+                $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
+                    'registerRepository',
+                    [
+                        $metadata->getClass('model'),
+                        new Reference($id),
+                    ]
+                );
             }
-
-            $metadata = $registry->get($attributes[0]['alias']);
-
-            $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
-                'registerRepository',
-                [
-                    $metadata->getClass('model'),
-                    new Reference($id),
-                ]
-            );
         }
     }
 }

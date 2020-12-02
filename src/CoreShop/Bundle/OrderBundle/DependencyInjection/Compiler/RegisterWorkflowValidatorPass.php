@@ -26,28 +26,30 @@ class RegisterWorkflowValidatorPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $map = [];
         foreach ($container->findTaggedServiceIds(self::WORKFLOW_VALIDATOR_TAG) as $id => $attributes) {
             $definition = $container->findDefinition($id);
 
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+            foreach ($attributes as $tag) {
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                }
+
+                if (!isset($tag['manager'])) {
+                    throw new \InvalidArgumentException('Tagged Condition `'.$id.'` needs to have `manager` attribute.');
+                }
+
+                $manager = $container->getDefinition($tag['manager']);
+
+                if (!$manager) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Workflow Manager with identifier %s not found', $tag['manager'])
+                    );
+                }
+
+                $priority = isset($tag['priority']) ? (int)$tag['priority'] : 0;
+
+                $manager->addMethodCall('addValidator', [new Reference($id), $tag['type'], $priority]);
             }
-
-            if (!isset($attributes[0]['manager'])) {
-                throw new \InvalidArgumentException('Tagged Condition `' . $id . '` needs to have `manager` attribute.');
-            }
-
-            $manager = $container->getDefinition($attributes[0]['manager']);
-
-            if (!$manager) {
-                throw new \InvalidArgumentException(sprintf('Workflow Manager with identifier %s not found', $attributes[0]['manager']));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-            $priority = isset($attributes[0]['priority']) ? (int) $attributes[0]['priority'] : 0;
-
-            $manager->addMethodCall('addValidator', [new Reference($id), $attributes[0]['type'], $priority]);
         }
     }
 }

@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Registry\PrioritizedServiceRegistry;
+use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -56,18 +58,31 @@ abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
         }
 
         $registry = $container->getDefinition($this->registry);
+        $registryInterfaces = class_implements($registry->getClass());
+        $isPrioritizedRegistry = false;
+
+        if ($registryInterfaces && in_array(PrioritizedServiceRegistryInterface::class, $registryInterfaces, true)) {
+            $isPrioritizedRegistry = true;
+        }
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
             $definition = $container->findDefinition($id);
 
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+            foreach ($attributes as $tag) {
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                }
+
+                $map[$tag['type']] = $tag['type'];
+
+                if ($isPrioritizedRegistry) {
+                    $registry->addMethodCall('register', [$tag['type'], $tag['priority'] ?? 1000, new Reference($id)]);
+                }
+                else {
+                    $registry->addMethodCall('register', [$tag['type'], new Reference($id)]);
+                }
             }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
         }
 
         $container->setParameter($this->parameter, $map);

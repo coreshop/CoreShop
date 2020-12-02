@@ -12,31 +12,18 @@
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-final class ProductRetailPriceCalculatorsPass extends AbstractProductPriceCalculatorPass
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+
+final class ProductRetailPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
     public const PRODUCT_RETAIL_PRICE_CALCULATOR_TAG = 'coreshop.product.retail_price_calculator';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRegistry()
+    public function __construct()
     {
-        return 'coreshop.registry.product.retail_price_calculators';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTag()
-    {
-        return self::PRODUCT_RETAIL_PRICE_CALCULATOR_TAG;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getParameter()
-    {
-        return 'coreshop.product.retail_price_calculators';
+        parent::__construct(
+            'coreshop.registry.product.retail_price_calculators',
+            'coreshop.product.retail_price_calculators',
+            self::PRODUCT_RETAIL_PRICE_CALCULATOR_TAG
+        );
     }
 }

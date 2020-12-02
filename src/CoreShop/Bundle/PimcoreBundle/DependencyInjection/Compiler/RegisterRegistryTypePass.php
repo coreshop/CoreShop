@@ -67,18 +67,21 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
 
         $map = [];
         foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
-            $definition = $container->findDefinition($id);
+            foreach ($attributes as $tag) {
+                $definition = $container->findDefinition($id);
 
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                }
 
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
+                $map[$tag['type']] = $tag['type'];
 
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
+                $registry->addMethodCall('register', [$tag['type'], new Reference($id)]);
 
-            if (isset($attributes[0]['form-type'])) {
-                $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
+                if (isset($tag['form-type'])) {
+                    $formRegistry
+                        ->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
+                }
             }
         }
 

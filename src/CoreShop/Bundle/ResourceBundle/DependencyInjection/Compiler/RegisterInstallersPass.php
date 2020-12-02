@@ -12,39 +12,18 @@
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
 
-final class RegisterInstallersPass implements CompilerPassInterface
+final class RegisterInstallersPass extends RegisterSimpleRegistryTypePass
 {
     public const INSTALLER_TAG = 'coreshop.resource.installer';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.resource.installers')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.resource.installers');
-        $map = [];
-
-        foreach ($container->findTaggedServiceIds(self::INSTALLER_TAG) as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'] ?? 1000, new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.resource.installers', $map);
+        parent::__construct(
+            'coreshop.registry.resource.installers',
+            'coreshop.resource.installers',
+            self::INSTALLER_TAG
+        );
     }
 }

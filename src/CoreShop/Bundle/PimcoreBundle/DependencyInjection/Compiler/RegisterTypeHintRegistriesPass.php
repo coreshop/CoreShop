@@ -30,41 +30,43 @@ final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
         }
 
         foreach ($container->findTaggedServiceIds('coreshop.registry') as $id => $attributes) {
-            if (!isset($attributes[0]['type_hint'])) {
-                throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type_hint` attributes');
-            }
+            foreach ($attributes as $tag) {
+                if (!isset($tag['type_hint'])) {
+                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type_hint` attributes');
+                }
 
-            $definition = $container->findDefinition($id);
+                $definition = $container->findDefinition($id);
 
-            $implements = class_implements($definition->getClass());
+                $implements = class_implements($definition->getClass());
 
-            if (
-                !in_array(ServiceRegistryInterface::class, $implements) &&
-                !in_array(PrioritizedServiceRegistryInterface::class, $implements)
-            ) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Registry needs to implement interface %s or %s, given %s',
-                        ServiceRegistryInterface::class,
-                        PrioritizedServiceRegistryInterface::class,
-                        implode(', ', $implements)
-                    )
+                if (
+                    !in_array(ServiceRegistryInterface::class, $implements) &&
+                    !in_array(PrioritizedServiceRegistryInterface::class, $implements)
+                ) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Registry needs to implement interface %s or %s, given %s',
+                            ServiceRegistryInterface::class,
+                            PrioritizedServiceRegistryInterface::class,
+                            implode(', ', $implements)
+                        )
+                    );
+                }
+
+                $container->registerAliasForArgument(
+                    $id,
+                    ServiceRegistryInterface::class,
+                    strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
+                        $tag['type_hint']))).'Registry'
+                );
+
+                $container->registerAliasForArgument(
+                    $id,
+                    ServiceRegistry::class,
+                    strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
+                        $tag['type_hint']))).'Registry'
                 );
             }
-
-            $container->registerAliasForArgument(
-                $id,
-                ServiceRegistryInterface::class,
-                strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
-                    $attributes[0]['type_hint']))).'Registry'
-            );
-
-            $container->registerAliasForArgument(
-                $id,
-                ServiceRegistry::class,
-                strtolower(trim(preg_replace(['/([A-Z])/', '/[_\s]+/'], ['_$1', ' '],
-                    $attributes[0]['type_hint']))).'Registry'
-            );
         }
     }
 }
