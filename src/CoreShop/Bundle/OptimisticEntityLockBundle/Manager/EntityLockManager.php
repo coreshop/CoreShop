@@ -47,10 +47,9 @@ final class EntityLockManager implements EntityLockManagerInterface
         }
 
         $entityVersionLock = $entityVersion->getOptimisticLockVersion() ?? 1;
-        $dataObjectLock = $dataObject->getOptimisticLockVersion() ?? 1;
 
-        if ($entityVersionLock !== $dataObjectLock) {
-            throw OptimisticLockException::lockFailedVersionMismatch($dataObject, $entityVersionLock, $dataObjectLock);
+        if ($entityVersionLock !== $lockVersion) {
+            throw OptimisticLockException::lockFailedVersionMismatch($dataObject, $lockVersion, $entityVersionLock);
         }
     }
 
