@@ -71,7 +71,8 @@
     "coreshop/pimcore-bundle": "self.version",
     "coreshop/tracking": "self.version",
     "coreshop/theme-bundle": "self.version",
-    "coreshop/menu-bundle": "self.version"
+    "coreshop/menu-bundle": "self.version",
+    "coreshop/optimistic-entity-lock-bundle": "self.version"
   },
   "require": {
     "php": "^7.2",
