@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 class RegisterOrderRendererTypesPass extends RegisterSimpleRegistryTypePass
 {

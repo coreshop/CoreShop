@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class ShippingPriceCalculatorsPass extends RegisterSimpleRegistryTypePass
 {

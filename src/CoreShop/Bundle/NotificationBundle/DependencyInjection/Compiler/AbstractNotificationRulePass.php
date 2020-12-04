@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;

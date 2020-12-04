@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
 final class TrackerPass extends RegisterSimpleRegistryTypePass
 {

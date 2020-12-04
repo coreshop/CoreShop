@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\AddressBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {

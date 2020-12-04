@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.2",
-    "coreshop/registry": "^2.0",
+    "coreshop/registry": "^2.2.6",
     "webmozart/assert": "^1.2"
   },
   "config": {

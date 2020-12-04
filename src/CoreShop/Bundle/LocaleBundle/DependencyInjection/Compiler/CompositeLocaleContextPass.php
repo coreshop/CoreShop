@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {
