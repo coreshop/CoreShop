@@ -15,6 +15,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Controller\Admin;
 use Pimcore\Bundle\AdminBundle\Controller\AdminController;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
+use Pimcore\Model\Factory;
 use Pimcore\Tool;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -66,7 +67,7 @@ final class DynamicDropdownController extends AdminController
             usort(
                 $options,
                 function ($a, $b) use ($sort) {
-                    $field = 'id';
+                    $field = 'value';
 
                     if ($sort === 'byValue') {
                         $field = 'key';
@@ -94,14 +95,17 @@ final class DynamicDropdownController extends AdminController
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function methodsAction(Request $request)
+    public function methodsAction(Request $request, Factory $modelFactory)
     {
         $availableMethods = [];
 
         $className = preg_replace("@[^a-zA-Z0-9_\-]@", '', $request->get('className'));
 
         if (!empty($className)) {
-            $class = new \ReflectionClass('\\Pimcore\\Model\\DataObject\\' . ucfirst($className));
+            $fqcn = '\\Pimcore\\Model\\DataObject\\' . ucfirst($className);
+            $instance = $modelFactory->build($fqcn);
+
+            $class = new \ReflectionClass(get_class($instance));
             $methods = $class->getMethods();
 
             $classMethods = array_map(function (\ReflectionMethod $method) {
@@ -133,7 +137,7 @@ final class DynamicDropdownController extends AdminController
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
         $className = ucfirst($request->get('className'));
-        $objectName = 'Pimcore\\Model\\DataObject\\' . $className;
+        $objectName = '\\Pimcore\\Model\\DataObject\\' . $className;
 
         $usesI18n = false;
         $children = $folder->getChildren();
@@ -159,31 +163,26 @@ final class DynamicDropdownController extends AdminController
          * @var DataObject\Concrete $child
          */
         foreach ($children as $child) {
-            $class = get_class($child);
-            switch ($class) {
-                case DataObject\Folder::class:
-                    /**
-                     * @var DataObject\Folder $child
-                     */
-                    $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
-                    if ($request->get('recursive') === 'true') {
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
-                    }
+            if ($child instanceof DataObject\Folder) {
+                /**
+                 * @var DataObject\Folder $child
+                 */
+                $key = $child->getProperty('Taglabel') != '' ? $child->getProperty('Taglabel') : $child->getKey();
+                if ($request->get('recursive') === 'true') {
+                    $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                }
+            }
+            else if ($child instanceof $objectName) {
+                $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
+                $options[] = [
+                    'value' => $child->getId(),
+                    'key' => ltrim($path . $this->separator . $key, $this->separator),
+                    'published' => $child instanceof DataObject\Concrete ? $child->getPublished() : false,
+                ];
 
-                    break;
-                case $objectName:
-                    $key = $usesI18n ? $child->$source($currentLang) : $child->$source();
-                    $options[] = [
-                        'value' => $child->getId(),
-                        'key' => ltrim($path . $this->separator . $key, $this->separator),
-                        'published' => $child instanceof DataObject\Concrete ? $child->getPublished() : false,
-                    ];
-
-                    if ($request->get('recursive') === 'true') {
-                        $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
-                    }
-
-                    break;
+                if ($request->get('recursive') === 'true') {
+                    $options = $this->walkPath($request, $child, $options, $path . $this->separator . $key);
+                }
             }
         }
 
