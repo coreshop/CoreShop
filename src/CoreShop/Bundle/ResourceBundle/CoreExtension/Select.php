@@ -21,8 +21,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class Select extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    Data\TypeDeclarationSupportInterface,
-    Data\EqualComparisonInterface,
     CustomRecyclingMarshalInterface
 {
     use Model\DataObject\Traits\SimpleComparisonTrait;
