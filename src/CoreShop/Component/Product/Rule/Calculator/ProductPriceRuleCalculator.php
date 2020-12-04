@@ -108,7 +108,7 @@ final class ProductPriceRuleCalculator implements ProductDiscountCalculatorInter
 
         foreach ($rules as $rule) {
             /**
-             * @var ActionInterface
+             * @var ActionInterface $action
              */
             foreach ($rule->getActions() as $action) {
                 $processor = $this->actionServiceRegistry->get($action->getType());

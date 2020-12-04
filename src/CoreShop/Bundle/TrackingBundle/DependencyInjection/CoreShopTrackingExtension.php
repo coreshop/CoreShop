@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\TrackingBundle\DependencyInjection;
 
-use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelExtension;
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackerPass;
 use CoreShop\Bundle\TrackingBundle\DependencyInjection\Compiler\TrackingExtractorPass;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
@@ -20,8 +19,9 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
-final class CoreShopTrackingExtension extends AbstractModelExtension
+final class CoreShopTrackingExtension extends Extension
 {
     /**
      * {@inheritdoc}

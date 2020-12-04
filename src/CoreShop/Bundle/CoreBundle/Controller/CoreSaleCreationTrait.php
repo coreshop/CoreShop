@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\ResourceBundle\Controller\ViewHandlerInterface;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Order\Model\CartInterface;
 use Webmozart\Assert\Assert;
@@ -29,6 +29,16 @@ trait CoreSaleCreationTrait
     protected function prepareCartItem(CartInterface $cart, CartItemInterface $item)
     {
         $itemFlat = parent::prepareCartItem($cart, $item);
+
+        /**
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
+        /**
+         * @var \CoreShop\Component\Core\Model\CartItemInterface $item
+         */
+        Assert::isInstanceOf($item, \CoreShop\Component\Core\Model\CartItemInterface::class);
 
         $units = [];
 
@@ -55,6 +65,11 @@ trait CoreSaleCreationTrait
     {
         $cartDetails = parent::getCartDetails($cart);
 
+        /**
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
+
         $cartDetails['carriers'] = $this->getCarrierDetails($cart);
 
         return $cartDetails;
@@ -66,9 +81,12 @@ trait CoreSaleCreationTrait
             return [];
         }
 
-        $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
+        /**
+         * @var \CoreShop\Component\Core\Model\CartInterface $cart
+         */
+        Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\CartInterface::class);
 
-        $currentCurrency = $cart->getStore()->getCurrency()->getIsoCode();
+        $carriers = $this->get('coreshop.carrier.resolver')->resolveCarriers($cart, $cart->getShippingAddress());
         $result = [];
 
         /**

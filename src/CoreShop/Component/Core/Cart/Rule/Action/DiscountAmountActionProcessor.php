@@ -91,11 +91,8 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
             $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
         }
 
-        /**
-         * @var CurrencyInterface $currency
-         */
-        $amount = $configuration['amount'];
         $currency = $this->currencyRepository->find($configuration['currency']);
+        $amount = $configuration['amount'];
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 

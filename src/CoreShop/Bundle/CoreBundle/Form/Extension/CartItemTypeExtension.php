@@ -13,6 +13,7 @@
 namespace CoreShop\Bundle\CoreBundle\Form\Extension;
 
 use CoreShop\Bundle\OrderBundle\Form\Type\CartItemType;
+use CoreShop\Bundle\OrderBundle\Form\Type\QuantityType;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsChoiceType;
 use CoreShop\Component\Core\Model\CartItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
@@ -35,6 +36,7 @@ final class CartItemTypeExtension extends AbstractTypeExtension
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $data = $event->getData();
+            $form = $event->getForm();
 
             if (!$data instanceof CartItemInterface) {
                 return;
@@ -46,11 +48,20 @@ final class CartItemTypeExtension extends AbstractTypeExtension
                 return;
             }
 
+            $form
+                ->remove('quantity')
+                ->add('quantity', QuantityType::class, [
+                    'html5' => true,
+                    'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
+                    'label' => 'coreshop.ui.quantity',
+                    'disabled' => $data->getIsGiftItem(),
+                ]);
+
             if (!$product->hasUnitDefinitions()) {
                 return;
             }
 
-            $event->getForm()->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
+            $form->add('unitDefinition', ProductUnitDefinitionsChoiceType::class, [
                 'product' => $product,
                 'required' => false,
                 'label' => null,

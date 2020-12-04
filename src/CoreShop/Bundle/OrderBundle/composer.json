@@ -19,6 +19,7 @@
   ],
   "require": {
     "php": "^7.2",
+    "coreshop/address-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",
     "coreshop/customer-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
@@ -28,16 +29,25 @@
     "coreshop/store-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
     "coreshop/workflow-bundle": "^2.0",
+    "coreshop/order": "^2.0",
     "pimcore/pimcore": "^6.6.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\OrderBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {

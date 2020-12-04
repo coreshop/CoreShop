@@ -19,6 +19,7 @@ use CoreShop\Component\Core\Repository\ProductRepositoryInterface;
 use CoreShop\Component\Core\Repository\ProductVariantRepositoryInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Pimcore\Model\DataObject\AbstractObject;
+use Pimcore\Model\DataObject\Listing;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
@@ -111,9 +112,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
                 AbstractObject::OBJECT_TYPE_OBJECT,
                 AbstractObject::OBJECT_TYPE_VARIANT,
             ];
-            $isvalid = $value === null || !array_diff($value, $valid);
-
-            return $isvalid;
+            return $value === null || !array_diff($value, $valid);
         });
 
         $listOptions = $resolver->resolve($options);
@@ -148,6 +147,18 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);
         $list->setOrder($listOptions['order']);
 
-        return $listOptions['return_type'] === 'objects' ? $list->load() : $list;
+        if ($listOptions['return_type'] === 'objects') {
+            /**
+             * @var ProductInterface[] $products
+             */
+            $products = $list->load();
+
+            return $products;
+        }
+
+        /**
+         * @var Listing $list
+         */
+        return $list;
     }
 }

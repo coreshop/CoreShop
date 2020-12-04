@@ -23,6 +23,7 @@
     "coreshop/customer-bundle": "^2.0",
     "coreshop/inventory-bundle": "^2.0",
     "coreshop/product-bundle": "^2.0",
+    "coreshop/product-quantity-price-rules-bundle": "^2.0",
     "coreshop/address-bundle": "^2.0",
     "coreshop/currency-bundle": "^2.0",
     "coreshop/money-bundle": "^2.0",
@@ -31,6 +32,9 @@
     "coreshop/index-bundle": "^2.0",
     "coreshop/payment-bundle": "^2.0",
     "coreshop/seo-bundle": "^2.0",
+    "coreshop/shipping-bundle": "^2.0",
+    "coreshop/tracking-bundle": "^2.0",
+    "coreshop/frontend-bundle": "^2.0",
     "coreshop/sequence-bundle": "^2.0",
     "coreshop/payum-bundle": "^2.0",
     "coreshop/configuration-bundle": "^2.0",
@@ -43,14 +47,22 @@
     "rinvex/countries": "^5.0",
     "pimcore/pimcore": "^6.6.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\CoreBundle\\": ""
     }
   },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../*/*"
+    }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {

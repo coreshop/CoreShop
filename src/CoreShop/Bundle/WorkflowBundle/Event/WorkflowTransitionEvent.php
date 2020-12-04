@@ -10,7 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Bundle\OrderBundle\Event;
+namespace CoreShop\Bundle\WorkflowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

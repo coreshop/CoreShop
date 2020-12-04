@@ -15,7 +15,7 @@ namespace CoreShop\Component\StorageList\Model;
 class StorageListItem implements StorageListItemInterface
 {
     /**
-     * @var int
+     * @var float
      */
     protected $quantity;
 

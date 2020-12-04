@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Request;
 
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\PaymentInterface;
 use Payum\Core\Request\BaseGetStatus;
 
 class GetStatus extends BaseGetStatus

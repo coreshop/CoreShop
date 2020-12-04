@@ -89,7 +89,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function merge($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -121,7 +121,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function detach($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -129,7 +129,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function refresh($object)
     {
-        //TODO:
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -176,22 +176,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     public function getClassMetadata($className)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function getMetadataFactory()
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function initializeObject($obj)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function contains($object)
     {
-        // TODO
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -204,7 +204,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param object $resource
      *
      * @return int
      */
@@ -220,36 +220,16 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param string $resource
+     * @param object $resource
      *
      * @return string
      */
     private function getResourceClassName($resource)
     {
-        $className = get_class($resource);
-
         if ($resource instanceof Concrete) {
-            $className = $resource->getClassName();
+            return $resource->getClassName();
         }
 
-        return $className;
-    }
-
-    /**
-     * @param string $resource
-     *
-     * @return bool
-     */
-    private function isResourceNew($resource)
-    {
-        if ($resource instanceof ElementInterface) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
-        }
-
-        if (method_exists($resource, 'getId')) {
-            return is_null($resource->getId()) || $resource->getId() === 0;
-        }
-
-        return true;
+        throw new \InvalidArgumentException('$resource is not a DataObject\\Concrete');
     }
 }

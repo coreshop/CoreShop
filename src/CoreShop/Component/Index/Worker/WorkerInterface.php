@@ -12,7 +12,6 @@
 
 namespace CoreShop\Component\Index\Worker;
 
-use CoreShop\Bundle\IndexBundle\Worker\AbstractListing;
 use CoreShop\Component\Index\Condition\ConditionInterface;
 use CoreShop\Component\Index\Extension\IndexExtensionInterface;
 use CoreShop\Component\Index\Listing\ListingInterface;

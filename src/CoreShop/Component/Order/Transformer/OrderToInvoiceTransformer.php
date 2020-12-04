@@ -154,7 +154,7 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $items = [];
 
         /**
-         * @var CartItemInterface $cartItem
+         * @var CartItemInterface $item
          */
         foreach ($itemsToTransform as $item) {
             $invoiceItem = $this->invoiceItemFactory->createNew();

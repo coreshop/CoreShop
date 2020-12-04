@@ -43,8 +43,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
         StorageListItemResolverInterface $cartItemResolver = null
-    )
-    {
+    ) {
         $this->availabilityChecker = $availabilityChecker;
 
         if (null === $cartItemResolver) {
@@ -54,8 +53,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
             );
 
             $this->cartItemResolver = new CartItemResolver();
-        }
-        else {
+        } else {
             $this->cartItemResolver = $cartItemResolver;
         }
     }
@@ -80,9 +78,12 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
 
         /**
          * @var CartItemInterface $cartItem
-         * @var CartInterface     $cart
          */
         $cartItem = $addToCartDto->getCartItem();
+
+        /**
+         * @var CartInterface $cart
+         */
         $cart = $addToCartDto->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(

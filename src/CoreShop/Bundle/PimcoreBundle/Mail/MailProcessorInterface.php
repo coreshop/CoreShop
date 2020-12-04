@@ -12,18 +12,15 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
-use Pimcore\Model\Document\Email;
+use CoreShop\Component\Pimcore\Mail\MailProcessorInterface as NewMailProcessorInterface;
 
-interface MailProcessorInterface
-{
+if (interface_exists(MailProcessorInterface::class)) {
+    @trigger_error('Interface CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Pimcore\Mail\MailProcessorInterface class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @param Email $emailDocument
-     * @param null  $subject
-     * @param mixed $recipients
-     * @param array $attachments
-     * @param array $params
-     *
-     * @return bool
+     * @deprecated Interface CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Pimcore\Mail\MailProcessorInterface class instead.
      */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = []);
+    interface MailProcessorInterface extends NewMailProcessorInterface
+    {
+    }
 }

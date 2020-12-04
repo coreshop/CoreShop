@@ -220,7 +220,7 @@ abstract class AbstractCartToSaleTransformer implements ProposalTransformerInter
         $sale->setInvoiceAddress($invoiceAddress);
 
         /**
-         * @var CartItemInterface
+         * @var CartItemInterface $cartItem
          */
         foreach ($cart->getItems() as $cartItem) {
             $saleItem = $this->saleItemFactory->createNew();

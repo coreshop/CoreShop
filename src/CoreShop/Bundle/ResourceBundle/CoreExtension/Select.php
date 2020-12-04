@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
+abstract class Select extends Data implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
 {
     /**
      * @var bool
@@ -92,7 +92,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return string | array
+     * {@inheritdoc}
      */
     public function getQueryColumnType()
     {
@@ -100,7 +100,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return string | array
+     * {@inheritdoc}
      */
     public function getColumnType()
     {
@@ -150,7 +150,10 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
+     * @return int|string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
@@ -162,7 +165,10 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
+     * @return ResourceInterface|object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -174,6 +180,9 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
+     * @param string $data
+     * @param null   $object
+     * @param array  $params
      * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
@@ -186,7 +195,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return int|null
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -194,7 +203,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return object|null
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
