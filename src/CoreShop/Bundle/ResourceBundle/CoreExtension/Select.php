@@ -18,8 +18,15 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data implements Data\CustomVersionMarshalInterface, CustomRecyclingMarshalInterface
+abstract class Select extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    Data\TypeDeclarationSupportInterface,
+    Data\EqualComparisonInterface,
+    CustomRecyclingMarshalInterface
 {
+    use Model\DataObject\Traits\SimpleComparisonTrait;
+
     /**
      * @var bool
      */
@@ -34,6 +41,38 @@ abstract class Select extends Data implements Data\CustomVersionMarshalInterface
      * @return string
      */
     abstract protected function getModel();
+
+    /**
+     * @return string|null
+     */
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
 
     /**
      * {@inheritdoc}
