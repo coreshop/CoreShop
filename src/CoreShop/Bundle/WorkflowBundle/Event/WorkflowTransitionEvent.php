@@ -68,3 +68,5 @@ final class WorkflowTransitionEvent extends Event
         return $this->allowedTransitions;
     }
 }
+
+class_alias(WorkflowTransitionEvent::class, 'CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent');
