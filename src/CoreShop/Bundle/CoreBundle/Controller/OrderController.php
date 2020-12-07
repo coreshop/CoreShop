@@ -43,11 +43,21 @@ class OrderController extends BaseOrderController
         $order = parent::getDetails($sale);
 
         if ($sale instanceof OrderInterface) {
+            $carrierIdentifier = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null;
+
             $order['shippingPayment'] = [
-                'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
+                'carrier' => $carrierIdentifier,
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];
+
+            foreach($order['shipments'] as &$shipment) {
+                if (isset($shipment['carrierName'])) {
+                    continue;
+                }
+
+                $shipment['carrierName'] = $carrierIdentifier;
+            }
         }
 
         return $order;

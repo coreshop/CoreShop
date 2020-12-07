@@ -369,8 +369,6 @@ class OrderController extends AbstractSaleDetailController
                 foreach ($shipment->getItems() as $index => $item) {
                     $data['items'][$index]['_itemName'] = $item->getOrderItem()->getName();
                 }
-
-                $data['carrierName'] = $shipment->getCarrier() !== null ? $shipment->getCarrier()->getIdentifier() : null;
             } else {
                 $data = $this->getSerializer()->toArray($shipment);
             }
