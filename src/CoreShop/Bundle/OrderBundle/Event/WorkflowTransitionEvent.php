@@ -12,59 +12,15 @@
 
 namespace CoreShop\Bundle\OrderBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent as NewWorkflowTransitionEvent;
 
-final class WorkflowTransitionEvent extends Event
-{
+if (class_exists(NewWorkflowTransitionEvent::class)) {
+    @trigger_error('Class CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var array
+     * @deprecated Class CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent class instead.
      */
-    protected $allowedTransitions;
-
-    /**
-     * @var string
-     */
-    protected $workflowName;
-
-    /**
-     * @param array  $allowedTransitions
-     * @param string $workflowName
-     */
-    public function __construct(array $allowedTransitions, $workflowName)
+    class WorkflowTransitionEvent
     {
-        $this->allowedTransitions = $allowedTransitions;
-        $this->workflowName = $workflowName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWorkflowName()
-    {
-        return $this->workflowName;
-    }
-
-    /**
-     * @param array $allowedTransitions
-     */
-    public function addAllowedTransitions(array $allowedTransitions)
-    {
-        $this->allowedTransitions = array_merge($this->allowedTransitions, $allowedTransitions);
-    }
-
-    /**
-     * @param array $allowedTransitions
-     */
-    public function setAllowedTransitions(array $allowedTransitions)
-    {
-        $this->allowedTransitions = $allowedTransitions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllowedTransitions()
-    {
-        return $this->allowedTransitions;
     }
 }

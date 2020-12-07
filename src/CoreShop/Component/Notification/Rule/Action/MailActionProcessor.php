@@ -13,8 +13,8 @@
 namespace CoreShop\Component\Notification\Rule\Action;
 
 use CoreShop\Component\Pimcore\DataObject\InheritanceHelper;
-use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Component\Notification\Model\NotificationRuleInterface;
+use CoreShop\Component\Pimcore\Mail\MailProcessorInterface;
 use Pimcore\Model\Document;
 
 class MailActionProcessor implements NotificationRuleProcessorInterface

@@ -58,7 +58,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);
         $outputStyle->writeln(sprintf(
@@ -70,5 +70,7 @@ EOT
 
         $this->runCommands($commands, $output);
         $outputStyle->newLine();
+
+        return 0;
     }
 }

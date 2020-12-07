@@ -61,11 +61,6 @@ final class OrderStateResolver implements StateResolverInterface
      */
     private function canOrderBeComplete(OrderInterface $order)
     {
-        /**
-         * @var $order \CoreShop\Component\Core\Model\OrderInterface
-         */
-        Assert::isInstanceOf($order, \CoreShop\Component\Core\Model\OrderInterface::class);
-
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&
             OrderShipmentStates::STATE_SHIPPED === $order->getShippingState();
 

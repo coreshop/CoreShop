@@ -53,7 +53,7 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
     public function findExpiredOrders($days)
     {
         $daysTimestamp = Carbon::now();
-        $daysTimestamp->subDay($days);
+        $daysTimestamp->subDays($days);
 
         $conditions[] = 'o_creationDate < ? AND orderState IN (?, ?, ?) AND paymentState <> ?';
         $params[] = $daysTimestamp->getTimestamp();

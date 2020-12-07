@@ -54,14 +54,10 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
                 ];
             }
 
-            /**
-             * @var QuantityRangeInterface $quantityRange
-             */
             foreach ($dataCheck as $unitName => $quantityRangesToCheck) {
                 $lastEnd = -1;
 
                 /**
-                 * @var int    $rowIndex
                  * @var array $quantityRangeToCheck
                  */
                 foreach ($quantityRangesToCheck as $quantityRangeToCheck) {

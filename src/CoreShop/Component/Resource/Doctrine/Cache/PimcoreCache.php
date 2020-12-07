@@ -51,7 +51,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doSave($id, $data, $lifeTime = 0)
     {
-        $this->coreHandler->save($this->getCacheKey($id), $data, ['doctrine_pimcore_cache'], $lifeTime);
+        return $this->coreHandler->save($this->getCacheKey($id), $data, ['doctrine_pimcore_cache'], $lifeTime);
     }
 
     /**
@@ -59,7 +59,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doDelete($id)
     {
-        $this->coreHandler->remove($this->getCacheKey($id));
+        return $this->coreHandler->remove($this->getCacheKey($id));
     }
 
     /**
@@ -67,7 +67,7 @@ class PimcoreCache extends CacheProvider
      */
     protected function doFlush()
     {
-        $this->coreHandler->clearTag('doctrine_pimcore_cache');
+        return $this->coreHandler->clearTag('doctrine_pimcore_cache');
     }
 
     /**

@@ -75,6 +75,8 @@ class ConfigurationService implements ConfigurationServiceInterface
         $config->setData($data);
         $this->entityManager->persist($config);
         $this->entityManager->flush();
+
+        return $config;
     }
 
     /**

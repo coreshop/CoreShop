@@ -30,21 +30,32 @@
     "coreshop/shipping": "^2.0",
     "coreshop/inventory": "^2.0",
     "coreshop/product": "^2.0",
+    "coreshop/product-quantity-price-rules": "^2.0",
     "coreshop/index": "^2.0",
     "coreshop/payment": "^2.0",
     "coreshop/taxation": "^2.0",
     "coreshop/notification": "^2.0",
     "coreshop/payum-bundle": "^2.0",
-    "coreshop/product-quantity-price-rules": "^2.1"
+    "coreshop/seo": "^2.0",
+    "coreshop/tracking": "^2.0",
+    "pimcore/pimcore": "^6.6.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Component\\Core\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {

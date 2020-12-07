@@ -97,6 +97,8 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         $config->setStore($store);
         $this->entityManager->persist($config);
         $this->entityManager->flush();
+
+        return $config;
     }
 
     /**

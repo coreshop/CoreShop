@@ -61,7 +61,7 @@ class DataLoader implements DataLoaderInterface
                     }
                 }
             } elseif ($def instanceof DataObject\ClassDefinition\Data) {
-                if ($def instanceof Money) {
+                if (class_exists(Money::class) && $def instanceof Money) {
                     $value = $fieldData;
                 } else {
                     $value = $def->getDataForEditmode($fieldData, $data);

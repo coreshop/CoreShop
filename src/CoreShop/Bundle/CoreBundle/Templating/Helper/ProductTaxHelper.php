@@ -78,6 +78,8 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTaxesAmount($this->priceHelper->getPrice($product, false, $context));
         }
+
+        return 0;
     }
 
     /**
@@ -99,6 +101,8 @@ class ProductTaxHelper extends Helper implements ProductTaxHelperInterface
         if ($taxCalculator instanceof TaxCalculatorInterface) {
             return $taxCalculator->getTotalRate();
         }
+
+        return 0;
     }
 
     public function getName()

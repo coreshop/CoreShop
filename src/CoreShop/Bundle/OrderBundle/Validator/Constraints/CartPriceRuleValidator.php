@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\CartInterface;
+use CoreShop\Component\Order\Model\CartInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;

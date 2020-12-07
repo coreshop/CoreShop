@@ -197,10 +197,10 @@ class CheckoutController extends FrontendController
          * Check all previous steps if they are valid, if not, redirect back
          */
 
-        /**
-         * @var CheckoutStepInterface $step
-         */
         foreach ($checkoutManager->getSteps() as $stepIdentifier) {
+            /**
+             * @var CheckoutStepInterface $step
+             */
             $step = $checkoutManager->getStep($stepIdentifier);
 
             if ($step instanceof CheckoutStepInterface && $step instanceof ValidationCheckoutStepInterface && !$step->validate($this->getCart())) {

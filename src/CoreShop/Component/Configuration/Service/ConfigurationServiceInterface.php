@@ -34,8 +34,6 @@ interface ConfigurationServiceInterface
 
     /**
      * @param string $key
-     *
-     * @return ConfigurationInterface
      */
     public function remove($key);
 }

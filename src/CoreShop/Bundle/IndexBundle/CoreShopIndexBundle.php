@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\IndexBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterConditionRendererTypesPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterExtensionsPass;
 use CoreShop\Bundle\IndexBundle\DependencyInjection\Compiler\RegisterColumnTypePass;
@@ -27,14 +29,11 @@ use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\PimcoreBundleInterface;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopIndexBundle extends AbstractResourceBundle implements PimcoreBundleInterface
 {
-    use PackageVersionTrait;
-
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -98,13 +97,35 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getVersion()
     {
-        if (isset(Versions::VERSIONS['coreshop/index-bundle'])) {
-            return 'coreshop/index-bundle';
+        $bundleName = 'coreshop/pimcore-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 
     /**

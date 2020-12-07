@@ -571,8 +571,6 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
 
     /**
      * @param QueryBuilder $queryBuilder
-     *
-     * @return string
      */
     public function addJoins(QueryBuilder $queryBuilder)
     {
