@@ -29,6 +29,10 @@ class PimcoreDataObjectDriver implements DriverInterface
         $this->decorated = $decorated;
     }
 
+    /**
+     * @param \ReflectionClass $class
+     * @return \Metadata\ClassMetadata|null
+     */
     public function loadMetadataForClass(\ReflectionClass $class)
     {
         //We don't want Pimcore entities to be serialized directly

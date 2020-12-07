@@ -92,6 +92,15 @@ final class PimcoreClassContext implements Context
         return $this->sharedStorage->get('object-instance');
     }
 
+
+    /**
+     * @Transform /^object-instance-2$/
+     */
+    public function objectInstance2()
+    {
+        return $this->sharedStorage->get('object-instance-2');
+    }
+
     /**
      * @Transform /^object-instance "([^"]+)"$/
      */

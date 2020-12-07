@@ -53,10 +53,10 @@ class ProposalCartPriceRuleCalculator implements ProposalCartPriceRuleCalculator
         $existingPriceRule = null !== $priceRuleItem;
         $result = false;
 
-        /**
-         * @var ProposalCartPriceRuleItemInterface
-         */
         if ($priceRuleItem === null) {
+            /**
+             * @var ProposalCartPriceRuleItemInterface $priceRuleItem
+             */
             $priceRuleItem = $this->cartPriceRuleItemFactory->createNew();
         }
 

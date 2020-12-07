@@ -79,7 +79,7 @@ interface SaleInterface extends ProposalInterface, PimcoreModelInterface, BaseAd
     public function getPriceRules();
 
     /**
-     * @return array
+     * @return Fieldcollection
      */
     public function getPriceRuleItems();
 

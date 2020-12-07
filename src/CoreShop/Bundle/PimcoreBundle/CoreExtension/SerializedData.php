@@ -151,11 +151,11 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getForCsvExport($object, $params = [])
     {
-        return null;
+        return '';
     }
 
     /**
@@ -166,10 +166,10 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getFilterCondition($value, $operator, $params = [])
     {
-        return null;
+        return '';
     }
 }

@@ -39,8 +39,6 @@ interface ConfigurationServiceInterface extends BaseConfigurationServiceInterfac
     /**
      * @param string              $key
      * @param StoreInterface|null $store
-     *
-     * @return ConfigurationInterface
      */
     public function removeForStore($key, StoreInterface $store = null);
 }

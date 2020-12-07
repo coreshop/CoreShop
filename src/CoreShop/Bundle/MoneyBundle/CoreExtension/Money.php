@@ -199,13 +199,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataFromResource
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -217,13 +211,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataForQueryResource
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -231,13 +219,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataForEditmode
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
@@ -245,13 +227,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getDataFromEditmode
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
@@ -263,26 +239,15 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @see Model\DataObject\ClassDefinition\Data::getVersionPreview
-     *
-     * @param float                                $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return $data;
+        return (string)$data;
     }
 
     /**
-     * Checks if data is valid for current data field.
-     *
-     * @param mixed $data
-     * @param bool  $omitMandatoryCheck
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
@@ -312,43 +277,25 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * converts object data to a simple string value or CSV Export.
-     *
-     * @abstract
-     *
-     * @param Model\DataObject\AbstractObject $object
-     * @param array                           $params
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
-        return strval($data);
+        return (string)$data;
     }
 
     /**
-     * fills object field data values from CSV Import String.
-     *
-     * @param string                               $importValue
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed                                $params
-     *
-     * @return float
+     * {@inheritdoc}
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
-        $value = $this->toNumeric(str_replace(',', '.', $importValue));
-
-        return $value;
+        return $this->toNumeric(str_replace(',', '.', $importValue));
     }
 
-    /** True if change is allowed in edit mode.
-     * @param string $object
-     * @param mixed  $params
-     *
-     * @return bool
+    /**
+     * {@inheritdoc}
      */
     public function isDiffChangeAllowed($object, $params = [])
     {
@@ -364,9 +311,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * @param mixed $data
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isEmpty($data)
     {

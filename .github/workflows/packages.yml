@@ -1,0 +1,82 @@
+name: Packages
+
+on:
+  push:
+    paths:
+      - "src/CoreShop/Bundle/**"
+      - "src/CoreShop/Component/**"
+    pull_request:
+      paths:
+        - "src/CoreShop/Bundle/**"
+        - "src/CoreShop/Component/**"
+  pull_request:
+    branches: [ master, '2.2' ]
+  release:
+    types: [ created ]
+  schedule:
+    - cron: "0 1 * * 1"
+
+jobs:
+  list:
+    runs-on: ubuntu-latest
+    name: "Create a list of packages"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: "List Packages"
+      id: create-list
+      run: echo "::set-output name=packages::$(find src/CoreShop -mindepth 3 -maxdepth 3 -type f -name composer.json -exec dirname '{}' \; | sed -e 's/src\/CoreShop\///g' | sort | jq  --raw-input . | jq --slurp . | jq -c .)"
+
+    outputs:
+       packages: "${{ steps.create-list.outputs.packages }}"
+
+
+  test-packages:
+    needs: list
+    runs-on: ubuntu-latest
+    name: "${{ matrix.package }}, PHP ${{ matrix.php }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        php: [ 7.4 ]
+        package: "${{ fromJson(needs.list.outputs.packages) }}"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: intl
+
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache Composer
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-
+          ${{ runner.os }}-php-${{ matrix.php }}-package-
+
+    - name: Validate composer.json
+      run: composer validate --ansi --strict
+      working-directory: "src/CoreShop/${{ matrix.package }}"
+
+    - name: Install dependencies
+      run: |
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+      env:
+          COMPOSER_ROOT_VERSION: dev-master
+      working-directory: "src/CoreShop/${{ matrix.package }}"
+
+    - name: STAN
+      run: |
+        cp ../../../../phpstan-package.neon phpstan.neon
+        vendor/bin/phpstan analyse -c phpstan.neon . -l 3
+      working-directory: "src/CoreShop/${{ matrix.package }}"

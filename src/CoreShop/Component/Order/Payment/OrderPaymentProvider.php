@@ -18,6 +18,7 @@ use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
@@ -60,18 +61,17 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
 
         /**
          * @var PaymentInterface $payment
-         * @var Payment          $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
-        $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setTotalAmount($order->getPaymentTotal());
+        $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails($order->getPaymentSettings());
+            $payment->setDetails(new ArrayObject($order->getPaymentSettings()));
         }
 
         if ($payment instanceof OrderPaymentInterface) {
@@ -85,8 +85,10 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         );
 
         //payum setters
-        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
-        $payment->setDescription($description);
+        if ($payment instanceof Payment) {
+            $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
+            $payment->setDescription($description);
+        }
 
         return $payment;
     }

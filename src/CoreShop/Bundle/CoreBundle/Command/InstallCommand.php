@@ -95,7 +95,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
 
@@ -132,6 +132,8 @@ EOT
         $outputStyle->writeln(sprintf(
             'You can now open your store at the following path under the website root: <info>/</info>'
         ));
+
+        return 0;
     }
 
     /**

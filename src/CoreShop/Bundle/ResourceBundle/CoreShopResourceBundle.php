@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\ResourceBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\DoctrineTargetEntitiesResolverPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterInstallersPass;
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\RegisterPimcoreRepositoriesPass;
@@ -23,15 +25,12 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler\ValidatorAutoMap
 use JMS\SerializerBundle\JMSSerializerBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopResourceBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    use PackageVersionTrait;
-
     const DRIVER_DOCTRINE_ORM = 'doctrine/orm';
     const DRIVER_PIMCORE = 'pimcore';
 
@@ -63,6 +62,7 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     {
         $collection->addBundle(new JMSSerializerBundle(), 3900);
         $collection->addBundle(new \CoreShop\Bundle\PimcoreBundle\CoreShopPimcoreBundle(), 3850);
+        $collection->addBundle(new \CoreShop\Bundle\OptimisticEntityLockBundle\CoreShopOptimisticEntityLockBundle(), 3800);
         $collection->addBundle(new \Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(), 1400);
         $collection->addBundle(new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(), 1200);
     }
@@ -86,13 +86,35 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getVersion()
     {
-        if (isset(Versions::VERSIONS['coreshop/resource-bundle'])) {
-            return 'coreshop/resource-bundle';
+        $bundleName = 'coreshop/pimcore-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 
     /**

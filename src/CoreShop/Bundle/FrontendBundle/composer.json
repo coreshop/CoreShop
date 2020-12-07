@@ -20,16 +20,25 @@
   "require": {
     "php": "^7.2",
     "coreshop/core-bundle": "^2.0",
-    "dachcom-digital/emailizr": "^1.0.6"
+    "dachcom-digital/emailizr": "^1.0.6",
+    "pimcore/pimcore": "^6.6.0"
   },
-  "config": {
-    "bin-dir": "bin"
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
   },
   "autoload": {
     "psr-4": {
       "CoreShop\\Bundle\\FrontendBundle\\": ""
     }
   },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {

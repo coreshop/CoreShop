@@ -20,16 +20,12 @@ interface StorageListModifierInterface
     /**
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $item
-     *
-     * @return StorageListItemInterface
      */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item);
 
     /**
      * @param StorageListInterface     $storageList
      * @param StorageListItemInterface $item
-     *
-     * @return StorageListItemInterface
      */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item);
 }

@@ -125,6 +125,8 @@ class Select extends Tag
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**
@@ -133,6 +135,8 @@ class Select extends Tag
     public function setDataFromResource($data)
     {
         $this->resource = $data;
+
+        return $this;
     }
 
     /**

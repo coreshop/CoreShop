@@ -62,8 +62,6 @@ final class DataFixturesSorter
 
     /**
      * Order fixtures by priority.
-     *
-     * @return array
      */
     private function orderFixturesByNumber()
     {
@@ -90,8 +88,6 @@ final class DataFixturesSorter
 
     /**
      * @param bool $usedPrioritySorting
-     *
-     * @return array
      *
      * @throws CircularReferenceException
      *

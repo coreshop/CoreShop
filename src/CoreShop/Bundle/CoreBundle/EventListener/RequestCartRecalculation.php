@@ -84,7 +84,12 @@ final class RequestCartRecalculation
         $cart = $this->shopperContext->getCart();
 
         if ($cart->getId()) {
-            if ($this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE') > $cart->getModificationDate()) {
+            /**
+             * @var int|null $updateTime
+             */
+            $updateTime = $this->configurationService->get('SYSTEM.PRICE_RULE.UPDATE');
+
+            if (null !== $updateTime && $updateTime > $cart->getModificationDate()) {
                 $this->cartManager->persistCart($cart);
             }
         }

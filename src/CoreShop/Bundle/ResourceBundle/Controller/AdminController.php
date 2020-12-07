@@ -12,6 +12,11 @@
 
 namespace CoreShop\Bundle\ResourceBundle\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * @property ContainerInterface $container
+ */
 class AdminController extends \Pimcore\Bundle\AdminBundle\Controller\AdminController
 {
     /**

@@ -12,19 +12,18 @@
 
 namespace CoreShop\Bundle\ThemeBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
 use Liip\ThemeBundle\LiipThemeBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    use PackageVersionTrait;
-
     /**
      * {@inheritdoc}
      */
@@ -59,15 +58,37 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
         return 'CoreShop - Theme Bundle';
     }
 
-    /**
+/**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getVersion()
     {
-        if (isset(Versions::VERSIONS['coreshop/theme-bundle'])) {
-            return 'coreshop/theme-bundle';
+        $bundleName = 'coreshop/pimcore-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 }

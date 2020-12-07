@@ -20,7 +20,7 @@ interface StorageListItemResolverInterface
      * @param StorageListItemInterface $itemA
      * @param StorageListItemInterface $itemB
      *
-     * @return StorageListItemInterface
+     * @return bool
      */
     public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB);
 }
