@@ -10,17 +10,22 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-namespace CoreShop\Component\StorageList;
+namespace CoreShop\Component\Pimcore\Mail;
 
-use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use Pimcore\Model\Document\Email;
 
-interface StorageListItemResolverInterface
+interface MailProcessorInterface
 {
     /**
-     * @param StorageListItemInterface $itemA
-     * @param StorageListItemInterface $itemB
+     * @param Email $emailDocument
+     * @param null  $subject
+     * @param mixed $recipients
+     * @param array $attachments
+     * @param array $params
      *
      * @return bool
      */
-    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB);
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = []);
 }
+
+class_alias(MailProcessorInterface::class, 'CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface');

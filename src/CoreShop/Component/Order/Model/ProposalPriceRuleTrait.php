@@ -50,12 +50,15 @@ trait ProposalPriceRuleTrait
 
         if ($this->getPriceRuleItems() instanceof Fieldcollection) {
             foreach ($this->getPriceRuleItems() as $ruleItem) {
-                if ($ruleItem instanceof ProposalCartPriceRuleItem) {
+                if ($ruleItem instanceof ProposalCartPriceRuleItemInterface) {
                     $rules[] = $ruleItem->getCartPriceRule();
                 }
             }
         }
 
+        /**
+         * @var ProposalCartPriceRuleItemInterface[] $rules
+         */
         return $rules;
     }
 

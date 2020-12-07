@@ -48,11 +48,14 @@ class DiscountAmountActionProcessor implements ProductDiscountActionProcessorInt
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);
 
         /**
-         * @var CurrencyInterface $currency
          * @var CurrencyInterface $contextCurrency
          */
         $contextCurrency = $context['currency'];
         $amount = $configuration['amount'];
+
+        /**
+         * @var CurrencyInterface $currency
+         */
         $currency = $this->currencyRepository->find($configuration['currency']);
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);

@@ -148,7 +148,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
      * @param string   $language
      * @param array    $properties
      *
-     * @return Document
+     * @return Document|null
      */
     private function installDocument(Document $rootDocument, $language, $properties)
     {
@@ -218,5 +218,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 return $document;
             }
         }
+
+        return null;
     }
 }

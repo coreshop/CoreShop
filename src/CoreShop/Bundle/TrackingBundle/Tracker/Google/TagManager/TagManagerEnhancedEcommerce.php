@@ -105,7 +105,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->codeTracker->addCodePart($result);
@@ -147,9 +147,9 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
             }
         }
 
-        if (!empty($cartCoupon)) {
-            $actionData['coupon'] = $cartCoupon;
-        }
+//        if (!empty($cartCoupon)) {
+//            $actionData['coupon'] = $cartCoupon;
+//        }
 
         if (!empty($actionField)) {
             $actionData['actionField'] = $actionField;

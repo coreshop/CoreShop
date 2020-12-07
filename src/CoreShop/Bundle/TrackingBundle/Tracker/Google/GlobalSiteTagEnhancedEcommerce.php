@@ -74,7 +74,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_view', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
@@ -96,7 +96,7 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 
         $parameters['actionData'] = $actionData;
 
-        unset($parameters['actionData']['quantity']);
+        //unset($parameters['actionData']['quantity']);
 
         $result = $this->renderTemplate('product_impression', $parameters);
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);

@@ -29,7 +29,7 @@ interface ProductRepositoryInterface extends BaseProductRepositoryInterface
     /**
      * @param array $options
      *
-     * @return ProductInterface[]
+     * @return mixed
      */
     public function getProducts($options = []);
 }

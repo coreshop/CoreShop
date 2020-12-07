@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use CoreShop\Component\Address\Formatter\AddressFormatterInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Address\Model\CountryInterface;
-use CoreShop\Component\Core\Model\CartItemInterface;
+use CoreShop\Component\Order\Model\CartItemInterface;
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Order\Model\CartInterface;
@@ -24,7 +24,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
-use JMS\Serializer\SerializationContext;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
@@ -304,8 +303,6 @@ class CartController extends AbstractSaleController
         }
 
         $totals = $this->getSummary($cart);
-
-        unset($totalEntry);
 
         $jsonSale['summary'] = $totals;
 

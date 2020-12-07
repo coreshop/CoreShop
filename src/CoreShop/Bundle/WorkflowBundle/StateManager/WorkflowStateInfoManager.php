@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
-use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
+use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
