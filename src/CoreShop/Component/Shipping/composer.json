@@ -19,11 +19,11 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0 ",
-    "coreshop/resource": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/taxation": "^2.0",
-    "coreshop/address": "^2.0",
-    "coreshop/rule": "^2.0",
+    "coreshop/resource": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/taxation": "^3.0",
+    "coreshop/address": "^3.0",
+    "coreshop/rule": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {

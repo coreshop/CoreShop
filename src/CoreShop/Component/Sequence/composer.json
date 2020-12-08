@@ -19,7 +19,7 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0 ",
-    "coreshop/resource": "^2.0",
+    "coreshop/resource": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {

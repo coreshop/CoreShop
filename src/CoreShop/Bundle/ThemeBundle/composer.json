@@ -19,8 +19,8 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0 ",
-    "coreshop/registry": "^2.0",
-    "coreshop/pimcore-bundle": "^2.1",
+    "coreshop/registry": "^3.0",
+    "coreshop/pimcore-bundle": "^3.0",
     "liip/theme-bundle": "^1.4",
     "pimcore/pimcore": "^10.0.0"
   },

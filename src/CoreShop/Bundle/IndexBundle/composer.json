@@ -19,10 +19,10 @@
   ],
   "require": {
     "php": "^7.4 || ^8.0 ",
-    "coreshop/index": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource-bundle": "^2.1",
-    "coreshop/menu-bundle": "^2.1",
+    "coreshop/index": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/resource-bundle": "^3.0",
+    "coreshop/menu-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "conflict": {
