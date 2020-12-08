@@ -14,7 +14,7 @@
         }
     ],
     "require": {
-        "dachcom-digital/emailizr": "^1.0.6",
+        "dachcom-digital/emailizr": "dev-master",
         "doctrine/common": "^2.6",
         "doctrine/data-fixtures": "^1.4",
         "doctrine/orm": "^2.5",
@@ -28,7 +28,7 @@
         "payum/payum-bundle": "^2.2",
         "payum/sofort": "^1.4",
         "php-http/guzzle6-adapter": "^2.0",
-        "pimcore/pimcore": "^7.0.0",
+        "pimcore/pimcore": "^10.0.0",
         "rinvex/countries": "^6.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "webmozart/assert": "^1.2"

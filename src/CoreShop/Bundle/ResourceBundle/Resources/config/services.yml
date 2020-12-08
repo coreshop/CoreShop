@@ -70,10 +70,6 @@ services:
         arguments:
             - '@translator'
 
-    CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:
-        arguments:
-            - '@Pimcore\Cache\Core\CoreHandlerInterface'
-
     CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver:
         decorates: 'jms_serializer.metadata.annotation_driver'
         arguments:
