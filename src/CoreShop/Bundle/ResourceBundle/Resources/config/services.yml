@@ -88,3 +88,7 @@ services:
         decorates: 'jms_serializer.metadata.annotation_driver'
         arguments:
             - '@CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver.inner'
+
+    CoreShop\Bundle\ResourceBundle\EventListener\DeepCopySubscriber:
+        tags:
+            - { name: kernel.event_subscriber }

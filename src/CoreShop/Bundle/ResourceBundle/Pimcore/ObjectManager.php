@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
@@ -91,7 +89,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function merge($object)
     {
-        return $object;
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -123,7 +121,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function detach($object)
     {
-
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -131,7 +129,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
      */
     public function refresh($object)
     {
-
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -178,22 +176,22 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
 
     public function getClassMetadata($className)
     {
-        throw new \Exception('not implemented');
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function getMetadataFactory()
     {
-        throw new \Exception('not implemented');
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function initializeObject($obj)
     {
-        throw new \Exception('not implemented');
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     public function contains($object)
     {
-        throw new \Exception('not implemented');
+        throw new \InvalidArgumentException('Not implemented');
     }
 
     /**
@@ -206,7 +204,7 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param mixed $resource
+     * @param object $resource
      *
      * @return int
      */
@@ -222,36 +220,16 @@ final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
     }
 
     /**
-     * @param mixed $resource
+     * @param object $resource
      *
      * @return string
      */
     private function getResourceClassName($resource)
     {
-        $className = get_class($resource);
-
         if ($resource instanceof Concrete) {
-            $className = $resource->getClassName();
+            return $resource->getClassName();
         }
 
-        return $className;
-    }
-
-    /**
-     * @param mixed $resource
-     *
-     * @return bool
-     */
-    private function isResourceNew($resource)
-    {
-        if ($resource instanceof ElementInterface) {
-            return null === $resource->getId() || $resource->getId() === 0;
-        }
-
-        if (method_exists($resource, 'getId')) {
-            return null === $resource->getId() || $resource->getId() === 0;
-        }
-
-        return true;
+        throw new \InvalidArgumentException('$resource is not a DataObject\\Concrete');
     }
 }

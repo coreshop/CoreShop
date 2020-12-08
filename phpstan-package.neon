@@ -1,0 +1,52 @@
+parameters:
+    reportUnmatchedIgnoredErrors: false
+
+    excludes_analyse:
+        # Makes PHPStan crash
+        - '**/DependencyInjection/Configuration.php'
+        - '**/Migrations/Version*.php'
+        # Ignore cause the file uses external dependencies and will only be used if those dependencies are met
+        - 'CoreShop/Component/SEO/Extractor/LuceneSearchExtractor.php'
+        - '**/ProcessManager/IndexListener.php'
+        - '**/ProcessManager/IndexProcess.php'
+        - '**/DataHub/*.php'
+        - 'vendor/***'
+
+    ignoreErrors:
+        # Magic calls
+        - '/Call to an undefined static method Webmozart\\Assert\\Assert::all/'
+        - '/Call to an undefined static method Webmozart\\Assert\\Assert::nullOr/'
+        - '/Call to an undefined method Faker\\Generator::/'
+        - '/Access to an undefined property Faker\\Generator::/'
+        - '/Constant PIMCORE_CONFIGURATION_DIRECTORY not found./'
+        - '/Constant PIMCORE_CLASS_DIRECTORY not found./'
+        - '/Constant PIMCORE_WEB_ROOT not found./'
+        - '/Constant PIMCORE_DEVMODE not found./'
+        - '/Class Zend_Paginator_Adapter_Interface not found and could not be autoloaded./'
+
+        - '/Class LuceneSearchBundle/'
+        - '/unknown class LuceneSearchBundle/'
+        - '/typehint type LuceneSearchBundle/'
+        - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\NodeDefinition::children\(\)/'
+        - '/Call to an undefined method Pimcore\\Model\\(.*)::save\(\)./'
+        - '/Call to an undefined method Pimcore\\Model\\(.*)::delete\(\)./'
+        - '/Method Pimcore\\Model\\DataObject\\Concrete::getLatestVersion\(\)\(.*\)/'
+        - '/Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\)/'
+        - '/Method CoreShop\\Bundle\\ResourceBundle\\Routing\\ResourceLoader::getResolver\(\) should return Symfony\\Component\\Config\\Loader\\LoaderResolverInterface but return statement is missing./'
+
+        # Pimcore BC Breaks
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Href not found/'
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\Multihref not found/'
+        - '/Class Pimcore\\Bundle\\AdminBundle\\Helper\\GridHelperService not found/'
+        - '/Class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface not found/'
+        - '/Class Pimcore\\Model\\DataObject\\ClassDefinition\\Data\\\CustomVersionMarshalInterface not found/'
+        - '/Call to method markLazyKeyAsLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
+        - '/Call to method isLazyKeyLoaded\(\) on an unknown class Pimcore\\Model\\DataObject\\LazyLoadedFieldsInterface/'
+        - '/Access to undefined constant PackageVersions\\Versions::VERSIONS/'
+
+        # BC Breaks that will be resolved with 3.0
+        - '/Method CoreShop\\Bundle\\ThemeBundle\\Service\\ThemeResolverInterface::resolveTheme\(\)/'
+
+includes:
+    - ./vendor/phpstan/phpstan-doctrine/extension.neon
+    - ./vendor/phpstan/phpstan-webmozart-assert/extension.neon

@@ -10,13 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\StorageList;
 
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 interface StorageListItemResolverInterface
 {
-    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB): bool;
+    /**
+     * @param StorageListItemInterface $itemA
+     * @param StorageListItemInterface $itemB
+     *
+     * @return bool
+     */
+    public function equals(StorageListItemInterface $itemA, StorageListItemInterface $itemB);
 }

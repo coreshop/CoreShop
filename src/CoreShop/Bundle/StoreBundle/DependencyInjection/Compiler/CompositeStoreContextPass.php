@@ -10,13 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
-use CoreShop\Component\Store\Context\CompositeStoreContext;
-use CoreShop\Component\Store\Context\StoreContextInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
 {
@@ -25,8 +21,8 @@ final class CompositeStoreContextPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            StoreContextInterface::class,
-            CompositeStoreContext::class,
+            'coreshop.context.store',
+            'coreshop.context.store.composite',
             self::STORE_CONTEXT_TAG,
             'addContext'
         );

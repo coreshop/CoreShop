@@ -1,35 +1,48 @@
 {
-    "name": "coreshop/inventory",
-    "type": "library",
-    "description": "CoreShop Inventory Component.",
-    "keywords": ["coreshop", "pimcore", "ecommerce"],
-    "homepage": "http://www.coreshop.org",
-    "license": "GPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "Dominik Pfaffenbauer",
-            "email": "dominik@pfaffenbauer.at",
-            "homepage": "https://www.pfaffenbauer.at/",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^7.2",
-        "coreshop/resource": "^3.0"
-    },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "autoload": {
-        "psr-4": {
-            "CoreShop\\Component\\Inventory\\": ""
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.0-dev"
-        }
+  "name": "coreshop/inventory",
+  "type": "library",
+  "description": "CoreShop Inventory Component.",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": "^7.2",
+    "coreshop/resource": "^2.0",
+    "pimcore/pimcore": "^10.0.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Component\\Inventory\\": ""
+    }
+  },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.2-dev"
+    }
+  }
 }

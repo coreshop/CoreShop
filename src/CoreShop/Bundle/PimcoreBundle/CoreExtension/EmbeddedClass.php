@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use CoreShop\Component\Pimcore\DataObject\EditmodeHelper;
@@ -447,24 +445,6 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
         }
 
         return null;
-    }
-
-    /**
-     * @return int
-     */
-    public function getMaxItems()
-    {
-        return $this->maxItems;
-    }
-
-    /**
-     * @param int $maxItems
-     */
-    public function setMaxItems($maxItems)
-    {
-        $this->maxItems = $maxItems;
-
-        return $this;
     }
 
     /**

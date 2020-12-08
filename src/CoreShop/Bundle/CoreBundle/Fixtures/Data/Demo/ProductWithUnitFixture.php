@@ -10,29 +10,16 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\CoreBundle\Fixtures\Data\Demo;
 
-use CoreShop\Bundle\FixtureBundle\Fixture\VersionedFixtureInterface;
-use CoreShop\Component\Core\Model\CategoryInterface;
-use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
-use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
-use Faker\Provider\Image;
 use Faker\Provider\Lorem;
-use Pimcore\Model\Asset;
-use Pimcore\Model\DataObject\Service;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 class ProductWithUnitFixture extends AbstractProductFixture
 {
@@ -64,20 +51,20 @@ class ProductWithUnitFixture extends AbstractProductFixture
             $unitDefinitions->setProduct($product);
 
             /**
-             * @var ProductUnitDefinitionInterface      $defaultDefinition
+             * @var ProductUnitDefinitionInterface $defaultDefinition
              */
             $defaultDefinition = $productUnitDefinitionFactory->createNew();
             $defaultDefinition->setUnit($this->getReference('unit-piece'));
 
             /**
-             * @var ProductUnitDefinitionInterface      $cartonDefinition
+             * @var ProductUnitDefinitionInterface $cartonDefinition
              */
             $cartonDefinition = $productUnitDefinitionFactory->createNew();
             $cartonDefinition->setUnit($this->getReference('unit-carton'));
             $cartonDefinition->setConversionRate(24);
 
             /**
-             * @var ProductUnitDefinitionInterface      $paletteDefinition
+             * @var ProductUnitDefinitionInterface $paletteDefinition
              */
             $paletteDefinition = $productUnitDefinitionFactory->createNew();
             $paletteDefinition->setUnit($this->getReference('unit-palette'));
@@ -100,7 +87,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                     $storeValues->setStore($store);
                 }
 
-                $storeValues->setPrice((int) $faker->randomFloat(2, 200, 400) * $decimalFactor);
+                $storeValues->setPrice((int)$faker->randomFloat(2, 200, 400) * $decimalFactor);
 
                 /**
                  * @var ProductUnitDefinitionPriceInterface $cartonPrice

@@ -27,14 +27,12 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
         $parent = $this->getParent();
 
         do {
-            if (is_subclass_of($parent, OrderShipmentInterface::class)) {
-                /**
-                 * @var OrderShipmentInterface $parent
-                 */
+            if ($parent instanceof OrderInterface) {
                 return $parent;
             }
+
             $parent = $parent->getParent();
-        } while ($parent != null);
+        } while ($parent !== null);
 
         throw new \InvalidArgumentException('Order Shipment could not be found!');
     }

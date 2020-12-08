@@ -345,6 +345,47 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a numeric field "([^"]+)"$/
+     */
+    public function definitionHasNumberField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "numeric",
+                "width": "",
+                "defaultValue": null,
+                "queryColumnType": "double",
+                "columnType": "double",
+                "phpdocType": "float",
+                "integer": false,
+                "unsigned": false,
+                "minValue": null,
+                "maxValue": null,
+                "unique": null,
+                "decimalSize": null,
+                "decimalPrecision": null,
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": false,
+                "noteditable": true,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false,
+                "defaultValueGenerator": ""
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
      * @Given /^the (definition) has a href field "([^"]+)"$/
      */
     public function definitionHasHrefField($definition, $name)
@@ -623,6 +664,15 @@ final class PimcoreClassContext implements Context
 
         $this->sharedStorage->set('object-instance', $instance);
     }
+    /**
+     * @Given /^I reload the (object-instance) into object-instance-2$/
+     */
+    public function iReloadTheObjectInstanceIntoObjectInstance2(Concrete $dataObject)
+    {
+        $newInstance = $dataObject::getById($dataObject->getId(), true);
+
+        $this->sharedStorage->set('object-instance-2', $newInstance);
+    }
 
     /**
      * @Given /^the (object-instance) is published$/
@@ -644,6 +694,8 @@ final class PimcoreClassContext implements Context
 
     /**
      * @Given /the (object-instance) has following values:/
+     * @Given /I change the (object-instance) values:/
+     * @Given /I change the (object-instance-2) values:/
      */
     public function theObjectInstanceHasFollowingValues(Concrete $object, TableNode $table)
     {

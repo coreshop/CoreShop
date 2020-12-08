@@ -10,12 +10,9 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
-use CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
 {
@@ -25,7 +22,7 @@ final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
     {
         parent::__construct(
             'coreshop.context.customer.request_based.resolver',
-            CompositeRequestResolver::class,
+            'coreshop.context.customer.request_based.resolver.composite',
             self::CUSTOMER_REQUEST_RESOLVER_SERVICE_TAG,
             'addResolver'
         );

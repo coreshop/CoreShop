@@ -32,7 +32,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 use Pimcore\Model\DataObject\Concrete;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Webmozart\Assert\Assert;
-use function League\Uri\merge_query;
 
 class ProductQuantityPriceRules extends Data implements
     Data\CustomResourcePersistingInterface,
