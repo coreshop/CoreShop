@@ -75,7 +75,7 @@
     "coreshop/optimistic-entity-lock-bundle": "self.version"
   },
   "require": {
-    "php": "^7.2",
+    "php": "^7.4 || ^8.0 ",
     "dachcom-digital/emailizr": "^1.0.6",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/orm": "^2.5",
