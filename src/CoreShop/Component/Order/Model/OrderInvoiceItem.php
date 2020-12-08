@@ -27,7 +27,7 @@ class OrderInvoiceItem extends AbstractPimcoreModel implements OrderInvoiceItemI
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof OrderInterface) {
+            if ($parent instanceof OrderDocumentInterface) {
                 return $parent;
             }
 

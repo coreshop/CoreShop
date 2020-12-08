@@ -27,7 +27,7 @@ class OrderShipmentItem extends AbstractPimcoreModel implements OrderShipmentIte
         $parent = $this->getParent();
 
         do {
-            if ($parent instanceof OrderInterface) {
+            if ($parent instanceof OrderDocumentInterface) {
                 return $parent;
             }
 

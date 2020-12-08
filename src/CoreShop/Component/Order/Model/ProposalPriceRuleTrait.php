@@ -44,7 +44,7 @@ trait ProposalPriceRuleTrait
     }
 
     /**
-     * @return ProposalCartPriceRuleItem[]
+     * @return ProposalCartPriceRuleItemInterface[]
      */
     public function getPriceRules()
     {

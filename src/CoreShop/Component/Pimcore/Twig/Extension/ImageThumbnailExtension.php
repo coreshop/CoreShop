@@ -81,6 +81,6 @@ final class ImageThumbnailExtension extends AbstractExtension
         E_USER_DEPRECATED
         );
 
-        return $this->getImageThumbnail($image, $thumbnail, $deferred)->getHTML($options, $removeAttributes);
+        return $this->getImageThumbnail($image, $thumbnail, $deferred)->getHtml($options, $removeAttributes);
     }
 }

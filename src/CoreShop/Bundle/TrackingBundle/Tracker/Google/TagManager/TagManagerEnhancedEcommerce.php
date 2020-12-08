@@ -61,7 +61,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -73,7 +73,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProduct($product)
+    public function trackProduct($product): void
     {
         $this->ensureDataLayer();
 
@@ -93,7 +93,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackProductImpression($product)
+    public function trackProductImpression($product): void
     {
         $this->ensureDataLayer();
 
@@ -114,7 +114,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartAdd($cart, $product, $quantity = 1)
+    public function trackCartAdd($cart, $product, $quantity = 1): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'add', $quantity);
@@ -123,7 +123,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCartRemove($cart, $product, $quantity = 1)
+    public function trackCartRemove($cart, $product, $quantity = 1): void
     {
         $this->ensureDataLayer();
         $this->trackCartAction($product, 'remove', $quantity);
@@ -132,7 +132,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null)
+    public function trackCheckoutStep($cart, $stepIdentifier = null, $isFirstStep = false, $checkoutOption = null): void
     {
         $this->ensureDataLayer();
 
@@ -164,7 +164,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    public function trackCheckoutComplete($order)
+    public function trackCheckoutComplete($order): void
     {
         $this->ensureDataLayer();
 
@@ -183,7 +183,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * {@inheritdoc}
      */
-    protected function trackCartAction($product, $action, $quantity = 1)
+    protected function trackCartAction($product, $action, $quantity = 1): void
     {
         $this->ensureDataLayer();
 
@@ -212,7 +212,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformOrder($actionData)
+    protected function transformOrder($actionData): array
     {
         return [
             'id' => $actionData['id'],
@@ -231,7 +231,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
      *
      * @return array
      */
-    protected function transformProductAction($item)
+    protected function transformProductAction($item): array
     {
         return $this->filterNullValues([
             'id' => $item['id'],
@@ -248,7 +248,7 @@ class TagManagerEnhancedEcommerce extends AbstractEcommerceTracker
     /**
      * Makes sure data layer is included once before any call.
      */
-    protected function ensureDataLayer()
+    protected function ensureDataLayer(): void
     {
         if ($this->dataLayerIncluded) {
             return;

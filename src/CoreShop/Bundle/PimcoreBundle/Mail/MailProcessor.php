@@ -20,7 +20,7 @@ use CoreShop\Component\Pimcore\Mail;
 use Pimcore\Model\Document\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class MailProcessor implements MailProcessorInterface
+final class MailProcessor implements Mail\MailProcessorInterface
 {
     private $eventDispatcher;
 
