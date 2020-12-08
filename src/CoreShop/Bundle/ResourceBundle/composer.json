@@ -36,7 +36,7 @@
     "symfony/twig-bundle": "^5.2.0",
     "symfony/validator": "^5.2.0",
     "symfony/yaml": "^5.2.0",
-    "gedmo/doctrine-extensions": "^2.4.12",
+    "gedmo/doctrine-extensions": "^3.0.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
