@@ -1,12 +1,12 @@
-name: PHP Stan
+name: Lint
 on:
   push:
-    branches: [ 'master' ]
+    branches: [ master, '2.2' ]
   pull_request:
-    branches: [ 'master' ]
+    branches: [ master, '2.2' ]
 
 jobs:
-  stan:
+  lint:
     runs-on: ubuntu-latest
     env:
       PIMCORE_ENVIRONMENT: "test"
@@ -20,10 +20,11 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.3, 7.4]
-        pimcore: [7.0.x-dev]
+        php: [ 7.4, 8.0 ]
+        pimcore: [ 10.0.x-dev ]
 
     steps:
     - uses: actions/checkout@v2
@@ -31,7 +32,7 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php }}
+        php-version: 7.3
         extensions: intl
 
     - name: Copy parameters.yml
@@ -63,15 +64,22 @@ jobs:
         mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
         mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
     - name: Composer install
       run: |
-          composer config minimum-stability dev
-          composer config prefer-stable true
-          composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-          composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Validate YAML
+      run: bin/console lint:yaml src --no-debug
+
+    - name: Validate TWIG
+      run: bin/console lint:twig src --no-debug
 
     - name: STAN
       run: |
-        cp -f app/config/config_stan.yml app/config/config_dev.yml
+        cp -f app/config/config_test.yml app/config/config_dev.yml
         bin/console cache:warmup --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3

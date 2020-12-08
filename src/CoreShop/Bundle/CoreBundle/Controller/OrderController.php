@@ -10,29 +10,26 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\CoreBundle\Controller;
 
 use CoreShop\Bundle\OrderBundle\Controller\OrderController as BaseOrderController;
 use CoreShop\Component\Core\Model\CarrierInterface;
-use CoreShop\Component\Order\Model\OrderInterface;
-use CoreShop\Component\Order\Model\OrderItemInterface;
-use CoreShop\Component\Core\Model\OrderInterface as CoreOrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
+use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Core\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\SaleInterface;
+use CoreShop\Component\Order\Model\SaleItemInterface;
 
 class OrderController extends BaseOrderController
 {
     /**
      * {@inheritdoc}
      */
-    protected function prepareSale(OrderInterface $sale): array
+    protected function prepareSale(SaleInterface $sale)
     {
         $order = parent::prepareSale($sale);
 
-        if ($sale instanceof CoreOrderInterface) {
+        if ($sale instanceof OrderInterface) {
             $order['carrier'] = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getId() : null;
-            $order['shipping'] = $sale->getShipping();
         }
 
         return $order;
@@ -41,56 +38,41 @@ class OrderController extends BaseOrderController
     /**
      * {@inheritdoc}
      */
-    protected function getDetails(OrderInterface $sale): array
+    protected function getDetails(SaleInterface $sale)
     {
-        $json = parent::getDetails($sale);
+        $order = parent::getDetails($sale);
 
-        if ($sale instanceof CoreOrderInterface) {
-            $json['shippingPayment'] = [
-                'carrier' => $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null,
+        if ($sale instanceof OrderInterface) {
+            $carrierIdentifier = $sale->getCarrier() instanceof CarrierInterface ? $sale->getCarrier()->getIdentifier() : null;
+
+            $order['shippingPayment'] = [
+                'carrier' => $carrierIdentifier,
                 'weight' => $sale->getWeight(),
                 'cost' => $sale->getShipping(),
             ];
 
-            if ($sale->getCarrier()) {
-                $json['carrierInfo'] = [
-                    'name' => $sale->getCarrier()->getTitle(),
-                ];
+            foreach($order['shipments'] as &$shipment) {
+                if (isset($shipment['carrierName'])) {
+                    continue;
+                }
+
+                $shipment['carrierName'] = $carrierIdentifier;
             }
         }
 
-        return $json;
+        return $order;
     }
 
-    protected function getSummary(OrderInterface $order): array
-    {
-        $summary = parent::getSummary($order);
-
-        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface && $order->getShipping() > 0) {
-            $summary[] = [
-                'key' => 'shipping',
-                'value' => $order->getShipping(),
-                'convertedValue' => $order->getConvertedShipping(),
-            ];
-
-            $summary[] = [
-                'key' => 'shipping_tax',
-                'value' => $order->getShippingTax(),
-                'convertedValue' => $order->getConvertedShippingTax(),
-            ];
-        }
-
-        return $summary;
-    }
-
-    protected function prepareSaleItem(OrderItemInterface $item): array
+    /**
+     * @param SaleItemInterface $item
+     *
+     * @return array
+     */
+    protected function prepareSaleItem(SaleItemInterface $item)
     {
         $itemData = parent::prepareSaleItem($item);
 
-        /**
-         * @var CoreOrderItemInterface $item
-         */
-        if (!$item instanceof CoreOrderItemInterface) {
+        if (!$item instanceof OrderItemInterface) {
             return $itemData;
         }
 
@@ -98,7 +80,7 @@ class OrderController extends BaseOrderController
             return $itemData;
         }
 
-        $itemData['unit'] = $item->hasUnitDefinition() ? $item->getUnitDefinition()->getUnit()->getFullLabel() : $item->getUnitIdentifier();
+        $itemData['unit'] = $item->hasUnit() ? $item->getUnit()->getFullLabel() : $item->getUnitIdentifier();
 
         return $itemData;
     }

@@ -21,10 +21,11 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.3, 7.4]
-        pimcore: [7.0.x-dev]
+        php: [7.4, 8.0]
+        pimcore: [10.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2
@@ -69,8 +70,6 @@ jobs:
 
     - name: Composer install
       run: |
-        composer config minimum-stability dev
-        composer config prefer-stable true
         composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 

@@ -60,9 +60,10 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
 
         /**
-         * @var OrderInterface     $cart
+         * @var OrderInterface $cart
          */
         $cart = $addToCartDto->getCart();
+
         /**
          * @var OrderItemInterface $cartItem
          */

@@ -10,13 +10,17 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
-use Pimcore\Model\Document\Email;
+use CoreShop\Component\Pimcore\Mail\MailProcessorInterface as NewMailProcessorInterface;
 
-interface MailProcessorInterface
-{
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []): bool;
+if (interface_exists(MailProcessorInterface::class)) {
+    @trigger_error('Interface CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Pimcore\Mail\MailProcessorInterface class instead.', E_USER_DEPRECATED);
+} else {
+    /**
+     * @deprecated Interface CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Pimcore\Mail\MailProcessorInterface class instead.
+     */
+    interface MailProcessorInterface extends NewMailProcessorInterface
+    {
+    }
 }

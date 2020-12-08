@@ -44,7 +44,7 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
     protected $state = PaymentInterface::STATE_NEW;
 
     /**
-     * @var array
+     * @var array|object
      */
     protected $details = [];
 

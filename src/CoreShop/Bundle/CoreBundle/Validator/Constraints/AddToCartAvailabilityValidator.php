@@ -57,6 +57,10 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
          * @var OrderItemInterface $cartItem
          */
         $cartItem = $addToCartDto->getCartItem();
+
+        /**
+         * @var CartInterface $cart
+         */
         $cart = $addToCartDto->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(

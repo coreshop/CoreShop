@@ -10,17 +10,21 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
+use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
-abstract class Select extends Data\Select implements Data\CustomVersionMarshalInterface
+abstract class Select extends Data implements
+    Data\ResourcePersistenceAwareInterface,
+    Data\QueryResourcePersistenceAwareInterface,
+    CustomRecyclingMarshalInterface
 {
+    use Model\DataObject\Traits\SimpleComparisonTrait;
+
     /**
      * @var bool
      */
@@ -35,6 +39,38 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
      * @return string
      */
     abstract protected function getModel();
+
+    /**
+     * @return string|null
+     */
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . $this->getModel();
+    }
 
     /**
      * {@inheritdoc}
@@ -93,7 +129,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return string | array
+     * {@inheritdoc}
      */
     public function getQueryColumnType()
     {
@@ -101,7 +137,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @return string | array
+     * {@inheritdoc}
      */
     public function getColumnType()
     {
@@ -151,13 +187,10 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @see ResourcePersistenceAwareInterface::getDataForResource
-     *
      * @param string $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return string|null
+     * @param null   $object
+     * @param array  $params
+     * @return int|string|null
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
@@ -169,13 +202,10 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
     }
 
     /**
-     * @see ResourcePersistenceAwareInterface::getDataFromResource
-     *
      * @param string $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return string|null
+     * @param null   $object
+     * @param array  $params
+     * @return ResourceInterface|object|null
      */
     public function getDataFromResource($data, $object = null, $params = [])
     {
@@ -186,14 +216,11 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         return null;
     }
 
-     /**
-     * @see ResourcePersistenceAwareInterface::getDataForQueryResource
-     *
+    /**
      * @param string $data
-     * @param null|Model\DataObject\AbstractObject $object
-     * @param mixed $params
-     *
-     * @return string|null
+     * @param null   $object
+     * @param array  $params
+     * @return int|null
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
@@ -238,6 +265,26 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
         }
 
         return parent::getDataForSearchIndex($object, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getForWebserviceExport($object, $params = [])
+    {
+        if ($object instanceof ResourceInterface) {
+            return $object->getId();
+        }
+
+        return parent::getForWebserviceExport($object, $params);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
+    {
+        return $this->getRepository()->find($value);
     }
 
     /**

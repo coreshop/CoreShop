@@ -17,8 +17,9 @@ namespace CoreShop\Bundle\PayumBundle\Model;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Model\SetValuesTrait;
 use Payum\Core\Model\GatewayConfig as BaseGatewayConfig;
+use Payum\Core\Model\GatewayConfigInterface;
 
-class GatewayConfig extends BaseGatewayConfig implements ResourceInterface
+class GatewayConfig extends BaseGatewayConfig implements ResourceInterface, GatewayConfigInterface
 {
     use SetValuesTrait;
 

@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
@@ -27,8 +25,14 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
+    /**
+     * @var KernelInterface
+     */
     private $kernel;
 
+    /**<
+     * @param KernelInterface $kernel
+     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -37,7 +41,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
     /**
      * {@inheritdoc}
      */
-    public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
+    public function installResources(OutputInterface $output, $applicationName = null, $options = [])
     {
         $parameter = $applicationName ? sprintf(
             '%s.pimcore.admin.install.documents',
@@ -139,7 +143,14 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         }
     }
 
-    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
+    /**
+     * @param Document $rootDocument
+     * @param string   $language
+     * @param array    $properties
+     *
+     * @return Document|null
+     */
+    private function installDocument(Document $rootDocument, $language, $properties)
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 

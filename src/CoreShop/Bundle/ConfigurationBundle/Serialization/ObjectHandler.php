@@ -10,9 +10,7 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
-namespace CoreShop\Component\Configuration\Serialization;
+namespace CoreShop\Bundle\ConfigurationBundle\Serialization;
 
 use JMS\Serializer\Context;
 use JMS\Serializer\JsonSerializationVisitor;

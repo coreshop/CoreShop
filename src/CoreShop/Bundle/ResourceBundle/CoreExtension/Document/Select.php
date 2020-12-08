@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension\Document;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
@@ -89,9 +87,6 @@ class Select extends Editable
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty()
     {
         return !$this->getResourceObject() instanceof ResourceInterface;
@@ -140,6 +135,16 @@ class Select extends Editable
         $this->resource = $data;
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getForWebserviceExport($document = null, $params = [])
+    {
+        return [
+            'id' => $this->resource->getId(),
+        ];
     }
 
     /**

@@ -14,43 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\SEOBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
 
-final class ExtractorRegistryServicePass implements CompilerPassInterface
+final class ExtractorRegistryServicePass extends RegisterSimpleRegistryTypePass
 {
     public const EXTRACTOR_TAG = 'coreshop.seo.extractor';
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function __construct()
     {
-        if (!$container->has('coreshop.registry.seo.extractor')) {
-            return;
-        }
-
-        $registry = $container->getDefinition('coreshop.registry.seo.extractor');
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds('coreshop.seo.extractor') as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            if (!isset($attributes[0]['priority'])) {
-                $attributes[0]['priority'] = 1000;
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], $attributes[0]['priority'], new Reference($id)]);
-        }
-
-        $container->setParameter('coreshop.seo.extractors', $map);
+        parent::__construct(
+            'coreshop.registry.seo.extractor',
+            'coreshop.seo.extractors',
+            self::EXTRACTOR_TAG
+        );
     }
+
 }
