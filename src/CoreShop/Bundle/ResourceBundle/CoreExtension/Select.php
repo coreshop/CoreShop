@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
@@ -21,7 +20,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class Select extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface
 {
     use Model\DataObject\Traits\SimpleComparisonTrait;
 

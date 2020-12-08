@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
 
@@ -20,7 +19,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.

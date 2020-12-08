@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Resource\Repository;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 
 interface RepositoryInterface extends ObjectRepository
 {
