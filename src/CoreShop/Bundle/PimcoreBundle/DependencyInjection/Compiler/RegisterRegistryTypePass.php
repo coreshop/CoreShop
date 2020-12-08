@@ -12,76 +12,15 @@
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterRegistryTypePass as NewRegisterRegistryTypePass;
 
-abstract class RegisterRegistryTypePass implements CompilerPassInterface
-{
+if (class_exists(NewRegisterRegistryTypePass::class)) {
+    @trigger_error('Class CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Registry\RegisterRegistryTypePass class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var string
+     * @deprecated Class CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Registry\RegisterRegistryTypePass class instead.
      */
-    protected $registry;
-
-    /**
-     * @var string
-     */
-    protected $formRegistry;
-
-    /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     */
-    public function __construct($registry, $formRegistry, $parameter, $tag)
+    class RegisterRegistryTypePass extends NewRegisterRegistryTypePass
     {
-        $this->registry = $registry;
-        $this->formRegistry = $formRegistry;
-        $this->parameter = $parameter;
-        $this->tag = $tag;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
-    {
-        if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
-            return;
-        }
-
-        $registry = $container->getDefinition($this->registry);
-        $formRegistry = $container->getDefinition($this->formRegistry);
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-
-            if (isset($attributes[0]['form-type'])) {
-                $formRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form-type']]);
-            }
-        }
-
-        $container->setParameter($this->parameter, $map);
     }
 }

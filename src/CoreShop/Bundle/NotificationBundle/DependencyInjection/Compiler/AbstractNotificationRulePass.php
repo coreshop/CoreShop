@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\NotificationBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass;
+use CoreShop\Component\Registry\RegisterRegistryTypePass;
 use CoreShop\Bundle\ResourceBundle\Form\Registry\FormTypeRegistry;
 use CoreShop\Component\Registry\ServiceRegistry;
 use CoreShop\Component\Rule\Condition\ConditionCheckerInterface;
@@ -64,8 +64,8 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
             foreach ($attributes as $tag) {
                 $definition = $container->findDefinition($id);
 
-                if (!isset($attributes[0]['type'])) {
-                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 if (!isset($tag['notification-type'])) {
@@ -97,7 +97,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
                 $registries[$type]->addMethodCall('register', [$tag['type'], new Reference($id)]);
                 $registry->addMethodCall('register', [$fqtn, new Reference($id)]);
 
-                if (isset($attributes[0]['form-type'])) {
+                if (isset($tag['form-type'])) {
                     $formRegistries[$type]->addMethodCall('add', [$tag['type'], 'default', $tag['form-type']]);
                     $formRegistry->addMethodCall('add', [$fqtn, 'default', $tag['form-type']]);
                 }

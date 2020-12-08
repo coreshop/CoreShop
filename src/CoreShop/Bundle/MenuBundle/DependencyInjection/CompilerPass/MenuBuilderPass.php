@@ -49,14 +49,15 @@ final class MenuBuilderPass implements CompilerPassInterface
         $map = [];
         foreach ($container->findTaggedServiceIds(self::MENU_BUILDER_TAG) as $id => $attributes) {
             foreach ($attributes as $tag) {
+
                 $definition = $container->findDefinition($id);
 
-                if (!isset($attributes[0]['type'])) {
-                    $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                if (!isset($tag['type'])) {
+                    $tag['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
-                if (!isset($attributes[0]['menu'])) {
-                    $attributes[0]['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
+                if (!isset($tag['menu'])) {
+                    $tag['menu'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
                 }
 
                 $type = $tag['menu'];
