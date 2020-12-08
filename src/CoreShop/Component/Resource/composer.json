@@ -20,7 +20,7 @@
   "require": {
     "php": "^7.4 || ^8.0 ",
     "coreshop/pimcore": "^3.0",
-    "doctrine/common": "^2.6",
+    "doctrine/common": "^3.1",
     "doctrine/orm": "^2.5",
     "webmozart/assert": "^1.2",
     "pimcore/pimcore": "^10.0.0"
