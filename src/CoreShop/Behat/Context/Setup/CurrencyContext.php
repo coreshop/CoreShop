@@ -21,7 +21,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CurrencyRepositoryInterface;
 use CoreShop\Component\Currency\Context\FixedCurrencyContext;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class CurrencyContext implements Context
 {

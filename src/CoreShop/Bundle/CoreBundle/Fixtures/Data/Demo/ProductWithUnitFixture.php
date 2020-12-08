@@ -16,7 +16,7 @@ use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;

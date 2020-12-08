@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class RepositoryFactory implements RepositoryFactoryInterface
 {

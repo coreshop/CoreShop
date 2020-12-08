@@ -19,7 +19,7 @@ use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use CoreShop\Component\Taxation\Model\TaxRateInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class TaxRateContext implements Context
 {

@@ -18,7 +18,7 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Inventory\Model\StockableInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Webmozart\Assert\Assert;
 
 final class OrderInventoryOperator implements OrderInventoryOperatorInterface

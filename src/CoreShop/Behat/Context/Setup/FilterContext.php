@@ -24,7 +24,7 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Product\Model\CategoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 final class FilterContext implements Context
 {

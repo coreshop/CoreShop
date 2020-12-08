@@ -17,8 +17,8 @@ namespace CoreShop\Bundle\ResourceBundle\EventListener;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\Common\Persistence\Mapping\RuntimeReflectionService;
+use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 
 abstract class AbstractDoctrineSubscriber implements EventSubscriber
 {
