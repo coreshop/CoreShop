@@ -83,7 +83,7 @@
     "gedmo/doctrine-extensions": "^2.4.12",
     "jms/serializer-bundle": "^3.7",
     "knplabs/knp-menu-bundle": "^3.0.0",
-    "sylius/theme-bundle": "^2.0",
+    "sylius/theme-bundle": "^2.1",
     "payum/offline": "^1.4",
     "payum/paypal-express-checkout-nvp": "^1.4",
     "payum/payum-bundle": "^2.2",

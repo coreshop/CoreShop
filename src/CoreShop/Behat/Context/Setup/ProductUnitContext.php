@@ -18,7 +18,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Component\Product\Model\ProductUnitInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use DoctrinePersistence${class};
+use Doctrine\Persistence\ObjectManager;
 
 final class ProductUnitContext implements Context
 {
