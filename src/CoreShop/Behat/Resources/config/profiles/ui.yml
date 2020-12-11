@@ -13,7 +13,7 @@ ui:
                 class: BehatAppKernel
                 environment: test
 
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: etc/build
             clean_start: false
             screenshot: true
