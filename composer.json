@@ -103,7 +103,7 @@
     "phpstan/phpstan-webmozart-assert": "^0.12",
     "phpunit/phpunit": "^6",
     "symfony/phpunit-bridge": "^3",
-    "symplify/easy-coding-standard": "^4.3.0"
+    "symplify/easy-coding-standard": "^9.0.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4",
