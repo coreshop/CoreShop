@@ -24,7 +24,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0 ",
+    "php": "^7.4",
     "coreshop/pimcore": "^3.0",
     "coreshop/registry": "^3.0",
     "symfony/config": "^5.2.0",

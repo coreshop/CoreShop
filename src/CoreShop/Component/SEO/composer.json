@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0 ",
+    "php": "^7.4",
     "coreshop/registry": "^3.0",
     "pimcore/pimcore": "^10.0.0",
     "webmozart/assert": "^1.2"

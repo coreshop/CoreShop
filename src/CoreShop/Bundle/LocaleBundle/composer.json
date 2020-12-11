@@ -18,7 +18,7 @@
     }
   ],
   "require": {
-    "php": "^7.4 || ^8.0 ",
+    "php": "^7.4",
     "coreshop/locale": "^3.0",
     "coreshop/pimcore-bundle": "^3.0",
     "coreshop/resource-bundle": "^3.0",
