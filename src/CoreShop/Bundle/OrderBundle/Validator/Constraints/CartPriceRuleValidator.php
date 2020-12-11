@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Validator\Constraints;
 
-use CoreShop\Component\Core\Model\OrderInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Cart\Rule\CartPriceRuleValidationProcessorInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleInterface;
 use CoreShop\Component\Order\Model\ProposalCartPriceRuleItemInterface;
