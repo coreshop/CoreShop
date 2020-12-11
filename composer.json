@@ -106,7 +106,8 @@
     "behat/mink": "^1.8",
     "friends-of-behat/mink-extension": "^2.4",
     "coreshop/behat-panther-extension": "^1.0",
-    "lakion/mink-debug-extension": "^2.0"
+    "lakion/mink-debug-extension": "^2.0",
+    "friends-of-behat/mink-debug-extension": "^2.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4",
