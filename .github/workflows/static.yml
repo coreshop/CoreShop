@@ -1,4 +1,4 @@
-name: Lint
+name: Static Tests (Lint, Stan)
 on:
   push:
     branches: [ master, '2.2' ]

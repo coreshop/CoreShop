@@ -11,7 +11,6 @@ imports:
     - suites/domain/pimcore.yml
     - suites/domain/order.yml
     - suites/domain/seo.yml
-    - suites/domain/placeholder.yml
     - suites/domain/cli.yml
     - suites/domain/filter.yml
     - suites/domain/tracking.yml
