@@ -76,7 +76,7 @@
   },
   "require": {
     "php": "^7.4",
-    "dachcom-digital/emailizr": "^1.0.6",
+    "dachcom-digital/emailizr": "^2.0.0",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/orm": "^2.5",
     "fzaninotto/faker": "^1.6",
