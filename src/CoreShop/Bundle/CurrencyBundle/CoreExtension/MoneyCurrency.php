@@ -45,22 +45,22 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
 
     public function getParameterTypeDeclaration(): ?string
     {
-        return '\\' . Money::class;
+        return '?\\' . Money::class;
     }
 
     public function getReturnTypeDeclaration(): ?string
     {
-        return '\\' . Money::class;
+        return '?\\' . Money::class;
     }
 
     public function getPhpdocInputType(): ?string
     {
-        return '\\' . Money::class;
+        return '?\\' . Money::class;
     }
 
     public function getPhpdocReturnType(): ?string
     {
-        return '\\' . Money::class;
+        return '?\\' . Money::class;
     }
 
     /**

@@ -341,3 +341,11 @@ services:
             - '@coreshop.factory.customer'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.setup.optimistic_entity_lock:
+        class: CoreShop\Behat\Context\Setup\OptimisticEntityLockContext
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManagerInterface'
+        tags:
+            - { name: fob.context_service }

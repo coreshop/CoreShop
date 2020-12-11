@@ -35,20 +35,20 @@ interface ProductInterface extends
     QuantityRangePriceAwareInterface,
     PimcoreStoresAwareInterface
 {
-    public function getStoreValues (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
-
     /**
      * @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]
      */
-    public function getAllStoreValues (): array;
+    public function getStoreValues (): array;
 
-    public function setStoreValues(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
+    public function setStoreValues (array $storeValues): self;
+
+    public function getStoreValuesForStore (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface;
+
+    public function setStoreValuesForStore(ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self;
 
     public function getStoreValuesOfType(string $type, \CoreShop\Component\Store\Model\StoreInterface $store);
 
     public function setStoreValuesOfType(string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store): self;
-
-    public function setAllStoreValues (array $storeValues): self;
 
     public function setTaxRule(?TaxRuleGroupInterface $taxRule);
 

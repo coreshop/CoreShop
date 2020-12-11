@@ -1,4 +1,4 @@
-@optimistic_entity_lock
+@domain @optimistic_entity_lock
 Feature: Locking an Entity to not overwrite it again
 
   Background:

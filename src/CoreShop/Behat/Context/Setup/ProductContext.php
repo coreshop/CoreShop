@@ -449,10 +449,10 @@ final class ProductContext implements Context
             /**
              * @var ProductStoreValuesInterface $storeValues
              */
-            $storeValues = $product->getStoreValues($store);
+            $storeValues = $product->getStoreValuesForStore($store);
             $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
 
-            $product->setStoreValues($storeValues, $store);
+            $product->setStoreValuesForStore($storeValues, $store);
         }
 
         $this->saveProduct($product);

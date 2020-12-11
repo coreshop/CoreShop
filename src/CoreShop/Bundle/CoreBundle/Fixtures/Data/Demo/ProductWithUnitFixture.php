@@ -80,7 +80,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                 /**
                  * @var ProductStoreValuesInterface $storeValues
                  */
-                $storeValues = $product->getStoreValues($store);
+                $storeValues = $product->getStoreValuesForStore($store);
 
                 if (null === $storeValues) {
                     $storeValues = $storeValuesFactory->createNew();
@@ -106,7 +106,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                 $storeValues->addProductUnitDefinitionPrice($cartonPrice);
                 $storeValues->addProductUnitDefinitionPrice($palettePrice);
 
-                $product->setStoreValues($storeValues, $store);
+                $product->setStoreValuesForStore($storeValues, $store);
             }
 
             $product->save();

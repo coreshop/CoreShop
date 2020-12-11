@@ -44,7 +44,7 @@ final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPr
         $contextUnitDefinition = $context['unitDefinition'];
         $contextStore = $context['store'];
 
-        $storeValues = $subject->getStoreValues($contextStore);
+        $storeValues = $subject->getStoreValuesForStore($contextStore);
         if (!$storeValues instanceof ProductStoreValuesInterface) {
             throw new NoRetailPriceFoundException(__CLASS__);
         }
