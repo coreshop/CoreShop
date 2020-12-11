@@ -14,13 +14,7 @@ namespace CoreShop\Component\Address\Model;
 
 interface DefaultAddressAwareInterface
 {
-    /**
-     * @param AddressInterface $address
-     */
-    public function setDefaultAddress($address);
+    public function setDefaultAddress(?AddressInterface $address);
 
-    /**
-     * @return AddressInterface
-     */
-    public function getDefaultAddress();
+    public function getDefaultAddress(): ?AddressInterface;
 }

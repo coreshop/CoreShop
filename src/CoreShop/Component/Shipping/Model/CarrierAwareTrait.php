@@ -21,18 +21,12 @@ trait CarrierAwareTrait
      */
     protected $carrier;
 
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier()
+    public function getCarrier(): ?CarrierInterface
     {
         return $this->carrier;
     }
 
-    /**
-     * @param CarrierInterface $carrier
-     */
-    public function setCarrier($carrier)
+    public function setCarrier(?CarrierInterface $carrier)
     {
         $this->carrier = $carrier;
     }

@@ -8,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "cacheRawRelationData": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -314,30 +315,13 @@
                                         "visibleSearch": false
                                     },
                                     {
-                                        "fieldtype": "manyToOneRelation",
+                                        "fieldtype": "coreShopRelation",
                                         "width": "",
-                                        "assetUploadPath": "",
                                         "relationType": true,
-                                        "queryColumnType": {
-                                            "id": "int(11)",
-                                            "type": "enum('document','asset','object')"
-                                        },
-                                        "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-                                        "objectsAllowed": true,
-                                        "assetsAllowed": false,
-                                        "assetTypes": [],
-                                        "documentsAllowed": false,
-                                        "documentTypes": [],
-                                        "lazyLoading": true,
-                                        "classes": [
-                                            {
-                                                "classes": "CoreShopProduct"
-                                            }
-                                        ],
                                         "pathFormatterClass": "",
+                                        "stack": "coreshop.purchasable",
                                         "name": "product",
                                         "title": "coreshop.order_item.product",
-                                        "tooltip": "",
                                         "mandatory": false,
                                         "noteditable": true,
                                         "index": false,
@@ -1334,7 +1318,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
-    "linkGeneratorReference": null,
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

@@ -58,22 +58,22 @@ class ProductUnitDefinitions extends Data implements
 
     public function getParameterTypeDeclaration(): ?string
     {
-        return 'array';
+        return '?\\' . ProductUnitDefinitionsInterface::class;
     }
 
     public function getReturnTypeDeclaration(): ?string
     {
-        return 'array';
+        return '?\\' . ProductUnitDefinitionsInterface::class;
     }
 
     public function getPhpdocInputType(): ?string
     {
-        return 'array';
+        return '?\\' . ProductUnitDefinitionsInterface::class;
     }
 
     public function getPhpdocReturnType(): ?string
     {
-        return 'array';
+        return '?\\' . ProductUnitDefinitionsInterface::class;
     }
 
     /**

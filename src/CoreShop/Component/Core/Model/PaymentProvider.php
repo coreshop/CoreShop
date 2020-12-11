@@ -36,9 +36,6 @@ class PaymentProvider extends BasePaymentProvider implements PaymentProviderInte
         $this->storesAwareConstructor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setGatewayConfig(GatewayConfigInterface $gatewayConfig)
     {
         $this->gatewayConfig = $gatewayConfig;

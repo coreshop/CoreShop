@@ -16,13 +16,7 @@ namespace CoreShop\Component\Shipping\Model;
 
 interface CarrierAwareInterface
 {
-    /**
-     * @return CarrierInterface
-     */
-    public function getCarrier();
+    public function getCarrier(): ?CarrierInterface;
 
-    /**
-     * @param CarrierInterface $carrier
-     */
-    public function setCarrier($carrier);
+    public function setCarrier(?CarrierInterface $carrier);
 }

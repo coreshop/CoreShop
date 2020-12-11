@@ -68,137 +68,86 @@ class CartPriceRuleVoucherCode implements CartPriceRuleVoucherCodeInterface
      */
     protected $creditUsed = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCode()
     {
         return $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCode($code)
     {
         $this->code = $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsed()
     {
         return $this->used;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsed($used)
     {
         $this->used = $used;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUses()
     {
         return $this->uses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUses($uses)
     {
         $this->uses = $uses;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCreditCode()
     {
         return $this->isCreditCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsCreditCode($isCreditCode)
     {
         $this->isCreditCode = $isCreditCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCreditAvailable()
     {
         return $this->creditAvailable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCreditAvailable($creditAvailable)
     {
         $this->creditAvailable = $creditAvailable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCreditCurrency()
     {
         return $this->creditCurrency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCreditCurrency(?CurrencyInterface $creditCurrency)
     {
         $this->creditCurrency = $creditCurrency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCreditUsed()
     {
         return $this->creditUsed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCreditUsed($creditUsed)
     {
         $this->creditUsed = $creditUsed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCartPriceRule()
     {
         return $this->cartPriceRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCartPriceRule($cartPriceRule = null)
     {
         $this->cartPriceRule = $cartPriceRule;

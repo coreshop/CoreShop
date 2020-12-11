@@ -1,5 +1,4 @@
-<?php
-/**
+/*
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -8,26 +7,10 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
  */
 
-declare(strict_types=1);
-
-namespace CoreShop\Component\Store\Model;
-
-trait StoreAwareTrait
-{
-    /**
-     * @var StoreInterface
-     */
-    protected $store;
-
-    public function getStore(): ?StoreInterface
-    {
-        return $this->store;
-    }
-
-    public function setStore(?StoreInterface $store)
-    {
-        $this->store = $store;
-    }
-}
+pimcore.registerNS("pimcore.object.tags.coreShopRelation");
+pimcore.object.tags.coreShopRelation = Class.create(pimcore.object.tags.manyToOneRelation, {
+    type: "coreShopRelation",
+});

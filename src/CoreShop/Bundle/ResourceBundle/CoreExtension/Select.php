@@ -37,14 +37,24 @@ abstract class Select extends Data implements
     /**
      * @return string
      */
-    abstract protected function getModel();
+    abstract protected function getModel(): string;
+
+    /**
+     * @return string
+     */
+    abstract protected function getInterface(): string;
+
+    /**
+     * @return bool
+     */
+    abstract protected function getNullable(): bool;
 
     /**
      * @return string|null
      */
     public function getParameterTypeDeclaration(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
     /**
@@ -52,7 +62,7 @@ abstract class Select extends Data implements
      */
     public function getReturnTypeDeclaration(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
     /**
@@ -60,7 +70,7 @@ abstract class Select extends Data implements
      */
     public function getPhpdocInputType(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
     /**
@@ -68,7 +78,7 @@ abstract class Select extends Data implements
      */
     public function getPhpdocReturnType(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
     /**
@@ -265,7 +275,7 @@ abstract class Select extends Data implements
 
         return parent::getDataForSearchIndex($object, $params);
     }
-    
+
     /**
      * {@inheritdoc}
      */

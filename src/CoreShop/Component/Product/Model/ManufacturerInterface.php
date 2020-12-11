@@ -18,13 +18,7 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface ManufacturerInterface extends PimcoreModelInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(?string $name);
 }

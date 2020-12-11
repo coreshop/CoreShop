@@ -1,5 +1,7 @@
 {
     "parentClass": "CoreShop\\Component\\Order\\Model\\ProposalCartPriceRuleItem",
+    "generateTypeDeclarations": true,
+    "group": "CoreShop",
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,

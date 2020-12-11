@@ -16,6 +16,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\StorageList\Model\StorageListInterface;
+use CoreShop\Component\StorageList\Model\StorageListItem;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListManagerInterface;
 use CoreShop\Component\StorageList\StorageListModifierInterface;
@@ -45,7 +46,7 @@ class WishlistController extends FrontendController
         }
 
         /**
-         * @var StorageListItemInterface $wishlistItem
+         * @var StorageListItem $wishlistItem
          */
         $wishlistItem = $this->get('coreshop.factory.wishlist_item')->createNew();
         $wishlistItem->setProduct($product);

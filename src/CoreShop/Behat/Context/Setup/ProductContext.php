@@ -115,7 +115,7 @@ final class ProductContext implements Context
     public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store)
     {
         $product->setStores(array_merge($product->getStores(), [$store->getId()]));
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -350,7 +350,7 @@ final class ProductContext implements Context
      */
     public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -361,7 +361,7 @@ final class ProductContext implements Context
      */
     public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -537,7 +537,7 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
-            $product->setStorePrice($price, $store);
+            $product->setStoreValuesOfType('price', $price, $store);
         }
 
         return $product;
@@ -585,7 +585,7 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $variant->setStores([$store->getId()]);
-            $variant->setStorePrice($price, $store);
+            $variant->setStoreValuesOfType('price', $price, $store);
         }
 
         return $variant;

@@ -63,81 +63,51 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
      */
     protected $orderId;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPaymentProvider()
     {
         return $this->paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPaymentProvider(PaymentProviderInterface $paymentProvider)
     {
         $this->paymentProvider = $paymentProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrencyCode()
     {
         return $this->currency->getIsoCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDatePayment()
     {
         return $this->datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDatePayment($datePayment)
     {
         $this->datePayment = $datePayment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState($state)
     {
         $this->state = $state;
@@ -151,9 +121,6 @@ class Payment extends \Payum\Core\Model\Payment implements PaymentInterface
         return $this->details;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDetails($details)
     {
         if ($details instanceof \Traversable) {

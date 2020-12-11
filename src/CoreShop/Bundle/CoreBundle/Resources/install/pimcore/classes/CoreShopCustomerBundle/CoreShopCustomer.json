@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -113,32 +114,15 @@
                                 "visibleSearch": true
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum(\"document\",\"asset\",\"object\")"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCompany"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.company",
                                 "name": "company",
                                 "title": "coreshop.customer.company",
-                                "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": false,
+                                "noteditable": true,
                                 "index": false,
                                 "locked": false,
                                 "style": "",
@@ -385,25 +369,15 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToManyRelation",
+                                "fieldtype": "coreShopRelations",
+                                "width": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "addresses",
                                 "title": "coreshop.customer.addresses",
-                                "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": false,
+                                "noteditable": true,
                                 "index": false,
                                 "locked": false,
                                 "style": "",
@@ -414,27 +388,15 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "defaultAddress",
                                 "title": "coreshop.customer.default_address",
-                                "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": false,
+                                "noteditable": true,
                                 "index": false,
                                 "locked": false,
                                 "style": "",
@@ -464,25 +426,15 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToManyRelation",
+                                "fieldtype": "coreShopRelations",
+                                "width": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCustomerGroup"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.customer_group",
                                 "name": "customerGroups",
                                 "title": "coreshop.customer.groups",
-                                "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": false,
+                                "noteditable": true,
                                 "index": false,
                                 "locked": false,
                                 "style": "",
@@ -504,6 +456,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

@@ -33,49 +33,31 @@ class ProductUnitDefinitionPrice extends AbstractResource implements ProductUnit
      */
     protected $unitDefinition;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice()
     {
         return (int) $this->price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrice(int $price)
     {
         $this->price = $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitDefinition()
     {
         return $this->unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnitDefinition(ProductUnitDefinitionInterface $unitDefinition)
     {
         $this->unitDefinition = $unitDefinition;

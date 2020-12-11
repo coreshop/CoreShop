@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "linkGeneratorReference": "@coreshop.object.link_generator.category",
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -168,25 +169,13 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCategory"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
-                                "name": "parentCategory",
+                                "stack": "coreshop.category",
+                                 "name": "parentCategory",
                                 "title": "coreshop.category.parent_category",
-                                "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": true,
                                 "index": false,
@@ -194,7 +183,7 @@
                                 "style": "",
                                 "permissions": null,
                                 "datatype": "data",
-                                "invisible": true,
+                                "invisible": false,
                                 "visibleGridView": false,
                                 "visibleSearch": false
                             }
@@ -296,6 +285,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

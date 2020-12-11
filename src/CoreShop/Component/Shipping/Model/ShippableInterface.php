@@ -19,22 +19,11 @@ interface ShippableInterface
     /**
      * @return ShippableItemInterface[]
      */
-    public function getItems();
+    public function getItems(): ?array;
 
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWeight(): ?float;
 
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
+    public function setWeight(?float $weight);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getSubtotal(bool $withTax = true): int;
 }

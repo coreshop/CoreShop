@@ -33,7 +33,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
      *
      * @var string
      */
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_YAML;
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
     /**
      * {@inheritdoc}

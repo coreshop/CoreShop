@@ -47,9 +47,6 @@ class ExchangeRate implements ExchangeRateInterface
         $this->creationDate = new \DateTime();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;

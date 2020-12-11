@@ -64,17 +64,11 @@ class State extends AbstractResource implements StateInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsoCode()
     {
         return $this->isoCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -82,17 +76,11 @@ class State extends AbstractResource implements StateInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name, $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
@@ -100,17 +88,11 @@ class State extends AbstractResource implements StateInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry()
     {
         return $this->country;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCountry(CountryInterface $country)
     {
         $this->country = $country;
@@ -118,9 +100,6 @@ class State extends AbstractResource implements StateInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountryName()
     {
         return $this->getCountry() instanceof CountryInterface ? $this->getCountry()->getName() : '';
@@ -140,9 +119,6 @@ class State extends AbstractResource implements StateInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new StateTranslation();

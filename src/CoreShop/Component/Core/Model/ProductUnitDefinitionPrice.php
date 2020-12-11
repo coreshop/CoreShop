@@ -21,17 +21,11 @@ class ProductUnitDefinitionPrice extends \CoreShop\Component\Product\Model\Produ
      */
     protected $productStoreValues;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductStoreValues()
     {
         return $this->productStoreValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProductStoreValues(ProductStoreValuesInterface $productStoreValues)
     {
         $this->productStoreValues = $productStoreValues;

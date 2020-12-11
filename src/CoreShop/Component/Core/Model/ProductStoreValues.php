@@ -48,41 +48,26 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         $this->productUnitDefinitionPrices = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(int $id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice()
     {
         return (int) $this->price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrice(int $price)
     {
         $this->price = $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
         if (!$this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
@@ -91,9 +76,6 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeProductUnitDefinitionPrice(ProductUnitDefinitionPriceInterface $productUnitDefinitionPrice)
     {
         if ($this->productUnitDefinitionPrices->contains($productUnitDefinitionPrice)) {
@@ -101,25 +83,16 @@ class ProductStoreValues extends AbstractResource implements ProductStoreValuesI
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductUnitDefinitionPrices()
     {
         return $this->productUnitDefinitionPrices;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProduct()
     {
         return $this->product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;

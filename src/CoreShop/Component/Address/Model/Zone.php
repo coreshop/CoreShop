@@ -53,25 +53,16 @@ class Zone extends AbstractResource implements ZoneInterface
         return sprintf('%s (%s)', $this->getName(), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
@@ -79,25 +70,16 @@ class Zone extends AbstractResource implements ZoneInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountries()
     {
         return $this->countries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountries()
     {
         return !$this->countries->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCountry(CountryInterface $country)
     {
         if (!$this->hasCountry($country)) {
@@ -106,9 +88,6 @@ class Zone extends AbstractResource implements ZoneInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCountry(CountryInterface $country)
     {
         if ($this->hasCountry($country)) {
@@ -117,9 +96,6 @@ class Zone extends AbstractResource implements ZoneInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountry(CountryInterface $country)
     {
         return $this->countries->contains($country);

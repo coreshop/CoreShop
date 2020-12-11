@@ -46,6 +46,10 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 continue;
             }
 
+            if ($definition->isDeprecated()) {
+                continue;
+            }
+
             if (!@class_exists($definition->getClass())) {
                 continue;
             }

@@ -94,13 +94,13 @@ class ProductWithUnitFixture extends AbstractProductFixture
                  */
                 $cartonPrice = $productUnitDefinitionPriceFactory->createNew();
                 $cartonPrice->setUnitDefinition($cartonDefinition);
-                $cartonPrice->setPrice($product->getStorePrice($store) * 20);
+                $cartonPrice->setPrice($product->getStoreValuesOfType('price', $store) * 20);
 
                 /**
                  * @var ProductUnitDefinitionPriceInterface $palettePrice
                  */
                 $palettePrice = $productUnitDefinitionPriceFactory->createNew();
-                $palettePrice->setPrice($product->getStorePrice($store) * 20 * 38);
+                $palettePrice->setPrice($product->getStoreValuesOfType('price', $store) * 20 * 38);
                 $palettePrice->setUnitDefinition($paletteDefinition);
 
                 $storeValues->addProductUnitDefinitionPrice($cartonPrice);

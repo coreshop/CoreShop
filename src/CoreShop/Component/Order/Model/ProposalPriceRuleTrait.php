@@ -20,25 +20,19 @@ use Pimcore\Model\DataObject\Fieldcollection;
 trait ProposalPriceRuleTrait
 {
     /**
-     * @return Fieldcollection
+     * @return ?Fieldcollection
      */
     public function getPriceRuleItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param Fieldcollection $priceRulesCollection
-     */
-    public function setPriceRuleItems($priceRulesCollection)
+    public function setPriceRuleItems(?Fieldcollection $priceRulesCollection)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPriceRules()
+    public function hasPriceRules(): bool
     {
         return $this->getPriceRuleItems() instanceof Fieldcollection && $this->getPriceRuleItems()->getCount() > 0;
     }
@@ -46,7 +40,7 @@ trait ProposalPriceRuleTrait
     /**
      * @return ProposalCartPriceRuleItemInterface[]
      */
-    public function getPriceRules()
+    public function getPriceRules(): array
     {
         $rules = [];
 
@@ -64,20 +58,14 @@ trait ProposalPriceRuleTrait
         return $rules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setPriceRules($priceRules)
+    public function setPriceRules($priceRules): void
     {
         if ($priceRules instanceof Fieldcollection) {
             $this->setPriceRuleItems($priceRules);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule)
+    public function addPriceRule(ProposalCartPriceRuleItemInterface $priceRule): void
     {
         if (!$this->hasPriceRule($priceRule)) {
             $items = $this->getPriceRuleItems();
@@ -92,10 +80,7 @@ trait ProposalPriceRuleTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule)
+    public function removePriceRule(ProposalCartPriceRuleItemInterface $priceRule): void
     {
         $items = $this->getPriceRuleItems();
 
@@ -127,10 +112,7 @@ trait ProposalPriceRuleTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule)
+    public function hasPriceRule(ProposalCartPriceRuleItemInterface $priceRule): bool
     {
         $items = $this->getPriceRuleItems();
 
@@ -158,23 +140,17 @@ trait ProposalPriceRuleTrait
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCartPriceRule(
         CartPriceRuleInterface $priceRule,
         CartPriceRuleVoucherCodeInterface $voucherCode = null
-    ) {
+    ): bool {
         return null !== $this->getPriceRuleByCartPriceRule($priceRule, $voucherCode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriceRuleByCartPriceRule(
         CartPriceRuleInterface $priceRule,
         CartPriceRuleVoucherCodeInterface $voucherCode = null
-    ) {
+    ): ?ProposalCartPriceRuleItemInterface {
         $items = $this->getPriceRuleItems();
 
         if ($items instanceof Fieldcollection) {

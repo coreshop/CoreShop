@@ -76,7 +76,7 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): float
     {
         $product = $cartItem->getProduct();
         $quantity = 0;
@@ -86,11 +86,11 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
          */
         foreach ($cart->getItems() as $item) {
             if (!$product && $this->cartItemResolver->equals($item, $cartItem)) {
-                return $item->getDefaultUnitQuantity();
+                return $item->getDefaultUnitQuantity() ?? 0.0;
             }
 
             if ($item->getProduct() instanceof $product && $item->getProduct()->getId() === $product->getId()) {
-                $quantity += $item->getDefaultUnitQuantity();
+                $quantity += $item->getDefaultUnitQuantity() ?? 0.0;
             }
         }
 

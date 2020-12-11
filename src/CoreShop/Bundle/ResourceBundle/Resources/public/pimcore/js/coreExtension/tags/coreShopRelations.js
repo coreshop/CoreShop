@@ -1,5 +1,4 @@
-<?php
-/**
+/*
  * CoreShop.
  *
  * This source file is subject to the GNU General Public License version 3 (GPLv3)
@@ -8,17 +7,10 @@
  *
  * @copyright  Copyright (c) 2015-2020 Dominik Pfaffenbauer (https://www.pfaffenbauer.at)
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
+ *
  */
 
-declare(strict_types=1);
-
-namespace CoreShop\Component\StorageList\Model;
-
-use CoreShop\Component\Resource\Model\ResourceInterface;
-
-/**
- * @deprecated StorageListProductInterface has been deprecated in 2.1.0 and will be removed with 2.2.0.
- */
-interface StorageListProductInterface extends ResourceInterface
-{
-}
+pimcore.registerNS("pimcore.object.tags.coreShopRelations");
+pimcore.object.tags.coreShopRelations = Class.create(pimcore.object.tags.manyToManyRelation, {
+    type: "coreShopRelations",
+});

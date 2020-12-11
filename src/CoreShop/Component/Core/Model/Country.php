@@ -35,17 +35,11 @@ class Country extends BaseCountry implements CountryInterface
         $this->storesAwareConstructor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency()
     {
         return $this->currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCurrency(CurrencyInterface $currency = null)
     {
         $this->currency = $currency;

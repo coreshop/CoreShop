@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Component\Address\Model\StateInterface;
 
 class State extends Select
 {
@@ -25,19 +26,23 @@ class State extends Select
      */
     public $fieldtype = 'coreShopState';
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.state');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.state.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . StateInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

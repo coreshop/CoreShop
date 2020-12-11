@@ -17,91 +17,38 @@ namespace CoreShop\Component\Order\Model;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreFieldcollection;
 
-class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implements ProposalCartPriceRuleItemInterface
+abstract class ProposalCartPriceRuleItem extends AbstractPimcoreFieldcollection implements ProposalCartPriceRuleItemInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->getObject()->getId() . '_cart_price_rule_' . $this->getIndex();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCartPriceRule()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCartPriceRule($cartPriceRule)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVoucherCode()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVoucherCode($voucherCode)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(bool $withTax = true): int
     {
         return $withTax ? $this->getDiscountGross() : $this->getDiscountNet();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDiscount(int $discount, bool $withTax = true)
     {
-        return $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
+        $withTax ? $this->setDiscountGross($discount) : $this->setDiscountNet($discount);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDiscountNet(int $discountNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDiscountGross(int $discountGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

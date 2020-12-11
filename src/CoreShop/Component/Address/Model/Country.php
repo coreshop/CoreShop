@@ -73,25 +73,16 @@ class Country extends AbstractResource implements CountryInterface
         return (string)$this->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIsoCode()
     {
         return $this->isoCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIsoCode($isoCode)
     {
         $this->isoCode = $isoCode;
@@ -99,17 +90,11 @@ class Country extends AbstractResource implements CountryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name, $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
@@ -117,17 +102,11 @@ class Country extends AbstractResource implements CountryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAddressFormat()
     {
         return $this->addressFormat;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAddressFormat($addressFormat)
     {
         $this->addressFormat = $addressFormat;
@@ -135,17 +114,11 @@ class Country extends AbstractResource implements CountryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalutations()
     {
         return $this->salutations;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSalutations($salutations)
     {
         $this->salutations = $salutations;
@@ -153,17 +126,11 @@ class Country extends AbstractResource implements CountryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getZone()
     {
         return $this->zone;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setZone(ZoneInterface $zone = null)
     {
         $this->zone = $zone;
@@ -171,9 +138,6 @@ class Country extends AbstractResource implements CountryInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getZoneName()
     {
         return $this->getZone() instanceof ZoneInterface ? $this->getZone()->getName() : '';
@@ -193,9 +157,6 @@ class Country extends AbstractResource implements CountryInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new CountryTranslation();

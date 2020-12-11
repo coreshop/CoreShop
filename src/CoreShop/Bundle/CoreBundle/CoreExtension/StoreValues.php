@@ -161,7 +161,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '*'."\n";
         $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store'."\n";
         $code .= '*'."\n";
-        $code .= '* @return null|'.$this->getPhpdocReturnType().'|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
+        $code .= '* @return null|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
         $code .= '*/'."\n";
         $code .= 'public function get'.ucfirst($key).' (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface {'."\n";
         $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
@@ -184,6 +184,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= "\treturn null;"."\n";
         $code .= "}\n\n";
 
+        $code .= '/**'."\n";
+        $code .= '* Get All '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
+                '', $this->getTitle())."\n";
+        $code .= '* @return \CoreShop\Component\Core\Model\ProductStoreValuesInterface[]'."\n";
+        $code .= '*/'."\n";
         $code .= 'public function getAll'.ucfirst($key).' (): array  {'."\n";
         $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
         $code .= "\t".$this->getPreGetValueHookCode($key);

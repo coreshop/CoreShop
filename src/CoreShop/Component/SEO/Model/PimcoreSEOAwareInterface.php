@@ -16,29 +16,11 @@ namespace CoreShop\Component\SEO\Model;
 
 interface PimcoreSEOAwareInterface extends SEOAwareInterface
 {
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getPimcoreMetaTitle($language = null);
+    public function getPimcoreMetaTitle(?string $language = null): ?string;
 
-    /**
-     * @param string $pimcoreMetaTitle
-     * @param string $language
-     */
-    public function setPimcoreMetaTitle($pimcoreMetaTitle, $language = null);
+    public function setPimcoreMetaTitle(?string $pimcoreMetaTitle, ?string $language = null);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getPimcoreMetaDescription($language = null);
+    public function getPimcoreMetaDescription(?string$language = null): ?string;
 
-    /**
-     * @param string $pimcoreMetaDescription
-     * @param string $language
-     */
-    public function setPimcoreMetaDescription($pimcoreMetaDescription, $language = null);
+    public function setPimcoreMetaDescription(?string $pimcoreMetaDescription, ?string $language = null);
 }

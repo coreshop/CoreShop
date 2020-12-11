@@ -48,105 +48,66 @@ class QuantityRange extends AbstractResource implements QuantityRangeInterface
      */
     protected $rule;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id)
     {
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRangeStartingFrom()
     {
         return $this->rangeStartingFrom;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRangeStartingFrom(float $rangeStartingFrom)
     {
         $this->rangeStartingFrom = $rangeStartingFrom;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPricingBehaviour()
     {
         return $this->pricingBehaviour;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPricingBehaviour(string $pricingBehaviour)
     {
         $this->pricingBehaviour = $pricingBehaviour;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPercentage()
     {
         return $this->percentage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPercentage(float $percentage)
     {
         $this->percentage = $percentage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHighlighted()
     {
         return $this->highlighted;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isHighlighted()
     {
         return $this->highlighted === true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setHighlighted(bool $highlighted)
     {
         $this->highlighted = $highlighted;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRule()
     {
         return $this->rule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRule($rule)
     {
         $this->rule = $rule;

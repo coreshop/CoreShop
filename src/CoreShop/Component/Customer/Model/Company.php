@@ -14,44 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Customer\Model;
 
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class Company extends AbstractPimcoreModel implements CompanyInterface
+abstract class Company extends AbstractPimcoreModel implements CompanyInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVatIdentificationNumber()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVatIdentificationNumber($vatIdentificationNumber)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
     /**
      * {@inheritdoc}
      */

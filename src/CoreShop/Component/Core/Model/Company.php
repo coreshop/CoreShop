@@ -17,7 +17,7 @@ namespace CoreShop\Component\Core\Model;
 use CoreShop\Component\Address\Model\AddressesAwareTrait;
 use CoreShop\Component\Customer\Model\Company as BaseCompany;
 
-class Company extends BaseCompany implements CompanyInterface
+abstract class Company extends BaseCompany implements CompanyInterface
 {
     use AddressesAwareTrait;
 }

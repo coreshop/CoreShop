@@ -59,33 +59,21 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return sprintf('%s (%s)', $this->getName('en'), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language = null)
     {
         return $this->getTranslation($language)->getName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name, $language = null)
     {
         $this->getTranslation($language, false)->setName($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRate()
     {
         return $this->rate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -105,9 +93,6 @@ class TaxRate extends AbstractResource implements TaxRateInterface
         return $translation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new TaxRateTranslation();

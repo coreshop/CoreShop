@@ -30,7 +30,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
      */
     public $phpdocType;
 
-        public function getParameterTypeDeclaration(): ?string
+    public function getParameterTypeDeclaration(): ?string
     {
         return null;
     }

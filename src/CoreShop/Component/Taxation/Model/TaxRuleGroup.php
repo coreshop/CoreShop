@@ -61,41 +61,26 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRules()
     {
         return $this->taxRules;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasTaxRules()
     {
         return !$this->taxRules->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addTaxRule(TaxRuleInterface $taxRule)
     {
         if (!$this->hasTaxRule($taxRule)) {
@@ -105,9 +90,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTaxRule(TaxRuleInterface $taxRule)
     {
         if ($this->hasTaxRule($taxRule)) {
@@ -116,9 +98,6 @@ class TaxRuleGroup extends AbstractResource implements TaxRuleGroupInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasTaxRule(TaxRuleInterface $taxRule)
     {
         return $this->taxRules->contains($taxRule);

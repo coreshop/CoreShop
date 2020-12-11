@@ -16,13 +16,7 @@ namespace CoreShop\Component\Store\Model;
 
 interface StoreAwareInterface
 {
-    /**
-     * @return StoreInterface
-     */
-    public function getStore();
+    public function getStore(): ?StoreInterface;
 
-    /**
-     * @param StoreInterface $store
-     */
-    public function setStore($store);
+    public function setStore(?StoreInterface $store);
 }

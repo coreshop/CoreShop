@@ -86,6 +86,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('product')->defaultValue(ProductInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('category')->defaultValue(CategoryInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('manufacturer')->defaultValue(ManufacturerInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();

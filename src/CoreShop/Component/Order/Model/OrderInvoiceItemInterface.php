@@ -16,34 +16,13 @@ namespace CoreShop\Component\Order\Model;
 
 interface OrderInvoiceItemInterface extends OrderDocumentItemInterface
 {
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getTotal(bool $withTax = true): int;
 
-    /**
-     * @param int  $total
-     * @param bool $withTax
-     */
     public function setTotal(int $total, bool $withTax = true);
 
-    /**
-     * @return int
-     */
     public function getTotalTax(): int;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedTotal(bool $withTax = true): int;
 
-    /**
-     * @param int  $convertedTotal
-     * @param bool $withTax
-     */
     public function setConvertedTotal(int $convertedTotal, bool $withTax = true);
 }

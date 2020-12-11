@@ -41,6 +41,10 @@ final class CoreShopAddressExtension extends AbstractModelExtension
             $this->registerPimcoreResources('coreshop', $config['pimcore_admin'], $container);
         }
 
+        if (array_key_exists('stack', $config)) {
+            $this->registerStack('coreshop', $config['stack'], $container);
+        }
+
         $bundles = $container->getParameter('kernel.bundles');
 
         if (array_key_exists('PimcoreDataHubBundle', $bundles)) {
