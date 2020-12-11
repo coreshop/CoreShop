@@ -19,22 +19,13 @@ use CoreShop\Bundle\ResourceBundle\Controller\AdminController;
 use Pimcore\Model\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 class SettingsController extends AdminController
 {
-    public function onKernelController(FilterControllerEvent $event)
-    {
-        $user = $this->getUser();
-
-        // permission check
-        if (!$user instanceof User || !$user->isAllowed('coreshop_permission_settings')) {
-            throw new \Exception(sprintf('this function requires "%s" permission!', 'coreshop_permission_settings'));
-        }
-    }
-
     public function getSettingsAction(Request $request): Response
     {
+        $this->checkPermission('coreshop_permission_settings');
+
         $settings = [
             'bundle' => [
                 'version' => Version::getVersion(),

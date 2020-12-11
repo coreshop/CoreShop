@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Store\Context;
 
 use CoreShop\Component\Store\Model\StoreInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeStoreContext implements StoreContextInterface
 {

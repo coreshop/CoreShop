@@ -6,6 +6,7 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Customer\Context\CustomerContextInterface: '@CoreShop\Component\Customer\Context\CompositeCustomerContext'
     CoreShop\Component\Customer\Context\CompositeCustomerContext:
         public: false
 

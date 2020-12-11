@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\Pimcore\Repository;
 
 use CoreShop\Bundle\ProductBundle\Pimcore\Repository\ProductRepository as BaseProductRepository;
@@ -27,7 +29,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findLatestByStore(StoreInterface $store, $count = 8)
+    public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
             ['condition' => 'active = ?', 'variable' => 1],
@@ -40,7 +42,7 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findAllVariants(ProductInterface $product, $recursive = true)
+    public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
         $list->setObjectTypes([AbstractObject::OBJECT_TYPE_VARIANT]);
@@ -57,35 +59,43 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
     /**
      * {@inheritdoc}
      */
-    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store)
+    public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
         $dao = $list->getDao();
 
-        $qb = $this->connection->createQueryBuilder();
-        $qb
-            ->select('oo_id')
-            ->from($dao->getTableName())
-            ->where('o_path LIKE :path')
-            ->andWhere('stores LIKE :stores')
-            ->andWhere('o_type = :type')
-            ->setParameter('path', $product->getRealFullPath() . '/%')
-            ->setParameter('stores', '%,' . $store->getId() . ',%')
-            ->setParameter('type', 'variant');
+        $db = \Pimcore\Db::get();
+        $query = $db->select()
+            ->from($dao->getTableName(), ['oo_id'])
+            ->where('o_path LIKE ?', $product->getRealFullPath() . '/%')
+            ->where('stores LIKE ?', '%,' . $store->getId() . ',%')
+            ->where('o_type = ?', 'variant');
 
         $variantIds = [];
 
-        foreach ($qb->execute()->fetchAllAssociative() as $column) {
+        foreach ($query->execute()->fetchAll() as $column) {
             $variantIds[] = $column['oo_id'];
         }
 
         return $variantIds;
     }
 
+    public function getProducts(array $options = []): array
+    {
+        $list = $this->getProductsListing($options);
+
+        /**
+         * @var ProductInterface[] $products
+         */
+        $products = $list->load();
+
+        return $products;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function getProducts($options = [])
+    public function getProductsListing(array $options = []): Listing
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -107,8 +117,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $resolver->setAllowedTypes('order_key_quote', 'bool');
         $resolver->setAllowedTypes('order', 'string');
         $resolver->setAllowedTypes('object_types', ['null', 'array']);
-        $resolver->setAllowedTypes('return_type', 'string');
-        $resolver->setAllowedValues('return_type', ['objects', 'list']);
         $resolver->setAllowedValues('object_types', function ($value) {
             $valid = [
                 null,
@@ -151,18 +159,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         $list->setOrderKey($listOptions['order_key'], $listOptions['order_key_quote']);
         $list->setOrder($listOptions['order']);
 
-        if ($listOptions['return_type'] === 'objects') {
-            /**
-             * @var ProductInterface[] $products
-             */
-            $products = $list->load();
-
-            return $products;
-        }
-
-        /**
-         * @var Listing $list
-         */
         return $list;
     }
 }

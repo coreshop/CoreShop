@@ -17,7 +17,7 @@ namespace CoreShop\Component\Shipping\Validator;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInterface
 {

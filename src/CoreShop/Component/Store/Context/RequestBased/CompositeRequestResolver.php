@@ -17,7 +17,7 @@ namespace CoreShop\Component\Store\Context\RequestBased;
 use CoreShop\Component\Store\Context\StoreNotFoundException;
 use CoreShop\Component\Store\Model\StoreInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {

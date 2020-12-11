@@ -27,10 +27,10 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use Laminas\Paginator\Paginator;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
 {

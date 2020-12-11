@@ -8,6 +8,7 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Address\Context\CountryContextInterface: '@CoreShop\Component\Address\Context\CompositeCountryContext'
     CoreShop\Component\Address\Context\CompositeCountryContext:
         public: false
 

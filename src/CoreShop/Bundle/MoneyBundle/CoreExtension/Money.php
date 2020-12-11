@@ -39,13 +39,6 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     public $defaultValue;
 
     /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType = 'int';
-
-    /**
      * @var float
      */
     public $minValue;
@@ -54,6 +47,26 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
      * @var float
      */
     public $maxValue;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'int';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'int';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'int';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'int';
+    }
 
     /**
      * @return int

@@ -14,6 +14,7 @@ services:
             - '@coreshop.repository.exchange_rate'
             - '@coreshop.repository.currency'
 
+    CoreShop\Component\Currency\Context\CurrencyContextInterface: '@CoreShop\Component\Currency\Context\CompositeCurrencyContext'
     CoreShop\Component\Currency\Context\CompositeCurrencyContext:
         public: false
 

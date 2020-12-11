@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Address\Context;
 
 use CoreShop\Component\Address\Model\CountryInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCountryContext implements CountryContextInterface
 {

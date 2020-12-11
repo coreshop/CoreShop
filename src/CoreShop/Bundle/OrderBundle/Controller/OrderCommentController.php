@@ -96,7 +96,10 @@ class OrderCommentController extends PimcoreController
         $commentId = $request->get('id');
         $objectNoteService = $this->get(NoteServiceInterface::class);
         $commentEntity = $objectNoteService->getNoteById($commentId);
-        $commentEntity->delete();
+
+        if ($commentEntity instanceof Note) {
+            $commentEntity->getDao()->delete();
+        }
 
         return $this->viewHandler->handle(['success' => true]);
     }

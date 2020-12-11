@@ -129,6 +129,26 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return false;
     }
 
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -141,13 +161,10 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '*'."\n";
         $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store'."\n";
         $code .= '*'."\n";
-        $code .= '* @return null|'.$this->getPhpdocType().'|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
+        $code .= '* @return null|'.$this->getPhpdocReturnType().'|\CoreShop\Component\Core\Model\ProductStoreValuesInterface'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function get'.ucfirst($key).' (\CoreShop\Component\Store\Model\StoreInterface $store = null) {'."\n";
+        $code .= 'public function get'.ucfirst($key).' (\CoreShop\Component\Store\Model\StoreInterface $store): ?\CoreShop\Component\Core\Model\ProductStoreValuesInterface {'."\n";
         $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
-        $code .= "\t".'if (is_null($store)) {'."\n";
-        $code .= "\t\t".'return $this->'.$key.";\n";
-        $code .= "\t".'}'."\n";
         $code .= "\t".'$data = $this->'.$key.";\n\n";
         $code .= "\t".'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
         $code .= "\t\t".'try {'."\n";
@@ -165,6 +182,13 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= "\t\t".'}'."\n";
         $code .= "\t".'}'."\n";
         $code .= "\treturn null;"."\n";
+        $code .= "}\n\n";
+
+        $code .= 'public function getAll'.ucfirst($key).' (): array  {'."\n";
+        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+        $code .= "\t".$this->getPreGetValueHookCode($key);
+        $code .= "\t".'$data = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n\n";
+        $code .= "\treturn " . '$data' . ";\n";
         $code .= "}\n\n";
 
         $code .= '/**'."\n";
@@ -198,18 +222,27 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '* Set '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
                 $this->getTitle())."\n";
         $code .= '*'."\n";
-        $code .= '* @param array|\CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues'."\n";
-        $code .= '* @param null|\CoreShop\Component\Store\Model\StoreInterface $store'."\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues'."\n";
+        $code .= '* @param \CoreShop\Component\Store\Model\StoreInterface $store'."\n";
         $code .= '*'."\n";
         $code .= '* @return static'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function set'.ucfirst($key).' ($storeValues, \CoreShop\Component\Store\Model\StoreInterface $store = null) {'."\n";
-        $code .= "\t"."\n";
-        $code .= "\t".'if (is_array($'.$key.')) {'."\n";
-        $code .= "\t\t".'$this->'.$key.' = $'.$key.';'."\n";
-        $code .= "\t".'} else if (!is_null($store)) {'."\n";
-        $code .= "\t\t".'$this->'.$key.'[$store->getId()] = $'.$key.';'."\n";
-        $code .= "\t".'}'."\n\n";
+        $code .= 'public function set'.ucfirst($key).' (\CoreShop\Component\Core\Model\ProductStoreValuesInterface $storeValues, \CoreShop\Component\Store\Model\StoreInterface $store): self {'."\n";
+        $code .= "\t".'$this->'.$key.'[$store->getId()] = $'.$key.';'."\n";
+        $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
+        $code .= "\t".'return $this;'."\n";
+        $code .= "}\n\n";
+
+        $code .= '/**'."\n";
+        $code .= '* Set All '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
+                $this->getTitle())."\n";
+        $code .= '*'."\n";
+        $code .= '* @param \CoreShop\Component\Core\Model\ProductStoreValuesInterface[] $storeValues'."\n";
+        $code .= '*'."\n";
+        $code .= '* @return static'."\n";
+        $code .= '*/'."\n";
+        $code .= 'public function setAll'.ucfirst($key).' (array $storeValues): self {'."\n";
+        $code .= "\t".'$this->'.$key.' = $'.$key.';'."\n";
         $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
         $code .= "\t".'return $this;'."\n";
         $code .= "}\n\n";
@@ -224,7 +257,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= '*'."\n";
         $code .= '* @return static'."\n";
         $code .= '*/'."\n";
-        $code .= 'public function set'.ucfirst($key).'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store) {'."\n";
+        $code .= 'public function set'.ucfirst($key).'OfType (string $type, $value, \CoreShop\Component\Store\Model\StoreInterface $store): self {'."\n";
         $code .= "\t".'$storeValue = \CoreShop\Component\Pimcore\DataObject\InheritanceHelper::useInheritedValues(function() use ($store) {'."\n";
         $code .= "\t\t".'return $this->getStoreValues($store);'."\n";
         $code .= "\t".'}, false);'."\n";

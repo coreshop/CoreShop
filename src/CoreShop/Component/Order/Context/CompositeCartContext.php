@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Order\Context;
 
 use CoreShop\Component\Order\Model\OrderInterface;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
 {

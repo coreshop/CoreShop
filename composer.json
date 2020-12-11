@@ -97,11 +97,16 @@
   "require-dev": {
     "behat/behat": "^3.3",
     "friends-of-behat/symfony-extension": "^2.0.0",
+    "friends-of-behat/page-object-extension": "^0.3.2",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-doctrine": "^0.12",
     "phpstan/phpstan-symfony": "^0.12",
     "phpstan/phpstan-webmozart-assert": "^0.12",
-    "symplify/easy-coding-standard": "^9.0.0"
+    "symplify/easy-coding-standard": "^9.0.0",
+    "behat/mink": "^1.8",
+    "friends-of-behat/mink-extension": "^2.4",
+    "coreshop/behat-panther-extension": "^1.0",
+    "lakion/mink-debug-extension": "^2.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4",

@@ -50,6 +50,26 @@ class ProductQuantityPriceRules extends Data implements
      */
     public $height;
 
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'array';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'array';
+    }
+
     /**
      * @param mixed $object
      *
@@ -151,7 +171,6 @@ class ProductQuantityPriceRules extends Data implements
             }
 
             $context = DeserializationContext::create();
-            $context->setSerializeNull(false);
             $context->setGroups(['Version']);
             $context->setAttribute('em', $tempEntityManager);
 

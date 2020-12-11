@@ -17,7 +17,7 @@ namespace CoreShop\Component\Customer\Context\RequestBased;
 use CoreShop\Component\Customer\Context\CustomerNotFoundException;
 use CoreShop\Component\Customer\Model\CustomerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
