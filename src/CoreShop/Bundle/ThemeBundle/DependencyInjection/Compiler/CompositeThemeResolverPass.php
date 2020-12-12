@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler;
 
+use CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
 use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
@@ -21,8 +23,8 @@ final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.theme.resolver',
-            'coreshop.theme.resolver.composite',
+            ThemeResolverInterface::class,
+            CompositeThemeResolver::class,
             self::THEME_RESOLVER_TAG,
             'register'
         );

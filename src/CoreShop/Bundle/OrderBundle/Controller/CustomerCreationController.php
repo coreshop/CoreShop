@@ -56,7 +56,7 @@ class CustomerCreationController extends PimcoreController
                 $customer->setPublished(true);
                 $customer->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
-                    $this->getParameter('coreshop.folder.customer'),
+                    $this->container->getParameter('coreshop.folder.customer'),
                     mb_strtoupper(mb_substr($customer->getLastname(), 0, 1))
                 )));
                 $customer->setKey(File::getValidFilename($customer->getEmail()));
@@ -68,7 +68,7 @@ class CustomerCreationController extends PimcoreController
                 $address->setParent($objectService->createFolderByPath(sprintf(
                     '/%s/%s',
                     $customer->getFullPath(),
-                    $this->getParameter('coreshop.folder.address')
+                    $this->container->getParameter('coreshop.folder.address')
                 )));
                 $address->save();
 

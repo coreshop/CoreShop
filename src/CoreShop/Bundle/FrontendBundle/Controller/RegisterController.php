@@ -92,7 +92,7 @@ class RegisterController extends FrontendController
      */
     public function passwordResetRequestAction(Request $request)
     {
-        $resetIdentifier = $this->getParameter('coreshop.customer.security.login_identifier');
+        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
         $form = $this->get('form.factory')->createNamed('', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
@@ -194,7 +194,7 @@ class RegisterController extends FrontendController
      */
     protected function generateResetPasswordHash(CustomerInterface $customer)
     {
-        $resetIdentifier = $this->getParameter('coreshop.customer.security.login_identifier');
+        $resetIdentifier = $this->container->getParameter('coreshop.customer.security.login_identifier');
 
         $userKey = $resetIdentifier === 'email' ? $customer->getEmail() : $customer->getUsername();
 

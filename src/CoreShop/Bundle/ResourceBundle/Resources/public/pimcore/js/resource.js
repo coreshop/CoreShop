@@ -22,6 +22,7 @@ coreshop.resources = Class.create({
 
                 coreshop.class_map = resp.classMap;
                 coreshop.stack = resp.stack;
+                coreshop.full_stack = resp.full_stack;
 
                 coreshop.broker.fireEvent("afterClassMap", coreshop.class_map);
             }.bind(this)

@@ -36,3 +36,6 @@ services:
         tags:
             - { name: knp_menu.provider }
 
+    CoreShop\Bundle\MenuBundle\Controller\MenuController:
+        tags:
+            - { name: controller.service_arguments }

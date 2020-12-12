@@ -46,7 +46,7 @@ class ProductUnitDefinition extends Data implements
 
     public function getParameterTypeDeclaration(): ?string
     {
-        return '\\' . ProductUnitDefinitionInterface::class;
+        return '?\\' . ProductUnitDefinitionInterface::class;
     }
 
     public function getReturnTypeDeclaration(): ?string

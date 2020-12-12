@@ -450,7 +450,7 @@
                                 "name": "categories",
                                 "title": "coreshop.product.categories",
                                 "mandatory": false,
-                                "noteditable": true,
+                                "noteditable": false,
                                 "index": false,
                                 "locked": false,
                                 "style": "",

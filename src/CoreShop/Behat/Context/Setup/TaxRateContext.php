@@ -40,7 +40,7 @@ final class TaxRateContext implements Context
     /**
      * @Given /^the site has a tax rate "([^"]+)" with "([^"]+)%" rate$/
      */
-    public function theSiteHasATaxRate($name, $rate)
+    public function theSiteHasATaxRate($name, float $rate)
     {
         $this->createTaxRate($name, $rate);
     }
@@ -57,8 +57,9 @@ final class TaxRateContext implements Context
 
     /**
      * @param string $name
+     * @param float  $rate
      */
-    private function createTaxRate($name, $rate)
+    private function createTaxRate(string $name, float $rate)
     {
         /**
          * @var TaxRateInterface $taxRate

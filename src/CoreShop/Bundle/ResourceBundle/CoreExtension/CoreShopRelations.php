@@ -16,7 +16,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class CoreShopRelations extends Data\ManyToManyRelation
 {
-    public $fieldtype = 'coreShopRelation';
+    public $fieldtype = 'coreShopRelations';
 
     public $stack;
 
@@ -36,6 +36,11 @@ class CoreShopRelations extends Data\ManyToManyRelation
     public function setStack($stack): void
     {
         $this->stack = $stack;
+    }
+
+    public function enrichLayoutDefinition($object, $context)
+    {
+        $this->classes = $this->getClasses();
     }
 
     protected function getCoreShopPimcoreClasses()

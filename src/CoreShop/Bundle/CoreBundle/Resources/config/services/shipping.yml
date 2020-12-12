@@ -70,7 +70,7 @@ services:
         arguments:
             - '@CoreShop\Component\Core\Shipping\Discover\StoreBasedShippableCarriersDiscovery.inner'
             - '@coreshop.repository.carrier'
-            - '@coreshop.shipping.carrier.validator'
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
 
     CoreShop\Component\Core\Shipping\Resolver\CheapestDefaultCarrierResolver:
         arguments:

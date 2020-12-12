@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\CustomerBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Customer\Context\RequestBased\CompositeRequestResolver;
+use CoreShop\Component\Customer\Context\RequestBased\RequestResolverInterface;
 use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
@@ -21,8 +23,8 @@ final class CompositeRequestResolverPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.context.customer.request_based.resolver',
-            'coreshop.context.customer.request_based.resolver.composite',
+            RequestResolverInterface::class,
+            CompositeRequestResolver::class,
             self::CUSTOMER_REQUEST_RESOLVER_SERVICE_TAG,
             'addResolver'
         );

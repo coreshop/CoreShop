@@ -4020,7 +4020,7 @@
                                 "title": "coreshop.order.items",
                                 "tooltip": "",
                                 "mandatory": false,
-                                "noteditable": true,
+                                "noteditable": false,
                                 "index": false,
                                 "locked": false,
                                 "style": "",

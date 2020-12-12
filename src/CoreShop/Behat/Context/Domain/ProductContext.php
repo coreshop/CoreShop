@@ -206,7 +206,7 @@ final class ProductContext implements Context
         $originalProduct->save();
         $copiedObject->save();
 
-        $storeValues = $originalProduct->getAllStoreValues();
+        $storeValues = $originalProduct->getStoreValues();
 
         foreach ($storeValues as $storeValue) {
             if (!$storeValue instanceof ProductStoreValuesInterface) {
@@ -216,7 +216,7 @@ final class ProductContext implements Context
             Assert::eq($storeValue->getProduct()->getId(), $originalProduct->getId());
         }
 
-        $copiedStoreValues = $copiedObject->getAllStoreValues();
+        $copiedStoreValues = $copiedObject->getStoreValues();
 
         foreach ($copiedStoreValues as $copiedStoreValue) {
             if (!$copiedStoreValue instanceof ProductStoreValuesInterface) {

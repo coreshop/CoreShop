@@ -226,7 +226,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ThemeContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.theme.resolver'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
             - { name: fob.context_service }
 

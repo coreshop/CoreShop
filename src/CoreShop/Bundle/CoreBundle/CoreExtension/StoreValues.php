@@ -168,7 +168,7 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $code .= "\t".'$data = $this->'.$key.";\n\n";
         $code .= "\t".'if (\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
         $code .= "\t\t".'try {'."\n";
-        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'", $store);'."\n";
+        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'ForStore", $store);'."\n";
         $code .= "\t\t".'} catch (InheritanceParentNotFoundException $e) {'."\n";
         $code .= "\t\t\t".'// no data from parent available, continue ... '."\n";
         $code .= "\t\t".'}'."\n";
@@ -787,11 +787,12 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         Model\DataObject\Concrete $object,
         array $serialized
     ) {
-        if (!$object instanceof ProductInterface || !$object->getUnitDefinitions()) {
+        $unitDefinitions = $object->getObjectVar('unitDefinitions');
+
+        if (!$object instanceof ProductInterface || !$unitDefinitions) {
             return $serialized;
         }
 
-        $unitDefinitions = $object->getUnitDefinitions();
         $isUnitDefinitionsSerialized = !$unitDefinitions instanceof ProductUnitDefinitionsInterface;
 
         $toRemove = [];

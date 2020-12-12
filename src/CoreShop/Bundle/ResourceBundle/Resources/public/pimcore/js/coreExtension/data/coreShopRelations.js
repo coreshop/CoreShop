@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.object.classes.data.coreShopRelations');
-coreshop.object.classes.data.coreShopRelations = Class.create(coreshop.object.classes.data.data, {
+pimcore.object.classes.data.coreShopRelations = Class.create(coreshop.object.classes.data.data, {
 
     /**
      * define where this datatype is allowed
@@ -50,7 +50,7 @@ coreshop.object.classes.data.coreShopRelations = Class.create(coreshop.object.cl
         this.specificPanel.removeAll();
         this.uniqeFieldId = uniqid();
 
-        var stacks = Object.keys(coreshop.stack.coreshop);
+        var stacks = coreshop.full_stack;
 
         this.specificPanel.add([
             {

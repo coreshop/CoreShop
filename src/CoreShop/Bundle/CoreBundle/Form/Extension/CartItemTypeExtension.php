@@ -56,7 +56,7 @@ final class CartItemTypeExtension extends AbstractTypeExtension
                     'html5' => true,
                     'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
                     'label' => 'coreshop.ui.quantity',
-                    'disabled' => $data->getIsGiftItem(),
+                    'disabled' => (bool)$data->getIsGiftItem(),
                 ]);
 
             if (!$product->hasUnitDefinitions()) {

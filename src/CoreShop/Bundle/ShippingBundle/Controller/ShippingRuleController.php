@@ -30,11 +30,11 @@ class ShippingRuleController extends ResourceController
 
     protected function getConfigActions(): array
     {
-        return $this->getParameter('coreshop.shipping_rule.actions');
+        return $this->container->getParameter('coreshop.shipping_rule.actions');
     }
 
     protected function getConfigConditions(): array
     {
-        return $this->getParameter('coreshop.shipping_rule.conditions');
+        return $this->container->getParameter('coreshop.shipping_rule.conditions');
     }
 }

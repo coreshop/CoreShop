@@ -371,6 +371,6 @@ class CartController extends FrontendController
     {
         return $this
             ->get('validator')
-            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'));
+            ->validate($cartItem, null, $this->container->getParameter('coreshop.form.type.cart_item.validation_groups'));
     }
 }

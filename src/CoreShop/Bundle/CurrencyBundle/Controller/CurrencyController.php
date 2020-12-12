@@ -23,8 +23,8 @@ class CurrencyController extends ResourceController
     public function getConfigAction(Request $request): Response
     {
         $settings = [
-            'decimal_precision' => $this->getParameter('coreshop.currency.decimal_precision'),
-            'decimal_factor' => $this->getParameter('coreshop.currency.decimal_factor'),
+            'decimal_precision' => $this->container->getParameter('coreshop.currency.decimal_precision'),
+            'decimal_factor' => $this->container->getParameter('coreshop.currency.decimal_factor'),
         ];
 
         return $this->viewHandler->handle($settings);

@@ -104,7 +104,7 @@
                         "name": "addresses",
                         "title": "coreshop.company.addresses",
                         "mandatory": false,
-                        "noteditable": true,
+                        "noteditable": false,
                         "index": false,
                         "locked": false,
                         "style": "",

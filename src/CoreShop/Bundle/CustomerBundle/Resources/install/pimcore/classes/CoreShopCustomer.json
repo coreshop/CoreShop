@@ -331,7 +331,7 @@
                                 "name": "customerGroups",
                                 "title": "coreshop.customer.groups",
                                 "mandatory": false,
-                                "noteditable": true,
+                                "noteditable": false,
                                 "index": false,
                                 "locked": false,
                                 "style": "",
