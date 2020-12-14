@@ -186,7 +186,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
      * @Given /^the (product) weighs ([^"]+)kg$/
      */
-    public function theProductWeighsKg(ProductInterface $product, $kg)
+    public function theProductWeighsKg(ProductInterface $product, float $kg)
     {
         $product->setWeight($kg);
 
@@ -197,7 +197,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
      * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
      */
-    public function theProductsMeasurementsAre(ProductInterface $product, $width, $height, $depth)
+    public function theProductsMeasurementsAre(ProductInterface $product, float $width, float $height, float $depth)
     {
         $product->setWidth($width);
         $product->setHeight($height);
