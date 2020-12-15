@@ -57,9 +57,6 @@ jobs:
         mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
         mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
-    - name: Copy parameters.yml
-      run: cp app/config/parameters.example.yml app/config/parameters.yml
-
     - name: Get composer cache directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"

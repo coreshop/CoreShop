@@ -35,9 +35,6 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: intl
 
-    - name: Copy parameters.yml
-      run: cp app/config/parameters.example.yml app/config/parameters.yml
-
     - name: Get composer cache directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
