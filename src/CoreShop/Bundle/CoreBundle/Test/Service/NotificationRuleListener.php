@@ -20,14 +20,7 @@ use Symfony\Component\Finder\Finder;
 
 final class NotificationRuleListener implements NotificationRuleListenerInterface
 {
-    /**
-     * @var string
-     */
     private $cacheDir;
-
-    /**
-     * @var array
-     */
     private $firedEvents = [];
 
     public function __construct(string $cacheDir)
@@ -35,9 +28,6 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         $this->cacheDir = $cacheDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasBeenFired($type)
     {
         $finder = new Finder();
@@ -46,9 +36,6 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         return $finder->count() > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear()
     {
         if (!is_dir($this->cacheDir)) {
@@ -65,9 +52,6 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyNewFired(GenericEvent $type)
     {
         $data = [
@@ -76,7 +60,7 @@ final class NotificationRuleListener implements NotificationRuleListenerInterfac
         ];
 
         if (!is_dir($this->cacheDir)) {
-            mkdir($this->cacheDir);
+            mkdir($this->cacheDir, 0777, true);
         }
 
         file_put_contents(sprintf('%s/%s.%s.notification', $this->cacheDir, uniqid(), $type->getSubject()), serialize($data));

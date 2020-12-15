@@ -92,7 +92,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_PRE, $event);
+        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -144,7 +144,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart(), ['step' => $step, 'step_identifier', $stepIdentifier, 'step_params' => $dataForStep]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_STEP_POST, $event);
+        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_STEP_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -171,7 +171,7 @@ class CheckoutController extends FrontendController
     {
         $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
-        return $this->renderTemplate($template, $dataForStep);
+        return $this->render($template, $dataForStep);
     }
 
     /**
@@ -216,7 +216,7 @@ class CheckoutController extends FrontendController
 
         $event = new CheckoutEvent($this->getCart());
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_PRE, $event);
+        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_PRE);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -253,14 +253,14 @@ class CheckoutController extends FrontendController
 
             $request->getSession()->set('coreshop_order_id', $order->getId());
 
-            $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, new CheckoutEvent($this->getCart(), ['order' => $order]));
+            $this->get('event_dispatcher')->dispatch(new CheckoutEvent($this->getCart(), ['order' => $order]), CheckoutEvents::CHECKOUT_DO_POST);
 
             $response = $this->redirectToRoute('coreshop_checkout_confirmation');
         }
 
         $event = new CheckoutEvent($this->getCart(), ['order' => $order]);
 
-        $this->get('event_dispatcher')->dispatch(CheckoutEvents::CHECKOUT_DO_POST, $event);
+        $this->get('event_dispatcher')->dispatch($event, CheckoutEvents::CHECKOUT_DO_POST);
 
         if ($event->isStopped()) {
             $this->addEventFlash($event->getMessageType(), $event->getMessage(), $event->getMessageParameters());
@@ -302,7 +302,7 @@ class CheckoutController extends FrontendController
         $payments = $this->get('coreshop.repository.payment')->findForPayable($order);
         $lastPayment = is_array($payments) ? $payments[count($payments) - 1] : null;
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/error.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Checkout/error.html'), [
             'order' => $order,
             'payments' => $payments,
             'lastPayment' => $lastPayment,
@@ -334,7 +334,7 @@ class CheckoutController extends FrontendController
             $this->get('security.token_storage')->setToken(null);
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Checkout/thank-you.html'), [
             'order' => $order,
         ]);
     }

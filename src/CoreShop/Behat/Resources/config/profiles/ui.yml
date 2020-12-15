@@ -28,7 +28,7 @@ ui:
 #                            external_converted_uri: "http://localhost:9080/app_test.php"
             show_auto: false
 
-        CoreShop\Behat\PantherExtension: ~
+        Robertfausk\Behat\PantherExtension: ~
 
     gherkin:
         filters:

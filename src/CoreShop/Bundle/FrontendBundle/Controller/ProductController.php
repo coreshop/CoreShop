@@ -34,7 +34,7 @@ class ProductController extends FrontendController
     {
         $productRepository = $this->get('coreshop.repository.product');
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/_latest.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Product/_latest.html'), [
             'products' => $productRepository->findLatestByStore($this->get(StoreContextInterface::class)->getStore()),
         ]);
     }
@@ -69,7 +69,7 @@ class ProductController extends FrontendController
         $this->get(SEOPresentationInterface::class)->updateSeoMetadata($product);
         $this->get(TrackerInterface::class)->trackProduct($product);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Product/detail.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Product/detail.html'), [
             'product' => $product,
         ]);
     }

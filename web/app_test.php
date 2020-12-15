@@ -13,7 +13,6 @@
  */
 
 use Pimcore\Tool;
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 define('PIMCORE_PROJECT_ROOT', __DIR__ . '/..');
@@ -33,6 +32,8 @@ $kernel = \Pimcore\Bootstrap::kernel();
 
 // reset current request - will be read from request stack from now on
 Tool::setCurrentRequest(null);
+
+$_SERVER['REQUEST_ID'] = uniqid();
 
 $response = $kernel->handle($request);
 $response->send();

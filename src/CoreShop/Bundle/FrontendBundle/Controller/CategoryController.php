@@ -68,7 +68,7 @@ class CategoryController extends FrontendController
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
         ]);
     }
@@ -89,7 +89,7 @@ class CategoryController extends FrontendController
             $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
             'activeSubCategories' => $activeSubCategories,
@@ -222,7 +222,7 @@ class CategoryController extends FrontendController
 
         $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
+        return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
     /**

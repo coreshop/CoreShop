@@ -48,6 +48,7 @@ parameters.yml
 var
 .env
 composer.lock
-docker-compose.yml
+docker-compose.yaml
 app/config/local/
 app/config/pimcore/
+.php-version

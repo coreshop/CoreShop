@@ -26,7 +26,7 @@ class MailController extends FrontendController
      */
     public function mailAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/mail.html'));
+        return $this->render($this->templateConfigurator->findTemplate('Mail/mail.html'));
     }
 
     /**
@@ -43,6 +43,6 @@ class MailController extends FrontendController
             $viewParameters['order'] = $order;
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
+        return $this->render($this->templateConfigurator->findTemplate('Mail/order-confirmation.html'), $viewParameters);
     }
 }

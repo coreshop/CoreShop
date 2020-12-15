@@ -147,6 +147,10 @@ final class PrioritizedServiceRegistry implements PrioritizedServiceRegistryInte
             }
         }
 
+        if (!isset($keys[$nextIndex])) {
+            return false;
+        }
+
         return $this->has($keys[$nextIndex]);
     }
 

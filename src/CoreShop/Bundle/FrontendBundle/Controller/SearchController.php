@@ -16,8 +16,8 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
 use CoreShop\Component\Store\Context\StoreContextInterface;
+use Laminas\Paginator\Paginator;
 use Symfony\Component\HttpFoundation\Request;
-use Zend\Paginator\Paginator;
 
 class SearchController extends FrontendController
 {
@@ -25,7 +25,7 @@ class SearchController extends FrontendController
     {
         $form = $this->createSearchForm();
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Search/_widget.html'), [
             'form' => $form->createView(),
         ]);
     }
@@ -62,7 +62,7 @@ class SearchController extends FrontendController
             $paginator->setCurrentPageNumber($page);
             $paginator->setItemCountPerPage($itemsPerPage);
 
-            return $this->renderTemplate($this->templateConfigurator->findTemplate('Search/search.html'), [
+            return $this->render($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
                 'searchText' => $text,
             ]);

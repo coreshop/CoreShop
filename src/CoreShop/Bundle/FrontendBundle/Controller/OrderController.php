@@ -117,7 +117,7 @@ class OrderController extends FrontendController
             'form' => $form->createView(),
         ];
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
+        return $this->render($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 
     /**

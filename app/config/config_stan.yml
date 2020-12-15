@@ -1,10 +1,6 @@
 imports:
     - { resource: config.yml }
 
-pimcore:
-    cache:
-        pool_service_id: pimcore.cache.core.pool.array
-
 doctrine:
     dbal:
         connections:

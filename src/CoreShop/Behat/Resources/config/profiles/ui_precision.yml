@@ -28,7 +28,7 @@ ui_precision:
 #                            external_converted_uri: "http://localhost:9080/app_test_precision.php"
             show_auto: false
 
-        CoreShop\Behat\PantherExtension: ~
+        Robertfausk\Behat\PantherExtension: ~
 
     gherkin:
         filters:

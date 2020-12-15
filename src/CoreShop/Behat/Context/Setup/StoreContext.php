@@ -159,9 +159,9 @@ final class StoreContext implements Context
             $country->setAddressFormat('
                 {{ company }}
                 {{ salutation }} {{ firstname }} {{ lastname }}
-                {{ street }};
-                {{ postCode }};
-                {{ country.name }};
+                {{ street }}
+                {{ postcode }}
+                {{ country.name }}
             ');
 
             $this->entityManager->persist($country);

@@ -13,7 +13,6 @@
  */
 
 use Pimcore\Tool;
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
 include __DIR__ . "/../vendor/autoload.php";
