@@ -230,7 +230,7 @@ final class Matomo extends AbstractEcommerceTracker
      */
     private function renderCalls(array $calls): string
     {
-        return $this->render('calls', [
+        return $this->renderTemplate('calls', [
             'calls' => $calls,
         ]);
     }

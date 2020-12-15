@@ -15,6 +15,7 @@ jobs:
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
     services:
       mysql:
         image: mysql:5.7
@@ -85,7 +86,7 @@ jobs:
       run: wget https://get.symfony.com/cli/installer -O - | bash
 
     - name: Run Symfony Webserver
-      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
+      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui

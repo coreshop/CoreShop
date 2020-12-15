@@ -1,6 +1,6 @@
 imports:
-    - { resource: config.yml }
-    - { resource: '../../src/CoreShop/Behat/Resources/config/services.yml' }
+    - { resource: ../../config.yaml }
+    - { resource: ../../../src/CoreShop/Behat/Resources/config/services.yml }
 
 doctrine:
     dbal:

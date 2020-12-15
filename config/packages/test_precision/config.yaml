@@ -1,5 +1,5 @@
 imports:
-    - { resource: config_test.yml }
+    - { resource: ../test/config.yaml }
     - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/prod.yml' } # loads default dev configuration
     - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/dev.yml' } # loads default dev configuration
     - { resource: '@PimcoreCoreBundle/Resources/config/pimcore/test.yml' } # loads default dev configuration

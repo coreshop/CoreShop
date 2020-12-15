@@ -128,11 +128,9 @@
     ]
   },
   "autoload-dev": {
-    "psr-4": {
-      "CoreShop\\Test\\": "tests/lib/CoreShop/Test"
-    },
     "classmap": [
-      "app/AppKernel.php"
+      "src/Kernel.php",
+      "src/BehatKernel.php"
     ]
   },
   "minimum-stability": "dev",

@@ -9,8 +9,8 @@ ui:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: behat-bootstrap.php
             kernel:
-                path: app/BehatAppKernel.php
-                class: BehatAppKernel
+                path: src/BehatKernel.php
+                class: BehatKernel
                 environment: test
 
         FriendsOfBehat\MinkDebugExtension:
