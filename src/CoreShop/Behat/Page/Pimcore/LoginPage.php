@@ -14,6 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Behat\Page\Pimcore;
 
+use Behat\Mink\Driver\PantherDriver;
+use Behat\Mink\Element\DocumentElement;
+
 class LoginPage extends AbstractPimcorePage implements LoginPageInterface
 {
     public function getRouteName(): string
@@ -24,7 +27,11 @@ class LoginPage extends AbstractPimcorePage implements LoginPageInterface
     public function logIn(): void
     {
         $this->findOrThrow('css', 'button[type=submit]')->click();
-        $this->waitForPimcore(10000000000);
+        usleep(4000000);
+
+        if ($this->getSession()->getDriver() instanceof PantherDriver) {
+            $this->getSession()->getDriver()->getClient()->refreshCrawler();
+        }
     }
 
     public function specifyPassword(string $password): void

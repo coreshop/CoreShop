@@ -22,11 +22,11 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_filters',
     type: 'coreshop_filters',
 
-    url: {
-        add: '/admin/coreshop/filters/add',
-        delete: '/admin/coreshop/filters/delete',
-        get: '/admin/coreshop/filters/get',
-        list: '/admin/coreshop/filters/list'
+    routing: {
+        add: 'coreshop_filter_add',
+        delete: 'coreshop_filter_delete',
+        get: 'coreshop_filter_get',
+        list: 'coreshop_filter_list'
     },
 
     /**
@@ -41,7 +41,7 @@ coreshop.filter.panel = Class.create(coreshop.resource.panel, {
         var me = this;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/filters/get-config',
+            url: Routing.generate('coreshop_filter_getConfig'),
             method: 'GET',
             success: function (result) {
                 var config = Ext.decode(result.responseText);

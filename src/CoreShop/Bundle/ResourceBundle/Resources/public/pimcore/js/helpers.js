@@ -17,7 +17,7 @@ coreshop.helpers.requestNicePathData = function (targets, responseHandler) {
 
     Ext.Ajax.request({
         method: 'POST',
-        url: "/admin/coreshop/helper/get-nice-path",
+        url: Routing.generate('coreshop_helper_get_nice_path'),
         params: {
             targets: elementData
         },

@@ -12,7 +12,7 @@
 
 pimcore.registerNS('coreshop.order.order.create.address');
 coreshop.order.order.create.address = Class.create(coreshop.resource.creation, {
-    url: '/admin/coreshop/order/address/create',
+    route: 'coreshop_admin_order_address_creation',
     type: 'address',
 
     getSettings: function() {

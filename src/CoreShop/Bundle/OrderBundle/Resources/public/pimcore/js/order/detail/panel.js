@@ -52,7 +52,7 @@ coreshop.order.order.detail.panel = Class.create({
         me.layout.setLoading(t('loading'));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order/detail',
+            url: Routing.generate('coreshop_admin_order_get_order'),
             params: {
                 id: me.sale.o_id
             },

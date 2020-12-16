@@ -30,7 +30,7 @@ coreshop.index.fields = Class.create({
             this.classDefinitionTreePanel.destroy();
         }
 
-        this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
+        this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
 
         this.configPanel.add(this.classDefinitionTreePanel);
     },
@@ -227,7 +227,7 @@ coreshop.index.fields = Class.create({
             this.brickKeys = [];
 
             if (this.class) {
-                this.classDefinitionTreePanel = this.getClassTree('/admin/coreshop/indices/get-class-definition-for-field-selection', this.class);
+                this.classDefinitionTreePanel = this.getClassTree(Routing.generate('coreshop_index_getClassDefinitionForFieldSelection'), this.class);
             }
         }
 

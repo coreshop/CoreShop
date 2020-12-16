@@ -13,6 +13,7 @@
 pimcore.registerNS('coreshop.resource.creation');
 coreshop.resource.creation = Class.create({
     url: null,
+    route: null,
     type: null,
     callback: Ext.emptyFn,
     options: {
@@ -67,7 +68,7 @@ coreshop.resource.creation = Class.create({
                         params = Ext.merge(params, this.options.params);
 
                         Ext.Ajax.request({
-                            url: this.url,
+                            url: this.route ? Routing.generate(this.route) : this.url,
                             method: 'post',
                             jsonData: params,
                             success: function (response) {

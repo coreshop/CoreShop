@@ -37,7 +37,7 @@ coreshop.shipment.render = Class.create({
     },
 
     loadDocument: function (shipmentId) {
-        var frameUrl = '/admin/coreshop/order-shipment/render?id=' + shipmentId;
+        var frameUrl = Routing.generate('coreshop_admin_order_shipment_render', {id: shipmentId});
 
         //check for native/plugin PDF viewer
         if (this.hasNativePDFViewer()) {

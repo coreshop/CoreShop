@@ -32,8 +32,31 @@ class PWAPage extends AbstractPimcorePage implements PWAPageInterface
         }
     }
 
+    public function waitTillLoaded(): void
+    {
+        $this->getDocument()->waitFor(10000000, function() {
+            return $this->getDocument()->find('css', 'body.coreshop_loaded') && $this->getDocument()->find('css', '#pimcore_menu_coreshop_main');
+        });
+    }
+
     public function hasLogoutButton(): bool
     {
         return $this->getDocument()->has('css', '#pimcore_logout');
+    }
+
+    public function hasPimcoreTabWithId(string $id): bool
+    {
+        return $this->getDocument()->has('css', '#pimcore_panel_tabs #' . $id);
+    }
+
+    public function openResource(string $application, string $resource): void
+    {
+        $this->getSession()->executeScript(
+            sprintf(
+                'coreshop.global.resource.open(\'%s\', \'%s\');',
+                $application,
+                $resource
+            )
+        );
     }
 }

@@ -15,8 +15,8 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_carrier',
 
-    url: {
-        save: '/admin/coreshop/carriers/save'
+    routing: {
+        save: 'coreshop_carrier_save'
     },
 
     initialize: function (parentPanel, data, panelKey, type) {

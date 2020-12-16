@@ -16,5 +16,11 @@ namespace CoreShop\Behat\Page\Pimcore;
 
 interface PWAPageInterface extends PimcorePageInterface
 {
+    public function waitTillLoaded(): void;
+
     public function hasLogoutButton(): bool;
+
+    public function hasPimcoreTabWithId(string $id): bool;
+
+    public function openResource(string $application, string $resource): void;
 }

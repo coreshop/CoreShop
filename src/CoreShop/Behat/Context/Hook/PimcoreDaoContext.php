@@ -23,6 +23,7 @@ use Pimcore\Model\DataObject\ClassDefinition;
 use Pimcore\Model\DataObject\Fieldcollection;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\DataObject\Objectbrick;
+use Pimcore\Model\User;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDaoContext implements Context
@@ -140,6 +141,18 @@ final class PimcoreDaoContext implements Context
             }
 
             $class->delete();
+        }
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearBehatAdminUser()
+    {
+        $user = User::getByName('behat-admin');
+
+        if ($user) {
+            $user->delete();
         }
     }
 

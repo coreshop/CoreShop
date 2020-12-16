@@ -19,6 +19,10 @@ coreshop.resource.item = Class.create({
         save: ''
     },
 
+    routing: {
+        save: null
+    },
+
     multiShopSettings: false,
 
     initialize: function (parentPanel, data, panelKey, type) {
@@ -52,6 +56,7 @@ coreshop.resource.item = Class.create({
 
         panel = new Ext.panel.Panel({
             title: this.getTitleText(),
+            itemId: this.panelKey,
             closable: true,
             iconCls: this.iconCls,
             layout: 'border',
@@ -98,7 +103,7 @@ coreshop.resource.item = Class.create({
             }
 
             Ext.Ajax.request({
-                url: this.url.save,
+                url: this.routing.save ? Routing.generate(this.routing.save) : this.url.save,
                 method: 'post',
                 jsonData: saveData,
                 success: function (response) {

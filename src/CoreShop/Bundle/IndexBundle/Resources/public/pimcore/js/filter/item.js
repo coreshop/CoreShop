@@ -16,8 +16,8 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_filters',
 
-    url: {
-        save: '/admin/coreshop/filters/save'
+    routing: {
+        save: 'coreshop_filter_save'
     },
 
     indexFieldsStore: null,
@@ -85,7 +85,7 @@ coreshop.filter.item = Class.create(coreshop.resource.item, {
     getFieldsForIndex: function (forceReload) {
         if (!this.indexFieldsStore) {
             var proxy = new Ext.data.HttpProxy({
-                url: '/admin/coreshop/filters/get-fields-for-index'
+                url: Routing.generate('coreshop_filter_getFieldsForIndex')
             });
 
             var reader = new Ext.data.JsonReader({}, [

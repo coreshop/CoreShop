@@ -13,13 +13,13 @@
 pimcore.registerNS('coreshop.taxation.resource');
 coreshop.taxation.resource = Class.create(coreshop.resource, {
     initialize: function () {
-        coreshop.global.addStore('coreshop_tax_rates', 'coreshop/tax_rates', [
+        coreshop.global.addStoreWithRoute('coreshop_tax_rates', 'coreshop_tax_rate_list', [
             {name: 'id'},
             {name: 'name'},
             {name: 'rate'}
         ]);
-        coreshop.global.addStore('coreshop_taxrulegroups', 'coreshop/tax_rule_groups');
-        coreshop.global.addStore('coreshop_tax_rule_groups', 'coreshop/tax_rule_groups');
+        coreshop.global.addStoreWithRoute('coreshop_taxrulegroups', 'coreshop_tax_rule_group_list');
+        coreshop.global.addStoreWithRoute('coreshop_tax_rule_groups', 'coreshop_tax_rule_group_list');
 
         coreshop.broker.fireEvent('resource.register', 'coreshop.taxation', this);
     },

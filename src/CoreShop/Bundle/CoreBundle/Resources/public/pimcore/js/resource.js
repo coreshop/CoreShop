@@ -32,7 +32,7 @@ coreshop.core.resource = Class.create(coreshop.resource, {
 
     pimcoreReady: function (params, broker) {
         Ext.Ajax.request({
-            url: '/admin/coreshop/settings/get-settings',
+            url: Routing.generate('coreshop_admin_settings_get_settings'),
             success: function (response) {
                 this.settings = Ext.decode(response.responseText);
                 coreshop.settings = this.settings;

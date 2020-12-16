@@ -21,6 +21,7 @@ class Kernel extends PimcoreKernel
     {
         $collection->addBundle(new \CoreShop\Bundle\CoreBundle\CoreShopCoreBundle());
         $collection->addBundle(new \FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle());
+        $collection->addBundle(new \CoreShop\Bundle\TestBundle\CoreShopTestBundle(), 0);
     }
 
     protected function getEnvironmentsForDevBundles(): array

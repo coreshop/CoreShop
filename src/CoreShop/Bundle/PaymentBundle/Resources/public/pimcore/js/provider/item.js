@@ -15,8 +15,8 @@ coreshop.provider.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_payment_provider',
 
-    url: {
-        save: '/admin/coreshop/payment_providers/save'
+    routing: {
+        save: 'coreshop_payment_provider_save'
     },
 
     getItems: function () {

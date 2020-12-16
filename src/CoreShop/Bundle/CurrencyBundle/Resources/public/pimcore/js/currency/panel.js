@@ -21,11 +21,11 @@ coreshop.currency.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_currency',
     type: 'coreshop_currencies',
 
-    url: {
-        add: '/admin/coreshop/currencies/add',
-        delete: '/admin/coreshop/currencies/delete',
-        get: '/admin/coreshop/currencies/get',
-        list: '/admin/coreshop/currencies/list'
+    routing: {
+        add: 'coreshop_currency_add',
+        delete: 'coreshop_currency_delete',
+        get: 'coreshop_currency_get',
+        list: 'coreshop_currency_list'
     },
 
     getItemClass: function() {

@@ -21,11 +21,11 @@ coreshop.zone.panel = Class.create(coreshop.resource.panel, {
     iconCls: 'coreshop_icon_zone',
     type: 'coreshop_zones',
 
-    url: {
-        add: '/admin/coreshop/zones/add',
-        delete: '/admin/coreshop/zones/delete',
-        get: '/admin/coreshop/zones/get',
-        list: '/admin/coreshop/zones/list'
+    routing: {
+        add: 'coreshop_zone_add',
+        delete: 'coreshop_zone_delete',
+        get: 'coreshop_zone_get',
+        list: 'coreshop_zone_list'
     },
 
     getItemClass: function() {

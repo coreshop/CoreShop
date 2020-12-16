@@ -19,13 +19,13 @@ use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
 use Symfony\Component\BrowserKit\Cookie;
 
-final class CookieSetter implements CookieSetterInterface
+class CookieSetter implements CookieSetterInterface
 {
     /** @var Session */
-    private $minkSession;
+    protected $minkSession;
 
     /** @var array */
-    private $minkParameters;
+    protected $minkParameters;
 
     public function __construct(Session $minkSession, $minkParameters)
     {
@@ -51,14 +51,14 @@ final class CookieSetter implements CookieSetterInterface
         $this->minkSession->setCookie($name, $value);
     }
 
-    private function prepareMinkSessionIfNeeded(Session $session): void
+    protected function prepareMinkSessionIfNeeded(Session $session): void
     {
         if ($this->shouldMinkSessionBePrepared($session)) {
             $session->visit(rtrim($this->minkParameters['base_url'] . '/en/shop', '/') . '/');
         }
     }
 
-    private function shouldMinkSessionBePrepared(Session $session): bool
+    protected function shouldMinkSessionBePrepared(Session $session): bool
     {
         $driver = $session->getDriver();
 

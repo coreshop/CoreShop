@@ -91,3 +91,9 @@ services:
     CoreShop\Bundle\CoreBundle\EventListener\ProductStoreValuesAdminGetListener:
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\CoreBundle\EventListener\AdminJavascriptListener:
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }

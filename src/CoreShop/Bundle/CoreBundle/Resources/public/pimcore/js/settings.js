@@ -22,7 +22,7 @@ coreshop.core.settings = Class.create({
 
     getData: function () {
         Ext.Ajax.request({
-            url: '/admin/coreshop/configurations/get-all',
+            url: Routing.generate('coreshop_admin_configuration_get_all'),
             success: function (response) {
 
                 this.data = Ext.decode(response.responseText).data;
@@ -192,7 +192,7 @@ coreshop.core.settings = Class.create({
         }
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/configurations/save-all',
+            url: Routing.generate('coreshop_admin_configuration_save_all'),
             method: 'post',
             params: {
                 values: Ext.encode(values),

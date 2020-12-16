@@ -15,8 +15,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
 
     iconCls: 'coreshop_icon_price_rule',
 
-    url: {
-        save: '/admin/coreshop/cart_price_rules/save'
+    routing: {
+        save: 'coreshop_cart_price_rule_save'
     },
 
     getPanel: function () {
@@ -150,8 +150,8 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         totalProperty: 'total'
                     },
                     api: {
-                        read: '/admin/coreshop/cart_price_rules/get-voucher-codes',
-                        destroy: '/admin/coreshop/cart_price_rules/delete-voucher-code'
+                        read: Routing.generate('coreshop_cart_price_rule_getVoucherCodes'),
+                        destroy: Routing.generate('coreshop_cart_price_rule_deleteVoucherCode')
                     },
                     extraParams: {
                         cartPriceRule: this.data.id
@@ -256,7 +256,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                             xtype: 'button',
                             text: t('coreshop_cart_pricerule_vouchers_export'),
                             handler: function () {
-                                pimcore.helpers.download('/admin/coreshop/cart_price_rules/export-voucher-codes?cartPriceRule=' + this.data.id);
+                                pimcore.helpers.download(Routing.generate('coreshop_cart_price_rule_exportVoucherCodes', {cartPriceRule: this.data.id}));
                             }.bind(this)
                         }
                     ]
@@ -298,7 +298,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/create-voucher-code',
+                            url: Routing.generate('coreshop_cart_price_rule_createVoucherCode'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {
@@ -385,7 +385,7 @@ coreshop.cart.pricerules.item = Class.create(coreshop.rules.item, {
                         params['cartPriceRule'] = this.data.id;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/cart_price_rules/generate-voucher-codes',
+                            url: Routing.generate('coreshop_cart_price_rule_generateVoucherCodes'),
                             method: 'post',
                             jsonData: params,
                             success: function (response) {

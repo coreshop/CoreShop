@@ -26,26 +26,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
 {
-    /**
-     * @return string
-     */
-    public function getNiceName()
+    public function getNiceName(): string
     {
         return 'CoreShop - Pimcore';
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function getDescription(): string
     {
         return 'CoreShop - Pimcore Bundle';
     }
 
-    /**
-     * @return string
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         $bundleName = 'coreshop/pimcore-bundle';
 
@@ -76,18 +67,7 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
-    {
-        parent::boot();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -97,61 +77,5 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new RegisterPimcoreDocumentTagPass());
         $container->addCompilerPass(new ExpressionLanguageServicePass());
         $container->addCompilerPass(new RegisterTypeHintRegistriesPass());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getJsPaths()
-    {
-        $jsFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.js'), true);
-        }
-
-        return $jsFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCssPaths()
-    {
-        $cssFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.css'));
-        }
-
-        return $cssFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeJsPaths()
-    {
-        $jsFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.editmode_js')) {
-            $jsFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_js'), false);
-        }
-
-        return $jsFiles;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEditmodeCssPaths()
-    {
-        $cssFiles = [];
-
-        if ($this->container->hasParameter('coreshop.all.pimcore.admin.editmode_css')) {
-            $cssFiles = $this->container->get('coreshop.resource_loader')->loadResources($this->container->getParameter('coreshop.all.pimcore.admin.editmode_css'));
-        }
-
-        return $cssFiles;
     }
 }

@@ -62,3 +62,11 @@ services:
         tags:
             - { name: coreshop.expression_language_provider }
 
+    CoreShop\Bundle\PimcoreBundle\EventListener\AdminJavascriptListener:
+        arguments:
+            - '%coreshop.all.pimcore.admin.js%'
+            - '%coreshop.all.pimcore.admin.editmode_js%'
+            - '%coreshop.all.pimcore.admin.css%'
+            - '%coreshop.all.pimcore.admin.editmode_css%'
+        tags:
+            - { name: kernel.event_subscriber }

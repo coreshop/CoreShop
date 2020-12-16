@@ -39,61 +39,89 @@ coreshop_admin_cart_price_rule:
 coreshop_admin_order_get_folder_configuration:
     path: /%coreshop.admin.route.base%/order/get-folder-configuration
     defaults: { _controller: 'coreshop.pimcore_controller.order:getFolderConfigurationAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_get_states:
     path: /%coreshop.admin.route.base%/order/get-states
     defaults: { _controller: 'coreshop.pimcore_controller.order:getStatesAction'}
+    options:
+        expose: true
 
-coreshop_admin_order_cancel_order:
+coreshop_admin_order_update_order_state:
     path: /%coreshop.admin.route.base%/order/update-order-state
     defaults: { _controller: 'coreshop.pimcore_controller.order:updateOrderStateAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_get_orders:
     path: /%coreshop.admin.route.base%/order/list
     defaults: { _controller: 'coreshop.pimcore_controller.order:listAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_get_order:
     path: /%coreshop.admin.route.base%/order/detail
     defaults: { _controller: 'coreshop.pimcore_controller.order:detailAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_find:
     path: /%coreshop.admin.route.base%/order/find
     defaults: { _controller: 'coreshop.pimcore_controller.order:findSaleAction'}
+    options:
+        expose: true
 
 ##### ORDER PAYMENT
 coreshop_admin_order_payment_add:
     path: /%coreshop.admin.route.base%/order-payment/add-payment
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:addPaymentAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_payment_update_state:
     path: /%coreshop.admin.route.base%/order-payment/update-payment-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_payment:updateStateAction'}
+    options:
+        expose: true
 
 ##### ORDER INVOICE
 coreshop_admin_order_invoice_get_processable_items:
     path: /%coreshop.admin.route.base%/order-invoice/get-invoice-able-items
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:getInvoiceAbleItemsAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_invoice_create:
     path: /%coreshop.admin.route.base%/order-invoice/create-invoice
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:createInvoiceAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_invoice_update_state:
     path: /%coreshop.admin.route.base%/order-invoice/update-invoice-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:updateStateAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_invoice_render:
     path: /%coreshop.admin.route.base%/order-invoice/render
     defaults: { _controller: 'coreshop.pimcore_controller.order_invoice:renderAction'}
+    options:
+        expose: true
 
 ##### ORDER Comments
 coreshop_admin_order_comments_list:
     path: /%coreshop.admin.route.base%/order-comment/list
     defaults: { _controller: 'coreshop.pimcore_controller.order_comment:listAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_comments_add:
     path: /%coreshop.admin.route.base%/order-comment/add
     defaults: { _controller: 'coreshop.pimcore_controller.order_comment:addAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_comments_delete:
     path: /%coreshop.admin.route.base%/order-comment/delete
@@ -103,50 +131,75 @@ coreshop_admin_order_comments_delete:
 coreshop_admin_order_shipment_get_processable_items:
     path: /%coreshop.admin.route.base%/order-shipment/get-ship-able-items
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:getShipAbleItemsAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_shipment_create:
     path: /%coreshop.admin.route.base%/order-shipment/create-shipment
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:createShipmentAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_shipment_update_state:
     path: /%coreshop.admin.route.base%/order-shipment/update-shipment-state
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:updateStateAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_shipment_render:
     path: /%coreshop.admin.route.base%/order-shipment/render
     defaults: { _controller: 'coreshop.pimcore_controller.order_shipment:renderAction'}
+    options:
+        expose: true
 
 ##### ORDER CREATION
 coreshop_admin_order_get_customer_details:
     path: /%coreshop.admin.route.base%/order-creation/get-customer-details
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:getCustomerDetailsAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_preview:
     path: /%coreshop.admin.route.base%/order-creation/preview
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:salePreviewAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_create:
     path: /%coreshop.admin.route.base%/order-creation/create
     defaults: { _controller: 'coreshop.pimcore_controller.order_creation:saleCreationAction'}
+    options:
+        expose: true
 
 ##### ORDER EDIT
 coreshop_admin_order_edit:
     path: /%coreshop.admin.route.base%/order-edit/edit-items
     defaults: { _controller: 'coreshop.pimcore_controller.order_edit:editItemsAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_add:
     path: /%coreshop.admin.route.base%/order-edit/add-items
     defaults: { _controller: 'coreshop.pimcore_controller.order_edit:addItemsAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_remove:
     path: /%coreshop.admin.route.base%/order-edit/remove-item
     defaults: { _controller: 'coreshop.pimcore_controller.order_edit:removeItemAction'}
+    options:
+        expose: true
 
 ##### CUSTOMER CREATION
 coreshop_admin_order_customer_creation:
     path: /%coreshop.admin.route.base%/order/customer/create
     defaults: { _controller: 'coreshop.pimcore_controller.order_customer_creation:createCustomerAction'}
+    options:
+        expose: true
 
 coreshop_admin_order_address_creation:
     path: /%coreshop.admin.route.base%/order/address/create
     defaults: { _controller: 'coreshop.pimcore_controller.order_address_creation:createAddressAction'}
+    options:
+        expose: true
+

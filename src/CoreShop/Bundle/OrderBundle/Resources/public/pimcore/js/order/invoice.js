@@ -23,7 +23,7 @@ coreshop.order.order.invoice = Class.create({
         this.cb = cb;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-invoice/get-invoice-able-items',
+            url: Routing.generate('coreshop_admin_order_invoice_get_processable_items'),
             params: {
                 id: this.order.o_id
             },
@@ -183,7 +183,7 @@ coreshop.order.order.invoice = Class.create({
                         data['items'] = itemsToInvoice;
 
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/order-invoice/create-invoice',
+                            url: Routing.generate('coreshop_admin_order_invoice_create'),
                             method: 'post',
                             jsonData: data,
                             success: function (response) {

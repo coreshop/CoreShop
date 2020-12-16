@@ -107,7 +107,7 @@ coreshop.order.order.detail.blocks.payment = Class.create(coreshop.order.order.d
                                 defaultBindProperty: null,
                                 handler: function (widgetColumn) {
                                     var record = widgetColumn.getWidgetRecord();
-                                    var url = '/admin/coreshop/order-payment/update-payment-state',
+                                    var url = Routing.generate('coreshop_admin_order_payment_update_state'),
                                         transitions = record.get('transitions'),
                                         id = record.get('id');
                                     if (transitions.length !== 0) {

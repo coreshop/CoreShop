@@ -16,8 +16,8 @@ coreshop.index.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_indexes',
 
-    url: {
-        save: '/admin/coreshop/indices/save'
+    routing: {
+        save: 'coreshop_index_save'
     },
 
     getPanel: function () {

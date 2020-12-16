@@ -61,7 +61,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/class/get-tree',
+                url: Routing.generate('pimcore_admin_dataobject_class_gettree'),
             },
             fields: ['name', 'id'],
             autoLoad: true,
@@ -95,7 +95,7 @@ pimcore.object.classes.data.coreShopDynamicDropdown = Class.create(pimcore.objec
             autoDestroy: true,
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/dynamic-dropdown/methods',
+                url: Routing.generate('coreshop_dynamic_dropdown_methods'),
                 extraParams: {
                     className: this.classesCombo.getValue()
                 },

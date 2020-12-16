@@ -143,7 +143,7 @@ pimcore.object.classes.data.coreShopEmbeddedClass = Class.create(pimcore.object.
         return new Ext.data.Store({
             proxy: {
                 type: 'ajax',
-                url: '/admin/coreshop/embedded-class/get-custom-layouts',
+                url: Routing.generate('coreshop_pimcore_embedded_class_get_custom_layouts'),
                 extraParams: {
                     className: this.datax.embeddedClassName
                 },

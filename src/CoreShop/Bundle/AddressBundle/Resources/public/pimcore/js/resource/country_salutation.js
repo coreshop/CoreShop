@@ -17,7 +17,7 @@ Ext.define('CoreShop.address.CountrySalutation', {
             store: {
                 proxy: {
                     type: 'ajax',
-                    url: '/admin/coreshop/countries/list-active',
+                    url: Routing.generate('coreshop_country_listActive'),
                     reader: {
                         type: 'json',
                     }
@@ -40,7 +40,7 @@ Ext.define('CoreShop.address.CountrySalutation', {
                     }
                     else {
                         Ext.Ajax.request({
-                            url: '/admin/coreshop/countries/get',
+                            url: Routing.generate('coreshop_country_get'),
                             method: 'get',
                             params: {
                                 id: cmb.getValue()

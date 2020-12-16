@@ -15,8 +15,8 @@ coreshop.tax.item = Class.create(coreshop.resource.item, {
 
     iconCls: 'coreshop_icon_taxes',
 
-    url: {
-        save: '/admin/coreshop/tax_rates/save'
+    routing: {
+        save: 'coreshop_tax_rate_save'
     },
 
     getItems: function () {

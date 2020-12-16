@@ -40,7 +40,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.order.
         me.layout.setLoading(t('loading'));
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-comment/list',
+            url: Routing.generate('coreshop_admin_order_comments_list'),
             params: {
                 id: me.sale.o_id
             },
@@ -188,7 +188,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.order.
         formValues['id'] = me.sale.o_id;
 
         Ext.Ajax.request({
-            url: '/admin/coreshop/order-comment/add',
+            url: Routing.generate('coreshop_admin_order_comments_add'),
             method: 'post',
             params: formValues,
             callback: function (request, success, response) {
@@ -219,7 +219,7 @@ coreshop.order.order.detail.blocks.comments = Class.create(coreshop.order.order.
                 me.layout.setLoading(t('loading'));
 
                 Ext.Ajax.request({
-                    url: '/admin/coreshop/order-comment/delete',
+                    url: Routing.generate('coreshop_admin_order_comments_delete'),
                     method: 'post',
                     params: {
                         id: comment.id

@@ -3,6 +3,7 @@ imports:
     - { resource: services/pages.yml }
     - { resource: services/pages_pimcore.yml }
     - { resource: services/elements.yml }
+    - { resource: services/elements_pimcore.yml }
 
 services:
     _defaults:
@@ -38,12 +39,22 @@ services:
             - '@behat.mink.default_session'
             - '@behat.mink.parameters'
 
+    CoreShop\Behat\Service\PimcoreCookieSetter:
+        arguments:
+            - '@behat.mink.default_session'
+            - '@behat.mink.parameters'
+
     coreshop.security_service.frontend:
         class: CoreShop\Behat\Service\SecurityService
         arguments:
             - '@session'
             - '@CoreShop\Behat\Service\CookieSetterInterface'
             - 'shop'
+
+    coreshop.security_service.backend:
+        class: CoreShop\Behat\Service\PimcoreSecurityService
+        arguments:
+            - '@CoreShop\Behat\Service\PimcoreCookieSetter'
 
     CoreShop\Behat\Service\NotificationAccessorInterface: '@CoreShop\Behat\Service\NotificationAccessor'
     CoreShop\Behat\Service\NotificationAccessor:

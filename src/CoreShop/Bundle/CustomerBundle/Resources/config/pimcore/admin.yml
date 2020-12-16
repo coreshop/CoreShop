@@ -1,6 +1,4 @@
 core_shop_customer:
     pimcore_admin:
-        js:
-            resource: '/bundles/coreshopcustomer/pimcore/js/resource.js'
         css:
             customer: '/bundles/coreshopcustomer/pimcore/css/customer.css'
