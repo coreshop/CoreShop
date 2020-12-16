@@ -13,6 +13,7 @@ services:
     CoreShop\Bundle\CoreBundle\Form\Type\AddressChoiceType:
         arguments:
             - '@coreshop.repository.customer'
+            - '@CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface'
         tags:
             - { name: form.type }
 
