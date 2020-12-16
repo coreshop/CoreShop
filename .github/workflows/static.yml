@@ -77,6 +77,6 @@ jobs:
 
     - name: STAN
       run: |
-        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaVersionObjectConstructorml
+        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
         bin/console cache:warmup --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3
