@@ -14,64 +14,15 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass as NewRegisterSimpleRegistryTypePass;
 
-abstract class RegisterSimpleRegistryTypePass implements CompilerPassInterface
-{
+if (class_exists(NewRegisterSimpleRegistryTypePass::class)) {
+    @trigger_error('Class CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Registry\RegisterRegistryTypePass class instead.', E_USER_DEPRECATED);
+} else {
     /**
-     * @var string
+     * @deprecated Class CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterSimpleRegistryTypePass is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Registry\RegisterRegistryTypePass class instead.
      */
-    protected $registry;
-
-    /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $registry
-     * @param string $parameter
-     * @param string $tag
-     */
-    public function __construct($registry, $parameter, $tag)
+    class RegisterSimpleRegistryTypePass extends NewRegisterSimpleRegistryTypePass
     {
-        $this->registry = $registry;
-        $this->parameter = $parameter;
-        $this->tag = $tag;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
-    {
-        if (!$container->has($this->registry)) {
-            return;
-        }
-
-        $registry = $container->getDefinition($this->registry);
-
-        $map = [];
-        foreach ($container->findTaggedServiceIds($this->tag) as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            if (!isset($attributes[0]['type'])) {
-                $attributes[0]['type'] = Container::underscore(substr(strrchr($definition->getClass(), '\\'), 1));
-            }
-
-            $map[$attributes[0]['type']] = $attributes[0]['type'];
-
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-        }
-
-        $container->setParameter($this->parameter, $map);
     }
 }

@@ -12,21 +12,26 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Core\Model\Payment;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
+use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
     private $paymentFactory;
+    private $decimalFactor;
+    private $decimalPrecision;
 
-    public function __construct(FactoryInterface $paymentFactory)
+    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
     {
         $this->paymentFactory = $paymentFactory;
+        $this->decimalFactor = $decimalFactor;
+        $this->decimalPrecision = $decimalPrecision;
     }
 
     /**
@@ -39,18 +44,18 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
 
         /**
-         * @var Payment $payment
+         * @var PaymentInterface $payment
          */
         $payment = $this->paymentFactory->createNew();
         $payment->setNumber($orderNumber);
-        $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setTotalAmount($order->getPaymentTotal());
+        $payment->setPaymentProvider($order->getPaymentProvider());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(new \DateTime());
         $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails($order->getPaymentSettings());
+            $payment->setDetails(new ArrayObject($order->getPaymentSettings() ?? []));
         }
 
         if ($payment instanceof OrderPaymentInterface) {
@@ -60,12 +65,14 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $description = sprintf(
             'Payment contains %s item(s) for a total of %s.',
             count($order->getItems()),
-            round($order->getPaymentTotal() / 100, 2)
+            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
         );
 
         //payum setters
-        $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
-        $payment->setDescription($description);
+        if ($payment instanceof Payment) {
+            $payment->setCurrencyCode($payment->getCurrency()->getIsoCode());
+            $payment->setDescription($description);
+        }
 
         return $payment;
     }

@@ -55,16 +55,6 @@ services:
         tags:
             - { name: jms_serializer.handler, type: carbon, direction: serialization, format: json, method: serializeRelation }
 
-    CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor:
-        decorates: 'jms_serializer.object_constructor'
-        arguments:
-            - '@CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor.inner'
-            - '@jms_serializer.unserialize_object_constructor'
-
-    jms_serializer.object_constructor:
-        alias: jms_serializer.doctrine_object_constructor
-        public: false
-
     CoreShop\Bundle\ResourceBundle\Form\Extension\HttpFoundation\HttpFoundationRequestHandler:
         decorates: form.type_extension.form.request_handler
         decoration_priority: 256
@@ -80,11 +70,18 @@ services:
         arguments:
             - '@translator'
 
-    CoreShop\Component\Resource\Doctrine\Cache\PimcoreCache:
-        arguments:
-            - '@Pimcore\Cache\Core\CoreHandlerInterface'
-
     CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver:
         decorates: 'jms_serializer.metadata.annotation_driver'
         arguments:
             - '@CoreShop\Bundle\ResourceBundle\Serialization\Driver\PimcoreDataObjectDriver.inner'
+
+    CoreShop\Bundle\ResourceBundle\EventListener\DeepCopySubscriber:
+        tags:
+            - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor:
+        decorates: 'jms_serializer.object_constructor'
+        arguments:
+            - '@CoreShop\Bundle\ResourceBundle\Serialization\VersionObjectConstructor.inner'
+            - '@jms_serializer.unserialize_object_constructor'
+            - 'null'

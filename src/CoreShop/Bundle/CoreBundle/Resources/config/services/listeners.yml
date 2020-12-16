@@ -4,7 +4,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\EventListener\CartBlamerListener:
         arguments:
-            - '@coreshop.cart_processor'
+            - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
             - '@CoreShop\Component\Order\Context\CartContextInterface'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
         tags:

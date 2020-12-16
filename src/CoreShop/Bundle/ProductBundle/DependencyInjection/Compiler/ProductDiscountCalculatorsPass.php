@@ -14,31 +14,18 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\DependencyInjection\Compiler;
 
-final class ProductDiscountCalculatorsPass extends AbstractProductPriceCalculatorPass
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
+
+final class ProductDiscountCalculatorsPass extends RegisterSimpleRegistryTypePass
 {
     public const PRODUCT_DISCOUNT_CALCULATOR_TAG = 'coreshop.product.discount_calculator';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getRegistry()
+    public function __construct()
     {
-        return 'coreshop.registry.product.discount_calculators';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getTag()
-    {
-        return self::PRODUCT_DISCOUNT_CALCULATOR_TAG;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getParameter()
-    {
-        return 'coreshop.product.discount_calculators';
+        parent::__construct(
+            'coreshop.registry.product.discount_calculators',
+            'coreshop.product.discount_calculators',
+            self::PRODUCT_DISCOUNT_CALCULATOR_TAG
+        );
     }
 }

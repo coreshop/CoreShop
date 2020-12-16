@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Core\Cart\Rule\Action;
 
 use CoreShop\Component\Core\Cart\Rule\Applier\CartRuleApplierInterface;
@@ -59,9 +57,6 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
@@ -70,27 +65,20 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getDiscount(OrderInterface $cart, array $configuration): int
+    protected function getDiscount(OrderInterface $cart, array $configuration)
     {
         $applyOn = isset($configuration['applyOn']) ? $configuration['applyOn'] : 'total';
 
         if ('total' === $applyOn) {
             $cartAmount = $cart->getTotal($configuration['gross']);
         } else {
-            $cartAmount = $cart->getSubtotal($configuration['gross']) + $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE,
-                    $configuration['gross']);
+            $cartAmount =
+                $cart->getSubtotal($configuration['gross']) +
+                $cart->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $configuration['gross']);
         }
 
-
-        $amount = $configuration['amount'];
-
-        /**
-         * @var CurrencyInterface $currency
-         */
         $currency = $this->currencyRepository->find($configuration['currency']);
+        $amount = $configuration['amount'];
 
         Assert::isInstanceOf($currency, CurrencyInterface::class);
 
@@ -101,7 +89,13 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         );
     }
 
-    protected function getApplicableAmount(int $cartAmount, int $ruleAmount): int
+    /**
+     * @param int $cartAmount
+     * @param int $ruleAmount
+     *
+     * @return int
+     */
+    protected function getApplicableAmount($cartAmount, $ruleAmount)
     {
         return min($cartAmount, $ruleAmount);
     }

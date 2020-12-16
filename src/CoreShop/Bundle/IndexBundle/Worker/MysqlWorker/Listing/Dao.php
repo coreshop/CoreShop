@@ -16,13 +16,14 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker\Listing;
 
 use CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 use CoreShop\Component\Index\Listing\ListingInterface;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pimcore\Db;
 
 class Dao
 {
     /**
-     * @var \Pimcore\Db\ConnectionInterface
+     * @var Connection
      */
     private $database;
 
@@ -39,10 +40,10 @@ class Dao
     /**
      * @param MysqlWorker\Listing $model
      */
-    public function __construct(MysqlWorker\Listing $model)
+    public function __construct(MysqlWorker\Listing $model, Connection $connection)
     {
         $this->model = $model;
-        $this->database = Db::get();
+        $this->database = $connection;
     }
 
     /**
@@ -73,10 +74,12 @@ class Dao
         } else {
             $queryBuilder->select('DISTINCT q.o_id');
         }
-        $result = $this->database->executeQuery($queryBuilder->getSQL());
-        $this->lastRecordCount = $result->rowCount();
 
-        return $result->fetchAll();
+        $resultSet = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $this->lastRecordCount = count($resultSet);
+
+        return $resultSet;
     }
 
     /**
@@ -101,24 +104,21 @@ class Dao
                 $queryBuilder->select($this->quoteIdentifier($fieldName) . ' AS value, count(*) AS count');
             }
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
-        } else {
-            $queryBuilder->select($this->quoteIdentifier($fieldName));
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $queryResult = $stmt->fetchAll();
-            $result = [];
-
-            foreach ($queryResult as $row) {
-                if ($row[$fieldName]) {
-                    $result[] = $row[$fieldName];
-                }
-            }
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
+
+        $queryBuilder->select($this->quoteIdentifier($fieldName));
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
+
+        $result = [];
+
+        foreach ($queryResult as $row) {
+            if ($row[$fieldName]) {
+                $result[] = $row[$fieldName];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -174,10 +174,7 @@ class Dao
             $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
             $queryBuilder->groupBy('dest');
 
-            $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-            $result = $stmt->fetchAll();
-
-            return $result;
+            return $this->database->fetchAllAssociative($queryBuilder->getSQL());
         }
 
         $queryBuilder->select($this->quoteIdentifier('dest'));
@@ -194,8 +191,7 @@ class Dao
         $queryBuilder->andWhere('src IN (' . $subQueryBuilder->getSQL() . ')');
         $queryBuilder->groupBy('dest');
 
-        $stmt = $this->database->executeQuery($queryBuilder->getSQL());
-        $queryResult = $stmt->fetchAll();
+        $queryResult = $this->database->fetchAllAssociative($queryBuilder->getSQL());
 
         $result = [];
 

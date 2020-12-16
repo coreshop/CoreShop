@@ -16,30 +16,13 @@ namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListInterface
 {
-    /**
-     * @return StorageListItemInterface[]
-     */
-    public function getItems();
+    public function getItems(): ?array;
 
-    /**
-     * @return bool
-     */
-    public function hasItems();
+    public function hasItems(): bool;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function addItem($item);
+    public function addItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     */
-    public function removeItem($item);
+    public function removeItem($item): void;
 
-    /**
-     * @param StorageListItemInterface $item
-     *
-     * @return bool
-     */
-    public function hasItem($item);
+    public function hasItem($item): bool;
 }

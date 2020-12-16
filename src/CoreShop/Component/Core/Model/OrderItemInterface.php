@@ -20,69 +20,29 @@ use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 
 interface OrderItemInterface extends BaseOrderItemInterface, ShippableItemInterface
 {
-    /**
-     * @return bool
-     */
-    public function getDigitalProduct();
+    public function getDigitalProduct(): ?bool;
 
-    /**
-     * @param bool $digitalProduct
-     */
-    public function setDigitalProduct($digitalProduct);
+    public function setDigitalProduct(?bool $digitalProduct);
 
-    /**
-     * @return string
-     */
-    public function getUnitIdentifier();
+    public function getUnitIdentifier(): ?string;
 
-    /**
-     * @param string $unitIdentifier
-     */
-    public function setUnitIdentifier($unitIdentifier);
+    public function setUnitIdentifier(?string $unitIdentifier);
 
-    /**
-     * @return null|ProductUnitDefinitionInterface
-     */
-    public function getUnitDefinition();
+    public function getUnitDefinition(): ?ProductUnitDefinitionInterface;
 
-    /**
-     * @param ProductUnitDefinitionInterface $productUnitDefinition
-     */
-    public function setUnitDefinition($productUnitDefinition);
+    public function setUnitDefinition(ProductUnitDefinitionInterface $productUnitDefinition);
 
-    /**
-     * @return bool
-     */
-    public function hasUnitDefinition();
+    public function hasUnitDefinition(): bool;
 
-    /**
-     * @return int
-     */
-    public function getDefaultUnitQuantity();
+    public function getDefaultUnitQuantity(): ?float;
 
-    /**
-     * @param int $defaultUnitQuantity
-     */
-    public function setDefaultUnitQuantity($defaultUnitQuantity);
+    public function setDefaultUnitQuantity(?float $defaultUnitQuantity);
 
-    /**
-     * @return float
-     */
-    public function getItemWeight();
+    public function getItemWeight(): ?float;
 
+    public function setItemWeight(?float $itemWeight);
 
-    /**
-     * @param float $itemWeight
-     */
-    public function setItemWeight($itemWeight);
+    public function getTotalWeight(): ?float;
 
-    /**
-     * @return float
-     */
-    public function getTotalWeight();
-
-    /**
-     * @param float $totalWeight
-     */
-    public function setTotalWeight($totalWeight);
+    public function setTotalWeight(?float $totalWeight);
 }

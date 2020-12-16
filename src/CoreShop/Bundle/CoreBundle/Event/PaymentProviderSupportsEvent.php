@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class PaymentProviderSupportsEvent extends Event
 {

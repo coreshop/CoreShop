@@ -10,11 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\ResourceBundle\Pimcore\ObjectManager;
 use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -27,26 +24,28 @@ final class RegisterPimcoreRepositoriesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->has(ObjectManager::class)) {
+        if (!$container->has('pimcore.dao.object_manager')) {
             return;
         }
 
         $registry = $container->get(RegistryInterface::class);
 
         foreach ($container->findTaggedServiceIds('coreshop.pimcore.repository') as $id => $attributes) {
-            if (!isset($attributes[0]['alias'])) {
-                throw new \InvalidArgumentException('Tagged Repository `' . $id . '` needs to have `type` and `priority` attributes.');
+            foreach ($attributes as $tag) {
+                if (!isset($tag['alias'])) {
+                    throw new \InvalidArgumentException('Tagged Repository `'.$id.'` needs to have `type` and `priority` attributes.');
+                }
+
+                $metadata = $registry->get($tag['alias']);
+
+                $container->findDefinition('pimcore.dao.object_manager')->addMethodCall(
+                    'registerRepository',
+                    [
+                        $metadata->getClass('model'),
+                        new Reference($id),
+                    ]
+                );
             }
-
-            $metadata = $registry->get($attributes[0]['alias']);
-
-            $container->findDefinition(ObjectManager::class)->addMethodCall(
-                'registerRepository',
-                [
-                    $metadata->getClass('model'),
-                    new Reference($id),
-                ]
-            );
         }
     }
 }

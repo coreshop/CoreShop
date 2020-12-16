@@ -16,11 +16,6 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
-use CoreShop\Component\Address\Model\ZoneInterface;
-use CoreShop\Component\Pimcore\DataObject\VersionHelper;
-use CoreShop\Component\Resource\Factory\FactoryInterface;
-use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
@@ -53,7 +48,12 @@ final class VersionContext implements Context
 
         $data = $this->restoreVersion($concrete, $key);
 
-        $this->sharedStorage->set('product-version', $concrete->getLatestVersion(true)->loadData());
+        $GLOBALS['data'] = $data;
+
+        $version = $concrete->getLatestVersion(true);
+        $versionData = $version->loadData(false);
+
+        $this->sharedStorage->set('product-version', $versionData);
 
         $data->save();
 

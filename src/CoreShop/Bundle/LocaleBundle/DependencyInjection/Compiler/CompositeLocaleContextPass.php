@@ -10,13 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\LocaleBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
 use CoreShop\Component\Locale\Context\CompositeLocaleContext;
 use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeLocaleContextPass extends PrioritizedCompositeServicePass
 {

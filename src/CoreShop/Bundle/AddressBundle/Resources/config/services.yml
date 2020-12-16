@@ -8,6 +8,7 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Address\Context\CountryContextInterface: '@CoreShop\Component\Address\Context\CompositeCountryContext'
     CoreShop\Component\Address\Context\CompositeCountryContext:
         public: false
 
@@ -30,7 +31,7 @@ services:
         public: false
         arguments:
             - '@coreshop.repository.country'
-            - '@Pimcore\Cache\Core\CoreHandlerInterface'
+            - '@Pimcore\Cache\Core\CoreCacheHandler'
             - '%pimcore.geoip.db_file%'
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }

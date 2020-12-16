@@ -32,8 +32,6 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
             ->setParameter('locale', $locale)
             ->addOrderBy('o.position')
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getResult();
     }
 

@@ -1,4 +1,4 @@
-@ui @ui_pimcore @country @wip
+@ui @ui_pimcore @country
 Feature: Test if I can create a new country
 
     Scenario:

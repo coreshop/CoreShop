@@ -18,8 +18,5 @@ interface PayableInterface
 {
     public function getId();
 
-    /**
-     * @return int
-     */
-    public function getPaymentTotal();
+    public function getPaymentTotal(): ?int;
 }

@@ -1,4 +1,4 @@
-@ui @ui_pimcore @menu @wip
+@ui @ui_pimcore @menu
 Feature: Test if I can open a menu in Pimcore
     Background: Sign in with email and password
         Given I want to log into Pimcore backend

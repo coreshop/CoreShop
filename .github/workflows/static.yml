@@ -1,0 +1,82 @@
+name: Static Tests (Lint, Stan)
+on:
+  push:
+    branches: [ master, '2.2' ]
+  pull_request:
+    branches: [ master, '2.2' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      PIMCORE_ENVIRONMENT: "test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: coreshop_test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
+    strategy:
+      matrix:
+        php: [7.4]
+        pimcore: [10.0.x-dev]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: intl
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Start mysql service
+      run: sudo /etc/init.d/mysql start
+
+    - name: Verify MySQL connection from host
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y mysql-client
+        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
+
+    - name: Setup mysql
+      run: |
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
+        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Composer install
+      run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Validate YAML
+      run: bin/console lint:yaml src --no-debug
+
+    - name: Validate TWIG
+      run: bin/console lint:twig src --no-debug
+
+    - name: STAN
+      run: |
+        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
+        bin/console cache:warmup --env=dev
+        vendor/bin/phpstan analyse -c phpstan.neon src -l 3

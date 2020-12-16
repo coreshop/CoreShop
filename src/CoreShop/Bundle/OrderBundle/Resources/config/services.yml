@@ -32,7 +32,7 @@ services:
     CoreShop\Component\Order\Manager\CartManagerInterface: '@CoreShop\Bundle\OrderBundle\Manager\CartManager'
     CoreShop\Bundle\OrderBundle\Manager\CartManager:
         arguments:
-            - '@coreshop.cart_processor'
+            - '@CoreShop\Component\Order\Processor\CartProcessorInterface'
             - '@CoreShop\Component\Pimcore\DataObject\ObjectServiceInterface'
             - '%coreshop.folder.cart%'
             - '%coreshop.folder.order_item%'

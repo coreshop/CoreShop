@@ -25,13 +25,7 @@ interface CategoryInterface extends
     SEOOpenGraphAwareInterface,
     PimcoreStoresAwareInterface
 {
-    /**
-     * @return FilterInterface
-     */
-    public function getFilter();
+    public function getFilter(): ?FilterInterface;
 
-    /**
-     * @param FilterInterface $filter
-     */
-    public function setFilter($filter);
+    public function setFilter(FilterInterface $filter);
 }

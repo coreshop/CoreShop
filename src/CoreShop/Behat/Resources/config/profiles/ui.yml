@@ -9,11 +9,11 @@ ui:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: behat-bootstrap.php
             kernel:
-                path: app/BehatAppKernel.php
-                class: BehatAppKernel
+                path: src/BehatKernel.php
+                class: BehatKernel
                 environment: test
 
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: etc/build
             clean_start: false
             screenshot: true
@@ -28,8 +28,8 @@ ui:
 #                            external_converted_uri: "http://localhost:9080/app_test.php"
             show_auto: false
 
-        CoreShop\Behat\PantherExtension: ~
+        Robertfausk\Behat\PantherExtension: ~
 
     gherkin:
         filters:
-            tags: '@ui && ~@ui_precision && ~@wip'
+            tags: '@ui && ~@ui_precision && ~@ui_pimcore && ~@wip'

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Form\Type;
 
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Core\Model\OrderItemInterface;
+use CoreShop\Component\Order\Model\OrderItemInterface;
 use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -49,9 +49,8 @@ final class CartItemType extends AbstractResourceType
 
             $event->getForm()->add('quantity', QuantityType::class, [
                 'html5' => true,
-                'unit_definition' => $data->hasUnitDefinition() ? $data->getUnitDefinition() : null,
                 'label' => 'coreshop.ui.quantity',
-                'disabled' => $data->getIsGiftItem(),
+                'disabled' => (bool)$data->getIsGiftItem(),
             ]);
         });
 

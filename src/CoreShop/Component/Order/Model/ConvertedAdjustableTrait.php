@@ -19,57 +19,36 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 trait ConvertedAdjustableTrait
 {
-    /**
-     * {@inheritdoc}
-     */
     public function setConvertedPimcoreAdjustmentTotalNet(int $adjustmentTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConvertedPimcoreAdjustmentTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConvertedPimcoreAdjustmentTotalGross(int $adjustmentTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConvertedPimcoreAdjustmentTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConvertedAdjustmentItems()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setConvertedAdjustmentItems($adjustmentItems)
+    public function setConvertedAdjustmentItems(?Fieldcollection $adjustmentItems)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConvertedAdjustments()
     {
         return $this->getConvertedAdjustmentItems() instanceof Fieldcollection && $this->getConvertedAdjustmentItems()->getCount() > 0;
@@ -104,9 +83,6 @@ trait ConvertedAdjustableTrait
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConvertedAdjustment(AdjustmentInterface $adjustment)
     {
         $items = $this->getConvertedAdjustmentItems();
@@ -124,9 +100,6 @@ trait ConvertedAdjustableTrait
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addConvertedAdjustment(AdjustmentInterface $adjustment)
     {
         if (!$this->hasConvertedAdjustment($adjustment)) {
@@ -144,9 +117,6 @@ trait ConvertedAdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeConvertedAdjustment(AdjustmentInterface $adjustment)
     {
         $items = $this->getConvertedAdjustmentItems();
@@ -169,9 +139,6 @@ trait ConvertedAdjustableTrait
         $this->addToConvertedAdjustmentsTotal($adjustment);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeConvertedAdjustments(string $type = null)
     {
         foreach ($this->getConvertedAdjustments($type) as $adjustment) {
@@ -179,9 +146,6 @@ trait ConvertedAdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeConvertedAdjustmentsRecursively(string $type = null)
     {
         $this->removeConvertedAdjustments($type);
@@ -195,9 +159,6 @@ trait ConvertedAdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConvertedAdjustmentsTotal(?string $type = null, bool $withTax = true): int
     {
         if (null === $type) {
@@ -218,9 +179,6 @@ trait ConvertedAdjustableTrait
         return $total;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function recalculateConvertedAdjustmentsTotal()
     {
         $adjustmentsTotalGross = 0;
@@ -261,8 +219,5 @@ trait ConvertedAdjustableTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract protected function recalculateConvertedAfterAdjustmentChange();
+    abstract protected function recalculateConvertedAfterAdjustmentChange(): void;
 }

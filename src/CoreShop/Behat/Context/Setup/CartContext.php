@@ -155,7 +155,9 @@ final class CartContext implements Context
     {
         Assert::greaterThan(count($customer->getAddresses()), 0);
 
-        $this->cartContext->getCart()->setShippingAddress(reset($customer->getAddresses()));
+        $address = $customer->getAddresses();
+
+        $this->cartContext->getCart()->setShippingAddress(reset($address));
         $this->cartManager->persistCart($this->cartContext->getCart());
     }
 
@@ -227,7 +229,7 @@ final class CartContext implements Context
      *
      * @return AddToCartInterface
      */
-    private function createAddToCart(OrderInterface $cart, OrderItemInterface $cartItem)
+    private function createAddToCart(\CoreShop\Component\Order\Model\OrderInterface $cart, \CoreShop\Component\Order\Model\OrderItemInterface $cartItem)
     {
         return $this->addToCartFactory->createWithCartAndCartItem($cart, $cartItem);
     }

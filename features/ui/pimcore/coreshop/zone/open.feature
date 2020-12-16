@@ -1,4 +1,4 @@
-@ui @ui_pimcore @zone @wip
+@ui @ui_pimcore @zone
 Feature: Test if I can open the Zones Panel
     Scenario:
         Given I am a logged in admin

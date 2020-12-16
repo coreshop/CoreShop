@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Behat\Service;
 
 use Behat\Mink\Driver\PantherDriver;
+use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
 use Symfony\Component\BrowserKit\Cookie;
 
@@ -61,7 +62,12 @@ class CookieSetter implements CookieSetterInterface
     {
         $driver = $session->getDriver();
 
-        if ($driver instanceof PantherDriver && $driver->getClient() === null) {
+        try {
+            if ($driver instanceof PantherDriver && $driver->getClient() === null) {
+                return true;
+            }
+        }
+        catch (DriverException $e) {
             return true;
         }
 

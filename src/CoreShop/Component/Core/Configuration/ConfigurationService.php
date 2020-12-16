@@ -25,9 +25,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
-    /**
-     * @var ConfigurationRepositoryInterface
-     */
     protected $configurationRepository;
     protected $storeContext;
 
@@ -46,7 +43,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * {@inheritdoc}
      */
-    public function getForStore($key, StoreInterface $store = null, $returnObject = false)
+    public function getForStore(string $key, StoreInterface $store = null, $returnObject = false)
     {
         if (null === $store) {
             $store = $this->getStore();
@@ -72,7 +69,7 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     /**
      * {@inheritdoc}
      */
-    public function setForStore($key, $data, StoreInterface $store = null): void
+    public function setForStore(string $key, $data, StoreInterface $store = null): \CoreShop\Component\Core\Model\ConfigurationInterface
     {
         if (null === $store) {
             $store = $this->getStore();
@@ -90,12 +87,14 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         $config->setStore($store);
         $this->entityManager->persist($config);
         $this->entityManager->flush();
+
+        return $config;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeForStore($key, StoreInterface $store = null): void
+    public function removeForStore(string $key, StoreInterface $store = null): void
     {
         if (null === $store) {
             $store = $this->getStore();

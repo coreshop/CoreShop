@@ -19,40 +19,35 @@ use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Order\OrderInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Doctrine\DBAL\Connection;
 use Pimcore\Model\DataObject\Concrete;
-use Zend\Paginator\Adapter\AdapterInterface;
-use Zend\Paginator\AdapterAggregateInterface;
 
-interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
+interface ListingInterface extends \Countable, \IteratorAggregate
 {
-    /**
-     * Order Key Price.
-     */
-    const ORDERKEY_PRICE = 'orderkey_price';
-
     /**
      * Variant mode defines how to consider variants in product list results
      * - does not consider variants in search results.
      */
-    const VARIANT_MODE_HIDE = 'hide';
+    public const VARIANT_MODE_HIDE = 'hide';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results and returns objects and variants.
      */
-    const VARIANT_MODE_INCLUDE = 'include';
+    public const VARIANT_MODE_INCLUDE = 'include';
 
     /**
      * Variant mode defines how to consider variants in product list results
      * - considers variants in search results but only returns corresponding objects in search results.
      */
-    const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
+    public const VARIANT_MODE_INCLUDE_PARENT_OBJECT = 'include_parent_object';
 
     /**
      * @param IndexInterface  $index
      * @param WorkerInterface $worker
+     * @param Connection $connection
      */
-    public function __construct(IndexInterface $index, WorkerInterface $worker);
+    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection);
 
     /**
      * Returns all products valid for this search.
@@ -60,6 +55,13 @@ interface ListingInterface extends AdapterInterface, AdapterAggregateInterface
      * @return PimcoreModelInterface[]
      */
     public function getObjects();
+
+    /**
+     * @param int $offset
+     * @param int $itemCountPerPage
+     * @return PimcoreModelInterface[]
+     */
+    public function getItems(int $offset, int $itemCountPerPage);
 
     /**
      * Adds filter condition to product list

@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Component\Address\Model\CountryInterface;
 
 class Country extends Select
 {
@@ -25,19 +26,23 @@ class Country extends Select
      */
     public $fieldtype = 'coreShopCountry';
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.country');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.country.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . CountryInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

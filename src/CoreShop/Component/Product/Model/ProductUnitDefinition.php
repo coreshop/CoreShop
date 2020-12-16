@@ -52,81 +52,51 @@ class ProductUnitDefinition extends AbstractResource implements ProductUnitDefin
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnit()
     {
         return $this->unit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUnit(ProductUnitInterface $unit)
     {
         $this->unit = $unit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConversionRate()
     {
         return $this->conversionRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConversionRate(float $conversionRate = null)
     {
         $this->conversionRate = $conversionRate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrecision()
     {
         return $this->precision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPrecision(int $precision)
     {
         $this->precision = $precision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductUnitDefinitions()
     {
         return $this->productUnitDefinitions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProductUnitDefinitions(ProductUnitDefinitionsInterface $productUnitDefinitions = null)
     {
         $this->productUnitDefinitions = $productUnitDefinitions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUnitName()
     {
         if ($unit = $this->getUnit()) {

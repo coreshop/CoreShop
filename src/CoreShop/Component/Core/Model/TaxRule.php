@@ -50,9 +50,6 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this->country;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCountry(CountryInterface $country = null)
     {
         $this->country = $country;
@@ -60,17 +57,11 @@ class TaxRule extends BaseTaxRule implements TaxRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getState()
     {
         return $this->state;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setState(StateInterface $state = null)
     {
         $this->state = $state;

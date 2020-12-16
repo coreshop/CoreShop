@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block checkout %}
-    {{ render(controller('coreshop.frontend.controller.security:loginAction', {renderLayout: false, failure: pimcore_url(), target: pimcore_url()})) }}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\SecurityController::loginAction', {renderLayout: false, failure: pimcore_url(), target: pimcore_url()})) }}
 
     {% if coreshop_configuration('system.guest.checkout') %}
         <h2 class="main-heading text-center mt-4">

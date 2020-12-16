@@ -20,7 +20,7 @@ use CoreShop\Component\Pimcore\Mail;
 use Pimcore\Model\Document\Email;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class MailProcessor implements MailProcessorInterface
+final class MailProcessor implements Mail\MailProcessorInterface
 {
     private $eventDispatcher;
 
@@ -44,7 +44,14 @@ final class MailProcessor implements MailProcessorInterface
         $mail->setDocument($emailDocument);
         $mail->setParams($params);
         $mail->addRecipients($recipients);
-        $mail->setEnableLayoutOnRendering(false);
+
+        //BC Remove with 3.1
+        if (method_exists($mail, 'setEnableLayoutOnPlaceholderRendering')) {
+            $mail->setEnableLayoutOnPlaceholderRendering(false);
+        }
+        elseif (method_exists($mail, 'setEnableLayoutOnRendering')) {
+            $mail->setEnableLayoutOnRendering(false);
+        }
 
         $mailEvent = new MailEvent(
             $subject,

@@ -10,20 +10,30 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Configuration\Service;
+
+use CoreShop\Component\Configuration\Model\ConfigurationInterface;
 
 interface ConfigurationServiceInterface
 {
     /**
      * @param string $key
      * @param bool   $returnObject
-     * @return mixed
+     *
+     * @return ConfigurationInterface|null
      */
     public function get(string $key, bool $returnObject = false);
 
-    public function set(string $key, $data): void;
+    /**
+     * @param string $key
+     * @param mixed  $data
+     *
+     * @return ConfigurationInterface
+     */
+    public function set(string $key, $data): ConfigurationInterface;
 
-    public function remove(string $key);
+    /**
+     * @param string $key
+     */
+    public function remove(string $key): void;
 }

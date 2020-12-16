@@ -21,18 +21,12 @@ trait StoreAwareTrait
      */
     protected $store;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
+    public function getStore(): ?StoreInterface
     {
         return $this->store;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setStore($store)
+    public function setStore(?StoreInterface $store)
     {
         $this->store = $store;
     }

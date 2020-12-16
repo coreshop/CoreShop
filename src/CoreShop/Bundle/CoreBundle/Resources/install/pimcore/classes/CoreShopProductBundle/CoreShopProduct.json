@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "linkGeneratorReference": "@coreshop.object.link_generator.product",
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -227,23 +228,15 @@
                                         "visibleSearch": false
                                     },
                                     {
-                                        "fieldtype": "manyToOneRelation",
+                                        "fieldtype": "coreShopRelation",
                                         "width": "",
-                                        "assetUploadPath": "",
                                         "relationType": true,
-                                        "objectsAllowed": true,
-                                        "assetsAllowed": false,
-                                        "assetTypes": [],
-                                        "documentsAllowed": false,
-                                        "documentTypes": [],
-                                        "lazyLoading": true,
-                                        "classes": [],
                                         "pathFormatterClass": "",
+                                        "stack": "coreshop.manufacturer",
                                         "name": "manufacturer",
                                         "title": "coreshop.product.manufacturer",
-                                        "tooltip": "",
                                         "mandatory": false,
-                                        "noteditable": false,
+                                        "noteditable": true,
                                         "index": false,
                                         "locked": false,
                                         "style": "",
@@ -449,27 +442,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToManyRelation",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCategory"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.category",
                                 "name": "categories",
                                 "title": "coreshop.product.categories",
-                                "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,
                                 "index": false,
@@ -1067,6 +1046,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

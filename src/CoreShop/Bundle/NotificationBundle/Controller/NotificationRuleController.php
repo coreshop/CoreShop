@@ -29,8 +29,8 @@ class NotificationRuleController extends ResourceController
         $actions = [];
         $types = [];
 
-        $actionTypes = $this->getParameter('coreshop.notification_rule.actions.types');
-        $conditionTypes = $this->getParameter('coreshop.notification_rule.conditions.types');
+        $actionTypes = $this->container->getParameter('coreshop.notification_rule.actions.types');
+        $conditionTypes = $this->container->getParameter('coreshop.notification_rule.conditions.types');
 
         foreach ($actionTypes as $type) {
             if (!in_array($type, $types)) {

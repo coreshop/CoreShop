@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\PimcoreBundle\CoreExtension;
 
 use Pimcore\Model;
@@ -31,6 +29,26 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
      * @var string
      */
     public $phpdocType;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return null;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return null;
+    }
 
     /**
      * {@inheritdoc}
@@ -153,7 +171,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getForCsvExport($object, $params = [])
     {
@@ -165,5 +183,13 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
      */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilterCondition($value, $operator, $params = [])
+    {
+        return '';
     }
 }

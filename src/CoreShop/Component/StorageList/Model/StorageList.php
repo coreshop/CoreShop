@@ -18,9 +18,6 @@ use Webmozart\Assert\Assert;
 
 class StorageList implements StorageListInterface
 {
-    /**
-     * @var array
-     */
     protected $items;
 
     public function __construct()
@@ -28,28 +25,17 @@ class StorageList implements StorageListInterface
         $this->items = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getItems()
+    public function getItems(): array
     {
         return $this->items;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setItems($items)
+    public function setItems($items): void
     {
         $this->items = $items;
-
-        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addItem($item)
+    public function addItem($item): void
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
@@ -59,17 +45,14 @@ class StorageList implements StorageListInterface
         $this->setItems($items);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeItem($item)
+    public function removeItem($item): void
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; $i++) {
-            $arrayItem = $items[$i];
+        foreach ($items as $i => $iValue) {
+            $arrayItem = $iValue;
 
             if ($arrayItem->getId() === $item->getId()) {
                 unset($items[$i]);
@@ -81,17 +64,14 @@ class StorageList implements StorageListInterface
         $this->setItems(array_values($items));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItem($item)
+    public function hasItem($item): bool
     {
         Assert::isInstanceOf($item, StorageListItemInterface::class);
 
         $items = $this->getItems();
 
-        for ($i = 0, $c = count($items); $i < $c; $i++) {
-            $arrayItem = $items[$i];
+        foreach ($items as $iValue) {
+            $arrayItem = $iValue;
 
             if ($arrayItem->getId() === $item->getId()) {
                 return true;
@@ -101,10 +81,7 @@ class StorageList implements StorageListInterface
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItems()
+    public function hasItems(): bool
     {
         return is_array($this->getItems()) && count($this->getItems()) > 0;
     }

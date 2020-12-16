@@ -123,7 +123,7 @@ class SalesReport implements ReportInterface, ExportReportInterface, PortletInte
               WHERE orders.store = $storeId AND orders.orderState = '$orderCompleteState' AND orders.orderDate > ? AND orders.orderDate < ? 
               GROUP BY " . $groupSelector;
 
-        $results = $this->db->fetchAll($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($sqlQuery, [$from->getTimestamp(), $to->getTimestamp()]);
 
         foreach ($results as $result) {
             $date = Carbon::createFromTimestamp($result['orderDate']);

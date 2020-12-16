@@ -67,7 +67,7 @@ class OrderController extends PimcoreController
 
     public function getStatesAction(Request $request): Response
     {
-        $identifiers = $this->getParameter('coreshop.state_machines');
+        $identifiers = $this->container->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
 
@@ -155,8 +155,8 @@ class OrderController extends PimcoreController
 
         $type = $request->get('saleType', 'order');
 
-        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = $this->getParameter('coreshop.folder.' . $type);
+        $orderClassId = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = $this->container->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
@@ -185,7 +185,7 @@ class OrderController extends PimcoreController
 
             $conditionFilters = [];
             $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'),
-                DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.order.pimcore_class_name')));
+                DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.order.pimcore_class_name')));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -302,7 +302,7 @@ class OrderController extends PimcoreController
         $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.address.pimcore_class_name'));
+        $classDefinition = DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';
@@ -609,7 +609,19 @@ class OrderController extends PimcoreController
                         continue;
                     }
                     if (is_array($detailValue)) {
-                        $detailValue = join(', ', $detailValue);
+                        $detailValue = implode(', ', $detailValue);
+                    }
+
+                    if (true === is_bool($detailValue)) {
+                        if (true === $detailValue) {
+                            $detailValue = 'true';
+                        } else {
+                            $detailValue = 'false';
+                        }
+                    }
+
+                    if (false === is_string($detailValue)) {
+                        $detailValue = (string)$detailValue;
                     }
 
                     $details[] = [$detailName, $detailValue ? htmlentities($detailValue) : ''];

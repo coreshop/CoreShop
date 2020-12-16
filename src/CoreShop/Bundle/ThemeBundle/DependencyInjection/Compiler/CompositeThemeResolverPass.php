@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
 use CoreShop\Bundle\ThemeBundle\Service\CompositeThemeResolver;
+use CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
 {
@@ -24,7 +23,7 @@ final class CompositeThemeResolverPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.theme.resolver',
+            ThemeResolverInterface::class,
             CompositeThemeResolver::class,
             self::THEME_RESOLVER_TAG,
             'register'

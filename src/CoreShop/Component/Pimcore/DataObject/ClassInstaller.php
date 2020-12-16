@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Pimcore\DataObject;
 
 use Pimcore\Model\DataObject;
+use Pimcore\Model\Exception\NotFoundException;
 
 class ClassInstaller implements ClassInstallerInterface
 {
@@ -25,7 +26,7 @@ class ClassInstaller implements ClassInstallerInterface
     {
         try {
             $objectBrick = DataObject\Objectbrick\Definition::getByKey($brickName);
-        } catch (\Exception $e) {
+        } catch (NotFoundException $e) {
             $objectBrick = null;
         }
 
@@ -49,11 +50,17 @@ class ClassInstaller implements ClassInstallerInterface
     public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition
     {
         $tempClass = new DataObject\ClassDefinition();
-        $id = $tempClass->getDao()->getIdByName($className);
         $class = null;
 
-        if ($id) {
-            $class = DataObject\ClassDefinition::getById($id);
+        try {
+            $id = $tempClass->getDao()->getIdByName($className);
+
+            if ($id) {
+                $class = DataObject\ClassDefinition::getById($id);
+            }
+        }
+        catch (NotFoundException $exception) {
+            //Ignore
         }
 
         if (!$class || $updateClass) {
@@ -100,7 +107,7 @@ class ClassInstaller implements ClassInstallerInterface
     {
         try {
             $fieldCollection = DataObject\Fieldcollection\Definition::getByKey($name);
-        } catch (\Exception $e) {
+        } catch (NotFoundException $e) {
             $fieldCollection = null;
         }
 

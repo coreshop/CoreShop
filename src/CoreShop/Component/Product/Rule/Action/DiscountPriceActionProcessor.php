@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Component\Product\Rule\Action;
 
 use CoreShop\Component\Currency\Converter\CurrencyConverterInterface;
@@ -21,13 +19,21 @@ use Webmozart\Assert\Assert;
 
 class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
+    /**
+     * @var CurrencyConverterInterface
+     */
     protected $moneyConverter;
+
+    /**
+     * @var CurrencyRepositoryInterface
+     */
     protected $currencyRepository;
 
-    public function __construct(
-        CurrencyRepositoryInterface $currencyRepository,
-        CurrencyConverterInterface $moneyConverter
-    )
+    /**
+     * @param CurrencyRepositoryInterface $currencyRepository
+     * @param CurrencyConverterInterface  $moneyConverter
+     */
+    public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
@@ -46,6 +52,7 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
          */
         $contextCurrency = $context['currency'];
         $price = $configuration['price'];
+
         /**
          * @var CurrencyInterface $currency
          */

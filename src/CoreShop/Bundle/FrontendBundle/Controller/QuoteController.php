@@ -46,7 +46,7 @@ class QuoteController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Quote/show.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Quote/show.html'), [
             'quote' => $quote,
         ]);
     }

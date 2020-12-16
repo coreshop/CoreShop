@@ -14,14 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\TestBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 
 class CoreShopTestBundle extends AbstractPimcoreBundle
 {
-    use PackageVersionTrait;
-
     /**
      * {@inheritdoc}
      */
@@ -38,16 +37,38 @@ class CoreShopTestBundle extends AbstractPimcoreBundle
         return 'CoreShop - Test Bundle';
     }
 
-    /**
+     /**
      * @return string
      */
-    public function getComposerPackageName(): string
+    public function getVersion()
     {
-        if (isset(Versions::VERSIONS['coreshop/test-bundle'])) {
-            return 'coreshop/test-bundle';
+        $bundleName = 'coreshop/test-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 
     public function getJsPaths()

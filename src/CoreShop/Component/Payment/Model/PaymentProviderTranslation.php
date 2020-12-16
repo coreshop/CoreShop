@@ -49,57 +49,36 @@ class PaymentProviderTranslation extends AbstractTranslation implements PaymentP
         return $this->getTitle();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstructions()
     {
         return $this->instructions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setInstructions($instructions)
     {
         $this->instructions = $instructions;

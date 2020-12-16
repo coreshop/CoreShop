@@ -1,4 +1,4 @@
-@ui @ui_pimcore @exchange_rate @wip
+@ui @ui_pimcore @exchange_rate
 Feature: Test if I can open the Exchange Rates Panel
     Scenario:
         Given I am a logged in admin

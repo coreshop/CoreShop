@@ -1,4 +1,4 @@
-@ui @ui_pimcore @currency @wip
+@ui @ui_pimcore @currency
 Feature: Test if I can open the Currencies Panel
     Scenario:
         Given I am a logged in admin

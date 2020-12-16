@@ -29,21 +29,46 @@ final class ObjectHelperExtensions extends AbstractExtension
     {
         return [
             new TwigTest('object', static function ($object) {
+                @trigger_error(
+                    'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return is_object($object) && $object instanceof DataObject\Concrete;
             }),
             new TwigTest('object_folder', static function ($object) {
+                @trigger_error(
+                    'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return is_object($object) && $object instanceof DataObject\Folder;
             }),
             new TwigTest('object_class', static function ($object, $className) {
+                @trigger_error(
+                    'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+                    E_USER_DEPRECATED
+                );
+
                 $className = ucfirst($className);
-                $className = 'Pimcore\\Model\\DataObject\\' . $className;
+                $className = 'Pimcore\\Model\\DataObject\\'.$className;
 
                 return class_exists($className) && $object instanceof $className;
             }),
             new TwigTest('object_gallery', static function ($object) {
+                @trigger_error(
+                    'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return $object instanceof DataObject\Data\ImageGallery;
             }),
             new TwigTest('object_hotspot_image', static function ($object) {
+                @trigger_error(
+                    'image_thumbnail_html 3.0.0 and will be removed in 3.1.0. Use pimcore_image_thumbnail_html instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return $object instanceof DataObject\Data\Hotspotimage;
             }),
         ];
@@ -56,9 +81,19 @@ final class ObjectHelperExtensions extends AbstractExtension
     {
         return [
             new TwigFunction('object_method', static function ($object, $methodName) {
+                @trigger_error(
+                    'object_method 3.0.0 and will be removed in 3.1.0. Use pimcore_object_method instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return is_object($object) && method_exists($object, $methodName);
             }),
             new TwigFunction('object_select_options', static function ($object, $field) {
+                @trigger_error(
+                    'object_select_options 3.0.0 and will be removed in 3.1.0. Use pimcore_object_select_options instead.',
+                    E_USER_DEPRECATED
+                );
+
                 return DataObject\Service::getOptionsForSelectField($object, $field);
             }),
         ];

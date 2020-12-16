@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\WorkflowBundle\History;
 
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use Pimcore\Model\DataObject;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HistoryLogger implements HistoryLoggerInterface
 {

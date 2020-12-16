@@ -49,89 +49,56 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         $this->id = $id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFullLabel($language = null)
     {
         return $this->getTranslation($language)->getFullLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFullLabel($fullLabel, $language = null)
     {
         $this->getTranslation($language, false)->setFullLabel($fullLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFullPluralLabel($language = null)
     {
         return $this->getTranslation($language)->getFullPluralLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setFullPluralLabel($fullPluralLabel, $language = null)
     {
         $this->getTranslation($language, false)->setFullPluralLabel($fullPluralLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getShortLabel($language = null)
     {
         return $this->getTranslation($language)->getShortLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setShortLabel($shortLabel, $language = null)
     {
         $this->getTranslation($language, false)->setShortLabel($shortLabel);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getShortPluralLabel($language = null)
     {
         return $this->getTranslation($language)->getShortPluralLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setShortPluralLabel($shortPluralLabel, $language = null)
     {
         $this->getTranslation($language, false)->setShortPluralLabel($shortPluralLabel);
@@ -159,9 +126,6 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
         return sprintf('%s (%d)', $this->getName(), $this->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new ProductUnitTranslation();

@@ -53,22 +53,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrder"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order",
                                 "name": "order",
                                 "title": "coreshop.order_shipment.order",
                                 "tooltip": "",
@@ -228,24 +217,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToManyRelation",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderShipmentItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order_shipment_item",
                                 "name": "items",
                                 "title": "coreshop.order_shipment.items",
                                 "tooltip": "",
@@ -272,6 +248,7 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
     "propertyVisibility": {
         "grid": {
             "id": true,

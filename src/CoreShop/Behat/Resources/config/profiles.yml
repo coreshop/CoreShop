@@ -1,4 +1,5 @@
 imports:
     - profiles/default.yml
     - profiles/ui.yml
+    - profiles/ui_pimcore.yml
     - profiles/ui_precision.yml

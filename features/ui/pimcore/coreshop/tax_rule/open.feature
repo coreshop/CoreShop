@@ -1,4 +1,4 @@
-@ui @ui_pimcore @tax_rule @wip
+@ui @ui_pimcore @tax_rule
 Feature: Test if I can open the Tax Rule Groups Panel
     Scenario:
         Given I am a logged in admin

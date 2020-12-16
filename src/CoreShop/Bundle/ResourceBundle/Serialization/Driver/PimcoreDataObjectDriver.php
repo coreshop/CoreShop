@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
+use Metadata\ClassMetadata;
 use Metadata\Driver\DriverInterface;
 use Metadata\NullMetadata;
 
@@ -26,7 +27,11 @@ class PimcoreDataObjectDriver implements DriverInterface
         $this->decorated = $decorated;
     }
 
-    public function loadMetadataForClass(\ReflectionClass $class)
+    /**
+     * @param \ReflectionClass $class
+     * @return \Metadata\ClassMetadata|null
+     */
+    public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
         //We don't want Pimcore entities to be serialized directly
         if ($class->getNamespaceName() === 'Pimcore\\Model\\DataObject') {

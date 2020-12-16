@@ -27,10 +27,10 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
+use Laminas\Paginator\Paginator;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Zend\Paginator\Paginator;
 
 class CategoryController extends FrontendController
 {
@@ -68,7 +68,7 @@ class CategoryController extends FrontendController
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Category/_menu.html'), [
             'categories' => $categories,
         ]);
     }
@@ -89,7 +89,7 @@ class CategoryController extends FrontendController
             $activeSubCategories = $this->getRepository()->findChildCategoriesForStore($activeCategory, $this->getContext()->getStore());
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Category/_menu-left.html'), [
             'categories' => $firstLevelCategories,
             'activeCategory' => $activeCategory,
             'activeSubCategories' => $activeSubCategories,
@@ -222,7 +222,7 @@ class CategoryController extends FrontendController
 
         $this->get(SEOPresentationInterface::class)->updateSeoMetadata($category);
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
+        return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
     /**

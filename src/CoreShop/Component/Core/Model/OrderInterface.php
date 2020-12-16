@@ -25,45 +25,19 @@ interface OrderInterface extends
     PaymentSettingsAwareInterface,
     ShippableInterface
 {
-    /**
-     * @return bool
-     */
-    public function hasShippableItems();
+    public function hasShippableItems(): ?bool;
 
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWeight(): ?float;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getShipping(bool $withTax = true): int;
 
-    /**
-     * @return int
-     */
     public function getShippingTax(): int;
 
-    /**
-     * @return float
-     */
-    public function getShippingTaxRate();
+    public function getShippingTaxRate(): ?float;
 
-    /**
-     * @param float $shippingTaxRate
-     */
-    public function setShippingTaxRate($shippingTaxRate);
+    public function setShippingTaxRate(?float $shippingTaxRate);
 
-    /**
-     * @param bool $needsRecalculation
-     */
-    public function setNeedsRecalculation($needsRecalculation);
+    public function getNeedsRecalculation(): ?bool;
 
-    /**
-     * @return null|bool
-     */
-    public function getNeedsRecalculation();
+    public function setNeedsRecalculation(?bool $needsRecalculation);
 }

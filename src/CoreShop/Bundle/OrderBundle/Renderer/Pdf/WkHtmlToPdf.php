@@ -97,7 +97,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
      */
     private function replaceUrls($string): string
     {
-        $hostUrl = $this->kernelRootDir . '/web';
+        $hostUrl = $this->kernelRootDir . '/public';
         $replacePrefix = '';
 
         //matches all links

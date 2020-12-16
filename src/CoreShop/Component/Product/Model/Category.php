@@ -17,60 +17,9 @@ namespace CoreShop\Component\Product\Model;
 use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
-class Category extends AbstractPimcoreModel implements CategoryInterface
+abstract class Category extends AbstractPimcoreModel implements CategoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName($language = null)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setName($name, $language = null)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDescription($language = null)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDescription($description, $language = null)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParentCategory()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParentCategory($parentCategory)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChildCategories()
+    public function getChildCategories(): array
     {
         /**
          * @var CategoryInterface[] $childs
@@ -80,18 +29,12 @@ class Category extends AbstractPimcoreModel implements CategoryInterface
         return $childs;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasChildCategories()
+    public function hasChildCategories(): bool
     {
         return count($this->getChildren()) > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getHierarchy()
+    public function getHierarchy(): array
     {
         $hierarchy = [];
 

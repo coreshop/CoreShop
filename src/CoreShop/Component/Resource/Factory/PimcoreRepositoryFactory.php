@@ -16,7 +16,7 @@ namespace CoreShop\Component\Resource\Factory;
 
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 
 class PimcoreRepositoryFactory implements RepositoryFactoryInterface

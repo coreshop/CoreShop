@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Event;
 
 use CoreShop\Component\Order\Model\OrderDocumentInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class WkhtmlOptionsEvent extends Event
 {

@@ -178,3 +178,7 @@ services:
         alias: CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Bundle\OrderBundle\StateResolver\OrderInvoiceStateResolver instead'
 
+    coreshop.cart_processor:
+        alias: CoreShop\Component\Order\Processor\CartProcessorInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Order\Processor\CartProcessorInterface instead'
+

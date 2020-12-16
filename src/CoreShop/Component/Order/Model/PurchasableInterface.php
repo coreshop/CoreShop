@@ -24,27 +24,9 @@ interface PurchasableInterface
      */
     public function getId();
 
-    /**
-     * @param string|null $language
-     *
-     * @return string
-     */
-    public function getName($language = null);
+    public function getName($language = null): ?string;
 
-    /**
-     * @return int
-     *
-     * @deprecated getWholesalePrice is deprecated since 2.1.0 and will be removed with 2.2.0, use getWholesaleBuyingPrice instead
-     */
-    public function getWholesalePrice();
+    public function getWholesaleBuyingPrice(): ?Money;
 
-    /**
-     * @return Money
-     */
-    public function getWholesaleBuyingPrice();
-
-    /**
-     * @return TaxRuleGroupInterface
-     */
-    public function getTaxRule();
+    public function getTaxRule(): ?TaxRuleGroupInterface;
 }

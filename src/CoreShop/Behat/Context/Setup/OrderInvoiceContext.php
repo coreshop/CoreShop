@@ -49,7 +49,8 @@ final class OrderInvoiceContext implements Context
      */
     public function iCreateAInvoiceForOrder(OrderInterface $order)
     {
-        $orderItem = reset($order->getItems());
+        $items = $order->getItems();
+        $orderItem = reset($items);
 
         $orderInvoice = $this->orderInvoiceFactory->createNew();
         $orderInvoice = $this->invoiceTransformer->transform($order, $orderInvoice, [

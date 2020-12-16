@@ -1,0 +1,97 @@
+name: Behat UI Pimcore
+on:
+  push:
+    branches: [ 'master' ]
+  pull_request:
+    branches: [ 'master' ]
+
+jobs:
+  behat_ui_pimcore:
+    runs-on: ubuntu-latest
+    env:
+      PIMCORE_ENVIRONMENT: "test"
+      CORESHOP_TEST: 1
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
+      PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
+      PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: coreshop_test
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
+    strategy:
+      matrix:
+        php: [7.4]
+        pimcore: [10.0.x-dev]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        extensions: intl
+
+    - name: Check PHP Version
+      run: php -v
+
+    - name: Start mysql service
+      run: sudo /etc/init.d/mysql start
+
+    - name: Verify MySQL connection from host
+      run: |
+        sudo apt-get install -y mysql-client
+        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
+
+    - name: Setup mysql
+      run: |
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
+        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
+        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v1
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Composer install
+      run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+
+    - name: Cache clear
+      run: bin/console cache:clear
+
+    - name: Assets Install
+      run: bin/console assets:install --symlink
+
+    - name: Setup Symfony CLI
+      run: wget https://get.symfony.com/cli/installer -O - | bash
+
+    - name: Run Symfony Webserver
+      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
+
+    - name: Run Behat
+      run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui_pimcore
+
+    - name: Upload Behat logs
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: etc/build/
+        if-no-files-found: ignore

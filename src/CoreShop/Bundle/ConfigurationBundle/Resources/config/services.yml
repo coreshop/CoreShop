@@ -13,6 +13,6 @@ services:
             - '@coreshop.repository.configuration'
             - '@coreshop.factory.configuration'
 
-    CoreShop\Component\Configuration\Serialization\ObjectHandler:
+    CoreShop\Bundle\ConfigurationBundle\Serialization\ObjectHandler:
         tags:
           - { name: jms_serializer.handler, type: object, direction: serialization, format: json, method: serializeRelation }

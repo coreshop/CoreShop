@@ -16,61 +16,36 @@ namespace CoreShop\Component\StorageList\Model;
 
 class StorageListItem implements StorageListItemInterface
 {
-    /**
-     * @var float
-     */
     protected $quantity;
-
-    /**
-     * @var mixed
-     */
     protected $product;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function equals(StorageListItemInterface $storageListItem)
+    public function equals(StorageListItemInterface $storageListItem): bool
     {
         $product = $storageListItem->getProduct();
 
         return $this->getProduct() instanceof $product && $this->getProduct()->getId() === $product->getId();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->product ? $this->product->getId() : 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProduct()
     {
         return $this->product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProduct($product)
     {
         $this->product = $product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getQuantity()
+    public function getQuantity(): ?float
     {
         return $this->quantity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;

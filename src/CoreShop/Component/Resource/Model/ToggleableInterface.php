@@ -16,15 +16,9 @@ namespace CoreShop\Component\Resource\Model;
 
 interface ToggleableInterface
 {
-    /**
-     * @return bool
-     */
-    public function getActive();
+    public function getActive(): ?bool;
 
-    /**
-     * @param bool $active
-     */
-    public function setActive($active);
+    public function setActive(?bool $active);
 
     public function activate();
 

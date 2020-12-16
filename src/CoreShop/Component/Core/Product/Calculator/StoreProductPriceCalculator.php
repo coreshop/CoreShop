@@ -34,7 +34,7 @@ final class StoreProductPriceCalculator implements ProductRetailPriceCalculatorI
         Assert::keyExists($context, 'store');
         Assert::isInstanceOf($context['store'], StoreInterface::class);
 
-        $storeValues = $subject->getStoreValues($context['store']);
+        $storeValues = $subject->getStoreValuesForStore($context['store']);
 
         if (null === $storeValues) {
             throw new NoRetailPriceFoundException(__CLASS__);

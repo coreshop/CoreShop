@@ -41,9 +41,9 @@ final class Db extends \Pimcore\Db
      */
     public static function getColumns($table): array
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
-        $data = $db->fetchAll('SHOW COLUMNS FROM ' . $table);
+        $data = $db->fetchAllAssociative('SHOW COLUMNS FROM ' . $table);
         $columns = [];
 
         foreach ($data as $d) {
@@ -62,9 +62,9 @@ final class Db extends \Pimcore\Db
      */
     public static function tableExists($table): bool
     {
-        $db = static::get();
+        $db = self::getDoctrineConnection();
 
-        $result = $db->fetchAll("SHOW TABLES LIKE '$table'");
+        $result = $db->fetchAllAssociative("SHOW TABLES LIKE '$table'");
 
         return count($result) > 0;
     }

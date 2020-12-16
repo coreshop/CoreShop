@@ -18,33 +18,21 @@ use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
 trait ProposalItemTrait
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDigitalProduct()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDigitalProduct($digitalProduct)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultUnitQuantity()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultUnitQuantity($defaultUnitQuantity)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

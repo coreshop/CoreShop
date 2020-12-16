@@ -77,7 +77,7 @@ class CustomersReport implements ReportInterface
             ORDER BY COUNT(customer.oo_id) DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 
         foreach ($results as &$result) {

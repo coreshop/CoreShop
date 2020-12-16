@@ -29,25 +29,16 @@ trait StoresAwareTrait
         $this->stores = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStores()
     {
         return $this->stores;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStores()
     {
         return !$this->stores->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addStore(StoreInterface $store)
     {
         if (!$this->hasStore($store)) {
@@ -55,9 +46,6 @@ trait StoresAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeStore(StoreInterface $store)
     {
         if ($this->hasStore($store)) {
@@ -65,9 +53,6 @@ trait StoresAwareTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStore(StoreInterface $store)
     {
         return $this->stores->contains($store);

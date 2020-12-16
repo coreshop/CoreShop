@@ -84,18 +84,11 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtendedType(): string
-    {
-        return ProductQuantityRangeCollectionType::class;
-    }
 
     /**
      * {@inheritdoc}
      */
-    public static function getExtendedTypes(): array
+    public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeCollectionType::class];
     }

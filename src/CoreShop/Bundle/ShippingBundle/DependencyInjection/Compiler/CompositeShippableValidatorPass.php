@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ShippingBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 use CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator;
+use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface;
 
 final class CompositeShippableValidatorPass extends PrioritizedCompositeServicePass
 {
@@ -24,7 +23,7 @@ final class CompositeShippableValidatorPass extends PrioritizedCompositeServiceP
     public function __construct()
     {
         parent::__construct(
-            'coreshop.shipping.carrier.validator',
+            ShippableCarrierValidatorInterface::class,
             CompositeShippableCarrierValidator::class,
             self::SHIPABLE_VALIDATOR_TAG,
             'addValidator'

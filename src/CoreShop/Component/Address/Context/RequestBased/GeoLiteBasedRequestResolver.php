@@ -18,7 +18,7 @@ use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use GeoIp2\Database\Reader;
-use Pimcore\Cache\Core\CoreHandlerInterface;
+use Pimcore\Cache\Core\CoreCacheHandler;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
@@ -29,7 +29,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 
     public function __construct(
         CountryRepositoryInterface $countryRepository,
-        CoreHandlerInterface $cache,
+        CoreCacheHandler $cache,
         ?string $geoDbFile = null
     ) {
         $this->countryRepository = $countryRepository;

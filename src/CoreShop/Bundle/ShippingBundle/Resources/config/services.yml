@@ -19,7 +19,7 @@ services:
     CoreShop\Component\Shipping\Resolver\CarriersResolver:
         arguments:
             - '@coreshop.repository.carrier'
-            - '@coreshop.shipping.carrier.validator'
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
 
     # Carrier Price Calculator
     coreshop.registry.shipping.price_calculators:

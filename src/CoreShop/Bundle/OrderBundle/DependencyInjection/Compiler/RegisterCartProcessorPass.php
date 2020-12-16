@@ -10,12 +10,11 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\OrderBundle\DependencyInjection\Compiler;
 
-use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass;
+use CoreShop\Component\Order\Processor\CartProcessorInterface;
 use CoreShop\Component\Order\Processor\CompositeCartProcessor;
+use CoreShop\Component\Registry\PrioritizedCompositeServicePass;
 
 final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
 {
@@ -24,7 +23,7 @@ final class RegisterCartProcessorPass extends PrioritizedCompositeServicePass
     public function __construct()
     {
         parent::__construct(
-            'coreshop.cart_processor',
+            CartProcessorInterface::class,
             CompositeCartProcessor::class,
             self::CART_PROCESSOR_TAG,
             'addProcessor'

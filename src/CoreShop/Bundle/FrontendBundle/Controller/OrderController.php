@@ -93,7 +93,7 @@ class OrderController extends FrontendController
 //
 //                    $session = $request->getSession();
 //                    $session->set(
-//                        sprintf('%s.%s', $this->getParameter('coreshop.session.cart'), $cart->getStore()->getId()),
+//                        sprintf('%s.%s', $this->container->getParameter('coreshop.session.cart'), $cart->getStore()->getId()),
 //                        $cart->getId()
 //                    );
 //
@@ -117,7 +117,7 @@ class OrderController extends FrontendController
             'form' => $form->createView(),
         ];
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
+        return $this->render($this->templateConfigurator->findTemplate('Order/revise.html'), $args);
     }
 
     /**

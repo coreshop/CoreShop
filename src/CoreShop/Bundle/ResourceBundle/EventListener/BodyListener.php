@@ -16,12 +16,12 @@ namespace CoreShop\Bundle\ResourceBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class BodyListener
 {
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         $request = $event->getRequest();
         $contentType = $request->headers->get('Content-Type');
@@ -38,7 +38,7 @@ class BodyListener
                     if (is_array($data)) {
                         $request->request = new ParameterBag($data);
                     } else {
-                        throw new BadRequestHttpException('Invalid ' . $format . ' message received');
+                        throw new BadRequestHttpException('Invalid '.$format.' message received');
                     }
                 }
             }

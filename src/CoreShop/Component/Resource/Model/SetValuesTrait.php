@@ -16,9 +16,6 @@ namespace CoreShop\Component\Resource\Model;
 
 trait SetValuesTrait
 {
-    /**
-     * {@inheritdoc}
-     */
     public function setValues($data = [])
     {
         if (is_array($data) && count($data) > 0) {
@@ -30,9 +27,6 @@ trait SetValuesTrait
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setValue($key, $value)
     {
         $method = 'set' . $key;

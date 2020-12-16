@@ -106,7 +106,7 @@ class CategoriesReport implements ReportInterface
             ORDER BY quantityCount DESC
             LIMIT $offset,$limit";
 
-        $results = $this->db->fetchAll($query, [$from->getTimestamp(), $to->getTimestamp()]);
+        $results = $this->db->fetchAllAssociative($query, [$from->getTimestamp(), $to->getTimestamp()]);
 
         $this->totalRecords = (int) $this->db->fetchColumn('SELECT FOUND_ROWS()');
 

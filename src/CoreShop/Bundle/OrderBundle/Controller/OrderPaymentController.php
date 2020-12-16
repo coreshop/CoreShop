@@ -17,12 +17,12 @@ namespace CoreShop\Bundle\OrderBundle\Controller;
 use Carbon\Carbon;
 use CoreShop\Bundle\ResourceBundle\Controller\PimcoreController;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManager;
-use CoreShop\Component\Core\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Payment\PaymentTransitions;
+use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
@@ -68,7 +68,7 @@ class OrderPaymentController extends PimcoreController
 
         $orderId = $request->get('o_id');
         $order = $this->getSaleRepository()->find($orderId);
-        $amount = (float) $request->get('amount', 0) * $this->getParameter('coreshop.currency.decimal_factor');
+        $amount = (float) $request->get('amount', 0) * $this->container->getParameter('coreshop.currency.decimal_factor');
 
         $paymentProviderId = $request->get('paymentProvider');
 
@@ -91,42 +91,75 @@ class OrderPaymentController extends PimcoreController
             $totalPaymentWouldBe = $totalPayed + $amount;
 
             if ($totalPaymentWouldBe > $order->getTotal()) {
-                return $this->viewHandler->handle(['success' => false, 'message' => 'Payed Amount is greater than order amount']);
-            } else {
-                $tokenGenerator = new UniqueTokenGenerator(true);
-                $uniqueId = $tokenGenerator->generate(15);
-                $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
-
-                /**
-                 * @var PaymentInterface $payment
-                 */
-                $payment = $this->getPaymentFactory()->createNew();
-                $payment->setNumber($orderNumber);
-                $payment->setPaymentProvider($paymentProvider);
-
-                if (method_exists($payment, 'setCurrency')) {
-                    $payment->setCurrency($order->getBaseCurrency());
-                }
-
-                $payment->setTotalAmount($amount);
-                $payment->setState(PaymentInterface::STATE_NEW);
-                $payment->setDatePayment(Carbon::now());
-
-                if ($payment instanceof OrderPaymentInterface) {
-                    $payment->setOrder($order);
-                }
-
-                $this->getEntityManager()->persist($payment);
-                $this->getEntityManager()->flush();
-
-                $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
-                $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
-
                 return $this->viewHandler->handle([
-                    'success' => true,
-                    'totalPayed' => $totalPayed,
+                    'success' => false,
+                    'message' => 'Payed Amount is greater than order amount'
                 ]);
             }
+
+            $tokenGenerator = new UniqueTokenGenerator(true);
+            $uniqueId = $tokenGenerator->generate(15);
+            $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+
+            /**
+             * @var PaymentInterface $payment
+             */
+            $payment = $this->getPaymentFactory()->createNew();
+            $payment->setNumber($orderNumber);
+            $payment->setPaymentProvider($paymentProvider);
+
+            if (method_exists($payment, 'setCurrency')) {
+                $payment->setCurrency($order->getBaseCurrency());
+            }
+
+            $payment->setTotalAmount($amount);
+            $payment->setState(PaymentInterface::STATE_NEW);
+            $payment->setDatePayment(Carbon::now());
+
+            if ($payment instanceof OrderPaymentInterface) {
+                $payment->setOrder($order);
+            }
+
+            $this->getEntityManager()->persist($payment);
+            $this->getEntityManager()->flush();
+
+            $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
+            $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
+
+            return $this->viewHandler->handle([
+                'success' => true,
+                'totalPayed' => $totalPayed,
+            ]);
+
+            $tokenGenerator = new UniqueTokenGenerator(true);
+            $uniqueId = $tokenGenerator->generate(15);
+            $orderNumber = preg_replace('/[^A-Za-z0-9\-_]/', '', str_replace(' ', '_', $order->getOrderNumber())) . '_' . $uniqueId;
+
+            /**
+             * @var PaymentInterface $payment
+             */
+            $payment = $this->getPaymentFactory()->createNew();
+            $payment->setNumber($orderNumber);
+            $payment->setPaymentProvider($paymentProvider);
+            $payment->setCurrency($order->getCurrency());
+            $payment->setTotalAmount($amount);
+            $payment->setState(PaymentInterface::STATE_NEW);
+            $payment->setDatePayment(Carbon::now());
+
+            if ($payment instanceof OrderPaymentInterface) {
+                $payment->setOrder($order);
+            }
+
+            $this->getEntityManager()->persist($payment);
+            $this->getEntityManager()->flush();
+
+            $workflow = $this->getStateMachineManager()->get($payment, 'coreshop_payment');
+            $workflow->apply($payment, PaymentTransitions::TRANSITION_PROCESS);
+
+            return $this->viewHandler->handle([
+                'success' => true,
+                'totalPayed' => $totalPayed,
+            ]);
         }
 
         return $this->viewHandler->handle(

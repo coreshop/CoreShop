@@ -10,8 +10,6 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
-declare(strict_types=1);
-
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\DocumentConfiguration;
@@ -27,8 +25,14 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
+    /**
+     * @var KernelInterface
+     */
     private $kernel;
 
+    /**<
+     * @param KernelInterface $kernel
+     */
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
@@ -139,7 +143,14 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         }
     }
 
-    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
+    /**
+     * @param Document $rootDocument
+     * @param string   $language
+     * @param array    $properties
+     *
+     * @return Document|null
+     */
+    private function installDocument(Document $rootDocument, $language, $properties)
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 
@@ -159,14 +170,8 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
                 if (isset($properties['title'])) {
                     $document->setTitle($properties['title']);
                 }
-                if (isset($properties['module'])) {
-                    $document->setModule($properties['module']);
-                }
                 if (isset($properties['controller'])) {
                     $document->setController($properties['controller']);
-                }
-                if (isset($properties['action'])) {
-                    $document->setAction($properties['action']);
                 }
                 if (isset($properties['template'])) {
                     $document->setTemplate($properties['template']);

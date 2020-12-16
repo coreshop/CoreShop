@@ -19,55 +19,24 @@ use CoreShop\Component\Address\Model\AddressesAwareInterface;
 use CoreShop\Component\Address\Model\DefaultAddressAwareInterface;
 use CoreShop\Component\Customer\Model\CustomerInterface as BaseCustomerInterface;
 
-interface CustomerInterface extends BaseCustomerInterface, AddressesAwareInterface, DefaultAddressAwareInterface
+interface CustomerInterface extends
+    BaseCustomerInterface,
+    AddressesAwareInterface,
+    DefaultAddressAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getAddressAccessType();
+    public function getAddressAccessType(): ?string;
 
-    /**
-     * @param string $addressAccessType
-     */
-    public function setAddressAccessType($addressAccessType);
+    public function setAddressAccessType(?string $addressAccessType);
 
-    /**
-     * @return AddressInterface
-     */
-    public function getDefaultAddress();
+    public function getNewsletterActive(): ?bool;
 
-    /**
-     * @param AddressInterface $address
-     */
-    public function setDefaultAddress($address);
+    public function setNewsletterActive(?bool $newsletterActive);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterActive();
+    public function getNewsletterConfirmed(): ?bool;
 
-    /**
-     * @param bool $newsletterActive
-     */
-    public function setNewsletterActive($newsletterActive);
+    public function setNewsletterConfirmed(?bool $newsletterConfirmed);
 
-    /**
-     * @return bool
-     */
-    public function getNewsletterConfirmed();
+    public function getNewsletterToken(): ?string;
 
-    /**
-     * @param bool $newsletterConfirmed
-     */
-    public function setNewsletterConfirmed($newsletterConfirmed);
-
-    /**
-     * @return string
-     */
-    public function getNewsletterToken();
-
-    /**
-     * @param string $newsletterToken
-     */
-    public function setNewsletterToken($newsletterToken);
+    public function setNewsletterToken(?string $newsletterToken);
 }

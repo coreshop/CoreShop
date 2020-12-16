@@ -60,9 +60,10 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
 
         /**
-         * @var OrderInterface     $cart
+         * @var OrderInterface $cart
          */
         $cart = $addToCartDto->getCart();
+
         /**
          * @var OrderItemInterface $cartItem
          */
@@ -90,7 +91,7 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         }
     }
 
-    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): int
+    private function getExistingCartItemQuantityFromCart(OrderInterface $cart, OrderItemInterface $cartItem): float
     {
         $product = $cartItem->getProduct();
         $quantity = 0;

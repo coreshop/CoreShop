@@ -36,7 +36,7 @@ services:
     CoreShop\Component\Core\Order\Processor\CartShippingProcessor:
         arguments:
             - '@CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface'
-            - '@coreshop.shipping.carrier.validator'
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
             - '@CoreShop\Component\Shipping\Resolver\DefaultCarrierResolverInterface'
             - '@CoreShop\Component\Core\Provider\AddressProviderInterface'
             - '@coreshop.factory.adjustment'

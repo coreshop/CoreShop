@@ -14,11 +14,11 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 
-use CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent;
+use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterface
 {

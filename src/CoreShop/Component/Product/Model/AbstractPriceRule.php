@@ -53,25 +53,16 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         $this->initializeTranslationsCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDescription($description)
     {
         $this->description = $description;
@@ -79,17 +70,11 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return $this->priority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPriority($priority)
     {
         $this->priority = $priority;
@@ -97,33 +82,21 @@ abstract class AbstractPriceRule implements PriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel($language = null)
     {
         return $this->getTranslation($language)->getLabel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label, $language = null)
     {
         $this->getTranslation($language)->setLabel($label);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStopPropagation()
     {
         return $this->stopPropagation;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setStopPropagation($stopPropagation)
     {
         $this->stopPropagation = $stopPropagation;

@@ -58,6 +58,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('customer')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('customer_group')->defaultValue(CustomerGroupInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('company')->defaultValue(CompanyInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();

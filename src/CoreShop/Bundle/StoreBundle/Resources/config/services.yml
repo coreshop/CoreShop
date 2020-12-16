@@ -9,6 +9,7 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Store\Context\StoreContextInterface: '@CoreShop\Component\Store\Context\CompositeStoreContext'
     CoreShop\Component\Store\Context\CompositeStoreContext:
         public: false
 

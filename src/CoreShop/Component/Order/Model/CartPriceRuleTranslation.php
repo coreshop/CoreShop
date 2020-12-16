@@ -31,25 +31,16 @@ class CartPriceRuleTranslation extends AbstractTranslation implements CartPriceR
      */
     protected $label;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLabel()
     {
         return $this->label;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLabel($label)
     {
         $this->label = $label;

@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\ResourceBundle\Form\Helper;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class ErrorSerializer
 {

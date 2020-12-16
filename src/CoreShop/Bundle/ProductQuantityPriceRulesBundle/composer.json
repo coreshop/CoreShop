@@ -1,44 +1,56 @@
 {
-    "name": "coreshop/product-quantity-price-rules-bundle",
-    "type": "pimcore-bundle",
-    "description": "CoreShop - Product Quantity Price Rules Bundle",
-    "keywords": ["coreshop", "pimcore", "ecommerce"],
-    "homepage": "http://www.coreshop.org",
-    "license": "GPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "Stefan Hagspiel",
-            "email": "shagspiel@dachcom.com",
-            "homepage": "https://www.dachcom.com/",
-            "role": "Developer"
-        },
-        {
-            "name": "Dominik Pfaffenbauer",
-            "email": "dominik@pfaffenbauer.at",
-            "homepage": "https://www.pfaffenbauer.at/",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^7.2",
-        "coreshop/product-quantity-price-rules": "^3.0",
-        "coreshop/rule-bundle": "^3.0",
-        "coreshop/money-bundle": "^3.0",
-        "pimcore/pimcore": "^7.0.0"
+  "name": "coreshop/product-quantity-price-rules-bundle",
+  "type": "pimcore-bundle",
+  "description": "CoreShop - Product Quantity Price Rules Bundle",
+  "keywords": [
+    "coreshop",
+    "pimcore",
+    "ecommerce"
+  ],
+  "homepage": "http://www.coreshop.org",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Stefan Hagspiel",
+      "email": "shagspiel@dachcom.com",
+      "homepage": "https://www.dachcom.com/",
+      "role": "Developer"
     },
-    "config": {
-        "bin-dir": "bin"
-    },
-    "autoload": {
-        "psr-4": {
-            "CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\": ""
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "extra": {
-        "branch-alias": {
-            "dev-master": "3.0-dev"
-        }
+    {
+      "name": "Dominik Pfaffenbauer",
+      "email": "dominik@pfaffenbauer.at",
+      "homepage": "https://www.pfaffenbauer.at/",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "php": "^7.4",
+    "coreshop/product-quantity-price-rules": "^3.0",
+    "coreshop/rule-bundle": "^3.0",
+    "coreshop/money-bundle": "^3.0",
+    "pimcore/pimcore": "^10.0.0"
+  },
+  "require-dev": {
+    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan-doctrine": "^0.12",
+    "phpstan/phpstan-webmozart-assert": "^0.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "CoreShop\\Bundle\\ProductQuantityPriceRulesBundle\\": ""
+    }
+  },
+  "repositories": [
+      {
+          "type": "path",
+          "url": "../../*/*"
+      }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "extra": {
+    "branch-alias": {
+      "dev-master": "3.0-dev"
+    }
+  }
 }

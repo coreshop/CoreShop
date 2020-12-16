@@ -68,15 +68,19 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         $list = $this->getList();
         $dao = $list->getDao();
 
-        $db = \Pimcore\Db::get();
-        $query = $db->select()
-            ->from($dao->getTableName(), ['oo_id'])
-            ->where('o_path LIKE ?', $category->getRealFullPath() . '/%')
-            ->where('stores LIKE ?', '%,' . $store->getId() . ',%');
+
+        $qb = $this->connection->createQueryBuilder();
+        $qb
+            ->select('oo_id')
+            ->from($dao->getTableName())
+            ->where('o_path LIKE :path')
+            ->andWhere('stores LIKE :stores')
+            ->setParameter('path', $category->getRealFullPath() . '/%')
+            ->setParameter('stores', '%,' . $store->getId() . ',%');
 
         $childIds = [];
 
-        foreach ($query->execute()->fetchAll() as $column) {
+        foreach ($qb->execute()->fetchAllAssociative() as $column) {
             $childIds[] = $column['oo_id'];
         }
 

@@ -61,6 +61,8 @@ class StoreFixture extends AbstractFixture implements ContainerAwareInterface, V
 
             $manager->persist($store);
             $manager->flush();
+
+            $this->setReference('store', $store);
         }
     }
 }

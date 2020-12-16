@@ -46,8 +46,12 @@ docs/generate-docs.sh
 phpda.html
 parameters.yml
 var
-.env
+.env.local
 composer.lock
-docker-compose.yml
-app/config/local/
-app/config/pimcore/
+docker-compose.yaml
+config/local/
+config/pimcore/
+.php-version
+etc/build
+public/bundles
+public/var
