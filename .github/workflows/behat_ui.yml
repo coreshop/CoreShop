@@ -6,7 +6,7 @@ on:
     branches: [ 'master' ]
 
 jobs:
-  behat:
+  behat_ui:
     runs-on: ubuntu-latest
     env:
       PIMCORE_ENVIRONMENT: "test"
@@ -87,3 +87,11 @@ jobs:
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+
+    - name: Upload Behat logs
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: etc/build/
+        if-no-files-found: ignore
