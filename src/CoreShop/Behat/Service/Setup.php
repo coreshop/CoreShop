@@ -60,7 +60,8 @@ class Setup
 
         $installer = new \Pimcore\Bundle\InstallBundle\Installer(
             \Pimcore::getContainer()->get('monolog.logger.pimcore'),
-            \Pimcore::getContainer()->get('event_dispatcher')
+            \Pimcore::getContainer()->get('event_dispatcher'),
+            \Pimcore::getContainer()->get('pimcore.cache.adapter.pdo'),
         );
 
         $installer->setupDatabase([

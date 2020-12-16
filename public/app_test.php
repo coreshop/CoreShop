@@ -33,8 +33,6 @@ $kernel = \Pimcore\Bootstrap::kernel();
 // reset current request - will be read from request stack from now on
 Tool::setCurrentRequest(null);
 
-$_SERVER['REQUEST_ID'] = uniqid();
-
 $response = $kernel->handle($request);
 $response->send();
 
