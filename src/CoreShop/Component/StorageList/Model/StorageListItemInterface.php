@@ -16,35 +16,15 @@ namespace CoreShop\Component\StorageList\Model;
 
 interface StorageListItemInterface
 {
-    /**
-     * @param StorageListItemInterface $storageListItem
-     *
-     * @return bool
-     */
-    public function equals(self $storageListItem);
+    public function equals(self $storageListItem): bool;
 
-    /**
-     * @return int
-     */
     public function getId();
 
-    /**
-     * @return StorageListProductInterface
-     */
     public function getProduct();
 
-    /**
-     * @param mixed $product
-     */
-    public function setProduct($product);
+//    public function setProduct($product);
 
-    /**
-     * @return float
-     */
-    public function getQuantity();
+    public function getQuantity(): ?float;
 
-    /**
-     * @param float $quantity
-     */
-    public function setQuantity($quantity);
+    public function setQuantity(?float $quantity);
 }

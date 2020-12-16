@@ -215,7 +215,7 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getConfigActions()
     {
-        return $this->getParameter('coreshop.cart_price_rule.actions');
+        return $this->container->getParameter('coreshop.cart_price_rule.actions');
     }
 
     /**
@@ -223,6 +223,6 @@ class CartPriceRuleController extends ResourceController
      */
     protected function getConfigConditions()
     {
-        return $this->getParameter('coreshop.cart_price_rule.conditions');
+        return $this->container->getParameter('coreshop.cart_price_rule.conditions');
     }
 }

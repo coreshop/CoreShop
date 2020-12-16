@@ -12,7 +12,7 @@
 
 namespace CoreShop\Bundle\WorkflowBundle\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class WorkflowTransitionEvent extends Event
 {
@@ -69,4 +69,3 @@ final class WorkflowTransitionEvent extends Event
     }
 }
 
-class_alias(WorkflowTransitionEvent::class, 'CoreShop\Bundle\OrderBundle\Event\WorkflowTransitionEvent');

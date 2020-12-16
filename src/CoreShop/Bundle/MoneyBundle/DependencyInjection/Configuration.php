@@ -25,8 +25,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_money');
+        $treeBuilder = new TreeBuilder('core_shop_money');
+        $rootNode = $treeBuilder->getRootNode();
 
         $this->addPimcoreResourcesSection($rootNode);
 

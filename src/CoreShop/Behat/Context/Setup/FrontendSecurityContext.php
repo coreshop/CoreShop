@@ -62,8 +62,8 @@ final class FrontendSecurityContext implements Context
         $customer->setKey(File::getValidFilename('coreshop@pimcore.org'));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail('coreshop@pimcore.org');
-        $customer->setFirstname(reset(explode('@', 'coreshop@pimcore.org')));
-        $customer->setLastname(end(explode('@', 'coreshop@pimcore.org')));
+        $customer->setFirstname('coreshop');
+        $customer->setLastname('pimcore');
         $customer->setPassword('coreshop');
         $customer->setPublished(true);
         $customer->save();

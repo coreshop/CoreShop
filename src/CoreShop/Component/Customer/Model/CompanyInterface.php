@@ -20,23 +20,11 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 
 interface CompanyInterface extends ResourceInterface, PimcoreModelInterface, EquatableInterface
 {
-    /**
-     * @return string
-     */
-    public function getName();
+    public function getName(): ?string;
 
-    /**
-     * @param string $name
-     */
-    public function setName($name);
+    public function setName(?string $name);
 
-    /**
-     * @return string
-     */
-    public function getVatIdentificationNumber();
+    public function getVatIdentificationNumber(): ?string;
 
-    /**
-     * @param string $vatIdentificationNumber
-     */
-    public function setVatIdentificationNumber($vatIdentificationNumber);
+    public function setVatIdentificationNumber(?string $vatIdentificationNumber);
 }

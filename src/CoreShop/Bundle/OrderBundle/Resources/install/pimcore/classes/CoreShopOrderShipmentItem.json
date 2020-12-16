@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -53,23 +54,12 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
-                                "name": "orderItem",
+                                "stack": "coreshop.order_item",
+                                 "name": "orderItem",
                                 "title": "coreshop.order_shipment_item.order_item",
                                 "tooltip": "",
                                 "mandatory": false,
@@ -203,6 +193,7 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
     "propertyVisibility": {
         "grid": {
             "id": true,

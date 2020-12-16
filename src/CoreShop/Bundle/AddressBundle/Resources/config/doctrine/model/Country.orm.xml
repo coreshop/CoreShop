@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Address\Model\Country" table="coreshop_country">
+        <indexes>
+            <index name="isoCode" columns="isoCode" />
+        </indexes>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="isoCode" column="isoCode" type="string" length="2" nullable="true"/>
+        <field name="active" column="active" type="boolean" />
+        <field name="addressFormat" column="addressFormat" type="string" />
+        <field name="salutations" column="salutations" type="simple_array" nullable="true" />
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="zone" target-entity="CoreShop\Component\Address\Model\ZoneInterface" inversed-by="countires">
+            <join-column name="zoneId" referenced-column-name="id" nullable="true" on-delete="SET NULL" />
+        </many-to-one>
+
+        <one-to-many field="states" target-entity="CoreShop\Component\Address\Model\StateInterface" mapped-by="country">
+            <cascade>
+                <cascade-remove />
+                <cascade-persist />
+            </cascade>
+        </one-to-many>
+    </mapped-superclass>
+</doctrine-mapping>

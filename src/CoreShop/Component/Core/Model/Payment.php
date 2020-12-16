@@ -24,17 +24,11 @@ class Payment extends BasePayment implements PaymentInterface
      */
     protected $order;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOrder()
     {
         return $this->order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOrder(\CoreShop\Component\Order\Model\OrderInterface $order)
     {
         Assert::isInstanceOf($order, OrderInterface::class);

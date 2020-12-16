@@ -29,18 +29,12 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
     use ProposalPriceRuleTrait;
     use ConvertedAdjustableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItems()
+    public function hasItems(): bool
     {
         return is_array($this->getItems()) && count($this->getItems()) > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addItem($item)
+    public function addItem($item): void
     {
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
@@ -50,10 +44,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         $this->setItems($items);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeItem($item)
+    public function removeItem($item): void
     {
         $items = $this->getItems();
 
@@ -70,10 +61,7 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         $this->setItems(array_values($items));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasItem($item)
+    public function hasItem($item): bool
     {
         $items = $this->getItems();
 
@@ -88,689 +76,203 @@ abstract class Order extends AbstractPimcoreModel implements OrderInterface
         return false;
     }
 
-    /**
-     * @return string
-     */
-    public function getSaleState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $saleState
-     */
-    public function setSaleState($saleState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrderState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $orderState
-     */
-    public function setOrderState($orderState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return string
-     */
-    public function getShippingState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $shippingState
-     */
-    public function setShippingState($shippingState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return string
-     */
-    public function getInvoiceState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $invoiceState
-     */
-    public function setInvoiceState($invoiceState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentState()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * @param string $paymentState
-     */
-    public function setPaymentState($paymentState)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderDate()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderDate($orderDate)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrderNumber()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setOrderNumber($orderNumber)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getToken()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setToken($token)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentProvider()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentProvider($paymentProvider)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStore()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStore($store)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCustomer()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCustomer($customer)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getShippingAddress()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getInvoiceAddress()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setInvoiceAddress($invoiceAddress)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getCurrency()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCurrency($currency)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItems()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItems($items)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaxes()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTaxes($taxes)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getComment()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setComment($comment)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAdditionalData()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAdditionalData($additionalData)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocaleCode()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocaleCode($localeCode)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getTotalTax(): int
     {
         return $this->getTotal(true) - $this->getTotal(false);
     }
 
-    /**
-     * @return int
-     */
     public function getConvertedTotalTax(): int
     {
         return $this->getConvertedTotal(true) - $this->getConvertedTotal(false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubtotalTax(): int
     {
         return $this->getSubtotal(true) - $this->getSubtotal(false);
     }
 
-    /**
-     * @return int
-     */
     public function getConvertedSubtotalTax(): int
     {
         return $this->getConvertedSubtotal(true) - $this->getConvertedSubtotal(false);
     }
 
-    /**
-     * @return int
-     */
     public function getConvertedShippingTax(): int
     {
         return $this->getConvertedShipping(true) - $this->getConvertedShipping(false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBaseCurrency()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBaseCurrency($currency)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getDiscount(bool $withTax = true): int
     {
         return $this->getAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getSubtotal(bool $withTax = true): int
     {
         return $withTax ? $this->getSubtotalGross() : $this->getSubtotalNet();
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function setSubtotal(int $subtotal, bool $withTax = true)
     {
-        return $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
+        $withTax ? $this->setSubtotalGross($subtotal) : $this->setSubtotalNet($subtotal);
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getTotalGross() : $this->getTotalNet();
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function setTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
+        $withTax ? $this->setTotalGross($total) : $this->setTotalNet($total);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalNet(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalNet(int $total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalGross(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalGross(int $total)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaymentTotal()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPaymentTotal(int $paymentTotal)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubtotalNet(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSubtotalNet(int $subTotalNet)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSubtotalGross(): int
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setSubtotalGross(int $subTotalGross)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setShippingTaxRate($taxRate)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getConvertedDiscount(bool $withTax = true): int
     {
         return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::CART_PRICE_RULE, $withTax);
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getConvertedSubtotal(bool $withTax = true): int
     {
         return $withTax ? $this->getConvertedSubtotalGross() : $this->getConvertedSubtotalNet();
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function setConvertedSubtotal(int $subtotal, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedSubtotalGross($subtotal) : $this->setConvertedSubtotalNet($subtotal);
+        $withTax ? $this->setConvertedSubtotalGross($subtotal) : $this->setConvertedSubtotalNet($subtotal);
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getConvertedTotal(bool $withTax = true): int
     {
         return $withTax ? $this->getConvertedTotalGross() : $this->getConvertedTotalNet();
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function setConvertedTotal(int $total, bool $withTax = true)
     {
-        return $withTax ? $this->setConvertedTotalGross($total) : $this->setConvertedTotalNet($total);
+        $withTax ? $this->setConvertedTotalGross($total) : $this->setConvertedTotalNet($total);
     }
 
-    /**
-     * Wrapper Method for Pimcore Object.
-     *
-     * {@inheritdoc}
-     */
     public function getConvertedShipping(bool $withTax = true): int
     {
         return $this->getConvertedAdjustmentsTotal(AdjustmentInterface::SHIPPING, $withTax);
     }
 
-    /**
-     * @return int
-     */
+    public function getTotalNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setTotalNet(int $total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getTotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setTotalGross(int $total)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getPaymentTotal(): ?int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setPaymentTotal(?int $paymentTotal)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getSubtotalNet(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setSubtotalNet(int $subTotalNet)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function getSubtotalGross(): int
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
+    public function setSubtotalGross(int $subTotalGross)
+    {
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+    }
+
     public function getConvertedTotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param int $total
-     */
     public function setConvertedTotalNet(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @return int
-     */
-    public function getConvertedTotalGross()
+    public function getConvertedTotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param int $total
-     */
     public function setConvertedTotalGross(int $total)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConvertedPaymentTotal()
+    public function getConvertedPaymentTotal(): ?int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setConvertedPaymentTotal(int $convertedPaymentTotal)
+    public function setConvertedPaymentTotal(?int $convertedPaymentTotal)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @return int
-     */
     public function getConvertedSubtotalNet(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param int $subTotalNet
-     */
     public function setConvertedSubtotalNet(int $subTotalNet)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @return int
-     */
     public function getConvertedSubtotalGross(): int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param int $subTotalGross
-     */
     public function setConvertedSubtotalGross(int $subTotalGross)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @return Fieldcollection
-     */
     public function getConvertedTaxes()
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * @param Fieldcollection $taxes
-     */
-    public function setConvertedTaxes($taxes)
+    public function setConvertedTaxes(?Fieldcollection $taxes)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getBackendCreated()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setBackendCreated($backendCreated)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function recalculateConvertedAfterAdjustmentChange()
+    protected function recalculateConvertedAfterAdjustmentChange(): void
     {
         $this->setConvertedTotal($this->getConvertedSubtotal(true) + $this->getConvertedAdjustmentsTotal(null, true), true);
         $this->setConvertedTotal($this->getConvertedSubtotal(false) + $this->getConvertedAdjustmentsTotal(null, false), false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function recalculateAfterAdjustmentChange()
+    protected function recalculateAfterAdjustmentChange(): void
     {
         $this->setTotal($this->getSubtotal(true) + $this->getAdjustmentsTotal(null, true), true);
         $this->setTotal($this->getSubtotal(false) + $this->getAdjustmentsTotal(null, false), false);

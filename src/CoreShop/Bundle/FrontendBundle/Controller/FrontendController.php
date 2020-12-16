@@ -16,9 +16,14 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\TemplateConfigurator\TemplateConfiguratorInterface;
 use CoreShop\Component\Pimcore\Routing\LinkGeneratorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class FrontendController extends \Pimcore\Controller\FrontendController
+/**
+ * @property ContainerInterface $container
+ */
+class FrontendController extends AbstractController
 {
     /**
      * @var TemplateConfiguratorInterface

@@ -18,10 +18,10 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/registry": "^2.2.6",
-    "coreshop/tracking": "^2.0",
-    "coreshop/pimcore-bundle": "^2.0",
+    "php": "^7.4",
+    "coreshop/registry": "^3.0",
+    "coreshop/tracking": "^3.0",
+    "coreshop/pimcore-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
@@ -44,7 +44,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

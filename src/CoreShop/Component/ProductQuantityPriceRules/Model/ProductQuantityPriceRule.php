@@ -74,9 +74,6 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         $this->ranges = new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
@@ -90,41 +87,26 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConditions()
     {
         return $this->conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConditions()
     {
         return !$this->conditions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCondition(ConditionInterface $condition)
     {
         return $this->conditions->contains($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(ConditionInterface $condition)
     {
         if (!$this->hasCondition($condition)) {
@@ -132,81 +114,51 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCondition(ConditionInterface $condition)
     {
         $this->conditions->removeElement($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getActions()
     {
         return new ArrayCollection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasActions()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAction(ActionInterface $action)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use hasRange() instead.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAction(ActionInterface $range)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAction(ActionInterface $range)
     {
         throw new \Exception('actions are not supported in quantity range price rules. use addRange() instead.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRanges()
     {
         return $this->ranges;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRanges()
     {
         return !$this->ranges->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRange(QuantityRangeInterface $range)
     {
         return $this->ranges->contains($range);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addRange(QuantityRangeInterface $range)
     {
         if (!$this->hasRange($range)) {
@@ -215,26 +167,17 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeRange(QuantityRangeInterface $range)
     {
         $range->setRule(null);
         $this->ranges->removeElement($range);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProduct()
     {
         return $this->product;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setProduct($product)
     {
         $this->product = $product;
@@ -242,33 +185,21 @@ class ProductQuantityPriceRule implements ProductQuantityPriceRuleInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCalculationBehaviour()
     {
         return $this->calculationBehaviour;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCalculationBehaviour($calculationBehaviour)
     {
         $this->calculationBehaviour = $calculationBehaviour;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPriority()
     {
         return $this->priority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPriority($priority)
     {
         $this->priority = $priority;

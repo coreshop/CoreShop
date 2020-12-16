@@ -51,7 +51,9 @@ final class CategoryContext implements Context
             sprintf('%d categories has been found with name "%s".', count($list->getObjects()), $categoryName)
         );
 
-        return reset($list->getObjects());
+        $objects = $list->getObjects();
+
+        return reset($objects);
     }
 
     /**

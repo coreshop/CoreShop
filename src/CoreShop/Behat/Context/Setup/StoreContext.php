@@ -157,11 +157,11 @@ final class StoreContext implements Context
             $country->setCurrency($currency);
             $country->setActive(true);
             $country->setAddressFormat('
-                %Text(company);
-                %Text(salutation); %Text(firstname); %Text(lastname);
-                %Text(street); %Text(number);
-                %Text(postCode); %Text(city);
-                %DataObject(country,{"method" : "getName"});
+                {{ company }}
+                {{ salutation }} {{ firstname }} {{ lastname }}
+                {{ street }}
+                {{ postcode }}
+                {{ country.name }}
             ');
 
             $this->entityManager->persist($country);

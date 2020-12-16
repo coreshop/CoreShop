@@ -40,8 +40,8 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_frontend');
+        $treeBuilder = new TreeBuilder('core_shop_frontend');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()

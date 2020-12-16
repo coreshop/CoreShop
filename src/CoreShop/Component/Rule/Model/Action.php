@@ -35,17 +35,11 @@ class Action implements ActionInterface
      */
     protected $configuration;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setType($type)
     {
         $this->type = $type;
@@ -53,9 +47,6 @@ class Action implements ActionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfiguration(array $configuration)
     {
         $this->configuration = $configuration;
@@ -63,17 +54,11 @@ class Action implements ActionInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfiguration()
     {
         return $this->configuration;

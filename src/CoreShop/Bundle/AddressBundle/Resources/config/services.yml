@@ -8,6 +8,7 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Address\Context\CountryContextInterface: '@CoreShop\Component\Address\Context\CompositeCountryContext'
     CoreShop\Component\Address\Context\CompositeCountryContext:
         public: false
 
@@ -30,7 +31,7 @@ services:
         public: false
         arguments:
             - '@coreshop.repository.country'
-            - '@pimcore.cache.core.handler'
+            - '@Pimcore\Cache\Core\CoreCacheHandler'
             - '%pimcore.geoip.db_file%'
         tags:
             - { name: coreshop.context.country.request_based.resolver, priority: 10 }
@@ -44,7 +45,8 @@ services:
     CoreShop\Component\Address\Formatter\AddressFormatterInterface: '@CoreShop\Component\Address\Formatter\AddressFormatter'
     CoreShop\Component\Address\Formatter\AddressFormatter:
         arguments:
-            - '@pimcore.translator'
+            - '@twig'
+            - '@translator'
 
     CoreShop\Bundle\AddressBundle\Twig\FormatAddressExtension:
         public: false

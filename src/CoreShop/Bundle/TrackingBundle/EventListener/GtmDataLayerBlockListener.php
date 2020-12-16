@@ -19,72 +19,34 @@ use Pimcore\Http\ResponseHelper;
 use Pimcore\Analytics\SiteId\SiteIdProvider;
 use Pimcore\Http\Request\Resolver\PimcoreContextResolver;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener
 {
-    /**
-     * @var PimcoreContextResolver
-     */
     protected $pimcoreContextResolver;
-
-    /**
-     * @var ResponseHelper
-     */
     protected $responseHelper;
-
-    /**
-     * @var CodeTracker
-     */
     protected $codeTracker;
+    protected $siteIdProvider;
 
-    /**
-     * @var SiteIdProvider
-     */
-    private $siteIdProvider;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var EngineInterface
-     */
-    private $templatingEngine;
-
-    /**
-     * @param PimcoreContextResolver   $pimcoreContextResolver
-     * @param ResponseHelper           $responseHelper
-     * @param SiteIdProvider           $siteIdProvider
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param EngineInterface          $templatingEngine
-     * @param CodeTracker              $codeTracker
-     */
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
         ResponseHelper $responseHelper,
         SiteIdProvider $siteIdProvider,
-        EventDispatcherInterface $eventDispatcher,
-        EngineInterface $templatingEngine,
         CodeTracker $codeTracker
     ) {
         $this->pimcoreContextResolver = $pimcoreContextResolver;
         $this->responseHelper = $responseHelper;
         $this->siteIdProvider = $siteIdProvider;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->templatingEngine = $templatingEngine;
         $this->codeTracker = $codeTracker;
     }
 
     /**
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         $request = $event->getRequest();
+
         if (!$event->isMasterRequest()) {
             return;
         }

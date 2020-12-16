@@ -18,58 +18,27 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface CategoryInterface extends PimcoreModelInterface
 {
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getName($language = null);
+    public function getName($language = null): ?string;
 
-    /**
-     * @param string $name
-     * @param string $language
-     *
-     * @return string
-     */
-    public function setName($name, $language = null);
+    public function setName(?string $name, $language = null);
 
-    /**
-     * @param string $language
-     *
-     * @return string
-     */
-    public function getDescription($language = null);
+    public function getDescription($language = null): ?string;
 
-    /**
-     * @param string $description
-     * @param string $language
-     *
-     * @return string
-     */
-    public function setDescription($description, $language = null);
+    public function setDescription(?string$description, $language = null);
 
-    /**
-     * @return CategoryInterface
-     */
-    public function getParentCategory();
+    public function getParentCategory(): ?CategoryInterface;
 
-    /**
-     * @param CategoryInterface $parentCategory
-     */
-    public function setParentCategory($parentCategory);
+    public function setParentCategory(?CategoryInterface $parentCategory);
 
     /**
      * @return CategoryInterface[]
      */
-    public function getChildCategories();
+    public function getChildCategories(): array;
 
-    /**
-     * @return bool
-     */
-    public function hasChildCategories();
+    public function hasChildCategories(): bool;
 
     /**
      * @return CategoryInterface[]
      */
-    public function getHierarchy();
+    public function getHierarchy(): array;
 }

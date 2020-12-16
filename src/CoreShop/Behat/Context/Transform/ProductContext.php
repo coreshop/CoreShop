@@ -55,7 +55,8 @@ final class ProductContext implements Context
             sprintf('%d products has been found with name "%s".', count($list->getObjects()), $productName)
         );
 
-        $product = \reset($list->getObjects());
+        $objects = $list->getObjects();
+        $product = \reset($objects);
 
         //This is to not run into cache issues
         return $this->productRepository->forceFind($product->getId());

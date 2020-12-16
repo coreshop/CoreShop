@@ -15,24 +15,20 @@ declare(strict_types=1);
 namespace CoreShop\Component\Address\Formatter;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use Pimcore\Placeholder;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 class AddressFormatter implements AddressFormatterInterface
 {
-    /**
-     * @var TranslatorInterface
-     */
+    private $twig;
     private $translator;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(Environment $twig, TranslatorInterface $translator)
     {
+        $this->twig = $twig;
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function formatAddress(AddressInterface $address, bool $asHtml = true): string
     {
         if (method_exists($address, 'getObjectVars')) {
@@ -45,17 +41,16 @@ class AddressFormatter implements AddressFormatterInterface
 
         //translate salutation
         if (!empty($address->getSalutation())) {
-            $translationKey = 'coreshop.form.customer.salutation.' . $address->getSalutation();
+            $translationKey = 'coreshop.form.customer.salutation.'.$address->getSalutation();
             $objectVars['salutation'] = $this->translator->trans($translationKey);
         }
 
-        $placeHolder = new Placeholder();
-        $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
+        $convertedAddress = $this->twig->createTemplate($address->getCountry()->getAddressFormat())->render($objectVars);
 
         if ($asHtml) {
-            $address = \nl2br($address);
+            $convertedAddress = \nl2br($convertedAddress);
         }
 
-        return $address;
+        return $convertedAddress;
     }
 }

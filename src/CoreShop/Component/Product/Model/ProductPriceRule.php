@@ -16,9 +16,6 @@ namespace CoreShop\Component\Product\Model;
 
 class ProductPriceRule extends AbstractPriceRule implements ProductPriceRuleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function createTranslation()
     {
         return new ProductPriceRuleTranslation();

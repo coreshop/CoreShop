@@ -18,18 +18,18 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/address-bundle": "^2.0",
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/customer-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/locale-bundle": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/rule-bundle": "^2.0",
-    "coreshop/store-bundle": "^2.0",
-    "coreshop/money-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
-    "coreshop/order": "^2.0",
+    "php": "^7.4",
+    "coreshop/address-bundle": "^3.0",
+    "coreshop/currency-bundle": "^3.0",
+    "coreshop/customer-bundle": "^3.0",
+    "coreshop/payment-bundle": "^3.0",
+    "coreshop/locale-bundle": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/rule-bundle": "^3.0",
+    "coreshop/store-bundle": "^3.0",
+    "coreshop/money-bundle": "^3.0",
+    "coreshop/workflow-bundle": "^3.0",
+    "coreshop/order": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
@@ -52,7 +52,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

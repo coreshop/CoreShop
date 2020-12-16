@@ -9,11 +9,11 @@ ui_precision:
         FriendsOfBehat\SymfonyExtension:
             bootstrap: behat-bootstrap.php
             kernel:
-                path: app/BehatAppKernel.php
-                class: BehatAppKernel
+                path: src/BehatKernel.php
+                class: BehatKernel
                 environment: test_precision
 
-        Lakion\Behat\MinkDebugExtension:
+        FriendsOfBehat\MinkDebugExtension:
             directory: etc/build
             clean_start: false
             screenshot: true
@@ -28,7 +28,7 @@ ui_precision:
 #                            external_converted_uri: "http://localhost:9080/app_test_precision.php"
             show_auto: false
 
-        CoreShop\Behat\PantherExtension: ~
+        Robertfausk\Behat\PantherExtension: ~
 
     gherkin:
         filters:

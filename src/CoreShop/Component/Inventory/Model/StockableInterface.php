@@ -16,43 +16,19 @@ namespace CoreShop\Component\Inventory\Model;
 
 interface StockableInterface
 {
-    /**
-     * @return string
-     */
-    public function getInventoryName();
+    public function getInventoryName(): ?string;
 
-    /**
-     * @return bool
-     */
-    public function isInStock();
+    public function isInStock(): bool;
 
-    /**
-     * @return int
-     */
-    public function getOnHold();
+    public function getOnHold(): ?int;
 
-    /**
-     * @param int $onHold
-     */
-    public function setOnHold($onHold);
+    public function setOnHold(?int $onHold);
 
-    /**
-     * @return int
-     */
-    public function getOnHand();
+    public function getOnHand(): ?int;
 
-    /**
-     * @param int $onHand
-     */
-    public function setOnHand($onHand);
+    public function setOnHand(?int $onHand);
 
-    /**
-     * @return bool
-     */
-    public function getIsTracked();
+    public function getIsTracked(): ?bool;
 
-    /**
-     * @param bool $tracked
-     */
-    public function setIsTracked($tracked);
+    public function setIsTracked(?bool $tracked);
 }

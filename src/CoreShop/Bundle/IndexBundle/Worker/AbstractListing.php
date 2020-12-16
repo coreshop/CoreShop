@@ -19,7 +19,10 @@ use CoreShop\Component\Index\Listing\ListingInterface;
 use CoreShop\Component\Index\Model\IndexInterface;
 use CoreShop\Component\Index\Worker\WorkerInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
+use Doctrine\DBAL\Connection;
+use Exception;
 use Pimcore\Tool;
+use Traversable;
 
 abstract class AbstractListing implements ListingInterface
 {
@@ -34,6 +37,11 @@ abstract class AbstractListing implements ListingInterface
     protected $worker;
 
     /**
+     * @var Connection
+     */
+    protected $connection;
+
+    /**
      * @var string
      */
     protected $locale;
@@ -41,10 +49,16 @@ abstract class AbstractListing implements ListingInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(IndexInterface $index, WorkerInterface $worker)
+    public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
         $this->index = $index;
         $this->worker = $worker;
+        $this->connection = $connection;
+    }
+
+    public function getIterator()
+    {
+        return $this;
     }
 
     /**

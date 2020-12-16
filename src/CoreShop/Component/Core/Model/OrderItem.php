@@ -16,136 +16,36 @@ namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderItem as BaseOrderItem;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 abstract class OrderItem extends BaseOrderItem implements OrderItemInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getWeight()
     {
         return $this->getTotalWeight();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDigitalProduct()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDigitalProduct($digitalProduct)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDefaultUnitQuantity()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultUnitQuantity($defaultUnitQuantity)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTotalWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTotalWeight($totalWeight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setItemWeight($itemWeight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-
-    /**
-     * {@inheritdoc}
-     */
     public function getWidth()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getWidth() : 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHeight()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getHeight() : 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDepth()
     {
         return $this->getProduct() instanceof ProductInterface ? $this->getProduct()->getDepth() : 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUnitDefinition()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUnitDefinition($productUnitDefinition)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasUnitDefinition()
+    public function hasUnitDefinition(): bool
     {
         return $this->getUnitDefinition() instanceof ProductUnitDefinitionInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function equals(StorageListItemInterface $storageListItem)
+    public function equals(StorageListItemInterface $storageListItem): bool
     {
         $coreEquals = parent::equals($storageListItem);
 

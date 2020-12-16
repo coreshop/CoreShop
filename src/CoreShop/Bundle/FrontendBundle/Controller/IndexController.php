@@ -20,6 +20,6 @@ class IndexController extends FrontendController
 {
     public function indexAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Index/index.html'));
+        return $this->render($this->templateConfigurator->findTemplate('Index/index.html'));
     }
 }

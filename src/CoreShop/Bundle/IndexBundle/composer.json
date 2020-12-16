@@ -18,11 +18,11 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/index": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource-bundle": "^2.1",
-    "coreshop/menu-bundle": "^2.1",
+    "php": "^7.4",
+    "coreshop/index": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/resource-bundle": "^3.0",
+    "coreshop/menu-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "conflict": {
@@ -51,7 +51,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     },
     "pimcore": {
       "bundles": [

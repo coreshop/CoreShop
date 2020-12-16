@@ -92,7 +92,7 @@ class FilterController extends ResourceController
      */
     protected function getPreConditionTypes(): array
     {
-        return $this->getParameter('coreshop.filter.pre_condition_types');
+        return $this->container->getParameter('coreshop.filter.pre_condition_types');
     }
 
     /**
@@ -100,6 +100,6 @@ class FilterController extends ResourceController
      */
     protected function getUserConditionTypes(): array
     {
-        return $this->getParameter('coreshop.filter.user_condition_types');
+        return $this->container->getParameter('coreshop.filter.user_condition_types');
     }
 }

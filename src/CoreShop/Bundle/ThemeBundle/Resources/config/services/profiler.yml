@@ -5,6 +5,6 @@ services:
     CoreShop\Bundle\ThemeBundle\Collector\ThemeCollector:
         arguments:
             - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
-            - '@coreshop.theme.resolver'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
-            - { name: data_collector, template: 'CoreShopThemeBundle:Collector:theme.html.twig', id: coreshop.theme_collector }
+            - { name: data_collector, template: '@CoreShopTheme/Collector/theme.html.twig', id: coreshop.theme_collector }

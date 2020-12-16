@@ -49,7 +49,7 @@ class MultiselectFilterConditionProcessor implements FilterConditionProcessorInt
         $field = $condition->getConfiguration()['field'];
         $values = $parameterBag->get($field);
 
-        if (empty($values)) {
+        if (empty($values) && isset($condition->getConfiguration()['preSelects'])) {
             $values = $condition->getConfiguration()['preSelects'];
         }
 

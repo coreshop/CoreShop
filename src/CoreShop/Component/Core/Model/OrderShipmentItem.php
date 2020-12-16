@@ -15,23 +15,8 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderShipmentItem as BaseOrderShipmentItem;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 
-class OrderShipmentItem extends BaseOrderShipmentItem implements OrderShipmentItemInterface
+abstract class OrderShipmentItem extends BaseOrderShipmentItem implements OrderShipmentItemInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setWeight($weight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

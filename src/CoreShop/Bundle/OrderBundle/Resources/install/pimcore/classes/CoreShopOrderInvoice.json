@@ -8,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -55,22 +56,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrder"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order",
                                 "name": "order",
                                 "title": "coreshop.order_invoice.order",
                                 "tooltip": "",
@@ -544,24 +534,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": true,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderInvoiceItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order_invoice_item",
                                 "name": "items",
                                 "title": "coreshop.order_invoice.items",
                                 "tooltip": "",
@@ -588,7 +565,7 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
-    "linkGeneratorReference": null,
+    "generateTypeDeclarations": true,
     "propertyVisibility": {
         "grid": {
             "id": true,

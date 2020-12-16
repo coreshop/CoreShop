@@ -14,49 +14,59 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle;
 
-use Doctrine\DBAL\Migrations\Version;
-use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Extension\Bundle\Installer\MigrationInstaller;
+use Pimcore\Extension\Bundle\Installer\InstallerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class Installer extends MigrationInstaller
+class Installer implements InstallerInterface
 {
-    /**
-     * @var bool
-     */
-    protected $runUpdateAfterInstall = false;
+    protected $kernel;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getMigrationVersion(): string
+    public function __construct(KernelInterface  $kernel)
     {
-        return '00000001';
+        $this->kernel = $kernel;
     }
 
-    protected function beforeInstallMigration()
+    public function install()
     {
-        $kernel = \Pimcore::getKernel();
-        $application = new Application($kernel);
+        $application = new Application($this->kernel);
         $application->setAutoExit(false);
         $options = ['command' => 'coreshop:install'];
         $options = array_merge($options, ['--no-interaction' => true, '--application-name coreshop']);
         $application->run(new ArrayInput($options));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function migrateInstall(Schema $schema, Version $version)
+    public function uninstall()
     {
+        return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function migrateUninstall(Schema $schema, Version $version)
+    public function isInstalled()
     {
-        //TODO: Uninstalling of CoreShop eg. dropping all tables
+        return false;
     }
+
+    public function canBeInstalled()
+    {
+        return true;
+    }
+
+    public function canBeUninstalled()
+    {
+        return false;
+    }
+
+    public function needsReloadAfterInstall()
+    {
+        return true;
+    }
+
+    public function getOutput(): OutputInterface
+    {
+        return new NullOutput();
+    }
+
 }

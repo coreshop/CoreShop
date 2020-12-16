@@ -17,8 +17,8 @@ namespace CoreShop\Bundle\WorkflowBundle\StateManager;
 use CoreShop\Bundle\WorkflowBundle\Event\WorkflowTransitionEvent;
 use CoreShop\Bundle\WorkflowBundle\History\HistoryRepositoryInterface;
 use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterface
 {
@@ -61,7 +61,7 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
     public function parseTransitions($subject, string $workflowName, array $transitions = [], bool $forFrontend = true): array
     {
         $event = new WorkflowTransitionEvent($transitions, $workflowName);
-        $this->eventDispatcher->dispatch('coreshop.workflow.valid_transitions', $event);
+        $this->eventDispatcher->dispatch($event, 'coreshop.workflow.valid_transitions');
 
         $valid = [];
         $workflow = $this->stateMachineManager->get($subject, $workflowName);

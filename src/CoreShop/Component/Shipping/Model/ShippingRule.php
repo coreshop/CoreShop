@@ -25,9 +25,6 @@ class ShippingRule implements ShippingRuleInterface
      */
     protected $id;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;

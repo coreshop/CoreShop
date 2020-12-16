@@ -18,8 +18,8 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/registry": "^2.0"
+    "php": "^7.4",
+    "coreshop/registry": "^3.0"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",
@@ -41,7 +41,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

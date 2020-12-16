@@ -14,9 +14,9 @@ namespace CoreShop\Bundle\ResourceBundle\CoreExtension\Document;
 
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
-use Pimcore\Model\Document\Tag;
+use Pimcore\Model\Document\Editable;
 
-class Select extends Tag
+class Select extends Editable
 {
     /**
      * @var ResourceInterface|null
@@ -45,8 +45,6 @@ class Select extends Tag
      */
     public function __construct(string $repositoryName, string $nameProperty, string $type)
     {
-        parent::__construct();
-
         $this->repositoryName = $repositoryName;
         $this->nameProperty = $nameProperty;
         $this->type = $type;
@@ -112,8 +110,8 @@ class Select extends Tag
                 $this->getResourceName($resource),
             ];
         }
-        $options = parent::getOptions();
 
+        $options = [];
         $options['store'] = $result;
 
         return $options;

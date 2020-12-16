@@ -386,13 +386,13 @@ final class PimcoreClassContext implements Context
     }
 
     /**
-     * @Given /^the (definition) has a href field "([^"]+)"$/
+     * @Given /^the (definition) has a relation field "([^"]+)"$/
      */
-    public function definitionHasHrefField($definition, $name)
+    public function definitionHasRelationField($definition, $name)
     {
         $jsonDefinition = sprintf('
             {
-                "fieldtype": "href",
+                "fieldtype": "manyToOneRelation",
                 "width": "",
                 "assetUploadPath": "",
                 "relationType": true,
@@ -728,7 +728,7 @@ final class PimcoreClassContext implements Context
 
                     break;
 
-                case 'href':
+                case 'relation':
                     $object->setValue($row['key'], DataObject::getById($row['value']));
 
                     break;

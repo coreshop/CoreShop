@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+use Carbon\Carbon;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
@@ -22,59 +23,33 @@ interface OrderDocumentInterface extends ResourceInterface, PimcoreModelInterfac
     /**
      * @return string
      */
-    public static function getDocumentType();
+    public static function getDocumentType(): string;
 
-    /**
-     * @return OrderInterface
-     */
-    public function getOrder();
+    public function getOrder(): ?OrderInterface;
 
-    /**
-     * @param OrderInterface $order
-     */
-    public function setOrder($order);
+    public function setOrder(?OrderInterface $order);
 
-    /**
-     * @return string
-     */
-    public function getState();
+    public function getState(): ?string;
 
-    /**
-     * @param string $state
-     */
-    public function setState($state);
+    public function setState(?string $state);
 
-    /**
-     * @return \DateTime
-     */
-    public function getDocumentDate();
+    public function getDocumentDate(): ?Carbon;
 
-    /**
-     * @param \DateTime $documentDate
-     */
-    public function setDocumentDate($documentDate);
+    public function setDocumentDate(?Carbon $documentDate);
 
-    /**
-     * @return string
-     */
-    public function getDocumentNumber();
+    public function getDocumentNumber(): ?string;
 
-    /**
-     * @param string $documentNumber
-     */
-    public function setDocumentNumber($documentNumber);
+    public function setDocumentNumber(?string $documentNumber);
 
     /**
      * @return OrderDocumentItemInterface[]
      */
-    public function getItems();
+    public function getItems(): ?array;
 
     /**
      * @param OrderDocumentItemInterface[] $items
-     *
-     * @return mixed
      */
-    public function setItems($items);
+    public function setItems(array $items);
 
     /**
      * @return mixed

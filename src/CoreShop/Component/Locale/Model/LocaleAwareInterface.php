@@ -16,13 +16,7 @@ namespace CoreShop\Component\Locale\Model;
 
 interface LocaleAwareInterface
 {
-    /**
-     * @return string
-     */
-    public function getLocaleCode();
+    public function getLocaleCode(): ?string;
 
-    /**
-     * @param string $localeCode
-     */
-    public function setLocaleCode($localeCode);
+    public function setLocaleCode(?string $localeCode);
 }

@@ -6,6 +6,10 @@ services:
         alias: CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Validator\CompositeShippableCarrierValidator instead'
 
+    coreshop.shipping.carrier.validator:
+        alias: CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface
+        deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface instead'
+
     coreshop.carrier.resolver:
         alias: CoreShop\Component\Shipping\Resolver\CarriersResolver
         deprecated: 'The "%alias_id%" service alias is deprecated since CoreShop 3.0 and will be removed with 3.1, use CoreShop\Component\Shipping\Resolver\CarriersResolver instead'

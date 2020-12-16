@@ -23,7 +23,7 @@ class PaymentProviderController extends ResourceController
     {
         $factoryResults = [];
 
-        foreach (array_keys($this->getParameter('coreshop.gateway_factories')) as $factory) {
+        foreach (array_keys($this->container->getParameter('coreshop.gateway_factories')) as $factory) {
             $factoryResults[] = [
                 'type' => $factory,
                 'name' => $factory,

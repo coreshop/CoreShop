@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Component\Resource\Pimcore;
 
 use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
-use Pimcore\Model\Document\Tag\TagInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
@@ -49,7 +49,7 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(string $type, array $params): TagInterface
+    public function create(string $type, array $params): EditableInterface
     {
         array_unshift($params, $type);
         array_unshift($params, $this->nameProperty);

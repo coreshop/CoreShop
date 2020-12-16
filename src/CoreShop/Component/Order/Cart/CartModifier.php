@@ -20,7 +20,7 @@ use CoreShop\Component\StorageList\Model\StorageListInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 use CoreShop\Component\StorageList\StorageListItemQuantityModifierInterface;
 use CoreShop\Component\StorageList\StorageListItemResolverInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Webmozart\Assert\Assert;
 
@@ -37,17 +37,7 @@ class CartModifier implements CartModifierInterface
     ) {
         $this->cartItemQuantityModifier = $cartItemQuantityModifier;
         $this->eventDispatcher = $eventDispatcher;
-
-        if (null === $cartItemResolver) {
-            @trigger_error(
-                'Not passing a StorageListItemResolverInterface as third argument is deprecated since 2.1.1 and will be removed with 3.0.0',
-                E_USER_DEPRECATED
-            );
-
-            $this->cartItemResolver = new CartItemResolver();
-        } else {
-            $this->cartItemResolver = $cartItemResolver;
-        }
+        $this->cartItemResolver = $cartItemResolver;
     }
 
     /**
@@ -71,16 +61,16 @@ class CartModifier implements CartModifierInterface
         Assert::isInstanceOf($item, OrderItemInterface::class);
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_pre',
-            new GenericEvent($storageList, ['item' => $item])
+            new GenericEvent($storageList, ['item' => $item]),
+            'coreshop.cart.remove_add_pre'
         );
 
         $storageList->removeItem($item);
         $item->delete();
 
         $this->eventDispatcher->dispatch(
-            'coreshop.cart.remove_add_post',
-            new GenericEvent($storageList, ['item' => $item])
+            new GenericEvent($storageList, ['item' => $item]),
+            'coreshop.cart.remove_add_post'
         );
     }
 

@@ -20,7 +20,8 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 final class RequestCartAvailability
 {
@@ -41,7 +42,7 @@ final class RequestCartAvailability
         $this->session = $session;
     }
 
-    public function checkCartAvailability(GetResponseEvent $event): void
+    public function checkCartAvailability(RequestEvent $event): void
     {
         if (!$event->isMasterRequest()) {
             return;

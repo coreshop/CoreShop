@@ -10,17 +10,20 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\MoneyBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
-use Pimcore\Model;
+use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\ClassDefinition\Data;
+use Pimcore\Model\DataObject\Concrete;
+use Pimcore\Model\Element\ValidationException;
 
-class Money extends Model\DataObject\ClassDefinition\Data implements
+class Money extends DataObject\ClassDefinition\Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
     Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface
 {
     /**
      * Static type of this element.
@@ -55,6 +58,26 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
      * @var float
      */
     public $maxValue;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return 'int';
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return 'int';
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return 'int';
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return 'int';
+    }
 
     /**
      * @return int
@@ -198,6 +221,358 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
+    public function preGetData($object)
+    {
+        /**
+         * @var Concrete $object
+         */
+        $data = $object->getObjectVar($this->getName());
+
+        if (null === $data) {
+            return 0;
+        }
+
+        if (!is_int($data)) {
+            return 0;
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGetterCode($class)
+    {
+        $key = $this->getName();
+        $code = '';
+
+        $code .= '/**' . "\n";
+        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+
+        $code .= $this->getPreGetValueHookCode($key);
+
+        if (method_exists($this, 'preGetData')) {
+            $code .= "\t" . '$data = $this->getClass()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n\n";
+        } else {
+            $code .= "\t" . '$data = $this->' . $key . ";\n\n";
+        }
+
+        // insert this line if inheritance from parent objects is allowed
+        if ($class instanceof DataObject\ClassDefinition && $class->getAllowInherit() && $this->supportsInheritance()) {
+            $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
+            $code .= "\t\t" . 'try {' . "\n";
+            $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '");' . "\n";
+            $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
+            $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
+            $code .= "\t\t" . '}' . "\n";
+            $code .= "\t" . '}' . "\n\n";
+        }
+
+        $code .= "\t" . 'if ($data instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField) {' . "\n";
+        $code .= "\t\t" . '    return $data->getPlain();' . "\n";
+        $code .= "\t" . '}' . "\n\n";
+
+        $code .= "\treturn " . '$data' . ";\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetterCode($class)
+    {
+        $returnType = $class instanceof DataObject\Fieldcollection\Definition ? '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey()) :
+            '\\Pimcore\\Model\\DataObject\\' . ucfirst($class->getName());
+
+        $key = $this->getName();
+        $code = '';
+
+        $code .= '/**' . "\n";
+        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
+        $code .= '* @return ' . $returnType . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= "\t" . '$fd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
+
+        if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
+            if ($this->getDelegate()) {
+                $code .= "\t" . '$encryptedFd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
+                $code .= "\t" . '$delegate = $encryptedFd->getDelegate();' . "\n";
+                $code .= "\t" . 'if ($delegate && !($' . $key . ' instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField)) {' . "\n";
+                $code .= "\t\t" . '$' . $key . ' = new \\Pimcore\\Model\\DataObject\\Data\\EncryptedField($delegate, $' . $key . ');' . "\n";
+                $code .= "\t" . '}' . "\n";
+            }
+        }
+
+        if ($this->supportsDirtyDetection()) {
+            $code .= "\t" . '$currentData = $this->get' . ucfirst($this->getName()) . '();' . "\n";
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+            $code .= "\t" . 'if (!$isEqual) {' . "\n";
+            $code .= "\t\t" . '$this->markFieldDirty("' . $key . '", true);' . "\n";
+            $code .= "\t" . '}' . "\n";
+        }
+
+        if (method_exists($this, 'preSetData')) {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$fd->preSetData($this, $' . $key . ');' . "\n";
+        } else {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$' . $key . ";\n";
+        }
+
+        $code .= "\t" . 'return $this;' . "\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGetterCodeObjectbrick($brickClass)
+    {
+        $key = $this->getName();
+        $code = '';
+        $code .= '/**' . "\n";
+        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+
+        if (method_exists($this, 'preGetData')) {
+            $code .= "\t" . '$data = $this->getDefinition()->getFieldDefinition("' . $key . '")->preGetData($this);' . "\n";
+        } else {
+            $code .= "\t" . '$data = $this->' . $key . ";\n";
+        }
+
+        if ($this->supportsInheritance()) {
+            $code .= "\t" . 'if(\Pimcore\Model\DataObject::doGetInheritedValues($this->getObject()) && $this->getDefinition()->getFieldDefinition("' . $key . '")->isEmpty($data)) {' . "\n";
+            $code .= "\t\t" . 'try {' . "\n";
+            $code .= "\t\t\t" . 'return $this->getValueFromParent("' . $key . '");' . "\n";
+            $code .= "\t\t" . '} catch (InheritanceParentNotFoundException $e) {' . "\n";
+            $code .= "\t\t\t" . '// no data from parent available, continue ... ' . "\n";
+            $code .= "\t\t" . '}' . "\n";
+            $code .= "\t" . '}' . "\n";
+        }
+
+        $code .= "\t" . 'if ($data instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField) {' . "\n";
+        $code .= "\t\t" . 'return $data->getPlain();' . "\n";
+        $code .= "\t" . '}' . "\n";
+
+        $code .= "\t return " . '$data' . ";\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetterCodeObjectbrick($brickClass)
+    {
+        $key = $this->getName();
+
+        $code = '';
+        $code .= '/**' . "\n";
+        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
+        $code .= '* @return \\Pimcore\\Model\\DataObject\\Objectbrick\\Data\\' . ucfirst($brickClass->getKey()) . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
+
+        if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
+            if ($this->getDelegate()) {
+                $code .= "\t" . '$encryptedFd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
+                $code .= "\t" . '$delegate = $encryptedFd->getDelegate();' . "\n";
+                $code .= "\t" . 'if ($delegate && !($' . $key . ' instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField)) {' . "\n";
+                $code .= "\t\t" . '$' . $key . ' = new \\Pimcore\\Model\\DataObject\\Data\\EncryptedField($delegate, $' . $key . ');' . "\n";
+                $code .= "\t" . '}' . "\n";
+            }
+        }
+
+        if ($this->supportsDirtyDetection()) {
+            $code .= "\t" . '$currentData = $this->get' . ucfirst($this->getName()) . '();' . "\n";
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+            $code .= "\t" . 'if (!$isEqual) {' . "\n";
+            $code .= "\t\t" . '$this->markFieldDirty("' . $key . '", true);' . "\n";
+            $code .= "\t" . '}' . "\n";
+        }
+
+        if (method_exists($this, 'preSetData')) {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$fd->preSetData($this, $' . $key . ');' . "\n";
+        } else {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$' . $key . ";\n";
+        }
+
+        $code .= "\t" . 'return $this;' . "\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGetterCodeFieldcollection($fieldcollectionDefinition)
+    {
+        $key = $this->getName();
+
+        $code = '';
+        $code .= '/**' . "\n";
+        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function get' . ucfirst($key) . " (): int {\n";
+
+        if (method_exists($this, 'preGetData')) {
+            $code .= "\t" . '$container = $this;' . "\n";
+            $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
+            $code .= "\t" . '$data = $fd->preGetData($container);' . "\n";
+        } else {
+            $code .= "\t" . '$data = $this->' . $key . ";\n";
+        }
+
+        $code .= "\t" . 'if ($data instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField) {' . "\n";
+        $code .= "\t\t" . '    return $data->getPlain();' . "\n";
+        $code .= "\t" . '}' . "\n";
+
+        $code .= "\t return " . '$data' . ";\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetterCodeFieldcollection($fieldcollectionDefinition)
+    {
+        $key = $this->getName();
+        $code = '';
+
+        $code .= '/**' . "\n";
+        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
+        $code .= '* @return \\Pimcore\\Model\\DataObject\\Fieldcollection\\Data\\' . ucfirst($fieldcollectionDefinition->getKey()) . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ") {\n";
+        $code .= "\t" . '$fd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
+
+        if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
+            if ($this->getDelegate()) {
+                $code .= "\t" . '$encryptedFd = $this->getDefinition()->getFieldDefinition("' . $key . '");' . "\n";
+                $code .= "\t" . '$delegate = $encryptedFd->getDelegate();' . "\n";
+                $code .= "\t" . 'if ($delegate && !($' . $key . ' instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField)) {' . "\n";
+                $code .= "\t\t" . '$' . $key . ' = new \\Pimcore\\Model\\DataObject\\Data\\EncryptedField($delegate, $' . $key . ');' . "\n";
+                $code .= "\t" . '}' . "\n";
+            }
+        }
+
+        if ($this->supportsDirtyDetection()) {
+            $code .= "\t" . '$currentData = $this->get' . ucfirst($this->getName()) . '();' . "\n";
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+            $code .= "\t" . 'if (!$isEqual) {' . "\n";
+            $code .= "\t\t" . '$this->markFieldDirty("' . $key . '", true);' . "\n";
+            $code .= "\t" . '}' . "\n";
+        }
+
+        if (method_exists($this, 'preSetData')) {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$fd->preSetData($this, $' . $key . ');' . "\n";
+        } else {
+            $code .= "\t" . '$this->' . $key . ' = ' . '$' . $key . ";\n";
+        }
+
+        $code .= "\t" . 'return $this;' . "\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGetterCodeLocalizedfields($class)
+    {
+        $key = $this->getName();
+        $code = '/**' . "\n";
+        $code .= '* Get ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @return ' . $this->getPhpdocReturnType() . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function get' . ucfirst($key) . ' ($language = null): int {' . "\n";
+
+        $code .= "\t" . '$data = $this->getLocalizedfields()->getLocalizedValue("' . $key . '", $language);' . "\n";
+
+        if (!$class instanceof DataObject\Fieldcollection\Definition && !$class instanceof DataObject\Objectbrick\Definition) {
+            $code .= $this->getPreGetValueHookCode($key);
+        }
+
+        $code .= "\t" . 'if ($data instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField) {' . "\n";
+        $code .= "\t\t" . 'return $data->getPlain();' . "\n";
+        $code .= "\t" . '}' . "\n";
+
+        // we don't need to consider preGetData, because this is already managed directly by the localized fields within getLocalizedValue()
+
+        $code .= "\treturn " . '$data' . ";\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetterCodeLocalizedfields($class)
+    {
+        $key = $this->getName();
+        if ($class instanceof DataObject\Fieldcollection\Definition || $class instanceof DataObject\Objectbrick\Definition) {
+            $classname = 'FieldCollection\\Data\\' . ucfirst($class->getKey());
+            $containerGetter = 'getDefinition';
+        } else {
+            $classname = $class->getName();
+            $containerGetter = 'getClass';
+        }
+
+        $code = '/**' . "\n";
+        $code .= '* Set ' . str_replace(['/**', '*/', '//'], '', $this->getName()) . ' - ' . str_replace(['/**', '*/', '//'], '', $this->getTitle()) . "\n";
+        $code .= '* @param ' . $this->getPhpdocReturnType() . ' $' . $key . "\n";
+        $code .= '* @return \\Pimcore\\Model\\DataObject\\' . ucfirst($classname) . "\n";
+        $code .= '*/' . "\n";
+        $code .= 'public function set' . ucfirst($key) . ' (int ' . '$' . $key . ', $language = null) {' . "\n";
+        if ($this->supportsDirtyDetection()) {
+            $code .= "\t" . '$fd = $this->' . $containerGetter . '()->getFieldDefinition("localizedfields")->getFieldDefinition("' . $key . '");' . "\n";
+        }
+
+        if ($this instanceof DataObject\ClassDefinition\Data\EncryptedField) {
+            if ($this->getDelegate()) {
+                $code .= "\t" . '$encryptedFd = $this->getClass()->getFieldDefinition("' . $key . '");' . "\n";
+                $code .= "\t" . '$delegate = $encryptedFd->getDelegate();' . "\n";
+                $code .= "\t" . 'if ($delegate && !($' . $key . ' instanceof \\Pimcore\\Model\\DataObject\\Data\\EncryptedField)) {' . "\n";
+                $code .= "\t\t" . '$' . $key . ' = new \\Pimcore\\Model\\DataObject\\Data\\EncryptedField($delegate, $' . $key . ');' . "\n";
+                $code .= "\t" . '}' . "\n";
+            }
+        }
+
+        if ($this->supportsDirtyDetection()) {
+            $code .= "\t" . '$currentData = $this->get' . ucfirst($this->getName()) . '($language);' . "\n";
+            $code .= "\t" . '$isEqual = $fd->isEqual($currentData, $' . $key . ');' . "\n";
+        } else {
+            $code .= "\t" . '$isEqual = false;' . "\n";
+        }
+
+        $code .= "\t" . '$this->getLocalizedfields()->setLocalizedValue("' . $key . '", $' . $key . ', $language, !$isEqual)' . ";\n";
+
+        $code .= "\t" . 'return $this;' . "\n";
+        $code .= "}\n\n";
+
+        return $code;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -205,6 +580,10 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     {
         if (is_numeric($data)) {
             return $this->toNumeric($data);
+        }
+
+        if (null === $data) {
+            return 0;
         }
 
         return $data;
@@ -243,7 +622,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
      */
     public function getVersionPreview($data, $object = null, $params = [])
     {
-        return (string)$data;
+        return $data;
     }
 
     /**
@@ -252,26 +631,26 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     public function checkValidity($data, $omitMandatoryCheck = false)
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
-            throw new Model\Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
+            throw new ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
         }
 
         if (!$this->isEmpty($data) && !is_numeric($data)) {
-            throw new Model\Element\ValidationException('invalid numeric data [' . $data . ']');
+            throw new ValidationException('invalid numeric data [' . $data . ']');
         }
 
         if (!$this->isEmpty($data) && !$omitMandatoryCheck) {
             $data = $this->toNumeric($data);
 
             if ($data >= PHP_INT_MAX) {
-                throw new Model\Element\ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
+                throw new ValidationException('Value exceeds PHP_INT_MAX please use an input data type instead of numeric!');
             }
 
-            if (strlen($this->getMinValue()) && $this->getMinValue() > $data) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
+            if (null !== $this->getMinValue() && $this->getMinValue() > $data) {
+                throw new ValidationException('Value in field [ ' . $this->getName() . ' ] is not at least ' . $this->getMinValue());
             }
 
-            if (strlen($this->getMaxValue()) && $data > $this->getMaxValue()) {
-                throw new Model\Element\ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
+            if (null !== $this->getMaxValue() && $data > $this->getMaxValue()) {
+                throw new ValidationException('Value in field [ ' . $this->getName() . ' ] is bigger than ' . $this->getMaxValue());
             }
         }
     }
@@ -283,7 +662,7 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     {
         $data = $this->getDataFromObjectParam($object, $params);
 
-        return (string)$data;
+        return strval($data);
     }
 
     /**
@@ -311,11 +690,13 @@ class Money extends Model\DataObject\ClassDefinition\Data implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $data
+     *
+     * @return bool
      */
     public function isEmpty($data)
     {
-        return strlen($data) < 1;
+        return null === $data || $data === '';
     }
 
     /**

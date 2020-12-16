@@ -47,5 +47,5 @@
 </div>
 
 {% if cart.shipping(false) is null %}
-    {{ render(controller('coreshop.frontend.controller.cart:shipmentCalculationAction')) }}
+    {{ render(controller('CoreShop\\Bundle\\FrontendBundle\\Controller\\CartController:shipmentCalculationAction')) }}
 {% endif %}

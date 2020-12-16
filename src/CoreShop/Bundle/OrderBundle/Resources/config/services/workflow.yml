@@ -32,8 +32,9 @@ services:
             - '@coreshop.order.invoice.processable'
 
     coreshop.state_machine.marking_store.single_state.order_payment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - paymentState
 
     coreshop.state_machine.marking_store.order_payment_pimcore_marking_store:
@@ -42,8 +43,9 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_payment_state'
 
     coreshop.state_machine.marking_store.single_state.order_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - orderState
 
     coreshop.state_machine.marking_store.order_pimcore_marking_store:
@@ -52,8 +54,9 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_state'
 
     coreshop.state_machine.marking_store.single_state.order_shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - shippingState
 
     coreshop.state_machine.marking_store.order_sales_type_pimcore_marking_store:
@@ -63,8 +66,9 @@ services:
             - false
 
     coreshop.state_machine.marking_store.single_state.order_sales_type_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - saleState
 
     coreshop.state_machine.marking_store.order_shipment_pimcore_marking_store:
@@ -73,8 +77,9 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_shipment_state'
 
     coreshop.state_machine.marking_store.single_state.order_invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - invoiceState
 
     coreshop.state_machine.marking_store.order_invoice_pimcore_marking_store:
@@ -83,13 +88,15 @@ services:
             - '@coreshop.state_machine.marking_store.single_state.order_invoice_state'
 
     coreshop.state_machine.marking_store.single_state.shipment_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - state
 
     coreshop.state_machine.marking_store.single_state.invoice_state:
-        class: Symfony\Component\Workflow\MarkingStore\SingleStateMarkingStore
+        class: Symfony\Component\Workflow\MarkingStore\MethodMarkingStore
         arguments:
+            - true
             - state
 
     coreshop.state_machine.marking_store.shipment_pimcore_marking_store:

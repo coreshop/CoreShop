@@ -6,7 +6,7 @@ on:
     branches: [ 'master' ]
 
 jobs:
-  behat:
+  behat_ui:
     runs-on: ubuntu-latest
     env:
       PIMCORE_ENVIRONMENT: "test"
@@ -15,6 +15,7 @@ jobs:
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
+      PIMCORE_KERNEL_CLASS: 'Kernel'
     services:
       mysql:
         image: mysql:5.7
@@ -24,10 +25,10 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.2, 7.3, 7.4]
-        symfony: [^4.0]
+        php: [7.4]
         pimcore: [10.0.x-dev]
 
     steps:
@@ -56,9 +57,6 @@ jobs:
         mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
         mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
-    - name: Copy parameters.yml
-      run: cp app/config/parameters.example.yml app/config/parameters.yml
-
     - name: Get composer cache directory
       id: composer-cache
       run: echo "::set-output name=dir::$(composer config cache-files-dir)"
@@ -72,22 +70,28 @@ jobs:
 
     - name: Composer install
       run: |
-        composer config minimum-stability dev
-        composer config prefer-stable true
-        composer req pimcore/pimcore:${{ matrix.pimcore }} symfony/symfony:${{ matrix.symfony }} --no-interaction --no-scripts --no-update
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
     - name: Cache clear
       run: bin/console cache:clear
 
     - name: Assets Install
-      run: bin/console assets:install --symlink web
+      run: bin/console assets:install --symlink
 
     - name: Setup Symfony CLI
       run: wget https://get.symfony.com/cli/installer -O - | bash
 
     - name: Run Symfony Webserver
-      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=web --force-php-discovery --daemon
+      run: ~/.symfony/bin/symfony server:start --port=9080 --dir=public --force-php-discovery --daemon
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p ui
+
+    - name: Upload Behat logs
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: "Behat logs (non-JS, PHP ${{ matrix.php }}, Symfony ${{ matrix.pimcore }})"
+        path: etc/build/
+        if-no-files-found: ignore

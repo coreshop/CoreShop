@@ -22,7 +22,7 @@ use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Currencies;
 
 class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface
 {
@@ -82,7 +82,9 @@ class CurrencyFixture extends AbstractFixture implements ContainerAwareInterface
             $currency->setName($c['iso_4217_name']);
             $currency->setIsoCode($iso);
             $currency->setNumericIsoCode($c['iso_4217_numeric']);
-            $currency->setSymbol(Intl::getCurrencyBundle()->getCurrencySymbol($iso));
+            $currency->setSymbol(Currencies::getSymbol($iso));
+
+            $this->setReference('currency_' . $iso, $currency);
 
             $manager->persist($currency);
         }

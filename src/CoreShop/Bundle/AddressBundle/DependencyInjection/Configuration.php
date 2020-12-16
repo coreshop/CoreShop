@@ -38,6 +38,8 @@ use CoreShop\Component\Address\Model\StateTranslation;
 use CoreShop\Component\Address\Model\StateTranslationInterface;
 use CoreShop\Component\Address\Model\Zone;
 use CoreShop\Component\Address\Model\ZoneInterface;
+use CoreShop\Component\Customer\Model\CustomerGroupInterface;
+use CoreShop\Component\Customer\Model\CustomerInterface;
 use CoreShop\Component\Resource\Factory\Factory;
 use CoreShop\Component\Resource\Factory\PimcoreFactory;
 use CoreShop\Component\Resource\Factory\TranslatableFactory;
@@ -52,18 +54,29 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_address');
+        $treeBuilder = new TreeBuilder('core_shop_address');
+        $rootNode = $treeBuilder->getRootNode();
 
-        $rootNode
-            ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
-            ->end();
-
+        $this->addStack($rootNode);
         $this->addModelsSection($rootNode);
         $this->addPimcoreResourcesSection($rootNode);
 
         return $treeBuilder;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $node
+     */
+    private function addStack(ArrayNodeDefinition $node)
+    {
+        $node->children()
+            ->arrayNode('stack')
+                ->addDefaultsIfNotSet()
+                ->children()
+                    ->scalarNode('address')->defaultValue(AddressInterface::class)->cannotBeEmpty()->end()
+                ->end()
+            ->end()
+        ->end();
     }
 
     /**

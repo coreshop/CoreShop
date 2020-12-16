@@ -35,7 +35,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
         return [
             'type' => 'select',
             'label' => $condition->getLabel(),
-            'currentValue' => $currentFilter[$field],
+            'currentValue' => $currentFilter[$field] ?? null,
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'quantityUnit' => Unit::getById($condition->getQuantityUnit()),
@@ -50,7 +50,7 @@ class SelectFilterConditionProcessor implements FilterConditionProcessorInterfac
         $field = $condition->getConfiguration()['field'];
         $value = $parameterBag->get($field);
 
-        if (empty($value)) {
+        if (empty($value) && isset($condition->getConfiguration()['preSelect'])) {
             $value = $condition->getConfiguration()['preSelect'];
         }
 

@@ -12,7 +12,6 @@
 
 namespace CoreShop\Bundle\ResourceBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Pimcore\Model;
@@ -21,7 +20,7 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 abstract class Select extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomRecyclingMarshalInterface
 {
     use Model\DataObject\Traits\SimpleComparisonTrait;
 
@@ -38,14 +37,24 @@ abstract class Select extends Data implements
     /**
      * @return string
      */
-    abstract protected function getModel();
+    abstract protected function getModel(): string;
+
+    /**
+     * @return string
+     */
+    abstract protected function getInterface(): string;
+
+    /**
+     * @return bool
+     */
+    abstract protected function getNullable(): bool;
 
     /**
      * @return string|null
      */
     public function getParameterTypeDeclaration(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
     /**
@@ -53,7 +62,7 @@ abstract class Select extends Data implements
      */
     public function getReturnTypeDeclaration(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? '?' : '') . $this->getInterface();
     }
 
     /**
@@ -61,7 +70,7 @@ abstract class Select extends Data implements
      */
     public function getPhpdocInputType(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
     /**
@@ -69,7 +78,7 @@ abstract class Select extends Data implements
      */
     public function getPhpdocReturnType(): ?string
     {
-        return '\\' . $this->getModel();
+        return ($this->getNullable() ? 'null|' : '') . $this->getInterface();
     }
 
     /**
@@ -265,26 +274,6 @@ abstract class Select extends Data implements
         }
 
         return parent::getDataForSearchIndex($object, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getForWebserviceExport($object, $params = [])
-    {
-        if ($object instanceof ResourceInterface) {
-            return $object->getId();
-        }
-
-        return parent::getForWebserviceExport($object, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFromWebserviceImport($value, $object = null, $params = [], $idMapper = null)
-    {
-        return $this->getRepository()->find($value);
     }
 
     /**

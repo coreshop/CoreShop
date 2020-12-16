@@ -25,8 +25,7 @@ use Rinvex\Country\Country;
 use Rinvex\Country\CountryLoader;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Intl\Data\Provider\LanguageDataProvider;
-use Symfony\Component\Intl\Intl;
+use Symfony\Component\Intl\Languages;
 
 class CountryFixture extends AbstractFixture implements ContainerAwareInterface, VersionedFixtureInterface, DependentFixtureInterface
 {
@@ -72,25 +71,25 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         /**
          * @var StoreInterface $store
          */
-        $store = $this->container->get('coreshop.repository.store')->findStandard();
+        $store = $this->getReference('store');
 
         $addressFormatReplaces = [
             'recipient' => [
-                '%Text(company);',
+                '{{ company }};',
                 PHP_EOL,
-                '%Text(salutation);',
-                '%Text(firstname);',
-                '%Text(lastname);',
+                '{{ salutation }}',
+                '{{ firstname }}',
+                '{{ lastname }}',
             ],
             'street' => [
-                '%Text(street);',
-                '%Text(number);',
+                '{{ street}}',
+                '{{ number }}',
             ],
-            'postalcode' => ' %Text(postcode); ',
-            'city' => '%Text(city);',
+            'postalcode' => ' {{ postcode }}',
+            'city' => '{{ city }}',
             'country' => [
-                '%DataObject(country,{"method" : "getName"});',
-                '%Text(phone);',
+                '{{ country.name }}',
+                '{{ phone }}',
             ],
             'region' => '',
         ];
@@ -99,19 +98,14 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $languages = Tool::getValidLanguages();
         $alpha3CodeMap = [];
 
-        /**
-         * @var LanguageDataProvider $languageDataProvider
-         */
-        $languageDataProvider = Intl::getLanguageBundle();
-
         foreach ($languages as $lang) {
             $langPart = strpos($lang, '_') ? explode('_', $lang)[0] : $lang;
-            $alpha3CodeMap[$lang] = $languageDataProvider->getAlpha3Code($langPart);
+            $alpha3CodeMap[$lang] = Languages::getAlpha3Code($langPart);
         }
 
         foreach ($countries as $country) {
             if ($country instanceof Country) {
-                if (!$country->getCurrency()['iso_4217_code']) {
+                if (null === $country->getCurrency() || !isset($country->getCurrency()['iso_4217_code'])) {
                     continue;
                 }
 
@@ -134,6 +128,8 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
                 $newCountry->setActive($country->getIsoAlpha2() === 'AT' || $newCountry->getActive());
                 $newCountry->setZone($this->container->get('coreshop.repository.zone')->findOneBy(['name' => $country->getContinent()]));
                 $newCountry->setCurrency($this->container->get('coreshop.repository.currency')->getByCode($country->getCurrency()['iso_4217_code']));
+
+                $this->setReference('country_' . $country->getIsoAlpha2(), $newCountry);
 
                 $extra = $country->getExtra();
                 $addressFormat = $defaultAddressFormat;
@@ -195,8 +191,13 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
         $manager->persist($store);
         $manager->flush();
 
-        $store->setCurrency($this->container->get('coreshop.repository.currency')->getByCode('EUR'));
-        $store->setBaseCountry($this->container->get('coreshop.repository.country')->findOneBy(['isoCode' => 'AT']));
+        if ($this->hasReference('currency_EUR')) {
+            $store->setCurrency($this->getReference('currency_EUR'));
+        }
+
+        if ($this->hasReference('country_AT')) {
+            $store->setBaseCountry($this->getReference('country_AT'));
+        }
 
         $manager->persist($store);
         $manager->flush();

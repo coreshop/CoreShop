@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -209,23 +210,15 @@
                                         "visibleSearch": true
                                     },
                                     {
-                                        "fieldtype": "href",
+                                        "fieldtype": "coreShopRelation",
                                         "width": "",
-                                        "assetUploadPath": "",
                                         "relationType": true,
-                                        "objectsAllowed": true,
-                                        "assetsAllowed": false,
-                                        "assetTypes": [],
-                                        "documentsAllowed": false,
-                                        "documentTypes": [],
-                                        "lazyLoading": true,
-                                        "classes": [],
                                         "pathFormatterClass": "",
+                                        "stack": "coreshop.manufacturer",
                                         "name": "manufacturer",
                                         "title": "coreshop.product.manufacturer",
-                                        "tooltip": "",
                                         "mandatory": false,
-                                        "noteditable": false,
+                                        "noteditable": true,
                                         "index": false,
                                         "locked": false,
                                         "style": "",
@@ -324,27 +317,13 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCategory"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.category",
                                 "name": "categories",
                                 "title": "coreshop.product.categories",
-                                "tooltip": "",
                                 "mandatory": false,
                                 "noteditable": false,
                                 "index": false,
@@ -376,7 +355,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
@@ -679,6 +658,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

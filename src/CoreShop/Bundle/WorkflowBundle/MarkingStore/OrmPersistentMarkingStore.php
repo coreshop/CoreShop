@@ -40,7 +40,7 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
     /**
      * {@inheritdoc}
      */
-    public function setMarking($subject, Marking $marking): void
+    public function setMarking($subject, Marking $marking, array $context = []): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);
         $manager = $this->doctrineRegistry->getManagerForClass(get_class($subject));

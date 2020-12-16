@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\RuleBundle\Event;
 
 use CoreShop\Component\Rule\Model\RuleInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RuleAvailabilityCheckEvent extends Event
 {

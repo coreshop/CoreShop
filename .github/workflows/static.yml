@@ -1,4 +1,4 @@
-name: Lint
+name: Static Tests (Lint, Stan)
 on:
   push:
     branches: [ master, '2.2' ]
@@ -20,9 +20,11 @@ jobs:
         ports:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [ 7.3, 7.4 ]
+        php: [7.4]
+        pimcore: [10.0.x-dev]
 
     steps:
     - uses: actions/checkout@v2
@@ -30,11 +32,8 @@ jobs:
     - name: Install PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 7.2
+        php-version: ${{ matrix.php }}
         extensions: intl
-
-    - name: Copy parameters.yml
-      run: cp app/config/parameters.example.yml app/config/parameters.yml
 
     - name: Get composer cache directory
       id: composer-cache
@@ -66,7 +65,9 @@ jobs:
       run: composer validate
 
     - name: Composer install
-      run: composer install --prefer-dist --no-progress --no-suggest
+      run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
     - name: Validate YAML
       run: bin/console lint:yaml src --no-debug
@@ -76,6 +77,6 @@ jobs:
 
     - name: STAN
       run: |
-        cp -f app/config/config_test.yml app/config/config_dev.yml
+        cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
         bin/console cache:warmup --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3

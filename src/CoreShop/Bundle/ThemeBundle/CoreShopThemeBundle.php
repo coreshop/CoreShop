@@ -15,11 +15,11 @@ namespace CoreShop\Bundle\ThemeBundle;
 use Composer\InstalledVersions;
 use CoreShop\Bundle\CoreBundle\Application\Version;
 use CoreShop\Bundle\ThemeBundle\DependencyInjection\Compiler\CompositeThemeResolverPass;
-use Liip\ThemeBundle\LiipThemeBundle;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\HttpKernel\Bundle\DependentBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
+use Sylius\Bundle\ThemeBundle\SyliusThemeBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBundleInterface
@@ -29,7 +29,7 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
      */
     public static function registerDependentBundles(BundleCollection $collection)
     {
-        $collection->addBundle(new LiipThemeBundle(), 1100);
+        $collection->addBundle(new SyliusThemeBundle(), 1100);
     }
 
     /**

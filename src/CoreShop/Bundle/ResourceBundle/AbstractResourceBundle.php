@@ -33,7 +33,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
      *
      * @var string
      */
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_YAML;
+    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
     /**
      * {@inheritdoc}
@@ -91,7 +91,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
-            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion() . ' (' . $this->getComposerVersion() . ')';
+            return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
         }
 
         return $this->getComposerVersion();

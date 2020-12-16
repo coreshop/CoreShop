@@ -14,35 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Order\Model;
 
+use Carbon\Carbon;
+
 interface OrderShipmentInterface extends OrderDocumentInterface
 {
-    /**
-     * @return \DateTime
-     */
-    public function getShipmentDate();
+    public function getShipmentDate(): ?Carbon;
 
-    /**
-     * @param \DateTime $shipmentDate
-     */
-    public function setShipmentDate($shipmentDate);
+    public function setShipmentDate(?Carbon $shipmentDate);
 
-    /**
-     * @return string
-     */
-    public function getShipmentNumber();
+    public function getShipmentNumber(): ?string;
 
-    /**
-     * @param string $shipmentNumber
-     */
-    public function setShipmentNumber($shipmentNumber);
+    public function setShipmentNumber(?string $shipmentNumber);
 
-    /**
-     * @return string
-     */
-    public function getTrackingCode();
+    public function getTrackingCode(): ?string;
 
-    /**
-     * @param string $trackingCode
-     */
-    public function setTrackingCode($trackingCode);
+    public function setTrackingCode(?string $trackingCode);
 }

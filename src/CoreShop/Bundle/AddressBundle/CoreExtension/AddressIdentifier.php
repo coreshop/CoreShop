@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
+use CoreShop\Component\Address\Model\AddressIdentifierInterface;
 
 class AddressIdentifier extends Select
 {
@@ -25,19 +26,23 @@ class AddressIdentifier extends Select
      */
     public $fieldtype = 'coreShopAddressIdentifier';
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getRepository()
     {
         return \Pimcore::getContainer()->get('coreshop.repository.address_identifier');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getModel()
+    protected function getModel(): string
     {
         return \Pimcore::getContainer()->getParameter('coreshop.model.address_identifier.class');
+    }
+
+    protected function getInterface(): string
+    {
+        return '\\' . AddressIdentifierInterface::class;
+    }
+
+    protected function getNullable(): bool
+    {
+        return true;
     }
 }

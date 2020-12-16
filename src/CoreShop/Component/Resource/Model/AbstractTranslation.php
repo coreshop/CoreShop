@@ -28,17 +28,11 @@ class AbstractTranslation implements TranslationInterface
      */
     protected $translatable;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTranslatable()
     {
         return $this->translatable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTranslatable(TranslatableInterface $translatable = null)
     {
         if ($translatable === $this->translatable) {
@@ -57,17 +51,11 @@ class AbstractTranslation implements TranslationInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocale()
     {
         return $this->locale;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLocale($locale)
     {
         $this->locale = $locale;

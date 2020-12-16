@@ -92,14 +92,14 @@ final class FilterContext implements Context
             $shouldHaveConditions[] = $value['value'];
         }
 
-        $field = reset(
-            array_filter(
-                $filter->getConditions()->toArray(),
-                function (FilterConditionInterface $condition) use ($field) {
-                    return $condition->getConfiguration()['field'] === $field;
-                }
-            )
+        $filtered = array_filter(
+            $filter->getConditions()->toArray(),
+            static function (FilterConditionInterface $condition) use ($field) {
+                return $condition->getConfiguration()['field'] === $field;
+            }
         );
+
+        $field = reset($filtered);
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);
@@ -131,14 +131,14 @@ final class FilterContext implements Context
     ) {
         $conditions = $this->prepareFilter($filter);
 
-        $field = reset(
-            array_filter(
-                $filter->getConditions()->toArray(),
-                function (FilterConditionInterface $condition) use ($field) {
-                    return $condition->getConfiguration()['field'] === $field;
-                }
-            )
+        $filtered = array_filter(
+            $filter->getConditions()->toArray(),
+            static function (FilterConditionInterface $condition) use ($field) {
+                return $condition->getConfiguration()['field'] === $field;
+            }
         );
+
+        $field = reset($filtered);
 
         Assert::isInstanceOf($field, FilterConditionInterface::class);
         Assert::eq($field->getType(), $conditionType);

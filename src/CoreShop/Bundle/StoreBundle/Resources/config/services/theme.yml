@@ -5,6 +5,5 @@ services:
     CoreShop\Bundle\StoreBundle\Theme\StoreThemeResolver:
         arguments:
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
-            - '@coreshop.repository.store'
         tags:
             - { name: coreshop.theme.resolver, type: coreshop_store, priority: 20 }

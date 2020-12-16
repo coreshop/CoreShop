@@ -24,24 +24,24 @@ final class TranslationConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('translations');
+        $treeBuilder = new TreeBuilder('translations');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-            ->arrayNode('translations')
-            ->useAttributeAsKey('key')
-            ->arrayPrototype()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('key')->cannotBeEmpty()->end()
-            ->arrayNode('languages')
-            ->useAttributeAsKey('language')
-            ->prototype('scalar')->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('translations')
+                    ->useAttributeAsKey('key')
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('key')->cannotBeEmpty()->end()
+                            ->arrayNode('languages')
+                                ->useAttributeAsKey('language')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

@@ -73,41 +73,26 @@ trait RuleTrait
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setName($name)
     {
         $this->name = $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConditions()
     {
         return $this->conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConditions()
     {
         return !$this->conditions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCondition(ConditionInterface $condition)
     {
         return $this->conditions->contains($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(ConditionInterface $condition)
     {
         if (!$this->hasCondition($condition)) {
@@ -115,41 +100,26 @@ trait RuleTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeCondition(ConditionInterface $condition)
     {
         $this->conditions->removeElement($condition);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getActions()
     {
         return $this->actions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasActions()
     {
         return !$this->actions->isEmpty();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAction(ActionInterface $action)
     {
         return $this->actions->contains($action);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addAction(ActionInterface $action)
     {
         if (!$this->hasAction($action)) {
@@ -157,9 +127,6 @@ trait RuleTrait
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeAction(ActionInterface $action)
     {
         $this->actions->removeElement($action);

@@ -120,10 +120,10 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         $product->setActive(true);
         $product->setCategories([$usedCategory]);
         $product->setOnHand(10);
-        $product->setWholesalePrice((int)($faker->randomFloat(2, 100, 200) * $decimalFactor));
+//        $product->setWholesalePrice((int)($faker->randomFloat(2, 100, 200) * $decimalFactor));
 
         foreach ($stores as $store) {
-            $product->setStorePrice((int) ($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
+            $product->setStoreValuesOfType('price', (int) ($faker->randomFloat(2, 200, 400) * $decimalFactor), $store);
         }
 
         $product->setTaxRule($this->getReference('taxRule'));

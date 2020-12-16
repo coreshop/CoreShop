@@ -42,7 +42,7 @@ class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcesso
     /**
      * {@inheritdoc}
      */
-    public function getDiscountPrice($subject, array $context, array $configuration)
+    public function getDiscountPrice($subject, array $context, array $configuration): int
     {
         Assert::keyExists($context, 'currency');
         Assert::isInstanceOf($context['currency'], CurrencyInterface::class);

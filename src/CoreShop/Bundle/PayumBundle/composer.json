@@ -18,14 +18,15 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/order-bundle": "^2.0",
-    "coreshop/payment-bundle": "^2.0",
-    "coreshop/core": "^2.0",
-    "payum/payum-bundle": "^2.2",
-    "payum/offline": "^1.4",
-    "payum/sofort": "^1.4",
-    "payum/paypal-express-checkout-nvp": "^1.4",
+    "php": "^7.4",
+    "coreshop/order-bundle": "^3.0",
+    "coreshop/payment-bundle": "^3.0",
+    "coreshop/core": "^3.0",
+    "payum/payum-bundle": "dev-master",
+    "payum/core": "^1.6@dev",
+    "payum/offline": "^1.6",
+    "payum/sofort": "^1.6",
+    "payum/paypal-express-checkout-nvp": "^1.6",
     "php-http/guzzle6-adapter": "^2.1",
     "pimcore/pimcore": "^10.0.0"
   },
@@ -49,7 +50,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

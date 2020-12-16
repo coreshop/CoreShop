@@ -46,6 +46,10 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 continue;
             }
 
+            if ($definition->isDeprecated() || $definition->isAbstract()) {
+                continue;
+            }
+
             if (!@class_exists($definition->getClass())) {
                 continue;
             }
@@ -72,7 +76,7 @@ final class TraceableValidationProcessorPass implements CompilerPassInterface
                 $validationProcessors,
             ]);
             $collector->addTag('data_collector', [
-                'template' => 'CoreShopRuleBundle:Collector:rule.html.twig',
+                'template' => '@CoreShopRule/Collector/rule.html.twig',
                 'id' => 'coreshop.rule_collector',
             ]);
 

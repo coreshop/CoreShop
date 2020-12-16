@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 use CoreShop\Bundle\ProductBundle\Form\Type\Unit\ProductUnitDefinitionsType;
 use CoreShop\Bundle\ResourceBundle\CoreExtension\TempEntityManagerTrait;
 use CoreShop\Bundle\ResourceBundle\Doctrine\ORM\EntityMerger;
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
@@ -33,8 +32,7 @@ use Webmozart\Assert\Assert;
 
 class ProductUnitDefinitions extends Data implements
     Data\CustomResourcePersistingInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     use TempEntityManagerTrait;
 
@@ -57,6 +55,26 @@ class ProductUnitDefinitions extends Data implements
      * @var string
      */
     public $phpdocType = 'array';
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionsInterface::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionsInterface::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionsInterface::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionsInterface::class;
+    }
 
     /**
      * @return int
@@ -120,53 +138,53 @@ class ProductUnitDefinitions extends Data implements
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getGetterCode($class)
-    {
-        $key = $this->getName();
-        $code = '/**'."\n";
-        $code .= '* Get '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
-                '', $this->getTitle())."\n";
-        $code .= '*'."\n";
-        $code .= '* @return null|'.$this->getPhpdocType().'|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface'."\n";
-        $code .= '*/'."\n";
-        $code .= 'public function get'.ucfirst($key).' () {'."\n";
-        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
-        $code .= "\t".'$data = $this->'.$key.";\n";
-        $code .= "\t".'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
-        $code .= "\t\t".'try {'."\n";
-        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'");'."\n";
-        $code .= "\t\t".'} catch (InheritanceParentNotFoundException $e) {'."\n";
-        $code .= "\t\t\t".'// no data from parent available, continue ... '."\n";
-        $code .= "\t\t".'}'."\n";
-        $code .= "\t".'}'."\n";
-        $code .= "\t".'return $data;'."\n";
-        $code .= "}\n\n";
-
-        return $code;
-    }
-
-    public function getSetterCode($class)
-    {
-        $key = $this->getName();
-        $code = '/**'."\n";
-        $code .= '* Set '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
-                $this->getTitle())."\n";
-        $code .= '*'."\n";
-        $code .= '* @param null|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions'."\n";
-        $code .= '*'."\n";
-        $code .= '* @return static'."\n";
-        $code .= '*/'."\n";
-        $code .= 'public function set'.ucfirst($key).' (\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions = null) {'."\n";
-        $code .= "\t".'$this->'.$key.' = $unitDefinitions;'."\n";
-        $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
-        $code .= "\t".'return $this;'."\n";
-        $code .= "}\n\n";
-
-        return $code;
-    }
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function getGetterCode($class)
+//    {
+//        $key = $this->getName();
+//        $code = '/**'."\n";
+//        $code .= '* Get '.str_replace(['/**', '*/', '//'], '', $this->getName()).' - '.str_replace(['/**', '*/', '//'],
+//                '', $this->getTitle())."\n";
+//        $code .= '*'."\n";
+//        $code .= '* @return null|'.$this->getPhpdocReturnType().'|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface'."\n";
+//        $code .= '*/'."\n";
+//        $code .= 'public function get'.ucfirst($key).' () {'."\n";
+//        $code .= "\t".'$this->'.$key.' = $this->getClass()->getFieldDefinition("'.$key.'")->preGetData($this);'."\n";
+//        $code .= "\t".'$data = $this->'.$key.";\n";
+//        $code .= "\t".'if(\Pimcore\Model\DataObject::doGetInheritedValues() && $this->getClass()->getFieldDefinition("'.$key.'")->isEmpty($data)) {'."\n";
+//        $code .= "\t\t".'try {'."\n";
+//        $code .= "\t\t\t".'return $this->getValueFromParent("'.$key.'");'."\n";
+//        $code .= "\t\t".'} catch (InheritanceParentNotFoundException $e) {'."\n";
+//        $code .= "\t\t\t".'// no data from parent available, continue ... '."\n";
+//        $code .= "\t\t".'}'."\n";
+//        $code .= "\t".'}'."\n";
+//        $code .= "\t".'return $data;'."\n";
+//        $code .= "}\n\n";
+//
+//        return $code;
+//    }
+//
+//    public function getSetterCode($class)
+//    {
+//        $key = $this->getName();
+//        $code = '/**'."\n";
+//        $code .= '* Set '.str_replace(['/**', '*/', '//'], '', $key).' - '.str_replace(['/**', '*/', '//'], '',
+//                $this->getTitle())."\n";
+//        $code .= '*'."\n";
+//        $code .= '* @param null|\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions'."\n";
+//        $code .= '*'."\n";
+//        $code .= '* @return static'."\n";
+//        $code .= '*/'."\n";
+//        $code .= 'public function set'.ucfirst($key).' (\CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface $unitDefinitions = null) {'."\n";
+//        $code .= "\t".'$this->'.$key.' = $unitDefinitions;'."\n";
+//        $code .= "\t".'$this->'.$key.' = '.'$this->getClass()->getFieldDefinition("'.$key.'")->preSetData($this, $this->'.$key.');'."\n";
+//        $code .= "\t".'return $this;'."\n";
+//        $code .= "}\n\n";
+//
+//        return $code;
+//    }
 
     /**
      * {@inheritdoc}
@@ -196,7 +214,6 @@ class ProductUnitDefinitions extends Data implements
         $tempEntityManager = $this->createTempEntityManager($this->getEntityManager());
 
         $context = DeserializationContext::create();
-        $context->setSerializeNull(false);
         $context->setGroups(['Version']);
         $context->setAttribute('em', $tempEntityManager);
 

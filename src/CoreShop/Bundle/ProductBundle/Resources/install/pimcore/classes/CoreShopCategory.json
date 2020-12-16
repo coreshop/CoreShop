@@ -6,6 +6,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -105,25 +106,13 @@
                         "visibleSearch": true
                     },
                     {
-                        "fieldtype": "href",
+                        "fieldtype": "coreShopRelation",
                         "width": "",
-                        "assetUploadPath": "",
                         "relationType": true,
-                        "objectsAllowed": true,
-                        "assetsAllowed": false,
-                        "assetTypes": [],
-                        "documentsAllowed": false,
-                        "documentTypes": [],
-                        "lazyLoading": true,
-                        "classes": [
-                            {
-                                "classes": "CoreShopCategory"
-                            }
-                        ],
                         "pathFormatterClass": "",
-                        "name": "parentCategory",
+                        "stack": "coreshop.category",
+                         "name": "parentCategory",
                         "title": "coreshop.category.parent_category",
-                        "tooltip": "",
                         "mandatory": false,
                         "noteditable": true,
                         "index": false,
@@ -131,7 +120,7 @@
                         "style": "",
                         "permissions": null,
                         "datatype": "data",
-                        "invisible": true,
+                        "invisible": false,
                         "visibleGridView": false,
                         "visibleSearch": false
                     }
@@ -144,6 +133,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

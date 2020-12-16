@@ -19,8 +19,6 @@ interface ThemeHelperInterface
     /**
      * @param string   $themeName
      * @param \Closure $function
-     *
-     * @return mixed
      */
-    public function useTheme($themeName, \Closure $function);
+    public function useTheme(string $themeName, \Closure $function): void;
 }

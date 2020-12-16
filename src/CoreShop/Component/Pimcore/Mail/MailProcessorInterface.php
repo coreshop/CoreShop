@@ -25,7 +25,5 @@ interface MailProcessorInterface
      *
      * @return bool
      */
-    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, $attachments = [], $params = []);
+    public function sendMail(Email $emailDocument, $subject = null, $recipients = null, array $attachments = [], array $params = []);
 }
-
-class_alias(MailProcessorInterface::class, 'CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface');

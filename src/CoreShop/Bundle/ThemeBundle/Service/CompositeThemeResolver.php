@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ThemeBundle\Service;
 
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeThemeResolver implements ThemeResolverInterface
 {
@@ -37,14 +37,16 @@ final class CompositeThemeResolver implements ThemeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme(ActiveThemeInterface $activeTheme): void
+    public function resolveTheme(): string
     {
         foreach ($this->themeResolvers as $themeResolver) {
             try {
-                $themeResolver->resolveTheme($activeTheme);
+                return $themeResolver->resolveTheme();
             } catch (ThemeNotResolvedException $exception) {
                 continue;
             }
         }
+
+        throw new ThemeNotResolvedException();
     }
 }

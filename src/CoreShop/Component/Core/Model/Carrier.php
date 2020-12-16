@@ -35,17 +35,11 @@ class Carrier extends BaseCarrier implements CarrierInterface
         $this->storesAwareConstructor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRule()
     {
         return $this->taxRule;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setTaxRule(TaxRuleGroupInterface $taxRule)
     {
         $this->taxRule = $taxRule;

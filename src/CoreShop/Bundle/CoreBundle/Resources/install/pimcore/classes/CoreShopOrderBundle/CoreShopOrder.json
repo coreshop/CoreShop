@@ -8,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "cacheRawRelationData": false,
     "layoutDefinitions": {
         "fieldtype": "panel",
@@ -3347,9 +3348,9 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
-                                                "queryColumnType": "double",
-                                                "columnType": "double",
-                                                "phpdocType": "float",
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
                                                 "integer": true,
                                                 "unsigned": false,
                                                 "minValue": null,
@@ -3376,9 +3377,9 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
-                                                "queryColumnType": "double",
-                                                "columnType": "double",
-                                                "phpdocType": "float",
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
                                                 "integer": true,
                                                 "unsigned": false,
                                                 "minValue": null,
@@ -3749,9 +3750,9 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
-                                                "queryColumnType": "double",
-                                                "columnType": "double",
-                                                "phpdocType": "float",
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
                                                 "integer": true,
                                                 "unsigned": false,
                                                 "minValue": null,
@@ -3778,9 +3779,9 @@
                                                 "fieldtype": "numeric",
                                                 "width": "",
                                                 "defaultValue": null,
-                                                "queryColumnType": "double",
-                                                "columnType": "double",
-                                                "phpdocType": "float",
+                                                "queryColumnType": "bigint(20)",
+                                                "columnType": "bigint(20)",
+                                                "phpdocType": "int",
                                                 "integer": true,
                                                 "unsigned": false,
                                                 "minValue": null,
@@ -4175,26 +4176,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToManyRelation",
+                                "fieldtype": "coreShopRelations",
                                 "width": "",
-                                "height": "",
-                                "maxItems": "",
-                                "assetUploadPath": "",
-                                "queryColumnType": "text",
-                                "phpdocType": "array",
                                 "relationType": true,
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopOrderItem"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.order_item",
                                 "name": "items",
                                 "title": "coreshop.order.items",
                                 "tooltip": "",
@@ -4252,27 +4238,11 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopCustomer"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.customer",
                                 "name": "customer",
                                 "title": "coreshop.order.customer",
                                 "tooltip": "",
@@ -4288,27 +4258,11 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "shippingAddress",
                                 "title": "coreshop.order.shipping_address",
                                 "tooltip": "",
@@ -4324,27 +4278,11 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "manyToOneRelation",
+                                "fieldtype": "coreShopRelation",
                                 "width": "",
-                                "assetUploadPath": "",
                                 "relationType": true,
-                                "queryColumnType": {
-                                    "id": "int(11)",
-                                    "type": "enum('document','asset','object')"
-                                },
-                                "phpdocType": "\\Pimcore\\Model\\Document\\Page | \\Pimcore\\Model\\Document\\Snippet | \\Pimcore\\Model\\Document | \\Pimcore\\Model\\Asset | \\Pimcore\\Model\\DataObject\\AbstractObject",
-                                "objectsAllowed": true,
-                                "assetsAllowed": false,
-                                "assetTypes": [],
-                                "documentsAllowed": false,
-                                "documentTypes": [],
-                                "lazyLoading": false,
-                                "classes": [
-                                    {
-                                        "classes": "CoreShopAddress"
-                                    }
-                                ],
                                 "pathFormatterClass": "",
+                                "stack": "coreshop.address",
                                 "name": "invoiceAddress",
                                 "title": "coreshop.order.invoice_address",
                                 "tooltip": "",
@@ -4373,7 +4311,8 @@
     "icon": null,
     "previewUrl": null,
     "group": "CoreShop",
-    "linkGeneratorReference": null,
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

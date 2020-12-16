@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:gedmo="http://gediminasm.org/schemas/orm/doctrine-extensions-mapping">
+
+    <mapped-superclass name="CoreShop\Component\Order\Model\CartPriceRuleVoucherCode" table="coreshop_cart_price_rule_voucher_code">
+        <unique-constraints>
+            <unique-constraint name="code" columns="code"/>
+        </unique-constraints>
+
+        <id name="id" column="id" type="integer">
+            <generator strategy="AUTO"/>
+        </id>
+
+        <field name="code" column="code" length="190"/>
+        <field name="used" column="used" type="boolean"/>
+        <field name="uses" column="uses" type="integer"/>
+        <field name="creditUsed" column="creditUsed" type="integer"/>
+        <field name="creditAvailable" column="creditAvailable" type="integer"/>
+        <field name="isCreditCode" column="isCreditCode" type="boolean"/>
+
+        <field name="creationDate" type="datetime">
+            <gedmo:timestampable on="create"/>
+        </field>
+        <field name="modificationDate" type="datetime" nullable="true">
+            <gedmo:timestampable on="update"/>
+        </field>
+
+        <many-to-one field="cartPriceRule" target-entity="CoreShop\Component\Order\Model\CartPriceRuleInterface" inversed-by="voucherCodes">
+            <join-column name="cartPriceRuleId"/>
+        </many-to-one>
+
+        <many-to-one field="creditCurrency" target-entity="CoreShop\Component\Currency\Model\CurrencyInterface" inversed-by="voucherCodes">
+            <join-column name="currencyId" referenced-column-name="id" on-delete="SET NULL"/>
+        </many-to-one>
+    </mapped-superclass>
+</doctrine-mapping>

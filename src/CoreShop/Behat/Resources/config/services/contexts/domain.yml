@@ -154,8 +154,8 @@ services:
         arguments:
             - '@coreshop.behat.shared_storage'
             - '@CoreShop\Component\SEO\SEOPresentationInterface'
-            - '@Pimcore\Templating\Helper\HeadTitle'
-            - '@Pimcore\Templating\Helper\HeadMeta'
+            - '@Pimcore\Twig\Extension\Templating\HeadTitle'
+            - '@Pimcore\Twig\Extension\Templating\HeadMeta'
         tags:
             - { name: fob.context_service }
 
@@ -167,18 +167,11 @@ services:
         tags:
             - { name: fob.context_service }
 
-    coreshop.behat.context.domain.placeholder:
-        class: CoreShop\Behat\Context\Domain\PlaceholderContext
-        arguments:
-            - '@coreshop.behat.shared_storage'
-        tags:
-            - { name: fob.context_service }
-
     coreshop.behat.context.domain.pimcore:
         class: CoreShop\Behat\Context\Domain\PimcoreContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '%kernel.root_dir%/../web'
+            - '%kernel.project_dir%/public'
             - '%coreshop.all.pimcore.admin.js%'
             - '%coreshop.all.pimcore.admin.css%'
             - '%coreshop.all.pimcore.admin.editmode_js%'
@@ -233,8 +226,7 @@ services:
         class: CoreShop\Behat\Context\Domain\ThemeContext
         arguments:
             - '@coreshop.behat.shared_storage'
-            - '@coreshop.theme.resolver'
-            - '@CoreShop\Bundle\ThemeBundle\Service\ActiveThemeInterface'
+            - '@CoreShop\Bundle\ThemeBundle\Service\ThemeResolverInterface'
         tags:
             - { name: fob.context_service }
 

@@ -29,16 +29,13 @@ final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function resolveTheme(ActiveThemeInterface $activeTheme): void
+    public function resolveTheme(): string
     {
         try {
             $document = $this->documentResolver->getDocument();
 
             if ($document && $document->getProperty('theme')) {
-                $theme = $document->getProperty('theme');
-
-                $activeTheme->addTheme($theme);
-                $activeTheme->setActiveTheme($theme);
+                return $document->getProperty('theme');
             }
         } catch (\Exception $ex) {
             throw new ThemeNotResolvedException($ex);

@@ -16,6 +16,7 @@ namespace CoreShop\Component\Order\Model;
 
 use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 use CoreShop\Component\StorageList\Model\StorageListItemInterface;
+use Pimcore\Model\DataObject\Fieldcollection;
 
 interface OrderItemInterface extends
     PimcoreModelInterface,
@@ -23,274 +24,111 @@ interface OrderItemInterface extends
     ConvertedAdjustableInterface,
     StorageListItemInterface
 {
-    /**
-     * @return OrderInterface
-     */
-    public function getOrder();
+    public function getOrder(): OrderInterface;
 
-    /**
-     * @return PurchasableInterface
-     */
-    public function getProduct();
+    public function getProduct(): ?PurchasableInterface;
 
-    /**
-     * @return string
-     */
-    public function getName();
+    public function setProduct(?PurchasableInterface $product);
 
-    /**
-     * @param string      $name
-     * @param string|null $language
-     */
-    public function setName($name, $language = null);
+    public function getName(): ?string;
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
+    public function setName(?string $name, $language = null);
+
     public function getTotal(bool $withTax = true): int;
 
-    /**
-     * @param int  $total
-     * @param bool $withTax
-     */
     public function setTotal(int $total, bool $withTax = true);
 
-    /**
-     * @return bool
-     */
-    public function getIsGiftItem();
+    public function getIsGiftItem(): ?bool;
 
-    /**
-     * @param bool $isGiftItem
-     */
-    public function setIsGiftItem($isGiftItem);
+    public function setIsGiftItem(?bool $isGiftItem);
 
-    /**
-     * @param PurchasableInterface $product
-     */
-    public function setProduct($product);
+    public function getQuantity(): ?float;
 
-    /**
-     * @return float
-     */
-    public function getQuantity();
+    public function setQuantity(?float $quantity);
 
-    /**
-     * @param float $quantity
-     */
-    public function setQuantity($quantity);
-
-    /**
-     * @return int
-     */
     public function getCustomItemPrice(): int;
 
-    /**
-     * @param int $customItemPrice
-     */
     public function setCustomItemPrice(int $customItemPrice);
 
-    /**
-     * @return int
-     */
-    public function getCustomItemDiscount();
+    public function getCustomItemDiscount(): ?float;
 
-    /**
-     * @param int $customItemPrice
-     */
-    public function setCustomItemDiscount($customItemPrice);
+    public function setCustomItemDiscount(?float $customItemPrice);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getItemPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemPrice
-     * @param bool $withTax
-     */
     public function setItemPrice(int $itemPrice, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getItemRetailPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemRetailPrice
-     * @param bool $withTax
-     */
     public function setItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getItemDiscountPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemDiscountPrice
-     * @param bool $withTax
-     */
     public function setItemDiscountPrice(int $itemDiscountPrice, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getItemDiscount(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemDiscount
-     * @param bool $withTax
-     */
     public function setItemDiscount(int $itemDiscount, bool $withTax = true);
 
-    /**
-     * @return int
-     */
     public function getItemWholesalePrice(): int;
 
-    /**
-     * @param int $itemWholesalePrice
-     */
     public function setItemWholesalePrice(int $itemWholesalePrice);
 
-    /**
-     * @return int
-     */
     public function getItemTax(): int;
 
-    /**
-     * @param int $itemTax
-     */
     public function setItemTax(int $itemTax);
 
-    /**
-     * @return int
-     */
     public function getTotalTax(): int;
 
     /**
-     * @return mixed
+     * @return Fieldcollection
      */
     public function getTaxes();
 
     /**
-     * @param mixed $taxes
+     * @param ?Fieldcollection $taxes
      */
-    public function setTaxes($taxes);
+    public function setTaxes(?Fieldcollection $taxes);
 
-    /**
-     * @param int $convertedItemWholesalePrice
-     */
     public function setConvertedItemWholesalePrice(int $convertedItemWholesalePrice);
 
-    /**
-     * @return int
-     */
     public function getConvertedCustomItemPrice(): int;
 
-    /**
-     * @param int $convertedCustomItemPrice
-     */
     public function setConvertedCustomItemPrice(int $convertedCustomItemPrice);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedItemPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemPrice
-     * @param bool $withTax
-     */
     public function setConvertedItemPrice(int $itemPrice, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedItemRetailPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $itemRetailPrice
-     * @param bool $withTax
-     */
     public function setConvertedItemRetailPrice(int $itemRetailPrice, bool $withTax = true);
 
-    /**
-     * @return int
-     */
     public function getConvertedItemTax(): int;
 
-    /**
-     * @param int $itemTax
-     */
     public function setConvertedItemTax(int $itemTax);
 
     /**
-     * @return mixed
+     * @return ?Fieldcollection
      */
     public function getConvertedTaxes();
 
     /**
-     * @param mixed $taxes
+     * @param ?Fieldcollection $taxes
      */
-    public function setConvertedTaxes($taxes);
+    public function setConvertedTaxes(?Fieldcollection $taxes);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedTotal(bool $withTax = true): int;
 
-    /**
-     * @return int
-     */
     public function getConvertedTotalTax(): int;
 
-    /**
-     * @param int  $total
-     * @param bool $withTax
-     */
     public function setConvertedTotal(int $total, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedItemDiscountPrice(bool $withTax = true): int;
 
-    /**
-     * @param int  $convertedItemDiscountPrice
-     * @param bool $withTax
-     */
     public function setConvertedItemDiscountPrice(int $convertedItemDiscountPrice, bool $withTax = true);
 
-    /**
-     * @param bool $withTax
-     *
-     * @return int
-     */
     public function getConvertedItemDiscount(bool $withTax = true): int;
 
-    /**
-     * @param int  $convertedItemDiscount
-     * @param bool $withTax
-     */
     public function setConvertedItemDiscount(int $convertedItemDiscount, bool $withTax = true);
 }

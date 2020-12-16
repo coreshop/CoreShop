@@ -24,35 +24,35 @@ final class DocumentConfiguration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('documents');
+        $treeBuilder = new TreeBuilder('documents');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-            ->arrayNode('documents')
-            ->arrayPrototype()
-            ->addDefaultsIfNotSet()
-            ->children()
-            ->scalarNode('key')->cannotBeEmpty()->end()
-            ->scalarNode('type')->cannotBeEmpty()->end()
-            ->scalarNode('path')->cannotBeEmpty()->end()
-            ->scalarNode('module')->end()
-            ->scalarNode('controller')->end()
-            ->scalarNode('action')->end()
-            ->arrayNode('content')
-            ->useAttributeAsKey('language')
-            ->arrayPrototype()
-            ->arrayPrototype()
-            ->children()
-            ->scalarNode('type')->isRequired()->end()
-            ->scalarNode('value')->isRequired()->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
-            ->end()
+                ->arrayNode('documents')
+                    ->arrayPrototype()
+                        ->addDefaultsIfNotSet()
+                        ->children()
+                            ->scalarNode('key')->cannotBeEmpty()->end()
+                            ->scalarNode('type')->cannotBeEmpty()->end()
+                            ->scalarNode('path')->end()
+                            ->scalarNode('module')->end()
+                            ->scalarNode('controller')->end()
+                            ->scalarNode('action')->end()
+                            ->arrayNode('content')
+                                ->useAttributeAsKey('language')
+                                ->arrayPrototype()
+                                    ->arrayPrototype()
+                                        ->children()
+                                            ->scalarNode('type')->isRequired()->end()
+                                            ->scalarNode('value')->isRequired()->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

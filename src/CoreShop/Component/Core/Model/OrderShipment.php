@@ -15,26 +15,9 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Model;
 
 use CoreShop\Component\Order\Model\OrderShipment as BaseOrderShipment;
-use CoreShop\Component\Resource\Exception\ImplementedByPimcoreException;
 use CoreShop\Component\Shipping\Model\CarrierAwareTrait;
 
-class OrderShipment extends BaseOrderShipment implements OrderShipmentInterface
+abstract class OrderShipment extends BaseOrderShipment implements OrderShipmentInterface
 {
     use CarrierAwareTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getWeight()
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setWeight($weight)
-    {
-        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
-    }
 }

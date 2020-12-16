@@ -18,11 +18,11 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/payment": "^2.0",
-    "coreshop/currency-bundle": "^2.0",
-    "coreshop/resource-bundle": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
+    "php": "^7.4",
+    "coreshop/payment": "^3.0",
+    "coreshop/currency-bundle": "^3.0",
+    "coreshop/resource-bundle": "^3.0",
+    "coreshop/workflow-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
@@ -45,7 +45,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

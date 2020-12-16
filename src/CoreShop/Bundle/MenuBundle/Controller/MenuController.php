@@ -14,18 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\MenuBundle\Controller;
 
-use Pimcore\Bundle\AdminBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-class MenuController extends Controller\AdminController
+class MenuController
 {
-    public function menuAction($type): Response
+    public function menuAction(string $type, Environment $twig): Response
     {
-        $response = $this->render('@CoreShopMenu/menu.js.twig', [
+        $result = $twig->render('@CoreShopMenu/menu.js.twig', [
             'type' => $type,
             'typeId' => str_replace('.', '_', $type),
         ]);
 
+        $response = new Response($result);
         $response->headers->set('Content-Type', 'application/javascript');
         $response->headers->set('Pragma', 'no-cache');
         $response->headers->set('Expires', '0');

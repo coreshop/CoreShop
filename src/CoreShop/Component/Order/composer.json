@@ -18,23 +18,23 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/address": "^2.0",
-    "coreshop/rule": "^2.0",
-    "coreshop/registry": "^2.0",
-    "coreshop/resource": "^2.0",
-    "coreshop/sequence": "^2.0",
-    "coreshop/store": "^2.0",
-    "coreshop/currency": "^2.0",
-    "coreshop/taxation": "^2.0",
-    "coreshop/payment": "^2.0",
-    "coreshop/pimcore": "^2.0",
-    "coreshop/customer": "^2.0",
-    "coreshop/product": "^2.0",
-    "coreshop/product-quantity-price-rules": "^2.0",
-    "coreshop/storage-list": "^2.0",
-    "coreshop/locale": "^2.0",
-    "coreshop/workflow-bundle": "^2.0",
+    "php": "^7.4",
+    "coreshop/address": "^3.0",
+    "coreshop/rule": "^3.0",
+    "coreshop/registry": "^3.0",
+    "coreshop/resource": "^3.0",
+    "coreshop/sequence": "^3.0",
+    "coreshop/store": "^3.0",
+    "coreshop/currency": "^3.0",
+    "coreshop/taxation": "^3.0",
+    "coreshop/payment": "^3.0",
+    "coreshop/pimcore": "^3.0",
+    "coreshop/customer": "^3.0",
+    "coreshop/product": "^3.0",
+    "coreshop/product-quantity-price-rules": "^3.0",
+    "coreshop/storage-list": "^3.0",
+    "coreshop/locale": "^3.0",
+    "coreshop/workflow-bundle": "^3.0",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
@@ -57,7 +57,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

@@ -19,28 +19,13 @@ use CoreShop\Component\Resource\Pimcore\Model\PimcoreModelInterface;
 
 interface OrderDocumentItemInterface extends ResourceInterface, PimcoreModelInterface
 {
-    /**
-     * @return OrderDocumentInterface
-     */
-    public function getDocument();
+    public function getDocument(): OrderDocumentInterface;
 
-    /**
-     * @return OrderItemInterface
-     */
-    public function getOrderItem();
+    public function getOrderItem(): ?OrderItemInterface;
 
-    /**
-     * @param OrderItemInterface $orderItem
-     */
-    public function setOrderItem($orderItem);
+    public function setOrderItem(?OrderItemInterface $orderItem);
 
-    /**
-     * @return int
-     */
-    public function getQuantity();
+    public function getQuantity(): ?float;
 
-    /**
-     * @param int $amount
-     */
-    public function setQuantity($amount);
+    public function setQuantity(?float $amount);
 }

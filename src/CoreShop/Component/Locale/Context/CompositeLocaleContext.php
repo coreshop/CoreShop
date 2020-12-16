@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Locale\Context;
 
-use Zend\Stdlib\PriorityQueue;
+use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeLocaleContext implements LocaleContextInterface
 {

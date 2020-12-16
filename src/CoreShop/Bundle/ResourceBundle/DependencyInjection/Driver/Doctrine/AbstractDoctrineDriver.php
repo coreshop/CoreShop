@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\Doctrine;
 
 use CoreShop\Bundle\ResourceBundle\DependencyInjection\Driver\AbstractDriver;
 use CoreShop\Component\Resource\Metadata\MetadataInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

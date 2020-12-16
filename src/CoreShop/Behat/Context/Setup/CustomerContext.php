@@ -146,11 +146,13 @@ final class CustomerContext implements Context
         /** @var CustomerInterface $customer */
         $customer = $this->customerFactory->createNew();
 
+        list ($firstname, $lastname) = explode('@', $email);
+
         $customer->setKey(File::getValidFilename($email));
         $customer->setParent(Folder::getByPath('/'));
         $customer->setEmail($email);
-        $customer->setFirstname(reset(explode('@', $email)));
-        $customer->setLastname(end(explode('@', $email)));
+        $customer->setFirstname($firstname);
+        $customer->setLastname($lastname);
 
         return $customer;
     }

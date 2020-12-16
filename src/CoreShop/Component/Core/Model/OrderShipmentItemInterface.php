@@ -18,13 +18,7 @@ use CoreShop\Component\Order\Model\OrderShipmentItemInterface as BaseOrderShipme
 
 interface OrderShipmentItemInterface extends BaseOrderShipmentItemInterface
 {
-    /**
-     * @return float
-     */
-    public function getWeight();
+    public function getWeight(): ?float;
 
-    /**
-     * @param float $weight
-     */
-    public function setWeight($weight);
+    public function setWeight(?float $weight);
 }

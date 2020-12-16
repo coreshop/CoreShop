@@ -23,26 +23,10 @@ use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
-    /**
-     * @var FactoryInterface
-     */
     private $paymentFactory;
-
-    /**
-     * @var int
-     */
     private $decimalFactor;
-
-    /**
-     * @var int
-     */
     private $decimalPrecision;
 
-    /**
-     * @param FactoryInterface $paymentFactory
-     * @param int              $decimalFactor
-     * @param int              $decimalPrecision
-     */
     public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
     {
         $this->paymentFactory = $paymentFactory;
@@ -53,7 +37,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function provideOrderPayment(OrderInterface $order)
+    public function provideOrderPayment(OrderInterface $order): PaymentInterface
     {
         $tokenGenerator = new UniqueTokenGenerator(true);
         $uniqueId = $tokenGenerator->generate(15);
@@ -71,7 +55,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails(new ArrayObject($order->getPaymentSettings()));
+            $payment->setDetails(new ArrayObject($order->getPaymentSettings() ?? []));
         }
 
         if ($payment instanceof OrderPaymentInterface) {

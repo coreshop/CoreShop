@@ -34,13 +34,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     public $width;
 
     /**
-     * Type for the generated phpdoc.
-     *
-     * @var string
-     */
-    public $phpdocType = \CoreShop\Component\Currency\Model\Money::class;
-
-    /**
      * @var float
      */
     public $minValue;
@@ -49,6 +42,26 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
      * @var float
      */
     public $maxValue;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . Money::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . Money::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '?\\' . Money::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '?\\' . Money::class;
+    }
 
     /**
      * @return int

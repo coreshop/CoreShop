@@ -32,7 +32,7 @@ services:
 
     CoreShop\Bundle\CoreBundle\Checkout\Step\ShippingCheckoutStep:
         arguments:
-            - '@coreshop.shipping.carrier.validator'
+            - '@CoreShop\Component\Shipping\Validator\ShippableCarrierValidatorInterface'
             - '@form.factory'
             - '@CoreShop\Component\Order\Manager\CartManagerInterface'
 

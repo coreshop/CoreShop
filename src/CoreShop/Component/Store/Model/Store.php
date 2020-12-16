@@ -64,9 +64,6 @@ class Store extends AbstractResource implements StoreInterface
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId($id)
     {
         $this->id = $id;

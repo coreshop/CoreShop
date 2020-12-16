@@ -11,7 +11,6 @@ imports:
     - domain/pimcore.yml
     - domain/order.yml
     - domain/seo.yml
-    - domain/placeholder.yml
     - domain/cli.yml
     - domain/filter.yml
     - domain/tracking.yml
@@ -20,3 +19,4 @@ imports:
     - domain/menu.yml
     - domain/version.yml
     - domain/recycle_bin.yml
+    - domain/optimistic_entity_lock.yml

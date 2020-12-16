@@ -18,9 +18,9 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/pimcore": "^2.0",
-    "doctrine/common": "^2.6",
+    "php": "^7.4",
+    "coreshop/pimcore": "^3.0",
+    "doctrine/common": "^3.1",
     "doctrine/orm": "^2.5",
     "webmozart/assert": "^1.2",
     "pimcore/pimcore": "^10.0.0"
@@ -45,7 +45,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }

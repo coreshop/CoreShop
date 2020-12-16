@@ -16,13 +16,7 @@ namespace CoreShop\Component\Currency\Model;
 
 interface CurrencyAwareInterface
 {
-    /**
-     * @return CurrencyInterface
-     */
-    public function getCurrency();
+    public function getCurrency(): ?CurrencyInterface;
 
-    /**
-     * @param CurrencyInterface $currency
-     */
-    public function setCurrency($currency);
+    public function setCurrency(?CurrencyInterface $currency);
 }

@@ -15,7 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Event;
 
 use CoreShop\Component\Customer\Model\CustomerInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {

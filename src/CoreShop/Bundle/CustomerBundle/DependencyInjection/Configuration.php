@@ -32,12 +32,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_customer');
+        $treeBuilder = new TreeBuilder('core_shop_customer');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->enumNode('login_identifier')->values(['email', 'username'])->defaultValue('email')->end()
             ->end();
 
@@ -59,6 +58,7 @@ final class Configuration implements ConfigurationInterface
                 ->children()
                     ->scalarNode('customer')->defaultValue(CustomerInterface::class)->cannotBeEmpty()->end()
                     ->scalarNode('customer_group')->defaultValue(CustomerGroupInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('company')->defaultValue(CompanyInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();

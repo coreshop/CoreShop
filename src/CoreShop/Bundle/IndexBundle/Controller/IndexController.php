@@ -67,7 +67,7 @@ class IndexController extends ResourceController
             ];
         }
 
-        $fieldTypes = $this->getParameter('coreshop.index.mapping_types');
+        $fieldTypes = $this->container->getParameter('coreshop.index.mapping_types');
         $fieldTypesResult = [];
 
         foreach ($fieldTypes as $type) {
@@ -365,16 +365,16 @@ class IndexController extends ResourceController
 
     protected function getInterpreterTypes(): array
     {
-        return $this->getParameter('coreshop.index.interpreters');
+        return $this->container->getParameter('coreshop.index.interpreters');
     }
 
     protected function getGetterTypes(): array
     {
-        return $this->getParameter('coreshop.index.getters');
+        return $this->container->getParameter('coreshop.index.getters');
     }
 
     protected function getWorkerTypes(): array
     {
-        return $this->getParameter('coreshop.index.workers');
+        return $this->container->getParameter('coreshop.index.workers');
     }
 }

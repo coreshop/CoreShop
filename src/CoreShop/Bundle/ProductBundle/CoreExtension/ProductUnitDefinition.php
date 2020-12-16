@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ProductBundle\CoreExtension;
 
-use CoreShop\Component\Pimcore\BCLayer\CustomRecyclingMarshalInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use CoreShop\Component\Resource\Repository\RepositoryInterface;
@@ -24,8 +23,7 @@ use Pimcore\Model\DataObject\Concrete;
 class ProductUnitDefinition extends Data implements
     Data\ResourcePersistenceAwareInterface,
     Data\QueryResourcePersistenceAwareInterface,
-    Data\CustomVersionMarshalInterface,
-    CustomRecyclingMarshalInterface
+    Data\CustomVersionMarshalInterface
 {
     /**
      * Static type of this element.
@@ -45,6 +43,26 @@ class ProductUnitDefinition extends Data implements
      * @var bool
      */
     public $allowEmpty = false;
+
+    public function getParameterTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getReturnTypeDeclaration(): ?string
+    {
+        return '?\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocInputType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
+
+    public function getPhpdocReturnType(): ?string
+    {
+        return '\\' . ProductUnitDefinitionInterface::class;
+    }
 
     /**
      * @return string | array
@@ -237,6 +255,14 @@ class ProductUnitDefinition extends Data implements
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getForCsvExport($object, $params = [])
+    {
+        return '';
     }
 
     /**

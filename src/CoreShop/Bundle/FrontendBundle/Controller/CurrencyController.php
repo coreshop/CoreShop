@@ -34,7 +34,7 @@ class CurrencyController extends FrontendController
     {
         $currencies = $this->get('coreshop.repository.currency')->findActiveForStore($this->get(ShopperContextInterface::class)->getStore());
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Currency/_widget.html'), [
             'currencies' => $currencies,
         ]);
     }

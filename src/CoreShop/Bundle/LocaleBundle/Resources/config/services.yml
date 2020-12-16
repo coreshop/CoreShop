@@ -5,12 +5,13 @@ services:
     _defaults:
         public: true
 
+    CoreShop\Component\Locale\Context\LocaleContextInterface: '@CoreShop\Component\Locale\Context\CompositeLocaleContext'
     CoreShop\Component\Locale\Context\CompositeLocaleContext:
         public: false
 
     CoreShop\Component\Locale\Context\PimcoreLocaleContext:
         arguments:
-            - '@pimcore.locale'
+            - '@Pimcore\Localization\LocaleServiceInterface'
         tags:
             - { name: coreshop.context.locale, priority: 100 }
 

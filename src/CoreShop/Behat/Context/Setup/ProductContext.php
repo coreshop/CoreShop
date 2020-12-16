@@ -115,7 +115,7 @@ final class ProductContext implements Context
     public function theProductIsPriced(ProductInterface $product, int $price, StoreInterface $store)
     {
         $product->setStores(array_merge($product->getStores(), [$store->getId()]));
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -186,7 +186,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") weighs ([^"]+)kg$/
      * @Given /^the (product) weighs ([^"]+)kg$/
      */
-    public function theProductWeighsKg(ProductInterface $product, $kg)
+    public function theProductWeighsKg(ProductInterface $product, float $kg)
     {
         $product->setWeight($kg);
 
@@ -197,7 +197,7 @@ final class ProductContext implements Context
      * @Given /^the (product "[^"]+") measurements are ([^"]+)x([^"]+)x([^"]+)$/
      * @Given /^the (product) measurements are ([^"]+)x([^"]+)x([^"]+)$/
      */
-    public function theProductsMeasurementsAre(ProductInterface $product, $width, $height, $depth)
+    public function theProductsMeasurementsAre(ProductInterface $product, float $width, float $height, float $depth)
     {
         $product->setWidth($width);
         $product->setHeight($height);
@@ -350,7 +350,7 @@ final class ProductContext implements Context
      */
     public function theProductHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -361,7 +361,7 @@ final class ProductContext implements Context
      */
     public function theVariantHasAPriceOfForStore(ProductInterface $product, int $price, StoreInterface $store)
     {
-        $product->setStorePrice($price, $store);
+        $product->setStoreValuesOfType('price', $price, $store);
 
         $this->saveProduct($product);
     }
@@ -449,10 +449,10 @@ final class ProductContext implements Context
             /**
              * @var ProductStoreValuesInterface $storeValues
              */
-            $storeValues = $product->getStoreValues($store);
+            $storeValues = $product->getStoreValuesForStore($store);
             $storeValues->addProductUnitDefinitionPrice($productUnitDefinitionPrice);
 
-            $product->setStoreValues($storeValues, $store);
+            $product->setStoreValuesForStore($storeValues, $store);
         }
 
         $this->saveProduct($product);
@@ -537,7 +537,7 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $product->setStores([$store->getId()]);
-            $product->setStorePrice($price, $store);
+            $product->setStoreValuesOfType('price', $price, $store);
         }
 
         return $product;
@@ -585,7 +585,7 @@ final class ProductContext implements Context
 
         if (null !== $store) {
             $variant->setStores([$store->getId()]);
-            $variant->setStorePrice($price, $store);
+            $variant->setStoreValuesOfType('price', $price, $store);
         }
 
         return $variant;

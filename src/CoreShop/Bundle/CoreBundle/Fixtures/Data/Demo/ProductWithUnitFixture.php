@@ -16,7 +16,7 @@ use CoreShop\Component\Core\Model\ProductStoreValuesInterface;
 use CoreShop\Component\Core\Model\ProductUnitDefinitionPriceInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionInterface;
 use CoreShop\Component\Product\Model\ProductUnitDefinitionsInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Provider\Barcode;
 use Faker\Provider\Lorem;
@@ -80,7 +80,7 @@ class ProductWithUnitFixture extends AbstractProductFixture
                 /**
                  * @var ProductStoreValuesInterface $storeValues
                  */
-                $storeValues = $product->getStoreValues($store);
+                $storeValues = $product->getStoreValuesForStore($store);
 
                 if (null === $storeValues) {
                     $storeValues = $storeValuesFactory->createNew();
@@ -94,19 +94,19 @@ class ProductWithUnitFixture extends AbstractProductFixture
                  */
                 $cartonPrice = $productUnitDefinitionPriceFactory->createNew();
                 $cartonPrice->setUnitDefinition($cartonDefinition);
-                $cartonPrice->setPrice($product->getStorePrice($store) * 20);
+                $cartonPrice->setPrice($product->getStoreValuesOfType('price', $store) * 20);
 
                 /**
                  * @var ProductUnitDefinitionPriceInterface $palettePrice
                  */
                 $palettePrice = $productUnitDefinitionPriceFactory->createNew();
-                $palettePrice->setPrice($product->getStorePrice($store) * 20 * 38);
+                $palettePrice->setPrice($product->getStoreValuesOfType('price', $store) * 20 * 38);
                 $palettePrice->setUnitDefinition($paletteDefinition);
 
                 $storeValues->addProductUnitDefinitionPrice($cartonPrice);
                 $storeValues->addProductUnitDefinitionPrice($palettePrice);
 
-                $product->setStoreValues($storeValues, $store);
+                $product->setStoreValuesForStore($storeValues, $store);
             }
 
             $product->save();

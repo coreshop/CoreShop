@@ -76,8 +76,6 @@ core_shop_core:
             cart_pricerule_condition_stores: '/bundles/coreshopcore/pimcore/js/cart/pricerules/conditions/stores.js'
             cart_pricerule_condition_zones: '/bundles/coreshopcore/pimcore/js/cart/pricerules/conditions/zones.js'
             taxrulegroup_item: '/bundles/coreshopcore/pimcore/js/taxation/taxrulegroup/item.js'
-            core_extension_data_store_price: '/bundles/coreshopcore/pimcore/js/coreExtension/data/coreShopStorePrice.js'
-            core_extension_tag_store_price: '/bundles/coreshopcore/pimcore/js/coreExtension/tags/coreShopStorePrice.js'
             core_extension_data_store_values: '/bundles/coreshopcore/pimcore/js/coreExtension/data/coreShopStoreValues.js'
             core_extension_tag_store_values: '/bundles/coreshopcore/pimcore/js/coreExtension/tags/coreShopStoreValues.js'
             core_extension_product_store_values_builder: '/bundles/coreshopcore/pimcore/js/product/storevalues/builder.js'

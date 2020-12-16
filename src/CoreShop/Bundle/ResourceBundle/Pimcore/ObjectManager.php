@@ -14,10 +14,9 @@ namespace CoreShop\Bundle\ResourceBundle\Pimcore;
 
 use Pimcore\Model\AbstractModel;
 use Pimcore\Model\DataObject\Concrete;
-use Pimcore\Model\Element\ElementInterface;
 use Webmozart\Assert\Assert;
 
-final class ObjectManager implements \Doctrine\Common\Persistence\ObjectManager
+final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
     /**
      * @var array

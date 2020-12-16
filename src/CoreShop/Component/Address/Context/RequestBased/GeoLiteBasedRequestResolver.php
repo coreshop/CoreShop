@@ -18,37 +18,23 @@ use CoreShop\Component\Address\Context\CountryNotFoundException;
 use CoreShop\Component\Address\Model\CountryInterface;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use GeoIp2\Database\Reader;
-use Pimcore\Cache\Core\CoreHandlerInterface;
+use Pimcore\Cache\Core\CoreCacheHandler;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var CountryRepositoryInterface
-     */
     private $countryRepository;
-
-    /**
-     * @var CoreHandlerInterface
-     */
     private $cache;
-
-    /**
-     * @var string
-     */
     private $geoDbFile;
 
-    /**
-     * @var string
-     */
-    private $geoDbFallbackFile;
-
-    public function __construct(CountryRepositoryInterface $countryRepository, CoreHandlerInterface $cache, string $geoDbFile = null)
-    {
+    public function __construct(
+        CountryRepositoryInterface $countryRepository,
+        CoreCacheHandler $cache,
+        ?string $geoDbFile = null
+    ) {
         $this->countryRepository = $countryRepository;
         $this->cache = $cache;
         $this->geoDbFile = $geoDbFile;
-        $this->geoDbFallbackFile = PIMCORE_CONFIGURATION_DIRECTORY . '/GeoLite2-City.mmdb';
     }
 
     /**
@@ -57,15 +43,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
     public function findCountry(Request $request): CountryInterface
     {
         $geoDbFileLocation = $this->geoDbFile;
-
-        if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
-            @trigger_error(
-                'You are still using the default search path for the MaxMind GEO DB File. Pimcore introduced a new parameter for the file, use that instead.',
-                E_USER_DEPRECATED
-            );
-
-            $geoDbFileLocation = $this->geoDbFallbackFile;
-        }
 
         if (null === $geoDbFileLocation || !file_exists($geoDbFileLocation)) {
             throw new CountryNotFoundException();
@@ -101,7 +78,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
             throw new CountryNotFoundException();
         }
 
-        $this->cache->save($cacheKey, $countryIsoCode, [], 24*60*60);
+        $this->cache->save($cacheKey, $countryIsoCode, [], 24 * 60 * 60);
 
         return $country;
     }
@@ -117,6 +94,7 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         try {
             $reader = new Reader($geoDbFileLocation);
             $record = $reader->city($clientIp);
+
             return $record->country->isoCode;
         } catch (\Exception $e) {
             //If something goes wrong, ignore the exception and throw a CountryNotFoundException

@@ -17,7 +17,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Loader;
 use CoreShop\Component\Pimcore\Document\DocumentTagFactoryInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Pimcore\Loader\ImplementationLoader\LoaderInterface;
-use Pimcore\Model\Document\Tag\TagInterface;
+use Pimcore\Model\Document\Editable\EditableInterface;
 
 class DependencyInjectionImplementationLoader implements LoaderInterface
 {
@@ -39,7 +39,7 @@ class DependencyInjectionImplementationLoader implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function build(string $name, array $params = []): TagInterface
+    public function build(string $name, array $params = []): EditableInterface
     {
         /**
          * @var DocumentTagFactoryInterface $factory

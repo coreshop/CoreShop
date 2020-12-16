@@ -4,7 +4,7 @@ Feature: Every country uses different formatting for addresses
 
   Background:
     Given the site operates on a store in "Austria"
-    And the countries address format is "%Text(street); %Text(number);\n%Text(postcode); %Text(city);\n%DataObject(country,{'method' : 'getName'});"
+    And the countries address format is "{{ street }} {{ number }}\n{{ postcode }} {{ city }}\n{{ country.name }}"
 
   Scenario: Format the address to given format
     Given there is an address with country "Austria", "4600", "Wels", "Freiung", "9-11/N3"

@@ -38,8 +38,6 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
             ->andWhere('o.siteId = :siteId')
             ->setParameter('siteId', $siteId)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 
@@ -49,10 +47,8 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
     public function findStandard(): ?StoreInterface
     {
         return $this->createQueryBuilder('o')
-            ->andWhere('o.isDefault = true')
+            ->andWhere('o.isDefault = 1')
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getOneOrNullResult();
     }
 }

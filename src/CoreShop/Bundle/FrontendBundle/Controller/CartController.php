@@ -49,7 +49,7 @@ class CartController extends FrontendController
      */
     public function widgetAction(Request $request)
     {
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Cart/_widget.html'), [
             'cart' => $this->getCart(),
         ]);
     }
@@ -75,7 +75,7 @@ class CartController extends FrontendController
                 if (!$voucherCode instanceof CartPriceRuleVoucherCodeInterface) {
                     $this->addFlash('error', $this->get('translator')->trans('coreshop.ui.error.voucher.not_found'));
 
-                    return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
+                    return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [
                         'cart' => $this->getCart(),
                         'form' => $form->createView(),
                     ]);
@@ -93,7 +93,7 @@ class CartController extends FrontendController
                 $this->addFlash('success', $this->get('translator')->trans('coreshop.ui.cart_updated'));
             }
 
-            $this->get('event_dispatcher')->dispatch('coreshop.cart.update', new GenericEvent($cart));
+            $this->get('event_dispatcher')->dispatch(new GenericEvent($cart), 'coreshop.cart.update');
             $this->getCartManager()->persistCart($cart);
         } else {
             if ($cart->getId()) {
@@ -101,7 +101,7 @@ class CartController extends FrontendController
             }
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/summary.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Cart/summary.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
         ]);
@@ -150,7 +150,7 @@ class CartController extends FrontendController
             });
         }
 
-        return $this->renderTemplate($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
+        return $this->render($this->templateConfigurator->findTemplate('Cart/ShipmentCalculator/_widget.html'), [
             'cart' => $cart,
             'form' => $form->createView(),
             'availableCarriers' => $availableCarriers,
@@ -235,7 +235,7 @@ class CartController extends FrontendController
             ]);
         }
 
-        return $this->renderTemplate(
+        return $this->render(
             $request->get('template', $this->templateConfigurator->findTemplate('Product/_addToCart.html')),
             [
                 'form' => $form->createView(),
@@ -371,6 +371,6 @@ class CartController extends FrontendController
     {
         return $this
             ->get('validator')
-            ->validate($cartItem, null, $this->getParameter('coreshop.form.type.cart_item.validation_groups'));
+            ->validate($cartItem, null, $this->container->getParameter('coreshop.form.type.cart_item.validation_groups'));
     }
 }

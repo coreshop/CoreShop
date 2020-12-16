@@ -22,7 +22,6 @@ use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterPimcoreDo
 use CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterTypeHintRegistriesPass;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
-use Pimcore\Placeholder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
@@ -83,8 +82,6 @@ final class CoreShopPimcoreBundle extends AbstractPimcoreBundle
     public function boot()
     {
         parent::boot();
-
-        Placeholder::addPlaceholderClassPrefix('CoreShop\Component\Pimcore\Placeholder\\');
     }
 
     /**

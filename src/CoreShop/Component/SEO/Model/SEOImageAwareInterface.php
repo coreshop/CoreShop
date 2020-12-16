@@ -18,8 +18,5 @@ use Pimcore\Model\Asset\Image;
 
 interface SEOImageAwareInterface
 {
-    /**
-     * @return Image
-     */
-    public function getImage();
+    public function getImage(): ?Image;
 }

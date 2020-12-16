@@ -38,8 +38,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
             ->innerJoin('o.countries', 'c')
             ->andWhere('c.active = true')
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 
@@ -52,8 +50,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
             ->andWhere('o.isoCode = :currencyCode')
             ->setParameter('currencyCode', $currencyCode)
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getOneOrNullResult();
     }
 }

@@ -26,18 +26,6 @@ final class ResourceLoader
      */
     public function loadResources($resources, $minify = false)
     {
-        if (PIMCORE_DEVMODE || !$minify) {
-            return $resources;
-        }
-
-        $scriptContents = '';
-
-        foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
-            }
-        }
-
-        return [Admin::getMinimizedScriptPath($scriptContents)];
+        return $resources;
     }
 }

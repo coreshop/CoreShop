@@ -1,18 +1,15 @@
 services:
     CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand:
-        abstract: true
         arguments:
             - '@kernel'
             - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
 
     CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\AbstractInstallCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:resources }
 
     CoreShop\Bundle\CoreBundle\Command\InstallDatabaseCommand:
-        public: true
         arguments:
             - '@kernel'
             - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
@@ -22,18 +19,15 @@ services:
 
     CoreShop\Bundle\CoreBundle\Command\InstallDemoCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:demo }
 
     CoreShop\Bundle\CoreBundle\Command\InstallFixturesCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
         tags:
           - { name: console.command, command: coreshop:install:fixtures }
 
     CoreShop\Bundle\CoreBundle\Command\InstallFoldersCommand:
-        public: true
         arguments:
             - '@kernel'
             - '@CoreShop\Bundle\CoreBundle\Installer\Checker\CommandDirectoryChecker'
@@ -43,16 +37,10 @@ services:
 
     CoreShop\Bundle\CoreBundle\Command\InstallCommand:
         parent: CoreShop\Bundle\CoreBundle\Command\InstallResourcesCommand
-        public: true
-        arguments:
-            $migrationManager: '@Pimcore\Migrations\MigrationManager'
-            $bundle: "@=service('kernel').getBundle('CoreShopCoreBundle')"
-            $installer: '@CoreShop\Bundle\CoreBundle\Installer'
         tags:
           - { name: console.command, command: coreshop:install }
 
     CoreShop\Bundle\CoreBundle\Command\MigrateCommand:
-        public: true
         arguments:
             - '%coreshop.all.dependant.bundles%'
         tags:

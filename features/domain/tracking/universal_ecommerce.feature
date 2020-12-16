@@ -21,5 +21,5 @@ Feature: In order to track ecommerce sales
     And I create an order from my cart
     Then tracking my order checkout complete with tracker "google-analytics-universal-ecommerce" should generate:
       """
-      ga('require', 'ecommerce', 'ecommerce.js'); ga('ecommerce\u003AaddTransaction', {"id":%DataObject(order, {"method": "getId"});,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"}); ga('ecommerce\u003AaddItem', {"id":%DataObject(orderItem, {"method": "getId"});,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ecommerce:send');
+      ga('require', 'ecommerce', 'ecommerce.js'); ga('ecommerce\u003AaddTransaction', {"id":##id##,"affiliation":24,"total":24,"tax":4,"shipping":0,"currency":"EUR"}); ga('ecommerce\u003AaddItem', {"id":##item_id##,"name":"T-Shirt","category":"","price":24,"quantity":1,"currency":"EUR"}); ga('ecommerce:send');
       """

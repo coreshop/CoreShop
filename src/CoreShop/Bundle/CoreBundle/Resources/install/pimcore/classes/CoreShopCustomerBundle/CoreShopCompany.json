@@ -8,6 +8,7 @@
     "allowInherit": false,
     "allowVariants": false,
     "showVariants": false,
+    "generateTypeDeclarations": true,
     "layoutDefinitions": {
         "fieldtype": "panel",
         "labelWidth": 100,
@@ -95,29 +96,13 @@
                         "visibleSearch": false
                     },
                     {
-                        "fieldtype": "manyToManyRelation",
+                        "fieldtype": "coreShopRelations",
                         "width": "",
-                        "height": "",
-                        "maxItems": "",
-                        "assetUploadPath": null,
-                        "queryColumnType": "text",
-                        "phpdocType": "array",
                         "relationType": true,
-                        "objectsAllowed": true,
-                        "assetsAllowed": false,
-                        "assetTypes": [],
-                        "documentsAllowed": false,
-                        "documentTypes": [],
-                        "lazyLoading": false,
-                        "classes": [
-                            {
-                                "classes": "CoreShopAddress"
-                            }
-                        ],
                         "pathFormatterClass": "",
+                        "stack": "coreshop.address",
                         "name": "addresses",
                         "title": "coreshop.company.addresses",
-                        "tooltip": "",
                         "mandatory": false,
                         "noteditable": false,
                         "index": false,
@@ -138,7 +123,8 @@
     "icon": "\/bundles\/coreshopcustomer\/pimcore\/img\/company.svg",
     "previewUrl": null,
     "group": "CoreShop",
-    "linkGeneratorReference": null,
+    "generateTypeDeclarations": true,
+
     "propertyVisibility": {
         "grid": {
             "id": true,

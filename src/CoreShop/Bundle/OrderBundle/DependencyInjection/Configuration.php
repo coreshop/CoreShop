@@ -61,12 +61,11 @@ final class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('core_shop_order');
+        $treeBuilder = new TreeBuilder('core_shop_order');
+        $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
             ->children()
-                ->scalarNode('driver')->defaultValue(CoreShopResourceBundle::DRIVER_DOCTRINE_ORM)->end()
                 ->booleanNode('legacy_serialization')->defaultTrue()->end()
             ->end();
         $this->addModelsSection($rootNode);
@@ -115,7 +114,12 @@ final class Configuration implements ConfigurationInterface
                 ->addDefaultsIfNotSet()
                 ->children()
                     ->scalarNode('purchasable')->defaultValue(PurchasableInterface::class)->cannotBeEmpty()->end()
-
+                    ->scalarNode('order')->defaultValue(OrderInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_item')->defaultValue(OrderItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_invoice')->defaultValue(OrderInvoiceInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_invoice_item')->defaultValue(OrderInvoiceItemInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_shipment')->defaultValue(OrderShipmentInterface::class)->cannotBeEmpty()->end()
+                    ->scalarNode('order_shipment_item')->defaultValue(OrderShipmentItemInterface::class)->cannotBeEmpty()->end()
                 ->end()
             ->end()
         ->end();

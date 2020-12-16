@@ -40,14 +40,13 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 use CoreShop\Component\Pimcore\DataObject\DataLoader;
 use CoreShop\Component\Pimcore\DataObject\NoteServiceInterface;
 use CoreShop\Component\Store\Model\StoreInterface;
-use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use JMS\Serializer\ArrayTransformerInterface;
 use Pimcore\Bundle\AdminBundle\Helper\GridHelperService;
 use Pimcore\Bundle\AdminBundle\Helper\QueryParams;
 use Pimcore\Model\DataObject;
 use Pimcore\Model\DataObject\Listing;
 use Pimcore\Model\User;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -55,58 +54,20 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends PimcoreController
 {
-    /**
-     * @var EventDispatcherInterface
-     */
     protected $eventDispatcher;
-
-    /**
-     * @var NoteServiceInterface
-     */
     protected $objectNoteService;
-    /**
-     * @var AddressFormatterInterface
-     */
     protected $addressFormatter;
-
-    /**
-     * @var ArrayTransformerInterface
-     */
     protected $serializer;
-
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
     protected $workflowStateManager;
-
-    /**
-     * @var ProcessableInterface
-     */
     protected $invoiceProcessableHelper;
-
-    /**
-     * @var ProcessableInterface
-     */
     protected $shipmentProcessableHelper;
-
-    /**
-     * @var OrderInvoiceRepositoryInterface
-     */
     protected $orderInvoiceRepository;
-
-    /**
-     * @var OrderShipmentRepositoryInterface
-     */
     protected $orderShipmentRepository;
-
-    /**
-     * @var PaymentRepositoryInterface
-     */
     protected $paymentRepository;
 
     public function getStatesAction(Request $request): Response
     {
-        $identifiers = $this->getParameter('coreshop.state_machines');
+        $identifiers = $this->container->getParameter('coreshop.state_machines');
         $states = [];
         $transitions = [];
 
@@ -194,8 +155,8 @@ class OrderController extends PimcoreController
 
         $type = $request->get('saleType', 'order');
 
-        $orderClassId = $this->getParameter('coreshop.model.order.pimcore_class_name');
-        $folderPath = $this->getParameter('coreshop.folder.' . $type);
+        $orderClassId = $this->container->getParameter('coreshop.model.order.pimcore_class_name');
+        $folderPath = $this->container->getParameter('coreshop.folder.' . $type);
         $orderClassDefinition = DataObject\ClassDefinition::getByName($orderClassId);
 
         $folder = DataObject::getByPath('/' . $folderPath);
@@ -224,7 +185,7 @@ class OrderController extends PimcoreController
 
             $conditionFilters = [];
             $conditionFilters[] = $gridHelper->getFilterCondition($request->get('filter'),
-                DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.order.pimcore_class_name')));
+                DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.order.pimcore_class_name')));
             if (count($conditionFilters) > 0 && $conditionFilters[0] !== '(())') {
                 $list->setCondition(implode(' AND ', $conditionFilters));
             }
@@ -341,7 +302,7 @@ class OrderController extends PimcoreController
         $prefix = 'address'.ucfirst($type);
         $values = [];
         $fullAddress = [];
-        $classDefinition = DataObject\ClassDefinition::getByName($this->getParameter('coreshop.model.address.pimcore_class_name'));
+        $classDefinition = DataObject\ClassDefinition::getByName($this->container->getParameter('coreshop.model.address.pimcore_class_name'));
 
         foreach ($classDefinition->getFieldDefinitions() as $fieldDefinition) {
             $value = '';

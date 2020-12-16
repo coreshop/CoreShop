@@ -30,7 +30,7 @@ services:
     CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker:
         abstract: true
         arguments:
-            - '@templating.engine.delegating'
+            - '@twig'
 
     CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker:
         public: true
@@ -41,8 +41,6 @@ services:
             - '@Pimcore\Http\Request\Resolver\PimcoreContextResolver'
             - '@Pimcore\Http\ResponseHelper'
             - '@Pimcore\Analytics\SiteId\SiteIdProvider'
-            - '@event_dispatcher'
-            - '@templating.engine.delegating'
             - '@CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\CodeTracker'
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -100 }

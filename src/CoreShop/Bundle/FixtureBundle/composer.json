@@ -18,11 +18,11 @@
     }
   ],
   "require": {
-    "php": "^7.2",
-    "coreshop/resource-bundle": "^2.0",
-    "symfony/framework-bundle": "^3.4.26 | ^4.1.12",
-    "symfony/doctrine-bridge": "^3.4 | ^4.0",
-    "symfony/twig-bundle": "^3.4 | ^4.0",
+    "php": "^7.4",
+    "coreshop/resource-bundle": "^3.0",
+    "symfony/framework-bundle": "^5.2.0",
+    "symfony/doctrine-bridge": "^5.2.0",
+    "symfony/twig-bundle": "^5.2.0",
     "doctrine/data-fixtures": "^1.0",
     "doctrine/dbal": "^2.1",
     "doctrine/orm": "^2.1",
@@ -48,7 +48,7 @@
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.2-dev"
+      "dev-master": "3.0-dev"
     }
   }
 }
