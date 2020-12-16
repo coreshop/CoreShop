@@ -64,7 +64,6 @@ services:
 
     CoreShop\Bundle\PimcoreBundle\EventListener\AdminJavascriptListener:
         arguments:
-            - '@router'
             - '%coreshop.all.pimcore.admin.js%'
             - '%coreshop.all.pimcore.admin.editmode_js%'
             - '%coreshop.all.pimcore.admin.css%'

@@ -16,27 +16,22 @@ namespace CoreShop\Bundle\PimcoreBundle\EventListener;
 
 use Pimcore\Event\BundleManager\PathsEvent;
 use Pimcore\Event\BundleManagerEvents;
-use Pimcore\Tool\Admin;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouterInterface;
 
 final class AdminJavascriptListener implements EventSubscriberInterface
 {
-    private $router;
     private $jsResources;
     private $editmodeJsResources;
     private $cssResources;
     private $editmodeCssResources;
 
     public function __construct(
-        RouterInterface $router,
         array $jsResources,
         array $editmodeJsResources,
         array $cssResources,
         array $editmodeCssResources
     )
     {
-        $this->router = $router;
         $this->jsResources = $jsResources;
         $this->editmodeJsResources = $editmodeJsResources;
         $this->cssResources = $cssResources;
@@ -59,14 +54,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
             return;
         }
 
-        if (\Pimcore::getDevMode()) {
-            $event->setPaths(array_merge($event->getPaths(), $this->jsResources));
-            return;
-        }
-
-        $event->setPaths(array_merge($event->getPaths(), [
-            $this->prepareResources($this->jsResources)
-        ]));
+        $event->setPaths(array_merge($event->getPaths(), $this->jsResources));
     }
 
     public function getAdminCss(PathsEvent $event)
@@ -84,14 +72,7 @@ final class AdminJavascriptListener implements EventSubscriberInterface
             return;
         }
 
-        if (\Pimcore::getDevMode()) {
-            $event->setPaths(array_merge($event->getPaths(), $this->editmodeJsResources));
-            return;
-        }
-
-        $event->setPaths(array_merge($event->getPaths(), [
-            $this->prepareResources($this->editmodeJsResources)
-        ]));
+        $event->setPaths(array_merge($event->getPaths(), $this->editmodeJsResources));
     }
 
     public function getEditmodeAdminCSS(PathsEvent $event)
@@ -101,18 +82,5 @@ final class AdminJavascriptListener implements EventSubscriberInterface
         }
 
         $event->setPaths(array_merge($event->getPaths(), $this->editmodeCssResources));
-    }
-
-    private function prepareResources(array $resources)
-    {
-        $scriptContents = '';
-
-        foreach ($resources as $scriptUrl) {
-            if (is_file(PIMCORE_WEB_ROOT . $scriptUrl)) {
-                $scriptContents .= file_get_contents(PIMCORE_WEB_ROOT . $scriptUrl) . "\n\n\n";
-            }
-        }
-
-        return $this->router->generate('pimcore_admin_misc_scriptproxy', Admin::getMinimizedScriptPath($scriptContents, false));
     }
 }
