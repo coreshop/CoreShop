@@ -77,7 +77,7 @@ jobs:
       run: bin/console cache:clear
 
     - name: Assets Install
-      run: bin/console assets:install --symlink web
+      run: bin/console assets:install --symlink
 
     - name: Setup Symfony CLI
       run: wget https://get.symfony.com/cli/installer -O - | bash

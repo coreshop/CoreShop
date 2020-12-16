@@ -74,7 +74,7 @@ jobs:
       run: bin/console cache:clear
 
     - name: Assets Install
-      run: bin/console assets:install --symlink web
+      run: bin/console assets:install --symlink
 
     - name: Run Behat
       run: vendor/bin/behat --strict --no-interaction -vvv -f progress --config behat.yml.dist -p default

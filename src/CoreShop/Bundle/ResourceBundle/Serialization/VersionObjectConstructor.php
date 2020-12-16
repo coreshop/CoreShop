@@ -82,6 +82,9 @@ class VersionObjectConstructor implements ObjectConstructorInterface
                 return $this->fallbackConstructor->construct($visitor, $metadata, $data, $type, $context);
             }
 
+            /**
+             * @var PropertyMetadata $propertyMetadata
+             */
             $propertyMetadata = $metadata->propertyMetadata[$name];
 
             // Avoid calling objectManager->find if some identification properties are excluded by some exclusion strategy
