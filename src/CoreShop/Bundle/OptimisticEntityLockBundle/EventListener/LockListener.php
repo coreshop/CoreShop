@@ -105,9 +105,6 @@ class LockListener implements EventSubscriberInterface
         $stmt = $queryBuilder->execute();
         $currentVersion = (int)$stmt->fetchOne();
 
-        echo 'Object Lock: ' . $object->getOptimisticLockVersion() . PHP_EOL;
-        echo 'Current Lock: ' . $currentVersion . PHP_EOL;
-
         if ($currentVersion === $object->getOptimisticLockVersion()) {
             return;
         }
