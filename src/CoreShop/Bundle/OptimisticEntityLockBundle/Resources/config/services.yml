@@ -6,5 +6,6 @@ services:
     CoreShop\Bundle\OptimisticEntityLockBundle\EventListener\LockListener:
         arguments:
             - '@CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManager'
+            - '@doctrine.dbal.default_connection'
         tags:
             - { name: kernel.event_subscriber }

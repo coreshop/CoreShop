@@ -15,6 +15,8 @@ namespace CoreShop\Bundle\OptimisticEntityLockBundle\EventListener;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Exception\OptimisticLockException;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Manager\EntityLockManager;
 use CoreShop\Bundle\OptimisticEntityLockBundle\Model\OptimisticLockedInterface;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\LockMode;
 use Pimcore\Event\DataObjectEvents;
 use Pimcore\Event\Model\DataObjectEvent;
 use Pimcore\Model\DataObject\Concrete;
@@ -23,10 +25,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class LockListener implements EventSubscriberInterface
 {
     protected $lockManager;
+    protected $connection;
 
-    public function __construct(EntityLockManager $lockManager)
+    public function __construct(EntityLockManager $lockManager, Connection $connection)
     {
         $this->lockManager = $lockManager;
+        $this->connection = $connection;
     }
 
     public static function getSubscribedEvents()
@@ -90,21 +94,28 @@ class LockListener implements EventSubscriberInterface
             return;
         }
 
-        $currentVersion = $object::getById($object->getId(), true);
+        $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder->from('object_store_' . $object->getClassId())
+            ->select('optimisticLockVersion')
+            ->where('oo_id = :id')
+            ->setMaxResults(1)
+            ->setParameter('id', $object->getId())
+        ;
 
-        if (!$currentVersion instanceof $object) {
-            throw new \RuntimeException(sprintf('Expected to get class %s but got %s', get_class($object),
-                get_class($currentVersion)));
-        }
+        $stmt = $queryBuilder->execute();
+        $currentVersion = (int)$stmt->fetchOne();
 
-        if ($currentVersion->getOptimisticLockVersion() === $object->getOptimisticLockVersion()) {
+        echo 'Object Lock: ' . $object->getOptimisticLockVersion() . PHP_EOL;
+        echo 'Current Lock: ' . $currentVersion . PHP_EOL;
+
+        if ($currentVersion === $object->getOptimisticLockVersion()) {
             return;
         }
 
         throw OptimisticLockException::lockFailedVersionMismatch(
             $object,
             $object->getOptimisticLockVersion(),
-            $currentVersion->getOptimisticLockVersion()
+            $currentVersion
         );
     }
 }
