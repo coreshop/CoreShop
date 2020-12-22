@@ -100,7 +100,7 @@ class ProductUnitDefinition extends Data implements
          */
         $data = $object->getObjectVar($this->getName());
 
-        if ($data instanceof ResourceInterface) {
+        if ($data instanceof ResourceInterface && $data->getId()) {
             //Reload from Database, but only if available
             $tmpData = $this->getRepository()->find($data->getId());
 
