@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\Storage;
 
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityManager;
 use Payum\Core\Bridge\Doctrine\Storage\DoctrineStorage;
@@ -21,10 +22,14 @@ class LockingStorage extends DoctrineStorage
     protected function doFind($id)
     {
         $objectManager = $this->objectManager;
-        if ($objectManager instanceof EntityManager) {
-            if ($objectManager->getConnection()->isTransactionActive()) {
-                return $objectManager->find($this->modelClass, $id, LockMode::PESSIMISTIC_WRITE);
-            }
+
+        if (($objectManager instanceof EntityManager) &&
+            in_array(PaymentInterface::class, class_implements($this->modelClass), true) &&
+            $objectManager->getConnection()->isTransactionActive()
+        ) {
+            $objectManager->getConnection()->setAutoCommit(false);
+
+            return $objectManager->find($this->modelClass, $id, LockMode::PESSIMISTIC_WRITE);
         }
 
         return parent::doFind($id);

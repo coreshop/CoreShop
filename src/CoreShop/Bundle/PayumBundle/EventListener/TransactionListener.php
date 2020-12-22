@@ -28,7 +28,6 @@ class TransactionListener implements EventSubscriberInterface
         $this->connection = $connection;
     }
 
-
     public static function getSubscribedEvents()
     {
         return [
@@ -41,12 +40,15 @@ class TransactionListener implements EventSubscriberInterface
     {
         $controller = $event->getController();
 
-        if (!$controller instanceof PayumController) {
+        if (!is_callable($controller)) {
+            return;
+        }
+
+        if (!$controller[0] instanceof PayumController) {
             return;
         }
 
         $event->getRequest()->attributes->add(['PAYUM_TRANSACTION_ACTIVE' => true]);
-
         $this->connection->beginTransaction();
     }
 
