@@ -103,7 +103,7 @@ class LockListener implements EventSubscriberInterface
         ;
 
         $stmt = $queryBuilder->execute();
-        $currentVersion = (int)$stmt->fetchOne();
+        $currentVersion = (int)$stmt->fetchColumn();
 
         if ($currentVersion === $object->getOptimisticLockVersion()) {
             return;
