@@ -71,7 +71,7 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $payment->setCurrency($order->getCurrency());
 
         if ($order instanceof PaymentSettingsAwareInterface) {
-            $payment->setDetails(new ArrayObject($order->getPaymentSettings()));
+            $payment->setDetails(new ArrayObject($order->getPaymentSettings() ?? []));
         }
 
         if ($payment instanceof OrderPaymentInterface) {
