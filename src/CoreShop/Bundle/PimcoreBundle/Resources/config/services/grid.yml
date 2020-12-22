@@ -5,6 +5,8 @@ services:
     CoreShop\Bundle\PimcoreBundle\Controller\Admin\GridController:
         tags:
             - { name: controller.service_arguments }
+        calls:
+            - [setContainer, ['@service_container']]
 
     CoreShop\Bundle\PimcoreBundle\EventListener\Grid\ObjectListFilterListener:
         arguments:

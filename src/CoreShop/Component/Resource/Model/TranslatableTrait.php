@@ -21,7 +21,7 @@ use Doctrine\ORM\PersistentCollection;
 trait TranslatableTrait
 {
     /**
-     * @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @var ArrayCollection|PersistentCollection|ArrayCollection<TranslationInterface>
      */
     protected $translations;
 

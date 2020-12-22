@@ -30,6 +30,10 @@ final class AddressAccessOptionsProvider implements SelectOptionsProviderInterfa
      */
     public function getOptions($context, $fieldDefinition)
     {
+        if (!isset($context['object'])) {
+            return [];
+        }
+
         $object = $context['object'];
 
         if (!$object instanceof CustomerInterface) {

@@ -82,8 +82,9 @@ final class PaymentContext implements Context
 
     /**
      * @Given /^I create a payment for (my order) with (payment provider "[^"]+") and amount ([^"]+)$/
+     * @Given /^I create a payment for (my order) with (payment provider "[^"]+")$/
      */
-    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount)
+    public function iCreateAPaymentForOrderWithProviderAndAmount(OrderInterface $order, PaymentProviderInterface $paymentProvider, $amount = null)
     {
         /**
          * @var PaymentInterface $payment
@@ -92,7 +93,7 @@ final class PaymentContext implements Context
         $payment->setCurrency($order->getBaseCurrency());
         $payment->setNumber($order->getId());
         $payment->setPaymentProvider($paymentProvider);
-        $payment->setTotalAmount($amount);
+        $payment->setTotalAmount($amount ?? $order->getPaymentTotal());
         $payment->setState(PaymentInterface::STATE_NEW);
         $payment->setDatePayment(Carbon::now());
         $payment->setOrder($order);

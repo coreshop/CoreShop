@@ -14,12 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Resource\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 interface TranslatableInterface
 {
     /**
-     * @return TranslationInterface[]|Collection
+     * @return Collection|ArrayCollection<TranslationInterface>
      */
     public function getTranslations();
 

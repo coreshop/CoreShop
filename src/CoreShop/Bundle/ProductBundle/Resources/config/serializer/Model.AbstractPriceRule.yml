@@ -25,7 +25,7 @@ CoreShop\Component\Product\Model\AbstractPriceRule:
             groups: [Detailed, Version]
         translations:
             expose: true
-            type: array
+            type: ArrayCollection
             groups: [Detailed]
         conditions:
             expose: true

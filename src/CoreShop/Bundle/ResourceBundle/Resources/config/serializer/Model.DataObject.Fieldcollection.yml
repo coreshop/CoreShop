@@ -1,5 +1,4 @@
-Pimcore\Model\AbstractModel:
-    exclude: true
+Pimcore\Model\DataObject\Fieldcollection:
     properties:
         dao:
             exclude: true
