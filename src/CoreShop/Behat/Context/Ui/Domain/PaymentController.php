@@ -18,6 +18,7 @@ use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Core\Model\PaymentInterface;
+use CoreShop\Component\Core\Model\PaymentProvider;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Pool;
@@ -59,7 +60,11 @@ final class PaymentController implements Context
 
         $this->router->setContext($context);
 
-        $gateway = $payment->getPaymentProvider()->getGatewayConfig()->getGatewayName();
+        $paymentProvider = $payment->getPaymentProvider();
+
+        Assert::isInstanceOf($paymentProvider, PaymentProvider::class);
+
+        $gateway = $paymentProvider->getGatewayConfig()->getGatewayName();
 
         $token = $this->payum->getTokenFactory()->createCaptureToken($gateway, $payment, 'coreshop_payment_after');
         $notifyToken = $this->payum->getTokenFactory()->createNotifyToken($gateway, $payment);

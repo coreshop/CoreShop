@@ -23,13 +23,15 @@ class LockingStorage extends DoctrineStorage
     {
         $objectManager = $this->objectManager;
 
-        if (($objectManager instanceof EntityManager) &&
-            in_array(PaymentInterface::class, class_implements($this->modelClass), true) &&
-            $objectManager->getConnection()->isTransactionActive()
-        ) {
-            $objectManager->getConnection()->setAutoCommit(false);
+        if ($objectManager instanceof EntityManager) {
+            if (
+                in_array(PaymentInterface::class, class_implements($this->modelClass), true) &&
+                $objectManager->getConnection()->isTransactionActive()
+            ) {
+                $objectManager->getConnection()->setAutoCommit(false);
 
-            return $objectManager->find($this->modelClass, $id, LockMode::PESSIMISTIC_WRITE);
+                return $objectManager->find($this->modelClass, $id, LockMode::PESSIMISTIC_WRITE);
+            }
         }
 
         return parent::doFind($id);
