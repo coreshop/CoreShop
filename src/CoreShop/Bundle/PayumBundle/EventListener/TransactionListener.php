@@ -44,6 +44,10 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
+        if (!is_array($controller)) {
+            return;
+        }
+
         if (!$controller[0] instanceof PayumController) {
             return;
         }
