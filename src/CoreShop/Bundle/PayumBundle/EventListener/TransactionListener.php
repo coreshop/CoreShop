@@ -12,6 +12,7 @@
 
 namespace CoreShop\Bundle\PayumBundle\EventListener;
 
+use CoreShop\Bundle\PayumBundle\Controller\PaymentController;
 use Doctrine\DBAL\Connection;
 use Payum\Bundle\PayumBundle\Controller\PayumController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -48,7 +49,7 @@ class TransactionListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$controller[0] instanceof PayumController) {
+        if (!$controller[0] instanceof PayumController && !$controller[0] instanceof PaymentController) {
             return;
         }
 
