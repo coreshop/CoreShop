@@ -422,7 +422,7 @@ class OrderController extends PimcoreController
 
         $event = new GenericEvent($order, $jsonSale);
 
-        $this->eventDispatcher->dispatch(Events::SALE_DETAIL_PREPARE, $event);
+        $this->eventDispatcher->dispatch($event, Events::SALE_DETAIL_PREPARE);
 
         $jsonSale = $event->getArguments();
 

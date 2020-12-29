@@ -24,11 +24,12 @@ class CommentChecker extends AbstractConditionChecker
      */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
-        $type = $params['type'];
-        $comment = $params['comment'];
-        $submitAsEmail = $params['submitAsEmail'];
+        $type = $params['type'] ?? null;
+        $comment = $params['comment'] ?? null;
+        $submitAsEmail = $params['submitAsEmail'] ?? null;
 
         $commentAction = $configuration['commentAction'];
+
         if ($comment instanceof Note) {
             return $submitAsEmail === true && $commentAction === $type;
         }

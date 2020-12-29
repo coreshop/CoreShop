@@ -7,3 +7,4 @@ imports:
     - ui/product.yml
     - ui/cart.yml
     - ui/checkout.yml
+    - ui/domain_payment.yml

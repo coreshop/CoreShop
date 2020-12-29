@@ -89,7 +89,7 @@ class CountryFixture extends AbstractFixture implements ContainerAwareInterface,
             'city' => '{{ city }}',
             'country' => [
                 '{{ country.name }}',
-                '{{ phone }}',
+                '{{ phoneNumber }}',
             ],
             'region' => '',
         ];

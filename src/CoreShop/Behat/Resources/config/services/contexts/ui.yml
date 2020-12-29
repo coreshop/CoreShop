@@ -99,3 +99,13 @@ services:
             - '@CoreShop\Behat\Page\Frontend\Checkout\ThankYouPageInterface'
         tags:
             - { name: fob.context_service }
+
+    coreshop.behat.context.ui.domain.payment:
+        class: CoreShop\Behat\Context\Ui\Domain\PaymentController
+        arguments:
+            - '@coreshop.behat.shared_storage'
+            - '@payum'
+            - '@router'
+            - '@CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface'
+        tags:
+            - { name: fob.context_service }

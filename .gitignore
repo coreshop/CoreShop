@@ -55,3 +55,4 @@ config/pimcore/
 etc/build
 public/bundles
 public/var
+web

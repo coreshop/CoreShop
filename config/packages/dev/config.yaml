@@ -1,3 +1,14 @@
 imports:
     - { resource: ../../config.yaml }
 
+payum:
+    gateways:
+        offline:
+            factory: concurrency
+
+services:
+    payum.concurrency_gateway_factory:
+        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
+        tags:
+            - { name: payum.gateway_factory_builder, factory: concurrency }

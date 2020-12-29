@@ -16,7 +16,6 @@ namespace CoreShop\Bundle\ResourceBundle\Serialization\Driver;
 
 use Metadata\ClassMetadata;
 use Metadata\Driver\DriverInterface;
-use Metadata\NullMetadata;
 
 class PimcoreDataObjectDriver implements DriverInterface
 {
@@ -33,9 +32,13 @@ class PimcoreDataObjectDriver implements DriverInterface
      */
     public function loadMetadataForClass(\ReflectionClass $class): ?ClassMetadata
     {
-        //We don't want Pimcore entities to be serialized directly
+//        //We don't want Pimcore entities to be serialized directly
         if ($class->getNamespaceName() === 'Pimcore\\Model\\DataObject') {
-            return null;
+            return $classMetadata = new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
+        }
+
+        if ($class->getName() === 'Pimcore\\Model\\DataObject\\Fieldcollection') {
+            return $classMetadata = new \JMS\Serializer\Metadata\ClassMetadata($name = $class->name);
         }
 
         return $this->decorated->loadMetadataForClass($class);

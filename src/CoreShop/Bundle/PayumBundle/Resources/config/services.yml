@@ -45,3 +45,9 @@ services:
     CoreShop\Bundle\PayumBundle\Action\Offline\StatusAction:
         tags:
             - { name: payum.action, factory: offline, alias: coreshop.offline.status }
+
+    CoreShop\Bundle\PayumBundle\EventListener\TransactionListener:
+        arguments:
+            - '@doctrine.dbal.default_connection'
+        tags:
+            - { name: kernel.event_subscriber }

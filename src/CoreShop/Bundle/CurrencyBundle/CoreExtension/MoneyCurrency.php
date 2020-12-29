@@ -16,6 +16,9 @@ namespace CoreShop\Bundle\CurrencyBundle\CoreExtension;
 
 use CoreShop\Component\Currency\Model\CurrencyInterface;
 use CoreShop\Component\Currency\Model\Money;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\DBAL\Types\Types;
 use Pimcore\Model;
 use Pimcore\Model\DataObject\Concrete;
 
@@ -61,6 +64,22 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     public function getPhpdocReturnType(): ?string
     {
         return '?\\' . Money::class;
+    }
+
+    public function getQueryColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
+    }
+
+    public function getColumnType()
+    {
+        return [
+            'value' => 'bigint(20)',
+            'currency' => 'int',
+        ];
     }
 
     /**
@@ -113,28 +132,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
     public function getMinValue()
     {
         return $this->minValue;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getQueryColumnType()
-    {
-        return [
-            'value' => 'bigint(20)',
-            'currency' => 'int',
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getColumnType()
-    {
-        return [
-            'value' => 'bigint(20)',
-            'currency' => 'int',
-        ];
     }
 
     public function preGetData($object, $params = [])

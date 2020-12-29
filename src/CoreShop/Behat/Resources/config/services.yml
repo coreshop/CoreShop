@@ -5,6 +5,11 @@ imports:
     - { resource: services/elements.yml }
     - { resource: services/elements_pimcore.yml }
 
+payum:
+    gateways:
+        offline:
+            factory: concurrency
+
 services:
     _defaults:
         public: true
@@ -70,3 +75,9 @@ services:
     CoreShop\Behat\Service\StoreContextSetter:
         arguments:
             - '@CoreShop\Behat\Service\CookieSetterInterface'
+
+    payum.concurrency_gateway_factory:
+        class: Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder
+        arguments: [ CoreShop\Behat\Service\Payum\Concurrency\ConcurrencyGatewayFactory ]
+        tags:
+            - { name: payum.gateway_factory_builder, factory: concurrency }
