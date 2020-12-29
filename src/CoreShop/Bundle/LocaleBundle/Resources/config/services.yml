@@ -10,6 +10,8 @@ services:
         public: false
 
     CoreShop\Component\Locale\Context\PimcoreLocaleContext:
+        #Quite Important to keep that, otherwise we get some pretty weird issues.
+        lazy: true
         arguments:
             - '@Pimcore\Localization\LocaleServiceInterface'
         tags:
