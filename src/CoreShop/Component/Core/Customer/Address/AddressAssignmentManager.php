@@ -86,7 +86,7 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
             return true;
         }
 
-        if ($customer->getAddressAccessType() === null) {
+        if (empty($customer->getAddressAccessType())) {
             return $customer->hasAddress($address);
         }
 
