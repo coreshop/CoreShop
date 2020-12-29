@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
 use CoreShop\Component\Core\Translation\TranslatableEntityPimcoreLocaleAssigner;
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
 use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -31,7 +32,7 @@ final class TranslatableEntityLocalePass implements CompilerPassInterface
     {
         $translatableEntityLocaleAssignerDefinition = new Definition(TranslatableEntityPimcoreLocaleAssigner::class);
         $translatableEntityLocaleAssignerDefinition->setPublic(true);
-        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('coreshop.context.locale'));
+        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference(LocaleContextInterface::class));
         $translatableEntityLocaleAssignerDefinition->addArgument(new Reference(TranslationLocaleProviderInterface::class));
 
         $container->setDefinition(TranslatableEntityLocaleAssignerInterface::class, $translatableEntityLocaleAssignerDefinition);
