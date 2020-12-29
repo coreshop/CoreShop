@@ -13,10 +13,6 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default, priority: 99 }
 
-    coreshop.translatable_entity_locale_assigner:
-        alias: 'CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface'
-        public: true
-
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface: '@CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner'
     CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssigner:
         arguments:

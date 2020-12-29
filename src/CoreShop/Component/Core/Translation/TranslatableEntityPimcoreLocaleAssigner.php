@@ -14,19 +14,23 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Core\Translation;
 
+use CoreShop\Component\Locale\Context\LocaleContextInterface;
+use CoreShop\Component\Locale\Context\LocaleNotFoundException;
 use CoreShop\Component\Resource\Model\TranslatableInterface;
+use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderInterface;
 use CoreShop\Component\Resource\Translation\TranslatableEntityLocaleAssignerInterface;
-use Pimcore\Cache\Runtime;
-use Pimcore\Localization\LocaleServiceInterface;
-use Pimcore\Tool;
 
 final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    private $pimcoreServiceLocale;
+    private $localeContext;
+    private $translationLocaleProvider;
 
-    public function __construct(LocaleServiceInterface $pimcoreServiceLocale)
-    {
-        $this->pimcoreServiceLocale = $pimcoreServiceLocale;
+    public function __construct(
+        LocaleContextInterface $localeContext,
+        TranslationLocaleProviderInterface $translationLocaleProvider
+    ) {
+        $this->localeContext = $localeContext;
+        $this->translationLocaleProvider = $translationLocaleProvider;
     }
 
     /**
@@ -34,26 +38,15 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
      */
     public function assignLocale(TranslatableInterface $translatableEntity): void
     {
-        $translatableEntity->setCurrentLocale($this->getPimcoreLanguage());
-        $translatableEntity->setFallbackLocale(Tool::getDefaultLanguage());
-    }
+        $fallbackLocale = $this->translationLocaleProvider->getDefaultLocaleCode();
 
-    private function getPimcoreLanguage(): string
-    {
-        $locale = null;
-
-        if (Runtime::isRegistered('model.locale')) {
-            $locale = Runtime::get('model.locale');
+        try {
+            $currentLocale = $this->localeContext->getLocaleCode();
+        } catch (LocaleNotFoundException $e) {
+            $currentLocale = $fallbackLocale;
         }
 
-        if (null === $locale) {
-            $locale = $this->pimcoreServiceLocale->findLocale();
-        }
-
-        if (Tool::isValidLanguage($locale)) {
-            return (string)$locale;
-        }
-
-        return Tool::getDefaultLanguage();
+        $translatableEntity->setCurrentLocale($currentLocale);
+        $translatableEntity->setFallbackLocale($fallbackLocale);
     }
 }
