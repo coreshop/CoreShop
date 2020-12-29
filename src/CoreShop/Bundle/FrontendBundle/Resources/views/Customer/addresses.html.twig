@@ -25,7 +25,9 @@
                     <div class="card card-smart">
                         <div class="card-body">
                             {% if customer is not coreshop_address_owner_of(address) %}
-                                <span class="badge badge badge-secondary float-right">{{ 'coreshop.ui.company_address'|trans }}</span>
+                                <span class="badge badge-secondary float-right">{{ 'coreshop.ui.company_address'|trans }}</span>
+                            {% elseif address.addressIdentifier is not empty %}
+                                <span class="badge badge-secondary float-right">{{ ('coreshop.ui.' ~ address.addressIdentifier.name ~ '_address')|trans }}</span>
                             {% endif %}
                             {{ address|coreshop_format_address }}
                             <br/>
