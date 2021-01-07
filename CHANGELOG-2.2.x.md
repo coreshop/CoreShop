@@ -1,5 +1,36 @@
 # Within 2.2
 
+## 2.2.7
+ - Features:
+     - [OptimisticLock] allow to optimistically lock Pimcore DataObjects (https://github.com/coreshop/CoreShop/pull/1537)
+     - [Pimcore] introduce DataObjectBatchListing (https://github.com/coreshop/CoreShop/pull/1519)
+
+ - Bugs:
+     - [Payment] Concurrency issues (https://github.com/coreshop/CoreShop/issues/1536, https://github.com/coreshop/CoreShop/pull/1549)
+     - [Frontend] fix addressAccessType check and improve view (https://github.com/coreshop/CoreShop/pull/1544)
+     - [Payment] Payment Details can be null (https://github.com/coreshop/CoreShop/issues/1545)
+     - [ProductBundle] fix UnitDefinition without id (https://github.com/coreshop/CoreShop/pull/1547)
+     - [Order] fix payment provider (https://github.com/coreshop/CoreShop/pull/1548)
+     - [Payment] ignore failed payments in total amount check (https://github.com/coreshop/CoreShop/pull/1543)
+     - [Checkout] Fix checkout with addressAccessType COMPANY_ONLY (https://github.com/coreshop/CoreShop/pull/1526)
+     - [CompilerPass] rework compiler passes (simplify) (https://github.com/coreshop/CoreShop/pull/1535)
+     - [Admin Order detail] Carrier name not shown with legacy serialization of Orders (https://github.com/coreshop/CoreShop/issues/1540)
+     - [composer2] make getVersion compatible (https://github.com/coreshop/CoreShop/pull/1539)
+     - [DynmicDropdown] support class override and fix order by id (https://github.com/coreshop/CoreShop/pull/1538)
+     - [DeepCopy] Order details are no longer working (https://github.com/coreshop/CoreShop/issues/1507, https://github.com/coreshop/CoreShop/pull/1534)
+     - [OrderBundle] fix voucher code export (https://github.com/coreshop/CoreShop/pull/1530)
+     - [Resources] Reset Id on __clone (https://github.com/coreshop/CoreShop/issues/1501, https://github.com/coreshop/CoreShop/pull/1502)
+     - [Document] Document saving failed (https://github.com/coreshop/CoreShop/issues/1498, https://github.com/coreshop/CoreShop/pull/1518)
+     - [Admin] fix payment details in backend order view (https://github.com/coreshop/CoreShop/pull/1525)
+     - [Notification] fix return of store on notification rule (https://github.com/coreshop/CoreShop/pull/1520)
+     - [Locale] Fix PSR-4 namespace (https://github.com/coreshop/CoreShop/pull/1509)
+   
+  - Docs:
+     - [Docs] add docu for product units (https://github.com/coreshop/CoreShop/pull/1551)
+   
+ - Tests:
+     - [Actions] add tests for packages (https://github.com/coreshop/CoreShop/pull/1542)
+
 ## 2.2.6
  - Bugs:
      - [Product] fix cloning of ProductUnitDefinitions and add test for it. (https://github.com/coreshop/CoreShop/pull/1502)

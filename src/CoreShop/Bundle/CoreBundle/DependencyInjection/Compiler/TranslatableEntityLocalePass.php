@@ -10,6 +10,8 @@
  * @license    https://www.coreshop.org/license     GNU General Public License version 3 (GPLv3)
  */
 
+declare(strict_types=1);
+
 namespace CoreShop\Bundle\CoreBundle\DependencyInjection\Compiler;
 
 use CoreShop\Component\Core\Translation\TranslatableEntityPimcoreLocaleAssigner;
@@ -27,7 +29,8 @@ final class TranslatableEntityLocalePass implements CompilerPassInterface
     {
         $translatableEntityLocaleAssignerDefinition = new Definition(TranslatableEntityPimcoreLocaleAssigner::class);
         $translatableEntityLocaleAssignerDefinition->setPublic(true);
-        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('pimcore.locale'));
+        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('coreshop.context.locale'));
+        $translatableEntityLocaleAssignerDefinition->addArgument(new Reference('coreshop.translation_locale_provider'));
 
         $container->setDefinition('coreshop.translatable_entity_locale_assigner', $translatableEntityLocaleAssignerDefinition);
     }
