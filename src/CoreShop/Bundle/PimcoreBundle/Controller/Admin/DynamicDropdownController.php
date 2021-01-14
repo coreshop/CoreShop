@@ -69,7 +69,7 @@ final class DynamicDropdownController extends AdminController
                 function ($a, $b) use ($sort) {
                     $field = 'value';
 
-                    if ($sort === 'byValue') {
+                    if ($sort === 'byvalue') {
                         $field = 'key';
                     }
 
