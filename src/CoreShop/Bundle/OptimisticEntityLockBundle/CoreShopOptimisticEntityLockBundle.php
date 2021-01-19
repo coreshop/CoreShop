@@ -12,6 +12,8 @@
 
 namespace CoreShop\Bundle\OptimisticEntityLockBundle;
 
+use Composer\InstalledVersions;
+use CoreShop\Bundle\CoreBundle\Application\Version;
 use PackageVersions\Versions;
 use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
@@ -41,11 +43,33 @@ class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
      */
     public function getComposerPackageName()
     {
-        if (isset(Versions::VERSIONS['coreshop/optimistic-entity-lock-bundle'])) {
-            return 'coreshop/optimistic-entity-lock-bundle';
+        $bundleName = 'coreshop/optimistic-entity-lock-bundle';
+
+        if (class_exists(InstalledVersions::class)) {
+            if (InstalledVersions::isInstalled('coreshop/core-shop')) {
+                return InstalledVersions::getVersion('coreshop/core-shop');
+            }
+
+            if (InstalledVersions::isInstalled($bundleName)) {
+                return InstalledVersions::getVersion($bundleName);
+            }
         }
 
-        return 'coreshop/core-shop';
+        if (class_exists(Versions::class)) {
+            if (isset(Versions::VERSIONS[$bundleName])) {
+                return Versions::getVersion($bundleName);
+            }
+
+            if (isset(Versions::VERSIONS['coreshop/core-shop'])) {
+                return Versions::getVersion('coreshop/core-shop');
+            }
+        }
+
+        if (class_exists(Version::class)) {
+            return Version::getVersion();
+        }
+
+        return '';
     }
 
     /**
