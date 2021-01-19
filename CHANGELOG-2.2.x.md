@@ -1,5 +1,9 @@
 # Within 2.2
 
+## 2.2.8
+ - Bugs:
+     - [OptimisticEntityLockBundle] fix Version loading with Composer v3 (https://github.com/coreshop/CoreShop/pull/1558)
+
 ## 2.2.7
  - Features:
      - [OptimisticLock] allow to optimistically lock Pimcore DataObjects (https://github.com/coreshop/CoreShop/pull/1537)
