@@ -13,13 +13,13 @@
 namespace CoreShop\Component\Core\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\CartInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Core\Model\CarrierInterface as CoreCarrierInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use CoreShop\Component\Taxation\Calculator\TaxCalculatorInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use CoreShop\Component\Taxation\Model\TaxRuleGroup;
@@ -59,9 +59,9 @@ class TaxCalculationStrategyTaxRule implements TaxCalculationStrategyInterface
         int $shippingAmountNet
     ) {
         /**
-         * @var CartInterface $shippable
+         * @var StoreAwareInterface $shippable
          */
-        Assert::isInstanceOf($shippable, CartInterface::class);
+        Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 
         $store = $shippable->getStore();
 
