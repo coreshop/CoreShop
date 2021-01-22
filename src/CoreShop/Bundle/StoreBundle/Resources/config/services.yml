@@ -24,7 +24,7 @@ services:
 
     coreshop.context.store.request_based.cached: '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext'
     CoreShop\Component\Store\Context\RequestBased\CachedStoreContext:
-        decorates: coreshop.context.store.request_based
+        decorates: CoreShop\Component\Store\Context\RequestBased\StoreContext
         arguments:
             - '@CoreShop\Component\Store\Context\RequestBased\CachedStoreContext.inner'
 
