@@ -14,13 +14,13 @@ declare(strict_types=1);
 
 namespace CoreShop\Component\Pimcore\Migration;
 
-use Pimcore\Model\Translation\Website;
+use Pimcore\Model\Translation;
 
 class SharedTranslation
 {
     public static function add(string $key, string $language, string $value)
     {
-        $key = Website::getByKey($key, true);
+        $key = Translation::getByKey($key, Translation::DOMAIN_DEFAULT, true);
         $key->addTranslation($language, $value);
         $key->save();
     }

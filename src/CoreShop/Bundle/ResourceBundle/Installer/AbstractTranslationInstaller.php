@@ -15,27 +15,22 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\TranslationConfiguration;
-use Pimcore\Model\Translation\AbstractTranslation;
-use Pimcore\Model\Translation\TranslationInterface;
-use Pimcore\Model\Translation\Website;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\Assert\Assert;
+use Pimcore\Model\Translation;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
     protected $kernel;
-    protected $translationClass;
+    protected $translationType;
 
-    public function __construct(KernelInterface $kernel, string $translationClass = Website::class)
+    public function __construct(KernelInterface $kernel, string $translationType = Translation::DOMAIN_DEFAULT)
     {
         $this->kernel = $kernel;
-        $this->translationClass = $translationClass;
-
-        Assert::implementsInterface($translationClass, TranslationInterface::class);
+        $this->translationType = $translationType;
     }
 
     /**
@@ -92,10 +87,10 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
 
     abstract protected function getIdentifier(?string $applicationName = null): string;
 
-    private function installTranslation(string $name, array $properties): AbstractTranslation
+    private function installTranslation(string $name, array $properties): Translation
     {
-        /** @var AbstractTranslation $translation */
-        $translation = $this->translationClass::getByKey($name, true);
+        /** @var Translation $translation */
+        $translation = Translation::getByKey($name, $this->translationType, true);
         $translationData = $translation->getTranslations();
         $coreShopTranslationData = $properties['languages'];
 
