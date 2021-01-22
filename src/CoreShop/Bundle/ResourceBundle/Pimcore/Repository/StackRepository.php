@@ -95,6 +95,10 @@ class StackRepository extends PimcoreRepository
     {
         $instance = DataObject::getById($id, $force);
 
+        if (null === $instance) {
+            return null;
+        }
+
         if (!in_array($this->interface, class_implements($instance), true)) {
             return null;
         }
