@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\PimcoreBundle\Mail;
 
 use CoreShop\Component\Pimcore\Mail\MailProcessorInterface as NewMailProcessorInterface;
 
-if (interface_exists(MailProcessorInterface::class)) {
+if (interface_exists(NewMailProcessorInterface::class)) {
     @trigger_error('Interface CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface is deprecated since version 2.2.6 and will be removed in 3.0.0. Use CoreShop\Component\Pimcore\Mail\MailProcessorInterface class instead.', E_USER_DEPRECATED);
 } else {
     /**
