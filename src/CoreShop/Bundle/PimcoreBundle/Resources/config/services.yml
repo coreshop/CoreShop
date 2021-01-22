@@ -49,6 +49,7 @@ services:
 
     coreshop.mail_processor: '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
     CoreShop\Component\Pimcore\Mail\MailProcessorInterface: '@CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor'
+    CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface: '@CoreShop\Component\Pimcore\Mail\MailProcessorInterface'
     CoreShop\Bundle\PimcoreBundle\Mail\MailProcessor:
         arguments:
             - '@event_dispatcher'
