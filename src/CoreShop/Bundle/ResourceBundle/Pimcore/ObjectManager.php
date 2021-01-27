@@ -218,6 +218,7 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         return $id;
     }
 
+
     /**
      * @param object $resource
      *
@@ -225,10 +226,12 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
      */
     private function getResourceClassName($resource)
     {
+        $className = get_class($resource);
+
         if ($resource instanceof Concrete) {
-            return $resource->getClassName();
+            $className = $resource->getClassName();
         }
 
-        throw new \InvalidArgumentException('$resource is not a DataObject\\Concrete');
+        return $className;
     }
 }

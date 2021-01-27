@@ -78,7 +78,7 @@ coreshop.notification.rule.actions.storeMail = Class.create(coreshop.notificatio
             checked: this.data ? this.data.doNotSendToDesignatedRecipient : false
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items: [
                 {
                     xtype: 'tabpanel',
