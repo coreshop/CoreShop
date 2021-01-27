@@ -25,7 +25,7 @@ final class MailEvent extends GenericEvent
     protected $params;
     protected $shouldSendMail = true;
 
-    public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
+    public function __construct(string $subject, Email $emailDocument, Mail $mail, array $params = [])
     {
         parent::__construct($subject);
 

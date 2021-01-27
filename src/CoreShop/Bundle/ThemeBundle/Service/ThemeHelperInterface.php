@@ -20,5 +20,5 @@ interface ThemeHelperInterface
      * @param string   $themeName
      * @param \Closure $function
      */
-    public function useTheme(string $themeName, \Closure $function): void;
+    public function useTheme(string $themeName, \Closure $function);
 }
