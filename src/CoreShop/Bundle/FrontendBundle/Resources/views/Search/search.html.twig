@@ -15,7 +15,7 @@
     </h2>
 
     <div class="row">
-        {% for result in paginator %}
+        {% for result.items in paginator %}
             {% include '@CoreShopFrontend/Category/_list.html.twig' with {
                 product: result,
             } only %}
