@@ -91,7 +91,8 @@
     "stof/doctrine-extensions-bundle": "^1.5",
     "webmozart/assert": "^1.2",
     "payum/payum": "dev-master",
-    "payum/payum-bundle": "dev-master"
+    "payum/payum-bundle": "dev-master",
+    "laminas/laminas-stdlib": "^3.3"
   },
   "require-dev": {
     "behat/behat": "^3.3",
