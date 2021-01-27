@@ -12,10 +12,10 @@
 
 namespace CoreShop\Bundle\CoreBundle\Order;
 
-use CoreShop\Bundle\PimcoreBundle\Mail\MailProcessorInterface;
 use CoreShop\Bundle\ThemeBundle\Service\ThemeHelperInterface;
 use CoreShop\Component\Core\Order\OrderMailProcessorInterface;
 use CoreShop\Component\Currency\Formatter\MoneyFormatterInterface;
+use CoreShop\Component\Pimcore\Mail\MailProcessorInterface;
 use CoreShop\Component\Order\InvoiceStates;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderInvoiceInterface;
