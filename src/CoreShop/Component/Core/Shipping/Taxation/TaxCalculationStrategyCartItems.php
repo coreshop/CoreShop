@@ -93,7 +93,7 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
          * @var ShippableItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if ($item instanceof \CoreShop\Component\Order\Model\CartItemInterface &&
+            if ($item instanceof \CoreShop\Component\Core\Model\CartItemInterface &&
                 $item->getDigitalProduct() === true
             ) {
                 continue;
