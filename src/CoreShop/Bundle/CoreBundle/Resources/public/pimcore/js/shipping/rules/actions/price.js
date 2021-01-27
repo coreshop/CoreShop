@@ -30,7 +30,7 @@ coreshop.shippingrule.actions.price = Class.create(coreshop.rules.actions.abstra
             decimalPrecision: pimcore.globalmanager.get('coreshop.currency.decimal_precision')
         });
 
-        this.form = new Ext.form.FieldSet({
+        this.form = new Ext.form.Panel({
             items: [
                 price,
                 {
