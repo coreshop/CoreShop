@@ -83,7 +83,7 @@ class StackRepository extends PimcoreRepository
     {
         $instance = DataObject::getById($id, $force);
 
-        if (!$instance instanceof DataObject\Concrete) {
+        if (null === $instance) {
             return null;
         }
 
