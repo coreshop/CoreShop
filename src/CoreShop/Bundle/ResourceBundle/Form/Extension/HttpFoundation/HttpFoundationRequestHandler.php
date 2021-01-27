@@ -62,6 +62,10 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
         if ('GET' === $method || 'HEAD' === $method || 'TRACE' === $method) {
             if ('' === $name) {
                 $data = $request->query->all();
+                // No data - nothing to submit.
+                if (!count($data)) {
+                    return;
+                }
             } else {
                 // Don't submit GET requests if the form's name does not exist
                 // in the request
