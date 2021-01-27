@@ -27,7 +27,7 @@ use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Resource\Model\AbstractObject;
 use CoreShop\Component\SEO\SEOPresentationInterface;
 use CoreShop\Component\Tracking\Tracker\TrackerInterface;
-use Laminas\Paginator\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -165,10 +165,11 @@ class CategoryController extends FrontendController
             $currentFilter = $this->get(FilterProcessorInterface::class)->processConditions($category->getFilter(), $filteredList, $request->query);
             $preparedConditions = $this->get(FilterProcessorInterface::class)->prepareConditionsForRendering($category->getFilter(), $filteredList, $currentFilter);
 
-            $paginator = new Paginator($filteredList);
-            $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage($perPage);
-            $paginator->setPageRange(10);
+            $paginator = $this->getPaginator()->paginate(
+                $filteredList,
+                $page,
+                $perPage
+            );
 
             $viewParameters['list'] = $filteredList;
             $viewParameters['filter'] = $category->getFilter();
@@ -201,9 +202,11 @@ class CategoryController extends FrontendController
 
             $list = $this->getProductRepository()->getProductsListing($options);
 
-            $paginator = new Paginator($list);
-            $paginator->setItemCountPerPage($perPage);
-            $paginator->setCurrentPageNumber($page);
+            $paginator = $this->getPaginator()->paginate(
+                $list,
+                $page,
+                $perPage
+            );
 
             $viewParameters['paginator'] = $paginator;
         }
@@ -286,5 +289,13 @@ class CategoryController extends FrontendController
     protected function getContext(): ShopperContextInterface
     {
         return $this->get(ShopperContextInterface::class);
+    }
+
+    /**
+     * @return PaginatorInterface
+     */
+    protected function getPaginator(): PaginatorInterface
+    {
+        return $this->get(PaginatorInterface::class);
     }
 }
