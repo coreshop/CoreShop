@@ -20,8 +20,6 @@ use Pimcore\Extension\Bundle\Traits\PackageVersionTrait;
 
 class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
 {
-    use PackageVersionTrait;
-
     /**
      * @return string
      */
@@ -41,7 +39,7 @@ class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
     /**
      * @return string
      */
-    public function getComposerPackageName()
+    public function getVersion()
     {
         $bundleName = 'coreshop/optimistic-entity-lock-bundle';
 
