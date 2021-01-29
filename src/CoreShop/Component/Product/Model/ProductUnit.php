@@ -20,8 +20,8 @@ class ProductUnit extends AbstractResource implements ProductUnitInterface
 {
     use TimestampableTrait;
     use TranslatableTrait {
-        __construct as private initializeTranslationsCollection;
-        getTranslation as private doGetTranslation;
+        TranslatableTrait::__construct as private initializeTranslationsCollection;
+        TranslatableTrait::getTranslation as private doGetTranslation;
     }
 
     /**
