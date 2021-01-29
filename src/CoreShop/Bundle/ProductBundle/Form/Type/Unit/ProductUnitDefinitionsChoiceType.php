@@ -43,7 +43,7 @@ final class ProductUnitDefinitionsChoiceType extends AbstractType
             'entry_type' => ProductUnitDefinitionType::class,
             'choice_value' => 'id',
             'choice_label' => function (ProductUnitDefinitionInterface $definition) {
-                return $definition->getUnit()->getName();
+                return $definition->getUnit()->getFullLabel();
             },
             'choice_attr' => function (ProductUnitDefinitionInterface $definition) {
                 return ['data-cs-unit-precision' => $definition->getPrecision()];
