@@ -52,7 +52,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "href",
+                                "fieldtype": "manyToOneRelation",
                                 "width": "",
                                 "assetUploadPath": "",
                                 "relationType": true,
