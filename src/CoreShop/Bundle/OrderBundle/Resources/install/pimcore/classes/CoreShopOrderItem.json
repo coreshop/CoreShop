@@ -157,7 +157,7 @@
                                         "visibleSearch": false
                                     },
                                     {
-                                        "fieldtype": "href",
+                                        "fieldtype": "manyToOneRelation",
                                         "width": "",
                                         "assetUploadPath": "",
                                         "relationType": true,

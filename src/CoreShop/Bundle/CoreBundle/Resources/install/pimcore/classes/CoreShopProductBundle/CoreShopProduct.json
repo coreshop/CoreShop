@@ -448,7 +448,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
@@ -500,7 +500,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
