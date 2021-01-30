@@ -8,7 +8,6 @@ Settings can be different for each Store.
 
 #### Base
 
-- Catalog-Mode: With catalog-mode enabled, the cart and checkout are disabled. Products can only be viewed.
 - Guest-Checkout: Enables or disables guest-checkout feature
 
 #### Customer Service
