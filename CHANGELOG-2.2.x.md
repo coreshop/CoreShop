@@ -1,5 +1,18 @@
 # Within 2.2
 
+## 2.2.9
+ - Bugs:
+     - [ResourceBundle] fix compatibility with Doctrine EventSubscriber (https://github.com/coreshop/CoreShop/pull/1580)
+     - [All] replace all usages of href with manyToOneRelation and multihref with manyToManyRelation (https://github.com/coreshop/CoreShop/pull/1576)
+     - [OptimisticEntityLockBundle] fix version for Pimcore Extensions UI (https://github.com/coreshop/CoreShop/pull/1577)
+     - [Models] strict defining of model trait methods (https://github.com/coreshop/CoreShop/pull/1578)
+     - [ProductBundle] use full unit definition label in choice field (https://github.com/coreshop/CoreShop/pull/1569)
+     - [ResourceBundle] check if instance is null before calling class_implements (https://github.com/coreshop/CoreShop/pull/1566)
+     - [Admin] use form.Panel instead of form.FieldSet (panel supports isDirty) (https://github.com/coreshop/CoreShop/pull/1561)
+     - [Resource] Provide Pimcore driver for Stack Repository (https://github.com/coreshop/CoreShop/pull/1567)
+     - [StoreBundle] fix cached store context decoration (https://github.com/coreshop/CoreShop/pull/1565)
+     - [Mailer] remove usages of PimcoreBundle\MailerInterface and fix interface deprecation (https://github.com/coreshop/CoreShop/pull/1568)
+   
 ## 2.2.8
  - Bugs:
      - [OptimisticEntityLockBundle] fix Version loading with Composer v3 (https://github.com/coreshop/CoreShop/pull/1558)

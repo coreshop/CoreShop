@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\ResourceBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Resource\Model\ResourceInterface;
+use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -36,86 +38,63 @@ final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
             return;
         }
 
-        $interfaces = $this->getInterfacesMapping($resources);
+        $interfaces = $this->resolve($resources);
         foreach ($interfaces as $interface => $model) {
-            $resolveTargetEntityListener->addMethodCall('addResolveTargetEntity', [
-                $this->getInterface($container, $interface),
-                $this->getClass($container, $model),
-                [],
-            ]);
+            $resolveTargetEntityListener->addMethodCall('addResolveTargetEntity', [$interface, $model, []]);
         }
 
-        if (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
+        $resolveTargetEntityListenerClass = $container->getParameterBag()->resolveValue($resolveTargetEntityListener->getClass());
+        if (is_a($resolveTargetEntityListenerClass, EventSubscriber::class, true)) {
+            if (!$resolveTargetEntityListener->hasTag('doctrine.event_subscriber')) {
+                $resolveTargetEntityListener->addTag('doctrine.event_subscriber');
+            }
+        } elseif (!$resolveTargetEntityListener->hasTag('doctrine.event_listener')) {
             $resolveTargetEntityListener->addTag('doctrine.event_listener', ['event' => 'loadClassMetadata']);
         }
     }
 
-    /**
-     * @param array $resources
-     *
-     * @return array
-     */
-    private function getInterfacesMapping($resources)
+    public function resolve(array $resources): array
     {
         $interfaces = [];
-        foreach ($resources as $alias => $configuration) {
-            if (isset($configuration['classes']['interface'])) {
-                $alias = explode('.', $alias);
 
-                if (!isset($alias[0], $alias[1])) {
-                    throw new \RuntimeException(sprintf('Error configuring "%s" resource. The resource alias should follow the "prefix.name" format.', $alias[0]));
+        foreach ($resources as $alias => $configuration) {
+            $model = $this->getModel($alias, $configuration);
+
+            foreach (class_implements($model) as $interface) {
+                if ($interface === ResourceInterface::class) {
+                    continue;
                 }
 
-                $interfaces[$configuration['classes']['interface']] = sprintf('%s.model.%s.class', $alias[0], $alias[1]);
+                $interfaces[$interface][] = $model;
+            }
+        }
+
+        $interfaces = array_filter($interfaces, static function (array $classes): bool {
+            return count($classes) === 1;
+        });
+
+        $interfaces = array_map(static function (array $classes): string {
+            return (string) current($classes);
+        }, $interfaces);
+
+        foreach ($resources as $alias => $configuration) {
+            if (isset($configuration['classes']['interface'])) {
+                $model = $this->getModel($alias, $configuration);
+                $interface = $configuration['classes']['interface'];
+
+                $interfaces[$interface] = $model;
             }
         }
 
         return $interfaces;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param string           $key
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function getInterface(ContainerBuilder $container, $key)
+    private function getModel(string $alias, array $configuration): string
     {
-        if ($container->hasParameter($key)) {
-            return $container->getParameter($key);
+        if (!isset($configuration['classes']['model'])) {
+            throw new \InvalidArgumentException(sprintf('Could not get model class from resource "%s".', $alias));
         }
 
-        if (interface_exists($key)) {
-            return $key;
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('The interface %s does not exist.', $key)
-        );
-    }
-
-    /**
-     * @param ContainerBuilder $container
-     * @param string           $key
-     *
-     * @return string
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function getClass(ContainerBuilder $container, $key)
-    {
-        if ($container->hasParameter($key)) {
-            return $container->getParameter($key);
-        }
-
-        if (class_exists($key)) {
-            return $key;
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('The class %s does not exist.', $key)
-        );
+        return $configuration['classes']['model'];
     }
 }

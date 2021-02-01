@@ -24,8 +24,8 @@ class State extends AbstractResource implements StateInterface
     use ToggleableTrait;
     use TimestampableTrait;
     use TranslatableTrait {
-        __construct as private initializeTranslationsCollection;
-        getTranslation as private doGetTranslation;
+        TranslatableTrait::__construct as private initializeTranslationsCollection;
+        TranslatableTrait::getTranslation as private doGetTranslation;
     }
 
     /**

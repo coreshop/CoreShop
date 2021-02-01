@@ -11,7 +11,7 @@
  */
 
 pimcore.registerNS('coreshop.object.elementHref');
-coreshop.object.elementHref = Class.create(pimcore.object.tags.href, {
+coreshop.object.elementHref = Class.create(pimcore.object.tags.manyToOneRelation, {
     getLayoutEdit: function ($super) {
         var me = this,
             element = $super();
