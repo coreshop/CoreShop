@@ -68,7 +68,7 @@ grid_config:
                                     type: value
                                     class: Href
                                     attribute: customer
-                                    dataType: href
+                                    dataType: manyToOneRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -101,7 +101,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -119,7 +119,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -314,7 +314,7 @@ grid_config:
                                     type: value
                                     class: Href
                                     attribute: customer
-                                    dataType: href
+                                    dataType: manyToOneRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -347,7 +347,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -365,7 +365,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -560,7 +560,7 @@ grid_config:
                                     type: value
                                     class: Href
                                     attribute: customer
-                                    dataType: href
+                                    dataType: manyToOneRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -593,7 +593,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -611,7 +611,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
@@ -737,7 +737,7 @@ grid_config:
                                     type: value
                                     class: Href
                                     attribute: customer
-                                    dataType: href
+                                    dataType: manyToOneRelation
                                     childs: {  }
                         key: '#5a65a6bced85d'
                     isOperator: true
@@ -770,7 +770,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                                 -
                                     label: 'Last Name'
@@ -788,7 +788,7 @@ grid_config:
                                             type: value
                                             class: Href
                                             attribute: invoiceAddress
-                                            dataType: href
+                                            dataType: manyToOneRelation
                                             childs: {  }
                         key: '#5a65a6bced8d0'
                     isOperator: true
