@@ -56,7 +56,7 @@
     </div>
 
     <div class="row">
-        {% for product in paginator %}
+        {% for product in paginator.items %}
             {% include '@CoreShopFrontend/Category/_'~type~'.html.twig' with {
                 product: product,
             } only %}

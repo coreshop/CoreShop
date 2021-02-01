@@ -30,10 +30,19 @@ final class ThemeHelper implements ThemeHelperInterface
         $this->themeContext = $themeContext;
     }
 
-    public function useTheme(string $themeName, \Closure $function): void
+    public function useTheme(string $themeName, \Closure $function)
     {
+        $backupTheme = $this->themeContext->getTheme();
         $this->themeContext->setTheme(
             $this->themeRepository->findOneByName($themeName)
         );
+
+        $result = $function();
+
+        if ($backupTheme) {
+            $this->themeContext->setTheme($backupTheme);
+        }
+
+        return $result;
     }
 }

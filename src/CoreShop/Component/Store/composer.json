@@ -21,7 +21,8 @@
     "php": "^7.4",
     "coreshop/resource": "^3.0",
     "coreshop/currency": "^3.0",
-    "pimcore/pimcore": "^10.0.0"
+    "pimcore/pimcore": "^10.0.0",
+    "laminas/laminas-stdlib": "^3.3"
   },
   "require-dev": {
     "phpstan/phpstan": "^0.12",

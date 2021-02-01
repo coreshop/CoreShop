@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\FrontendBundle\Controller;
 
 use CoreShop\Bundle\FrontendBundle\Form\Type\SearchType;
 use CoreShop\Component\Store\Context\StoreContextInterface;
-use Laminas\Paginator\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends FrontendController
@@ -57,10 +57,12 @@ class SearchController extends FrontendController
 
             $list = $this->get('coreshop.repository.product')->getList();
             $list->setCondition('active = 1 AND (' . implode(' OR ', $query) . ') AND stores LIKE ?', $queryParams);
-
-            $paginator = new Paginator($list);
-            $paginator->setCurrentPageNumber($page);
-            $paginator->setItemCountPerPage($itemsPerPage);
+            
+            $paginator = $this->getPaginator()->paginate(
+                $list,
+                $page,
+                $itemsPerPage
+            );
 
             return $this->render($this->templateConfigurator->findTemplate('Search/search.html'), [
                 'paginator' => $paginator,
@@ -77,5 +79,13 @@ class SearchController extends FrontendController
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET',
         ]);
+    }
+
+    /**
+     * @return PaginatorInterface
+     */
+    protected function getPaginator(): PaginatorInterface
+    {
+        return $this->get(PaginatorInterface::class);
     }
 }

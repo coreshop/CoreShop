@@ -79,7 +79,7 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreSharedTranslationsInstaller:
         arguments:
             - '@kernel'
-            - 'Pimcore\Model\Translation\Website'
+            - 'messages'
         tags:
            - { name: coreshop.resource.installer, type: translations, priority: 450}
 
@@ -90,7 +90,7 @@ services:
     CoreShop\Bundle\ResourceBundle\Installer\PimcoreAdminTranslationsInstaller:
         arguments:
             - '@kernel'
-            - 'Pimcore\Model\Translation\Admin'
+            - 'admin'
         tags:
            - { name: coreshop.resource.installer, type: admin_translations, priority: 500}
 

@@ -23,7 +23,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
-use Webmozart\Assert\Assert;
+use Pimcore\Model\Translation;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
