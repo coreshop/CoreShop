@@ -15,32 +15,22 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Shipping\Taxation;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
-use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Taxation\TaxCalculatorFactoryInterface;
 use CoreShop\Component\Order\Distributor\ProportionalIntegerDistributorInterface;
+use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
+use CoreShop\Component\Shipping\Model\ShippableItemInterface;
 use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use CoreShop\Component\Taxation\Collector\TaxCollectorInterface;
 use Webmozart\Assert\Assert;
 
 class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
 {
-    /**
-     * @var TaxCollectorInterface
-     */
     private $taxCollector;
-
-    /**
-     * @var TaxCalculatorFactoryInterface
-     */
     private $taxCalculationFactory;
-
-    /**
-     * @var ProportionalIntegerDistributorInterface
-     */
     private $distributor;
 
     public function __construct(
@@ -53,9 +43,6 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         $this->distributor = $distributor;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function calculateShippingTax(
         ShippableInterface $shippable,
         CarrierInterface $carrier,
@@ -63,9 +50,9 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         int $shippingAmountNet
     ): array {
         /**
-         * @var OrderInterface $shippable
+         * @var StoreAwareInterface $shippable
          */
-        Assert::isInstanceOf($shippable, OrderInterface::class);
+        Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 
         $store = $shippable->getStore();
 
@@ -85,16 +72,22 @@ class TaxCalculationStrategyCartItems implements TaxCalculationStrategyInterface
         return $this->collectTaxes($address, $taxRules, $distributedAmount, $store->getUseGrossPrice());
     }
 
-    private function collectCartItemsTaxRules(OrderInterface $cart): array
+    private function collectCartItemsTaxRules(ShippableInterface $cart): array
     {
         $totalAmount = [];
         $taxRules = [];
 
         /**
-         * @var OrderItemInterface $item
+         * @var ShippableItemInterface $item
          */
         foreach ($cart->getItems() as $item) {
-            if ($item->getDigitalProduct() === true) {
+            if ($item instanceof \CoreShop\Component\Core\Model\OrderItemInterface &&
+                $item->getDigitalProduct() === true
+            ) {
+                continue;
+            }
+
+            if (!$item->getProduct() instanceof PurchasableInterface) {
                 continue;
             }
 

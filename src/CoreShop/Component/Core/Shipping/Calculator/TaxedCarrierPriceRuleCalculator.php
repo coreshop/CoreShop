@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Component\Core\Shipping\Calculator;
 
 use CoreShop\Component\Address\Model\AddressInterface;
-use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\Shipping\Calculator\CarrierPriceCalculatorInterface;
@@ -23,6 +22,7 @@ use CoreShop\Component\Shipping\Calculator\TaxedShippingCalculatorInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface as BaseCarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Taxation\TaxCalculationStrategyInterface;
+use CoreShop\Component\Store\Model\StoreAwareInterface;
 use CoreShop\Component\Taxation\Model\TaxItemInterface;
 use Webmozart\Assert\Assert;
 
@@ -48,9 +48,9 @@ final class TaxedCarrierPriceRuleCalculator implements TaxedShippingCalculatorIn
     ): int
     {
         /**
-         * @var OrderInterface $shippable
+         * @var StoreAwareInterface $shippable
          */
-        Assert::isInstanceOf($shippable, OrderInterface::class);
+        Assert::isInstanceOf($shippable, StoreAwareInterface::class);
 
         $store = $shippable->getStore();
 
