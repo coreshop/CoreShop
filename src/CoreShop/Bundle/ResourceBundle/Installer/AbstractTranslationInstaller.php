@@ -15,15 +15,12 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 use CoreShop\Bundle\ResourceBundle\Installer\Configuration\TranslationConfiguration;
-use Pimcore\Model\Translation\AbstractTranslation;
-use Pimcore\Model\Translation\TranslationInterface;
 use Pimcore\Model\Translation;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Yaml;
-use Pimcore\Model\Translation;
 
 abstract class AbstractTranslationInstaller implements ResourceInstallerInterface
 {
