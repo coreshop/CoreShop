@@ -1,5 +1,6 @@
 coreshop_save_error: 'Error saving item'
 coreshop_payment_provider: 'Payment Provider'
+coreshop_payment_provider_multiselect: 'Payment Provider Multiselect'
 coreshop_identifier: 'Identifier'
 coreshop_position: 'Position'
 coreshop_instructions: 'Instruction'
