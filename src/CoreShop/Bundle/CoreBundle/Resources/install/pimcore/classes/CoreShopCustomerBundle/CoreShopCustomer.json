@@ -384,7 +384,7 @@
                                 "visibleSearch": false
                             },
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,
@@ -463,7 +463,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "relationType": true,
                                 "objectsAllowed": true,
                                 "assetsAllowed": false,

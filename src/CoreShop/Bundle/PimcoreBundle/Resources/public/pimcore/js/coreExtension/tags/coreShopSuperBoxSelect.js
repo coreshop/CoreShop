@@ -10,7 +10,7 @@
  */
 
 pimcore.registerNS('pimcore.object.tags.coreShopSuperBoxSelect');
-pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.multihref, {
+pimcore.object.tags.coreShopSuperBoxSelect = Class.create(pimcore.object.tags.manyToManyRelation, {
     type: 'coreShopSuperBoxSelect',
 
      initialize: function (data, fieldConfig) {

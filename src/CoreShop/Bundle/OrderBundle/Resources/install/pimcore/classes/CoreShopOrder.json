@@ -3924,7 +3924,7 @@
                         "permissions": null,
                         "childs": [
                             {
-                                "fieldtype": "multihref",
+                                "fieldtype": "manyToManyRelation",
                                 "width": "",
                                 "height": "",
                                 "maxItems": "",
