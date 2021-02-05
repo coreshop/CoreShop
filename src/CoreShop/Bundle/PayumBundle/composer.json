@@ -27,7 +27,7 @@
     "payum/offline": "^1.6",
     "payum/sofort": "^1.6",
     "payum/paypal-express-checkout-nvp": "^1.6",
-    "php-http/guzzle6-adapter": "^2.1",
+    "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.0.0"
   },
   "require-dev": {
