@@ -34,7 +34,7 @@ class AddressFormatter implements AddressFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAddress(AddressInterface $address, $asHtml = true)
+    public function formatAddress(AddressInterface $address, $asHtml = true): string
     {
         if (method_exists($address, 'getObjectVars')) {
             $objectVars = $address->getObjectVars();
@@ -43,6 +43,7 @@ class AddressFormatter implements AddressFormatterInterface
         }
 
         $objectVars['country'] = $address->getCountry();
+        $objectVars['state'] = $address->getState();
 
         //translate salutation
         if (!empty($address->getSalutation())) {
@@ -51,12 +52,24 @@ class AddressFormatter implements AddressFormatterInterface
         }
 
         $placeHolder = new Placeholder();
+
         $address = $placeHolder->replacePlaceholders($address->getCountry()->getAddressFormat(), $objectVars);
 
         if ($asHtml) {
-            $address = nl2br($address);
+            $address = nl2br($this->removeEmptyLines($address));
         }
 
         return $address;
+    }
+
+    /**
+     * @param string $payload
+     * @return string
+     */
+    private function removeEmptyLines(string $payload) : string
+    {
+        $values = array_filter(explode( "\n", $payload), fn($value) => !empty(trim($value)));
+
+        return implode("\n", $values);
     }
 }
