@@ -68,8 +68,10 @@ class AddressFormatter implements AddressFormatterInterface
      */
     private function removeEmptyLines(string $payload) : string
     {
-        $values = array_filter(explode( "\n", $payload), fn($value) => !empty(trim($value)));
-
+        $values = array_filter(explode( "\n", $payload), function ($value) {
+            return !empty(trim($value));
+        });
+        
         return implode("\n", $values);
     }
 }
