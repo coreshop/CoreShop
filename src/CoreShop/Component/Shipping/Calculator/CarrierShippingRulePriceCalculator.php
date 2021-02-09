@@ -19,6 +19,7 @@ use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
+use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
@@ -43,18 +44,18 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
          * First valid price rule wins. so, we loop through all ShippingRuleGroups
          * get the first valid one, and process it for the price.
          */
-        $shippingRuleGroup = $this->carrierShippingRuleChecker->findValidShippingRule($carrier, $shippable, $address);
+        $shippingRule = $this->carrierShippingRuleChecker->findValidShippingRule($carrier, $shippable, $address);
 
-        if ($shippingRuleGroup instanceof ShippingRuleGroupInterface) {
+        if ($shippingRule instanceof ShippingRuleInterface) {
             $price = $this->shippingRuleProcessor->getPrice(
-                $shippingRuleGroup->getShippingRule(),
+                $shippingRule,
                 $carrier,
                 $shippable,
                 $address,
                 $context
             );
             $modifications = $this->shippingRuleProcessor->getModification(
-                $shippingRuleGroup->getShippingRule(),
+                $shippingRule,
                 $carrier,
                 $shippable,
                 $address,
