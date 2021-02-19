@@ -11,7 +11,7 @@ jobs:
     env:
       PIMCORE_ENVIRONMENT: "test"
       CORESHOP_TEST: 1
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
     services:
       mysql:
         image: mysql:5.7
@@ -34,7 +34,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdf_mysql, zip, zlib
+        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
     - name: Check PHP Version
       run: php -v
