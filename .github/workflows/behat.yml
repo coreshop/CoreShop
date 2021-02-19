@@ -34,7 +34,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        extensions: intl, gd
+        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdf_mysql, zip, zlib
 
     - name: Check PHP Version
       run: php -v
