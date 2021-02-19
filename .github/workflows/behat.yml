@@ -47,7 +47,7 @@ jobs:
 
     - name: Setup mysql
       run: |
-        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+        mysql -uroot -h127.0.0.1 -proot --port ${{ job.services.mysql.ports['3306'] }} -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Copy parameters.yml
       run: cp app/config/parameters.example.yml app/config/parameters.yml
