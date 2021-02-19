@@ -31,7 +31,6 @@ jobs:
     outputs:
        packages: "${{ steps.create-list.outputs.packages }}"
 
-
   test-packages:
     needs: list
     runs-on: ubuntu-latest

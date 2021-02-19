@@ -39,9 +39,6 @@ jobs:
     - name: Check PHP Version
       run: php -v
 
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
     - name: Verify MySQL connection from host
       run: |
         sudo apt-get update
@@ -50,8 +47,6 @@ jobs:
 
     - name: Setup mysql
       run: |
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
         mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
 
     - name: Copy parameters.yml
