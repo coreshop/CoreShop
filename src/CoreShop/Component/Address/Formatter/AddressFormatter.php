@@ -34,7 +34,7 @@ class AddressFormatter implements AddressFormatterInterface
     /**
      * {@inheritdoc}
      */
-    public function formatAddress(AddressInterface $address, $asHtml = true): string
+    public function formatAddress(AddressInterface $address, $asHtml = true)
     {
         if (method_exists($address, 'getObjectVars')) {
             $objectVars = $address->getObjectVars();
@@ -71,7 +71,7 @@ class AddressFormatter implements AddressFormatterInterface
         $values = array_filter(explode( "\n", $payload), function ($value) {
             return !empty(trim($value));
         });
-        
+
         return implode("\n", $values);
     }
 }
