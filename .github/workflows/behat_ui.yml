@@ -11,7 +11,7 @@ jobs:
     env:
       PIMCORE_ENVIRONMENT: "test"
       CORESHOP_TEST: 1
-      PIMCORE_TEST_DB_DSN: "mysql://root:root@localhost/coreshop_test"
+      PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
@@ -23,7 +23,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: coreshop_test
         ports:
-          - 3306
+          - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
@@ -38,24 +38,16 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
-        extensions: intl
+        extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
     - name: Check PHP Version
       run: php -v
 
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
-    - name: Verify MySQL connection from host
+    - name: Verify MySQL connection
       run: |
+        mysql --version
         sudo apt-get install -y mysql-client
-        mysql -uroot -h127.0.0.1 -proot -e "SHOW DATABASES"
-
-    - name: Setup mysql
-      run: |
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_file_format=Barracuda;"
-        mysql -uroot -h127.0.0.1 -proot -e "SET GLOBAL innodb_large_prefix=1;"
-        mysql -uroot -h127.0.0.1 -proot -e "CREATE DATABASE coreshop_test CHARSET=utf8mb4;"
+        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
     - name: Get composer cache directory
       id: composer-cache
