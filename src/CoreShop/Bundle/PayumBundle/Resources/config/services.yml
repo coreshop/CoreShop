@@ -51,3 +51,8 @@ services:
             - '@doctrine.dbal.default_connection'
         tags:
             - { name: kernel.event_subscriber }
+
+    CoreShop\Bundle\PayumBundle\CoreGatewayFactoryBuilder:
+        decorates: 'payum.core_gateway_factory_builder'
+        calls:
+            - [setContainer, ['@service_container']]
