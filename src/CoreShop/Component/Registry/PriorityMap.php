@@ -38,8 +38,6 @@ class PriorityMap implements \Iterator, \Countable
      * @param string $key      name
      * @param string $value    value
      * @param int    $priority priority
-     *
-     * @return PriorityMap
      */
     public function set($key, $value, $priority = 0)
     {
