@@ -20,14 +20,18 @@ class SharedTranslation
 {
     public static function add(string $key, string $language, string $value)
     {
-        $key = Translation::getByKey($key, Translation::DOMAIN_DEFAULT, true);
-        $key->addTranslation($language, $value);
-        $key->save();
+        $translationKey = Translation::getByKey($key, Translation::DOMAIN_DEFAULT, true);
+
+        if ($translationKey) {
+            $translationKey->addTranslation($language, $value);
+            $translationKey->save();
+        }
     }
 
     public static function cleanup(): void
     {
-        $list = new Website\Listing();
+        $list = new Translation\Listing();
+        $list->setDomain(Translation::DOMAIN_DEFAULT);
 
         if (method_exists($list, 'cleanup')) {
             $list->cleanup();

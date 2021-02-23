@@ -90,15 +90,6 @@ services:
         tags:
             - { name: coreshop.tracking.tracker, type: google-gtm-enhanced-ecommerce }
 
-
-    CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo:
-        parent: CoreShop\Bundle\TrackingBundle\Tracker\AbstractEcommerceTracker
-        public: true
-        calls:
-            - [setTracker, ['@Pimcore\Analytics\Piwik\Tracker']]
-        tags:
-            - { name: coreshop.tracking.tracker, type: matomo }
-
     CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface: '@CoreShop\Component\Tracking\Extractor\CompositeExtractor'
     CoreShop\Component\Tracking\Extractor\CompositeExtractor:
         arguments:

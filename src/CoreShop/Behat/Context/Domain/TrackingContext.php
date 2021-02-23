@@ -23,7 +23,6 @@ use CoreShop\Bundle\TrackingBundle\Tracker\Google\GlobalSiteTagEnhancedEcommerce
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerClassicEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager\TagManagerEnhancedEcommerce;
 use CoreShop\Bundle\TrackingBundle\Tracker\Google\UniversalEcommerce;
-use CoreShop\Bundle\TrackingBundle\Tracker\Matomo\Matomo;
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Registry\ServiceRegistry;
@@ -174,8 +173,7 @@ final class TrackingContext implements Context
             $code = implode('', $tracker->codeTracker->getBlocks());
         } elseif ($tracker instanceof AnalyticsEnhancedEcommerce ||
             $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
-            $tracker instanceof UniversalEcommerce ||
-            $tracker instanceof Matomo
+            $tracker instanceof UniversalEcommerce
         ) {
             $trackerReflector = new \ReflectionClass(AbstractTracker::class);
             $codeCollectorProperty = $trackerReflector->getProperty('codeCollector');

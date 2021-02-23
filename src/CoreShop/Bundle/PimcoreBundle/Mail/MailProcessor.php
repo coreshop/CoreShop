@@ -36,8 +36,8 @@ final class MailProcessor implements Mail\MailProcessorInterface
         $mail = new Mail();
 
         foreach ($attachments as $attachment) {
-            if ($attachment instanceof \Swift_Mime_SimpleMimeEntity) {
-                $mail->attach($attachment);
+            if (is_array($attachment)) {
+                $mail->attach($attachment['body'], $attachment['name'], $attachment['content-type']);
             }
         }
 

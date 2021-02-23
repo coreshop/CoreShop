@@ -102,7 +102,11 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                 if ($invoice instanceof OrderInvoiceInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($invoice);
-                        $attachments[] = new \Swift_Attachment($data, sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()), 'application/pdf');
+                        $attachments[] = [
+                            'body' => $data,
+                            'name' => sprintf('invoice-%s.pdf', $invoice->getInvoiceNumber()),
+                            'content-type' => 'application/pdf'
+                        ];
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching invoice to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
@@ -117,7 +121,11 @@ class OrderMailProcessor implements OrderMailProcessorInterface
                 if ($shipment instanceof OrderShipmentInterface) {
                     try {
                         $data = $this->orderDocumentRenderer->renderDocumentPdf($shipment);
-                        $attachments[] = new \Swift_Attachment($data, sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()), 'application/pdf');
+                        $attachments[] = [
+                            'body' => $data,
+                            'name' => sprintf('shipment-%s.pdf', $shipment->getShipmentNumber()),
+                            'content-type' => 'application/pdf'
+                        ];
                     } catch (\Exception $e) {
                         $this->logger->error('Error while attaching packing slip to order mail. Messages was: ' . $e->getMessage(), [$e]);
                     }
