@@ -86,7 +86,7 @@ pimcore.object.classes.data.coreShopRelation = Class.create(coreshop.object.clas
                     {
                         xtype: 'combo',
                         fieldLabel: t("coreshop_allowed_stack"),
-                        name: "classes",
+                        name: "stack",
                         id: 'coreshop_relation_stack_' + this.uniqeFieldId,
                         value: this.datax.stack,
                         store: stacks,
