@@ -42,10 +42,7 @@ jobs:
 
     - name: Check PHP Version
       run: php -v
-
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
+ 
     - name: Verify MySQL connection
       run: |
         mysql --version
