@@ -78,7 +78,6 @@
     "php": "^7.2",
     "dachcom-digital/emailizr": "^1.0.6",
     "doctrine/data-fixtures": "^1.0",
-    "doctrine/doctrine-cache-bundle": "^1.3",
     "doctrine/orm": "^2.5",
     "fzaninotto/faker": "^1.6",
     "gedmo/doctrine-extensions": "^2.4.12",

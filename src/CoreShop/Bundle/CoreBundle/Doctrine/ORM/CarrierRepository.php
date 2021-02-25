@@ -28,8 +28,6 @@ class CarrierRepository extends EntityRepository implements CarrierRepositoryInt
             ->andWhere('s.id = :store')
             ->setParameter('store', [$store])
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 }
