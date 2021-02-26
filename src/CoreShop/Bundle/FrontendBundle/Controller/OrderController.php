@@ -62,7 +62,7 @@ class OrderController extends FrontendController
             }
         }
 
-        $form = $this->getFormFactory()->createNamed('', PaymentType::class, $order, [
+        $form = $this->getFormFactory()->createNamed('coreshop', PaymentType::class, $order, [
             'payment_subject' => $order,
         ]);
 
