@@ -33,8 +33,6 @@ class ExchangeRateRepository extends EntityRepository implements ExchangeRateRep
             ->setParameter('firstCurrency', $firstCurrency)
             ->setParameter('secondCurrency', $secondCurrency)
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getOneOrNullResult();
     }
 }
