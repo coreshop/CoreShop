@@ -41,14 +41,14 @@ class RegisterController extends FrontendController
             return $this->redirectToRoute('coreshop_customer_profile');
         }
 
-        $form = $this->get('form.factory')->createNamed('', CustomerRegistrationType::class);
+        $form = $this->get('form.factory')->createNamed('coreshop', CustomerRegistrationType::class);
 
         $redirect = $request->get('_redirect', $this->generateCoreShopUrl(null, 'coreshop_customer_profile'));
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $formData = $handledForm->getData();
 
                 $customer = $formData['customer'];
@@ -89,12 +89,12 @@ class RegisterController extends FrontendController
     public function passwordResetRequestAction(Request $request)
     {
         $resetIdentifier = $this->getParameter('coreshop.customer.security.login_identifier');
-        $form = $this->get('form.factory')->createNamed('', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
+        $form = $this->get('form.factory')->createNamed('coreshop', RequestResetPasswordType::class, null, ['reset_identifier' => $resetIdentifier]);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $passwordResetData = $handledForm->getData();
 
                 $customer = $this->getCustomerRepository()->findUniqueByLoginIdentifier($resetIdentifier, $passwordResetData[$resetIdentifier], false);
@@ -134,12 +134,12 @@ class RegisterController extends FrontendController
         if ($resetToken) {
             $customer = $this->getCustomerRepository()->findByResetToken($resetToken);
 
-            $form = $this->get('form.factory')->createNamed('', ResetPasswordType::class);
+            $form = $this->get('form.factory')->createNamed('coreshop', ResetPasswordType::class);
 
             if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
                 $handledForm = $form->handleRequest($request);
 
-                if ($handledForm->isValid()) {
+                if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                     $resetPassword = $handledForm->getData();
 
                     $customer->setPassword($resetPassword['password']);

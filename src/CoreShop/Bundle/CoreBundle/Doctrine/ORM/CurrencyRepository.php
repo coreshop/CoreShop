@@ -31,8 +31,6 @@ class CurrencyRepository extends BaseCurrencyRepository implements CurrencyRepos
             ->setParameter('storeId', $store->getId())
             ->distinct()
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 }

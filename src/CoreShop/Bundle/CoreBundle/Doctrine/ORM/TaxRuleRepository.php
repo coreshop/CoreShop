@@ -30,8 +30,6 @@ class TaxRuleRepository extends BaseTaxRuleRepository implements TaxRuleReposito
             ->setParameter('country', $country ? $country->getId() : 0)
             ->setParameter('state', $state ? $state->getId() : 0)
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 }

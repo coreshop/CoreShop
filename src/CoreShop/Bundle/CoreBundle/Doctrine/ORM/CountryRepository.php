@@ -29,8 +29,6 @@ class CountryRepository extends BaseCountryRepository implements CountryReposito
             ->andWhere('o.id = :storeId')
             ->setParameter('storeId', $store->getId())
             ->getQuery()
-            ->useResultCache(true)
-            ->useQueryCache(true)
             ->getResult();
     }
 }

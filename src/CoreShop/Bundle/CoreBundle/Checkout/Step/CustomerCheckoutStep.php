@@ -144,7 +144,7 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
      */
     private function createForm(Request $request)
     {
-        $view = $this->formFactory->createNamed('guest', GuestRegistrationType::class);
+        $view = $this->formFactory->createNamed('coreshop_guest', GuestRegistrationType::class);
 
         $handledView = $view->handleRequest($request);
 

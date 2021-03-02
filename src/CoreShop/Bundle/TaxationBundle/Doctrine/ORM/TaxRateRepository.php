@@ -37,8 +37,6 @@ class TaxRateRepository extends EntityRepository implements TaxRateRepositoryInt
             ->setParameter('name', $name)
             ->setParameter('locale', $locale)
             ->getQuery()
-            ->useQueryCache(true)
-            ->useResultCache(true)
             ->getResult();
     }
 }
