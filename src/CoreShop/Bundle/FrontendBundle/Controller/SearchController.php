@@ -32,7 +32,7 @@ class SearchController extends FrontendController
         $form = $this->createSearchForm();
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
             $text = $formData['text'];
             $page = $request->get('page', 1);
@@ -70,7 +70,7 @@ class SearchController extends FrontendController
 
     protected function createSearchForm()
     {
-        return $this->get('form.factory')->createNamed('search', SearchType::class, null, [
+        return $this->get('form.factory')->createNamed('coreshop', SearchType::class, null, [
             'action' => $this->generateCoreShopUrl(null, 'coreshop_search'),
             'method' => 'GET',
         ]);

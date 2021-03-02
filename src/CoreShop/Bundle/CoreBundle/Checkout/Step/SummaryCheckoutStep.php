@@ -103,7 +103,7 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
      */
     private function createForm(Request $request, CartInterface $cart)
     {
-        $form = $this->formFactory->createNamed('', SummaryType::class, $cart);
+        $form = $this->formFactory->createNamed('coreshop', SummaryType::class, $cart);
 
         if ($request->isMethod('post')) {
             $form = $form->handleRequest($request);

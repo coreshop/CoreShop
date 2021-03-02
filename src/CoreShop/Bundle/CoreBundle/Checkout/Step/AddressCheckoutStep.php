@@ -152,7 +152,7 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
             'customer' => $customer,
         ];
 
-        $form = $this->formFactory->createNamed('', AddressType::class, $cart, $options);
+        $form = $this->formFactory->createNamed('coreshop', AddressType::class, $cart, $options);
 
         if ($cart->hasShippableItems() === false) {
             $form->remove('shippingAddress');
