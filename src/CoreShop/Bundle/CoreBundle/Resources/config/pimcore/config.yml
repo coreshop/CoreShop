@@ -1,7 +1,6 @@
 imports:
     - { resource: admin.yml }
     - { resource: coreshop.yml }
-    - { resource: security.yml }
     - { resource: payum.yml }
     - { resource: checkout.yml }
     - { resource: workflow.yml }
@@ -18,6 +17,9 @@ twig:
         coreshop: '@CoreShop\Component\Core\Context\ShopperContextInterface'
 
 pimcore:
+    security:
+        encoder_factories:
+            '%coreshop.model.customer.class%': coreshop.security.customer.password_encoder_factory
     objects:
         class_definitions:
             data:
