@@ -9,6 +9,8 @@ core_shop_payment:
             payment_gateway_sofort: '/bundles/coreshoppayment/pimcore/js/provider/gateways/sofort.js'
             core_extension_data_provider: '/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProvider.js'
             core_extension_tag_provider: '/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProvider.js'
+            core_extension_data_provider_multiselect: '/bundles/coreshoppayment/pimcore/js/coreExtension/data/coreShopPaymentProviderMultiselect.js'
+            core_extension_tag_provider_multiselect: '/bundles/coreshoppayment/pimcore/js/coreExtension/tags/coreShopPaymentProviderMultiselect.js'
         css:
             payment: '/bundles/coreshoppayment/pimcore/css/payment.css'
         editmode_js:
