@@ -24,7 +24,7 @@ use CoreShop\Component\Core\Model\StoreInterface;
 use CoreShop\Component\Core\Repository\CountryRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use Doctrine\Persistence\ObjectManager;
-use Pimcore\Tool\Console;
+use Symfony\Component\Process\Process;
 
 final class CountryContext implements Context
 {
@@ -126,14 +126,16 @@ final class CountryContext implements Context
      */
     public function iDownloadedTheGeoLite2DB()
     {
-        $cmd = sprintf(
-            '%s/etc/geoipupdate/geoipupdate -f %s/etc/geoipupdate/GeoIP.conf -d %s/var/config/',
-            $this->kernelRootDirectory,
-            $this->kernelRootDirectory,
-            $this->kernelRootDirectory
+        $process = new Process(
+            [
+                sprintf('%s/etc/geoipupdate/geoipupdate', $this->kernelRootDirectory),
+                '-f',
+                sprintf('%s/etc/geoipupdate/GeoIP.conf', $this->kernelRootDirectory),
+                '-d',
+                sprintf('%s/var/config/', $this->kernelRootDirectory)
+            ]
         );
-
-        Console::exec($cmd);
+        $process->run();
     }
 
     /**
