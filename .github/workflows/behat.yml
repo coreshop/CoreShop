@@ -9,7 +9,7 @@ jobs:
   behat:
     runs-on: ubuntu-latest
     env:
-      PIMCORE_ENVIRONMENT: "test"
+      APP_ENV: "test"
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
     services:

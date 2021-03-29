@@ -9,7 +9,7 @@ jobs:
   behat_ui_pimcore:
     runs-on: ubuntu-latest
     env:
-      PIMCORE_ENVIRONMENT: "test"
+      APP_ENV: "test"
       CORESHOP_TEST: 1
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
       PANTHER_EXTERNAL_BASE_URI: "http://localhost:9080/app_test.php"
@@ -42,7 +42,7 @@ jobs:
 
     - name: Check PHP Version
       run: php -v
- 
+
     - name: Verify MySQL connection
       run: |
         mysql --version
