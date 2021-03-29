@@ -197,7 +197,7 @@ final class WkHtmlToPdf implements PdfRendererInterface
         $process->run();
 
         if (!file_exists($tmpPdfFile)) {
-            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $execCommand));
+            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $process->getCommandLine()));
         }
 
         $pdfContent = file_get_contents($tmpPdfFile);
