@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
+use Pimcore\Tool\Console;
 use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
