@@ -386,6 +386,47 @@ final class PimcoreClassContext implements Context
     }
 
     /**
+     * @Given /^the (definition) has a numeric integer field "([^"]+)"$/
+     */
+    public function definitionHasIntegerField($definition, $name)
+    {
+        $jsonDefinition = sprintf('
+            {
+                "fieldtype": "numeric",
+                "width": "",
+                "defaultValue": null,
+                "queryColumnType": "int",
+                "columnType": "int",
+                "phpdocType": "int",
+                "integer": true,
+                "unsigned": false,
+                "minValue": null,
+                "maxValue": null,
+                "unique": null,
+                "decimalSize": null,
+                "decimalPrecision": null,
+                "name": "%s",
+                "title": "%s",
+                "tooltip": "",
+                "mandatory": true,
+                "noteditable": true,
+                "index": false,
+                "locked": false,
+                "style": "",
+                "permissions": null,
+                "datatype": "data",
+                "relationType": false,
+                "invisible": false,
+                "visibleGridView": false,
+                "visibleSearch": false,
+                "defaultValueGenerator": ""
+            }
+        ', $name, $name);
+
+        $this->addFieldDefinitionToDefinition($definition, $jsonDefinition);
+    }
+
+    /**
      * @Given /^the (definition) has a relation field "([^"]+)"$/
      */
     public function definitionHasRelationField($definition, $name)

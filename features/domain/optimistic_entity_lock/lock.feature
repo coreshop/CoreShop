@@ -4,7 +4,7 @@ Feature: Locking an Entity to not overwrite it again
   Background:
     Given there is a pimcore class "Locking"
     And the definition has a input field "name"
-    And the definition has a numeric field "optimisticLockVersion"
+    And the definition has a numeric integer field "optimisticLockVersion"
     And the definitions parent class is set to "\CoreShop\Behat\Model\Lock\OptimisticLock"
     And there is an instance of behat-class "Locking" with key "test1"
     And the object-instance has following values:
