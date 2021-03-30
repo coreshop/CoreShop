@@ -38,7 +38,6 @@ trait ProductVariantsCheckerTrait
                 if (!$product instanceof ProductInterface) {
                     continue;
                 }
-
                 $variants = $this->productRepository->findRecursiveVariantIdsForProductAndStore($product, $store);
 
                 foreach ($variants as $variant) {

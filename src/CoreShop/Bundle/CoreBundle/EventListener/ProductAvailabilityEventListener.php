@@ -43,6 +43,10 @@ final class ProductAvailabilityEventListener
     {
         $object = $event->getObject();
 
+        if ($event->hasArgument('isRecycleBinRestore') && $event->getArgument('isRecycleBinRestore')) {
+            return;
+        }
+
         if (!$object instanceof PurchasableInterface) {
             return;
         }
