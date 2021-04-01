@@ -162,7 +162,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -198,7 +198,7 @@ abstract class Select extends Data\Select implements Data\CustomVersionMarshalIn
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
