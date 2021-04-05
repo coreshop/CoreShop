@@ -39,8 +39,8 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             'label' => $condition->getLabel(),
             'minValue' => $minValue,
             'maxValue' => $maxValue,
-            'currentValueMin' => $currentFilter[$field . '-min'] ? $currentFilter[$field . '-min'] : $minValue,
-            'currentValueMax' => $currentFilter[$field . '-max'] ? $currentFilter[$field . '-max'] : $maxValue,
+            'currentValueMin' => ('' !== (string)$currentFilter[$field . '-min']) ? $currentFilter[$field . '-min'] : $minValue,
+            'currentValueMax' => ('' !== (string)$currentFilter[$field . '-max']) ? $currentFilter[$field . '-max'] : $maxValue,
             'values' => array_values($rawValues),
             'fieldName' => $field,
             'stepCount' => $condition->getConfiguration()['stepCount'],
@@ -65,7 +65,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $valueMin = $parameterBag->get($field . '-min');
         $valueMax = $parameterBag->get($field . '-max');
 
-        if (empty($valueMax)) {
+        if (null === $valueMax) {
             $valueMax = $condition->getConfiguration()['preSelectMax'];
         }
 
@@ -73,7 +73,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
             $valueMax = null;
         }
 
-        if (empty($valueMin)) {
+        if (null === $valueMin) {
             $valueMin = $condition->getConfiguration()['preSelectMin'];
         }
 
@@ -84,7 +84,7 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         $currentFilter[$field . '-min'] = $valueMin;
         $currentFilter[$field . '-max'] = $valueMax;
 
-        if (!empty($valueMin) && !empty($valueMax)) {
+        if (null !== $valueMin && null !== $valueMax) {
             $fieldName = $field;
 
             if ($isPrecondition) {
