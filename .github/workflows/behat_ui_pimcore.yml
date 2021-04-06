@@ -28,7 +28,7 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.4]
+        php: [8.0]
         pimcore: [10.0.x-dev]
 
     steps:
