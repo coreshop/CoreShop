@@ -203,7 +203,7 @@ abstract class Select extends Data implements
      */
     public function getDataForResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
@@ -233,7 +233,7 @@ abstract class Select extends Data implements
      */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
-        if (method_exists($data, 'getId') && is_a($data, $this->getModel())) {
+        if ($data !== null && method_exists($data, 'getId') && is_a($data, $this->getModel())) {
             return $data->getId();
         }
 
