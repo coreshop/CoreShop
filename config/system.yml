@@ -47,13 +47,6 @@ pimcore:
             email: ''
             simple_api_key: ''
             browser_api_key: ''
-    cache:
-        enabled: false
-        lifetime: null
-        exclude_patterns: ''
-        exclude_cookie: ''
-    webservice:
-        enabled: true
     httpclient:
         adapter: Socket
         proxy_host: ''
