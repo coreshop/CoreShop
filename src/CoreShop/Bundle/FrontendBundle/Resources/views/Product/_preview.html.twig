@@ -3,9 +3,9 @@
 
 <div class="product-col">
     <div class="image">
-        {% if product.image is asset_image %}
+        {% if product.image is pimcore_asset_image %}
             <a href="{{ href }}">
-                {{ product.image|image_thumbnail_html('coreshop_productList', {'class': 'img-fluid', 'alt': product.name, 'id': 'image' ~ product.id}) }}
+                {{ product.image|pimcore_image_thumbnail_html('coreshop_productList', {'class': 'img-fluid', 'alt': product.name, 'id': 'image' ~ product.id}) }}
             </a>
         {% endif %}
     </div>
