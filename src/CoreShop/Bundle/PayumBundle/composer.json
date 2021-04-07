@@ -22,10 +22,7 @@
     "coreshop/payment-bundle": "^3.0",
     "coreshop/core": "^3.0",
     "payum/payum-bundle": "dev-master",
-    "payum/core": "dev-master",
-    "payum/offline": "dev-master",
-    "payum/sofort": "dev-master",
-    "payum/paypal-express-checkout-nvp": "dev-master",
+    "payum/payum": "dev-master",
     "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.0.0"
   },

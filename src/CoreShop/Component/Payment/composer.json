@@ -20,7 +20,7 @@
   "require": {
     "coreshop/currency": "^3.0",
     "payum/payum-bundle": "dev-master",
-    "payum/core": "dev-master",
+    "payum/payum": "dev-master",
     "php-http/guzzle7-adapter": "^0.1",
     "pimcore/pimcore": "^10.0.0"
   },
