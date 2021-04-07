@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/taxation": "^3.0",
     "coreshop/resource-bundle": "^3.0",
     "coreshop/money-bundle": "^3.0",

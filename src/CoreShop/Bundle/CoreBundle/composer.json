@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/order-bundle": "^3.0",
     "coreshop/customer-bundle": "^3.0",
     "coreshop/inventory-bundle": "^3.0",

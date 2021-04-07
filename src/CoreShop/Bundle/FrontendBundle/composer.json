@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/core-bundle": "^3.0",
     "dachcom-digital/emailizr": "^2.0.0",
     "pimcore/pimcore": "^10.0.0"
