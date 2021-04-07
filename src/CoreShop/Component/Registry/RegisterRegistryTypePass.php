@@ -88,5 +88,3 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
         $container->setParameter($this->parameter, $map);
     }
 }
-
-class_alias(RegisterRegistryTypePass::class, 'CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\RegisterRegistryTypePass');

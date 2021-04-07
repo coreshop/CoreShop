@@ -119,5 +119,3 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         $channelContextDefinition->addMethodCall($this->methodName, $arguments);
     }
 }
-
-class_alias(PrioritizedCompositeServicePass::class, 'CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler\PrioritizedCompositeServicePass');

@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
+
 class RegisterGridFilterPass extends RegisterSimpleRegistryTypePass
 {
     public const GRID_FILTER_TAG = 'coreshop.grid.filter';

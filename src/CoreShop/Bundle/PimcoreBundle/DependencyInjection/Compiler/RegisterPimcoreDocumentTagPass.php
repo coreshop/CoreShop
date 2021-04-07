@@ -14,6 +14,8 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\PimcoreBundle\DependencyInjection\Compiler;
 
+use CoreShop\Component\Registry\RegisterSimpleRegistryTypePass;
+
 final class RegisterPimcoreDocumentTagPass extends RegisterSimpleRegistryTypePass
 {
     public function __construct()
