@@ -75,7 +75,7 @@ final class TrackingContext implements Context
 
         $tracker->trackProductImpression($this->trackingExtractor->updateMetadata($product));
 
-        $result = str_replace('##id##', $product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
         Assert::eq(preg_replace("/\r|\n/", '', $this->getRenderedPartForTracker($tracker)), preg_replace("/\r|\n/", '', $result));
     }
@@ -89,7 +89,7 @@ final class TrackingContext implements Context
 
         $tracker->trackProduct($this->trackingExtractor->updateMetadata($product));
 
-        $result = str_replace('##id##', $product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -105,10 +105,10 @@ final class TrackingContext implements Context
 
         $params = ['cart' => $cart, 'product' => $product];
 
-        $result = str_replace('##id##', $product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
         if (count($cart->getItems()) > 0) {
-            $result = str_replace('##item_id##', $cart->getItems()[0]->getId(), $result);
+            $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
         }
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
@@ -123,7 +123,7 @@ final class TrackingContext implements Context
 
         $tracker->trackCartRemove($this->trackingExtractor->updateMetadata($cart), $this->trackingExtractor->updateMetadata($product), 1);
 
-        $result = str_replace('##id##', $product->getId(), $code->getRaw());
+        $result = str_replace('##id##', (string)$product->getId(), $code->getRaw());
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -137,8 +137,8 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutStep($this->trackingExtractor->updateMetadata($cart));
 
-        $result = str_replace('##id##', $cart->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', $cart->getItems()[0]->getId(), $result);
+        $result = str_replace('##id##', (string)$cart->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string)$cart->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $result);
     }
@@ -152,8 +152,8 @@ final class TrackingContext implements Context
 
         $tracker->trackCheckoutComplete($this->trackingExtractor->updateMetadata($order));
 
-        $result = str_replace('##id##', $order->getId(), $code->getRaw());
-        $result = str_replace('##item_id##', $order->getItems()[0]->getId(), $result);
+        $result = str_replace('##id##', (string)$order->getId(), $code->getRaw());
+        $result = str_replace('##item_id##', (string)$order->getItems()[0]->getId(), $result);
 
         Assert::eq($this->getRenderedPartForTracker($tracker), $code);
     }

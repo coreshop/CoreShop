@@ -1,0 +1,86 @@
+parameters:
+    coreshop.security.frontend_regex: "^/(?!admin)[^/]++"
+
+security:
+    providers:
+        coreshop_customer:
+            id: CoreShop\Bundle\CoreBundle\Security\ObjectUserProvider
+        pimcore_admin:
+            id: Pimcore\Bundle\AdminBundle\Security\User\UserProvider
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Pimcore WebDAV HTTP basic // DO NOT CHANGE!
+        pimcore_admin_webdav:
+            pattern: ^/admin/asset/webdav
+            provider: pimcore_admin
+            http_basic: ~
+
+        # Pimcore admin form login // DO NOT CHANGE!
+        pimcore_admin:
+            anonymous: ~
+            pattern: ^/admin(/.*)?$
+            # admin firewall is stateless as we open the admin
+            # session on demand for non-blocking parallel requests
+            stateless: true
+            provider: pimcore_admin
+            logout:
+                path: /admin/logout
+                target: /admin/login
+                success_handler: Pimcore\Bundle\AdminBundle\Security\LogoutSuccessHandler
+            guard:
+                entry_point: Pimcore\Bundle\AdminBundle\Security\Guard\AdminAuthenticator
+                authenticators:
+                    - Pimcore\Bundle\AdminBundle\Security\Guard\AdminAuthenticator
+            two_factor:
+                auth_form_path: /admin/login/2fa                   # Path or route name of the two-factor form
+                check_path: /admin/login/2fa-verify                # Path or route name of the two-factor code check
+                default_target_path: /admin            # Where to redirect by default after successful authentication
+                always_use_default_target_path: false  # If it should always redirect to default_target_path
+                auth_code_parameter_name: _auth_code   # Name of the parameter for the two-factor authentication code
+                trusted_parameter_name: _trusted       # Name of the parameter for the trusted device option
+                multi_factor: false                    # If ALL active two-factor methods need to be fulfilled (multi-factor authentication)
+
+        coreshop_frontend:
+            anonymous: ~
+            provider: coreshop_customer
+            pattern: '%coreshop.security.frontend_regex%'
+            context: shop
+            form_login:
+                login_path: coreshop_login
+                check_path: coreshop_login_check
+                provider: coreshop_customer
+                failure_path: coreshop_login
+                default_target_path: coreshop_index
+                use_forward: false
+                use_referer: true
+            remember_me:
+                secret: "%secret%"
+                name: APP_CORESHOP_REMEMBER_ME
+                lifetime: 31536000
+                remember_me_parameter: _remember_me
+            logout:
+                path: coreshop_logout
+                target: coreshop_login
+                invalidate_session: false
+                success_handler: CoreShop\Bundle\CoreBundle\EventListener\ShopUserLogoutHandler
+
+    access_control:
+        # Pimcore admin ACl  // DO NOT CHANGE!
+        - { path: ^/admin/settings/display-custom-logo, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login/2fa-verify, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: ^/admin/login/2fa, roles: IS_AUTHENTICATED_2FA_IN_PROGRESS }
+        - { path: ^/admin/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login/(login|lostpassword|deeplink|csrf-token)$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_PIMCORE_USER }
+
+        # CoreShop
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: IS_AUTHENTICATED_ANONYMOUSLY, ips: [127.0.0.1, ::1] }
+        - { path: "%coreshop.security.frontend_regex%/_partial", role: ROLE_NO_ACCESS }
+
+    role_hierarchy:
+        # Pimcore admin  // DO NOT CHANGE!
+        ROLE_PIMCORE_ADMIN: [ ROLE_PIMCORE_USER ]

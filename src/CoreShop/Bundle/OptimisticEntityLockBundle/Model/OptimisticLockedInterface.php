@@ -14,7 +14,7 @@ namespace CoreShop\Bundle\OptimisticEntityLockBundle\Model;
 
 interface OptimisticLockedInterface
 {
-    public function getOptimisticLockVersion();
+    public function getOptimisticLockVersion(): ?int;
 
-    public function setOptimisticLockVersion($optimisticLockVersion);
+    public function setOptimisticLockVersion(?int $optimisticLockVersion);
 }

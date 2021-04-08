@@ -4,9 +4,9 @@
 
 <tr class="shopping-cart-item">
     <td class="text-center">
-        {% if item.product and item.product.image is asset_image %}
+        {% if item.product and item.product.image is pimcore_asset_image %}
             <a href="{{ productUrl }}">
-                {{ item.product.image|image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
+                {{ item.product.image|pimcore_image_thumbnail_html('coreshop_productCart', {'class': 'img-fluid', 'alt': item.product.name, 'title': item.product.name}) }}
             </a>
         {% endif %}
     </td>

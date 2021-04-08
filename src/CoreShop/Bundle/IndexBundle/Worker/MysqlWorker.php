@@ -30,6 +30,7 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
+use PDO;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
@@ -99,15 +100,14 @@ class MysqlWorker extends AbstractWorker
 
         $queries = $newSchema->getMigrateFromSql($oldSchema, $this->database->getDatabasePlatform());
 
-        $this->database->transactional(function () use ($queries, $index) {
-            foreach ($queries as $qry) {
-                $this->database->executeQuery($qry);
-            }
+        //Show run in an Transaction, but doctrine transactional does not work with PDO for some odd reason....
+        foreach ($queries as $qry) {
+            $this->database->executeQuery($qry);
+        }
 
-            foreach ($this->createLocalizedViews($index) as $qry) {
-                $this->database->executeQuery($qry);
-            }
-        });
+        foreach ($this->createLocalizedViews($index) as $qry) {
+            $this->database->executeQuery($qry);
+        }
     }
 
     /**

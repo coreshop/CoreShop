@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/notification": "^3.0",
     "coreshop/registry": "^3.0",
     "coreshop/rule-bundle": "^3.0",

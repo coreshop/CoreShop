@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/resource": "^3.0",
     "coreshop/registry": "^3.0",
     "coreshop/currency": "^3.0",

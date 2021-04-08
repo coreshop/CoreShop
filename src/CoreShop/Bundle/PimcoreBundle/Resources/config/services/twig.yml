@@ -2,22 +2,6 @@ services:
     _defaults:
         public: true
 
-    CoreShop\Component\Pimcore\Twig\Extension\AssetHelperExtensions:
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Component\Pimcore\Twig\Extension\DocumentHelperExtensions:
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Component\Pimcore\Twig\Extension\ImageThumbnailExtension:
-        tags:
-            - { name: twig.extension }
-
-    CoreShop\Component\Pimcore\Twig\Extension\ObjectHelperExtensions:
-        tags:
-            - { name: twig.extension }
-
     CoreShop\Component\Pimcore\Twig\Extension\ObjectLinkGeneratorExtension:
         arguments:
             - '@CoreShop\Component\Pimcore\DataObject\LinkGenerator'

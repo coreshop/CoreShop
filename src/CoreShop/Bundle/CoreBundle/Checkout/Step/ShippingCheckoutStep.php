@@ -122,7 +122,7 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
 
     private function createForm(Request $request, OrderInterface $cart): FormInterface
     {
-        $form = $this->formFactory->createNamed('', CarrierType::class, $cart, [
+        $form = $this->formFactory->createNamed('coreshop', CarrierType::class, $cart, [
             'cart' => $cart,
         ]);
 

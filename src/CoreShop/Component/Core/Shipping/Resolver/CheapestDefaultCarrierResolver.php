@@ -59,7 +59,7 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
             $aPrice = $this->carrierPriceCalculator->getPrice($a, $shippable, $address, $this->cartContextResolver->resolveCartContext($shippable));
             $bPrice = $this->carrierPriceCalculator->getPrice($b, $shippable, $address, $this->cartContextResolver->resolveCartContext($shippable));
 
-            return $aPrice > $bPrice;
+            return $aPrice > $bPrice ? 1 : -1;
         });
 
         return reset($carriers);

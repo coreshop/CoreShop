@@ -9,7 +9,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     env:
-      PIMCORE_ENVIRONMENT: "test"
+      APP_ENV: "test"
       PIMCORE_TEST_DB_DSN: "mysql://root:root@127.0.0.1:3306/coreshop_test"
     services:
       mysql:
@@ -23,7 +23,7 @@ jobs:
     name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
     strategy:
       matrix:
-        php: [7.4]
+        php: [8.0]
         pimcore: [10.0.x-dev]
 
     steps:
@@ -61,13 +61,13 @@ jobs:
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
     - name: Validate YAML
-      run: bin/console lint:yaml src --no-debug
+      run: bin/console lint:yaml src
 
     - name: Validate TWIG
-      run: bin/console lint:twig src --no-debug
+      run: bin/console lint:twig src
 
     - name: STAN
       run: |
         cp -f config/packages/stan/config.yaml config/packages/dev/config.yaml
-        bin/console cache:warmup --env=dev
+        bin/console cache:clear --env=dev
         vendor/bin/phpstan analyse -c phpstan.neon src -l 3

@@ -24,7 +24,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "coreshop/product-quantity-price-rules": "^3.0",
     "coreshop/rule-bundle": "^3.0",
     "coreshop/money-bundle": "^3.0",

@@ -21,16 +21,16 @@ class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInt
     /**
      * {@inheritdoc}
      */
-    public function getOptimisticLockVersion()
+    public function getOptimisticLockVersion(): ?int
     {
-        return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOptimisticLockVersion($optimisticLockVersion)
+    public function setOptimisticLockVersion(?int $optimisticLockVersion)
     {
-        return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
+        throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 }

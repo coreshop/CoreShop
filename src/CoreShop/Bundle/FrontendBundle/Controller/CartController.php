@@ -62,10 +62,10 @@ class CartController extends FrontendController
     public function summaryAction(Request $request)
     {
         $cart = $this->getCart();
-        $form = $this->createForm(CartType::class, $cart);
+        $form = $this->get('form.factory')->createNamed('coreshop', CartType::class, $cart);
         $form->handleRequest($request);
 
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted() && $form->isValid()) {
             $cart = $form->getData();
             $code = $form->get('cartRuleCoupon')->getData();
 
@@ -115,7 +115,7 @@ class CartController extends FrontendController
     public function shipmentCalculationAction(Request $request)
     {
         $cart = $this->getCart();
-        $form = $this->createForm(ShippingCalculatorType::class, null, [
+        $form = $this->get('form.factory')->createNamed('coreshop', ShippingCalculatorType::class, null, [
                 'action' => $this->generateCoreShopUrl(null, 'coreshop_cart_check_shipment'),
             ]);
 
@@ -123,7 +123,7 @@ class CartController extends FrontendController
         $form->handleRequest($request);
 
         //check if there is a shipping calculation request
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isValid()) {
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && $form->isSubmitted() && $form->isValid()) {
             $shippingCalculatorFormData = $form->getData();
             $carrierPriceCalculator = $this->get(TaxedShippingCalculatorInterface::class);
             $carriersResolver = $this->get(CarriersResolverInterface::class);
@@ -182,12 +182,14 @@ class CartController extends FrontendController
 
         $addToCart = $this->createAddToCart($this->getCart(), $cartItem);
 
-        $form = $this->createForm(AddToCartType::class, $addToCart);
+        $form = $this->get('form.factory')->createNamed('coreshop', AddToCartType::class, $addToCart);
 
         if ($request->isMethod('POST')) {
             $redirect = $request->get('_redirect', $this->generateCoreShopUrl($this->getCart(), 'coreshop_cart_summary'));
 
-            if ($form->handleRequest($request)->isValid()) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
                 /**
                  * @var AddToCartInterface $addToCart
                  */

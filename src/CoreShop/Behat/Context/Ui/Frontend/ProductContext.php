@@ -45,7 +45,7 @@ final class ProductContext implements Context
      */
     public function iOpenPage($url, ProductInterface $product)
     {
-        $url = str_replace('%id%', $product->getId(), $url);
+        $url = str_replace('%id%', (string)$product->getId(), $url);
 
         $this->productPage->tryToOpenWithUri($url);
     }

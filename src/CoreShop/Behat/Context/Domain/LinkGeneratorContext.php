@@ -37,7 +37,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectShouldBe(Concrete $object, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, null, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,
@@ -56,7 +56,7 @@ final class LinkGeneratorContext implements Context
     public function theGeneratedUrlForObjectWithRouteShouldBe(Concrete $object, $routeName, $url)
     {
         $generatedUrl = $this->linkGenerator->generate($object, $routeName, ['_locale' => 'en']);
-        $url = str_replace('%id', $object->getId(), $url);
+        $url = str_replace('%id', (string)$object->getId(), $url);
 
         Assert::eq(
             $generatedUrl,

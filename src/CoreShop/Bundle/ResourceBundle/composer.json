@@ -18,7 +18,6 @@
     }
   ],
   "require": {
-    "php": "^7.4",
     "doctrine/orm": "^2.5",
     "doctrine/doctrine-bundle": "^2.2",
     "jms/serializer-bundle": "^3.0",

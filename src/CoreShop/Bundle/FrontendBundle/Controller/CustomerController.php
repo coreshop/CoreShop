@@ -173,14 +173,14 @@ class CustomerController extends FrontendController
             'selected_affiliation'   => $addressAssignmentManager->detectAddressAffiliationForCustomer($customer, $address)
         ];
 
-        $form = $this->get('form.factory')->createNamed('address', AddressType::class, $address, $addressFormOptions);
+        $form = $this->get('form.factory')->createNamed('coreshop', AddressType::class, $address, $addressFormOptions);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
             $addressAffiliation = $form->has('addressAffiliation') ? $form->get('addressAffiliation')->getData() : null;
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
 
                 $address = $handledForm->getData();
                 $address->setPublished(true);
@@ -248,7 +248,7 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $form = $this->get('form.factory')->createNamed('', CustomerType::class, $customer, [
+        $form = $this->get('form.factory')->createNamed('coreshop', CustomerType::class, $customer, [
             'customer' => $customer->getId(),
             'allow_default_address' => true,
         ]);
@@ -256,7 +256,7 @@ class CustomerController extends FrontendController
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $customer = $handledForm->getData();
                 $customer->save();
 
@@ -286,12 +286,12 @@ class CustomerController extends FrontendController
             return $this->redirectToRoute('coreshop_index');
         }
 
-        $form = $this->get('form.factory')->createNamed('', ChangePasswordType::class);
+        $form = $this->get('form.factory')->createNamed('coreshop', ChangePasswordType::class);
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'], true)) {
             $handledForm = $form->handleRequest($request);
 
-            if ($handledForm->isValid()) {
+            if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                 $formData = $handledForm->getData();
                 $customer->setPassword($formData['password']);
                 $customer->save();

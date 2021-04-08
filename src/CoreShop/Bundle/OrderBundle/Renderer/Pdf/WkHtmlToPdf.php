@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\OrderBundle\Renderer\Pdf;
 
 use Pimcore\Tool\Console;
+use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
@@ -186,11 +187,17 @@ final class WkHtmlToPdf implements PdfRendererInterface
             $command = $wkHtmlTopPfBinary . $options;
         }
 
-        $execCommand = $command . ' ' . $httpSource . ' ' . $tmpPdfFile;
-        Console::exec($execCommand);
+        $process = new Process(
+            [
+                $command,
+                $httpSource,
+                $tmpPdfFile
+            ]
+        );
+        $process->run();
 
         if (!file_exists($tmpPdfFile)) {
-            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $execCommand));
+            throw new \Exception(sprintf('wkhtmltopdf pdf conversion failed. This could be a command error. Executed command was: "%s"', $process->getCommandLine()));
         }
 
         $pdfContent = file_get_contents($tmpPdfFile);
