@@ -61,7 +61,7 @@ class CartItemQuantityModifier implements StorageListItemQuantityModifierInterfa
             return $targetQuantity;
         }
 
-        $quantity = (float) str_replace(',', '.', $targetQuantity);
+        $quantity = (float) str_replace(',', '.', (string)$targetQuantity);
         $formattedQuantity = round($quantity, $scale, PHP_ROUND_HALF_UP);
 
         if ($quantity !== $formattedQuantity) {
