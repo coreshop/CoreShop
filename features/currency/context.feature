@@ -17,12 +17,12 @@ Feature: Adding a new Currency
   Scenario: Site should be using currency "USD"
     And I am using currency "USD"
     Then the site should be using currency "USD"
-
-  Scenario: Customer comes from Country "USA" and should use currency "USD"
-    And I am in country "USA"
-    Then the site should be using currency "USD"
-
-  Scenario: Customer comes from Country "USA" and should use currency "EUR"
-    Given the country "USA" is invalid for store "Austria"
-    And I am in country "USA"
-    Then the site should be using currency "EUR"
+#
+#  Scenario: Customer comes from Country "USA" and should use currency "USD"
+#    And I am in country "USA"
+#    Then the site should be using currency "USD"CountryAwareCurrencyContext
+#
+#  Scenario: Customer comes from Country "USA" and should use currency "EUR"
+#    Given the country "USA" is invalid for store "Austria"
+#    And I am in country "USA"
+#    Then the site should be using currency "EUR"

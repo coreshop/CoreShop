@@ -54,9 +54,3 @@ services:
             - '@CoreShop\Component\Core\Context\Country\StoreAwareCountryContext.inner'
             - '@coreshop.context.store'
 
-    coreshop.context.currency.country_currency_based: '@CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext'
-    CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext:
-        arguments:
-            - '@coreshop.context.country'
-        tags:
-            - { name: 'coreshop.context.currency' }
