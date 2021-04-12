@@ -48,8 +48,3 @@ services:
             - '@CoreShop\Component\Core\Context\Country\StoreAwareCountryContext.inner'
             - '@CoreShop\Component\Store\Context\StoreContextInterface'
 
-    CoreShop\Component\Core\Context\Currency\CountryAwareCurrencyContext:
-        arguments:
-            - '@CoreShop\Component\Address\Context\CountryContextInterface'
-        tags:
-            - { name: coreshop.context.currency }

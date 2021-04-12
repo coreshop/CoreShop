@@ -14,6 +14,6 @@ pimcore.registerNS('pimcore.object.tags.coreShopPaymentProviderMultiselect');
 pimcore.object.tags.coreShopPaymentProviderMultiselect = Class.create(coreshop.object.tags.multiselect, {
 
     type: 'coreShopPaymentProviderMultiselect',
-    storeName: 'coreshop_payment_providers',
+    storeName: 'coreshop_payment_provider',
     displayField: 'identifier'
 });
