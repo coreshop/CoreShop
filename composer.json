@@ -193,7 +193,7 @@
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
         "branch-alias": {
-            "dev-master": "2.4-dev"
+            "dev-2.2-dev-3.0": "2.4-dev"
         }
     }
 }
