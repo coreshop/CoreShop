@@ -1,6 +1,7 @@
 core_shop_pimcore:
     pimcore_admin:
         js:
+            pimcore_extension_multiselect: '/bundles/coreshoppimcore/pimcore/js/ext/MultiSelect.js'
             pimcore_extension_itemselector: '/bundles/coreshoppimcore/pimcore/js/ext/ItemSelector.js'
             broker: '/bundles/coreshoppimcore/pimcore/js/broker.js'
             helpers: '/bundles/coreshoppimcore/pimcore/js/helpers.js'
