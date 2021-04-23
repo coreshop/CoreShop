@@ -1,4 +1,6 @@
 ---
+coreshop_filters: 'Filter'
+coreshop_filter: 'Filter'
 coreshop_filters_order: 'Beställning'
 coreshop_filters_order_asc: 'stigande'
 coreshop_filters_orderKey: 'Ordernyckel'
