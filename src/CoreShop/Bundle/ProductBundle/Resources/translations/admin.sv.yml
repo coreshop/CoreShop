@@ -1,6 +1,8 @@
 ---
 coreshop_action_discountAmount_amount: 'Belopp'
 coreshop_product_list: 'Produktlista'
+coreshop_product_quantity: 'Kvantitet'
+coreshop_product_price: 'Pris'
 coreshop_condition_products: 'Produkter'
 coreshop_condition_amount: 'Belopp'
 coreshop_action_discountAmount: 'Rabattbelopp'
