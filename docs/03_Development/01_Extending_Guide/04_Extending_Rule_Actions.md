@@ -1,6 +1,6 @@
 # Custom Price-Rule/Shipping-Rule/Notification-Rule Actions
 
-Adding Price-, Shipping- or Notification-Rule Actions is the same for all of these types. They're only difference is the
+Adding Price-, Shipping- or Notification-Rule Actions is the same for all of these types. Their only difference is the
 tag you use and Interface you need to implement for them.
 
 
