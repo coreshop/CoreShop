@@ -1,1 +1,6 @@
 ---
+coreshop_filters: 'Filtro'
+coreshop_filter: 'Filtro'
+coreshop_index_field_settings: 'Impostazioni'
+coreshop_filters_category_select: 'Categoria'
+coreshop_filters_category_name: 'Categoria'
