@@ -1,4 +1,5 @@
 ---
+coreshop_currency: 'Valuta'
 coreshop_currency_isoCode: 'ISO-kod'
 coreshop_currency_numericIsoCode: 'Numerisk ISO-kod'
 coreshop_currency_symbol: 'Symbol'
