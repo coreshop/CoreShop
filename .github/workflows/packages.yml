@@ -50,6 +50,19 @@ jobs:
         php-version: ${{ matrix.php }}
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
+    - name: Get Composer cache directory
+      id: composer-cache
+      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+    - name: Cache Composer
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
+        restore-keys: |
+          ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
+          ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-
+
     - name: Validate composer.json
       run: composer validate --ansi --strict
       working-directory: "src/CoreShop/${{ matrix.package }}"
@@ -57,15 +70,10 @@ jobs:
     - name: Install dependencies
       run: |
         composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       env:
           COMPOSER_ROOT_VERSION: dev-master
       working-directory: "src/CoreShop/${{ matrix.package }}"
-
-    - name: Install dependencies with Composer
-      uses: ramsey/composer-install@v1
-      with:
-          dependency-versions: ${{ matrix.dependencies }}
-          composer-options: "--working-dir=src/CoreShop/${{ matrix.package }}"
 
     - name: STAN
       run: |
