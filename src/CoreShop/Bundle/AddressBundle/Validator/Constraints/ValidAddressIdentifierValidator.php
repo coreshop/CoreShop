@@ -22,16 +22,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 final class ValidAddressIdentifierValidator extends ConstraintValidator
 {
-    private $addressIdentifierRepository;
+    private RepositoryInterface $addressIdentifierRepository;
 
     public function __construct(RepositoryInterface $addressIdentifierRepository)
     {
         $this->addressIdentifierRepository = $addressIdentifierRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         if (!$constraint instanceof ValidAddressIdentifier) {

@@ -25,11 +25,11 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CarriersReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $carrierRepository;
-    private $orderRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private RepositoryInterface$carrierRepository;
+    private PimcoreRepositoryInterface $orderRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -43,9 +43,6 @@ class CarriersReport implements ReportInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -103,9 +100,6 @@ class CarriersReport implements ReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

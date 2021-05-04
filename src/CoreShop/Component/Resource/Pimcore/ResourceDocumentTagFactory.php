@@ -19,26 +19,10 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 
 class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
+    private string $class;
+    private string $repositoryName;
+    private string $nameProperty;
 
-    /**
-     * @var string
-     */
-    private $repositoryName;
-
-    /**
-     * @var string
-     */
-    private $nameProperty;
-
-    /**
-     * @param string $class
-     * @param string $repositoryName
-     * @param string $nameProperty
-     */
     public function __construct(string $class, string $repositoryName, string $nameProperty)
     {
         $this->class = $class;
@@ -46,9 +30,6 @@ class ResourceDocumentTagFactory implements DocumentTagFactoryInterface
         $this->nameProperty = $nameProperty;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(string $type, array $params): EditableInterface
     {
         array_unshift($params, $type);

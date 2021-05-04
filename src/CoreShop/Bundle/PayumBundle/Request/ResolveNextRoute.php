@@ -18,44 +18,25 @@ use Payum\Core\Request\Generic;
 
 class ResolveNextRoute extends Generic implements ResolveNextRouteInterface
 {
-    /**
-     * @var string
-     */
-    private $routeName;
+    private string $routeName;
+    private array $routeParameters = [];
 
-    /**
-     * @var array
-     */
-    private $routeParameters = [];
-
-    /**
-     * @return string
-     */
-    public function getRouteName()
+    public function getRouteName(): string
     {
         return $this->routeName;
     }
 
-    /**
-     * @param string $routeName
-     */
-    public function setRouteName(string $routeName)
+    public function setRouteName(string $routeName): void
     {
         $this->routeName = $routeName;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getRouteParameters()
+    public function getRouteParameters(): array
     {
         return $this->routeParameters;
     }
 
-    /**
-     * @param array $parameters
-     */
-    public function setRouteParameters(array $parameters)
+    public function setRouteParameters(array $parameters): void
     {
         $this->routeParameters = $parameters;
     }

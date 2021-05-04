@@ -20,16 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FilterUserConditionChoiceType extends AbstractType
 {
-    private $types;
+    private array $types;
 
     public function __construct(array $types)
     {
         $this->types = $types;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -37,17 +34,11 @@ final class FilterUserConditionChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_user_condition_choice';

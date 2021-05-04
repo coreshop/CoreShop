@@ -20,8 +20,8 @@ use Twig\Environment;
 
 class AddressFormatter implements AddressFormatterInterface
 {
-    private $twig;
-    private $translator;
+    private Environment $twig;
+    private TranslatorInterface $translator;
 
     public function __construct(Environment $twig, TranslatorInterface $translator)
     {

@@ -19,10 +19,7 @@ use Pimcore\Model\DataObject;
 
 class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
 {
-    /**
-     * @var DataObject\Fieldcollection\Definition
-     */
-    private $fieldCollectionDefinition;
+    private DataObject\Fieldcollection\Definition $fieldCollectionDefinition;
 
     public function __construct(string $fieldCollectionKey)
     {
@@ -36,9 +33,6 @@ class FieldCollectionDefinitionUpdate extends AbstractDefinitionUpdate
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->fieldCollectionDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(): bool
     {
         return null !== DataObject\ClassDefinition\Service::importFieldCollectionFromJson($this->fieldCollectionDefinition, json_encode($this->jsonDefinition), true);

@@ -22,25 +22,18 @@ final class CompositeCustomerContext implements CustomerContextInterface
     /**
      * @var PriorityQueue|CustomerContextInterface[]
      */
-    private $customerContexts;
+    private PriorityQueue $customerContexts;
 
     public function __construct()
     {
         $this->customerContexts = new PriorityQueue();
     }
 
-    /**
-     * @param CustomerContextInterface $customerContext
-     * @param int                      $priority
-     */
-    public function addContext(CustomerContextInterface $customerContext, int $priority = 0)
+    public function addContext(CustomerContextInterface $customerContext, int $priority = 0): void
     {
         $this->customerContexts->insert($customerContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): CustomerInterface
     {
         foreach ($this->customerContexts as $customerContext) {

@@ -20,39 +20,19 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class OrderToOrderDocumentTransformerWorkflowApplier implements OrderDocumentTransformerInterface
 {
-    /**
-     * @var OrderDocumentTransformerInterface
-     */
-    private $innerTransformer;
+    private OrderDocumentTransformerInterface $innerTransformer;
+    private StateMachineManagerInterface $stateMachineManager;
+    private string $initialState;
+    private string $workflowName;
+    private string $transition;
 
-    /**
-     * @var StateMachineManagerInterface
-     */
-    private $stateMachineManager;
-
-    /**
-     * @var string
-     */
-    private $initialState;
-
-    /**
-     * @var string
-     */
-    private $workflowName;
-
-    /**
-     * @var string
-     */
-    private $transition;
-
-    /**
-     * @param OrderDocumentTransformerInterface $innerTransformer
-     * @param StateMachineManagerInterface      $stateMachineManager
-     * @param string                            $initialState
-     * @param string                            $workflowName
-     * @param string                            $transition
-     */
-    public function __construct(OrderDocumentTransformerInterface $innerTransformer, StateMachineManagerInterface $stateMachineManager, string $initialState, string $workflowName, string $transition)
+    public function __construct(
+        OrderDocumentTransformerInterface $innerTransformer,
+        StateMachineManagerInterface $stateMachineManager,
+        string $initialState,
+        string $workflowName,
+        string $transition
+    )
     {
         $this->innerTransformer = $innerTransformer;
         $this->stateMachineManager = $stateMachineManager;

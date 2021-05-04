@@ -27,8 +27,8 @@ use Webmozart\Assert\Assert;
 
 final class AddToCartAvailabilityValidator extends ConstraintValidator
 {
-    private $availabilityChecker;
-    protected $cartItemResolver;
+    private AvailabilityCheckerInterface $availabilityChecker;
+    private StorageListItemResolverInterface $cartItemResolver;
 
     public function __construct(
         AvailabilityCheckerInterface $availabilityChecker,
@@ -39,15 +39,15 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         $this->cartItemResolver = $cartItemResolver;
     }
 
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartAvailability::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -56,12 +56,12 @@ final class AddToCartAvailabilityValidator extends ConstraintValidator
         /**
          * @var OrderItemInterface $cartItem
          */
-        $cartItem = $addToCartDto->getCartItem();
+        $cartItem = $value->getCartItem();
 
         /**
          * @var OrderInterface $cart
          */
-        $cart = $addToCartDto->getCart();
+        $cart = $value->getCart();
 
         $isStockSufficient = $this->availabilityChecker->isStockSufficient(
             $purchasable,

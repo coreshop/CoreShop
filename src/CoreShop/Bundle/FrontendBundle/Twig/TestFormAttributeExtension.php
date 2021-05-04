@@ -19,16 +19,13 @@ use Twig\TwigFunction;
 
 final class TestFormAttributeExtension extends AbstractExtension
 {
-    private $environment;
+    private string $environment;
 
     public function __construct(string $environment)
     {
         $this->environment = $environment;
     }
 
-    /**
-     * @return TwigFunction[]
-     */
     public function getFunctions(): array
     {
         return [

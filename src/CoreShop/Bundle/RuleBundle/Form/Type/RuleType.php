@@ -20,9 +20,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class RuleType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -31,9 +28,6 @@ class RuleType extends AbstractResourceType
             ->add('actions', RuleActionCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_rule';

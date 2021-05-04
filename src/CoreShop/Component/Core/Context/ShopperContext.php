@@ -56,17 +56,11 @@ class ShopperContext implements ShopperContextInterface
         $this->cartContext = $cartContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStore(): StoreInterface
     {
         return $this->storeContext->getStore();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStore(): bool
     {
         try {
@@ -78,17 +72,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         return $this->currencyContext->getCurrency();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCurrency(): bool
     {
         try {
@@ -100,17 +88,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocaleCode(): string
     {
         return $this->localeContext->getLocaleCode();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasLocaleCode(): bool
     {
         try {
@@ -122,17 +104,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): CountryInterface
     {
         return $this->countryContext->getCountry();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCountry(): bool
     {
         try {
@@ -144,17 +120,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): CustomerInterface
     {
         return $this->customerContext->getCustomer();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCustomer(): bool
     {
         try {
@@ -166,17 +136,11 @@ class ShopperContext implements ShopperContextInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         return $this->cartContext->getCart();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getContext(): array
     {
         return [

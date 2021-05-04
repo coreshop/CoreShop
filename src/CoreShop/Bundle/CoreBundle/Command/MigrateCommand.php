@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace CoreShop\Bundle\CoreBundle\Command;
 
 use CoreShop\Bundle\CoreBundle\Installer\Executor\CommandExecutor;
-use Pimcore\Migrations\Version;
 use Pimcore\Tool\Console;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,7 +26,7 @@ final class MigrateCommand extends Command
     /**
      * @var array
      */
-    protected $dependantBundles = [];
+    protected array $dependantBundles = [];
 
     public function __construct(array $dependantBundles)
     {
@@ -37,9 +36,6 @@ final class MigrateCommand extends Command
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -52,9 +48,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $application = $this->getApplication();

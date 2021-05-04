@@ -23,10 +23,10 @@ use CoreShop\Component\Pimcore\DataObject\VersionHelper;
 
 final class CartManager implements CartManagerInterface
 {
-    private $objectService;
-    private $cartFolderPath;
-    private $cartItemFolderPath;
-    private $cartProcessor;
+    private CartProcessorInterface $cartProcessor;
+    private ObjectServiceInterface $objectService;
+    private string $cartFolderPath;
+    private string $cartItemFolderPath;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,
@@ -40,9 +40,6 @@ final class CartManager implements CartManagerInterface
         $this->cartItemFolderPath = $cartItemFolderPath;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persistCart(OrderInterface $cart): void
     {
         $cartsFolder = $this->objectService->createFolderByPath(sprintf('%s/%s', $this->cartFolderPath, date('Y/m/d')));

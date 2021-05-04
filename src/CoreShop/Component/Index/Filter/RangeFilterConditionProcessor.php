@@ -23,9 +23,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
@@ -48,9 +45,6 @@ class RangeFilterConditionProcessor implements FilterConditionProcessorInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];

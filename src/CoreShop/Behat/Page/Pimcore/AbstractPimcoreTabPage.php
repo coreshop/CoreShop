@@ -21,17 +21,10 @@ use Behat\Mink\Session;
 
 abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
-    /** @var Session */
-    protected $session;
-
-    /** @var array */
-    protected $parameters;
-
-    /** @var DocumentElement|null */
-    protected $document;
-
-    /** @var NodeElement|null */
-    protected $tabElement;
+    protected Session $session;
+    protected array $parameters;
+    protected ?DocumentElement $document;
+    protected ? NodeElement $tabElement;
 
     /**
      * @param array|\ArrayAccess $minkParameters

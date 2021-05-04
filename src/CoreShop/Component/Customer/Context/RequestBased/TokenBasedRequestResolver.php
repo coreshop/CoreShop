@@ -22,22 +22,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 final class TokenBasedRequestResolver implements RequestResolverInterface
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
+    private TokenStorageInterface $tokenStorage;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     */
     public function __construct(TokenStorageInterface $tokenStorage)
     {
         $this->tokenStorage = $tokenStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCustomer(Request $request): CustomerInterface
     {
         if ($this->tokenStorage->getToken() instanceof TokenInterface && $this->tokenStorage->getToken()->getUser() instanceof CustomerInterface) {

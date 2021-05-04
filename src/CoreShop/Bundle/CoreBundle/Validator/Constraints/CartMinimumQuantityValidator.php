@@ -25,20 +25,20 @@ use Webmozart\Assert\Assert;
 
 class CartMinimumQuantityValidator extends ConstraintValidator
 {
-    private $quantityValidatorService;
+    private QuantityValidatorService $quantityValidatorService;
 
     public function __construct(QuantityValidatorService $quantityValidatorService)
     {
         $this->quantityValidatorService = $quantityValidatorService;
     }
 
-    public function validate($cart, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
         /**
-         * @var OrderInterface $cart
+         * @var OrderInterface               $value
          * @var CartMinimumQuantityValidator $constraint
          */
-        Assert::isInstanceOf($cart, OrderInterface::class);
+        Assert::isInstanceOf($value, OrderInterface::class);
         Assert::isInstanceOf($constraint, CartMinimumQuantity::class);
 
         $lowerThenMinimum = false;
@@ -49,7 +49,7 @@ class CartMinimumQuantityValidator extends ConstraintValidator
         /**
          * @var OrderItemInterface $cartItem
          */
-        foreach ($cart->getItems() as $cartItem) {
+        foreach ($value->getItems() as $cartItem) {
             $product = $cartItem->getProduct();
 
             if (!$product instanceof StockableInterface) {
@@ -75,7 +75,7 @@ class CartMinimumQuantityValidator extends ConstraintValidator
             $minLimit = (int) $product->getMinimumQuantityToOrder();
             $lowerThenMinimum = $this->quantityValidatorService->isLowerThenMinLimit(
                 $minLimit,
-                $this->getExistingCartItemQuantityFromCart($cart, $cartItem)
+                $this->getExistingCartItemQuantityFromCart($value, $cartItem)
             );
 
             if (!in_array($product->getId(), $productsChecked, true)) {

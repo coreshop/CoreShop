@@ -21,16 +21,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ObjectListFilterListener
 {
-    private $filterServiceRegistry;
+    private ServiceRegistryInterface $filterServiceRegistry;
 
     public function __construct(ServiceRegistryInterface $filterServiceRegistry)
     {
         $this->filterServiceRegistry = $filterServiceRegistry;
     }
 
-    /**
-     * @param GenericEvent $event
-     */
     public function checkObjectList(GenericEvent $event): void
     {
         $list = $event->getArgument('list');

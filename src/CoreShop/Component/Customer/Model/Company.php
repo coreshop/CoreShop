@@ -19,9 +19,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class Company extends AbstractPimcoreModel implements CompanyInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isEqualTo(UserInterface $user)
     {
         return $user instanceof self && $user->getId() === $this->getId();

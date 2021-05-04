@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CurrencyType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,9 +30,6 @@ final class CurrencyType extends AbstractResourceType
             ->add('symbol', TextType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_currency';

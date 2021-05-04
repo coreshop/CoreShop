@@ -24,7 +24,7 @@ final class PostcodeConfigurationType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -34,9 +34,6 @@ final class PostcodeConfigurationType extends AbstractType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,9 +42,6 @@ final class PostcodeConfigurationType extends AbstractType
             ->add('exclusion', CheckboxType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_condition_postcode';

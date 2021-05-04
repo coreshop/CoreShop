@@ -22,7 +22,7 @@ final class CompositeCountryContext implements CountryContextInterface
     /**
      * @var PriorityQueue|CountryContextInterface[]
      */
-    private $countryContexts;
+    private PriorityQueue $countryContexts;
 
     public function __construct()
     {
@@ -34,9 +34,6 @@ final class CompositeCountryContext implements CountryContextInterface
         $this->countryContexts->insert($countryContexts, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): CountryInterface
     {
         foreach ($this->countryContexts as $countryContexts) {

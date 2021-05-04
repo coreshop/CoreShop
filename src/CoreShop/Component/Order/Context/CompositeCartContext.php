@@ -19,7 +19,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCartContext implements CartContextInterface
 {
-    private $cartContexts;
+    private PriorityQueue $cartContexts;
 
     public function __construct()
     {
@@ -31,9 +31,6 @@ final class CompositeCartContext implements CartContextInterface
         $this->cartContexts->insert($cartContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         foreach ($this->cartContexts as $cartContext) {

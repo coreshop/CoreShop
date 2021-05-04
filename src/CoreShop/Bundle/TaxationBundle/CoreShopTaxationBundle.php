@@ -17,16 +17,10 @@ namespace CoreShop\Bundle\TaxationBundle;
 use CoreShop\Bundle\MoneyBundle\CoreShopMoneyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopTaxationBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -34,9 +28,6 @@ final class CoreShopTaxationBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -44,9 +35,6 @@ final class CoreShopTaxationBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopMoneyBundle(), 3600);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Taxation\Model';

@@ -19,9 +19,6 @@ use Pimcore\Model\Exception\NotFoundException;
 
 class ClassInstaller implements ClassInstallerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createBrick(string $jsonFile, string $brickName): DataObject\Objectbrick\Definition
     {
         try {
@@ -44,9 +41,6 @@ class ClassInstaller implements ClassInstallerInterface
         return $objectBrick;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createClass(string $jsonFile, string $className, bool $updateClass = false): DataObject\ClassDefinition
     {
         $tempClass = new DataObject\ClassDefinition();
@@ -100,9 +94,6 @@ class ClassInstaller implements ClassInstallerInterface
         return $class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createFieldCollection(string $jsonFile, string $name): DataObject\Fieldcollection\Definition
     {
         try {

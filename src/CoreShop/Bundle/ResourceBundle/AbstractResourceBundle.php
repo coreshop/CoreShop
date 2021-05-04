@@ -28,17 +28,9 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractResourceBundle extends Bundle implements ResourceBundleInterface, DependentBundleInterface
 {
-    /**
-     * Configure format of mapping files.
-     *
-     * @var string
-     */
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+    protected string $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         if (null !== $this->getModelNamespace()) {
             foreach ($this->getSupportedDrivers() as $driver) {
@@ -77,18 +69,12 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function registerDependentBundles(BundleCollection $collection)
+    public static function registerDependentBundles(BundleCollection $collection): void
     {
         $collection->addBundle(new CoreShopResourceBundle(), 3800);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
             return \CoreShop\Bundle\CoreBundle\Application\Version::getVersion().' ('.$this->getComposerVersion().')';
@@ -97,10 +83,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return $this->getComposerVersion();
     }
 
-    /**
-     * @return string
-     */
-    public function getComposerVersion()
+    public function getComposerVersion(): string
     {
         if ($this instanceof ComposerPackageBundleInterface) {
             $bundleName = $this->getPackageName();
@@ -133,46 +116,22 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return '';
     }
 
-    /**
-     * Return the prefix of the bundle.
-     *
-     * @return string
-     */
-    protected function getBundlePrefix()
+    protected function getBundlePrefix(): string
     {
         return Container::underscore(substr(strrchr(get_class($this), '\\'), 1, -6));
     }
 
-    /**
-     * Return the directory where are stored the doctrine mapping.
-     *
-     * @return string
-     */
-    protected function getDoctrineMappingDirectory()
+    protected function getDoctrineMappingDirectory(): string
     {
         return 'model';
     }
 
-    /**
-     * Return the entity namespace.
-     *
-     * @return string|null
-     */
-    protected function getModelNamespace()
+    protected function getModelNamespace(): ?string
     {
         return null;
     }
 
-    /**
-     * Return mapping compiler pass class depending on driver.
-     *
-     * @param string $driverType
-     *
-     * @return array
-     *
-     * @throws UnknownDriverException
-     */
-    protected function getMappingCompilerPassInfo($driverType)
+    protected function getMappingCompilerPassInfo($driverType): array
     {
         switch ($driverType) {
             case CoreShopResourceBundle::DRIVER_DOCTRINE_ORM:
@@ -188,12 +147,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return [$mappingsPassClassname, $compilerPassMethod];
     }
 
-    /**
-     * Return the absolute path where are stored the doctrine mapping.
-     *
-     * @return string
-     */
-    protected function getConfigFilesPath()
+    protected function getConfigFilesPath(): string
     {
         return sprintf(
             '%s/Resources/config/doctrine/%s',
@@ -202,10 +156,7 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         );
     }
 
-    /**
-     * @return string
-     */
-    protected function getObjectManagerParameter()
+    protected function getObjectManagerParameter(): string
     {
         return sprintf('%s.object_manager', $this->getBundlePrefix());
     }

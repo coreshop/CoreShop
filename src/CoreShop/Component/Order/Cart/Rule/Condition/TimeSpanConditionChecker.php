@@ -21,9 +21,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 class TimeSpanConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);

@@ -19,9 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NotificationRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -29,9 +26,6 @@ class NotificationRuleConditionCollectionType extends RuleConditionCollectionTyp
         $resolver->setDefault('entry_type', NotificationRuleConditionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_notification_rule_condition_collection';

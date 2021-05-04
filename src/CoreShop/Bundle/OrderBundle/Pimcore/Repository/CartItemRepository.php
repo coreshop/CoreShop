@@ -19,9 +19,6 @@ use CoreShop\Component\Order\Repository\CartItemRepositoryInterface;
 
 class CartItemRepository extends PimcoreRepository implements CartItemRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findCartItemsByProductId(int $productId): array
     {
         $list = $this->getList();

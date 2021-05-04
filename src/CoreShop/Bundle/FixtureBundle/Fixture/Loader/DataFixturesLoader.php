@@ -26,31 +26,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class DataFixturesLoader extends ContainerAwareLoader
 {
-    /** @var EntityManager */
-    protected $em;
+    protected EntityManager $em;
+    protected array $loadedFixtures;
+    protected \ReflectionProperty $ref;
+    protected UpdateDataFixturesFixture $updateDataFixturesFixture;
+    protected DataFixtureRepositoryInterface $dataFixtureRepository;
 
-    /** @var array */
-    protected $loadedFixtures;
-
-    /** @var \ReflectionProperty */
-    protected $ref;
-
-    /**
-     * @var UpdateDataFixturesFixture
-     */
-    protected $updateDataFixturesFixture;
-
-    /**
-     * @var DataFixtureRepositoryInterface
-     */
-    protected $dataFixtureRepository;
-
-    /**
-     * @param EntityManager                  $em
-     * @param ContainerInterface             $container
-     * @param UpdateDataFixturesFixture      $updateDataFixturesFixture
-     * @param DataFixtureRepositoryInterface $dataFixtureRepository
-     */
     public function __construct(
         EntityManager $em,
         ContainerInterface $container,
@@ -64,9 +45,6 @@ class DataFixturesLoader extends ContainerAwareLoader
         $this->dataFixtureRepository = $dataFixtureRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFixtures()
     {
         $sorter = new DataFixturesSorter();

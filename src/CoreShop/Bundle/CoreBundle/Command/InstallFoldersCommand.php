@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class InstallFoldersCommand extends AbstractInstallCommand
 {
-    protected $folderInstaller;
+    protected FolderInstallerProvider $folderInstaller;
 
     public function __construct(
         KernelInterface $kernel,
@@ -35,9 +35,6 @@ final class InstallFoldersCommand extends AbstractInstallCommand
         parent::__construct($kernel, $directoryChecker);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -49,9 +46,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $outputStyle = new SymfonyStyle($input, $output);

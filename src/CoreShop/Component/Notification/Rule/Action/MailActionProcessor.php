@@ -21,16 +21,13 @@ use Pimcore\Model\Document;
 
 class MailActionProcessor implements NotificationRuleProcessorInterface
 {
-    protected $mailProcessor;
+    protected MailProcessorInterface $mailProcessor;
 
     public function __construct(MailProcessorInterface $mailProcessor)
     {
         $this->mailProcessor = $mailProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         $language = null;

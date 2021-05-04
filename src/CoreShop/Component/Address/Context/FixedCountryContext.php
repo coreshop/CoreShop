@@ -18,14 +18,8 @@ use CoreShop\Component\Address\Model\CountryInterface;
 
 final class FixedCountryContext implements CountryContextInterface
 {
-    /**
-     * @var CountryInterface
-     */
-    private $country = null;
+    private ?CountryInterface $country = null;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): CountryInterface
     {
         if ($this->country instanceof CountryInterface) {
@@ -35,9 +29,6 @@ final class FixedCountryContext implements CountryContextInterface
         throw new CountryNotFoundException();
     }
 
-    /**
-     * @param CountryInterface $country
-     */
     public function setCountry(CountryInterface $country): void
     {
         $this->country = $country;

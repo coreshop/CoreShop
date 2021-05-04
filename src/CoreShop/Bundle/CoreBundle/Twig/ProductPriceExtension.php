@@ -14,23 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductPriceHelperInterface;
 use CoreShop\Component\Core\Product\TaxedProductPriceCalculatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ProductPriceExtension extends AbstractExtension
 {
-    private $productPriceCalculator;
+    private TaxedProductPriceCalculatorInterface $productPriceCalculator;
 
     public function __construct(TaxedProductPriceCalculatorInterface $productPriceCalculator)
     {
         $this->productPriceCalculator = $productPriceCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters(): array
     {
         return [

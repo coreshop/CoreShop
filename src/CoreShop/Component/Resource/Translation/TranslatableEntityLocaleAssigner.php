@@ -19,16 +19,13 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 final class TranslatableEntityLocaleAssigner implements TranslatableEntityLocaleAssignerInterface
 {
-    private $translationLocaleProvider;
+    private TranslationLocaleProviderInterface $translationLocaleProvider;
 
     public function __construct(TranslationLocaleProviderInterface $translationLocaleProvider)
     {
         $this->translationLocaleProvider = $translationLocaleProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function assignLocale(TranslatableInterface $translatableEntity): void
     {
         $localeCode = $this->translationLocaleProvider->getDefaultLocaleCode();

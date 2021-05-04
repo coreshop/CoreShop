@@ -21,23 +21,20 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class StateHistoryLogger implements StateHistoryLoggerInterface
 {
-    private $noteService;
-    private $translator;
-    private $noteIdentifier;
+    private NoteServiceInterface $noteService;
+    private TranslatorInterface $translator;
+    private string $noteIdentifier;
 
     public function __construct(
         NoteServiceInterface $noteService,
         TranslatorInterface $translator,
-        $noteIdentifier
+        string $noteIdentifier
     ) {
         $this->noteService = $noteService;
         $this->translator = $translator;
         $this->noteIdentifier = $noteIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function log(Concrete $object, Event $event): void
     {
         $transition = $event->getTransition();

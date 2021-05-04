@@ -20,8 +20,8 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class OrmPersistentMarkingStore implements MarkingStoreInterface
 {
-    private $originMarkingStore;
-    private $doctrineRegistry;
+    private MarkingStoreInterface $originMarkingStore;
+    private Registry $doctrineRegistry;
 
     public function __construct(MarkingStoreInterface $originMarkingStore, Registry $doctrineRegistry)
     {
@@ -29,17 +29,11 @@ class OrmPersistentMarkingStore implements MarkingStoreInterface
         $this->doctrineRegistry = $doctrineRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMarking($subject): Marking
     {
         return $this->originMarkingStore->getMarking($subject);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMarking($subject, Marking $marking, array $context = []): void
     {
         $this->originMarkingStore->setMarking($subject, $marking);

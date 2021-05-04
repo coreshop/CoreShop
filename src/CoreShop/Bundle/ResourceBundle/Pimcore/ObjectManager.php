@@ -18,37 +18,16 @@ use Webmozart\Assert\Assert;
 
 final class ObjectManager implements \Doctrine\Persistence\ObjectManager
 {
-    /**
-     * @var array
-     */
-    private $repositories = [];
+    private array $repositories = [];
+    private array $modelsToUpdate = [];
+    private array $modelsToInsert = [];
+    private array $modelsToRemove = [];
 
-    /**
-     * @var array
-     */
-    private $modelsToUpdate = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToInsert = [];
-
-    /**
-     * @var array
-     */
-    private $modelsToRemove = [];
-
-    /**
-     * {@inheritdoc}
-     */
     public function find($className, $id)
     {
         return $className::getById($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persist($resource)
     {
         /**
@@ -66,9 +45,6 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove($resource)
     {
         $id = $this->getResourceId($resource);
@@ -83,17 +59,11 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function merge($object)
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function clear($objectName = null)
     {
         if (null === $objectName) {
@@ -115,25 +85,16 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function detach($object)
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refresh($object)
     {
         throw new \InvalidArgumentException('Not implemented');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function flush()
     {
         foreach ($this->modelsToRemove as $className => $classTypeModels) {
@@ -161,9 +122,6 @@ final class ObjectManager implements \Doctrine\Persistence\ObjectManager
         $this->modelsToRemove = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRepository($className)
     {
         if (!array_key_exists($className, $this->repositories)) {

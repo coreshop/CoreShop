@@ -18,19 +18,13 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 
 final class FixedCustomerContext implements CustomerContextInterface
 {
-    /**
-     * @var CustomerInterface
-     */
-    private $customer;
+    private CustomerInterface $customer;
 
     public function setCustomer(CustomerInterface $customer)
     {
         $this->customer = $customer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): CustomerInterface
     {
         if ($this->customer instanceof CustomerInterface) {

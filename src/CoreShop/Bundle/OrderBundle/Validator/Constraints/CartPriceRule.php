@@ -23,17 +23,11 @@ final class CartPriceRule extends Constraint
      */
     public $message = 'Voucher "%rule%" is not valid anymore.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_cart_rule_valid';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

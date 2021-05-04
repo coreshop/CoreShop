@@ -21,9 +21,9 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class SequenceGenerator implements SequenceGeneratorInterface
 {
-    private $sequenceRepository;
-    private $sequenceFactory;
-    private $entityManager;
+    private SequenceRepositoryInterface $sequenceRepository;
+    private SequenceFactoryInterface $sequenceFactory;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(
         SequenceRepositoryInterface $sequenceRepository,
@@ -36,9 +36,6 @@ class SequenceGenerator implements SequenceGeneratorInterface
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNextSequenceForType(string $type): int
     {
         $sequence = $this->getSequence($type);

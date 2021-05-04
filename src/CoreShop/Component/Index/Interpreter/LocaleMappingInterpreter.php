@@ -19,17 +19,11 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class LocaleMappingInterpreter implements LocalizedInterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpretForLanguage(string $language, $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         if (!is_array($value)) {

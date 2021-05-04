@@ -17,17 +17,11 @@ namespace CoreShop\Bundle\PaymentBundle;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use CoreShop\Bundle\WorkflowBundle\CoreShopWorkflowBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 
 final class CoreShopPaymentBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -35,9 +29,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -46,9 +37,6 @@ final class CoreShopPaymentBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopWorkflowBundle(), 1550);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Payment\Model';

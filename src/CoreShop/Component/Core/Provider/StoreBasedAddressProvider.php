@@ -33,9 +33,6 @@ class StoreBasedAddressProvider implements AddressProviderInterface
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAddress(OrderInterface $cart): ?AddressInterface
     {
         if ($cart->getStore() instanceof StoreInterface) {

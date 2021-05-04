@@ -25,7 +25,7 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class InstallCommand extends AbstractInstallCommand
 {
-    private $commands = [
+    private array $commands = [
         [
             'command' => 'resources',
             'message' => 'Install Pimcore Classes.',
@@ -40,9 +40,6 @@ final class InstallCommand extends AbstractInstallCommand
         ],
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -54,9 +51,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->setVerbosity(OutputInterface::VERBOSITY_NORMAL);
@@ -92,12 +86,7 @@ EOT
         return 0;
     }
 
-    /**
-     * @param bool $errored
-     *
-     * @return string
-     */
-    private function getProperFinalMessage($errored)
+    private function getProperFinalMessage(true $errored): string
     {
         if ($errored) {
             return 'CoreShop has been installed, but some error occurred.';
@@ -106,9 +95,6 @@ EOT
         return 'CoreShop has been successfully installed.';
     }
 
-    /**
-     * @return string
-     */
     private function getCoreShopLogo(): string
     {
         return '<fg=red>                                          

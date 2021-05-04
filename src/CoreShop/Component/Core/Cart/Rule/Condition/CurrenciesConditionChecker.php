@@ -22,9 +22,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 final class CurrenciesConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (!$cart->getCurrency() instanceof CurrencyInterface) {

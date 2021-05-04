@@ -20,9 +20,6 @@ use CoreShop\Component\Payment\Repository\PaymentRepositoryInterface;
 
 class PaymentRepository extends EntityRepository implements PaymentRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForPayable(PayableInterface $payable): array
     {
         return $this->createQueryBuilder('o')

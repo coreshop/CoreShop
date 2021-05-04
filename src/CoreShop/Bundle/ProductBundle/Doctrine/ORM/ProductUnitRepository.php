@@ -21,17 +21,11 @@ use Doctrine\ORM\QueryBuilder;
 
 class ProductUnitRepository extends EntityRepository implements ProductUnitRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByName(string $name): ?ProductUnitInterface
     {
         return $this->createQueryBuilder('o')

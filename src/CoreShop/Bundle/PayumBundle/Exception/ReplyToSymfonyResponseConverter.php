@@ -19,9 +19,6 @@ use Payum\Core\Reply\ReplyInterface;
 
 class ReplyToSymfonyResponseConverter extends BaseReplyToSymfonyResponseConverter
 {
-    /**
-     * {@inheritdoc}
-     */
     public function convert(ReplyInterface $reply)
     {
         if ($reply instanceof ReplyException) {

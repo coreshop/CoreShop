@@ -30,9 +30,6 @@ class NestedInterpreter implements InterpreterInterface
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $this->assert($interpreterConfig);

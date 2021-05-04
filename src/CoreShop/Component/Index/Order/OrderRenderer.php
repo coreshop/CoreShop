@@ -19,16 +19,13 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class OrderRenderer implements OrderRendererInterface
 {
-    private $registry;
+    private ServiceRegistryInterface $registry;
 
     public function __construct(ServiceRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, OrderInterface $condition, string $prefix = null)
     {
         /**

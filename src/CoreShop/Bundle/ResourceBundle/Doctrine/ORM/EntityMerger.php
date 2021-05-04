@@ -26,8 +26,8 @@ use Doctrine\ORM\Utility\IdentifierFlattener;
 
 class EntityMerger
 {
-    private $em;
-    private $identifierFlattener;
+    private EntityManagerInterface $em;
+    private IdentifierFlattener $identifierFlattener;
 
     public function __construct(EntityManagerInterface $em)
     {

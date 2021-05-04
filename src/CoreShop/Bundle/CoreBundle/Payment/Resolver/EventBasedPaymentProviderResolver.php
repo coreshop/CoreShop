@@ -22,8 +22,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    private $inner;
-    private $eventDispatcher;
+    private PaymentProviderResolverInterface $inner;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         PaymentProviderResolverInterface $inner,
@@ -34,9 +34,6 @@ class EventBasedPaymentProviderResolver implements PaymentProviderResolverInterf
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
         $allowedPaymentProviders = [];

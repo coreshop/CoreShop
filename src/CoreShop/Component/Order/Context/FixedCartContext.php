@@ -18,11 +18,8 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 final class FixedCartContext implements CartContextInterface
 {
-    private $cart ;
+    private OrderInterface $cart ;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         if ($this->cart instanceof OrderInterface) {

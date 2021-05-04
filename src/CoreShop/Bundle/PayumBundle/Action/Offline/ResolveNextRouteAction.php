@@ -43,9 +43,6 @@ final class ResolveNextRouteAction implements ActionInterface
         $request->setRouteName('coreshop_checkout_error');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

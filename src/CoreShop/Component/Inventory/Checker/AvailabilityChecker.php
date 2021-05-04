@@ -18,17 +18,11 @@ use CoreShop\Component\Inventory\Model\StockableInterface;
 
 final class AvailabilityChecker implements AvailabilityCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isStockAvailable(StockableInterface $stockable): bool
     {
         return $this->isStockSufficient($stockable, 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isStockSufficient(StockableInterface $stockable, float $quantity): bool
     {
         return !$stockable->getIsTracked() || $quantity <= ($stockable->getOnHand() - $stockable->getOnHold());

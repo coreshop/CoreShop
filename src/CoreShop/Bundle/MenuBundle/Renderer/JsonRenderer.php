@@ -21,9 +21,9 @@ use Twig\Environment;
 
 class JsonRenderer implements RendererInterface
 {
-    private $environment;
-    private $guard;
-    private $defaultOptions;
+    private Environment $environment;
+    private PimcoreGuard $guard;
+    private array $defaultOptions;
 
     public function __construct(
         Environment $environment,

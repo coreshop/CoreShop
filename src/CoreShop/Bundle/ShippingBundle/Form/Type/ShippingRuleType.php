@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class ShippingRuleType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,9 +30,6 @@ final class ShippingRuleType extends RuleType
             ->add('actions', ShippingRuleActionCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule';

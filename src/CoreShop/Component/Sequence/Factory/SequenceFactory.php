@@ -19,26 +19,18 @@ use CoreShop\Component\Sequence\Model\SequenceInterface;
 
 class SequenceFactory implements SequenceFactoryInterface
 {
-    private $className;
+    private string $className;
 
     public function __construct(string $className)
     {
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws UnsupportedMethodException
-     */
     public function createNew()
     {
         throw new UnsupportedMethodException('createNew');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithType(string $type): SequenceInterface
     {
         $sequence = new $this->className();

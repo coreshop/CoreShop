@@ -25,28 +25,14 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class FrontendController extends AbstractController
 {
-    /**
-     * @var TemplateConfiguratorInterface
-     */
-    protected $templateConfigurator;
+    protected TemplateConfiguratorInterface $templateConfigurator;
 
-    /**
-     * @param TemplateConfiguratorInterface $templateConfigurator
-     */
     public function setTemplateConfigurator(TemplateConfiguratorInterface $templateConfigurator)
     {
         $this->templateConfigurator = $templateConfigurator;
     }
 
-    /**
-     * @param mixed  $object|null
-     * @param string $route|null
-     * @param array  $parameters
-     * @param int    $referenceType
-     *
-     * @return mixed|string
-     */
-    protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    protected function generateCoreShopUrl($object, $route = null, $parameters = array(), $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): ?string
     {
         return $this->container->get(LinkGeneratorInterface::class)->generate($object, $route, $parameters, $referenceType);
     }

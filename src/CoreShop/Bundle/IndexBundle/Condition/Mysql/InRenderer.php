@@ -23,9 +23,6 @@ use Webmozart\Assert\Assert;
 
 class InRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
@@ -59,9 +56,6 @@ class InRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof InCondition;

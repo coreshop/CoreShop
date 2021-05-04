@@ -41,44 +41,13 @@ abstract class AbstractWorker implements WorkerInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $extensions;
+    protected ServiceRegistryInterface $extensions;
+    protected ServiceRegistryInterface $getterServiceRegistry;
+    protected ServiceRegistryInterface $interpreterServiceRegistry;
+    protected FilterGroupHelperInterface $filterGroupHelper;
+    protected ConditionRendererInterface $conditionRenderer;
+    protected OrderRendererInterface $orderRenderer;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $getterServiceRegistry;
-
-    /**
-     * @var ServiceRegistryInterface
-     */
-    protected $interpreterServiceRegistry;
-
-    /**
-     * @var FilterGroupHelperInterface
-     */
-    protected $filterGroupHelper;
-
-    /**
-     * @var ConditionRendererInterface
-     */
-    protected $conditionRenderer;
-
-    /**
-     * @var OrderRendererInterface
-     */
-    protected $orderRenderer;
-
-    /**
-     * @param ServiceRegistryInterface   $extensions
-     * @param ServiceRegistryInterface   $getterServiceRegistry
-     * @param ServiceRegistryInterface   $interpreterServiceRegistry
-     * @param FilterGroupHelperInterface $filterGroupHelper
-     * @param ConditionRendererInterface $conditionRenderer
-     * @param OrderRendererInterface     $orderRenderer
-     */
     public function __construct(
         ServiceRegistryInterface $extensions,
         ServiceRegistryInterface $getterServiceRegistry,
@@ -95,9 +64,6 @@ abstract class AbstractWorker implements WorkerInterface
         $this->orderRenderer = $orderRenderer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExtensions(IndexInterface $index)
     {
         $extensions = $this->extensions->all();
@@ -112,25 +78,16 @@ abstract class AbstractWorker implements WorkerInterface
         return $eligibleExtensions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderCondition(ConditionInterface $condition, $prefix = null)
     {
         return $this->conditionRenderer->render($this, $condition, $prefix);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderOrder(OrderInterface $condition, $prefix = null)
     {
         return $this->orderRenderer->render($this, $condition, $prefix);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function prepareData(IndexInterface $index, IndexableInterface $object)
     {
         $inAdmin = \Pimcore::inAdmin();
@@ -241,30 +198,10 @@ abstract class AbstractWorker implements WorkerInterface
         return $result;
     }
 
-    /**
-     * @param IndexColumnInterface $column
-     * @param mixed                $value
-     *
-     * @return mixed
-     */
     abstract protected function typeCastValues(IndexColumnInterface $column, $value);
 
-    /**
-     * @param IndexInterface $index
-     * @param array          $value
-     *
-     * @return mixed
-     */
     abstract protected function handleArrayValues(IndexInterface $index, array $value);
 
-    /**
-     * @param IndexColumnInterface $column
-     * @param IndexableInterface   $object
-     * @param mixed                $value
-     * @param int                  $virtualObjectId
-     *
-     * @return array
-     */
     protected function processRelationalData(IndexColumnInterface $column, IndexableInterface $object, $value, $virtualObjectId)
     {
         if (null === $value) {
@@ -299,12 +236,6 @@ abstract class AbstractWorker implements WorkerInterface
         return $relationData;
     }
 
-    /**
-     * @param IndexColumnInterface $column
-     * @param IndexableInterface   $object
-     *
-     * @return mixed|null
-     */
     protected function processGetter(IndexColumnInterface $column, IndexableInterface $object)
     {
         $getter = $column->getGetter();
@@ -315,17 +246,7 @@ abstract class AbstractWorker implements WorkerInterface
         return $getterClass->get($object, $column);
     }
 
-    /**
-     * @param IndexColumnInterface $column
-     * @param IndexableInterface   $object
-     * @param mixed                $originalValue
-     * @param int                  $virtualObjectId
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    protected function processInterpreter(IndexColumnInterface $column, IndexableInterface $object, $originalValue, $virtualObjectId)
+    protected function processInterpreter(IndexColumnInterface $column, IndexableInterface $object, $originalValue, int $virtualObjectId): array
     {
         $value = $originalValue;
         $relationData = [];
@@ -363,7 +284,7 @@ abstract class AbstractWorker implements WorkerInterface
      *
      * @throws \Exception
      */
-    protected function getInterpreterObject(IndexColumnInterface $column)
+    protected function getInterpreterObject(IndexColumnInterface $column): ?InterpreterInterface
     {
         $interpreter = $column->getInterpreter();
 
@@ -372,60 +293,34 @@ abstract class AbstractWorker implements WorkerInterface
 
             if ($interpreterObject instanceof InterpreterInterface) {
                 return $interpreterObject;
-            } else {
-                throw new \InvalidArgumentException(
-                    sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter)
-                );
             }
+
+            throw new \InvalidArgumentException(
+                sprintf('%s needs to implement "%s", "%s" given.', $column->getInterpreter(), InterpreterInterface::class, $interpreter)
+            );
         }
 
-        return false;
+        return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilterGroupHelper()
+    public function getFilterGroupHelper(): FilterGroupHelperInterface
     {
         return $this->filterGroupHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function createOrUpdateIndexStructures(IndexInterface $index);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function deleteIndexStructures(IndexInterface $index);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function deleteFromIndex(IndexInterface $index, IndexableInterface $object);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function updateIndex(IndexInterface $index, IndexableInterface $object);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getList(IndexInterface $index);
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function renderFieldType($type);
+    abstract public function renderFieldType(string $type);
 
-    /**
-     * Get System Attributes.
-     *
-     * @return array
-     */
-    protected function getSystemAttributes()
+    protected function getSystemAttributes(): array
     {
         return [
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,
@@ -440,12 +335,7 @@ abstract class AbstractWorker implements WorkerInterface
         ];
     }
 
-    /**
-     * Get System Attributes.
-     *
-     * @return array
-     */
-    protected function getLocalizedSystemAttributes()
+    protected function getLocalizedSystemAttributes(): array
     {
         return [
             'o_id' => IndexColumnInterface::FIELD_TYPE_INTEGER,

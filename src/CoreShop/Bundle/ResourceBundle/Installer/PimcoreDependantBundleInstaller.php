@@ -22,8 +22,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreDependantBundleInstaller implements ResourceInstallerInterface
 {
-    private $kernel;
-    private $bundleManager;
+    private KernelInterface $kernel;
+    private PimcoreBundleManager $bundleManager;
 
     public function __construct(KernelInterface $kernel, PimcoreBundleManager $bundleManager)
     {
@@ -31,9 +31,6 @@ final class PimcoreDependantBundleInstaller implements ResourceInstallerInterfac
         $this->bundleManager = $bundleManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ?

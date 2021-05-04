@@ -21,9 +21,6 @@ use Pimcore\Model\DataObject\Listing;
 
 class PimcoreRepository extends PimcoreDaoRepository implements PimcoreRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getClassId(): string
     {
         $class = $this->metadata->getClass('model');

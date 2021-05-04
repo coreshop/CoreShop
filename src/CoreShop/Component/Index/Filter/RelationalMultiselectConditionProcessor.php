@@ -24,9 +24,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class RelationalMultiselectConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
@@ -52,9 +49,6 @@ class RelationalMultiselectConditionProcessor implements FilterConditionProcesso
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];

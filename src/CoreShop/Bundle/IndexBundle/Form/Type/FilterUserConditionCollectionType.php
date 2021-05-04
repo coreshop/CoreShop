@@ -19,9 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FilterUserConditionCollectionType extends AbstractConfigurationCollectionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -29,9 +26,6 @@ final class FilterUserConditionCollectionType extends AbstractConfigurationColle
         $resolver->setDefault('entry_type', FilterUserConditionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_user_condition_collection';

@@ -69,33 +69,21 @@ class CoreShopOptimisticEntityLockBundle extends AbstractPimcoreBundle
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeCssPaths()
     {
         return [];

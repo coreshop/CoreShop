@@ -19,9 +19,6 @@ use Pimcore\Model\DataObject;
 
 class DataLoader implements DataLoaderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForObject(DataObject\Concrete $data, array $loadedObjects = []): array
     {
         if (!$data instanceof DataObject\AbstractObject) {

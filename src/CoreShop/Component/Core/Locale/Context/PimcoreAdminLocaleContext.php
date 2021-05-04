@@ -42,9 +42,6 @@ class PimcoreAdminLocaleContext implements LocaleContextInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocaleCode(): string
     {
         $request = $this->requestStack->getCurrentRequest();

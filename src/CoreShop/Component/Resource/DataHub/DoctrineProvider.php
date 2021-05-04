@@ -34,49 +34,15 @@ class DoctrineProvider
     /** @var Type[] */
     private static $standardTypes;
 
-    /**
-     * @var array
-     */
-    public $doctrineMetadata = array();
-
-    /**
-     * @var array
-     */
-    private $types = array();
-
-    /**
-     * @var array
-     */
-    private $typeClass = array();
-    /**
-     * @var array
-     */
-    private $doctrineToName = array();
-
-    /**
-     * @var array
-     */
-    private $inputTypes = array();
-
-    /**
-     * @var array
-     */
-    private $inputTypesToName = array();
-
-    /**
-     * @var array
-     */
-    private $identifierFields = array();
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
-     * @var array
-     */
-    private $dataBuffers = array();
+    public array $doctrineMetadata = array();
+    private array $types = array();
+    private array $typeClass = array();
+    private array $doctrineToName = array();
+    private array $inputTypes = array();
+    private array $inputTypesToName = array();
+    private array $identifierFields = array();
+    private EntityManagerInterface $em;
+    private array $dataBuffers = array();
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -119,7 +85,7 @@ class DoctrineProvider
 
         foreach ($entityMetaType->getFieldNames() as $fieldName) {
             $fieldType = $this->mapFieldType($entityMetaType->getTypeOfField($fieldName));
-            
+
             $resolver = new DoctrineField($fieldName, $fieldType);
             $fields[$fieldName] = $resolver->getDefinition();
             $inputFields[$fieldName] = array(

@@ -30,9 +30,9 @@ use Webmozart\Assert\Assert;
 
 class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $formFactory;
-    private $tokenStorage;
-    private $cartManager;
+    private FormFactoryInterface $formFactory;
+    private TokenStorageInterface $tokenStorage;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         FormFactoryInterface $formFactory,
@@ -44,25 +44,16 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'address';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -72,9 +63,6 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
             && $cart->getInvoiceAddress() instanceof AddressInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $customer = $this->getCustomer();
@@ -93,9 +81,6 @@ class AddressCheckoutStep implements CheckoutStepInterface, ValidationCheckoutSt
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);

@@ -21,20 +21,21 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService implements ConfigurationServiceInterface
 {
-    protected $entityManager;
-    protected $configurationRepository;
-    protected $configurationFactory;
+    protected EntityManagerInterface $entityManager;
+    protected ConfigurationRepositoryInterface $configurationRepository;
+    protected FactoryInterface $configurationFactory;
 
-    public function __construct(EntityManagerInterface $entityManager, ConfigurationRepositoryInterface $configurationRepository, FactoryInterface $configurationFactory)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ConfigurationRepositoryInterface $configurationRepository,
+        FactoryInterface $configurationFactory
+    )
     {
         $this->entityManager = $entityManager;
         $this->configurationRepository = $configurationRepository;
         $this->configurationFactory = $configurationFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $key, bool $returnObject = false)
     {
         $config = $this->configurationRepository->findByKey($key);
@@ -46,9 +47,6 @@ class ConfigurationService implements ConfigurationServiceInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(string $key, $data): ConfigurationInterface
     {
         $config = $this->get($key, true);
@@ -65,9 +63,6 @@ class ConfigurationService implements ConfigurationServiceInterface
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(string $key): void
     {
         $config = $this->get($key, true);

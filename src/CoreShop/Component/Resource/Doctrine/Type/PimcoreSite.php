@@ -23,25 +23,16 @@ class PimcoreSite extends Type
 {
     public const PIMCORE_SITE = 'pimcoreSite';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return Site::getById($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof Site) {
@@ -51,25 +42,16 @@ class PimcoreSite extends Type
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return ParameterType::INTEGER;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return self::PIMCORE_SITE;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

@@ -39,7 +39,7 @@ abstract class AbstractPimcorePage extends SymfonyPage implements PimcorePageInt
         return $element;
     }
 
-    public function waitForPimcore($time = 10000, $condition = null)
+    public function waitForPimcore($time = 10000, $condition = null): void
     {
         $start = microtime(true);
         $end = $start + $time / 1000.0;

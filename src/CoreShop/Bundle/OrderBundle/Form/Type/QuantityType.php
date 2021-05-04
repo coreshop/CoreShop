@@ -25,9 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class QuantityType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addViewTransformer(new CallbackTransformer(
@@ -40,9 +37,6 @@ final class QuantityType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -61,9 +55,6 @@ final class QuantityType extends AbstractType
         $resolver->setAllowedTypes('html5', 'bool');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         if ($options['unit_definition'] instanceof ProductUnitDefinitionInterface) {
@@ -80,17 +71,11 @@ final class QuantityType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_quantity';

@@ -20,9 +20,6 @@ use CoreShop\Component\Configuration\Repository\ConfigurationRepositoryInterface
 
 class ConfigurationRepository extends EntityRepository implements ConfigurationRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByKey(string $key): ?ConfigurationInterface
     {
         return $this->createQueryBuilder('o')

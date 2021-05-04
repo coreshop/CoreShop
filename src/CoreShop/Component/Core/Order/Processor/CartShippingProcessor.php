@@ -55,9 +55,6 @@ final class CartShippingProcessor implements CartProcessorInterface
         $this->cartContextResolver = $cartContextResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         if (!$cart instanceof CoreOrderInterface) {

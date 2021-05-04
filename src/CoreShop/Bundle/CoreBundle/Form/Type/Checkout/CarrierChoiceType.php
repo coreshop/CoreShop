@@ -29,10 +29,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CarrierChoiceType extends AbstractResourceType
 {
-    private $repository;
-    private $carriersResolver;
-    private $taxedShippingCalculator;
-    private $cartContextResolver;
+    private CarrierRepositoryInterface $repository;
+    private CarriersResolverInterface $carriersResolver;
+    private TaxedShippingCalculatorInterface $taxedShippingCalculator;
+    private CartContextResolverInterface $cartContextResolver;
 
     public function __construct(
         $dataClass,
@@ -50,9 +50,6 @@ final class CarrierChoiceType extends AbstractResourceType
         $this->cartContextResolver = $cartContextResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -77,9 +74,6 @@ final class CarrierChoiceType extends AbstractResourceType
             ->setAllowedTypes('cart', OrderInterface::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $prices = [];
@@ -107,17 +101,11 @@ final class CarrierChoiceType extends AbstractResourceType
         $view->vars['show_carrier_price'] = $options['show_carrier_price'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_carrier_choice';

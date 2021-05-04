@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\DTO;
 
 class AddMultipleToCart implements AddMultipleToCartInterface
 {
-    private $items;
+    private array $items;
 
     public function __construct(array $items)
     {
@@ -39,9 +39,6 @@ class AddMultipleToCart implements AddMultipleToCartInterface
         $this->items = $items;
     }
 
-    /**
-     * @param AddToCartInterface $addToCart
-     */
     public function addItem(AddToCartInterface $addToCart): void
     {
         $this->items[] = $addToCart;

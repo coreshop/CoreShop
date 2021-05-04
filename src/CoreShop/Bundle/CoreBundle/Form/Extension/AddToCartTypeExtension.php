@@ -22,9 +22,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddToCartTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $originalCartItem = $builder->get('cartItem');
@@ -35,9 +32,6 @@ final class AddToCartTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [AddToCartType::class];

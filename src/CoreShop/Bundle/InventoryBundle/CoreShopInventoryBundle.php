@@ -14,10 +14,9 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\InventoryBundle;
 
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 final class CoreShopInventoryBundle extends Bundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+
 }

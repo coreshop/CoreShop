@@ -23,18 +23,13 @@ use Webmozart\Assert\Assert;
 
 final class CreateIndexListener
 {
-    private $workerServiceRegistry;
+    private ServiceRegistryInterface $workerServiceRegistry;
 
     public function __construct(ServiceRegistryInterface $workerServiceRegistry)
     {
         $this->workerServiceRegistry = $workerServiceRegistry;
     }
 
-    /**
-     * Prevent channel deletion if no more channels enabled.
-     *
-     * @param ResourceControllerEvent $event
-     */
     public function onIndexSavePost(ResourceControllerEvent $event): void
     {
         $resource = $event->getSubject();

@@ -20,9 +20,6 @@ use Pimcore\Model\DataObject\Data\QuantityValue;
 
 class QuantityValueInterpreter implements InterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         if ($value instanceof QuantityValue) {

@@ -22,23 +22,14 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerCompanyRelationListener
 {
-    /**
-     * @var CustomerRepositoryInterface
-     */
-    protected $customerRepository;
+    protected CustomerRepositoryInterface $customerRepository;
 
-    /**
-     * @param CustomerRepositoryInterface $customerRepository
-     */
     public function __construct(CustomerRepositoryInterface $customerRepository)
     {
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     */
-    public function onCompanyDelete(DataObjectEvent $event)
+    public function onCompanyDelete(DataObjectEvent $event): void
     {
         $object = $event->getObject();
 
@@ -64,5 +55,4 @@ final class CustomerCompanyRelationListener
             $customer->save();
         }
     }
-
 }

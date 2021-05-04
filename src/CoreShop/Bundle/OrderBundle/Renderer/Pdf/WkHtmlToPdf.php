@@ -19,22 +19,15 @@ use Symfony\Component\Process\Process;
 
 final class WkHtmlToPdf implements PdfRendererInterface
 {
-    private $kernelCacheDir;
-    private $kernelRootDir;
+    private string $kernelCacheDir;
+    private string $kernelRootDir;
 
-    /**
-     * @param string $kernelCacheDir
-     * @param string $kernelRootDir
-     */
     public function __construct(string $kernelCacheDir, string $kernelRootDir)
     {
         $this->kernelCacheDir = $kernelCacheDir;
         $this->kernelRootDir = $kernelRootDir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fromString(string $string, string $header = '', string $footer = '', array $config = []): string
     {
         $bodyHtml = $this->createHtmlFile($string);

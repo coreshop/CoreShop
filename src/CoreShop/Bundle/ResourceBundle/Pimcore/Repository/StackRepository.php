@@ -23,11 +23,11 @@ use Pimcore\Model\DataObject\Listing;
 
 class StackRepository extends PimcoreRepository
 {
-    private $classNames = [];
-    private $fqnStackClasses = [];
-    private $interface;
+    private array $classNames = [];
+    private array $fqnStackClasses = [];
+    private array $interface = [];
 
-    public function __construct(MetadataInterface $metadata, Connection $connection, $interface, array $stackClasses)
+    public function __construct(MetadataInterface $metadata, Connection $connection, array $interface, array $stackClasses)
     {
         parent::__construct($metadata, $connection);
 
@@ -41,10 +41,7 @@ class StackRepository extends PimcoreRepository
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getClassIds()
+    public function getClassIds(): array
     {
         $ids = [];
 
@@ -55,19 +52,13 @@ class StackRepository extends PimcoreRepository
         return $ids;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function findAll()
+    public function findAll(): array
     {
         $list = $this->getList();
 
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getList()
     {
         $list = new DataObject\Listing();
@@ -76,9 +67,6 @@ class StackRepository extends PimcoreRepository
         return $list;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function forceFind($id, bool $force = true)
     {
         $instance = DataObject::getById($id, $force);
@@ -94,9 +82,6 @@ class StackRepository extends PimcoreRepository
         return $instance;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
         $criteria[] = [
@@ -106,9 +91,6 @@ class StackRepository extends PimcoreRepository
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneBy(array $criteria)
     {
         $instance = parent::findOneBy($criteria);

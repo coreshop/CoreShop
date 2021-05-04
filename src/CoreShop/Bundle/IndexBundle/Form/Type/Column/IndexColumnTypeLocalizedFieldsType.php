@@ -19,16 +19,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class IndexColumnTypeLocalizedFieldsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_column_type_localized_fields';

@@ -21,20 +21,9 @@ use CoreShop\Component\Currency\Repository\ExchangeRateRepositoryInterface;
 
 final class CurrencyConverter implements CurrencyConverterInterface
 {
-    /**
-     * @var ExchangeRateRepositoryInterface
-     */
-    private $exchangeRateRepository;
-
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    private $currencyRepository;
-
-    /**
-     * @var array
-     */
-    private $cache;
+    private ExchangeRateRepositoryInterface $exchangeRateRepository;
+    private CurrencyRepositoryInterface $currencyRepository;
+    private array $cache = [];
 
     public function __construct(ExchangeRateRepositoryInterface $exchangeRateRepository, CurrencyRepositoryInterface $currencyRepository)
     {
@@ -42,9 +31,6 @@ final class CurrencyConverter implements CurrencyConverterInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convert(int $amount, string $fromCurrencyCode, string $toCurrencyCode): int
     {
         if ($fromCurrencyCode === $toCurrencyCode) {
@@ -64,13 +50,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
         return (int) round($amount / $exchangeRate->getExchangeRate());
     }
 
-    /**
-     * @param string $fromCode
-     * @param string $toCode
-     *
-     * @return ExchangeRateInterface|null
-     */
-    private function getExchangeRate($fromCode, $toCode): ?ExchangeRateInterface
+    private function getExchangeRate(string $fromCode, string $toCode): ?ExchangeRateInterface
     {
         $fromToIndex = $this->createIndex($fromCode, $toCode);
 
@@ -94,13 +74,7 @@ final class CurrencyConverter implements CurrencyConverterInterface
         return null;
     }
 
-    /**
-     * @param string $prefix
-     * @param string $suffix
-     *
-     * @return string
-     */
-    private function createIndex($prefix, $suffix): string
+    private function createIndex(string $prefix, string $suffix): string
     {
         return sprintf('%s-%s', $prefix, $suffix);
     }

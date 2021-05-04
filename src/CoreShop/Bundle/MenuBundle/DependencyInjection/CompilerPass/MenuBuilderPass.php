@@ -28,9 +28,6 @@ final class MenuBuilderPass implements CompilerPassInterface
 {
     public const MENU_BUILDER_TAG = 'coreshop.menu';
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('coreshop.menu.registry')) {

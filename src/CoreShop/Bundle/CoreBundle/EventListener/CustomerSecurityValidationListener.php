@@ -23,16 +23,16 @@ use Pimcore\Model\Element\ValidationException;
 
 final class CustomerSecurityValidationListener
 {
-    protected $requestHelper;
-    protected $customerRepository;
-    protected $className;
-    protected $loginIdentifier;
+    protected RequestHelper $requestHelper;
+    protected CustomerRepositoryInterface $customerRepository;
+    protected string $className;
+    protected string $loginIdentifier;
 
     public function __construct(
         RequestHelper $requestHelper,
         CustomerRepositoryInterface $customerRepository,
-        $className,
-        $loginIdentifier
+        string $className,
+        string $loginIdentifier
     ) {
         $this->requestHelper = $requestHelper;
         $this->customerRepository = $customerRepository;
@@ -40,12 +40,7 @@ final class CustomerSecurityValidationListener
         $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * @param DataObjectEvent $event
-     *
-     * @throws ValidationException
-     */
-    public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event)
+    public function checkCustomerSecurityDataBeforeUpdate(DataObjectEvent $event): void
     {
         if ($this->requestHelper->hasCurrentRequest() && !$this->requestHelper->isFrontendRequestByAdmin()) {
             return;

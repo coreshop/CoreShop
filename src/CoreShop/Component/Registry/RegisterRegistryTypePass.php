@@ -19,33 +19,12 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class RegisterRegistryTypePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    protected $registry;
+    protected string $registry;
+    protected string $formRegistry;
+    protected string $parameter;
+    protected string $tag;
 
-    /**
-     * @var string
-     */
-    protected $formRegistry;
-
-    /**
-     * @var string
-     */
-    protected $parameter;
-
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     */
-    public function __construct($registry, $formRegistry, $parameter, $tag)
+    public function __construct(string $registry, string $formRegistry, string $parameter, string $tag)
     {
         $this->registry = $registry;
         $this->formRegistry = $formRegistry;
@@ -53,10 +32,7 @@ abstract class RegisterRegistryTypePass implements CompilerPassInterface
         $this->tag = $tag;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;

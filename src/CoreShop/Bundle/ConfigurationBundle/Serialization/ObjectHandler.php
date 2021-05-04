@@ -17,14 +17,6 @@ use JMS\Serializer\JsonSerializationVisitor;
 
 class ObjectHandler
 {
-    /**
-     * @param JsonSerializationVisitor $visitor
-     * @param mixed                    $value
-     * @param array                    $type
-     * @param Context                  $context
-     *
-     * @return mixed
-     */
     public function serializeRelation(JsonSerializationVisitor $visitor, $value, array $type, Context $context)
     {
         return $value;

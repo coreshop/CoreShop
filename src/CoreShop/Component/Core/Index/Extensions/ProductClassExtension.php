@@ -30,17 +30,11 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
         $this->productClassName = $productClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(IndexInterface $index): bool
     {
         return $this->productClassName === $index->getClass();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSystemColumns(): array
     {
         return [
@@ -50,17 +44,11 @@ final class ProductClassExtension implements IndexColumnsExtensionInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocalizedSystemColumns(): array
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndexColumns(IndexableInterface $indexable): array
     {
         if ($indexable instanceof ProductInterface) {

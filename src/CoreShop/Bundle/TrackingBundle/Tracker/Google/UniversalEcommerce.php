@@ -22,35 +22,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UniversalEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var TrackerInterface
-     */
-    public $tracker;
+    public TrackerInterface $tracker;
+    public ConfigResolverInterface $config;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
-
-    /**
-     * @param TrackerInterface $tracker
-     */
     public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
 
-    /**
-     * @param ConfigResolverInterface $config
-     */
     public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -60,49 +44,31 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackProduct($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackProductImpression($product): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         // not implemented
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCheckoutComplete($order): void
     {
         if ($this->isGlobalSiteTagMode() === true) {
@@ -133,9 +99,6 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, Tracker::BLOCK_AFTER_TRACK);
     }
 
-    /**
-     * @return bool
-     */
     protected function isGlobalSiteTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();
@@ -146,13 +109,6 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         return (bool) $config->get('gtagcode');
     }
 
-    /**
-     * Transform ActionData into classic analytics data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
     protected function transformOrder(array $actionData): array
     {
         return [
@@ -165,13 +121,6 @@ class UniversalEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-    /**
-     * Transform product action into enhanced data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
     protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([

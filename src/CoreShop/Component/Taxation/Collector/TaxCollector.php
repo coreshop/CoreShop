@@ -22,20 +22,9 @@ use CoreShop\Component\Taxation\Model\TaxRateInterface;
 
 class TaxCollector implements TaxCollectorInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $taxRateRepository;
+    private RepositoryInterface $taxRateRepository;
+    private FactoryInterface $taxItemFactory;
 
-    /**
-     * @var FactoryInterface
-     */
-    private $taxItemFactory;
-
-    /**
-     * @param RepositoryInterface $taxRateRepository
-     * @param FactoryInterface    $taxItemFactory
-     */
     public function __construct(
         RepositoryInterface $taxRateRepository,
         FactoryInterface $taxItemFactory
@@ -44,9 +33,6 @@ class TaxCollector implements TaxCollectorInterface
         $this->taxItemFactory = $taxItemFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collectTaxes(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -62,9 +48,6 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collectTaxesFromGross(TaxCalculatorInterface $taxCalculator, $price, array $usedTaxes = []): array
     {
         if ($taxCalculator instanceof TaxCalculatorInterface) {
@@ -80,9 +63,6 @@ class TaxCollector implements TaxCollectorInterface
         return $usedTaxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mergeTaxes(array $taxes1, array $taxes2): array
     {
         foreach ($taxes1 as $id => $tax) {

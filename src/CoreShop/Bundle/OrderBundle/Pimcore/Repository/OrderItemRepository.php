@@ -19,9 +19,6 @@ use CoreShop\Component\Order\Repository\OrderItemRepositoryInterface;
 
 class OrderItemRepository extends PimcoreRepository implements OrderItemRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findOrderItemsByProductId(int $productId): array
     {
         $list = $this->getList();

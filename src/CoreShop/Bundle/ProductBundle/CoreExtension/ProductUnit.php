@@ -26,17 +26,11 @@ class ProductUnit extends Select
      */
     public $fieldtype = 'coreShopProductUnit';
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];

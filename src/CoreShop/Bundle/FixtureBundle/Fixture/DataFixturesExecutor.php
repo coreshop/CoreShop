@@ -22,28 +22,18 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class DataFixturesExecutor implements DataFixturesExecutorInterface
 {
-    /** @var EntityManager */
-    private $em;
-
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EntityManager $em;
+    private EventDispatcherInterface $eventDispatcher;
 
     /** @var callable|null */
     private $logger;
 
-    /**
-     * @param EntityManager            $em
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EntityManager $em, EventDispatcherInterface $eventDispatcher)
     {
         $this->em = $em;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute(array $fixtures, $fixturesType)
     {
         $event = new DataFixturesEvent($this->em, $fixturesType, $this->logger);
@@ -58,9 +48,6 @@ final class DataFixturesExecutor implements DataFixturesExecutorInterface
         $this->eventDispatcher->dispatch($event, FixturesEvents::DATA_FIXTURES_POST_LOAD);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLogger($logger)
     {
         $this->logger = $logger;

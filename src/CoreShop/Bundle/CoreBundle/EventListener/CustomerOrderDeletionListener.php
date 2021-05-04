@@ -21,7 +21,7 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class CustomerOrderDeletionListener
 {
-    private $orderRepository;
+    private OrderRepositoryInterface $orderRepository;
 
     public function __construct(OrderRepositoryInterface $orderRepository)
     {

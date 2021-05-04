@@ -18,7 +18,7 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class EntityLockManager implements EntityLockManagerInterface
 {
-    private $lockedVersions = [];
+    private array $lockedVersions = [];
 
     public function lock(Concrete $dataObject, $lockVersion = null)
     {

@@ -21,9 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ProductStoreValuesRepository extends EntityRepository implements ProductStoreValuesRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')
@@ -33,9 +30,6 @@ class ProductStoreValuesRepository extends EntityRepository implements ProductSt
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')

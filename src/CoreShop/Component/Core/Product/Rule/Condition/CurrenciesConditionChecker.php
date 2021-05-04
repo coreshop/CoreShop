@@ -21,9 +21,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class CurrenciesConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

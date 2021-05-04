@@ -20,17 +20,14 @@ use Twig\TwigFilter;
 
 final class FormatAddressExtension extends AbstractExtension
 {
-    private $addressFormatter;
+    private AddressFormatterInterface $addressFormatter;
 
     public function __construct(AddressFormatterInterface $addressFormatter)
     {
         $this->addressFormatter = $addressFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_format_address', [$this->addressFormatter, 'formatAddress'], ['is_safe' => ['html']]),

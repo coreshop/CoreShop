@@ -25,18 +25,8 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
 {
-    /**
-     * @var string
-     */
-    protected $type;
+    protected string $type;
 
-    /**
-     * @param string $registry
-     * @param string $formRegistry
-     * @param string $parameter
-     * @param string $tag
-     * @param string $type
-     */
     public function __construct($registry, $formRegistry, $parameter, $tag, $type)
     {
         parent::__construct($registry, $formRegistry, $parameter, $tag);
@@ -44,10 +34,7 @@ abstract class AbstractNotificationRulePass extends RegisterRegistryTypePass
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->has($this->registry) || !$container->has($this->formRegistry)) {
             return;

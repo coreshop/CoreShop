@@ -24,10 +24,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class CoreShopPayumExtension extends AbstractModelExtension implements PrependExtensionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -42,9 +39,6 @@ final class CoreShopPayumExtension extends AbstractModelExtension implements Pre
         $container->setParameter('payum.template.obtain_credit_card', $config['template']['obtain_credit_card']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepend(ContainerBuilder $container)
     {
         if (!$container->hasExtension('coreshop_payment')) {

@@ -41,57 +41,36 @@ class DataFixture extends AbstractResource implements DataFixtureInterface
      */
     protected $loadedAt;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClassName()
     {
         return $this->className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setClassName($className)
     {
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLoadedAt()
     {
         return $this->loadedAt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLoadedAt($loadedAt)
     {
         $this->loadedAt = $loadedAt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setVersion($version)
     {
         $this->version = $version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersion()
     {
         return $this->version;

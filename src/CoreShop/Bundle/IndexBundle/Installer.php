@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class Installer implements InstallerInterface
 {
-    protected $kernel;
+    protected KernelInterface $kernel;
 
     public function __construct(KernelInterface $kernel)
     {

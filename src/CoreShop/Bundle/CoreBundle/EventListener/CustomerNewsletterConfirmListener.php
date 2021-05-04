@@ -25,9 +25,9 @@ use Webmozart\Assert\Assert;
 
 final class CustomerNewsletterConfirmListener
 {
-    private $linkGenerator;
-    private $requestStack;
-    private $eventDispatcher;
+    private LinkGeneratorInterface $linkGenerator;
+    private RequestStack $requestStack;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
@@ -62,7 +62,12 @@ final class CustomerNewsletterConfirmListener
 
         $confirmEvent = new RequestNewsletterConfirmationEvent(
             $user,
-            $this->linkGenerator->generate($event->getSubject(), 'coreshop_customer_confirm_newsletter', ['_locale' => $this->requestStack->getMasterRequest()->getLocale()], UrlGeneratorInterface::ABSOLUTE_URL)
+            $this->linkGenerator->generate(
+                $event->getSubject(),
+                'coreshop_customer_confirm_newsletter',
+                ['_locale' => $this->requestStack->getMasterRequest()->getLocale()],
+                UrlGeneratorInterface::ABSOLUTE_URL
+            )
         );
         $this->eventDispatcher->dispatch($confirmEvent, 'coreshop.customer.request_newsletter_confirm');
     }

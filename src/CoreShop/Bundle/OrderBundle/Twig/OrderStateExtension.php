@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Twig;
 
-use CoreShop\Bundle\OrderBundle\Templating\Helper\OrderStateHelperInterface;
 use CoreShop\Bundle\WorkflowBundle\StateManager\WorkflowStateInfoManagerInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\OrderPaymentStates;
@@ -25,16 +24,13 @@ use Twig\TwigFilter;
 
 final class OrderStateExtension extends AbstractExtension
 {
-    private $workflowStateManager;
+    private WorkflowStateInfoManagerInterface $workflowStateManager;
 
     public function __construct(WorkflowStateInfoManagerInterface $workflowStateManager)
     {
         $this->workflowStateManager = $workflowStateManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters(): array
     {
         return [

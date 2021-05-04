@@ -20,9 +20,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class ResourceList extends Resource
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::listOf($this->doctrineProvider->getGraphQlType($this->className));

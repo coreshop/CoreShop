@@ -26,11 +26,8 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
  */
 final class DataFixturesSorter
 {
-    /** @var array */
-    private $orderedFixtures = [];
-
-    /** @var array */
-    private $fixtures = [];
+    private array $orderedFixtures = [];
+    private array $fixtures = [];
 
     /**
      * Returns the array of data fixtures to execute.

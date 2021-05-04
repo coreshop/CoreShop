@@ -19,106 +19,27 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 interface ClassUpdateInterface
 {
-    /**
-     * @param string $className
-     */
     public function __construct(string $className);
 
-    /**
-     * Save Field Definition.
-     *
-     * @return bool
-     */
     public function save(): bool;
 
-    /**
-     * get a property from the class.
-     *
-     * @param string $property
-     *
-     * @return array
-     */
-    public function getProperty($property): array;
+    public function getProperty(string $property): array;
 
-    /**
-     * set a property for the class.
-     *
-     * @param string $property
-     * @param mixed  $value
-     */
-    public function setProperty($property, $value): void;
+    public function setProperty(string $property, $value): void;
 
-    /**
-     * Check if Class has field.
-     *
-     * @param string $fieldName
-     *
-     * @return bool
-     */
-    public function hasField($fieldName): bool;
+    public function hasField(string $fieldName): bool;
 
-    /**
-     * @param string $fieldName
-     *
-     * @return Data|null
-     */
-    public function getFieldDefinition($fieldName): ?Data;
+    public function getFieldDefinition(string $fieldName): ?Data;
 
-    /**
-     * Insert Field at the end.
-     *
-     * @param array $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertField($jsonFieldDefinition): void;
+    public function insertField(array $jsonFieldDefinition): void;
 
-    /**
-     * Insert Field before another field.
-     *
-     * @param string $fieldName
-     * @param array  $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition): void;
+    public function insertFieldBefore(string $fieldName, array $jsonFieldDefinition): void;
 
-    /**
-     * Insert Field after another field.
-     *
-     * @param string $fieldName
-     * @param array  $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition): void;
+    public function insertFieldAfter(string $fieldName, array $jsonFieldDefinition): void;
 
-    /**
-     * Replace existing Field with a new Definition.
-     *
-     * @param string $fieldName
-     * @param array  $jsonFieldDefinition
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition): void;
+    public function replaceField(string $fieldName, array $jsonFieldDefinition): void;
 
-    /**
-     * Replace Properties from any field.
-     *
-     * @param string $fieldName
-     * @param array  $keyValues
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues): void;
+    public function replaceFieldProperties(string $fieldName, array $keyValues): void;
 
-    /**
-     * Remove existing Field.
-     *
-     * @param string $fieldName
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
-    public function removeField($fieldName): void;
+    public function removeField(string $fieldName): void;
 }

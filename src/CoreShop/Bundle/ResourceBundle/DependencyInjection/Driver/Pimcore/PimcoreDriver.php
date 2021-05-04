@@ -31,18 +31,12 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class PimcoreDriver extends AbstractDriver
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::load($container, $metadata);
 
@@ -63,10 +57,7 @@ final class PimcoreDriver extends AbstractDriver
         $this->addRepositoryFactory($container, $metadata);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function setClassesParameters(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::setClassesParameters($container, $metadata);
 
@@ -79,12 +70,12 @@ final class PimcoreDriver extends AbstractDriver
      * @param ContainerBuilder  $container
      * @param MetadataInterface $metadata
      */
-    protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addDefaultPimcoreController(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $this->addPimcoreController($container, $metadata, $metadata->getClass('pimcore_controller'));
     }
 
-    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, $classValue, $suffix = null)
+    protected function addPimcoreController(ContainerBuilder $container, MetadataInterface $metadata, string $classValue, string $suffix = null): void
     {
         $definition = new Definition($classValue);
 
@@ -118,11 +109,7 @@ final class PimcoreDriver extends AbstractDriver
         $container->setDefinition($serviceId, $definition);
     }
 
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addPimcoreClass(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $folder = $metadata->getParameter('path');
 
@@ -153,10 +140,7 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryClassParameterName = sprintf('%s.repository.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryClass = PimcoreRepository::class;
@@ -190,10 +174,7 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-     /**
-     * {@inheritdoc}
-     */
-    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryFactoryClassParameterName = sprintf('%s.repository.factory.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryFactoryClass = PimcoreRepositoryFactory::class;
@@ -228,10 +209,7 @@ final class PimcoreDriver extends AbstractDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $alias = new Alias(ObjectManager::class);
         $alias->setPublic(true);

@@ -19,7 +19,7 @@ use Doctrine\DBAL\Connection;
 
 abstract class AbstractMysqlDynamicRenderer implements DynamicRendererInterface
 {
-    protected $connection;
+    protected Connection $connection;
 
     public function __construct(Connection $connection)
     {

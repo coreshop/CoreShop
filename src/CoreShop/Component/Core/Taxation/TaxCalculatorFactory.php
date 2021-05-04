@@ -29,9 +29,6 @@ class TaxCalculatorFactory implements TaxCalculatorFactoryInterface
         $this->taxRuleRepository = $taxRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCalculatorForAddress(
         TaxRuleGroupInterface $taxRuleGroup,
         AddressInterface $address

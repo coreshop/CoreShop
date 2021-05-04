@@ -27,16 +27,11 @@ use Pimcore\Tool;
  */
 class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
 {
-    private $definition;
-    private $oldFieldName;
-    private $newFieldName;
-    private $database;
+    private ClassDefinition $definition;
+    private string $oldFieldName;
+    private string $newFieldName;
+    private Connection $database;
 
-    /**
-     * @param ClassDefinition $definition
-     * @param string          $oldFieldName
-     * @param string          $newFieldName
-     */
     public function __construct(ClassDefinition $definition, string $oldFieldName, string $newFieldName)
     {
         $this->definition = $definition;
@@ -45,9 +40,6 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         $this->database = Db::getDoctrineConnection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rename(): void
     {
         $queries = $this->getRenameQueries();
@@ -61,25 +53,16 @@ class ClassDefinitionFieldReNamer implements DefinitionFieldReNamerInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): ClassDefinition
     {
         return $this->definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOldFieldName(): string
     {
         return $this->oldFieldName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNewFieldName(): string
     {
         return $this->newFieldName;

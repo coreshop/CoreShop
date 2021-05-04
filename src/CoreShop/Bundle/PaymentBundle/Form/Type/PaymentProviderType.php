@@ -24,9 +24,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class PaymentProviderType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,9 +42,6 @@ final class PaymentProviderType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_payment_provider';

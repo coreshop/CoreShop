@@ -23,9 +23,6 @@ class ItemSelector extends DynamicDropdownMultiple
      */
     public $fieldtype = 'coreShopItemSelector';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectsAllowed()
     {
         return true;

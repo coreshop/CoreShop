@@ -20,22 +20,13 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class PimcoreResourceDataTransformer implements DataTransformerInterface
 {
-    /**
-     * @var RepositoryInterface
-     */
-    private $repository;
+    private RepositoryInterface $repository;
 
-    /**
-     * @param RepositoryInterface $repository
-     */
     public function __construct(RepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value)
     {
         if ($value instanceof ResourceInterface) {
@@ -45,9 +36,6 @@ class PimcoreResourceDataTransformer implements DataTransformerInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value)
     {
         if ($value) {

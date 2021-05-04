@@ -33,9 +33,6 @@ class ConfigurationController extends ResourceController
         return $this->viewHandler->handle(['success' => true]);
     }
 
-    /**
-     * @return ConfigurationServiceInterface
-     */
     private function getConfigurationService(): ConfigurationServiceInterface
     {
         return $this->get(ConfigurationServiceInterface::class);

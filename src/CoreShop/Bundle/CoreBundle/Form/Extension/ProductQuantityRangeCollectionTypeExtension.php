@@ -26,9 +26,6 @@ use Symfony\Component\Form\FormEvents;
 
 class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {
@@ -85,9 +82,6 @@ class ProductQuantityRangeCollectionTypeExtension extends AbstractTypeExtension
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeCollectionType::class];

@@ -37,17 +37,11 @@ class ProductExtractor implements TrackingExtractorInterface
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof PurchasableInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         $categories = [];

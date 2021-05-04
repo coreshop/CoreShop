@@ -22,9 +22,6 @@ use Doctrine\Common\Collections\Collection;
 
 class ProductQuantityPriceRulesCloner implements ProductClonerInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function clone(ProductInterface $product, ProductInterface $referenceProduct, bool $resetExistingData = false): void
     {
         if ($product->getId() === null) {

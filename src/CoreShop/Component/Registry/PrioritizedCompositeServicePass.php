@@ -19,33 +19,12 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    private $serviceId;
+    private string $serviceId;
+    private string $compositeId;
+    private string $tagName;
+    private string $methodName;
 
-    /**
-     * @var string
-     */
-    private $compositeId;
-
-    /**
-     * @var string
-     */
-    private $tagName;
-
-    /**
-     * @var string
-     */
-    private $methodName;
-
-    /**
-     * @param string $serviceId
-     * @param string $compositeId
-     * @param string $tagName
-     * @param string $methodName
-     */
-    public function __construct($serviceId, $compositeId, $tagName, $methodName)
+    public function __construct(string $serviceId, string $compositeId, string $tagName, string $methodName)
     {
         $this->serviceId = $serviceId;
         $this->compositeId = $compositeId;
@@ -53,9 +32,6 @@ abstract class PrioritizedCompositeServicePass implements CompilerPassInterface
         $this->methodName = $methodName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition($this->compositeId) && !$container->hasAlias($this->compositeId)) {

@@ -31,9 +31,6 @@ final class CartTextProcessor implements CartProcessorInterface
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         foreach ($cart->getItems() as $item) {

@@ -41,9 +41,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         $collection->addBundle(new CoreShopMenuBundle(), 4000);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -51,9 +48,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -70,25 +64,16 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         $container->addCompilerPass(new RegisterFilterUserConditionTypesPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Index\Model';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - Index';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - Index Bundle';
@@ -128,9 +113,6 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getInstaller()
     {
         if ($this->container->has(Installer::class)) {
@@ -145,41 +127,26 @@ final class CoreShopIndexBundle extends AbstractResourceBundle implements Pimcor
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAdminIframePath()
     {
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCssPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeJsPaths()
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEditmodeCssPaths()
     {
         return [];

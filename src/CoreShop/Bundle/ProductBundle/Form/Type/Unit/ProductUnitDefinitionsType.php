@@ -25,9 +25,6 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 final class ProductUnitDefinitionsType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::SUBMIT, [$this, 'onSubmit']);
@@ -70,9 +67,6 @@ final class ProductUnitDefinitionsType extends AbstractResourceType
         PropertyAccess::createPropertyAccessor()->setValue($unitDefinitions, 'additionalUnitDefinitions', $additionalUnitDefinitions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definitions';

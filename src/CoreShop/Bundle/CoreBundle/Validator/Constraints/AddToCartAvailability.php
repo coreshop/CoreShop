@@ -23,17 +23,11 @@ final class AddToCartAvailability extends Constraint
      */
     public $message;
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_add_to_cart_availability';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

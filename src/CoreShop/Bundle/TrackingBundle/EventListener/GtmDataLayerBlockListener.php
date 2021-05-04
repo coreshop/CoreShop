@@ -23,10 +23,10 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class GtmDataLayerBlockListener
 {
-    protected $pimcoreContextResolver;
-    protected $responseHelper;
-    protected $codeTracker;
-    protected $siteIdProvider;
+    protected PimcoreContextResolver $pimcoreContextResolver;
+    protected ResponseHelper $responseHelper;
+    protected SiteIdProvider $siteIdProvider;
+    protected CodeTracker $codeTracker;
 
     public function __construct(
         PimcoreContextResolver $pimcoreContextResolver,
@@ -40,10 +40,7 @@ class GtmDataLayerBlockListener
         $this->codeTracker = $codeTracker;
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
-    public function onKernelResponse(ResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event): void
     {
         $request = $event->getRequest();
 
@@ -82,10 +79,7 @@ class GtmDataLayerBlockListener
         $response->setContent($content);
     }
 
-    /**
-     * @return string
-     */
-    private function generateCode()
+    private function generateCode(): string
     {
         $html = '';
         foreach ($this->codeTracker->getBlocks() as $code) {

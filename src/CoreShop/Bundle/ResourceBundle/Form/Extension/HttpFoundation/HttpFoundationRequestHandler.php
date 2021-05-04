@@ -30,14 +30,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler
 {
-    /**
-     * @var ServerParams
-     */
-    private $serverParams;
+    private ServerParams $serverParams;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(ServerParams $serverParams = null)
     {
         parent::__construct($serverParams);
@@ -45,9 +39,6 @@ final class HttpFoundationRequestHandler extends \Symfony\Component\Form\Extensi
         $this->serverParams = $serverParams ?: new ServerParams();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handleRequest(FormInterface $form, $request = null): void
     {
         if (!$request instanceof Request) {

@@ -25,9 +25,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInterface
 {
-    private $storeRepository;
-    private $requestHelper;
-    private $documentService;
+    private StoreRepositoryInterface $storeRepository;
+    private RequestHelper $requestHelper;
+    private Service $documentService;
 
     public function __construct(
         StoreRepositoryInterface $storeRepository,
@@ -39,9 +39,6 @@ final class PimcoreAdminSiteBasedRequestResolver implements RequestResolverInter
         $this->documentService = $documentService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStore(Request $request): ?StoreInterface
     {
         if ($this->requestHelper->isFrontendRequestByAdmin($request)) {

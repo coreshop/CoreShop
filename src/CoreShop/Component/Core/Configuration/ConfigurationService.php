@@ -40,9 +40,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForStore(string $key, StoreInterface $store = null, $returnObject = false)
     {
         if (null === $store) {
@@ -66,9 +63,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setForStore(string $key, $data, StoreInterface $store = null): \CoreShop\Component\Core\Model\ConfigurationInterface
     {
         if (null === $store) {
@@ -91,9 +85,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeForStore(string $key, StoreInterface $store = null): void
     {
         if (null === $store) {

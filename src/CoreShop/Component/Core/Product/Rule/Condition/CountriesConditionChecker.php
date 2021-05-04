@@ -21,9 +21,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class CountriesConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

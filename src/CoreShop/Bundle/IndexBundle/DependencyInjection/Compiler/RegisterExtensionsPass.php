@@ -22,9 +22,6 @@ final class RegisterExtensionsPass implements CompilerPassInterface
 {
     public const INDEX_EXTENSION_TAG = 'coreshop.index.extension';
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('coreshop.registry.index.extensions')) {

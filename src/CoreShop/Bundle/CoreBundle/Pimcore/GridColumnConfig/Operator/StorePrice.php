@@ -22,27 +22,10 @@ use Pimcore\DataObject\GridColumnConfig\Operator\AbstractOperator;
 
 class StorePrice extends AbstractOperator
 {
-    /**
-     * @var int
-     */
-    private $storeId;
+    private int $storeId;
+    private StoreRepositoryInterface $storeRepository;
+    private MoneyFormatterInterface $moneyFormatter;
 
-    /**
-     * @var StoreRepositoryInterface
-     */
-    private $storeRepository;
-
-    /**
-     * @var MoneyFormatterInterface
-     */
-    private $moneyFormatter;
-
-    /**
-     * @param StoreRepositoryInterface $storeRepository
-     * @param MoneyFormatterInterface  $moneyFormatter
-     * @param \stdClass                $config
-     * @param null                     $context
-     */
     public function __construct(
         StoreRepositoryInterface $storeRepository,
         MoneyFormatterInterface $moneyFormatter,

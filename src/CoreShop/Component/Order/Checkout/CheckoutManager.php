@@ -20,27 +20,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CheckoutManager implements CheckoutManagerInterface
 {
-    private $serviceRegistry;
-    private $steps;
+    private PrioritizedServiceRegistryInterface $serviceRegistry;
 
     public function __construct(PrioritizedServiceRegistryInterface $serviceRegistry)
     {
         $this->serviceRegistry = $serviceRegistry;
-        $this->steps = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCheckoutStep(CheckoutStepInterface $step, int $priority): void
     {
         $this->serviceRegistry->register($step->getIdentifier(), $priority, $step);
-        $this->steps[] = $step->getIdentifier();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSteps(): array
     {
         return array_map(function (CheckoutStepInterface $step) {
@@ -48,9 +39,6 @@ class CheckoutManager implements CheckoutManagerInterface
         }, $this->serviceRegistry->all());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStep(string $identifier): CheckoutStepInterface
     {
         /**
@@ -61,41 +49,26 @@ class CheckoutManager implements CheckoutManagerInterface
         return $step;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNextStep(string $identifier): CheckoutStepInterface
     {
         return $this->serviceRegistry->getNextTo($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasNextStep(string $identifier): bool
     {
         return $this->serviceRegistry->hasNextTo($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPreviousStep(string $identifier): CheckoutStepInterface
     {
         return $this->serviceRegistry->getPreviousTo($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPreviousStep(string $identifier): bool
     {
         return $this->serviceRegistry->hasPreviousTo($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPreviousSteps(string $identifier): array
     {
         $previousSteps = $this->serviceRegistry->getAllPreviousTo($identifier);
@@ -103,9 +76,6 @@ class CheckoutManager implements CheckoutManagerInterface
         return is_array($previousSteps) ? $previousSteps : [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validateStep(CheckoutStepInterface $step, OrderInterface $cart): bool
     {
         if ($step instanceof ValidationCheckoutStepInterface) {
@@ -115,25 +85,16 @@ class CheckoutManager implements CheckoutManagerInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): array
     {
         return $step->prepareStep($cart, $request);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrentStepIndex(string $identifier): int
     {
         return $this->serviceRegistry->getIndex($identifier);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(CheckoutStepInterface $step, OrderInterface $cart, Request $request): bool
     {
         return $step->commitStep($cart, $request);

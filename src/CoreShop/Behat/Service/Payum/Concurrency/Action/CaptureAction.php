@@ -21,9 +21,6 @@ use Payum\Core\Request\Capture;
 
 class CaptureAction implements ActionInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function execute($request)
     {
         sleep(1);
@@ -36,9 +33,6 @@ class CaptureAction implements ActionInterface
         $model['STATUS'] = 'captured';
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports($request)
     {
         return

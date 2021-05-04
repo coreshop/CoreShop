@@ -26,9 +26,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class CoreShopThemeExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
@@ -43,7 +40,7 @@ class CoreShopThemeExtension extends Extension
         if (false === $config['default_resolvers']['pimcore_document_property']) {
             $container->removeDefinition(PimcoreDocumentPropertyResolver::class);
         }
-        
+
         $container
             ->registerForAutoconfiguration(ThemeResolverInterface::class)
             ->addTag(CompositeThemeResolverPass::THEME_RESOLVER_TAG);

@@ -16,9 +16,6 @@ namespace CoreShop\Component\ProductQuantityPriceRules\Exception;
 
 class NoPriceFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($calculatorClass, \Exception $previousException = null)
     {
         parent::__construct(sprintf('Quantity Price Calculator "%s" was not able to match a valid price.', $calculatorClass), 0, $previousException);

@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CartCreationTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('shippingAddress', AddressChoiceType::class, [
@@ -35,9 +32,6 @@ final class CartCreationTypeExtension extends AbstractTypeExtension
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [CartCreationType::class];

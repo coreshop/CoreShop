@@ -20,16 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexColumnGetterChoiceType extends AbstractType
 {
-    private $getters;
+    private array $getters;
 
     public function __construct(array $getters)
     {
         $this->getters = $getters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -37,17 +34,11 @@ final class IndexColumnGetterChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_getter_choice';

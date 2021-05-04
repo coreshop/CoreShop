@@ -24,8 +24,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LockListener implements EventSubscriberInterface
 {
-    protected $lockManager;
-    protected $connection;
+    protected EntityLockManager $lockManager;
+    protected Connection $connection;
 
     public function __construct(EntityLockManager $lockManager, Connection $connection)
     {

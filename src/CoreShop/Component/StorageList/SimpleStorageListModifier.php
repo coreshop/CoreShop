@@ -28,17 +28,11 @@ class SimpleStorageListModifier implements StorageListModifierInterface
         $this->storageListItemFinder = new StorageListItemModelEqualsResolver();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         $this->resolveItem($storageList, $item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         $storageList->removeItem($item);

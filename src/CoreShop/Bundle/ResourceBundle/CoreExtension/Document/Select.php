@@ -50,17 +50,11 @@ class Select extends Editable
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function frontend()
     {
         return '';
@@ -92,9 +86,6 @@ class Select extends Editable
         return !$this->getResourceObject() instanceof ResourceInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getOptions()
     {
         $data = $this->getRepository()->findAll();
@@ -117,9 +108,6 @@ class Select extends Editable
         return $options;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromEditmode($data)
     {
         $this->resource = $data;
@@ -127,9 +115,6 @@ class Select extends Editable
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDataFromResource($data)
     {
         $this->resource = $data;

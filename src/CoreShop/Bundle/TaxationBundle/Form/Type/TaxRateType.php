@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TaxRateType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -35,9 +32,6 @@ class TaxRateType extends AbstractResourceType
             ->add('active', CheckboxType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rate';

@@ -29,17 +29,11 @@ class OrderItemExtractor implements TrackingExtractorInterface
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof ProposalItemInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**

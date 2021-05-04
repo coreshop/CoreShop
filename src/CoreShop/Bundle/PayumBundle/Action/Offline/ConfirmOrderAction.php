@@ -23,24 +23,13 @@ use Payum\Core\Action\ActionInterface;
 
 final class ConfirmOrderAction implements ActionInterface
 {
-    /**
-     * @var StateMachineApplier
-     */
-    private $stateMachineApplier;
+    private StateMachineApplier $stateMachineApplier;
 
-    /**
-     * @param StateMachineApplier $stateMachineApplier
-     */
     public function __construct(StateMachineApplier $stateMachineApplier)
     {
         $this->stateMachineApplier = $stateMachineApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param ConfirmOrder $request
-     */
     public function execute($request)
     {
         $payment = $request->getFirstModel();
@@ -56,9 +45,6 @@ final class ConfirmOrderAction implements ActionInterface
         //Shouldn't actually happen -> maybe cancel?
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

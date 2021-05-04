@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 class CheckoutCartLocaleAssignerListener
 {
-    private $localeContext;
+    private LocaleContextInterface $localeContext;
 
     public function __construct(LocaleContextInterface $localeContext)
     {

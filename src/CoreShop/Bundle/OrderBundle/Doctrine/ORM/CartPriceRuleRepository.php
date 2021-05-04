@@ -19,9 +19,6 @@ use CoreShop\Component\Order\Repository\CartPriceRuleRepositoryInterface;
 
 class CartPriceRuleRepository extends RuleRepository implements CartPriceRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findNonVoucherRules(): array
     {
         return $this->createQueryBuilder('o')

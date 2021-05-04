@@ -19,24 +19,12 @@ use CoreShop\Component\Index\Model\FilterConditionInterface;
 use CoreShop\Component\Index\Model\FilterInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Webmozart\Assert\Assert;
 
 class FilterProcessor implements FilterProcessorInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $preConditionProcessors;
+    private ServiceRegistryInterface $preConditionProcessors;
+    private ServiceRegistryInterface $userConditionProcessors;
 
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $userConditionProcessors;
-
-    /**
-     * @param ServiceRegistryInterface $preConditionProcessors
-     * @param ServiceRegistryInterface $userConditionProcessors
-     */
     public function __construct(
         ServiceRegistryInterface $preConditionProcessors,
         ServiceRegistryInterface $userConditionProcessors
@@ -45,9 +33,6 @@ class FilterProcessor implements FilterProcessorInterface
         $this->userConditionProcessors = $userConditionProcessors;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function processConditions(FilterInterface $filter, ListingInterface $list, ParameterBag $parameterBag): array
     {
         $currentFilter = [];
@@ -69,9 +54,6 @@ class FilterProcessor implements FilterProcessorInterface
         return $currentFilter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareConditionsForRendering(FilterInterface $filter, ListingInterface $list, $currentFilter): array
     {
         $conditions = $filter->getConditions();

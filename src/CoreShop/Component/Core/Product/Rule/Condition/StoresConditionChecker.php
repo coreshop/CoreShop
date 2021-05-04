@@ -21,9 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class StoresConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

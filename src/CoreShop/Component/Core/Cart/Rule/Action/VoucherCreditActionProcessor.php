@@ -38,9 +38,6 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
@@ -76,9 +73,6 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
@@ -87,9 +81,6 @@ class VoucherCreditActionProcessor implements CartPriceRuleActionProcessorInterf
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDiscount(OrderInterface $cart, CartPriceRuleVoucherCodeInterface $voucherCode): int
     {
         return min($cart->getTotal(), $voucherCode->getCreditAvailable() - $voucherCode->getCreditUsed());

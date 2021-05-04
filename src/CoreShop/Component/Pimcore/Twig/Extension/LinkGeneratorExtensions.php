@@ -20,16 +20,13 @@ use Twig\TwigFunction;
 
 final class LinkGeneratorExtensions extends AbstractExtension
 {
-    private $helper;
+    private LinkGeneratorHelperInterface $helper;
 
     public function __construct(LinkGeneratorHelperInterface $helper)
     {
         $this->helper = $helper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

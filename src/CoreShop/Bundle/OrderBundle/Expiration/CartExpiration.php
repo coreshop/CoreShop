@@ -18,16 +18,13 @@ use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
 final class CartExpiration implements ProposalExpirationInterface
 {
-    private $cartRepository;
+    private OrderRepositoryInterface $cartRepository;
 
     public function __construct(OrderRepositoryInterface $cartRepository)
     {
         $this->cartRepository = $cartRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {

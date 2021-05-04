@@ -22,16 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class IndexChoiceType extends AbstractType
 {
-    private $indexRepository;
+    private RepositoryInterface $indexRepository;
 
     public function __construct(RepositoryInterface $indexRepository)
     {
         $this->indexRepository = $indexRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -45,17 +42,11 @@ final class IndexChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_choice';

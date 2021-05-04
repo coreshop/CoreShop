@@ -21,9 +21,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ShippingRuleGroupType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -33,9 +30,6 @@ class ShippingRuleGroupType extends AbstractResourceType
             ->add('carrier', CarrierChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_group';

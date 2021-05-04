@@ -29,9 +29,6 @@ class OrderMailActionProcessor implements NotificationRuleProcessorInterface
         $this->orderMailProcessor = $orderMailProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         if (!array_key_exists('doNotSendToDesignatedRecipient', $configuration)) {

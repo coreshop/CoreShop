@@ -22,9 +22,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class ZonesConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

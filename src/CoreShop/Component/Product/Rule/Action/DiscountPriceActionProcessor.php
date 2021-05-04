@@ -19,29 +19,15 @@ use Webmozart\Assert\Assert;
 
 class DiscountPriceActionProcessor implements ProductDiscountPriceActionProcessorInterface
 {
-    /**
-     * @var CurrencyConverterInterface
-     */
-    protected $moneyConverter;
+    protected CurrencyConverterInterface $moneyConverter;
+    protected CurrencyRepositoryInterface $currencyRepository;
 
-    /**
-     * @var CurrencyRepositoryInterface
-     */
-    protected $currencyRepository;
-
-    /**
-     * @param CurrencyRepositoryInterface $currencyRepository
-     * @param CurrencyConverterInterface  $moneyConverter
-     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository, CurrencyConverterInterface $moneyConverter)
     {
         $this->currencyRepository = $currencyRepository;
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice($subject, array $context, array $configuration): int
     {
         Assert::keyExists($context, 'currency');

@@ -21,7 +21,7 @@ final class CompositeLocaleContext implements LocaleContextInterface
     /**
      * @var PriorityQueue|LocaleContextInterface[]
      */
-    private $localeContexts;
+    private PriorityQueue $localeContexts;
 
     public function __construct()
     {
@@ -33,9 +33,6 @@ final class CompositeLocaleContext implements LocaleContextInterface
         $this->localeContexts->insert($localeContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocaleCode(): string
     {
         $lastException = null;

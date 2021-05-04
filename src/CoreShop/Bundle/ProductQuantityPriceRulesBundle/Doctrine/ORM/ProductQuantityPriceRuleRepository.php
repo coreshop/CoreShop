@@ -20,9 +20,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Repository\ProductQuantityPrice
 
 class ProductQuantityPriceRuleRepository extends EntityRepository implements ProductQuantityPriceRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')
@@ -31,9 +28,6 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findForProduct(QuantityRangePriceAwareInterface $product): array
     {
         return $this->createQueryBuilder('o')
@@ -43,9 +37,6 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
@@ -56,9 +47,6 @@ class ProductQuantityPriceRuleRepository extends EntityRepository implements Pro
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithActionOfType($actionType): array
     {
         throw new \Exception('actions are not supported in product quantity price rules.');

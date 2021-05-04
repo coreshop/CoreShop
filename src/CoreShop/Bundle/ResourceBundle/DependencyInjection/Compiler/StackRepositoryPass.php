@@ -24,9 +24,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class StackRepositoryPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasParameter('coreshop.all.stack.pimcore_class_names') ||

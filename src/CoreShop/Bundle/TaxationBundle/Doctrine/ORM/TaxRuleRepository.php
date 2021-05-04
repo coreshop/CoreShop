@@ -20,9 +20,6 @@ use CoreShop\Component\Taxation\Repository\TaxRuleRepositoryInterface;
 
 class TaxRuleRepository extends EntityRepository implements TaxRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByGroup(TaxRuleGroupInterface $group): array
     {
         return $this->createQueryBuilder('o')

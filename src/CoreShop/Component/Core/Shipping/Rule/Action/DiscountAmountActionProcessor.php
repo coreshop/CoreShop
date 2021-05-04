@@ -36,9 +36,6 @@ class DiscountAmountActionProcessor implements CarrierPriceModificationActionPro
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
         Assert::keyExists($context, 'currency');

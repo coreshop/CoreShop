@@ -24,7 +24,7 @@ final class CompositeRequestResolver implements RequestResolverInterface
     /**
      * @var PriorityQueue|RequestResolverInterface[]
      */
-    private $requestResolvers;
+    private PriorityQueue $requestResolvers;
 
     public function __construct()
     {
@@ -36,9 +36,6 @@ final class CompositeRequestResolver implements RequestResolverInterface
         $this->requestResolvers->insert($requestResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCountry(Request $request): CountryInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {

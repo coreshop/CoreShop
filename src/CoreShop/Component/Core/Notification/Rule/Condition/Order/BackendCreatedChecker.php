@@ -20,9 +20,6 @@ use Webmozart\Assert\Assert;
 
 class BackendCreatedChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         /**

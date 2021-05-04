@@ -22,20 +22,9 @@ use Pimcore\Db;
 
 class Dao
 {
-    /**
-     * @var Connection
-     */
-    private $database;
-
-    /**
-     * @var MysqlWorker\Listing
-     */
-    private $model;
-
-    /**
-     * @var int
-     */
-    private $lastRecordCount;
+    private Connection $database;
+    private MysqlWorker\Listing $model;
+    private int $lastRecordCount = 0;
 
     /**
      * @param MysqlWorker\Listing $model

@@ -18,17 +18,11 @@ use Pimcore\Tool;
 
 final class PimcoreTranslationLocaleProvider implements TranslationLocaleProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinedLocalesCodes(): array
     {
         return Tool::getValidLanguages();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultLocaleCode(): string
     {
         return Tool::getDefaultLanguage();

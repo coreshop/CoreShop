@@ -20,9 +20,6 @@ use CoreShop\Component\Customer\Repository\CompanyRepositoryInterface;
 
 class CompanyRepository extends PimcoreRepository implements CompanyRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findCompanyByName($name)
     {
         $list = $this->getList();

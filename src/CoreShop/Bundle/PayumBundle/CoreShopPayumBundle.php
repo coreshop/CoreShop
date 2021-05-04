@@ -20,18 +20,12 @@ use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\PayumReplyToSymfony
 use CoreShop\Bundle\PayumBundle\DependencyInjection\Compiler\RegisterGatewayConfigTypePass;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Payum\Bundle\PayumBundle\PayumBundle;
 use Pimcore\HttpKernel\BundleCollection\BundleCollection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopPayumBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -39,9 +33,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
@@ -50,9 +41,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $container->addCompilerPass(new PayumReplyToSymfonyPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -62,9 +50,6 @@ final class CoreShopPayumBundle extends AbstractResourceBundle
         $collection->addBundle(new PayumBundle(), 1300);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Bundle\PayumBundle\Model';

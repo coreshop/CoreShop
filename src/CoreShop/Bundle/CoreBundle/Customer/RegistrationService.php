@@ -27,14 +27,14 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RegistrationService implements RegistrationServiceInterface
 {
-    private $customerRepository;
-    private $objectService;
-    private $eventDispatcher;
-    private $localeContext;
-    private $customerFolder;
-    private $guestFolder;
-    private $addressFolder;
-    private $loginIdentifier;
+    private CustomerRepositoryInterface $customerRepository;
+    private ObjectServiceInterface $objectService;
+    private EventDispatcherInterface $eventDispatcher;
+    private LocaleContextInterface $localeContext;
+    private string $customerFolder;
+    private string $guestFolder;
+    private string $addressFolder;
+    private string $loginIdentifier;
 
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -56,9 +56,6 @@ final class RegistrationService implements RegistrationServiceInterface
         $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function registerCustomer(
         CustomerInterface $customer,
         AddressInterface $address,

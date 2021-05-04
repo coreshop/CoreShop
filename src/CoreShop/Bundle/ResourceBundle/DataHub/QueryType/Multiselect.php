@@ -38,9 +38,6 @@ class Multiselect extends Base
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig($fieldDefinition, $class, $attribute, [
@@ -50,17 +47,11 @@ class Multiselect extends Base
         ], $container);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::listOf(Type::int());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver($attribute, $fieldDefinition, $class)
     {
         $resolver = new MultiResourceResolver($fieldDefinition, $this->repository);

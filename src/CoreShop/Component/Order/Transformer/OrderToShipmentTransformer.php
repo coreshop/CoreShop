@@ -29,13 +29,13 @@ use Webmozart\Assert\Assert;
 
 class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
 {
-    protected $orderItemToShipmentItemTransformer;
-    protected $numberGenerator;
-    protected $shipmentFolderPath;
-    protected $objectService;
-    protected $orderItemRepository;
-    protected $shipmentItemFactory;
-    protected $eventDispatcher;
+    protected OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected string $shipmentFolderPath;
+    protected ObjectServiceInterface $objectService;
+    protected PimcoreRepositoryInterface $orderItemRepository;
+    protected PimcoreFactoryInterface $shipmentItemFactory;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         OrderDocumentItemTransformerInterface $orderItemToShipmentItemTransformer,
@@ -55,9 +55,6 @@ class OrderToShipmentTransformer implements OrderDocumentTransformerInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderInterface $order, OrderDocumentInterface $shipment, $itemsToTransform)
     {
         /**

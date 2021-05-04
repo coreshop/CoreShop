@@ -23,9 +23,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class ObjectUserProvider implements UserProviderInterface
 {
-    protected $customerRepository;
-    protected $className;
-    protected $loginIdentifier;
+    protected CustomerRepositoryInterface $customerRepository;
+    protected string $className;
+    protected string $loginIdentifier;
 
     public function __construct(
         CustomerRepositoryInterface $customerRepository,
@@ -38,9 +38,6 @@ class ObjectUserProvider implements UserProviderInterface
         $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loadUserByUsername($userNameOrEmailAddress)
     {
         $customer = $this->customerRepository->findUniqueByLoginIdentifier($this->loginIdentifier, $userNameOrEmailAddress, false);
@@ -52,9 +49,6 @@ class ObjectUserProvider implements UserProviderInterface
         throw new UsernameNotFoundException(sprintf('User with email address or username "%s" was not found', $userNameOrEmailAddress));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof CustomerInterface) {
@@ -64,14 +58,9 @@ class ObjectUserProvider implements UserProviderInterface
         /**
          * @var CustomerInterface $refreshedUser
          */
-        $refreshedUser = $this->customerRepository->find($user->getId());
-
-        return $refreshedUser;
+        return $this->customerRepository->find($user->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportsClass($class)
     {
         return $class === $this->className;

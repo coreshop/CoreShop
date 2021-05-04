@@ -34,9 +34,6 @@ final class OrderToShipmentTransformer implements OrderDocumentTransformerInterf
         $this->inner = $inner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderInterface $order, OrderDocumentInterface $document, $items)
     {
         if ($document instanceof OrderShipmentInterface && $order instanceof \CoreShop\Component\Core\Model\OrderInterface) {

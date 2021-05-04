@@ -19,16 +19,13 @@ use CoreShop\Component\Resource\Model\ResourceInterface;
 
 class PaymentProviderResolver implements PaymentProviderResolverInterface
 {
-    private $paymentProviderRepository;
+    private PaymentProviderRepositoryInterface $paymentProviderRepository;
 
     public function __construct(PaymentProviderRepositoryInterface $paymentProviderRepository)
     {
         $this->paymentProviderRepository = $paymentProviderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolvePaymentProviders(ResourceInterface $subject = null): array
     {
         return $this->paymentProviderRepository->findActive();

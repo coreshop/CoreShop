@@ -37,25 +37,14 @@ use Webmozart\Assert\Assert;
 
 class CheckoutController extends FrontendController
 {
-    /**
-     * @var CheckoutManagerFactoryInterface
-     */
-    protected $checkoutManagerFactory;
+    protected CheckoutManagerFactoryInterface $checkoutManagerFactory;
 
-    /**
-     * @param CheckoutManagerFactoryInterface $checkoutManagerFactory
-     */
     public function __construct(CheckoutManagerFactoryInterface $checkoutManagerFactory)
     {
         $this->checkoutManagerFactory = $checkoutManagerFactory;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function processAction(Request $request)
+    public function processAction(Request $request): Response
     {
         if (!$this->getCart()->hasItems()) {
             return $this->redirectToRoute('coreshop_cart_summary');
@@ -159,29 +148,14 @@ class CheckoutController extends FrontendController
         return $this->renderResponseForCheckoutStep($request, $step, $stepIdentifier, $dataForStep);
     }
 
-    /**
-     * @param Request               $request
-     * @param CheckoutStepInterface $step
-     * @param string                $stepIdentifier
-     * @param mixed                 $dataForStep
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, $stepIdentifier, $dataForStep)
+    protected function renderResponseForCheckoutStep(Request $request, CheckoutStepInterface $step, string $stepIdentifier, array $dataForStep): Response
     {
         $template = $this->templateConfigurator->findTemplate(sprintf('Checkout/steps/%s.html', $stepIdentifier));
 
         return $this->render($template, $dataForStep);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     *
-     * @throws \Exception
-     */
-    public function doCheckoutAction(Request $request)
+    public function doCheckoutAction(Request $request): Response
     {
         $cart = $this->getCart();
         $checkoutManager = $this->checkoutManagerFactory->createCheckoutManager($cart);
@@ -278,12 +252,7 @@ class CheckoutController extends FrontendController
         return $response;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function errorAction(Request $request)
+    public function errorAction(Request $request): Response
     {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
@@ -309,12 +278,7 @@ class CheckoutController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function thankYouAction(Request $request)
+    public function thankYouAction(Request $request): Response
     {
         $orderId = $request->getSession()->get('coreshop_order_id', null);
 
@@ -339,7 +303,7 @@ class CheckoutController extends FrontendController
         ]);
     }
 
-    protected function addEventFlash(string $type, string $message = null, array $parameters = [])
+    protected function addEventFlash(string $type, string $message = null, array $parameters = []): void
     {
         if (!$message) {
             return;
@@ -352,7 +316,7 @@ class CheckoutController extends FrontendController
         $this->addFlash($type, $message);
     }
 
-    private function prepareMessage(string $message, array $parameters)
+    private function prepareMessage(string $message, array $parameters): array
     {
         return [
             'message' => $message,

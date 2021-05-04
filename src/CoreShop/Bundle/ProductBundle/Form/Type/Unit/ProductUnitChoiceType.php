@@ -24,16 +24,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductUnitChoiceType extends AbstractType
 {
-    protected $productUnitRepository;
+    protected ProductUnitRepositoryInterface $productUnitRepository;
 
     public function __construct(ProductUnitRepositoryInterface $productUnitRepository)
     {
         $this->productUnitRepository = $productUnitRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
@@ -41,9 +38,6 @@ final class ProductUnitChoiceType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -57,17 +51,11 @@ final class ProductUnitChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_choice';

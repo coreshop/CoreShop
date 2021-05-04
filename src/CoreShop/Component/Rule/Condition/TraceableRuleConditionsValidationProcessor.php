@@ -20,25 +20,19 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditionsValidationProcessorInterface
 {
-    private $ruleConditionsValidationProcessor;
-    private $processed = [];
+    private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
+    private array $processed = [];
 
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType(): string
     {
         return $this->ruleConditionsValidationProcessor->getType();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
         if (!$rule->getActive()) {
@@ -65,9 +59,6 @@ class TraceableRuleConditionsValidationProcessor implements TraceableRuleConditi
         return $ruleResult;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool
     {
         $isValid = $this->ruleConditionsValidationProcessor->isConditionValid($subject, $rule, $condition, $params);

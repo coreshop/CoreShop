@@ -20,8 +20,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LinkGenerator implements LinkGeneratorInterface
 {
-    private $dataObjectLinkGenerator;
-    private $urlGenerator;
+    private DataObjectLinkGenerator $dataObjectLinkGenerator;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(DataObjectLinkGenerator $dataObjectLinkGenerator, UrlGeneratorInterface $urlGenerator)
     {
@@ -29,9 +29,6 @@ class LinkGenerator implements LinkGeneratorInterface
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(
         $object,
         ?string $routeName = null,

@@ -22,9 +22,6 @@ use Webmozart\Assert\Assert;
 
 class RangeRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
@@ -41,9 +38,6 @@ class RangeRenderer extends AbstractMysqlDynamicRenderer
         ) . ' <= ' . $to;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof RangeCondition;

@@ -26,7 +26,7 @@ use Symfony\Component\Form\FormInterface;
 
 class IndexType extends AbstractResourceType
 {
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
     public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
@@ -35,9 +35,6 @@ class IndexType extends AbstractResourceType
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -112,9 +109,6 @@ class IndexType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index';

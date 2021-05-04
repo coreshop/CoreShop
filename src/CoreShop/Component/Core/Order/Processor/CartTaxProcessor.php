@@ -41,9 +41,6 @@ final class CartTaxProcessor implements CartProcessorInterface
         $this->registry = $shippingTaxCalculationServices;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $cart->setTaxes(null);
@@ -104,7 +101,7 @@ final class CartTaxProcessor implements CartProcessorInterface
              */
             $taxCalculationService = $this->registry->get($shippingTaxCalculationStrategy);
             $cartTax = $taxCalculationService->calculateShippingTax($cart, $carrier, $address, $cart->getShipping($store->getUseGrossPrice()));
-            
+
             if (1 === count($cartTax)) {
                 $cart->setShippingTaxRate(reset($cartTax)->getRate());
             } elseif (0 === $cart->getShipping(false)) {

@@ -19,16 +19,13 @@ use Webmozart\Assert\Assert;
 
 final class MoneyFormatter implements MoneyFormatterInterface
 {
-    private $decimalFactor;
+    private int $decimalFactor;
 
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function format(int $amount, string $currency, string $locale = 'en', int $fraction = 2, int $factor = null): string
     {
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);

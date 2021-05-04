@@ -29,9 +29,6 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         /**
@@ -50,17 +47,11 @@ class DiscountPercentActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDiscount(OrderInterface $cart, array $configuration, $withTax = false)
     {
         $total = $cart->getSubtotal($withTax);

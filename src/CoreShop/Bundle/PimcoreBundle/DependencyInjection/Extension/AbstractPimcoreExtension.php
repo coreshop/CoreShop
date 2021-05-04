@@ -19,12 +19,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 
 abstract class AbstractPimcoreExtension extends Extension
 {
-    /**
-     * @param string           $applicationName
-     * @param array            $bundleResources
-     * @param ContainerBuilder $container
-     */
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
+    protected function registerPimcoreResources(string $applicationName, array $bundleResources, ContainerBuilder $container): void
     {
         $resourceTypes = ['js', 'css', 'editmode_js', 'editmode_css'];
 

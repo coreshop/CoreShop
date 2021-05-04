@@ -24,10 +24,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('core_shop_core');
         $rootNode = $treeBuilder->getRootNode();
@@ -45,10 +42,7 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addModelsSection(ArrayNodeDefinition $node)
+    private function addModelsSection(ArrayNodeDefinition $node): void
     {
         $node
             ->children()
@@ -75,10 +69,7 @@ final class Configuration implements ConfigurationInterface
             ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addPimcoreResourcesSection(ArrayNodeDefinition $node)
+    private function addPimcoreResourcesSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('pimcore_admin')
@@ -122,10 +113,7 @@ final class Configuration implements ConfigurationInterface
         ->end();
     }
 
-    /**
-     * @param ArrayNodeDefinition $node
-     */
-    private function addCheckoutConfigurationSection(ArrayNodeDefinition $node)
+    private function addCheckoutConfigurationSection(ArrayNodeDefinition $node): void
     {
         $node->children()
             ->arrayNode('checkout')

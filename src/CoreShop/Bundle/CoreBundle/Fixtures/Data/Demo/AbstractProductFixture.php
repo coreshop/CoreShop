@@ -34,18 +34,12 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
 {
     use ContainerAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getVersion()
+    public function getVersion(): string
     {
         return '2.0';
     }
 
-    /**
-     * @return string[]
-     */
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             CategoryFixture::class,
@@ -53,14 +47,7 @@ abstract class AbstractProductFixture extends AbstractFixture implements Contain
         ];
     }
 
-    /**
-     * @param string $parentPath
-     *
-     * @return ProductInterface
-     *
-     * @throws \Exception
-     */
-    protected function createProduct(string $parentPath)
+    protected function createProduct(string $parentPath): ProductInterface
     {
         $faker = Factory::create();
         $faker->addProvider(new Lorem($faker));

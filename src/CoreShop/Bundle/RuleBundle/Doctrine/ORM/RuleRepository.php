@@ -19,9 +19,6 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 class RuleRepository extends EntityRepository implements RuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')
@@ -30,9 +27,6 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithConditionOfType($conditionType): array
     {
         return $this->createQueryBuilder('o')
@@ -43,9 +37,6 @@ class RuleRepository extends EntityRepository implements RuleRepositoryInterface
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findWithActionOfType($actionType): array
     {
         return $this->createQueryBuilder('o')

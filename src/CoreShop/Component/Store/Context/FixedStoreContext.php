@@ -18,16 +18,13 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class FixedStoreContext implements StoreContextInterface
 {
-    private $store;
+    private StoreInterface $store;
 
     public function setStore(StoreInterface $store): void
     {
         $this->store = $store;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStore(): StoreInterface
     {
         if ($this->store instanceof StoreInterface) {

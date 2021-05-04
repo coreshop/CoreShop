@@ -28,26 +28,17 @@ class CustomerRegistrationType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
+    protected string $loginIdentifier;
 
-    protected $loginIdentifier;
-
-    /**
-     * @param string[] $validationGroups
-     * @param string $loginIdentifier
-     */
     public function __construct(array $validationGroups, string $loginIdentifier)
     {
         $this->validationGroups = $validationGroups;
         $this->loginIdentifier = $loginIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-
         $builder
             ->add('customer', CustomerType::class, [
                 'label' => 'coreshop.form.customer_registration.customer',
@@ -78,9 +69,6 @@ class CustomerRegistrationType extends AbstractType
             ->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_customer_registration';

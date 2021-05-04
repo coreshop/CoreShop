@@ -52,7 +52,7 @@ final class DataObjectBatchListing implements Iterator, Countable
      * @var array
      */
     private $items = [];
-    
+
     /**
      * @var array
      */
@@ -64,17 +64,11 @@ final class DataObjectBatchListing implements Iterator, Countable
         $this->batchSize = $batchSize;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function current()
     {
         return $this->items[$this->index];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function next()
     {
         $this->index++;
@@ -87,25 +81,16 @@ final class DataObjectBatchListing implements Iterator, Countable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key()
     {
         return ($this->index + 1) * ($this->loop + 1);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function valid()
     {
         return isset($this->items[$this->index]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rewind()
     {
         $this->index = 0;

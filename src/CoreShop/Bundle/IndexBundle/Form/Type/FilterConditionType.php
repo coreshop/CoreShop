@@ -26,7 +26,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class FilterConditionType extends AbstractResourceType
 {
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
     public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry)
     {
@@ -35,9 +35,6 @@ class FilterConditionType extends AbstractResourceType
         $this->formTypeRegistry = $formTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -83,9 +80,6 @@ class FilterConditionType extends AbstractResourceType
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -119,9 +113,6 @@ class FilterConditionType extends AbstractResourceType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition';

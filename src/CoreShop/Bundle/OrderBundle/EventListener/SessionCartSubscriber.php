@@ -25,20 +25,21 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class SessionCartSubscriber implements EventSubscriberInterface
 {
-    private $pimcoreContext;
-    private $cartContext;
-    private $sessionKeyName;
+    private PimcoreContextResolver $pimcoreContext;
+    private CartContextInterface $cartContext;
+    private string $sessionKeyName;
 
-    public function __construct(PimcoreContextResolver $pimcoreContextResolver, CartContextInterface $cartContext, string $sessionKeyName)
+    public function __construct(
+        PimcoreContextResolver $pimcoreContextResolver,
+        CartContextInterface $cartContext,
+        string $sessionKeyName
+    )
     {
         $this->pimcoreContext = $pimcoreContextResolver;
         $this->cartContext = $cartContext;
         $this->sessionKeyName = $sessionKeyName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -46,9 +47,6 @@ final class SessionCartSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ResponseEvent $event
-     */
     public function onKernelResponse(ResponseEvent $event): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($event->getRequest(), PimcoreContextResolver::CONTEXT_ADMIN)) {

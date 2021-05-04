@@ -31,9 +31,6 @@ final class CurrencyStorage implements CurrencyStorageInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(StoreInterface $store, CurrencyInterface $currency): void
     {
         if ($this->isBaseCurrency($currency, $store) || !$this->isAvailableCurrency($currency, $store)) {
@@ -45,9 +42,6 @@ final class CurrencyStorage implements CurrencyStorageInterface
         $this->storage->set($this->provideKey($store), $currency->getId());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(StoreInterface $store): CurrencyInterface
     {
         if ($this->storage->get($this->provideKey($store))) {

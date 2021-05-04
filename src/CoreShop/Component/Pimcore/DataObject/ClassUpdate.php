@@ -19,8 +19,8 @@ use Pimcore\Model\DataObject;
 
 class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameInterface
 {
-    private $classDefinition;
-    private $fieldsToRename = [];
+    private DataObject\ClassDefinition $classDefinition;
+    private array $fieldsToRename = [];
 
     public function __construct(string $className)
     {
@@ -34,9 +34,6 @@ class ClassUpdate extends AbstractDefinitionUpdate implements ClassUpdateRenameI
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->classDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(): bool
     {
         foreach ($this->fieldsToRename as $from => $to) {

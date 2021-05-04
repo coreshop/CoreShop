@@ -18,12 +18,13 @@ use CoreShop\Component\Resource\Metadata\RegistryInterface;
 use CoreShop\Component\Resource\Model\ResourceInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Persistence\Mapping\ClassMetadata;
+use Doctrine\Persistence\Mapping\ReflectionService;
 use Doctrine\Persistence\Mapping\RuntimeReflectionService;
 
 abstract class AbstractDoctrineSubscriber implements EventSubscriber
 {
-    protected $resourceRegistry;
-    private $reflectionService;
+    protected RegistryInterface $resourceRegistry;
+    protected ReflectionService $reflectionService;
 
     public function __construct(RegistryInterface $resourceRegistry)
     {

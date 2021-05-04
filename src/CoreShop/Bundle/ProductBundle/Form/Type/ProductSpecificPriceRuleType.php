@@ -23,9 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductSpecificPriceRuleType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -41,9 +38,6 @@ final class ProductSpecificPriceRuleType extends RuleType
             ->add('actions', ProductSpecificPriceRuleActionCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_specific_price_rule';

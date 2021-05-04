@@ -21,22 +21,13 @@ use Webmozart\Assert\Assert;
 
 final class IteratorInterpreter implements InterpreterInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $interpreterRegistry;
+    private ServiceRegistryInterface $interpreterRegistry;
 
-    /**
-     * @param ServiceRegistryInterface $interpreterRegistry
-     */
     public function __construct(ServiceRegistryInterface $interpreterRegistry)
     {
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         Assert::isArray($value, 'IteratorInterpreter can only be used with array values');

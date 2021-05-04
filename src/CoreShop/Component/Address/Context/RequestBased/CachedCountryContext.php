@@ -20,27 +20,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class CachedCountryContext implements RequestResolverInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $inner;
+    private RequestResolverInterface$inner;
+    private ?CountryInterface $country = null;
 
-    /**
-     * @var CountryInterface
-     */
-    private $country;
-
-    /**
-     * @param RequestResolverInterface $inner
-     */
     public function __construct(RequestResolverInterface $inner)
     {
         $this->inner = $inner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCountry(Request $request): CountryInterface
     {
         if (null === $this->country) {

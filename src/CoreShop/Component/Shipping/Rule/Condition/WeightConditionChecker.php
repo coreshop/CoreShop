@@ -20,9 +20,6 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class WeightConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration): bool
     {
         $minWeight = $configuration['minWeight'];

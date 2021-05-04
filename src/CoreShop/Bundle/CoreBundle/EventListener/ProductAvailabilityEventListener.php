@@ -27,9 +27,9 @@ use Pimcore\Model\FactoryInterface;
 
 final class ProductAvailabilityEventListener
 {
-    private $cartItemRepository;
-    private $pimcoreModelFactory;
-    private $productIdsToCheck = [];
+    private OrderItemRepositoryInterface $cartItemRepository;
+    private FactoryInterface $pimcoreModelFactory;
+    private array $productIdsToCheck = [];
 
     public function __construct(
         OrderItemRepositoryInterface $cartItemRepository,

@@ -35,9 +35,6 @@ final class CartItemProcessor implements CartItemProcessorInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function processCartItem(
         OrderItemInterface $cartItem,
         int $itemPrice,
