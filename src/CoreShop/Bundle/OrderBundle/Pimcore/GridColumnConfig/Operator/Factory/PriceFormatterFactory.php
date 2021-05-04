@@ -33,7 +33,7 @@ class PriceFormatterFactory implements OperatorFactoryInterface
         $this->localeService = $localeService;
     }
 
-    public function build(\stdClass $configElement, array $context = []): OperatorInterface
+    public function build(\stdClass $configElement, $context = [])
     {
         return new PriceFormatter($this->moneyFormatter, $this->localeService, $configElement, $context);
     }
