@@ -21,26 +21,14 @@ use Pimcore\DataObject\GridColumnConfig\Operator\OperatorInterface;
 
 class OrderStateFactory implements OperatorFactoryInterface
 {
-    /**
-     * @var WorkflowStateInfoManagerInterface
-     */
-    private $workflowManager;
+    private WorkflowStateInfoManagerInterface $workflowManager;
 
-    /**
-     * @param WorkflowStateInfoManagerInterface $workflowManager
-     */
     public function __construct(WorkflowStateInfoManagerInterface $workflowManager)
     {
         $this->workflowManager = $workflowManager;
     }
 
-    /**
-     * @param \stdClass $configElement
-     * @param null      $context
-     *
-     * @return OperatorInterface
-     */
-    public function build(\stdClass $configElement, $context = null): OperatorInterface
+    public function build(\stdClass $configElement, array $context = []): OperatorInterface
     {
         return new OrderState($this->workflowManager, $configElement, $context);
     }
