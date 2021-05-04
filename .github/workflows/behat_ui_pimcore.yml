@@ -71,6 +71,9 @@ jobs:
     - name: Assets Install
       run: bin/console assets:install --symlink
 
+    - name: Install Browser Drivers
+      run: vendor/bin/bdi detect drivers
+
     - name: Setup Symfony CLI
       run: wget https://get.symfony.com/cli/installer -O - | bash
 

@@ -125,7 +125,7 @@ class SerializedData extends Model\DataObject\ClassDefinition\Data implements Mo
     /**
      * {@inheritdoc}
      */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         return true;
     }

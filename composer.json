@@ -105,7 +105,8 @@
     "lakion/mink-debug-extension": "^2.0",
     "friends-of-behat/mink-debug-extension": "^2.0",
     "phpunit/phpunit": "^9.5",
-    "robertfausk/behat-panther-extension": "^1.0"
+    "robertfausk/behat-panther-extension": "^1.0",
+    "dbrekelmans/bdi": "^0.3.0"
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4",
