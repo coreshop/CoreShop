@@ -28,7 +28,7 @@ class OrderStateFactory implements OperatorFactoryInterface
         $this->workflowManager = $workflowManager;
     }
 
-    public function build(\stdClass $configElement, array $context = [])
+    public function build(\stdClass $configElement, $context = [])
     {
         return new OrderState($this->workflowManager, $configElement, $context);
     }
