@@ -265,7 +265,7 @@ final class EmbeddedClass extends DataObject\ClassDefinition\Data\ManyToManyRela
     /**
      * {@inheritdoc}
      */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck and $this->getMandatory() and empty($data)) {
             throw new Element\ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
