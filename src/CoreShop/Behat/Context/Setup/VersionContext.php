@@ -16,6 +16,7 @@ namespace CoreShop\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use CoreShop\Behat\Service\SharedStorageInterface;
+use Pimcore\Db;
 use Pimcore\Model\DataObject\Concrete;
 use Pimcore\Model\Version;
 
@@ -50,7 +51,16 @@ final class VersionContext implements Context
 
         $GLOBALS['data'] = $data;
 
-        $version = $concrete->getLatestVersion(true);
+        $db = Db::get();
+        $versionData = $db->fetchRow("SELECT id,date,versionCount FROM versions WHERE cid = ? AND ctype='object' ORDER BY `versionCount` DESC, `id` DESC LIMIT 1", $concrete->getId());
+        $version = Version::getById($versionData['id']);
+
+//        $version = $concrete->getLatestVersion();
+
+        if (null === $version) {
+            throw new \Exception('No Version found!');
+        }
+
         $versionData = $version->loadData(false);
 
         $this->sharedStorage->set('product-version', $versionData);
