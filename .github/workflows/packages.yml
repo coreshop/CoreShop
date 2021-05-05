@@ -5,12 +5,11 @@ on:
     paths:
       - "src/CoreShop/Bundle/**"
       - "src/CoreShop/Component/**"
-    pull_request:
-      paths:
-        - "src/CoreShop/Bundle/**"
-        - "src/CoreShop/Component/**"
   pull_request:
     branches: [ master, '2.2' ]
+    paths:
+      - "src/CoreShop/Bundle/**"
+      - "src/CoreShop/Component/**"
   release:
     types: [ created ]
   schedule:
@@ -39,6 +38,7 @@ jobs:
       fail-fast: false
       matrix:
         php: [8.0]
+        pimcore: [ 10.0.x-dev ]
         package: "${{ fromJson(needs.list.outputs.packages) }}"
 
     steps:
@@ -60,8 +60,8 @@ jobs:
         path: ${{ steps.composer-cache.outputs.dir }}
         key: ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-${{ hashFiles(format('src/CoreShop/{0}/composer.json', matrix.package)) }}
         restore-keys: |
-          ${{ runner.os }}-php-${{ matrix.php }}-package-${{ matrix.package }}-composer-
-          ${{ runner.os }}-php-${{ matrix.php }}-package-
+          ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-${{ matrix.package }}-composer-
+          ${{ runner.os }}-php-${{ matrix.php }}-${{ matrix.pimcore }}-package-
 
     - name: Validate composer.json
       run: composer validate --ansi --strict
@@ -69,6 +69,7 @@ jobs:
 
     - name: Install dependencies
       run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
         composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
       env:
           COMPOSER_ROOT_VERSION: dev-master

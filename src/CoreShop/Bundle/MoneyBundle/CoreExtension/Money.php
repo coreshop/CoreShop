@@ -628,7 +628,7 @@ class Money extends DataObject\ClassDefinition\Data implements
     /**
      * {@inheritdoc}
      */
-    public function checkValidity($data, $omitMandatoryCheck = false)
+    public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
             throw new ValidationException('Empty mandatory field [ ' . $this->getName() . ' ]');
