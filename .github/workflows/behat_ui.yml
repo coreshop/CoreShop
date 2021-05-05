@@ -66,13 +66,13 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - if: matrix.dependencies == 'lowest'
+    - if: matrix.dependencies == 'highest'
       name: Install dependencies highest
       run: |
         composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
         composer update --no-progress --prefer-dist --optimize-autoloader
 
-    - if: matrix.dependencies == 'highest'
+    - if: matrix.dependencies == 'lowest'
       name: Install dependencies lowest
       run: |
         composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
