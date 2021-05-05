@@ -16,20 +16,25 @@ jobs:
       PANTHER_CHROME_ARGUMENTS: "--disable-dev-shm-usage"
       PANTHER_CHROME_DRIVER_BINARY: "/usr/bin/chromedriver"
       PIMCORE_KERNEL_CLASS: 'Kernel'
+
+    strategy:
+      matrix:
+        php: [ 8.0 ]
+        pimcore: [ 10.0.x-dev ]
+        database: [ mysql:8.0, percona:8.0, mariadb:10.3, mariadb:10.4, mariadb:10.5 ]
+        dependencies: [ highest, lowest ]
+
     services:
-      mysql:
-        image: mysql:8.0
+      database:
+        image: "${{ matrix.database }}"
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: coreshop_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}"
-    strategy:
-      matrix:
-        php: [8.0]
-        pimcore: [10.0.x-dev]
+
+    name: "${{ matrix.pimcore }}, PHP ${{ matrix.php }}, DB ${{ matrix.database }}, Deps ${{ matrix.dependencies }}"
 
     steps:
     - uses: actions/checkout@v2
@@ -38,6 +43,7 @@ jobs:
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
+        ini-values: display_errors=On, display_startup_errors=On, error_reporting=32767
         extensions: intl, gd, simpleXML, dom, exif, fileinfo, iconv, mbstring, mysqli, pdo_mysql, zip, zlib
 
     - name: Check PHP Version
@@ -47,7 +53,7 @@ jobs:
       run: |
         mysql --version
         sudo apt-get install -y mysql-client
-        mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
+        mysql --host 127.0.0.1 --port ${{ job.services.database.ports['3306'] }} -uroot -proot -e "SHOW DATABASES"
 
     - name: Get composer cache directory
       id: composer-cache
@@ -60,10 +66,17 @@ jobs:
         key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
         restore-keys: ${{ runner.os }}-composer-
 
-    - name: Composer install
+    - if: matrix.dependencies == 'lowest'
+      name: Install dependencies highest
       run: |
         composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
-        composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+        composer update --no-progress --prefer-dist --optimize-autoloader
+
+    - if: matrix.dependencies == 'highest'
+      name: Install dependencies lowest
+      run: |
+        composer req pimcore/pimcore:${{ matrix.pimcore }} --no-interaction --no-scripts --no-update
+        composer update --no-progress --prefer-dist --optimize-autoloader --prefer-lowest
 
     - name: Cache clear
       run: bin/console cache:clear
