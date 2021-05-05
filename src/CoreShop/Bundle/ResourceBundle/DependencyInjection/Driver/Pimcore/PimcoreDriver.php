@@ -31,7 +31,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class PimcoreDriver extends AbstractDriver
 {
-    public function getType()
+    public function getType(): string
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
     }

@@ -18,7 +18,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 final class FixedStoreContext implements StoreContextInterface
 {
-    private StoreInterface $store;
+    private ?StoreInterface $store = null;
 
     public function setStore(StoreInterface $store): void
     {

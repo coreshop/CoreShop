@@ -20,7 +20,7 @@ use CoreShop\Component\Store\Model\StoreInterface;
 final class CachedStoreContext implements StoreContextInterface
 {
     private StoreContextInterface $requestBasedStoreContext;
-    private ?StoreInterface $cachedStore;
+    private ?StoreInterface $cachedStore = null;
 
     public function __construct(StoreContextInterface $requestBasedStoreContext)
     {

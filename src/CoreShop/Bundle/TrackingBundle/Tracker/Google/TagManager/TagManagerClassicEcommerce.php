@@ -35,6 +35,11 @@ class TagManagerClassicEcommerce extends AbstractEcommerceTracker
         $this->codeTracker = $tracker;
     }
 
+    public function getCodeTracker(): CodeTracker
+    {
+        return $this->codeTracker;
+    }
+
     public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;

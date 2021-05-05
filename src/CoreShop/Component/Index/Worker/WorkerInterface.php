@@ -87,7 +87,7 @@ interface WorkerInterface
      *
      * @return mixed
      */
-    public function renderFieldType($type);
+    public function renderFieldType(string $type);
 
     /**
      * @return FilterGroupHelperInterface

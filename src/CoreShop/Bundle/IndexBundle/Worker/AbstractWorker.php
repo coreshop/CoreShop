@@ -277,13 +277,6 @@ abstract class AbstractWorker implements WorkerInterface
         ];
     }
 
-    /**
-     * @param IndexColumnInterface $column
-     *
-     * @return InterpreterInterface|bool
-     *
-     * @throws \Exception
-     */
     protected function getInterpreterObject(IndexColumnInterface $column): ?InterpreterInterface
     {
         $interpreter = $column->getInterpreter();

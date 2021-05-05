@@ -29,6 +29,7 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
     public function __construct(RegistryInterface $resourceRegistry)
     {
         $this->resourceRegistry = $resourceRegistry;
+        $this->reflectionService = new RuntimeReflectionService();
     }
 
     protected function isResource(ClassMetadata $metadata): bool
@@ -42,10 +43,6 @@ abstract class AbstractDoctrineSubscriber implements EventSubscriber
 
     protected function getReflectionService()
     {
-        if ($this->reflectionService === null) {
-            $this->reflectionService = new RuntimeReflectionService();
-        }
-
         return $this->reflectionService;
     }
 }

@@ -26,19 +26,19 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class DoctrineORMDriver extends AbstractDoctrineDriver
 {
-    public function getType()
+    public function getType(): string
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
     }
 
-    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::load($container, $metadata);
 
         $this->addRepositoryFactory($container, $metadata);
     }
 
-    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryClassParameterName = sprintf('%s.repository.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryClass = EntityRepository::class;
@@ -71,7 +71,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
     }
 
-    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryFactoryClassParameterName = sprintf('%s.repository.factory.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryFactoryClass = RepositoryFactory::class;

@@ -21,6 +21,9 @@ use Twig\Environment;
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
     protected bool $enabled = false;
+    protected Environment $twig;
+    protected ?string $templatePrefix = null;
+    protected ?string $templateExtension = null;
 
     public function __construct(
         Environment $twig,

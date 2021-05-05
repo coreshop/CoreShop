@@ -86,7 +86,7 @@ EOT
         return 0;
     }
 
-    private function getProperFinalMessage(true $errored): string
+    private function getProperFinalMessage(bool $errored): string
     {
         if ($errored) {
             return 'CoreShop has been installed, but some error occurred.';
