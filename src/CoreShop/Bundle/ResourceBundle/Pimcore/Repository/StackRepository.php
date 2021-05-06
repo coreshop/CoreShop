@@ -25,9 +25,9 @@ class StackRepository extends PimcoreRepository
 {
     private array $classNames = [];
     private array $fqnStackClasses = [];
-    private array $interface = [];
+    private string $interface;
 
-    public function __construct(MetadataInterface $metadata, Connection $connection, array $interface, array $stackClasses)
+    public function __construct(MetadataInterface $metadata, Connection $connection, string $interface, array $stackClasses)
     {
         parent::__construct($metadata, $connection);
 

@@ -210,7 +210,7 @@ class Dao
         }
         $stmt = $this->database->executeQuery($queryBuilder->getSQL());
 
-        return $stmt->fetchColumn();
+        return (int)$stmt->fetchColumn();
     }
 
     /**
@@ -326,7 +326,7 @@ class Dao
      *
      * @return int
      */
-    public function getLastRecordCount()
+    public function getLastRecordCount(): int
     {
         return $this->lastRecordCount;
     }

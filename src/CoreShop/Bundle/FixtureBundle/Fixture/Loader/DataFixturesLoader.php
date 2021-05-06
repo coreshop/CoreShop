@@ -27,8 +27,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class DataFixturesLoader extends ContainerAwareLoader
 {
     protected EntityManager $em;
-    protected array $loadedFixtures;
-    protected \ReflectionProperty $ref;
+    protected array $loadedFixtures = [];
+    protected ?\ReflectionProperty $ref = null;
     protected UpdateDataFixturesFixture $updateDataFixturesFixture;
     protected DataFixtureRepositoryInterface $dataFixtureRepository;
 

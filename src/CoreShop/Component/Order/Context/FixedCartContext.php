@@ -18,7 +18,7 @@ use CoreShop\Component\Order\Model\OrderInterface;
 
 final class FixedCartContext implements CartContextInterface
 {
-    private OrderInterface $cart ;
+    private ?OrderInterface $cart = null;
 
     public function getCart(): OrderInterface
     {

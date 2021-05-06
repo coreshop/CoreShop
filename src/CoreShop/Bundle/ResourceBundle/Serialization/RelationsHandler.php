@@ -29,7 +29,7 @@ class RelationsHandler
         $this->manager = $manager;
     }
 
-    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context): array
+    public function serializeRelation(JsonSerializationVisitor $visitor, $relation, array $type, Context $context)
     {
         if ($relation instanceof \Traversable) {
             $relation = iterator_to_array($relation);
@@ -50,7 +50,7 @@ class RelationsHandler
         return $this->getSingleEntityRelation($relation, $manager);
     }
 
-    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context): array
+    public function deserializeRelation(JsonDeserializationVisitor $visitor, $relation, array $type, Context $context)
     {
         $className = isset($type['params'][0]['name']) ? $type['params'][0]['name'] : null;
 
@@ -86,7 +86,7 @@ class RelationsHandler
         return $objects;
     }
 
-    protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager): array
+    protected function getSingleEntityRelation($relation, EntityManagerInterface $entityManager)
     {
         $metadata = $entityManager->getClassMetadata(get_class($relation));
 

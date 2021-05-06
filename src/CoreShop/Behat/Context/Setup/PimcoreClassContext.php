@@ -836,7 +836,7 @@ final class PimcoreClassContext implements Context
     private function addFieldDefinitionToDefinition($definition, $fieldDefinition)
     {
         $definitionUpdater = $this->getUpdater($definition);
-        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition)));
+        $definitionUpdater->insertField(json_decode(stripslashes($fieldDefinition), true));
         $definitionUpdater->save();
     }
 

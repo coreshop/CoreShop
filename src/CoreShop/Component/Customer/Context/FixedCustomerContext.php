@@ -18,7 +18,7 @@ use CoreShop\Component\Customer\Model\CustomerInterface;
 
 final class FixedCustomerContext implements CustomerContextInterface
 {
-    private CustomerInterface $customer;
+    private ?CustomerInterface $customer = null;
 
     public function setCustomer(CustomerInterface $customer)
     {

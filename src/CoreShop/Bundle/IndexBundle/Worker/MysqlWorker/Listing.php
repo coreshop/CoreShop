@@ -39,9 +39,9 @@ class Listing extends AbstractListing implements OrderAwareListingInterface, Ext
     protected ?array $objects = null;
     protected ?int $totalCount = null;
     protected string $variantMode = ListingInterface::VARIANT_MODE_INCLUDE;
-    protected int $limit;
-    protected int $offset;
-    protected ?PimcoreModelInterface $category;
+    protected ?int $limit = null;
+    protected ?int $offset = null;
+    protected ?PimcoreModelInterface $category = null;
     protected Dao $dao;
 
     /**

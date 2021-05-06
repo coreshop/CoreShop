@@ -16,7 +16,7 @@ namespace CoreShop\Component\Locale\Context;
 
 final class FixedLocaleContext implements LocaleContextInterface
 {
-    private string $locale;
+    private ?string $locale = null;
 
     public function setLocale(string $locale): void
     {
