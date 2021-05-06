@@ -23,8 +23,8 @@ abstract class AbstractPimcoreTabPage implements PimcoreTabPageInterface
 {
     protected Session $session;
     protected $parameters;
-    protected ?DocumentElement $document;
-    protected ?NodeElement $tabElement;
+    protected ?DocumentElement $document = null;
+    protected ?NodeElement $tabElement = null;
 
     /**
      * @param array|\ArrayAccess $minkParameters
