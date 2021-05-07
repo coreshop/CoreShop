@@ -23,7 +23,7 @@
             <gedmo:timestampable on="update"/>
         </field>
 
-        <many-to-one field="zone" target-entity="CoreShop\Component\Address\Model\ZoneInterface" inversed-by="countires">
+        <many-to-one field="zone" target-entity="CoreShop\Component\Address\Model\ZoneInterface" inversed-by="countries">
             <join-column name="zoneId" referenced-column-name="id" nullable="true" on-delete="SET NULL" />
         </many-to-one>
 
