@@ -10,7 +10,7 @@
     background: url(../img/indexes.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_indexes {
+body.pimcore_version_10 .coreshop_nav_icon_indexes {
     background: url(../img/indexes_white.svg) center center no-repeat !important;
 }
 
@@ -22,7 +22,7 @@ body.pimcore_version_6 .coreshop_nav_icon_indexes {
     background: url(../img/filters.svg) center center no-repeat !important;
 }
 
-body.pimcore_version_6 .coreshop_nav_icon_filters {
+body.pimcore_version_10 .coreshop_nav_icon_filters {
     background: url(../img/filters_white.svg) center center no-repeat !important;
 }
 
