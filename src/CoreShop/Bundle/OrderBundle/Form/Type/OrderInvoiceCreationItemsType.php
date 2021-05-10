@@ -20,9 +20,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class OrderInvoiceCreationItemsType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

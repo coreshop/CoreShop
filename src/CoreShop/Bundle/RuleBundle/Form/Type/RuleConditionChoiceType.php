@@ -20,19 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RuleConditionChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $conditions;
+    private array $conditions;
 
     public function __construct(array $conditions)
     {
         $this->conditions = $conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
@@ -40,17 +34,11 @@ class RuleConditionChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_action_condition_choice';

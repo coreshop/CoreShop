@@ -25,14 +25,14 @@ use CoreShop\Component\Resource\Repository\RepositoryInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
-class AbandonedCartsReport implements ReportInterface, ExportReportInterface
+final class AbandonedCartsReport implements ReportInterface, ExportReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $cartRepository;
-    private $customerRepository;
-    private $localeContext;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private PimcoreRepositoryInterface $cartRepository;
+    private PimcoreRepositoryInterface $customerRepository;
+    private LocaleContextInterface $localeContext;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -48,9 +48,6 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         $this->localeContext = $localeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -130,9 +127,6 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExportReportData(ParameterBag $parameterBag): array
     {
         $data = $this->getReportData($parameterBag);
@@ -147,9 +141,6 @@ class AbandonedCartsReport implements ReportInterface, ExportReportInterface
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

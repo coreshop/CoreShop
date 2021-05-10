@@ -19,8 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class ProductQuantityPriceRuleValidationEvent extends GenericEvent
 {
-    private $object;
-    private $data;
+    private Concrete $object;
+    private array $data;
 
     public function __construct(Concrete $object, array $data)
     {

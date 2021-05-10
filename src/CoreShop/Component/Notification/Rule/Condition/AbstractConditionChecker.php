@@ -20,9 +20,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 abstract class AbstractConditionChecker implements NotificationConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         if ($subject instanceof NotificationRuleInterface) {

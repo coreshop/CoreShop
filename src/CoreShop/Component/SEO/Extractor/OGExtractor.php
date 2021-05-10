@@ -20,17 +20,11 @@ use Webmozart\Assert\Assert;
 
 final class OGExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof SEOOpenGraphAwareInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, SEOOpenGraphAwareInterface::class);

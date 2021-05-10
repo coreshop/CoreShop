@@ -23,9 +23,9 @@ use Payum\Core\Model\Payment;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
-    private $paymentFactory;
-    private $decimalFactor;
-    private $decimalPrecision;
+    private FactoryInterface $paymentFactory;
+    private int $decimalFactor;
+    private int $decimalPrecision;
 
     public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
     {
@@ -34,9 +34,6 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
         $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function provideOrderPayment(OrderInterface $order): PaymentInterface
     {
         $tokenGenerator = new UniqueTokenGenerator(true);

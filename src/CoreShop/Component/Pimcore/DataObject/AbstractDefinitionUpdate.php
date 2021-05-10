@@ -19,49 +19,27 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
 {
-    /**
-     * @var array
-     */
-    protected $jsonDefinition;
+    protected array $jsonDefinition;
+    protected array $fieldDefinitions;
 
-    /**
-     * @var array
-     */
-    protected $fieldDefinitions;
-
-    /**
-     * {@inheritdoc}
-     */
     abstract public function save(): bool;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getProperty($property): array
+    public function getProperty(string $property): array
     {
         return $this->jsonDefinition[$property];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setProperty($property, $value): void
+    public function setProperty(string $property, $value): void
     {
         $this->jsonDefinition[$property] = $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasField($fieldName): bool
+    public function hasField(string $fieldName): bool
     {
         return array_key_exists($fieldName, $this->fieldDefinitions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFieldDefinition($fieldName): ?Data
+    public function getFieldDefinition(string $fieldName): ?Data
     {
         if (!$this->hasField($fieldName)) {
             throw new \InvalidArgumentException(sprintf('Field with Name %s not found', $fieldName));
@@ -70,18 +48,12 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         return $this->fieldDefinitions[$fieldName];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertField($jsonFieldDefinition): void
+    public function insertField(array $jsonFieldDefinition): void
     {
         $this->jsonDefinition['layoutDefinitions']['childs'][0]['childs'][] = $jsonFieldDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldBefore($fieldName, $jsonFieldDefinition): void
+    public function insertFieldBefore(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -99,10 +71,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function insertFieldAfter($fieldName, $jsonFieldDefinition): void
+    public function insertFieldAfter(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -116,10 +85,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceField($fieldName, $jsonFieldDefinition): void
+    public function replaceField(string $fieldName, array $jsonFieldDefinition): void
     {
         $this->findField(
             $fieldName,
@@ -129,10 +95,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function replaceFieldProperties($fieldName, array $keyValues): void
+    public function replaceFieldProperties(string $fieldName, array $keyValues): void
     {
         $this->findField(
             $fieldName,
@@ -144,10 +107,7 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function removeField($fieldName): void
+    public function removeField(string $fieldName): void
     {
         $this->findField(
             $fieldName,
@@ -157,12 +117,6 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
         );
     }
 
-    /**
-     * @param string   $fieldName
-     * @param \Closure $callback
-     *
-     * @throws ClassDefinitionFieldNotFoundException
-     */
     protected function findField(string $fieldName, \Closure $callback): void
     {
         $found = false;
@@ -174,10 +128,10 @@ abstract class AbstractDefinitionUpdate implements ClassUpdateInterface
                     $found = true;
 
                     break;
-                } else {
-                    if (array_key_exists('childs', $child)) {
-                        $child = $traverseFunction($child);
-                    }
+                }
+
+                if (array_key_exists('childs', $child)) {
+                    $child = $traverseFunction($child);
                 }
             }
 

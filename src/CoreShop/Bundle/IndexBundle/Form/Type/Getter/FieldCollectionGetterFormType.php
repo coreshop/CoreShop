@@ -24,7 +24,7 @@ final class FieldCollectionGetterFormType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -34,9 +34,6 @@ final class FieldCollectionGetterFormType extends AbstractType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -47,9 +44,6 @@ final class FieldCollectionGetterFormType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_getter_field_collection';

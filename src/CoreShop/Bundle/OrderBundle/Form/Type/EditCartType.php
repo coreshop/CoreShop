@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class EditCartType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

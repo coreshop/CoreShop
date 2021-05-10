@@ -23,25 +23,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class IndexListener
 {
-    /**
-     * @var ProcessInterface
-     */
-    private $process;
+    private ProcessInterface $process;
+    private ProcessFactoryInterface $processFactory;
+    private ProcessLogger $processLogger;
 
-    /**
-     * @var ProcessFactoryInterface
-     */
-    private $processFactory;
-
-    /**
-     * @var ProcessLogger
-     */
-    private $processLogger;
-
-    /**
-     * @param FactoryInterface $processFactory
-     * @param ProcessLogger    $processLogger
-     */
     public function __construct(FactoryInterface $processFactory, ProcessLogger $processLogger)
     {
         $this->processFactory = $processFactory;

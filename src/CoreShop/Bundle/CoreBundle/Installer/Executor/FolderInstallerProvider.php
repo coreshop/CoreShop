@@ -18,7 +18,7 @@ use Pimcore\Model\DataObject;
 
 final class FolderInstallerProvider
 {
-    private $folders;
+    private array $folders;
 
     public function __construct(array $folders)
     {

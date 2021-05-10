@@ -22,8 +22,8 @@ use Symfony\Component\Workflow\Event\Event;
 
 class WorkflowListener implements EventSubscriberInterface
 {
-    private $callbackConfig;
-    protected $container;
+    protected array $callbackConfig;
+    protected ContainerInterface $container;
 
     public function __construct(array $callbackConfig, ContainerInterface $container)
     {
@@ -77,9 +77,9 @@ class WorkflowListener implements EventSubscriberInterface
     {
         foreach ($actions as $callback) {
             if ($callback['enabled'] === false) {
-                continue;   
+                continue;
             }
-            
+
             if (!in_array($transitionName, $callback['on'])) {
                 continue;
             }

@@ -23,17 +23,11 @@ final class CartStockAvailability extends Constraint
      */
     public $message = 'coreshop.cart_item.not_sufficient_stock';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_cart_stock_availability';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

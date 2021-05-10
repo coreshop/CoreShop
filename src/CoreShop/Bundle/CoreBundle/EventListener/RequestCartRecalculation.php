@@ -22,10 +22,10 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 final class RequestCartRecalculation
 {
-    private $cartManager;
-    private $shopperContext;
-    private $configurationService;
-    private $pimcoreRequestHelper;
+    private CartManagerInterface $cartManager;
+    private ShopperContextInterface $shopperContext;
+    private ConfigurationServiceInterface $configurationService;
+    private RequestHelper $pimcoreRequestHelper;
 
     public function __construct(
         CartManagerInterface $cartManager,

@@ -19,9 +19,6 @@ use CoreShop\Component\Product\Repository\ProductSpecificPriceRuleRepositoryInte
 
 class ProductSpecificPriceRuleRepository extends PriceRuleRepository implements ProductSpecificPriceRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForProduct(ProductInterface $product): array
     {
         return $this->createQueryBuilder('o')

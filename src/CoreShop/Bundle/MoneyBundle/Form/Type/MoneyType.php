@@ -22,16 +22,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MoneyType extends AbstractType
 {
-    protected $decimalFactor;
+    protected int $decimalFactor;
 
     public function __construct(int $decimalFactor)
     {
         $this->decimalFactor = $decimalFactor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(
@@ -39,9 +36,6 @@ class MoneyType extends AbstractType
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
@@ -49,17 +43,11 @@ class MoneyType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_money';

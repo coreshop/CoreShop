@@ -25,16 +25,13 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseSetupCommandsProvider implements DatabaseSetupCommandsProviderInterface
 {
-    private $doctrineRegistry;
+    private Registry $doctrineRegistry;
 
     public function __construct(Registry $doctrineRegistry)
     {
         $this->doctrineRegistry = $doctrineRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCommands(InputInterface $input, OutputInterface $output, QuestionHelper $questionHelper): array
     {
         return array_merge($this->getRequiredCommands($input, $output, $questionHelper), [

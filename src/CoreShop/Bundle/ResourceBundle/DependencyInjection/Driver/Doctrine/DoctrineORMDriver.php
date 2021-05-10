@@ -26,25 +26,19 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class DoctrineORMDriver extends AbstractDoctrineDriver
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getType()
+    public function getType(): string
     {
         return CoreShopResourceBundle::DRIVER_DOCTRINE_ORM;
     }
 
-    public function load(ContainerBuilder $container, MetadataInterface $metadata)
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::load($container, $metadata);
 
         $this->addRepositoryFactory($container, $metadata);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepository(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryClassParameterName = sprintf('%s.repository.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryClass = EntityRepository::class;
@@ -77,10 +71,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata)
+    protected function addRepositoryFactory(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         $repositoryFactoryClassParameterName = sprintf('%s.repository.factory.%s.class', $metadata->getApplicationName(), $metadata->getName());
         $repositoryFactoryClass = RepositoryFactory::class;
@@ -114,9 +105,6 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function addManager(ContainerBuilder $container, MetadataInterface $metadata): void
     {
         parent::addManager($container, $metadata);
@@ -130,10 +118,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getManagerServiceId(MetadataInterface $metadata)
+    protected function getManagerServiceId(MetadataInterface $metadata): string
     {
         if ($objectManagerName = $this->getObjectManagerName($metadata)) {
             return sprintf('doctrine.orm.%s_entity_manager', $objectManagerName);
@@ -142,10 +127,7 @@ final class DoctrineORMDriver extends AbstractDoctrineDriver
         return 'doctrine.orm.entity_manager';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function getClassMetadataClassname()
+    protected function getClassMetadataClassname(): string
     {
         return ClassMetadata::class;
     }

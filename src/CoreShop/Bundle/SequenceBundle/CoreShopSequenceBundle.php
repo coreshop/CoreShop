@@ -16,16 +16,10 @@ namespace CoreShop\Bundle\SequenceBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSequenceBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -33,17 +27,11 @@ final class CoreShopSequenceBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Sequence\Model';

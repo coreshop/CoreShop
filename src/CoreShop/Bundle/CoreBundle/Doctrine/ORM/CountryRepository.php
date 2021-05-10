@@ -20,9 +20,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CountryRepository extends BaseCountryRepository implements CountryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')

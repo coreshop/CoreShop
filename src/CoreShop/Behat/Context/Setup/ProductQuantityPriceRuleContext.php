@@ -633,25 +633,16 @@ final class ProductQuantityPriceRuleContext implements Context
         return $unitDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return ProductSpecificPriceRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

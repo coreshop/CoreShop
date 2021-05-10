@@ -23,16 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TaxRuleGroupChoiceType extends AbstractType
 {
-    private $taxRuleGroupRepository;
+    private RepositoryInterface $taxRuleGroupRepository;
 
     public function __construct(RepositoryInterface $taxRuleGroupRepository)
     {
         $this->taxRuleGroupRepository = $taxRuleGroupRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -52,17 +49,11 @@ final class TaxRuleGroupChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rule_group_choice';

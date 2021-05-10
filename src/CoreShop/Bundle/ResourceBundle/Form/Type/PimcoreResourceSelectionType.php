@@ -30,25 +30,16 @@ class PimcoreResourceSelectionType extends AbstractType
         $this->repository = $repository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new PimcoreResourceDataTransformer($this->repository));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

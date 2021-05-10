@@ -54,16 +54,16 @@ use Symfony\Component\Workflow\StateMachine;
 
 class OrderController extends PimcoreController
 {
-    protected $eventDispatcher;
-    protected $objectNoteService;
-    protected $addressFormatter;
-    protected $serializer;
-    protected $workflowStateManager;
-    protected $invoiceProcessableHelper;
-    protected $shipmentProcessableHelper;
-    protected $orderInvoiceRepository;
-    protected $orderShipmentRepository;
-    protected $paymentRepository;
+    protected EventDispatcherInterface $eventDispatcher;
+    protected NoteServiceInterface $objectNoteService;
+    protected AddressFormatterInterface $addressFormatter;
+    protected ArrayTransformerInterface $serializer;
+    protected WorkflowStateInfoManagerInterface $workflowStateManager;
+    protected ProcessableInterface $invoiceProcessableHelper;
+    protected ProcessableInterface $shipmentProcessableHelper;
+    protected OrderInvoiceRepositoryInterface $orderInvoiceRepository;
+    protected OrderShipmentRepositoryInterface $orderShipmentRepository;
+    protected PaymentRepositoryInterface $paymentRepository;
 
     public function getStatesAction(Request $request): Response
     {
@@ -437,11 +437,11 @@ class OrderController extends PimcoreController
 
         foreach ($notes as $note) {
             $noteElement = [
-                'date' => $note->date,
-                'description' => $note->description,
+                'date' => $note->getDate(),
+                'description' => $note->getDescription(),
             ];
 
-            foreach ($note->data as $key => $noteData) {
+            foreach ($note->getData() as $key => $noteData) {
                 $noteElement[$key] = $noteData['data'];
             }
 

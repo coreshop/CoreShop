@@ -20,9 +20,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class OrderShippingStateConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -30,9 +27,6 @@ final class OrderShippingStateConfigurationType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_notification_condition_order_shipping_state';

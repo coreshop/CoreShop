@@ -30,41 +30,18 @@ use CoreShop\Component\Tracking\Tracker\TrackerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Pimcore\Http\RequestHelper;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends FrontendController
 {
-    /**
-     * @var array
-     */
-    protected $validSortProperties = ['name'];
+    protected array $validSortProperties = ['name'];
+    protected string $repositoryIdentifier = 'oo_id';
+    protected string $requestIdentifier = 'category';
+    protected string $defaultSortName = 'name';
+    protected string $defaultSortDirection = 'asc';
 
-    /**
-     * @var string
-     */
-    protected $repositoryIdentifier = 'oo_id';
-
-    /**
-     * @var string
-     */
-    protected $requestIdentifier = 'category';
-
-    /**
-     * @var string
-     */
-    protected $defaultSortName = 'name';
-
-    /**
-     * @var string
-     */
-    protected $defaultSortDirection = 'asc';
-
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuAction(Request $request)
+    public function menuAction(): Response
     {
         $categories = $this->getRepository()->findForStore($this->getContext()->getStore());
 
@@ -73,12 +50,7 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function menuLeftAction(Request $request)
+    public function menuLeftAction(Request $request): Response
     {
         $activeCategory = $request->get('activeCategory');
         $activeSubCategories = [];
@@ -96,12 +68,7 @@ class CategoryController extends FrontendController
         ]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request): Response
     {
         $listModeDefault = $this->getConfigurationService()->getForStore('system.category.list.mode');
         $gridPerPageAllowed = $this->getConfigurationService()->getForStore('system.category.grid.per_page');
@@ -140,8 +107,6 @@ class CategoryController extends FrontendController
         if (!in_array($perPage, $allowedPerPage)) {
             $perPage = $defaultPerPage;
         }
-
-        $paginator = null;
 
         $viewParameters = [];
 
@@ -228,12 +193,7 @@ class CategoryController extends FrontendController
         return $this->render($this->templateConfigurator->findTemplate('Category/index.html'), $viewParameters);
     }
 
-    /**
-     * @param string $sortString
-     *
-     * @return array
-     */
-    protected function parseSorting($sortString)
+    protected function parseSorting(string $sortString): array
     {
         $sort = [
             'name' => 'name',

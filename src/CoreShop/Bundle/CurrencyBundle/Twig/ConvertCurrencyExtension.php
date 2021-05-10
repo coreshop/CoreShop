@@ -20,17 +20,14 @@ use Twig\TwigFilter;
 
 final class ConvertCurrencyExtension extends AbstractExtension
 {
-    private $currencyConverter;
+    private CurrencyConverterInterface $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_convert_currency', [$this, 'convertAmount']),

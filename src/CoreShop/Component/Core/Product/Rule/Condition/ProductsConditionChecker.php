@@ -34,9 +34,6 @@ class ProductsConditionChecker implements ConditionCheckerInterface
         $this->__traitConstruct($productRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

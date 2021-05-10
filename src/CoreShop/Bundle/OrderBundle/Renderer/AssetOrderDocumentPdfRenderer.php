@@ -20,22 +20,15 @@ use Pimcore\Model\Asset;
 
 class AssetOrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    private $decoratedService;
-    private $environment;
+    private OrderDocumentRendererInterface $decoratedService;
+    private string $environment;
 
-    /**
-     * @param OrderDocumentRendererInterface $decoratedService
-     * @param string                         $environment
-     */
     public function __construct(OrderDocumentRendererInterface $decoratedService, string $environment)
     {
         $this->decoratedService = $decoratedService;
         $this->environment = $environment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         // if in dev mode, do not store document

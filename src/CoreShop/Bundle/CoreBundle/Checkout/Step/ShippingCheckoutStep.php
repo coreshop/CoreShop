@@ -32,9 +32,9 @@ use Webmozart\Assert\Assert;
 
 class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $shippableCarrierValidator;
-    private $formFactory;
-    private $cartManager;
+    private ShippableCarrierValidatorInterface $shippableCarrierValidator;
+    private FormFactoryInterface $formFactory;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         ShippableCarrierValidatorInterface $shippableCarrierValidator,
@@ -46,17 +46,11 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         $this->cartManager = $cartManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'shipping';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRequired(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -64,9 +58,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return $cart->hasShippableItems();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -74,9 +65,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return $cart->hasShippableItems() === false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         Assert::isInstanceOf($cart, \CoreShop\Component\Core\Model\OrderInterface::class);
@@ -88,9 +76,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
                 $this->shippableCarrierValidator->isCarrierValid($cart->getCarrier(), $cart, $cart->getShippingAddress()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -110,9 +95,6 @@ class ShippingCheckoutStep implements CheckoutStepInterface, OptionalCheckoutSte
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [

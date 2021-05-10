@@ -20,17 +20,11 @@ use Pimcore\Model\DataObject\Service;
 
 class ObjectService implements ObjectServiceInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createFolderByPath(string $path): Folder
     {
         return Service::createFolderByPath($path);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function copyObject(Concrete $fromObject, Concrete $toObject): void
     {
         //load all in case of lazy loading fields

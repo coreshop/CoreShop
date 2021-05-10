@@ -23,9 +23,6 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 class StoresChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         $store = null;

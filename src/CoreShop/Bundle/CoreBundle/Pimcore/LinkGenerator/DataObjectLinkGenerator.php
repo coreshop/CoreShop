@@ -22,9 +22,9 @@ use Webmozart\Assert\Assert;
 
 class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 {
-    private $type;
-    private $routeName;
-    private $urlGenerator;
+    private string $type;
+    private string $routeName;
+    private UrlGeneratorInterface $urlGenerator;
 
     public function __construct(string $type, string $routeName, UrlGeneratorInterface $urlGenerator)
     {
@@ -35,9 +35,6 @@ class DataObjectLinkGenerator extends AbstractSluggableLinkGenerator
 
     public function generate(Concrete $object, array $params = []): string
     {
-        /**
-         * @var Concrete $object
-         */
         Assert::isInstanceOf($object, Concrete::class);
 
         $locale = isset($params['_locale']) ? $params['_locale'] : null;

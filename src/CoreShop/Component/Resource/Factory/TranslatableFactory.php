@@ -20,31 +20,15 @@ use CoreShop\Component\Resource\Translation\Provider\TranslationLocaleProviderIn
 
 final class TranslatableFactory implements TranslatableFactoryInterface
 {
-    /**
-     * @var FactoryInterface
-     */
-    private $factory;
+    private FactoryInterface $factory;
+    private TranslationLocaleProviderInterface $localeProvider;
 
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    private $localeProvider;
-
-    /**
-     * @param FactoryInterface                   $factory
-     * @param TranslationLocaleProviderInterface $localeProvider
-     */
     public function __construct(FactoryInterface $factory, TranslationLocaleProviderInterface $localeProvider)
     {
         $this->factory = $factory;
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws UnexpectedTypeException
-     */
     public function createNew()
     {
         $resource = $this->factory->createNew();

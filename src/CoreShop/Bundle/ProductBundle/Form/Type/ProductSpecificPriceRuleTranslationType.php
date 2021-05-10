@@ -20,18 +20,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductSpecificPriceRuleTranslationType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('label', TextType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_specific_price_rule_translation';

@@ -20,20 +20,12 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class DataFixturesEvent extends Event
 {
-    /** @var ObjectManager */
-    private $manager;
-
-    /** @var string */
-    private $fixturesType;
+    private ObjectManager $manager;
+    private string $fixturesType;
 
     /** @var callable|null */
     private $logger;
 
-    /**
-     * @param ObjectManager $manager      The entity manager
-     * @param string        $fixturesType The type of data fixtures
-     * @param callable|null $logger       The callback for logging messages
-     */
     public function __construct(ObjectManager $manager, $fixturesType, $logger = null)
     {
         $this->manager = $manager;

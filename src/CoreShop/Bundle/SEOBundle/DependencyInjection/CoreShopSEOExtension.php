@@ -23,19 +23,12 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 final class CoreShopSEOExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
         $bundles = $container->getParameter('kernel.bundles');
-
-        if (array_key_exists('LuceneSearchBundle', $bundles)) {
-            $loader->load('services/lucene_search.yml');
-        }
 
         $container
             ->registerForAutoconfiguration(ExtractorInterface::class)

@@ -30,9 +30,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager = $productEntityManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cancel(OrderInterface $order): void
     {
         if (in_array(
@@ -48,9 +45,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->release($order);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hold(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -72,9 +66,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sell(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -115,9 +106,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function release(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */
@@ -147,9 +135,6 @@ final class OrderInventoryOperator implements OrderInventoryOperatorInterface
         $this->productEntityManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function giveBack(OrderInterface $order): void
     {
         /** @var OrderItemInterface $orderItem */

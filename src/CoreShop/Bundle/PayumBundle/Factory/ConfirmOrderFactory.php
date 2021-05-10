@@ -19,9 +19,6 @@ use CoreShop\Bundle\PayumBundle\Request\ConfirmOrderInterface;
 
 final class ConfirmOrderFactory implements ConfirmOrderFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createNewWithModel($model): ConfirmOrderInterface
     {
         return new ConfirmOrder($model);

@@ -16,10 +16,10 @@ namespace CoreShop\Component\Index\Condition;
 
 class LikeCondition implements ConditionInterface
 {
-    private $fieldName;
-    private $pattern;
-    private $value;
-    private $allowedPatterns = ['left', 'right', 'both'];
+    private string $fieldName;
+    private string $pattern;
+    private string $value;
+    private array $allowedPatterns = ['left', 'right', 'both'];
 
     public function __construct(string $fieldName, string $pattern, string $value)
     {

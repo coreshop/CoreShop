@@ -22,7 +22,7 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
     /**
      * @var PriorityQueue|CurrencyContextInterface[]
      */
-    private $currencyContexts;
+    private PriorityQueue $currencyContexts;
 
     public function __construct()
     {
@@ -34,9 +34,6 @@ final class CompositeCurrencyContext implements CurrencyContextInterface
         $this->currencyContexts->insert($currencyContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         $lastException = null;

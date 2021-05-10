@@ -24,10 +24,13 @@ use Symfony\Component\Workflow\Workflow;
 
 final class OrderPaymentStateResolver implements StateResolverInterface
 {
-    private $stateMachineManager;
-    private $paymentRepository;
+    private StateMachineManager $stateMachineManager;
+    private PaymentRepositoryInterface $paymentRepository;
 
-    public function __construct(StateMachineManager $stateMachineManager, PaymentRepositoryInterface $paymentRepository)
+    public function __construct(
+        StateMachineManager $stateMachineManager,
+        PaymentRepositoryInterface $paymentRepository
+    )
     {
         $this->stateMachineManager = $stateMachineManager;
         $this->paymentRepository = $paymentRepository;

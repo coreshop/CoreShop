@@ -20,9 +20,6 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectInterpreter implements RelationInterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpretRelational($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $result = [];
@@ -46,9 +43,6 @@ class ObjectInterpreter implements RelationInterpreterInterface
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $result = [];

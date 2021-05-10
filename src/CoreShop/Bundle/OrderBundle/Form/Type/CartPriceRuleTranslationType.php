@@ -20,18 +20,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CartPriceRuleTranslationType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('label', TextType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_translation';

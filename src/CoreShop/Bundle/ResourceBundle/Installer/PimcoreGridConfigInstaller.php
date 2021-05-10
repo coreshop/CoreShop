@@ -28,11 +28,11 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
 {
-    private $kernel;
-    private $metaDataRegistry;
-    private $gridConfigInstaller;
-    private $objectManager;
-    private $pimcoreClassInstaller;
+    private KernelInterface $kernel;
+    private RegistryInterface $metaDataRegistry;
+    private ObjectManager $objectManager;
+    private GridConfigInstallerInterface $gridConfigInstaller;
+    private PimcoreClassInstallerInterface $pimcoreClassInstaller;
 
     public function __construct(
         KernelInterface $kernel,
@@ -48,9 +48,6 @@ final class PimcoreGridConfigInstaller implements ResourceInstallerInterface
         $this->pimcoreClassInstaller = $classInstaller;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore.admin.install.grid_config', $applicationName) : 'coreshop.all.pimcore.admin.install.grid_config';

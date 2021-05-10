@@ -529,41 +529,26 @@ final class CartPriceRuleContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return CartPriceRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormRegistry()
     {
         return $this->actionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormClass()
     {
         return CartPriceRuleActionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

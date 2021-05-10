@@ -26,10 +26,10 @@ use Twig\TwigFunction;
 
 final class CheckoutIdentifierExtension extends AbstractExtension
 {
-    private $requestStack;
-    protected $linkGenerator;
-    protected $checkoutManagerFactory;
-    protected $cartContext;
+    private RequestStack $requestStack;
+    private LinkGeneratorInterface $linkGenerator;
+    private CheckoutManagerFactoryInterface $checkoutManagerFactory;
+    private CartContextInterface $cartContext;
 
     public function __construct(
         RequestStack $requestStack,
@@ -43,9 +43,6 @@ final class CheckoutIdentifierExtension extends AbstractExtension
         $this->cartContext = $cartContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

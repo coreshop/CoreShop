@@ -24,7 +24,7 @@ final class FilterConditionMultiselectType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -34,9 +34,6 @@ final class FilterConditionMultiselectType extends AbstractType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -48,9 +45,6 @@ final class FilterConditionMultiselectType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_condition_type_multiselect';

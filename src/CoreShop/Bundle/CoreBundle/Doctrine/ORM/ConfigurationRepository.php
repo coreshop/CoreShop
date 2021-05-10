@@ -21,9 +21,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class ConfigurationRepository extends BaseConfigurationRepository implements ConfigurationRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForKeyAndStore(string $key, StoreInterface $store): ?ConfigurationInterface
     {
         return $this->createQueryBuilder('o')

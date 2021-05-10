@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CountryCollector extends DataCollector
 {
-    private $countryContext;
+    private CountryContextInterface $countryContext;
 
     public function __construct(
         CountryContextInterface $countryContext,
@@ -46,9 +46,6 @@ final class CountryCollector extends DataCollector
         return $this->data['country_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
@@ -60,17 +57,11 @@ final class CountryCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.country_collector';

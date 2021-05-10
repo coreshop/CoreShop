@@ -19,9 +19,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class RegisterPaymentSettingsFormsPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasParameter('coreshop.gateway_factories') || !$container->has('coreshop.form_registry.payment.settings')) {

@@ -16,9 +16,9 @@ namespace CoreShop\Component\Index\Condition;
 
 class ConcatCondition implements ConditionInterface
 {
-    private $fieldName;
-    private $operator;
-    private $conditions;
+    private string $fieldName;
+    private string $operator;
+    private array $conditions;
 
     public function __construct(string $fieldName, string $operator, array $conditions)
     {

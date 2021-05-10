@@ -30,27 +30,12 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Type;
-use PDO;
 use Pimcore\Tool;
 
 class MysqlWorker extends AbstractWorker
 {
-    /**
-     * Database.
-     *
-     * @var Connection
-     */
     protected $database;
 
-    /**
-     * @param ServiceRegistryInterface   $extensionsRegistry
-     * @param ServiceRegistryInterface   $getterServiceRegistry
-     * @param ServiceRegistryInterface   $interpreterServiceRegistry
-     * @param FilterGroupHelperInterface $filterGroupHelper
-     * @param ConditionRendererInterface $conditionRenderer
-     * @param OrderRendererInterface     $orderRenderer
-     * @param Connection                 $connection
-     */
     public function __construct(
         ServiceRegistryInterface $extensionsRegistry,
         ServiceRegistryInterface $getterServiceRegistry,
@@ -72,9 +57,6 @@ class MysqlWorker extends AbstractWorker
         $this->database = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createOrUpdateIndexStructures(IndexInterface $index)
     {
         $schemaManager = $this->database->getSchemaManager();
@@ -110,14 +92,6 @@ class MysqlWorker extends AbstractWorker
         }
     }
 
-    /**
-     * @param IndexInterface $index
-     * @param Schema         $tableSchema
-     *
-     * @return Schema
-     *
-     * @throws \Exception
-     */
     protected function createTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getTablename($index));
@@ -167,14 +141,6 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    /**
-     * @param IndexInterface $index
-     * @param Schema         $tableSchema
-     *
-     * @return Schema
-     *
-     * @throws \Exception
-     */
     protected function createLocalizedTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getLocalizedTablename($index));
@@ -225,12 +191,6 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    /**
-     * @param IndexInterface $index
-     * @param Schema         $tableSchema
-     *
-     * @return Schema
-     */
     protected function createRelationalTableSchema(IndexInterface $index, Schema $tableSchema)
     {
         $table = $tableSchema->createTable($this->getRelationTablename($index));
@@ -260,13 +220,6 @@ class MysqlWorker extends AbstractWorker
         return $tableSchema;
     }
 
-    /**
-     * Create Localized Views.
-     *
-     * @param IndexInterface $index
-     *
-     * @return array
-     */
     protected function createLocalizedViews(IndexInterface $index)
     {
         $queries = [];
@@ -296,9 +249,6 @@ QUERY;
         return $queries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function typeCastValues(IndexColumnInterface $column, $value)
     {
         $doctrineType = $this->renderFieldType($column->getColumnType());
@@ -308,9 +258,6 @@ QUERY;
         return $type->convertToDatabaseValue($value, $this->database->getDatabasePlatform());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function typeCastValueSQLDecleration(IndexColumnInterface $column)
     {
         $doctrineType = $this->renderFieldType($column->getColumnType());
@@ -320,17 +267,11 @@ QUERY;
         return $type->convertToDatabaseValueSQL('?', $this->database->getDatabasePlatform());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function handleArrayValues(IndexInterface $index, array $value)
     {
         return ',' . implode(',', $value) . ',';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteIndexStructures(IndexInterface $index)
     {
         try {
@@ -348,9 +289,6 @@ QUERY;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteFromIndex(IndexInterface $index, IndexableInterface $object)
     {
         $this->database->delete($this->getTablename($index), ['o_id' => $object->getId()]);
@@ -358,9 +296,6 @@ QUERY;
         $this->database->delete($this->getRelationTablename($index), ['src' => $object->getId()]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateIndex(IndexInterface $index, IndexableInterface $object)
     {
         $doIndex = $object->getIndexable($index);
@@ -394,13 +329,7 @@ QUERY;
         }
     }
 
-    /**
-     * Insert data into mysql-table.
-     *
-     * @param IndexInterface $index
-     * @param array          $data
-     */
-    protected function doInsertData(IndexInterface $index, $data)
+    protected function doInsertData(IndexInterface $index, array $data)
     {
         //insert index data
         $dataKeys = [];
@@ -448,13 +377,7 @@ QUERY;
         }
     }
 
-    /**
-     * Insert data into mysql-table.
-     *
-     * @param IndexInterface $index
-     * @param array          $data
-     */
-    protected function doInsertLocalizedData(IndexInterface $index, $data)
+    protected function doInsertLocalizedData(IndexInterface $index, array $data)
     {
         $columns = $index->getColumns()->toArray();
         $columnNames = array_map(function(IndexColumnInterface $column) { return $column->getName(); }, $columns);
@@ -509,10 +432,7 @@ QUERY;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function renderFieldType($type)
+    public function renderFieldType(string $type)
     {
         //Check if the Mapping type is available in doctrine
         $doctrineType = strtolower($type);
@@ -535,9 +455,6 @@ QUERY;
         throw new \Exception($type . ' is not supported by MySQL Index');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldTypeConfig(IndexColumnInterface $column)
     {
         $config = ['notnull' => false];
@@ -551,9 +468,6 @@ QUERY;
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSystemFieldTypeConfig(IndexInterface $index, string $name, string $type)
     {
         $config = ['notnull' => false];
@@ -567,59 +481,27 @@ QUERY;
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getList(IndexInterface $index)
     {
         return new MysqlWorker\Listing($index, $this, $this->database);
     }
 
-    /**
-     * get table name.
-     *
-     * @param IndexInterface $index
-     *
-     * @return string
-     */
-    public function getTablename(IndexInterface $index)
+    public function getTablename(IndexInterface $index): string
     {
         return 'coreshop_index_mysql_' . $index->getName();
     }
 
-    /**
-     * get table name.
-     *
-     * @param IndexInterface $index
-     *
-     * @return string
-     */
-    public function getLocalizedTablename(IndexInterface $index)
+    public function getLocalizedTablename(IndexInterface $index): string
     {
         return 'coreshop_index_mysql_localized_' . $index->getName();
     }
 
-    /**
-     * get localized view name.
-     *
-     * @param IndexInterface $index
-     * @param string         $language
-     *
-     * @return string
-     */
-    public function getLocalizedViewName(IndexInterface $index, $language)
+    public function getLocalizedViewName(IndexInterface $index, string $language): string
     {
         return $this->getLocalizedTablename($index) . '_' . $language;
     }
 
-    /**
-     * get tablename for relations.
-     *
-     * @param IndexInterface $index
-     *
-     * @return string
-     */
-    public function getRelationTablename(IndexInterface $index)
+    public function getRelationTablename(IndexInterface $index): string
     {
         return 'coreshop_index_mysql_relations_' . $index->getName();
     }

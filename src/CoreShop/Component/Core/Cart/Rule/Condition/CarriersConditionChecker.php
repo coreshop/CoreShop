@@ -23,9 +23,6 @@ use Webmozart\Assert\Assert;
 
 final class CarriersConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         /**

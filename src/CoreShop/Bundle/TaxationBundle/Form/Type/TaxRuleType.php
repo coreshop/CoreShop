@@ -20,9 +20,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class TaxRuleType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

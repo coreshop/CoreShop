@@ -24,16 +24,13 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Action\ProductQuantityPric
 
 class VolumeCalculator implements CalculatorInterface
 {
-    protected $actionRegistry;
+    protected ServiceRegistryInterface $actionRegistry;
 
     public function __construct(ServiceRegistryInterface $actionRegistry)
     {
         $this->actionRegistry = $actionRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
@@ -56,9 +53,6 @@ class VolumeCalculator implements CalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,

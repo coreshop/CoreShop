@@ -18,16 +18,13 @@ use CoreShop\Bundle\OrderBundle\DTO\AddMultipleToCartInterface;
 
 class AddMultipleToCartFactory implements AddMultipleToCartFactoryInterface
 {
-    protected $addMultipleToCartClass;
+    protected string $addMultipleToCartClass;
 
     public function __construct(string $addMultipleToCartClass)
     {
         $this->addMultipleToCartClass = $addMultipleToCartClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithMultipleAddToCarts(array $addToCarts): AddMultipleToCartInterface
     {
         $class = new $this->addMultipleToCartClass($addToCarts);

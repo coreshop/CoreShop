@@ -28,9 +28,6 @@ use Symfony\Component\Form\FormInterface;
 
 final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -91,9 +88,6 @@ final class ProductQuantityRangeTypeExtension extends AbstractTypeExtension
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [ProductQuantityRangeType::class];

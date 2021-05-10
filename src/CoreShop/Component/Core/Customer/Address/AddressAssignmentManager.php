@@ -35,9 +35,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         $this->customerTransformHelper = $customerTransformHelper;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function getAddressAffiliationTypesForCustomer(CustomerInterface $customer, bool $useTranslationKeys = true)
     {
         if ($customer->getAddressAccessType() !== CustomerAddressAllocatorInterface::ADDRESS_ACCESS_TYPE_OWN_AND_COMPANY) {
@@ -53,9 +50,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         ];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function detectAddressAffiliationForCustomer(CustomerInterface $customer, AddressInterface $address)
     {
         if ($address->getId() === 0) {
@@ -77,9 +71,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function checkAddressAffiliationPermissionForCustomer(CustomerInterface $customer, AddressInterface $address)
     {
         if ($address->getId() === 0) {
@@ -106,9 +97,6 @@ final class AddressAssignmentManager implements AddressAssignmentManagerInterfac
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function allocateAddressByAffiliation(CustomerInterface $customer, AddressInterface $address, ?string $affiliation)
     {
         $company = $customer->getCompany();

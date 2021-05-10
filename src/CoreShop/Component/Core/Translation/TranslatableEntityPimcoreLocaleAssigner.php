@@ -33,9 +33,6 @@ final class TranslatableEntityPimcoreLocaleAssigner implements TranslatableEntit
         $this->translationLocaleProvider = $translationLocaleProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function assignLocale(TranslatableInterface $translatableEntity): void
     {
         $fallbackLocale = $this->translationLocaleProvider->getDefaultLocaleCode();

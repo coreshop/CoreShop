@@ -18,9 +18,6 @@ use Pimcore\Model\GridConfig;
 
 class GridConfigInstaller implements GridConfigInstallerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function installGridConfig(array $config, string $name, string $class, bool $overwrite = false): void
     {
         $list = new GridConfig\Listing();

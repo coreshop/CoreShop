@@ -33,9 +33,6 @@ abstract class AbstractTranslationInstaller implements ResourceInstallerInterfac
         $this->translationType = $translationType;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $this->getIdentifier($applicationName);

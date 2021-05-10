@@ -23,23 +23,13 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 class QuantityPriceFetcher
 {
-    private $calculatorRegistry;
+    private ServiceRegistryInterface $calculatorRegistry;
 
     public function __construct(ServiceRegistryInterface $calculatorRegistry)
     {
         $this->calculatorRegistry = $calculatorRegistry;
     }
 
-    /**
-     * @param ProductQuantityPriceRuleInterface $rule
-     * @param QuantityRangePriceAwareInterface  $subject
-     * @param float                             $quantity
-     * @param int                               $originalPrice
-     * @param array                             $context
-     *
-     * @return int
-     * @throws NoPriceFoundException
-     */
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
         QuantityRangePriceAwareInterface $subject,
@@ -55,15 +45,6 @@ class QuantityPriceFetcher
         return $service->calculateForQuantity($rule, $subject, $quantity, $originalPrice, $context);
     }
 
-    /**
-     * @param QuantityRangeInterface           $range
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param int                              $originalPrice
-     * @param array                            $context
-     *
-     * @return int
-     * @throws NoPriceFoundException
-     */
     public function fetchRangePrice(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,

@@ -18,14 +18,13 @@ use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Shipping\Checker\CarrierShippingRuleCheckerInterface;
 use CoreShop\Component\Shipping\Model\CarrierInterface;
 use CoreShop\Component\Shipping\Model\ShippableInterface;
-use CoreShop\Component\Shipping\Model\ShippingRuleGroupInterface;
 use CoreShop\Component\Shipping\Model\ShippingRuleInterface;
 use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterface;
 
 class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterface
 {
-    protected $carrierShippingRuleChecker;
-    protected $shippingRuleProcessor;
+    protected CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker;
+    protected ShippingRuleActionProcessorInterface $shippingRuleProcessor;
 
     public function __construct(
         CarrierShippingRuleCheckerInterface $carrierShippingRuleChecker,
@@ -35,9 +34,6 @@ class CarrierShippingRulePriceCalculator implements CarrierPriceCalculatorInterf
         $this->shippingRuleProcessor = $shippingRuleProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $context): int
     {
         /**

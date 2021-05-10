@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class StoreType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -34,9 +31,6 @@ final class StoreType extends AbstractResourceType
             ->add('currency', CurrencyChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_store';

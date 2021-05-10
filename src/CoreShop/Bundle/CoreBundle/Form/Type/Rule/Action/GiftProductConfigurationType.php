@@ -20,17 +20,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class GiftProductConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('product', IntegerType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action_gift_product';

@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SessionStorageManager implements StorageListManagerInterface
 {
-    private $session;
-    private $name;
-    private $sessionListFactory;
+    private SessionInterface $session;
+    private string $name;
+    private FactoryInterface $sessionListFactory;
 
     public function __construct(SessionInterface $session, string $name, FactoryInterface $sessionListFactory)
     {
@@ -31,9 +31,6 @@ class SessionStorageManager implements StorageListManagerInterface
         $this->sessionListFactory = $sessionListFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStorageList(): StorageListInterface
     {
         $list = $this->session->get($this->name);
@@ -45,17 +42,11 @@ class SessionStorageManager implements StorageListManagerInterface
         return $list;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasStorageList(): bool
     {
         return $this->session->has($this->name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function persist(StorageListInterface $storageList): void
     {
         $this->session->set($this->name, $storageList);

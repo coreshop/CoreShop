@@ -21,9 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PimcoreClassChoiceType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $classes = new ClassDefinition\Listing();
@@ -40,17 +37,11 @@ final class PimcoreClassChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_resource_pimcore_class_choice';

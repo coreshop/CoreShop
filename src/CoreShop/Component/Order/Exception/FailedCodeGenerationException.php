@@ -16,9 +16,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 
 final class FailedCodeGenerationException extends \InvalidArgumentException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(
         CartPriceRuleVoucherGeneratorInterface $instruction,
         int $exceptionCode = 0,

@@ -50,9 +50,6 @@ final class ResolveNextRouteAction implements ActionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

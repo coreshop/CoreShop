@@ -16,15 +16,9 @@ namespace CoreShop\Bundle\ConfigurationBundle;
 
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 
 final class CoreShopConfigurationBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -32,9 +26,6 @@ final class CoreShopConfigurationBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Configuration\Model';

@@ -31,9 +31,6 @@ final class StoreAwareCountryContext implements CountryContextInterface
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCountry(): \CoreShop\Component\Address\Model\CountryInterface
     {
         /** @var StoreInterface $store */

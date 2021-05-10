@@ -30,9 +30,6 @@ class CachedTaxCalculatorFactory implements TaxCalculatorFactoryInterface
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCalculatorForAddress(
         TaxRuleGroupInterface $taxRuleGroup,
         AddressInterface $address

@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingRuleGroupCollectionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return CollectionType::class;

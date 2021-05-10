@@ -25,16 +25,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class PaymentProviderChoiceType extends AbstractType
 {
-    private $paymentProviderResolver;
+    private PaymentProviderResolverInterface $paymentProviderResolver;
 
     public function __construct(PaymentProviderResolverInterface $paymentProviderResolver)
     {
         $this->paymentProviderResolver = $paymentProviderResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -61,9 +58,6 @@ final class PaymentProviderChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         parent::buildView($view, $form, $options);
@@ -86,17 +80,11 @@ final class PaymentProviderChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_payment_provider_choice';

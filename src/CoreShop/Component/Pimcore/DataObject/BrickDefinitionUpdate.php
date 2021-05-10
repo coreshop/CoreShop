@@ -19,7 +19,7 @@ use Pimcore\Model\DataObject;
 
 class BrickDefinitionUpdate extends AbstractDefinitionUpdate
 {
-    private $brickDefinition;
+    private DataObject\Objectbrick\Definition $brickDefinition;
 
     public function __construct(string $brickKey)
     {
@@ -33,9 +33,6 @@ class BrickDefinitionUpdate extends AbstractDefinitionUpdate
         $this->jsonDefinition = json_decode(DataObject\ClassDefinition\Service::generateClassDefinitionJson($this->brickDefinition), true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(): bool
     {
         return null !== DataObject\ClassDefinition\Service::importObjectBrickFromJson($this->brickDefinition, json_encode($this->jsonDefinition), true);

@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -73,9 +70,6 @@ final class AddressType extends AbstractResourceType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -83,9 +77,6 @@ final class AddressType extends AbstractResourceType
         $resolver->setDefault('show_address_identifier_choice', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_address';

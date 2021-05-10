@@ -16,7 +16,7 @@ namespace CoreShop\Component\Order\Checkout;
 
 class CheckoutException extends \RuntimeException
 {
-    private $translatableText;
+    private string $translatableText;
 
     public function __construct(string $reason, string $translatableText)
     {

@@ -23,9 +23,6 @@ use CoreShop\Component\Core\Model\OrderItemInterface as CoreOrderItemInterface;
 
 class OrderController extends BaseOrderController
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function prepareSale(OrderInterface $sale): array
     {
         $order = parent::prepareSale($sale);
@@ -38,9 +35,6 @@ class OrderController extends BaseOrderController
         return $order;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDetails(OrderInterface $sale): array
     {
         $json = parent::getDetails($sale);
@@ -66,7 +60,7 @@ class OrderController extends BaseOrderController
     {
         $summary = parent::getSummary($order);
 
-        if ($order instanceof \CoreShop\Component\Core\Model\OrderInterface && $order->getShipping() > 0) {
+        if ($order instanceof CoreOrderInterface && $order->getShipping() > 0) {
             $summary[] = [
                 'key' => 'shipping',
                 'value' => $order->getShipping(),

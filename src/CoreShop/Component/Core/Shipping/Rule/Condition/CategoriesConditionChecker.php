@@ -35,9 +35,6 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
         $this->__traitConstruct($categoryRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

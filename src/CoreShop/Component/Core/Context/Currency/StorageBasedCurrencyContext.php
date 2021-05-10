@@ -32,9 +32,6 @@ final class StorageBasedCurrencyContext implements CurrencyContextInterface
         $this->currencyStorage = $currencyStorage;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         /** @var StoreInterface $store */

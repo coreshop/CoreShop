@@ -20,11 +20,11 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class ProposalExpireTask implements TaskInterface
 {
-    private $configurationService;
-    private $proposalExpiration;
-    private $type;
-    private $days;
-    private $params;
+    private ConfigurationServiceInterface $configurationService;
+    private ProposalExpirationInterface $proposalExpiration;
+    private string $type;
+    private int $days;
+    private array $params;
 
     public function __construct(
         ConfigurationServiceInterface $configurationService,

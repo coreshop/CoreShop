@@ -18,9 +18,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class FilterPreConditionType extends FilterConditionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -29,9 +26,6 @@ final class FilterPreConditionType extends FilterConditionType
             ->add('type', FilterPreConditionChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter_pre_condition';

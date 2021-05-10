@@ -22,8 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class StoreContext implements StoreContextInterface
 {
-    private $requestResolver;
-    private $requestStack;
+    private RequestResolverInterface $requestResolver;
+    private RequestStack $requestStack;
 
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
@@ -31,9 +31,6 @@ final class StoreContext implements StoreContextInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStore(): StoreInterface
     {
         try {

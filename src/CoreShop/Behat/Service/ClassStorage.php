@@ -21,9 +21,6 @@ class ClassStorage implements ClassStorageInterface
      */
     private $storage = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($className)
     {
         if (!isset($this->storage[$className])) {
@@ -33,17 +30,11 @@ class ClassStorage implements ClassStorageInterface
         return $this->storage[$className];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($className)
     {
         return isset($this->storage[$className]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set($className)
     {
         $this->storage[$className] = $this->getBehatClassName($className);
@@ -51,9 +42,6 @@ class ClassStorage implements ClassStorageInterface
         return $this->storage[$className];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function getBehatClassName($className)
     {
         return sprintf('Behat%s%s', $className, uniqid());

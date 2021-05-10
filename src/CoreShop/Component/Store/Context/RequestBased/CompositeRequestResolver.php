@@ -21,7 +21,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeRequestResolver implements RequestResolverInterface
 {
-    private $requestResolvers;
+    private PriorityQueue $requestResolvers;
 
     public function __construct()
     {
@@ -33,9 +33,6 @@ final class CompositeRequestResolver implements RequestResolverInterface
         $this->requestResolvers->insert($requestResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStore(Request $request): ?StoreInterface
     {
         foreach ($this->requestResolvers as $requestResolver) {

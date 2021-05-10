@@ -20,16 +20,13 @@ use CoreShop\Component\Order\Model\OrderItemInterface;
 
 class AddToCartFactory implements AddToCartFactoryInterface
 {
-    protected $addToCartClass;
+    protected string $addToCartClass;
 
     public function __construct(string $addToCartClass)
     {
         $this->addToCartClass = $addToCartClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithCartAndCartItem(OrderInterface $cart, OrderItemInterface $cartItem): AddToCartInterface
     {
         $class = new $this->addToCartClass($cart, $cartItem);

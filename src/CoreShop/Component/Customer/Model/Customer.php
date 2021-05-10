@@ -21,31 +21,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class Customer extends AbstractPimcoreModel implements CustomerInterface
 {
-    /**
-     * @var array
-     */
-    private $roles = [];
+    private array $roles = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsername(?string $username)
     {
         $this->setEmail($username);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUsername()
     {
         //This is just a fallback, if you want to use username for login, this method is overwritten by Pimcore's implementation
         return $this->getEmail();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt()
     {
         // user has no salt as we use password_hash
@@ -66,9 +54,6 @@ abstract class Customer extends AbstractPimcoreModel implements CustomerInterfac
         $field->getDataForResource($this->getPassword(), $this);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRoles()
     {
         $roles = $this->roles;
@@ -87,9 +72,6 @@ abstract class Customer extends AbstractPimcoreModel implements CustomerInterfac
         return array_unique($roles);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEqualTo(UserInterface $user)
     {
         return $user instanceof self && $user->getId() === $this->getId();

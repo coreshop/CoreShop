@@ -20,7 +20,7 @@ use Twig\TwigFunction;
 
 final class TaxationDisplayProviderExtension extends AbstractExtension
 {
-    private $taxationDisplayProvider;
+    private TaxationDisplayProviderInterface $taxationDisplayProvider;
 
     public function __construct(TaxationDisplayProviderInterface $taxationDisplayProvider)
     {

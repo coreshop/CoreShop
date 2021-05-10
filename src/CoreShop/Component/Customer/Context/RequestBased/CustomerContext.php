@@ -22,29 +22,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CustomerContext implements CustomerContextInterface
 {
-    /**
-     * @var RequestResolverInterface
-     */
-    private $requestResolver;
+    private RequestResolverInterface $requestResolver;
+    private RequestStack $requestStack;
 
-    /**
-     * @var RequestStack
-     */
-    private $requestStack;
-
-    /**
-     * @param RequestResolverInterface $requestResolver
-     * @param RequestStack             $requestStack
-     */
     public function __construct(RequestResolverInterface $requestResolver, RequestStack $requestStack)
     {
         $this->requestResolver = $requestResolver;
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCustomer(): CustomerInterface
     {
         try {
@@ -54,12 +40,7 @@ final class CustomerContext implements CustomerContextInterface
         }
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return CustomerInterface
-     */
-    private function getCustomerForRequest(Request $request)
+    private function getCustomerForRequest(Request $request): CustomerInterface
     {
         $customer = $this->requestResolver->findCustomer($request);
 
@@ -68,10 +49,7 @@ final class CustomerContext implements CustomerContextInterface
         return $customer;
     }
 
-    /**
-     * @return Request
-     */
-    private function getMasterRequest()
+    private function getMasterRequest(): Request
     {
         $masterRequest = $this->requestStack->getMasterRequest();
         if (null === $masterRequest) {
@@ -81,9 +59,6 @@ final class CustomerContext implements CustomerContextInterface
         return $masterRequest;
     }
 
-    /**
-     * @param CustomerInterface|null $customer $store
-     */
     private function assertCustomerWasFound(CustomerInterface $customer = null)
     {
         if (null === $customer) {

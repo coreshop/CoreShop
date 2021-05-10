@@ -26,7 +26,7 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -36,9 +36,6 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -59,9 +56,6 @@ final class ProductSpecificPriceNestedConfigurationType extends AbstractNestedCo
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_rule_condition_nested';

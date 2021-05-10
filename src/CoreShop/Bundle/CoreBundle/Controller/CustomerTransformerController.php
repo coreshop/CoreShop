@@ -27,12 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerTransformerController extends AdminController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function checkForNameDuplicatesAction(Request $request)
+    public function checkForNameDuplicatesAction(Request $request): JsonResponse
     {
         $error = false;
         $message = null;
@@ -62,14 +57,7 @@ class CustomerTransformerController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param string  $type
-     * @param int     $objectId
-     *
-     * @return JsonResponse
-     */
-    public function getEntityDetailsAction(Request $request, string $type, int $objectId)
+    public function getEntityDetailsAction(string $type, int $objectId): JsonResponse
     {
         $error = false;
         $message = null;
@@ -108,14 +96,7 @@ class CustomerTransformerController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request  $request
-     * @param int      $customerId
-     * @param int|null $companyId
-     *
-     * @return JsonResponse
-     */
-    public function validateAssignmentAction(Request $request, int $customerId, int $companyId = null)
+    public function validateAssignmentAction(int $customerId, int $companyId = null): JsonResponse
     {
         $error = false;
         $message = null;
@@ -173,14 +154,7 @@ class CustomerTransformerController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int     $customerId
-     * @param int     $companyId
-     *
-     * @return JsonResponse
-     */
-    public function dispatchExistingAssignmentAction(Request $request, $customerId, $companyId)
+    public function dispatchExistingAssignmentAction(Request $request, int $customerId, int $companyId): JsonResponse
     {
         $error = false;
         $formError = false;
@@ -221,13 +195,7 @@ class CustomerTransformerController extends AdminController
         ]);
     }
 
-    /**
-     * @param Request $request
-     * @param int $customerId
-     *
-     * @return JsonResponse
-     */
-    public function dispatchNewAssignmentAction(Request $request, $customerId)
+    public function dispatchNewAssignmentAction(Request $request, int $customerId): JsonResponse
     {
         $error = false;
         $formError = false;
@@ -275,26 +243,17 @@ class CustomerTransformerController extends AdminController
         ]);
     }
 
-    /**
-     * @return CustomerRepositoryInterface
-     */
-    protected function getCustomerRepository()
+    protected function getCustomerRepository(): CustomerRepositoryInterface
     {
         return $this->get('coreshop.repository.customer');
     }
 
-    /**
-     * @return CompanyRepositoryInterface
-     */
-    protected function getCompanyRepository()
+    protected function getCompanyRepository(): CompanyRepositoryInterface
     {
         return $this->get('coreshop.repository.company');
     }
 
-    /**
-     * @return CustomerTransformHelperInterface
-     */
-    protected function getCustomerTransformerHelper()
+    protected function getCustomerTransformerHelper(): CustomerTransformHelperInterface
     {
         return $this->get(CustomerTransformHelperInterface::class);
     }

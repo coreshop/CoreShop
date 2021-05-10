@@ -20,9 +20,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class PaymentProviderSupportsEvent extends Event
 {
-    private $paymentProvider;
-    private $subject;
-    private $supported = true;
+    private PaymentProviderInterface $paymentProvider;
+    private ?ResourceInterface $subject;
+    private bool $supported = true;
 
     public function __construct(PaymentProviderInterface $paymentProvider, ResourceInterface $subject = null)
     {

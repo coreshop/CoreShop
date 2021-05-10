@@ -26,9 +26,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductRepository extends BaseProductRepository implements ProductRepositoryInterface, ProductVariantRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findLatestByStore(StoreInterface $store, int $count = 8): array
     {
         $conditions = [
@@ -39,9 +36,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $this->findBy($conditions, ['o_creationDate DESC'], $count);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findAllVariants(ProductInterface $product, bool $recursive = true): array
     {
         $list = $this->getList();
@@ -56,9 +50,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveVariantIdsForProductAndStore(ProductInterface $product, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -97,9 +88,6 @@ class ProductRepository extends BaseProductRepository implements ProductReposito
         return $products;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProductsListing(array $options = []): Listing
     {
         $resolver = new OptionsResolver();

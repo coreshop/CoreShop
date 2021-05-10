@@ -25,8 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductQuantityRangeType extends AbstractResourceType
 {
-    protected $actionTypes;
-    protected $actionConstraints;
+    protected array $actionTypes;
+    protected array $actionConstraints;
 
     public function __construct(string $dataClass, array $validationGroups, array $actionTypes, array $actionConstraints)
     {
@@ -36,9 +36,6 @@ final class ProductQuantityRangeType extends AbstractResourceType
         $this->actionConstraints = $actionConstraints;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
@@ -51,9 +48,6 @@ final class ProductQuantityRangeType extends AbstractResourceType
             ->add('highlighted', CheckboxType::class, []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -77,9 +71,6 @@ final class ProductQuantityRangeType extends AbstractResourceType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rules_range';

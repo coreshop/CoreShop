@@ -21,9 +21,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddToCartType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('cartItem', CartItemType::class, [
@@ -31,9 +28,6 @@ final class AddToCartType extends AbstractResourceType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -43,9 +37,6 @@ final class AddToCartType extends AbstractResourceType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_add_to_cart';

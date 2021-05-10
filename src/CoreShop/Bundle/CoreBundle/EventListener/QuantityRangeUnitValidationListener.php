@@ -24,7 +24,7 @@ use Pimcore\Model\Element\ValidationException;
 
 final class QuantityRangeUnitValidationListener
 {
-    protected $productUnitDefinitionRepository;
+    protected RepositoryInterface $productUnitDefinitionRepository;
 
     public function __construct(RepositoryInterface $productUnitDefinitionRepository)
     {

@@ -27,7 +27,7 @@ final class AmountConfigurationType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -37,9 +37,6 @@ final class AmountConfigurationType extends AbstractType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -59,9 +56,6 @@ final class AmountConfigurationType extends AbstractType
             ->add('gross', CheckboxType::class, []);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_condition_amount';

@@ -20,17 +20,14 @@ use Twig\TwigFilter;
 
 final class FormatMoneyExtension extends AbstractExtension
 {
-    private $moneyFormatter;
+    private MoneyFormatterInterface $moneyFormatter;
 
     public function __construct(MoneyFormatterInterface $moneyFormatter)
     {
         $this->moneyFormatter = $moneyFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_format_money', [$this->moneyFormatter, 'format']),

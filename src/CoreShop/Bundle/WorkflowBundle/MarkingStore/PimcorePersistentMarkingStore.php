@@ -20,8 +20,8 @@ use Symfony\Component\Workflow\MarkingStore\MarkingStoreInterface;
 
 class PimcorePersistentMarkingStore implements MarkingStoreInterface
 {
-    private $originMarkingStore;
-    private $persistDirectly;
+    private MarkingStoreInterface $originMarkingStore;
+    private bool $persistDirectly;
 
     public function __construct(MarkingStoreInterface $originMarkingStore, bool $persistDirectly = true)
     {
@@ -29,17 +29,11 @@ class PimcorePersistentMarkingStore implements MarkingStoreInterface
         $this->persistDirectly = $persistDirectly;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMarking($subject): Marking
     {
         return $this->originMarkingStore->getMarking($subject);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setMarking(object $subject, Marking $marking, array $context = [])
     {
         $this->originMarkingStore->setMarking($subject, $marking);

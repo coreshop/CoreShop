@@ -33,9 +33,6 @@ final class ProductsConditionChecker extends AbstractConditionChecker
         $this->__traitConstruct($productRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         $productIdsToCheck = $this->getProductsToCheck($configuration['products'], $cart->getStore(), $configuration['include_variants'] ?: false);

@@ -24,16 +24,8 @@ use Symfony\Component\Form\FormEvents;
 
 final class GatewayConfigType extends AbstractResourceType
 {
-    /**
-     * @var FormTypeRegistryInterface
-     */
-    private $gatewayConfigurationTypeRegistry;
+    private FormTypeRegistryInterface $gatewayConfigurationTypeRegistry;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param FormTypeRegistryInterface $gatewayConfigurationTypeRegistry
-     */
     public function __construct(
         $dataClass,
         array $validationGroups,
@@ -44,9 +36,6 @@ final class GatewayConfigType extends AbstractResourceType
         $this->gatewayConfigurationTypeRegistry = $gatewayConfigurationTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -70,9 +59,6 @@ final class GatewayConfigType extends AbstractResourceType
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_payum_gateway_config';

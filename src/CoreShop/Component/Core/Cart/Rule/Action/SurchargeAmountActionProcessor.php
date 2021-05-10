@@ -39,9 +39,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(
         OrderInterface $cart,
         array $configuration,
@@ -58,9 +55,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(
         OrderInterface $cart,
         array $configuration,
@@ -69,9 +63,6 @@ class SurchargeAmountActionProcessor implements CartPriceRuleActionProcessorInte
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDiscount(OrderInterface $cart, array $configuration)
     {
         /**

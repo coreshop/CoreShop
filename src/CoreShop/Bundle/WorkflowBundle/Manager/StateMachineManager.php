@@ -20,30 +20,18 @@ use Symfony\Component\Workflow\Workflow;
 
 final class StateMachineManager implements StateMachineManagerInterface
 {
-    /**
-     * @var Registry
-     */
-    private $registry;
+    private Registry $registry;
 
-    /**
-     * @param Registry $registry
-     */
     public function __construct(Registry $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($subject, string $workflowName = null): Workflow
     {
         return $this->registry->get($subject, $workflowName);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTransitionFromState(Workflow $workflow, $subject, string $fromState): ?string
     {
         /** @var Transition $transition */
@@ -56,9 +44,6 @@ final class StateMachineManager implements StateMachineManagerInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTransitionToState(Workflow $workflow, $subject, string $toState): ?string
     {
         /** @var Transition $transition */

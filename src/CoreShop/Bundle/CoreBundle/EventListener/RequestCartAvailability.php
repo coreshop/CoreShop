@@ -25,10 +25,10 @@ use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 final class RequestCartAvailability
 {
-    private $cartManager;
-    private $shopperContext;
-    private $pimcoreRequestHelper;
-    private $session;
+    private CartManagerInterface $cartManager;
+    private ShopperContextInterface $shopperContext;
+    private RequestHelper $pimcoreRequestHelper;
+    private Session $session;
 
     public function __construct(
         CartManagerInterface $cartManager,

@@ -20,9 +20,6 @@ use Pimcore\Model\DataObject\Fieldcollection;
 
 class FieldCollectionGetter implements GetterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
         $columnConfig = $config->getConfiguration();

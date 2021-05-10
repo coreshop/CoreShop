@@ -16,9 +16,6 @@ namespace CoreShop\Bundle\ResourceBundle\Installer;
 
 final class PimcoreAdminTranslationsInstaller extends AbstractTranslationInstaller
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getIdentifier(?string $applicationName = null): string
     {
         return $applicationName ? sprintf('%s.pimcore.admin.install.admin_translations', $applicationName) : 'coreshop.all.pimcore.admin.install.admin_translations';

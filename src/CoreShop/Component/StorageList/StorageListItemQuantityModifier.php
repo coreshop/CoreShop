@@ -18,9 +18,6 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class StorageListItemQuantityModifier implements StorageListItemQuantityModifierInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function modify(StorageListItemInterface $item, float $targetQuantity): void
     {
         $currentQuantity = $item->getQuantity();

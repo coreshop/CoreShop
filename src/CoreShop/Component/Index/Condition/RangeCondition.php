@@ -16,9 +16,9 @@ namespace CoreShop\Component\Index\Condition;
 
 class RangeCondition implements ConditionInterface
 {
-    private $fieldName;
-    private $from;
-    private $to;
+    private string $fieldName;
+    private string $from;
+    private string $to;
 
     public function __construct(string $fieldName, string $from, string $to)
     {

@@ -23,20 +23,9 @@ use Twig\TwigFunction;
 
 final class LocaleSwitcherExtension extends AbstractExtension
 {
-    /**
-     * @var Document\Service
-     */
-    private $documentService;
+    private Document\Service $documentService;
+    private ShopperContextInterface $shopperContext;
 
-    /**
-     * @var ShopperContextInterface
-     */
-    private $shopperContext;
-
-    /**
-     * @param Document\Service        $documentService
-     * @param ShopperContextInterface $shopperContext
-     */
     public function __construct(
         Document\Service $documentService,
         ShopperContextInterface $shopperContext
@@ -45,9 +34,6 @@ final class LocaleSwitcherExtension extends AbstractExtension
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

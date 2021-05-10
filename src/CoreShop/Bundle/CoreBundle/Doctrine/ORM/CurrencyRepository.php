@@ -20,9 +20,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CurrencyRepository extends BaseCurrencyRepository implements CurrencyRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')

@@ -19,9 +19,6 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 class PercentageIncreaseAction implements ProductQuantityPriceRuleActionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
         return $realItemPrice + ((int) round(($range->getPercentage() / 100) * $realItemPrice));

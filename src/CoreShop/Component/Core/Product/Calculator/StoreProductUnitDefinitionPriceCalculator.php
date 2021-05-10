@@ -25,9 +25,6 @@ use Webmozart\Assert\Assert;
 
 final class StoreProductUnitDefinitionPriceCalculator implements ProductRetailPriceCalculatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         /**

@@ -18,17 +18,11 @@ use Pimcore\Model;
 
 abstract class Multiselect extends Model\DataObject\ClassDefinition\Data\Multiselect
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];

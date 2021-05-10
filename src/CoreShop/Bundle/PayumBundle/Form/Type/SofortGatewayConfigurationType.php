@@ -23,9 +23,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class SofortGatewayConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

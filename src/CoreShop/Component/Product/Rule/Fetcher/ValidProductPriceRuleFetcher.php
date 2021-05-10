@@ -20,8 +20,8 @@ use CoreShop\Component\Rule\Condition\RuleValidationProcessorInterface;
 
 final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
 {
-    private $productPriceRuleRepository;
-    private $ruleValidationProcessor;
+    private ProductPriceRuleRepositoryInterface $productPriceRuleRepository;
+    private RuleValidationProcessorInterface $ruleValidationProcessor;
 
     public function __construct(
         ProductPriceRuleRepositoryInterface $productPriceRuleRepository,
@@ -32,9 +32,6 @@ final class ValidProductPriceRuleFetcher implements ValidRulesFetcherInterface
         $this->ruleValidationProcessor = $ruleValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValidRules(ProductInterface $product, array $context): array
     {
         $validRules = [];

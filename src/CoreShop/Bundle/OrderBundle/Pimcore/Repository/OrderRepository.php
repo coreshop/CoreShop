@@ -26,9 +26,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class OrderRepository extends PimcoreRepository implements OrderRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findCartByCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
@@ -58,9 +55,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findLatestCartByStoreAndCustomer(StoreInterface $store, CustomerInterface $customer): ?OrderInterface
     {
         $list = $this->getList();
@@ -78,9 +72,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findExpiredCarts(int $days, bool $anonymous, bool $customer): array
     {
         $list = $this->getList();
@@ -128,9 +119,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return $result;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByCustomer(CustomerInterface $customer): array
     {
         $list = $this->getList();
@@ -142,9 +130,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasCustomerOrders(CustomerInterface $customer): bool
     {
         $list = $this->getList();
@@ -153,9 +138,6 @@ class OrderRepository extends PimcoreRepository implements OrderRepositoryInterf
         return $list->getTotalCount() > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findExpiredOrders(int $days): array
     {
         $daysTimestamp = Carbon::now();

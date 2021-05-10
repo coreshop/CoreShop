@@ -19,16 +19,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 interface DriverInterface
 {
-    /**
-     * @param ContainerBuilder  $container
-     * @param MetadataInterface $metadata
-     */
-    public function load(ContainerBuilder $container, MetadataInterface $metadata);
+    public function load(ContainerBuilder $container, MetadataInterface $metadata): void;
 
-    /**
-     * Returns unique name of the driver.
-     *
-     * @return string
-     */
-    public function getType();
+    public function getType(): string;
 }

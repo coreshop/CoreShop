@@ -20,12 +20,9 @@ use Symfony\Component\Filesystem\Filesystem;
 
 final class CommandDirectoryChecker
 {
-    private $name;
-    private $filesystem;
+    private string $name;
+    private Filesystem $filesystem;
 
-    /**
-     * @param Filesystem $filesystem
-     */
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;

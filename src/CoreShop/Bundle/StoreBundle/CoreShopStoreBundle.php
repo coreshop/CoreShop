@@ -17,7 +17,6 @@ namespace CoreShop\Bundle\StoreBundle;
 use CoreShop\Bundle\CurrencyBundle\CoreShopCurrencyBundle;
 use CoreShop\Bundle\ResourceBundle\AbstractResourceBundle;
 use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeRequestResolverPass;
 use CoreShop\Bundle\StoreBundle\DependencyInjection\Compiler\CompositeStoreContextPass;
 use CoreShop\Bundle\ThemeBundle\CoreShopThemeBundle;
@@ -26,11 +25,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopStoreBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -38,9 +32,6 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);
@@ -49,9 +40,6 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $container->addCompilerPass(new CompositeRequestResolverPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         parent::registerDependentBundles($collection);
@@ -60,9 +48,6 @@ final class CoreShopStoreBundle extends AbstractResourceBundle
         $collection->addBundle(new CoreShopThemeBundle(), 2800);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\Store\Model';

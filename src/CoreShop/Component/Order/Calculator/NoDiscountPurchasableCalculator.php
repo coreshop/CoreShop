@@ -18,9 +18,6 @@ use CoreShop\Component\Order\Model\PurchasableInterface;
 
 final class NoDiscountPurchasableCalculator implements PurchasableDiscountCalculatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(PurchasableInterface $purchasable, array $context, int $convertedPrice): int
     {
         return 0;

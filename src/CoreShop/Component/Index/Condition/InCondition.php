@@ -16,13 +16,13 @@ namespace CoreShop\Component\Index\Condition;
 
 class InCondition implements ConditionInterface
 {
-    private $fieldName;
-    private $values;
+    private string $fieldName;
+    private array $values;
 
-    public function __construct(string $fieldName, array $value)
+    public function __construct(string $fieldName, array $values)
     {
         $this->fieldName = $fieldName;
-        $this->values = $value;
+        $this->values = $values;
     }
 
     public function getFieldName(): string

@@ -17,14 +17,11 @@ namespace CoreShop\Behat\Service;
 use Behat\Mink\Driver\PantherDriver;
 use Behat\Mink\Exception\DriverException;
 use Behat\Mink\Session;
-use Symfony\Component\BrowserKit\Cookie;
+use FriendsOfBehat\SymfonyExtension\Mink\MinkParameters;
 
 class CookieSetter implements CookieSetterInterface
 {
-    /** @var Session */
-    protected $minkSession;
-
-    /** @var array */
+    protected Session $minkSession;
     protected $minkParameters;
 
     public function __construct(Session $minkSession, $minkParameters)
@@ -41,9 +38,6 @@ class CookieSetter implements CookieSetterInterface
         $this->minkParameters = $minkParameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setCookie($name, $value)
     {
         $this->prepareMinkSessionIfNeeded($this->minkSession);

@@ -19,17 +19,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class FreeShippingConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         //Nothing to do here
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action_free_shipping';

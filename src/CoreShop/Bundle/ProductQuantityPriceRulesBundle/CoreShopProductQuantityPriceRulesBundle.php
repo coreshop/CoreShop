@@ -19,16 +19,10 @@ use CoreShop\Bundle\ResourceBundle\CoreShopResourceBundle;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesCalculatorPass;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesConditionPass;
 use CoreShop\Bundle\ProductQuantityPriceRulesBundle\DependencyInjection\Compiler\ProductQuantityPriceRulesActionPass;
-use CoreShop\Bundle\ResourceBundle\ResourceBundleInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
 {
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSupportedDrivers()
     {
         return [
@@ -45,25 +39,16 @@ class CoreShopProductQuantityPriceRulesBundle extends AbstractResourceBundle
         $container->addCompilerPass(new ProductQuantityPriceRulesCalculatorPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName(): string
     {
         return 'CoreShop - Product Quantity Price Rules';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription(): string
     {
         return 'CoreShop - Product Quantity Price Rules Bundle';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getModelNamespace()
     {
         return 'CoreShop\Component\ProductQuantityPriceRules\Model';

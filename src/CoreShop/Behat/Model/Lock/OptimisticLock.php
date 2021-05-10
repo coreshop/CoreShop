@@ -18,17 +18,11 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class OptimisticLock extends AbstractPimcoreModel implements OptimisticLockedInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getOptimisticLockVersion(): ?int
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setOptimisticLockVersion(?int $optimisticLockVersion)
     {
         throw new ImplementedByPimcoreException(__CLASS__, __METHOD__);

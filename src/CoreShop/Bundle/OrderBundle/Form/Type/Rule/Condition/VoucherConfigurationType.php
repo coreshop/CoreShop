@@ -24,7 +24,7 @@ final class VoucherConfigurationType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -34,9 +34,6 @@ final class VoucherConfigurationType extends AbstractType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -44,9 +41,6 @@ final class VoucherConfigurationType extends AbstractType
             ->add('onlyOnePerCart', CheckboxType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_condition_voucher';

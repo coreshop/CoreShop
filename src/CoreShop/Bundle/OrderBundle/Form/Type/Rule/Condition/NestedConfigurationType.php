@@ -26,7 +26,7 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @param string[] $validationGroups
@@ -36,9 +36,6 @@ final class NestedConfigurationType extends AbstractNestedConfigurationType
         $this->validationGroups = $validationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);

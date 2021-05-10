@@ -18,19 +18,13 @@ use CoreShop\Component\Currency\Model\CurrencyInterface;
 
 final class FixedCurrencyContext implements CurrencyContextInterface
 {
-    /**
-     * @var CurrencyInterface
-     */
-    private $currency;
+    private ?CurrencyInterface $currency = null;
 
     public function setCurrency(CurrencyInterface $currency): void
     {
         $this->currency = $currency;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         if ($this->currency instanceof CurrencyInterface) {

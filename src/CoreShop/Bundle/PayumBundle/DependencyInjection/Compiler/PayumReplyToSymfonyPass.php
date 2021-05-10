@@ -20,9 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class PayumReplyToSymfonyPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $definitionId = 'payum.converter.reply_to_http_response';

@@ -22,16 +22,13 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class VoucherConditionChecker extends AbstractConditionChecker
 {
-    private $voucherCodeRepository;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
 
     public function __construct(CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository)
     {
         $this->voucherCodeRepository = $voucherCodeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (null === $voucher) {

@@ -21,17 +21,11 @@ use Doctrine\ORM\QueryBuilder;
 
 class CurrencyRepository extends EntityRepository implements CurrencyRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')
@@ -41,9 +35,6 @@ class CurrencyRepository extends EntityRepository implements CurrencyRepositoryI
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getByCode(string $currencyCode): ?CurrencyInterface
     {
         return $this->createQueryBuilder('o')

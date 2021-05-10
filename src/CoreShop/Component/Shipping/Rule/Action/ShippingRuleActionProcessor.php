@@ -23,8 +23,8 @@ use CoreShop\Component\Shipping\Rule\Processor\ShippingRuleActionProcessorInterf
 
 class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterface, CarrierPriceModificationActionProcessorInterface
 {
-    protected $shippingRuleProcessor;
-    protected $shippingRuleRepository;
+    protected ShippingRuleActionProcessorInterface $shippingRuleProcessor;
+    protected RepositoryInterface $shippingRuleRepository;
 
     public function __construct(
         ShippingRuleActionProcessorInterface $shippingRuleProcessor,
@@ -34,9 +34,6 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
         $this->shippingRuleRepository = $shippingRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(
         CarrierInterface $carrier,
         ShippableInterface $shippable,
@@ -53,9 +50,6 @@ class ShippingRuleActionProcessor implements CarrierPriceActionProcessorInterfac
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getModification(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

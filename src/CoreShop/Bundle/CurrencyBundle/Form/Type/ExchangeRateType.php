@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ExchangeRateType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -43,9 +40,6 @@ final class ExchangeRateType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -53,9 +47,6 @@ final class ExchangeRateType extends AbstractResourceType
         $resolver->setDefault('rounding_mode', NumberToLocalizedStringTransformer::ROUND_HALF_EVEN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_exchange_rate';

@@ -25,9 +25,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class MultiselectFilterConditionFromMultiselectProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = $condition->getConfiguration()['field'];
@@ -63,9 +60,6 @@ class MultiselectFilterConditionFromMultiselectProcessor implements FilterCondit
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = $condition->getConfiguration()['field'];

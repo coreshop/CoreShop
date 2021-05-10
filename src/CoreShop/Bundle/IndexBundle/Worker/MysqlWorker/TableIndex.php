@@ -17,18 +17,10 @@ namespace CoreShop\Bundle\IndexBundle\Worker\MysqlWorker;
 final class TableIndex
 {
     const TABLE_INDEX_TYPE_UNIQUE = 'UNIQUE';
-
     const TABLE_INDEX_TYPE_INDEX = 'INDEX';
 
-    /**
-     * @var array
-     */
-    private $columns;
-
-    /**
-     * @var string
-     */
-    private $type;
+    private array $columns = [];
+    private string $type;
 
     /**
      * @return array

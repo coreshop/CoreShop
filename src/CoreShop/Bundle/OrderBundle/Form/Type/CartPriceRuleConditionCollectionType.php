@@ -19,9 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CartPriceRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -29,9 +26,6 @@ class CartPriceRuleConditionCollectionType extends RuleConditionCollectionType
         $resolver->setDefault('entry_type', CartPriceRuleConditionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule_condition_collection';

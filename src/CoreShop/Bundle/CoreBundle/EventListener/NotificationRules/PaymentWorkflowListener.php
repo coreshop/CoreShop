@@ -21,7 +21,7 @@ use Webmozart\Assert\Assert;
 
 final class PaymentWorkflowListener extends AbstractNotificationRuleListener
 {
-    private $orderRepository;
+    private OrderRepositoryInterface $orderRepository;
 
     public function setOrderRepository(OrderRepositoryInterface $orderRepository)
     {

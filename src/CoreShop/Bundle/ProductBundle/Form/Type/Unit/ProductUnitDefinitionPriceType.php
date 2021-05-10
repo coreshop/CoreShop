@@ -16,16 +16,12 @@ namespace CoreShop\Bundle\ProductBundle\Form\Type\Unit;
 
 use CoreShop\Bundle\MoneyBundle\Form\Type\MoneyType;
 use CoreShop\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
-use CoreShop\Component\Product\Model\ProductUnitDefinitionPriceInterface;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 final class ProductUnitDefinitionPriceType extends AbstractResourceType
 {
-    protected $decimalFactor;
-    protected $decimalPrecision;
+    protected int $decimalFactor;
+    protected int $decimalPrecision;
 
     public function __construct(string $dataClass, array $validationGroups, int $decimalFactor, int $decimalPrecision)
     {
@@ -35,9 +31,6 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
         $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,9 +38,6 @@ final class ProductUnitDefinitionPriceType extends AbstractResourceType
             ->add('unitDefinition', ProductUnitDefinitionSelectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_price';

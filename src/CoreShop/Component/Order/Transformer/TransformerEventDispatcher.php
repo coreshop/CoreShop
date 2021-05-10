@@ -19,16 +19,13 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class TransformerEventDispatcher implements TransformerEventDispatcherInterface
 {
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatchPreEvent($modelName, $model, $params = [])
     {
         $event = $this->getEvent($model, $params);
@@ -39,9 +36,6 @@ final class TransformerEventDispatcher implements TransformerEventDispatcherInte
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dispatchPostEvent($modelName, $model, $params = [])
     {
         $event = $this->getEvent($model, $params);

@@ -41,9 +41,6 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);
@@ -88,9 +85,6 @@ final class GiftProductActionProcessor implements CartPriceRuleActionProcessorIn
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $product = $this->productRepository->find($configuration['product']);

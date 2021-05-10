@@ -19,21 +19,18 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 use CoreShop\Component\Order\Model\CartPriceRuleVoucherGeneratorInterface;
 use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
-use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGenerator;
 use Webmozart\Assert\Assert;
 
 class CartPriceRuleVoucherCodeGenerator
 {
     const FORMAT_ALPHANUMERIC = 'alphanumeric';
-
     const FORMAT_ALPHABETIC = 'alphabetic';
-
     const FORMAT_NUMERIC = 'numeric';
 
-    private $voucherCodeFactory;
-    private $voucherCodeRepository;
-    private $checker;
-    private $letterResolver;
+    private FactoryInterface $voucherCodeFactory;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
+    private CodeGeneratorCheckerInterface $checker;
+    private CodeGeneratorLetterResolver $letterResolver;
 
     public function __construct(
         FactoryInterface $voucherCodeFactory,
@@ -78,15 +75,6 @@ class CartPriceRuleVoucherCodeGenerator
         return $generatedVouchers;
     }
 
-    /**
-     * @param string      $letters
-     * @param int         $length
-     * @param string|null $prefix
-     * @param string|null $suffix
-     * @param array       $generatedCoupons
-     * @return string
-     * @throws \Exception
-     */
     protected function generateCode(string $letters, int $length, ?string $prefix, ?string $suffix, array $generatedCoupons): string
     {
          Assert::nullOrRange($length, 1, 40, 'Invalid %d code length should be between %d and %d');
@@ -121,9 +109,6 @@ class CartPriceRuleVoucherCodeGenerator
         return null !== $this->voucherCodeRepository->findOneBy(['code' => $code]);
     }
 
-    /**
-     * @throws FailedCodeGenerationException
-     */
     private function assert(CartPriceRuleVoucherGeneratorInterface $generator): void
     {
         if (!$this->checker->isGenerationPossible($generator)) {

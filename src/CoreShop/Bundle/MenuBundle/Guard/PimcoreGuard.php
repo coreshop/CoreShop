@@ -20,7 +20,7 @@ use Pimcore\Model\User;
 
 class PimcoreGuard
 {
-    private $tokenStorageUserResolver;
+    private TokenStorageUserResolver $tokenStorageUserResolver;
 
     public function __construct(TokenStorageUserResolver $tokenStorageUserResolver)
     {

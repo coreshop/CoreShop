@@ -22,9 +22,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class AddMultipleToCartType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('items', CollectionType::class, [
@@ -36,9 +33,6 @@ final class AddMultipleToCartType extends AbstractResourceType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);

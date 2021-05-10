@@ -21,17 +21,11 @@ use Doctrine\ORM\QueryBuilder;
 
 class CountryRepository extends EntityRepository implements CountryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByName(string $name, string $locale): array
     {
         return $this->createQueryBuilder('o')
@@ -44,9 +38,6 @@ class CountryRepository extends EntityRepository implements CountryRepositoryInt
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByCode($code): ?CountryInterface
     {
         return $this->createQueryBuilder('o')

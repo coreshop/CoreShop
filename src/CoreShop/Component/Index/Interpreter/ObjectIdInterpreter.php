@@ -20,9 +20,6 @@ use Pimcore\Model\DataObject\AbstractObject;
 
 class ObjectIdInterpreter implements InterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         if ($value instanceof AbstractObject) {

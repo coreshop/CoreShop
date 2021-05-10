@@ -21,22 +21,13 @@ use Pimcore\Model\DataObject;
 
 class LocalizedFieldGetter implements GetterInterface
 {
-    /**
-     * @var TranslationLocaleProviderInterface
-     */
-    protected $localeProvider;
+    protected TranslationLocaleProviderInterface $localeProvider;
 
-    /**
-     * @param TranslationLocaleProviderInterface $localeProvider
-     */
     public function __construct(TranslationLocaleProviderInterface $localeProvider)
     {
         $this->localeProvider = $localeProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(IndexableInterface $object, IndexColumnInterface $config)
     {
         $getter = 'get' . ucfirst($config->getObjectKey());

@@ -20,9 +20,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
 {
-    private $validRuleFetcher;
-    private $requestStack;
-    private $checkedProducts = [];
+    private ValidRulesFetcherInterface $validRuleFetcher;
+    private RequestStack $requestStack;
+    private array $checkedProducts = [];
 
     public function __construct(ValidRulesFetcherInterface $validRuleFetcher, RequestStack $requestStack)
     {
@@ -30,9 +30,6 @@ final class MemoryCachedValidRuleFetcher implements ValidRulesFetcherInterface
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getValidRules(QuantityRangePriceAwareInterface $product, array $context): array
     {
         if ($this->requestStack->getMasterRequest() instanceof Request) {

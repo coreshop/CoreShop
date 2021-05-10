@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class StoreOrderMailConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -43,9 +40,6 @@ class StoreOrderMailConfigurationType extends AbstractType
             ->add('doNotSendToDesignatedRecipient', CheckboxType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_notification_rule_action_store_mail';

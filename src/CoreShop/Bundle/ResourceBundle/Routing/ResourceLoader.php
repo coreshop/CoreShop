@@ -24,8 +24,8 @@ use Symfony\Component\Yaml\Yaml;
 
 final class ResourceLoader implements LoaderInterface
 {
-    private $modelRegistry;
-    private $routeFactory;
+    private RegistryInterface $modelRegistry;
+    private RouteFactoryInterface $routeFactory;
 
     public function __construct(RegistryInterface $modelRegistry, RouteFactoryInterface $routeFactory)
     {
@@ -33,9 +33,6 @@ final class ResourceLoader implements LoaderInterface
         $this->routeFactory = $routeFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($resource, $type = null)
     {
         $processor = new Processor();
@@ -98,25 +95,16 @@ final class ResourceLoader implements LoaderInterface
         return $routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($resource, $type = null): bool
     {
         return 'coreshop.resources' === $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver()
     {
         // Intentionally left blank.
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setResolver(LoaderResolverInterface $resolver)
     {
         // Intentionally left blank.

@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 final class DefaultCheckoutManagerFactory implements CheckoutManagerFactoryInterface
 {
-    private $steps;
-    private $priorityMap;
+    private ContainerInterface $steps;
+    private array $priorityMap;
 
     public function __construct(ContainerInterface $steps, array $priorityMap)
     {

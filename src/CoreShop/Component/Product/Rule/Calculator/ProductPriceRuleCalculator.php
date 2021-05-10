@@ -33,8 +33,8 @@ final class ProductPriceRuleCalculator implements
     ProductRetailPriceCalculatorInterface,
     ProductDiscountPriceCalculatorInterface
 {
-    private $validRulesFetcher;
-    private $actionServiceRegistry;
+    private ValidRulesFetcherInterface $validRulesFetcher;
+    private ServiceRegistryInterface $actionServiceRegistry;
 
     public function __construct(
         ValidRulesFetcherInterface $validRulesFetcher,
@@ -44,9 +44,6 @@ final class ProductPriceRuleCalculator implements
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
@@ -88,9 +85,6 @@ final class ProductPriceRuleCalculator implements
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         $price = null;
@@ -131,9 +125,6 @@ final class ProductPriceRuleCalculator implements
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         $discount = 0;

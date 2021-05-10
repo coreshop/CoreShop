@@ -21,7 +21,7 @@ use Twig\TwigFunction;
 
 final class ObjectLinkGeneratorExtension extends AbstractExtension
 {
-    private $objectLinkGenerator;
+    private LinkGeneratorInterface $objectLinkGenerator;
 
     public function __construct(LinkGeneratorInterface $objectLinkGenerator)
     {

@@ -113,17 +113,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $this->minValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryColumnType()
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getColumnType()
     {
         return false;
@@ -149,9 +143,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCode($class)
     {
         $key = $this->getName();
@@ -285,17 +276,11 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preGetData($object, $params = [])
     {
         /**
@@ -332,9 +317,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $returnData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function preSetData($object, $data, $params = [])
     {
         if ($object instanceof Model\DataObject\LazyLoadedFieldsInterface) {
@@ -344,9 +326,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function load($object, $params = [])
     {
         if (isset($params['force']) && $params['force']) {
@@ -356,9 +335,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -439,9 +415,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $object->setObjectVar($this->getName(), $allStoreValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -464,9 +437,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         if (!is_array($data)) {
@@ -505,25 +475,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $entities;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function delete($object, $params = [])
     {
         if (!$object instanceof ProductInterface) {
@@ -538,9 +499,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         $this->getEntityManager()->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         $storeData = [];
@@ -597,9 +555,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeData;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         /**
@@ -660,9 +615,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $storeValues;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         if (!is_array($data)) {
@@ -677,9 +629,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return join(', ', $preview);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -691,9 +640,6 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return json_encode($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         if (!$object) {
@@ -749,25 +695,16 @@ class StoreValues extends Model\DataObject\ClassDefinition\Data implements
         return $newObject;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         return is_null($data) || (is_array($data) && count($data) === 0);

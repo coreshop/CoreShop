@@ -26,32 +26,23 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStepInterface
 {
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'summary';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResponse(OrderInterface $cart, Request $request): RedirectResponse
     {
         $checkoutFinisherUrl = $request->get('checkout_finisher');
@@ -59,17 +50,11 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
         return new RedirectResponse($checkoutFinisherUrl);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request, $cart);
@@ -85,9 +70,6 @@ class SummaryCheckoutStep implements CheckoutStepInterface, RedirectCheckoutStep
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return ['form' => $this->createForm($request, $cart)->createView()];

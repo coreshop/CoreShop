@@ -22,9 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class RegisterTypeHintRegistriesPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!method_exists($container, 'registerAliasForArgument')) {

@@ -36,7 +36,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
     /**
      * @var array
      */
-    private static $bundles = [
+    private static array $bundles = [
         'coreshop_address',
         'coreshop_currency',
         'coreshop_customer',
@@ -53,10 +53,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         'coreshop_taxation',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $config, ContainerBuilder $container)
+    public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
@@ -106,10 +103,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
             ->addTag(RegisterReportsPass::REPORT_TAG);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
         $config = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
@@ -121,11 +115,7 @@ final class CoreShopCoreExtension extends AbstractModelExtension implements Prep
         }
     }
 
-    /**
-     * @param ContainerBuilder $container
-     * @param array            $config
-     */
-    private function registerCheckout(ContainerBuilder $container, $config)
+    private function registerCheckout(ContainerBuilder $container, array $config): void
     {
         $availableCheckoutManagerFactories = [];
 

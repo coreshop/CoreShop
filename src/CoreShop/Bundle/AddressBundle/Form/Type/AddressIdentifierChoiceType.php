@@ -23,16 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressIdentifierChoiceType extends AbstractType
 {
-    private $addressIdentifierRepository;
+    private RepositoryInterface $addressIdentifierRepository;
 
     public function __construct(RepositoryInterface $addressIdentifierRepository)
     {
         $this->addressIdentifierRepository = $addressIdentifierRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -57,17 +54,11 @@ final class AddressIdentifierChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_address_identifier_choice';

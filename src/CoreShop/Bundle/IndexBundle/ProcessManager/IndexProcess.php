@@ -19,9 +19,6 @@ use ProcessManagerBundle\Process\Pimcore;
 
 final class IndexProcess extends Pimcore
 {
-    /**
-     * {@inheritdoc}
-     */
     public function run(ExecutableInterface $executable, array $params = null)
     {
         $settings = $executable->getSettings();

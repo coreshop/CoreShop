@@ -17,15 +17,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class AdminCustomerCreationEvent extends Event
 {
-    /**
-     * @var CustomerInterface
-     */
-    private $customer;
-
-    /**
-     * @var array
-     */
-    private $data;
+    private CustomerInterface $customer;
+    private array $data;
 
     public function __construct(CustomerInterface $customer, array $data)
     {
@@ -33,18 +26,12 @@ final class AdminCustomerCreationEvent extends Event
         $this->data = $data;
     }
 
-    /**
-     * @return CustomerInterface
-     */
-    public function getCustomer()
+    public function getCustomer(): CustomerInterface
     {
         return $this->customer;
     }
 
-    /**
-     * @return array
-     */
-    public function getData()
+    public function getData(): array
     {
         return $this->data;
     }

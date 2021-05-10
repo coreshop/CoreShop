@@ -21,17 +21,11 @@ use Doctrine\ORM\QueryBuilder;
 
 class StoreRepository extends EntityRepository implements StoreRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createListQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('o');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findOneBySite(int $siteId): ?StoreInterface
     {
         return $this->createQueryBuilder('o')
@@ -41,9 +35,6 @@ class StoreRepository extends EntityRepository implements StoreRepositoryInterfa
             ->getOneOrNullResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStandard(): ?StoreInterface
     {
         return $this->createQueryBuilder('o')

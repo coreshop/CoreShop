@@ -32,9 +32,6 @@ final class EventedRuleProcessor implements RulesProcessorInterface
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRules(string $type, $subject, array $params = []): void
     {
         $event = new GenericEvent($type, [

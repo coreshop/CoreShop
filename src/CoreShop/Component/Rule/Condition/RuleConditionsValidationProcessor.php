@@ -21,8 +21,8 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class RuleConditionsValidationProcessor implements RuleConditionsValidationProcessorInterface
 {
-    private $ruleRegistry;
-    private $type;
+    private ServiceRegistryInterface $ruleRegistry;
+    private string $type;
 
     public function __construct(ServiceRegistryInterface $ruleRegistry, string $type)
     {
@@ -30,17 +30,11 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, $conditions, array $params = []): bool
     {
         if (!count($conditions)) {
@@ -60,9 +54,6 @@ class RuleConditionsValidationProcessor implements RuleConditionsValidationProce
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isConditionValid(ResourceInterface $subject, RuleInterface $rule, ConditionInterface $condition, array $params = []): bool
     {
         /** @var ConditionCheckerInterface $checker */

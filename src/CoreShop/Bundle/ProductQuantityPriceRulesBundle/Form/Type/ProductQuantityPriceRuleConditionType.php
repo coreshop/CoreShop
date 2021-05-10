@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class ProductQuantityPriceRuleConditionType extends RuleConditionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
@@ -34,9 +31,6 @@ final class ProductQuantityPriceRuleConditionType extends RuleConditionType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule_condition';

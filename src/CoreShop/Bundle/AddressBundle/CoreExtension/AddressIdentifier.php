@@ -16,17 +16,13 @@ namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Address\Model\AddressIdentifierInterface;
+use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
 
 class AddressIdentifier extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
     public $fieldtype = 'coreShopAddressIdentifier';
 
-    protected function getRepository()
+    protected function getRepository(): AddressIdentifierRepositoryInterface
     {
         return \Pimcore::getContainer()->get('coreshop.repository.address_identifier');
     }

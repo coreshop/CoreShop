@@ -36,9 +36,6 @@ final class CartRuleAutoProcessor implements CartProcessorInterface
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $eligibleRules = $this->cartPriceRuleRepository->findNonVoucherRules();

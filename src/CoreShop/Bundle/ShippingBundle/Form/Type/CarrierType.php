@@ -23,9 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CarrierType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,9 +37,6 @@ class CarrierType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_carrier';

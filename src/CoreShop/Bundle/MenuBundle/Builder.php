@@ -21,9 +21,9 @@ use Knp\Menu\ItemInterface;
 
 class Builder
 {
-    protected $factory;
-    protected $type;
-    protected $registry;
+    protected FactoryInterface $factory;
+    protected string $type;
+    protected ServiceRegistryInterface $registry;
 
     public function __construct(FactoryInterface $factory, string $type, ServiceRegistryInterface $registry)
     {

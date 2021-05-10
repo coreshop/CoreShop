@@ -157,57 +157,36 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $this->minValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getColumnType()
     {
         return 'bigint(20)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryColumnType()
     {
         return 'bigint(20)';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalVersion($object, $data)
     {
         return $this->getDataForEditmode($data, $object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalVersion($object, $data)
     {
         return $this->getDataFromEditmode($data, $object);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function marshalRecycleData($object, $data)
     {
         return $this->marshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unmarshalRecycleData($object, $data)
     {
         return $this->unmarshalVersion($object, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if (is_numeric($data) && !is_int($data)) {
@@ -239,9 +218,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCode($class)
     {
         $key = $this->getName();
@@ -282,9 +258,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSetterCode($class)
     {
         $returnType = $class instanceof DataObject\Fieldcollection\Definition ? '\\Pimcore\\Model\\DataObject\\FieldCollection\\Data\\' . ucfirst($class->getKey()) :
@@ -331,9 +304,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCodeObjectbrick($brickClass)
     {
         $key = $this->getName();
@@ -370,9 +340,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSetterCodeObjectbrick($brickClass)
     {
         $key = $this->getName();
@@ -416,9 +383,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCodeFieldcollection($fieldcollectionDefinition)
     {
         $key = $this->getName();
@@ -448,9 +412,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSetterCodeFieldcollection($fieldcollectionDefinition)
     {
         $key = $this->getName();
@@ -494,9 +455,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getGetterCodeLocalizedfields($class)
     {
         $key = $this->getName();
@@ -524,9 +482,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSetterCodeLocalizedfields($class)
     {
         $key = $this->getName();
@@ -573,9 +528,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
@@ -589,25 +541,16 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         return round($data / $this->getDecimalFactor(), $this->getDecimalPrecision());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_numeric($data)) {
@@ -617,17 +560,11 @@ class Money extends DataObject\ClassDefinition\Data implements
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
@@ -655,9 +592,6 @@ class Money extends DataObject\ClassDefinition\Data implements
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -665,25 +599,16 @@ class Money extends DataObject\ClassDefinition\Data implements
         return strval($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         return $this->toNumeric(str_replace(',', '.', $importValue));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];

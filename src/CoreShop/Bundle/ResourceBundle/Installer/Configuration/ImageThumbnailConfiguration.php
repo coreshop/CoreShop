@@ -19,9 +19,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class ImageThumbnailConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('thumbnails');

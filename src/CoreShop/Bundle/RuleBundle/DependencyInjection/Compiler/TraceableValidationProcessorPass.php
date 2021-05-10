@@ -24,9 +24,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TraceableValidationProcessorPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->getParameter('kernel.debug')) {

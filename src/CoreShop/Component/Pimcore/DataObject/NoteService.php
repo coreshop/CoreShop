@@ -23,24 +23,18 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class NoteService implements NoteServiceInterface
 {
-    protected $eventDispatcher;
+    protected EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNoteById(int $id): ?Note
     {
         return Note::getById($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createPimcoreNoteInstance(Concrete $object, string $noteType): Note
     {
         $note = new Note();
@@ -51,9 +45,6 @@ class NoteService implements NoteServiceInterface
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createAnonymousNoteInstance(string $noteType): Note
     {
         $note = new Note();
@@ -63,9 +54,6 @@ class NoteService implements NoteServiceInterface
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectNotes(Concrete $object, string $noteType): array
     {
         $noteList = new Note\Listing();
@@ -77,9 +65,6 @@ class NoteService implements NoteServiceInterface
         return $noteList->load();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function storeNoteForEmail(Note $note, Document\Email $emailDocument): Note
     {
         //Because logger does not return any id, we need to fetch the last one!
@@ -97,9 +82,6 @@ class NoteService implements NoteServiceInterface
         return $this->storeNote($note);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function storeNote(Note $note, array $eventParams = []): Note
     {
         $note->save();
@@ -112,9 +94,6 @@ class NoteService implements NoteServiceInterface
         return $note;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function deleteNote(int $noteId, array $eventParams = []): void
     {
         $note = $this->getNoteById($noteId);

@@ -33,17 +33,11 @@ final class InStock extends Constraint
      */
     public $quantityPath = 'quantity';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_in_stock';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

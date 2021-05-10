@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormEvents;
 
 final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNestedConfigurationType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
@@ -43,9 +40,6 @@ final class ProductQuantityPriceRuleNestedConfigurationType extends AbstractNest
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rules_rule_condition_nested';

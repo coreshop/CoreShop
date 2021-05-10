@@ -36,9 +36,6 @@ class CustomerType extends AbstractResourceType
         $this->guestValidationGroups = $guestValidationGroups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -94,9 +91,6 @@ class CustomerType extends AbstractResourceType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -121,9 +115,6 @@ class CustomerType extends AbstractResourceType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_customer';

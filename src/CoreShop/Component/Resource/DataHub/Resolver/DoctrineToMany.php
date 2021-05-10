@@ -21,20 +21,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToMany
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $graphName;
-
-    /**
-     * @var DoctrineProvider
-     */
-    private $typeProvider;
+    private string $name;
+    private string $graphName;
+    private DoctrineProvider $typeProvider;
 
     public function __construct(
         DoctrineProvider $provider,
@@ -46,7 +35,7 @@ class DoctrineToMany
         $this->typeProvider = $provider;
     }
 
-    public function getDefinition()
+    public function getDefinition(): array
     {
         $args = array();
 

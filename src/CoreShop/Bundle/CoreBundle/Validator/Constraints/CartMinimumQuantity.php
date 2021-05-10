@@ -23,17 +23,11 @@ final class CartMinimumQuantity extends Constraint
      */
     public $messageBelowMinimum;
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_cart_minimum_quantity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

@@ -20,17 +20,11 @@ use Webmozart\Assert\Assert;
 
 final class TitleExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof SEOAwareInterface || method_exists($object, 'getMetaTitle');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, SEOAwareInterface::class);

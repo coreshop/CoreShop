@@ -28,9 +28,6 @@ class DynamicDropdown extends DataObject\ClassDefinition\Data\ManyToOneRelation
      */
     public $fieldtype = 'coreShopDynamicDropdown';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromEditmode($data, $object = null, $params = array())
     {
         return Element\Service::getElementById('object', $data);

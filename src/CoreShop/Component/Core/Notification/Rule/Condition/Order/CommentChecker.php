@@ -19,9 +19,6 @@ use Pimcore\Model\Element\Note;
 
 class CommentChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         $type = $params['type'] ?? null;

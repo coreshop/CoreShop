@@ -26,29 +26,11 @@ use Traversable;
 
 abstract class AbstractListing implements ListingInterface
 {
-    /**
-     * @var IndexInterface
-     */
-    protected $index;
+    protected IndexInterface $index;
+    protected WorkerInterface $worker;
+    protected Connection $connection;
+    protected string $locale;
 
-    /**
-     * @var WorkerInterface
-     */
-    protected $worker;
-
-    /**
-     * @var Connection
-     */
-    protected $connection;
-
-    /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(IndexInterface $index, WorkerInterface $worker, Connection $connection)
     {
         $this->index = $index;
@@ -61,145 +43,64 @@ abstract class AbstractListing implements ListingInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getObjects();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function addCondition(ConditionInterface $condition, $fieldName);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function addQueryCondition(ConditionInterface $condition, $fieldName);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function addRelationCondition(ConditionInterface $condition, $fieldName);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function resetCondition($fieldName);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function resetQueryCondition($fieldName);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function resetConditions();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setOrder($order);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getOrder();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setOrderKey($orderKey);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getOrderKey();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setLimit($limit);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getLimit();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setOffset($offset);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getOffset();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setCategory(PimcoreModelInterface $category);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getCategory();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function setVariantMode($variantMode);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getVariantMode();
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function load(array $options = []);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getGroupByValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getGroupByRelationValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getGroupBySystemValues($fieldName, $countValues = false, $fieldNameShouldBeExcluded = true);
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function buildSimilarityOrderBy($fields, $objectId);
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndex()
     {
         return $this->index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setIndex(IndexInterface $index)
     {
         $this->index = $index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLocale()
     {
         //TODO: Use Locale Services

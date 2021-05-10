@@ -37,9 +37,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         $this->actionRegistry = $actionRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForQuantity(
         ProductQuantityPriceRuleInterface $quantityPriceRule,
         QuantityRangePriceAwareInterface $subject,
@@ -71,9 +68,6 @@ class UnitVolumeCalculator implements CalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculateForRange(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,

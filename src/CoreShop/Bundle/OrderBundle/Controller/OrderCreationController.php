@@ -41,10 +41,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrderCreationController extends PimcoreController
 {
-    /**
-     * @var AddressFormatterInterface
-     */
-    protected $addressFormatter;
+    protected AddressFormatterInterface $addressFormatter;
 
     public function getCustomerDetailsAction(
         Request $request,

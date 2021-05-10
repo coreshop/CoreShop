@@ -19,8 +19,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class RequestNewsletterConfirmationEvent extends Event
 {
-    private $customer;
-    private $confirmLink;
+    private CustomerInterface $customer;
+    private string $confirmLink;
 
     public function __construct(CustomerInterface $customer, string $confirmLink)
     {

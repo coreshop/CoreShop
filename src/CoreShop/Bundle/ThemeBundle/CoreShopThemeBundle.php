@@ -24,17 +24,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new SyliusThemeBundle(), 1100);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -42,17 +36,11 @@ class CoreShopThemeBundle extends AbstractPimcoreBundle implements DependentBund
         $container->addCompilerPass(new CompositeThemeResolverPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - Theme';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - Theme Bundle';

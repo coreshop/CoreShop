@@ -19,16 +19,10 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class EmptyConfigurationFormType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_interpreter_empty';

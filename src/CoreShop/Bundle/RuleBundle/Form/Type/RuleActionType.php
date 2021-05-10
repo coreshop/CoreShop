@@ -18,17 +18,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class RuleActionType extends AbstractConfigurableRuleElementType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_rule_action';

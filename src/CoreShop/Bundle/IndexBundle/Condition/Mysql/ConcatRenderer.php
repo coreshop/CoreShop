@@ -24,7 +24,7 @@ use Webmozart\Assert\Assert;
 
 class ConcatRenderer extends AbstractMysqlDynamicRenderer
 {
-    private $renderer;
+    private ConditionRendererInterface $renderer;
 
     public function __construct(Connection $connection, ConditionRendererInterface $renderer)
     {
@@ -33,9 +33,6 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         $this->renderer = $renderer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
@@ -61,9 +58,6 @@ class ConcatRenderer extends AbstractMysqlDynamicRenderer
         return '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof ConcatCondition;

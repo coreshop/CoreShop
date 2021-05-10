@@ -19,19 +19,13 @@ use CoreShop\Component\Registry\ServiceRegistryInterface;
 
 final class ConditionRenderer implements ConditionRendererInterface
 {
-    /**
-     * @var ServiceRegistryInterface
-     */
-    private $registry;
+    private ServiceRegistryInterface $registry;
 
     public function __construct(ServiceRegistryInterface $registry)
     {
         $this->registry = $registry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**

@@ -23,7 +23,7 @@ use Symfony\Component\Form\FormEvents;
 
 final class CartItemType extends AbstractResourceType
 {
-    private $dataMapper;
+    private DataMapperInterface $dataMapper;
 
     public function __construct(
         string $dataClass,
@@ -35,9 +35,6 @@ final class CartItemType extends AbstractResourceType
         $this->dataMapper = $dataMapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
@@ -57,9 +54,6 @@ final class CartItemType extends AbstractResourceType
         $builder->setDataMapper($this->dataMapper);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_item';

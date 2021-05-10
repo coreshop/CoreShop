@@ -20,9 +20,6 @@ use CoreShop\Component\Shipping\Model\CarrierInterface;
 
 abstract class AbstractConditionChecker implements ShippingConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         if (!$subject instanceof CarrierInterface) {

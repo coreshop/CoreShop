@@ -19,9 +19,6 @@ use Webmozart\Assert\Assert;
 
 class DiscountPercentActionProcessor implements ProductDiscountActionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount($subject, int $price, array $context, array $configuration): int
     {
         Assert::isInstanceOf($subject, ProductInterface::class);

@@ -22,9 +22,6 @@ use CoreShop\Component\Store\Model\StoreAwareInterface;
 
 final class StoresConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

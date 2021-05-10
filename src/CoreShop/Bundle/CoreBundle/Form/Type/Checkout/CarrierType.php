@@ -24,9 +24,6 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 final class CarrierType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -42,9 +39,6 @@ final class CarrierType extends AbstractResourceType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -53,9 +47,6 @@ final class CarrierType extends AbstractResourceType
         $resolver->setAllowedTypes('cart', OrderInterface::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_carrier';

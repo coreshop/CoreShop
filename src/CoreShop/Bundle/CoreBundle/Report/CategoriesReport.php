@@ -27,14 +27,14 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategoriesReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $moneyFormatter;
-    private $localeService;
-    private $orderRepository;
-    private $categoryRepository;
-    private $orderItemRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeService;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface$categoryRepository;
+    private PimcoreRepositoryInterface $orderItemRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -54,9 +54,6 @@ class CategoriesReport implements ReportInterface
         $this->orderItemRepository = $orderItemRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -128,9 +125,6 @@ class CategoriesReport implements ReportInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

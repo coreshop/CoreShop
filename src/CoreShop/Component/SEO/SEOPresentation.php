@@ -22,9 +22,9 @@ use Pimcore\Twig\Extension\Templating\HeadTitle;
 
 class SEOPresentation implements SEOPresentationInterface
 {
-    protected $headMeta;
-    protected $headTitle;
-    protected $extractorRegistry;
+    protected HeadMeta $headMeta;
+    protected HeadTitle $headTitle;
+    protected PrioritizedServiceRegistryInterface $extractorRegistry;
 
     public function __construct(
         HeadMeta $headMeta,
@@ -36,9 +36,6 @@ class SEOPresentation implements SEOPresentationInterface
         $this->extractorRegistry = $extractorRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateSeoMetadata($object): void
     {
         $seoMetadata = $this->extractSeoMetaData($object);

@@ -20,7 +20,7 @@ use Pimcore\Event\Model\DataObjectEvent;
 
 final class ProductUpdateEventListener
 {
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
 
     public function __construct(ConfigurationServiceInterface $configurationService)
     {

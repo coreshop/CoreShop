@@ -26,9 +26,6 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 final class DoctrineTargetEntitiesResolverPass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         try {

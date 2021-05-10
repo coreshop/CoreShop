@@ -31,9 +31,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutStepInterface
 {
-    private $customerContext;
-    private $formFactory;
-    private $registrationService;
+    private CustomerContextInterface $customerContext;
+    private FormFactoryInterface $formFactory;
+    private RegistrationServiceInterface $registrationService;
 
     public function __construct(
         CustomerContextInterface $customerContext,
@@ -46,25 +46,16 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         $this->registrationService = $registrationService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifier(): string
     {
         return 'customer';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function doAutoForward(OrderInterface $cart): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate(OrderInterface $cart): bool
     {
         if (!$cart->hasItems()) {
@@ -82,9 +73,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function commitStep(OrderInterface $cart, Request $request): bool
     {
         $form = $this->createForm($request);
@@ -117,9 +105,6 @@ class CustomerCheckoutStep implements CheckoutStepInterface, ValidationCheckoutS
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepareStep(OrderInterface $cart, Request $request): array
     {
         return [

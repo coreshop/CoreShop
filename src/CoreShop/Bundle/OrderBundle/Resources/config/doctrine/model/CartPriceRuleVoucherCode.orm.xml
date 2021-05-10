@@ -30,7 +30,7 @@
             <join-column name="cartPriceRuleId"/>
         </many-to-one>
 
-        <many-to-one field="creditCurrency" target-entity="CoreShop\Component\Currency\Model\CurrencyInterface" inversed-by="voucherCodes">
+        <many-to-one field="creditCurrency" target-entity="CoreShop\Component\Currency\Model\CurrencyInterface">
             <join-column name="currencyId" referenced-column-name="id" on-delete="SET NULL"/>
         </many-to-one>
     </mapped-superclass>

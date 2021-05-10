@@ -22,16 +22,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SiteBasedRequestResolver implements RequestResolverInterface
 {
-    private $storeRepository;
+    private StoreRepositoryInterface $storeRepository;
 
     public function __construct(StoreRepositoryInterface $storeRepository)
     {
         $this->storeRepository = $storeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findStore(Request $request): ?StoreInterface
     {
         if (Site::isSiteRequest()) {

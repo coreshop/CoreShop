@@ -25,8 +25,8 @@ use Webmozart\Assert\Assert;
 
 final class OrderStateResolver implements StateResolverInterface
 {
-    private $stateMachineManager;
-    private $includeInvoiceStateToComplete;
+    private StateMachineManager $stateMachineManager;
+    private bool $includeInvoiceStateToComplete;
 
     public function __construct(StateMachineManager $stateMachineManager, bool $includeInvoiceStateToComplete)
     {
@@ -34,9 +34,6 @@ final class OrderStateResolver implements StateResolverInterface
         $this->includeInvoiceStateToComplete = $includeInvoiceStateToComplete;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(OrderInterface $order): void
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');
@@ -45,11 +42,6 @@ final class OrderStateResolver implements StateResolverInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     *
-     * @return bool
-     */
     private function canOrderBeComplete(OrderInterface $order): bool
     {
         $coreStates = OrderPaymentStates::STATE_PAID === $order->getPaymentState() &&

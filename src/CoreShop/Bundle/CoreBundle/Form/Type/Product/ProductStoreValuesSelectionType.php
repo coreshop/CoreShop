@@ -24,16 +24,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ProductStoreValuesSelectionType extends AbstractType
 {
-    protected $productStoreValuesRepository;
+    private ProductStoreValuesRepositoryInterface $productStoreValuesRepository;
 
     public function __construct(ProductStoreValuesRepositoryInterface $productStoreValuesRepository)
     {
         $this->productStoreValuesRepository = $productStoreValuesRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addModelTransformer(new CallbackTransformer(
@@ -50,9 +47,6 @@ final class ProductStoreValuesSelectionType extends AbstractType
         ));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -61,17 +55,11 @@ final class ProductStoreValuesSelectionType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return NumberType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_store_values_selection';

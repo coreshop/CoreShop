@@ -18,17 +18,11 @@ final class VoucherAmount extends Constraint
 {
     public $message = 'coreshop.cart_price_rule_voucher_generator.possible_generation_amount';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_voucher_amount_validator';

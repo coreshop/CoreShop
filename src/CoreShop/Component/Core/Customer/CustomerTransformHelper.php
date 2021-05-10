@@ -72,9 +72,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         $this->addressFolder = $addressFolder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEntityAddressFolderPath(string $rootPath)
     {
         /**
@@ -85,9 +82,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $folder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSaveKeyForMoving(ElementInterface $object, ElementInterface $newParent)
     {
         $incrementId = 1;
@@ -104,9 +98,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $newKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function moveCustomerToNewCompany(CustomerInterface $customer, array $transformOptions)
     {
         $resolver = $this->getMoveOptionsResolver();
@@ -146,9 +137,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function moveCustomerToExistingCompany(CustomerInterface $customer, CompanyInterface $company, array $transformOptions)
     {
         $resolver = $this->getMoveOptionsResolver();
@@ -162,9 +150,6 @@ final class CustomerTransformHelper implements CustomerTransformHelperInterface
         return $this->moveCustomerToCompany($customer, $company, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function moveAddressToNewAddressStack(AddressInterface $address, ElementInterface $newHolder, $removeOldRelations = true)
     {
         $path = $newHolder->getFullPath();

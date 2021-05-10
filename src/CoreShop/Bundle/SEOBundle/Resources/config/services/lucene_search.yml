@@ -1,6 +1,0 @@
-services:
-    CoreShop\Component\SEO\Extractor\LuceneSearchExtractor:
-        arguments:
-            - '@LuceneSearchBundle\Tool\CrawlerState'
-        tags:
-            - { name: coreshop.seo.extractor, type: lucene_search }

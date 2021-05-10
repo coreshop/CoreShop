@@ -24,7 +24,7 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreImageThumbnailsInstaller implements ResourceInstallerInterface
 {
-    private $kernel;
+    private KernelInterface $kernel;
 
     public function __construct(KernelInterface $kernel)
     {

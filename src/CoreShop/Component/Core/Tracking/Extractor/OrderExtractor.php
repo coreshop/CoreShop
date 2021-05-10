@@ -32,17 +32,11 @@ class OrderExtractor implements TrackingExtractorInterface
         $this->decimalPrecision = $decimalPrecision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof OrderInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, $data = []): array
     {
         /**

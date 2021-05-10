@@ -16,17 +16,13 @@ namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Address\Model\CountryInterface;
+use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 
 class Country extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
     public $fieldtype = 'coreShopCountry';
 
-    protected function getRepository()
+    protected function getRepository(): CountryRepositoryInterface
     {
         return \Pimcore::getContainer()->get('coreshop.repository.country');
     }

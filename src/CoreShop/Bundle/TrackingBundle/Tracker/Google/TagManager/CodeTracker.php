@@ -16,22 +16,13 @@ namespace CoreShop\Bundle\TrackingBundle\Tracker\Google\TagManager;
 
 class CodeTracker
 {
-    /**
-     * @var array
-     */
-    protected $blocks = [];
+    protected array $blocks = [];
 
-    /**
-     * @param mixed $block
-     */
     public function addCodePart($block): void
     {
         $this->blocks[] = $block;
     }
 
-    /**
-     * @return array
-     */
     public function getBlocks(): array
     {
         return $this->blocks;

@@ -21,16 +21,13 @@ use Symfony\Component\Form\FormInterface;
 
 final class ResourceFormFactory implements ResourceFormFactoryInterface
 {
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
     {
         $this->formFactory = $formFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(MetadataInterface $metadata, ResourceInterface $resource): FormInterface
     {
         $formType = $metadata->getClass('form');

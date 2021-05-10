@@ -29,9 +29,6 @@ final class CountryAwareCurrencyContext implements CurrencyContextInterface
         $this->countryContext = $countryContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         /** @var CountryInterface $country */

@@ -18,17 +18,13 @@ use Pimcore\Http\Request\Resolver\DocumentResolver;
 
 final class PimcoreDocumentPropertyResolver implements ThemeResolverInterface
 {
-    private $documentResolver;
+    private DocumentResolver $documentResolver;
 
-    public function __construct(
-        DocumentResolver $documentResolver
-    ) {
+    public function __construct(DocumentResolver $documentResolver)
+    {
         $this->documentResolver = $documentResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveTheme(): string
     {
         try {
