@@ -8,33 +8,23 @@ use CoreShop\Component\Order\Manager\CartManagerInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
-use Pimcore\Model\DataObject\Concrete;
+use Doctrine\Migrations\AbstractMigration;
 use Pimcore\Model\DataObject\Service;
-use Pimcore\Tool;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20200415161210 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20200415161210 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
-        $this->writeMessage('Start migration for Cart Objects');
-
         $cartClass = 'Pimcore\Model\DataObject\CoreShopCart\Listing';
 
         if (!class_exists($cartClass)) {
-            $this->writeMessage(
-                sprintf(
-                    'Cart Class not found, please copy migration and adapt manually to suite your installation. (%s)', __FILE__
-                )
-            );
-
             return;
         }
 
@@ -124,10 +114,6 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
 
             $this->container->get(CartManagerInterface::class)->persistCart($order);
         }
-
-        foreach ($fieldsNotMigrated as $from => $to) {
-            $this->writeMessage(sprintf('Could not migrate %s to %s', $from, $to));
-        }
     }
 
     protected function migrateOrderItems(OrderInterface $order, array $items): array
@@ -212,7 +198,7 @@ class Version20200415161210 extends AbstractPimcoreMigration implements Containe
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
 
