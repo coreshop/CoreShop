@@ -19,47 +19,41 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangeInterface;
 use CoreShop\Component\Registry\ServiceRegistryInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 
-class QuantityPriceFetcher implements QuantityPriceFetcherInterface
+interface QuantityPriceFetcherInterface
 {
     /**
-     * @var ServiceRegistryInterface
+     * @param ProductQuantityPriceRuleInterface $rule
+     * @param QuantityRangePriceAwareInterface  $subject
+     * @param float                             $quantity
+     * @param int                               $originalPrice
+     * @param array                             $context
+     *
+     * @throws NoPriceFoundException
+     *
+     * @return int
      */
-    private $calculatorRegistry;
-
-    /**
-     * @param ServiceRegistryInterface $calculatorRegistry
-     */
-    public function __construct(ServiceRegistryInterface $calculatorRegistry)
-    {
-        $this->calculatorRegistry = $calculatorRegistry;
-    }
-
     public function fetchQuantityPrice(
         ProductQuantityPriceRuleInterface $rule,
         QuantityRangePriceAwareInterface $subject,
         float $quantity,
         int $originalPrice,
         array $context
-    ) {
-        /**
-         * @var CalculatorInterface $service
-         */
-        $service = $this->calculatorRegistry->get($rule->getCalculationBehaviour());
+    );
 
-        return $service->calculateForQuantity($rule, $subject, $quantity, $originalPrice, $context);
-    }
-
+    /**
+     * @param QuantityRangeInterface           $range
+     * @param QuantityRangePriceAwareInterface $subject
+     * @param int                              $originalPrice
+     * @param array                            $context
+     *
+     * @throws NoPriceFoundException
+     *
+     * @return int
+     */
     public function fetchRangePrice(
         QuantityRangeInterface $range,
         QuantityRangePriceAwareInterface $subject,
         int $originalPrice,
         array $context
-    ) {
-        /**
-         * @var CalculatorInterface $service
-         */
-        $service = $this->calculatorRegistry->get($range->getRule()->getCalculationBehaviour());
-
-        return $service->calculateForRange($range, $subject, $originalPrice, $context);
-    }
+    );
 }
