@@ -85,7 +85,7 @@
     "laminas/laminas-stdlib": "^3.3.1",
     "sylius/theme-bundle": "^2.1",
     "php-http/guzzle7-adapter": "^0.1",
-    "pimcore/pimcore": "dev-master",
+    "pimcore/pimcore": "^10.0",
     "rinvex/countries": "^7.0",
     "stof/doctrine-extensions-bundle": "^1.5",
     "webmozart/assert": "^1.2",
@@ -111,7 +111,6 @@
   },
   "conflict": {
     "dpfaffenbauer/process-manager": "<2.4",
-    "pimcore/pimcore": "6.1.0 || 6.1.1 || 6.5.2",
     "monolog/monolog": ">=2",
     "symfony/monolog-bundle": "3.6.0"
   },
