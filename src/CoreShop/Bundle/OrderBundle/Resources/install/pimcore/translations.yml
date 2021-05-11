@@ -1,0 +1,7 @@
+translations:
+    coreshop.order_payment.total:
+        languages:
+            en: 'Payment contains %items% item(s) for a total of %total%.'
+            de: 'Zahlung behinhaltet %items% Einträge für Betrag %total%.'
+            de_CH: 'Zahlung behinhaltet %items% Einträge für Betrag %total%.'
+            it: 'Payment contains %items% item(s) for a total of %total%.'
