@@ -16,9 +16,6 @@ namespace CoreShop\Component\Locale\Context;
 
 final class LocaleNotFoundException extends \RuntimeException
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($message = null, \Exception $previousException = null)
     {
         parent::__construct($message ?: 'Locale could not be found!', 0, $previousException);

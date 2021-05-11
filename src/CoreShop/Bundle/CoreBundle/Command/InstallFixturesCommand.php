@@ -19,9 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class InstallFixturesCommand extends AbstractInstallCommand
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -33,9 +30,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->runCommands(['coreshop:fixture:data:load'], $output);

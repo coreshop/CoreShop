@@ -26,36 +26,21 @@ use Payum\Core\Request\Notify;
 
 final class UpdateOrderStateExtension implements ExtensionInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
 
-    /**
-     * @param StateMachineManager $stateMachineManager
-     */
     public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPreExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPostExecute(Context $context)
     {
         if ($context->getException()) {
@@ -109,9 +94,6 @@ final class UpdateOrderStateExtension implements ExtensionInterface
         }
     }
 
-    /**
-     * @param OrderInterface $order
-     */
     private function confirmOrderState(OrderInterface $order)
     {
         $stateMachine = $this->stateMachineManager->get($order, 'coreshop_order');

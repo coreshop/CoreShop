@@ -624,41 +624,26 @@ final class ShippingContext implements Context
         $this->objectManager->flush();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormRegistry()
     {
         return $this->conditionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getConditionFormClass()
     {
         return ShippingRuleConditionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormRegistry()
     {
         return $this->actionFormTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getActionFormClass()
     {
         return ShippingRuleActionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getFormFactory()
     {
         return $this->formFactory;

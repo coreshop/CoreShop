@@ -23,9 +23,6 @@ use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 
 class ZonesConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

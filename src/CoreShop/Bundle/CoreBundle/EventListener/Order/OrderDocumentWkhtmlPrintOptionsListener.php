@@ -19,7 +19,7 @@ use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 
 final class OrderDocumentWkhtmlPrintOptionsListener
 {
-    private $configurationHelper;
+    private ConfigurationServiceInterface $configurationHelper;
 
     public function __construct(ConfigurationServiceInterface $configurationHelper)
     {

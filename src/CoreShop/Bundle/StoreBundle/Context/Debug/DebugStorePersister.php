@@ -20,8 +20,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class DebugStorePersister
 {
-    /** @var DebugStoreProviderInterface */
-    private $debugStoreProvider;
+    private DebugStoreProviderInterface $debugStoreProvider;
 
     public function __construct(DebugStoreProviderInterface $debugStoreProvider)
     {

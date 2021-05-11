@@ -18,25 +18,18 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeThemeResolver implements ThemeResolverInterface
 {
-    private $themeResolvers;
+    private PriorityQueue $themeResolvers;
 
     public function __construct()
     {
         $this->themeResolvers = new PriorityQueue();
     }
 
-    /**
-     * @param ThemeResolverInterface $themeResolver
-     * @param int                    $priority
-     */
-    public function register(ThemeResolverInterface $themeResolver, $priority = 0)
+    public function register(ThemeResolverInterface $themeResolver, int $priority = 0): void
     {
         $this->themeResolvers->insert($themeResolver, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveTheme(): string
     {
         foreach ($this->themeResolvers as $themeResolver) {

@@ -33,9 +33,6 @@ class ContextBasedDefaultTaxAddressProvider implements DefaultTaxAddressProvider
         $this->addressFactory = $addressFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAddress(array $context = []): ?AddressInterface
     {
         $address = $this->addressFactory->createNew();

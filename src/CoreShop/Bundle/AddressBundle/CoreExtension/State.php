@@ -16,17 +16,13 @@ namespace CoreShop\Bundle\AddressBundle\CoreExtension;
 
 use CoreShop\Bundle\ResourceBundle\CoreExtension\Select;
 use CoreShop\Component\Address\Model\StateInterface;
+use CoreShop\Component\Resource\Repository\RepositoryInterface;
 
 class State extends Select
 {
-    /**
-     * Static type of this element.
-     *
-     * @var string
-     */
     public $fieldtype = 'coreShopState';
 
-    protected function getRepository()
+    protected function getRepository(): RepositoryInterface
     {
         return \Pimcore::getContainer()->get('coreshop.repository.state');
     }

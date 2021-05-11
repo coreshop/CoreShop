@@ -20,10 +20,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class MailEvent extends GenericEvent
 {
-    protected $emailDocument;
-    protected $mail;
-    protected $params;
-    protected $shouldSendMail = true;
+    protected Email $emailDocument;
+    protected Mail $mail;
+    protected array $params;
+    protected bool $shouldSendMail = true;
 
     public function __construct($subject, Email $emailDocument, Mail $mail, array $params = [])
     {

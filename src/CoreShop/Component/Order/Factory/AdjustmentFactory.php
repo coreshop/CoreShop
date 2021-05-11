@@ -19,24 +19,18 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class AdjustmentFactory implements AdjustmentFactoryInterface
 {
-    private $adjustmentFactory;
+    private FactoryInterface $adjustmentFactory;
 
     public function __construct(FactoryInterface $adjustmentFactory)
     {
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createNew()
     {
         return $this->adjustmentFactory->createNew();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createWithData(string $type, string $label, int $amountGross, int $amountNet, bool $neutral = false): AdjustmentInterface
     {
         $adjustment = $this->createNew();

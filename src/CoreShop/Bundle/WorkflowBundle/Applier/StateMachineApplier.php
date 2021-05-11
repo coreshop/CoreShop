@@ -18,7 +18,7 @@ use CoreShop\Bundle\WorkflowBundle\Manager\StateMachineManagerInterface;
 
 final class StateMachineApplier implements StateMachineApplierInterface
 {
-    private $stateMachineManager;
+    private StateMachineManagerInterface $stateMachineManager;
 
     public function __construct(StateMachineManagerInterface $stateMachineManager)
     {

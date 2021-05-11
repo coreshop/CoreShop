@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class ProductQuantityPriceRuleType extends RuleType
 {
-    protected $calculatorTypes;
+    protected array $calculatorTypes;
 
     public function __construct(string $dataClass, array $validationGroups, array $calculatorTypes)
     {
@@ -33,9 +33,6 @@ final class ProductQuantityPriceRuleType extends RuleType
         $this->calculatorTypes = $calculatorTypes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -52,9 +49,6 @@ final class ProductQuantityPriceRuleType extends RuleType
             ->add('ranges', ProductQuantityRangeCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule';

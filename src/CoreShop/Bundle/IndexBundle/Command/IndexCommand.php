@@ -30,9 +30,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class IndexCommand extends Command
 {
-    protected $indexRepository;
-    protected $indexUpdater;
-    protected $eventDispatcher;
+    private RepositoryInterface $indexRepository;
+    private IndexUpdaterServiceInterface $indexUpdater;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         RepositoryInterface $indexRepository,

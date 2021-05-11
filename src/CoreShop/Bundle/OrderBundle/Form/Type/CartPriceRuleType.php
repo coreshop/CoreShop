@@ -23,9 +23,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CartPriceRuleType extends RuleType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,9 +37,6 @@ final class CartPriceRuleType extends RuleType
             ->add('actions', CartPriceRuleActionCollectionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_cart_price_rule';

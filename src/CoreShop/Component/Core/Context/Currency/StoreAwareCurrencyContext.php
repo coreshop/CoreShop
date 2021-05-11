@@ -37,9 +37,6 @@ final class StoreAwareCurrencyContext implements CurrencyContextInterface
         $this->currencyRepository = $currencyRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCurrency(): CurrencyInterface
     {
         /** @var StoreInterface $store */

@@ -21,17 +21,11 @@ use CoreShop\Component\Resource\Pimcore\Model\AbstractPimcoreModel;
 
 class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getIndexable(IndexInterface $index): bool
     {
         return $this->getIndexableEnabled($index) && $this->getPublished();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndexableEnabled(IndexInterface $index): bool
     {
         $enabled = $this->getEnabled();
@@ -44,9 +38,6 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIndexableName(IndexInterface $index, string $language): string
     {
         $name = $this->getName($language);
@@ -62,16 +53,10 @@ class TestEnableIndex extends AbstractPimcoreModel implements IndexableInterface
         return $name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getEnabled()
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);
     }
-    /**
-     * {@inheritdoc}
-     */
     public function getName($language)
     {
         return new ImplementedByPimcoreException(__CLASS__, __METHOD__);

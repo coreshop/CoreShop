@@ -26,10 +26,10 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CartsReport implements ReportInterface, PortletInterface
 {
-    private $totalRecords = 0;
-    private $storeRepository;
-    private $db;
-    private $orderRepository;
+    private int $totalRecords = 0;
+    private RepositoryInterface $storeRepository;
+    private Connection $db;
+    private PimcoreRepositoryInterface $orderRepository;
 
     public function __construct(
         RepositoryInterface $storeRepository,
@@ -41,27 +41,16 @@ class CartsReport implements ReportInterface, PortletInterface
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPortletData(ParameterBag $parameterBag): array
     {
         return $this->getData($parameterBag);
     }
 
-    /**
-     * @param ParameterBag $parameterBag
-     *
-     * @return array
-     */
     protected function getData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -123,9 +112,6 @@ class CartsReport implements ReportInterface, PortletInterface
         return array_values($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

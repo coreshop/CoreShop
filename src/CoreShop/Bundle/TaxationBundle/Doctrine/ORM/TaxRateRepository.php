@@ -19,9 +19,6 @@ use CoreShop\Component\Taxation\Repository\TaxRateRepositoryInterface;
 
 class TaxRateRepository extends EntityRepository implements TaxRateRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByName($name, $locale): array
     {
         return $this->createQueryBuilder('o')

@@ -21,17 +21,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class OrderShipmentCreationTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('carrier', CarrierChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [OrderShipmentCreationType::class];

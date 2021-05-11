@@ -44,17 +44,11 @@ trait DynamicDropdownTrait
      */
     public $onlyPublished;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getObjectsAllowed()
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getClasses()
     {
         return [['classes' => $this->getClassName()]];

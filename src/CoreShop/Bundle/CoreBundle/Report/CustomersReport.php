@@ -25,12 +25,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CustomersReport implements ReportInterface
 {
-    private $totalRecords = 0;
-    private $db;
-    private $moneyFormatter;
-    private $localeContext;
-    private $orderRepository;
-    private $customerRepository;
+    private int $totalRecords = 0;
+    private Connection $db;
+    private MoneyFormatterInterface $moneyFormatter;
+    private LocaleContextInterface $localeContext;
+    private PimcoreRepositoryInterface $orderRepository;
+    private PimcoreRepositoryInterface $customerRepository;
 
     public function __construct(
         Connection $db,
@@ -46,9 +46,6 @@ class CustomersReport implements ReportInterface
         $this->customerRepository = $customerRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReportData(ParameterBag $parameterBag): array
     {
         $fromFilter = $parameterBag->get('from', strtotime(date('01-m-Y')));
@@ -91,9 +88,6 @@ class CustomersReport implements ReportInterface
         return array_values($results);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotal(): int
     {
         return $this->totalRecords;

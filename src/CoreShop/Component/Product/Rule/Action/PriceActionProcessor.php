@@ -21,8 +21,8 @@ use Webmozart\Assert\Assert;
 
 class PriceActionProcessor implements ProductPriceActionProcessorInterface
 {
-    protected $moneyConverter;
-    protected $currencyRepository;
+    protected CurrencyRepositoryInterface $currencyRepository;
+    protected CurrencyConverterInterface $moneyConverter;
 
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
@@ -33,9 +33,6 @@ class PriceActionProcessor implements ProductPriceActionProcessorInterface
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice($subject, array $context, array $configuration): int
     {
         Assert::keyExists($context, 'currency');

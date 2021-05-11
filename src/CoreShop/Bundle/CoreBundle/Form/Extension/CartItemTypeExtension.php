@@ -27,9 +27,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CartItemTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!$options['allow_units']) {
@@ -71,17 +68,11 @@ final class CartItemTypeExtension extends AbstractTypeExtension
         });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('allow_units', false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [CartItemType::class];

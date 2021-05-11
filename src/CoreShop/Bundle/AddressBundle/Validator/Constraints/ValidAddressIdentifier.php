@@ -18,22 +18,13 @@ use Symfony\Component\Validator\Constraint;
 
 final class ValidAddressIdentifier extends Constraint
 {
-    /**
-     * @var string
-     */
-    public $message = 'Address Identifier "%address_identifier%" is not valid.';
+    public string $message = 'Address Identifier "%address_identifier%" is not valid.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_address_valid_identifier';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::PROPERTY_CONSTRAINT;

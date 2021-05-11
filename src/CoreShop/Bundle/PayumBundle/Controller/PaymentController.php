@@ -27,16 +27,17 @@ use Payum\Core\Payum;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\GetStatusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends AbstractController
 {
-    private $orderPaymentProvider;
-    private $orderRepository;
-    private $getStatusRequestFactory;
-    private $resolveNextRouteRequestFactory;
-    private $confirmOrderFactory;
+    private OrderPaymentProviderInterface $orderPaymentProvider;
+    private PimcoreRepositoryInterface $orderRepository;
+    private GetStatusFactoryInterface $getStatusRequestFactory;
+    private ResolveNextRouteFactoryInterface $resolveNextRouteRequestFactory;
+    private ConfirmOrderFactoryInterface $confirmOrderFactory;
 
     public function __construct(
         OrderPaymentProviderInterface $orderPaymentProvider,
@@ -52,12 +53,7 @@ class PaymentController extends AbstractController
         $this->confirmOrderFactory = $confirmOrderFactory;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function prepareCaptureAction(Request $request)
+    public function prepareCaptureAction(Request $request): RedirectResponse
     {
         /**
          * @var $order OrderInterface
@@ -91,16 +87,7 @@ class PaymentController extends AbstractController
         return $this->redirect($token->getTargetUrl());
     }
 
-    /**
-     * Here we return from the Payment Provider and process the result.
-     *
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     *
-     * @throws \Exception
-     */
-    public function afterCaptureAction(Request $request)
+    public function afterCaptureAction(Request $request): RedirectResponse
     {
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($request);
 
@@ -118,19 +105,11 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute($resolveNextRoute->getRouteName(), $resolveNextRoute->getRouteParameters());
     }
 
-    /**
-     * @return Payum
-     */
-    protected function getPayum()
+    protected function getPayum(): Payum
     {
         return $this->get('payum');
     }
 
-    /**
-     * @param PaymentInterface $payment
-     *
-     * @return mixed
-     */
     private function provideTokenBasedOnPayment(PaymentInterface $payment)
     {
         /** @var PaymentProviderInterface $paymentMethod */

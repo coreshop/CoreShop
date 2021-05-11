@@ -23,9 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class GeoLiteBasedRequestResolver implements RequestResolverInterface
 {
-    private $countryRepository;
-    private $cache;
-    private $geoDbFile;
+    private CountryRepositoryInterface $countryRepository;
+    private CoreCacheHandler $cache;
+    private ?string $geoDbFile = null;
 
     public function __construct(
         CountryRepositoryInterface $countryRepository,
@@ -37,9 +37,6 @@ final class GeoLiteBasedRequestResolver implements RequestResolverInterface
         $this->geoDbFile = $geoDbFile;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCountry(Request $request): CountryInterface
     {
         $geoDbFileLocation = $this->geoDbFile;

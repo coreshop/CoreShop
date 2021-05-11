@@ -30,9 +30,6 @@ class FixedAction implements ProductQuantityPriceRuleActionInterface
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function calculate(QuantityRangeInterface $range, QuantityRangePriceAwareInterface $subject, int $realItemPrice, array $context): int
     {
         /**

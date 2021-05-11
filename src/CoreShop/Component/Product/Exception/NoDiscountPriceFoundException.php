@@ -16,9 +16,6 @@ namespace CoreShop\Component\Product\Exception;
 
 class NoDiscountPriceFoundException extends \Exception
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct($calculatorClass, \Exception $previousException = null)
     {
         parent::__construct(sprintf('Price Calculator "%s" was not able to match a valid discount price.', $calculatorClass), 0, $previousException);

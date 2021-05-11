@@ -26,9 +26,6 @@ class CompositeResourceInstaller implements ResourceInstallerInterface
         $this->serviceRegistry = $serviceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         foreach ($this->serviceRegistry->all() as $installer) {

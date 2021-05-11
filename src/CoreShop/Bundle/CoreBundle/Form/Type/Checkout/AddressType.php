@@ -31,8 +31,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class AddressType extends AbstractResourceType
 {
-    private $addressFormatHelper;
-    private $translator;
+    private AddressFormatterInterface $addressFormatHelper;
+    private TranslatorInterface $translator;
 
     public function __construct(
         string $dataClass,
@@ -46,9 +46,6 @@ final class AddressType extends AbstractResourceType
         $this->translator = $translator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $defaultShippingAddress = null;
@@ -166,9 +163,6 @@ final class AddressType extends AbstractResourceType
             });
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -177,9 +171,6 @@ final class AddressType extends AbstractResourceType
         $resolver->setAllowedTypes('customer', [CustomerInterface::class]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_checkout_address';

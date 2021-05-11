@@ -35,9 +35,6 @@ final class OrderItemToShipmentItemTransformer implements OrderDocumentItemTrans
         $this->inner = $inner;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(
         OrderDocumentInterface $orderDocument,
         OrderItemInterface $orderItem,

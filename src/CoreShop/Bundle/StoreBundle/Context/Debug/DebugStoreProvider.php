@@ -18,9 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class DebugStoreProvider implements DebugStoreProviderInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getStoreId(Request $request): ?string
     {
         return $request->query->get('_store_id') ?: $request->cookies->get('_store_id');

@@ -25,8 +25,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DropDatabaseTablesCommand extends Command
 {
-    private $coreShopResources;
-    private $entityManager;
+    private array $coreShopResources;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(array $coreShopResources, EntityManagerInterface $entityManager)
     {
@@ -36,9 +36,6 @@ final class DropDatabaseTablesCommand extends Command
         parent::__construct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -67,9 +64,6 @@ EOT
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ui = new SymfonyStyle($input, $output);

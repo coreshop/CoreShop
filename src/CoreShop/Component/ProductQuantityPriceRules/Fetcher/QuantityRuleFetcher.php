@@ -21,21 +21,13 @@ use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherI
 
 class QuantityRuleFetcher
 {
-    private $validRulesFetcher;
+    private ValidRulesFetcherInterface $validRulesFetcher;
 
     public function __construct(ValidRulesFetcherInterface $validRulesFetcher)
     {
         $this->validRulesFetcher = $validRulesFetcher;
     }
 
-    /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param array                            $context
-     *
-     * @throws NoRuleFoundException
-     *
-     * @return ProductQuantityPriceRuleInterface
-     */
     public function fetch(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface
     {
         $quantityPriceRules = $this->getQuantityPriceRulesForSubject($subject, $context);
@@ -51,12 +43,6 @@ class QuantityRuleFetcher
         return $quantityPriceRules[0];
     }
 
-    /**
-     * @param QuantityRangePriceAwareInterface $subject
-     * @param array                            $context
-     *
-     * @return array|ProductQuantityPriceRuleInterface[]
-     */
     public function getQuantityPriceRulesForSubject(QuantityRangePriceAwareInterface $subject, array $context): array
     {
         /** @var ProductQuantityPriceRuleInterface[] $rules */

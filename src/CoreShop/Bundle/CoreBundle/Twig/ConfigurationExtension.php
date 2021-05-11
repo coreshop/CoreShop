@@ -14,23 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ConfigurationHelperInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 final class ConfigurationExtension extends AbstractExtension
 {
-    private $configurationService;
+    private ConfigurationServiceInterface $configurationService;
 
     public function __construct(ConfigurationServiceInterface $configurationService)
     {
         $this->configurationService = $configurationService;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

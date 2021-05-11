@@ -34,25 +34,16 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         $this->computationMethod = (int) $computationMethod;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyTaxes(int $price): int
     {
         return (int) round($price * (1 + ($this->getTotalRate() / 100)));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeTaxes(int $price): int
     {
         return (int) round($price / (1 + $this->getTotalRate() / 100));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTotalRate(): float
     {
         $taxes = 0;
@@ -73,17 +64,11 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         return (float) $taxes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountFromGross(int $price): int
     {
         return array_sum($this->getTaxesAmountFromGrossAsArray($price));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountFromGrossAsArray(int $price): array
     {
         $taxesAmounts = [];
@@ -100,17 +85,11 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
         return $taxesAmounts;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmount(int $price): int
     {
         return array_sum($this->getTaxesAmountAsArray($price));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxesAmountAsArray(int $price): array
     {
         $taxesAmounts = [];
@@ -128,9 +107,6 @@ class TaxRulesTaxCalculator implements TaxCalculatorInterface
     }
 
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxRates(): array
     {
         return $this->taxRates;

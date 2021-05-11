@@ -25,10 +25,10 @@ use Symfony\Component\Security\Http\Logout\LogoutSuccessHandlerInterface;
 
 final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
 {
-    private $linkGenerator;
-    private $routeName;
-    private $session;
-    private $storeContext;
+    private LinkGeneratorInterface $linkGenerator;
+    private string $routeName;
+    private SessionInterface $session;
+    private StoreContextInterface $storeContext;
 
     public function __construct(
         LinkGeneratorInterface $linkGenerator,
@@ -42,9 +42,6 @@ final class ShopUserLogoutHandler implements LogoutSuccessHandlerInterface
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onLogoutSuccess(Request $request): Response
     {
         $store = $this->storeContext->getStore();

@@ -13,9 +13,6 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 class PimcoreAssetDataTransformer implements DataTransformerInterface
 {
 
-    /**
-     * {@inheritDoc}
-     */
     public function transform($value)
     {
         if ($value instanceof Asset) {
@@ -25,9 +22,6 @@ class PimcoreAssetDataTransformer implements DataTransformerInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function reverseTransform($value)
     {
         if (!$value) {

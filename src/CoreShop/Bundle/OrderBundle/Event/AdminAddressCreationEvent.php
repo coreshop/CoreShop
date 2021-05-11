@@ -18,9 +18,9 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 final class AdminAddressCreationEvent extends Event
 {
-    private $address;
-    private $customer;
-    private $data;
+    private AddressInterface $address;
+    private CustomerInterface $customer;
+    private array $data;
 
     public function __construct(AddressInterface $address, CustomerInterface $customer, array $data)
     {

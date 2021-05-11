@@ -23,9 +23,9 @@ use Symfony\Component\Process\Exception\RuntimeException;
 
 final class CommandExecutor
 {
-    private $input;
-    private $output;
-    private $application;
+    private InputInterface $input;
+    private OutputInterface $output;
+    private Application $application;
 
     public function __construct(InputInterface $input, OutputInterface $output, Application $application)
     {
@@ -34,15 +34,6 @@ final class CommandExecutor
         $this->application = $application;
     }
 
-    /**
-     * @param string               $command
-     * @param array                $parameters
-     * @param OutputInterface|null $output
-     *
-     * @return $this
-     *
-     * @throws \Exception
-     */
     public function runCommand($command, $parameters = [], OutputInterface $output = null): CommandExecutor
     {
         $parameters = array_merge(

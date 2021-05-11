@@ -18,9 +18,6 @@ use CoreShop\Bundle\ResourceBundle\Form\Type\PimcoreResourceSelectionType;
 
 final class ProductSelectionType extends PimcoreResourceSelectionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product';

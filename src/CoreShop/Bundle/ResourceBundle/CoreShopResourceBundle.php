@@ -38,9 +38,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
     const PIMCORE_MODEL_TYPE_FIELD_COLLECTION = 'fieldcollection';
     const PIMCORE_MODEL_TYPE_BRICK = 'brick';
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -55,9 +52,6 @@ final class CoreShopResourceBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new ValidatorAutoMappingFixPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new JMSSerializerBundle(), 3900);

@@ -20,11 +20,10 @@ use Twig\Environment;
 
 abstract class AbstractEcommerceTracker implements TrackerInterface
 {
-    protected $enabled = false;
-    protected $templatingEngine;
-    protected $templatePrefix;
-    protected $templateExtension;
-    protected $twig;
+    protected bool $enabled = false;
+    protected Environment $twig;
+    protected ?string $templatePrefix = null;
+    protected ?string $templateExtension = null;
 
     public function __construct(
         Environment $twig,
@@ -37,17 +36,11 @@ abstract class AbstractEcommerceTracker implements TrackerInterface
         $this->processOptions($resolver->resolve($options));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEnabled(): bool
     {
         return $this->enabled;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;

@@ -19,9 +19,6 @@ use CoreShop\Component\Product\Repository\PriceRuleRepositoryInterface;
 
 class PriceRuleRepository extends RuleRepository implements PriceRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')

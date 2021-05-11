@@ -20,9 +20,6 @@ use CoreShop\Component\Shipping\Model\ShippableInterface;
 
 class DiscountPercentActionProcessor implements CarrierPriceModificationActionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getModification(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, int $price, array $configuration, array $context): int
     {
         return (int) round(-1 * ($price * ($configuration['percent'] / 100)));

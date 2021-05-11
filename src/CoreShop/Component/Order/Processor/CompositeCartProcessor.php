@@ -19,7 +19,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeCartProcessor implements CartProcessorInterface
 {
-    private $cartProcessors;
+    private PriorityQueue $cartProcessors;
 
     public function __construct()
     {
@@ -31,9 +31,6 @@ final class CompositeCartProcessor implements CartProcessorInterface
         $this->cartProcessors->insert($cartProcessor, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         foreach ($this->cartProcessors as $cartProcessor) {

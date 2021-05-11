@@ -24,9 +24,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterface
 {
-    private $eventDispatcher;
-    private $entityManager;
-    private $ruleRegistry;
+    private EventDispatcherInterface $eventDispatcher;
+    private EntityManagerInterface $entityManager;
+    private ServiceRegistryInterface $ruleRegistry;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
@@ -38,9 +38,6 @@ final class RuleAvailabilityProcessor implements RuleAvailabilityProcessorInterf
         $this->ruleRegistry = $ruleRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(): void
     {
         /** @var RuleAvailabilityAssessorInterface $ruleAssessor */

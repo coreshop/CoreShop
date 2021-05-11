@@ -25,29 +25,13 @@ use Webmozart\Assert\Assert;
 
 class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformerInterface
 {
-    /**
-     * @var ObjectServiceInterface
-     */
-    private $objectService;
+    private ObjectServiceInterface $objectService;
+    private string $pathForItems;
+    private TransformerEventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var string
-     */
-    private $pathForItems;
-
-    /**
-     * @var TransformerEventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @param ObjectServiceInterface              $objectService
-     * @param string                              $pathForItems
-     * @param TransformerEventDispatcherInterface $eventDispatcher
-     */
     public function __construct(
         ObjectServiceInterface $objectService,
-        $pathForItems,
+        string $pathForItems,
         TransformerEventDispatcherInterface $eventDispatcher
     ) {
         $this->objectService = $objectService;
@@ -55,9 +39,6 @@ class OrderItemToShipmentItemTransformer implements OrderDocumentItemTransformer
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderDocumentInterface $shipment, OrderItemInterface $orderItem, OrderDocumentItemInterface $shipmentItem, $quantity, $options = [])
     {
         /**

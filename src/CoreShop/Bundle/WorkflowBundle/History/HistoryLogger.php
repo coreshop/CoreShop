@@ -20,9 +20,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class HistoryLogger implements HistoryLoggerInterface
 {
-    private $noteService;
-    private $translator;
-    private $noteIdentifier;
+    private NoteServiceInterface $noteService;
+    private TranslatorInterface $translator;
+    private string $noteIdentifier;
 
     public function __construct(
         NoteServiceInterface $noteService,
@@ -34,9 +34,6 @@ class HistoryLogger implements HistoryLoggerInterface
         $this->noteIdentifier = $noteIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function log(
         DataObject\Concrete $object,
         ?string $message = null,

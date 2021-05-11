@@ -21,17 +21,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 final class CountryTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('currency', CurrencyChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [CountryType::class];

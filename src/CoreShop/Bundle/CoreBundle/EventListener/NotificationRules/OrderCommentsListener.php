@@ -23,7 +23,7 @@ use Webmozart\Assert\Assert;
 
 final class OrderCommentsListener extends AbstractNotificationRuleListener
 {
-    private $orderRepository;
+    private OrderRepositoryInterface $orderRepository;
 
     public function setOrderRepository(OrderRepositoryInterface $orderRepository)
     {

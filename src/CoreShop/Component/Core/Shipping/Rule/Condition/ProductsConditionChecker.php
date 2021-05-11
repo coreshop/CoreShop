@@ -35,9 +35,6 @@ class ProductsConditionChecker extends AbstractConditionChecker
         $this->__traitConstruct($productRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

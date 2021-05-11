@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressTypeExtension extends AbstractTypeExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $availableAffiliations = $options['available_affiliations'];
@@ -55,9 +52,6 @@ final class AddressTypeExtension extends AbstractTypeExtension
         $resolver->setAllowedTypes('selected_affiliation', ['null', 'string']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getExtendedTypes(): iterable
     {
         return [AddressType::class];

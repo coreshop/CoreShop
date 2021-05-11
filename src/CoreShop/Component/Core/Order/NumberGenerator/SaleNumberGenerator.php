@@ -42,9 +42,6 @@ final class SaleNumberGenerator implements NumberGeneratorInterface
         $this->suffixConfigurationKey = $suffixConfigurationKey;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(ResourceInterface $model): string
     {
         $store = null;

@@ -19,9 +19,6 @@ use CoreShop\Component\Notification\Repository\NotificationRuleRepositoryInterfa
 
 class NotificationRuleRepository extends RuleRepository implements NotificationRuleRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForType($type): array
     {
         return $this->createQueryBuilder('o')

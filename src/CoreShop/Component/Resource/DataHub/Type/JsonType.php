@@ -20,25 +20,16 @@ class JsonType extends ScalarType
 {
     public $name = 'json';
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseValue($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseLiteral($valueNode, ?array $variables = null)
     {
         return $this->parseNodeAsList($result, '', $valueNode);

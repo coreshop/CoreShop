@@ -22,9 +22,6 @@ use Pimcore\Model\DataObject\Listing;
 
 class CategoryRepository extends BaseCategoryRepository implements CategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForStore(StoreInterface $store): array
     {
         $list = $this->getList();
@@ -34,9 +31,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findFirstLevelForStore(StoreInterface $store): array
     {
         $list = $this->getList();
@@ -47,9 +41,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -60,9 +51,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveChildCategoryIdsForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $list = $this->getList();
@@ -87,9 +75,6 @@ class CategoryRepository extends BaseCategoryRepository implements CategoryRepos
         return $childIds;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findRecursiveChildCategoriesForStore(CategoryInterface $category, StoreInterface $store): array
     {
         $childIds = $this->findRecursiveChildCategoryIdsForStore($category, $store);

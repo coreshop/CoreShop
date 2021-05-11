@@ -23,7 +23,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class StoreCollector extends DataCollector
 {
-    private $storeContext;
+    private StoreContextInterface $storeContext;
 
     public function __construct(
         StoreRepositoryInterface $storeRepository,
@@ -60,9 +60,6 @@ final class StoreCollector extends DataCollector
         return $this->data['store_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
@@ -72,17 +69,11 @@ final class StoreCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.store_collector';

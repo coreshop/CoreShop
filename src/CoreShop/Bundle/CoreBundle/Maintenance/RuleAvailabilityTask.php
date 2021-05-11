@@ -20,8 +20,8 @@ use Pimcore\Maintenance\TaskInterface;
 
 final class RuleAvailabilityTask implements TaskInterface
 {
-    private $configurationService;
-    private $ruleAvailabilityProcessor;
+    private ConfigurationServiceInterface $configurationService;
+    private RuleAvailabilityProcessorInterface $ruleAvailabilityProcessor;
 
     public function __construct(
         ConfigurationServiceInterface $configurationService,

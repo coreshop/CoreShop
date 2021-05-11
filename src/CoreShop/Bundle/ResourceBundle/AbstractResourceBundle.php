@@ -28,16 +28,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 abstract class AbstractResourceBundle extends Bundle implements ResourceBundleInterface, DependentBundleInterface
 {
-    /**
-     * Configure format of mapping files.
-     *
-     * @var string
-     */
-    protected $mappingFormat = ResourceBundleInterface::MAPPING_XML;
+    protected string $mappingFormat = ResourceBundleInterface::MAPPING_XML;
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         if (null !== $this->getModelNamespace()) {
@@ -77,17 +69,11 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new CoreShopResourceBundle(), 3800);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersion()
     {
         if (class_exists('\\CoreShop\\Bundle\\CoreBundle\\Application\\Version')) {
@@ -97,9 +83,6 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return $this->getComposerVersion();
     }
 
-    /**
-     * @return string
-     */
     public function getComposerVersion()
     {
         if ($this instanceof ComposerPackageBundleInterface) {
@@ -133,45 +116,21 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return '';
     }
 
-    /**
-     * Return the prefix of the bundle.
-     *
-     * @return string
-     */
     protected function getBundlePrefix()
     {
         return Container::underscore(substr(strrchr(get_class($this), '\\'), 1, -6));
     }
 
-    /**
-     * Return the directory where are stored the doctrine mapping.
-     *
-     * @return string
-     */
     protected function getDoctrineMappingDirectory()
     {
         return 'model';
     }
 
-    /**
-     * Return the entity namespace.
-     *
-     * @return string|null
-     */
     protected function getModelNamespace()
     {
         return null;
     }
 
-    /**
-     * Return mapping compiler pass class depending on driver.
-     *
-     * @param string $driverType
-     *
-     * @return array
-     *
-     * @throws UnknownDriverException
-     */
     protected function getMappingCompilerPassInfo($driverType)
     {
         switch ($driverType) {
@@ -188,11 +147,6 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         return [$mappingsPassClassname, $compilerPassMethod];
     }
 
-    /**
-     * Return the absolute path where are stored the doctrine mapping.
-     *
-     * @return string
-     */
     protected function getConfigFilesPath()
     {
         return sprintf(
@@ -202,9 +156,6 @@ abstract class AbstractResourceBundle extends Bundle implements ResourceBundleIn
         );
     }
 
-    /**
-     * @return string
-     */
     protected function getObjectManagerParameter()
     {
         return sprintf('%s.object_manager', $this->getBundlePrefix());

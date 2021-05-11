@@ -28,9 +28,6 @@ use CoreShop\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractModelEx
 
 class CoreShopProductQuantityPriceRulesExtension extends AbstractModelExtension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);

@@ -22,16 +22,13 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesExtension extends AbstractExtension
 {
-    protected $quantityReferenceDetector;
+    protected QuantityReferenceDetectorInterface $quantityReferenceDetector;
 
     public function __construct(QuantityReferenceDetectorInterface $quantityReferenceDetector)
     {
         $this->quantityReferenceDetector = $quantityReferenceDetector;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

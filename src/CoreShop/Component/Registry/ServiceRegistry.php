@@ -16,46 +16,21 @@ namespace CoreShop\Component\Registry;
 
 class ServiceRegistry implements ServiceRegistryInterface
 {
-    /**
-     * @var array
-     */
-    private $services = [];
+    private array $services = [];
+    private string $interface;
+    private string $context;
 
-    /**
-     * Interface which is required by all services.
-     *
-     * @var string
-     */
-    private $interface;
-
-    /**
-     * Human readable context for these services, e.g. "grid field".
-     *
-     * @var string
-     */
-    private $context;
-
-    /**
-     * @param string $interface
-     * @param string $context
-     */
-    public function __construct($interface, $context = 'service')
+    public function __construct(string $interface, string $context = 'service')
     {
         $this->interface = $interface;
         $this->context = $context;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all()
     {
         return $this->services;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function register($identifier, $service)
     {
         if ($this->has($identifier)) {
@@ -75,9 +50,6 @@ class ServiceRegistry implements ServiceRegistryInterface
         $this->services[$identifier] = $service;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unregister($identifier)
     {
         if (!$this->has($identifier)) {
@@ -87,17 +59,11 @@ class ServiceRegistry implements ServiceRegistryInterface
         unset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has($identifier)
     {
         return isset($this->services[$identifier]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get($identifier)
     {
         if (!$this->has($identifier)) {

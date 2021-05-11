@@ -20,9 +20,6 @@ use CoreShop\Component\Customer\Repository\CustomerRepositoryInterface;
 
 class CustomerRepository extends PimcoreRepository implements CustomerRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByResetToken(string $resetToken): ?CustomerInterface
     {
         $list = $this->getList();
@@ -36,9 +33,6 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findByNewsletterToken(string $newsletterToken): ?CustomerInterface
     {
         $list = $this->getList();
@@ -52,9 +46,6 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueByLoginIdentifier(string $identifier, string $value, bool $isGuest): ?CustomerInterface
     {
         $list = $this->getList();
@@ -81,41 +72,26 @@ class CustomerRepository extends PimcoreRepository implements CustomerRepository
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueByEmail(string $email, bool $isGuest): ?CustomerInterface
     {
         return $this->findUniqueByLoginIdentifier('email', $email, $isGuest);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findUniqueByUsername(string $username, bool $isGuest): ?CustomerInterface
     {
         return $this->findUniqueByLoginIdentifier('username', $username, $isGuest);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findGuestByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCustomerByEmail(string $email): ?CustomerInterface
     {
         return $this->findUniqueByEmail($email, false);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findCustomerByUsername(string $username): ?CustomerInterface
     {
         return $this->findUniqueByUsername($username, false);

@@ -23,9 +23,6 @@ use Webmozart\Assert\Assert;
 
 class IsNullRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, ConditionInterface $condition, string $prefix = null)
     {
         /**
@@ -42,9 +39,6 @@ class IsNullRenderer extends AbstractMysqlDynamicRenderer
         return sprintf('%s %s', $this->quoteFieldName($condition->getFieldName(), $prefix), $operator);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, ConditionInterface $condition): bool
     {
         return $worker instanceof MysqlWorker && $condition instanceof IsNullCondition;

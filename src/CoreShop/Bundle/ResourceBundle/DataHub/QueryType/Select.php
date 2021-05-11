@@ -21,9 +21,6 @@ use Pimcore\Model\DataObject\ClassDefinition\Data;
 
 class Select extends Input
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getGraphQlFieldConfig($attribute, Data $fieldDefinition, $class = null, $container = null)
     {
         return $this->enrichConfig(
@@ -39,17 +36,11 @@ class Select extends Input
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFieldType(Data $fieldDefinition, $class = null, $container = null)
     {
         return Type::int();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getResolver($attribute, $fieldDefinition, $class)
     {
         $resolver = new ResourceResolver($fieldDefinition);

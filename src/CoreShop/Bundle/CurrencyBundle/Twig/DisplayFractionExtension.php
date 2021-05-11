@@ -20,16 +20,13 @@ use Twig\TwigFunction;
 
 final class DisplayFractionExtension extends AbstractExtension
 {
-    private $displayFractionProvider;
+    private DisplayFractionProviderInterface $displayFractionProvider;
 
     public function __construct(DisplayFractionProviderInterface $displayFractionProvider)
     {
         $this->displayFractionProvider = $displayFractionProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

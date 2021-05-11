@@ -25,9 +25,6 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class TranslatableEntityLocalePass implements CompilerPassInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function process(ContainerBuilder $container)
     {
         $translatableEntityLocaleAssignerDefinition = new Definition(TranslatableEntityPimcoreLocaleAssigner::class);

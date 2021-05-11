@@ -17,16 +17,10 @@ namespace CoreShop\Bundle\AddressBundle\Controller;
 use CoreShop\Bundle\ResourceBundle\Controller\ResourceController;
 use CoreShop\Component\Address\Repository\CountryRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class CountryController extends ResourceController
 {
-    /**
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function listActiveAction(Request $request)
+    public function listActiveAction(): JsonResponse
     {
         /**
          * @var CountryRepositoryInterface $repository

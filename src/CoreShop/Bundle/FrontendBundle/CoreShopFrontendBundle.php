@@ -25,18 +25,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements DependentBundleInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public static function registerDependentBundles(BundleCollection $collection)
     {
         $collection->addBundle(new CoreShopCoreBundle(), 1600);
         $collection->addBundle(new EmailizrBundle(), 1000);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -44,17 +38,11 @@ final class CoreShopFrontendBundle extends AbstractPimcoreBundle implements Depe
         $container->addCompilerPass(new RegisterFrontendControllerPass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - Frontend';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - Frontend Bundle';

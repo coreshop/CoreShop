@@ -22,35 +22,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
 {
-    /**
-     * @var TrackerInterface
-     */
-    public $tracker;
+    public TrackerInterface $tracker;
+    public ConfigResolverInterface $config;
 
-    /**
-     * @var ConfigResolverInterface
-     */
-    public $config;
-
-    /**
-     * {@inheritdoc}
-     */
     public function setTracker(TrackerInterface $tracker): void
     {
         $this->tracker = $tracker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfigResolver(ConfigResolverInterface $config): void
     {
         $this->config = $config;
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     */
     protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -60,9 +44,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackProduct($product): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -82,9 +63,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackProductImpression($product): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -104,9 +82,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCartAdd($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -116,9 +91,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->trackCartAction($product, 'add', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCartRemove($cart, $product, float $quantity = 1.0): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -128,9 +100,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->trackCartAction($product, 'remove', $quantity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCheckoutStep($cart, $stepIdentifier = null, bool $isFirstStep = false, $checkoutOption = null): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -159,9 +128,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trackCheckoutComplete($order): void
     {
         if ($this->isGoogleTagMode() === false) {
@@ -183,9 +149,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function trackCartAction($product, $action, float $quantity = 1.0): void
     {
         $product = $this->transformProductAction($product);
@@ -202,13 +165,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         $this->tracker->addCodePart($result, GoogleTracker::BLOCK_BEFORE_TRACK);
     }
 
-    /**
-     * Transform ActionData into classic analytics data array.
-     *
-     * @param array $actionData
-     *
-     * @return array
-     */
     protected function transformOrder(array $actionData): array
     {
         return [
@@ -221,13 +177,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         ];
     }
 
-    /**
-     * Transform product action into enhanced data object.
-     *
-     * @param array $item
-     *
-     * @return array
-     */
     protected function transformProductAction(array $item): array
     {
         return $this->filterNullValues([
@@ -243,11 +192,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         ]);
     }
 
-    /**
-     * @param array $items
-     *
-     * @return array
-     */
     protected function buildCheckoutCalls(array $items): array
     {
         $calls = [];
@@ -258,9 +202,6 @@ class GlobalSiteTagEnhancedEcommerce extends AbstractEcommerceTracker
         return $calls;
     }
 
-    /**
-     * @return bool
-     */
     protected function isGoogleTagMode(): bool
     {
         $config = $this->config->getGoogleConfig();

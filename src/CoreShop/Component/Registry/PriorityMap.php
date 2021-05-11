@@ -16,11 +16,12 @@ namespace CoreShop\Component\Registry;
 
 class PriorityMap implements \Iterator, \Countable
 {
-    private $lastSequence = 0;
-    private $list = [];
     const ORDER_ASC = 'asc';
     const ORDER_DESC = 'desc';
-    private $order = self::ORDER_ASC;
+
+    private int $lastSequence = 0;
+    private array $list = [];
+    private string $order = self::ORDER_ASC;
 
     /**
      * Get scalar key from mixed.

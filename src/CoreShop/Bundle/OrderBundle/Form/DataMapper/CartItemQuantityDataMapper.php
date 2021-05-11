@@ -22,8 +22,8 @@ use Symfony\Component\Form\DataMapperInterface;
  */
 class CartItemQuantityDataMapper implements DataMapperInterface
 {
-    private $cartItemQuantityModifier;
-    private $propertyPathDataMapper;
+    private StorageListItemQuantityModifierInterface $cartItemQuantityModifier;
+    private DataMapperInterface $propertyPathDataMapper;
 
     public function __construct(
         StorageListItemQuantityModifierInterface $cartItemQuantityModifier,
@@ -33,17 +33,11 @@ class CartItemQuantityDataMapper implements DataMapperInterface
         $this->propertyPathDataMapper = $propertyPathDataMapper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapDataToForms($data, $forms): void
     {
         $this->propertyPathDataMapper->mapDataToForms($data, $forms);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mapFormsToData($forms, &$data): void
     {
         $formsOtherThanQuantity = [];

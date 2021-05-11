@@ -23,10 +23,7 @@ use Faker\Provider\Lorem;
 
 class ProductWithUnitFixture extends AbstractProductFixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $stores = $this->container->get('coreshop.repository.store')->findAll();
 

@@ -28,8 +28,8 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 final class ORMTranslatableListener implements EventSubscriber
 {
-    private $resourceMetadataRegistry;
-    private $translatableEntityLocaleAssigner;
+    private RegistryInterface $resourceMetadataRegistry;
+    private TranslatableEntityLocaleAssignerInterface $translatableEntityLocaleAssigner;
 
     public function __construct(
         RegistryInterface $resourceMetadataRegistry,

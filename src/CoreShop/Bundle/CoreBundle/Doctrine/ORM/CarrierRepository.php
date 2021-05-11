@@ -20,9 +20,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class CarrierRepository extends EntityRepository implements CarrierRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')

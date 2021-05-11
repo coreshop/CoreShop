@@ -22,8 +22,8 @@ use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 
 final class ThemeContext implements ThemeContextInterface
 {
-    private $resolver;
-    private $themeRepository;
+    private ThemeResolverInterface $resolver;
+    private ThemeRepositoryInterface $themeRepository;
 
     public function __construct(ThemeResolverInterface $resolver, ThemeRepositoryInterface $themeRepository)
     {

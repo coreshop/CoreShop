@@ -22,9 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CartExpireCommand extends Command
 {
-    protected $cartExpiration;
-    protected $days;
-    protected $params;
+    protected ProposalExpirationInterface $cartExpiration;
+    protected int $days;
+    protected array $params;
 
     public function __construct(ProposalExpirationInterface $cartExpiration, int $days = 0, array $params = [])
     {

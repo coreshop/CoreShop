@@ -211,9 +211,6 @@ class OrderPaymentController extends PimcoreController
         return $this->get('coreshop.state_machine_manager');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getSaleRepository()
     {
         return $this->get('coreshop.repository.order');

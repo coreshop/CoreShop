@@ -27,7 +27,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $resources
      * @param ContainerBuilder $container
      */
-    protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container)
+    protected function registerResources($applicationName, $driver, array $resources, ContainerBuilder $container): void
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), $driver), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), $driver);
@@ -64,7 +64,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $models
      * @param ContainerBuilder $container
      */
-    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container)
+    protected function registerPimcoreModels($applicationName, array $models, ContainerBuilder $container): void
     {
         $container->setParameter(sprintf('%s.driver.%s', $this->getAlias(), 'pimcore'), true);
         $container->setParameter(sprintf('%s.driver', $this->getAlias()), 'pimcore');
@@ -91,7 +91,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $stack
      * @param ContainerBuilder $container
      */
-    public function registerStack(string $applicationName, array $stack, ContainerBuilder $container)
+    public function registerStack(string $applicationName, array $stack, ContainerBuilder $container): void
     {
         $appParameterName = sprintf('%s.stack', $applicationName);
         $globalParameterName = 'coreshop.all.stack';
@@ -113,10 +113,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container)
+    protected function registerPimcoreResources($applicationName, $bundleResources, ContainerBuilder $container): void
     {
         parent::registerPimcoreResources($applicationName, $bundleResources, $container);
 
@@ -176,7 +173,7 @@ abstract class AbstractModelExtension extends AbstractPimcoreExtension
      * @param array            $bundles
      * @param ContainerBuilder $container
      */
-    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container)
+    public function registerDependantBundles($applicationName, $bundles, ContainerBuilder $container): void
     {
         $appParameterName = sprintf('%s.dependant.bundles', $applicationName);
         $globalParameterName = 'coreshop.all.dependant.bundles';

@@ -23,9 +23,6 @@ use Webmozart\Assert\Assert;
 
 abstract class AbstractConditionChecker implements CartRuleConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         Assert::isInstanceOf($subject, OrderInterface::class);

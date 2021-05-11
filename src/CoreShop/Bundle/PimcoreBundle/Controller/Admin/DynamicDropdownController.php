@@ -17,20 +17,14 @@ use Pimcore\Model\DataObject;
 use Pimcore\Model\Element\Service;
 use Pimcore\Model\Factory;
 use Pimcore\Tool;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 final class DynamicDropdownController extends AdminController
 {
-    private $separator = ' - ';
+    private string $separator = ' - ';
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     *
-     * @throws \Exception
-     */
-    public function optionsAction(Request $request)
+    public function optionsAction(Request $request): JsonResponse
     {
         $folderName = $request->get('folderName');
         $parts = array_map(static function ($part) {
@@ -90,12 +84,7 @@ final class DynamicDropdownController extends AdminController
         );
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
-     */
-    public function methodsAction(Request $request, Factory $modelFactory)
+    public function methodsAction(Request $request, Factory $modelFactory): JsonResponse
     {
         $availableMethods = [];
 
@@ -122,17 +111,7 @@ final class DynamicDropdownController extends AdminController
         return $this->json($availableMethods);
     }
 
-    /**
-     * @param Request                   $request
-     * @param DataObject\AbstractObject $folder
-     * @param array                     $options
-     * @param string                    $path
-     *
-     * @return array
-     *
-     * @throws \Exception
-     */
-    private function walkPath(Request $request, DataObject\AbstractObject $folder, $options = [], $path = '')
+    private function walkPath(Request $request, DataObject\AbstractObject $folder, array $options = [], string $path = ''): array
     {
         $currentLang = $request->get('current_language');
         $source = $request->get('methodName');
@@ -189,13 +168,7 @@ final class DynamicDropdownController extends AdminController
         return $options;
     }
 
-    /**
-     * @param DataObject\Concrete $object
-     * @param string              $method
-     *
-     * @return bool
-     */
-    private function isUsingI18n(DataObject\Concrete $object, $method)
+    private function isUsingI18n(DataObject\Concrete $object, string $method): bool
     {
         $classDefinition = $object->getClass();
         $definitionFile = $classDefinition->getDefinitionFile();

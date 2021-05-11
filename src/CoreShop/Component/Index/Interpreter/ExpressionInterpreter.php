@@ -21,29 +21,15 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 class ExpressionInterpreter implements InterpreterInterface
 {
-    /**
-     * @var ExpressionLanguage
-     */
-    protected $expressionLanguage;
+    protected ExpressionLanguage $expressionLanguage;
+    protected ContainerInterface $container;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
-     * @param ExpressionLanguage $expressionLanguage
-     * @param ContainerInterface $container
-     */
     public function __construct(ExpressionLanguage $expressionLanguage, ContainerInterface $container)
     {
         $this->expressionLanguage = $expressionLanguage;
         $this->container = $container;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $expression = $interpreterConfig['expression'];

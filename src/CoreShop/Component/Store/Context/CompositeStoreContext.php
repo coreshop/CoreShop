@@ -19,7 +19,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 final class CompositeStoreContext implements StoreContextInterface
 {
-    private $storeContexts;
+    private PriorityQueue $storeContexts;
 
     public function __construct()
     {
@@ -31,9 +31,6 @@ final class CompositeStoreContext implements StoreContextInterface
         $this->storeContexts->insert($storeContext, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStore(): StoreInterface
     {
         foreach ($this->storeContexts as $storeContext) {

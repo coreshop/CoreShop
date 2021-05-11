@@ -28,9 +28,6 @@ final class StateTransitionChecker extends AbstractConditionChecker
         $this->workflowName = $workflowName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         Assert::isInstanceOf($subject, $this->interface);

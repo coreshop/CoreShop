@@ -22,11 +22,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
 {
-    private $kernel;
-    private $classInstaller;
-    private $installedClasses = [];
-    private $installedCollections = [];
-    private $installedBricks = [];
+    private KernelInterface $kernel;
+    private ClassInstallerInterface $classInstaller;
+    private array $installedClasses = [];
+    private array $installedCollections = [];
+    private array $installedBricks = [];
 
     public function __construct(
         KernelInterface $kernel,
@@ -36,9 +36,6 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
         $this->classInstaller = $classInstaller;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf('%s.pimcore_classes', $applicationName) : 'coreshop.all.pimcore_classes';
@@ -121,25 +118,16 @@ final class PimcoreClassInstaller implements PimcoreClassInstallerInterface
         }
     }
 
-    /**
-     * @return array
-     */
     public function getInstalledClasses(): array
     {
         return $this->installedClasses;
     }
 
-    /**
-     * @return array
-     */
     public function getInstalledCollections(): array
     {
         return $this->installedCollections;
     }
 
-    /**
-     * @return array
-     */
     public function getInstalledBricks(): array
     {
         return $this->installedBricks;

@@ -20,22 +20,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ShippingTaxCalculationStrategyChoiceType extends AbstractType
 {
-    /**
-     * @var array
-     */
-    private $strategies;
+    private array $strategies;
 
-    /**
-     * @param array $strategies
-     */
     public function __construct(array $strategies)
     {
         $this->strategies = $strategies;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -43,17 +34,11 @@ class ShippingTaxCalculationStrategyChoiceType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent()
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'coreshop_shipping_tax_calculation_strategy';

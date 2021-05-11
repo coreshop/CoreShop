@@ -19,8 +19,8 @@ use Sylius\Bundle\ThemeBundle\Repository\ThemeRepositoryInterface;
 
 final class ThemeHelper implements ThemeHelperInterface
 {
-    private $themeContext;
-    private $themeRepository;
+    private ThemeRepositoryInterface $themeRepository;
+    private SettableThemeContext $themeContext;
 
     public function __construct(
         ThemeRepositoryInterface $themeRepository,

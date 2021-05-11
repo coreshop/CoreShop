@@ -20,9 +20,6 @@ use CoreShop\Component\Index\Model\IndexColumnInterface;
 
 class TimestampInterpreter implements InterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         if ($value instanceof Carbon) {

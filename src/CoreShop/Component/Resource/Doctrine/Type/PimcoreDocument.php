@@ -23,25 +23,16 @@ class PimcoreDocument extends Type
 {
     public const PIMCORE_DOCUMENT = 'pimcoreDocument';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSQLDeclaration(array $fieldDeclaration, AbstractPlatform $platform)
     {
         return $platform->getIntegerTypeDeclarationSQL($fieldDeclaration);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return Document::getById($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value instanceof Document) {
@@ -51,25 +42,16 @@ class PimcoreDocument extends Type
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBindingType()
     {
         return ParameterType::INTEGER;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName()
     {
         return self::PIMCORE_DOCUMENT;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;

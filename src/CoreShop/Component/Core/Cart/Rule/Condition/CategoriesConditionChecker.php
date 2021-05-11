@@ -34,9 +34,6 @@ final class CategoriesConditionChecker extends AbstractConditionChecker
         $this->__traitConstruct($categoryRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(
         OrderInterface $cart,
         CartPriceRuleInterface $cartPriceRule,

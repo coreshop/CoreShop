@@ -21,16 +21,13 @@ use Twig\TwigFunction;
 
 final class InventoryExtension extends AbstractExtension
 {
-    private $checker;
+    private AvailabilityCheckerInterface $checker;
 
     public function __construct(AvailabilityCheckerInterface $checker)
     {
         $this->checker = $checker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return [

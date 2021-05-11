@@ -18,9 +18,9 @@ use Webmozart\Assert\Assert;
 
 class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
 {
-    private $voucherCodeRepository;
-    private $letterResolver;
-    private $ratio;
+    private CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository;
+    private CodeGeneratorLetterResolver $letterResolver;
+    private float $ratio;
 
     public function __construct(
         CartPriceRuleVoucherRepositoryInterface $voucherCodeRepository,
@@ -33,9 +33,6 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
         $this->ratio = $ratio;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isGenerationPossible(CartPriceRuleVoucherGeneratorInterface $generator)
     {
         $amountToBeCreated = $generator->getAmount();
@@ -44,17 +41,11 @@ class CodeGeneratorChecker implements CodeGeneratorCheckerInterface
         return $possibleAmount >= $amountToBeCreated;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator)
     {
         return $this->calculatePossibleGenerationAmount($generator);
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
     private function calculatePossibleGenerationAmount(CartPriceRuleVoucherGeneratorInterface $generator)
     {
         $amountToBeCreated = $generator->getAmount();

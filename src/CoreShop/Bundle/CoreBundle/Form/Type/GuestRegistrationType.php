@@ -26,12 +26,12 @@ class GuestRegistrationType extends AbstractType
     /**
      * @var string[]
      */
-    protected $validationGroups = [];
+    protected array $validationGroups = [];
 
     /**
      * @var string[]
      */
-    protected $validationGroupsGuest = [];
+    protected array $validationGroupsGuest = [];
 
     /**
      * @param string[] $validationGroups
@@ -43,9 +43,6 @@ class GuestRegistrationType extends AbstractType
         $this->validationGroupsGuest = $validationGroupsGuest;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -72,9 +69,6 @@ class GuestRegistrationType extends AbstractType
             ->add('submit', SubmitType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_guest_registration';

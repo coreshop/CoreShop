@@ -19,54 +19,33 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 final class SessionStorage implements StorageInterface
 {
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private SessionInterface $session;
 
-    /**
-     * @param SessionInterface $session
-     */
     public function __construct(SessionInterface $session)
     {
         $this->session = $session;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $name): bool
     {
         return $this->session->has($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $name, $default = null)
     {
         return $this->session->get($name, $default);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function set(string $name, $value): void
     {
         $this->session->set($name, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(string $name): void
     {
         $this->session->remove($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function all(): array
     {
         return $this->session->all();

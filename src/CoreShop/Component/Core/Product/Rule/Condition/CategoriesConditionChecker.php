@@ -34,9 +34,6 @@ final class CategoriesConditionChecker implements ConditionCheckerInterface
         $this->__traitConstruct($categoryRepository);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(
         ResourceInterface $subject,
         RuleInterface $rule,

@@ -30,9 +30,6 @@ class ProductTaxCalculatorFactory implements ProductTaxCalculatorFactoryInterfac
         $this->taxCalculatorFactory = $taxCalculatorFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTaxCalculator(PurchasableInterface $product, AddressInterface $address): ?TaxCalculatorInterface
     {
         $taxRuleGroup = $product->getTaxRule();

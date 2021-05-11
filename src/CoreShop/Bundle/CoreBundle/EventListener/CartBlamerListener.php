@@ -25,9 +25,9 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 final class CartBlamerListener
 {
-    private $cartProcessor;
-    private $cartContext;
-    private $cartManager;
+    private CartProcessorInterface $cartProcessor;
+    private CartContextInterface $cartContext;
+    private CartManagerInterface $cartManager;
 
     public function __construct(
         CartProcessorInterface $cartProcessor,

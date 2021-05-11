@@ -22,9 +22,6 @@ use Webmozart\Assert\Assert;
 
 class SimpleOrderRenderer extends AbstractMysqlDynamicRenderer
 {
-    /**
-     * {@inheritdoc}
-     */
     public function render(WorkerInterface $worker, OrderInterface $order, string $prefix = null)
     {
         /**
@@ -35,9 +32,6 @@ class SimpleOrderRenderer extends AbstractMysqlDynamicRenderer
         return '' . $this->quoteFieldName($order->getKey(), $prefix) . ' ' . $order->getDirection();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(WorkerInterface $worker, OrderInterface $order): bool
     {
         return $worker instanceof MysqlWorker && $order instanceof SimpleOrder;

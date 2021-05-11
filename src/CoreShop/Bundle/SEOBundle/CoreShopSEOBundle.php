@@ -21,9 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class CoreShopSEOBundle extends AbstractPimcoreBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
@@ -31,17 +28,11 @@ final class CoreShopSEOBundle extends AbstractPimcoreBundle
         $container->addCompilerPass(new ExtractorRegistryServicePass());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName()
     {
         return 'CoreShop - SEO';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription()
     {
         return 'CoreShop - SEO Bundle';

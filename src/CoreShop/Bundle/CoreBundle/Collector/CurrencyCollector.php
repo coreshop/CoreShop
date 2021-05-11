@@ -24,7 +24,7 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CurrencyCollector extends DataCollector
 {
-    private $currencyContext;
+    private CurrencyContextInterface $currencyContext;
 
     public function __construct(
         CurrencyRepositoryInterface $currencyRepository,
@@ -60,9 +60,6 @@ final class CurrencyCollector extends DataCollector
         return $this->data['currency_change_support'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         try {
@@ -72,17 +69,11 @@ final class CurrencyCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.currency_collector';

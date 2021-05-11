@@ -19,7 +19,7 @@ use CoreShop\Bundle\CoreBundle\Event\CustomerRegistrationEvent;
 
 final class CustomerLoginListener
 {
-    private $customerLoginService;
+    private CustomerLoginServiceInterface $customerLoginService;
 
     public function __construct(CustomerLoginServiceInterface $customerLoginService)
     {

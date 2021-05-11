@@ -18,7 +18,7 @@ use CoreShop\Component\Resource\Factory\FactoryInterface;
 
 class OrderFactory implements FactoryInterface
 {
-    private $cartFactory;
+    private FactoryInterface $cartFactory;
 
     public function __construct(FactoryInterface $cartFactory)
     {

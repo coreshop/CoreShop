@@ -26,36 +26,21 @@ use Payum\Core\Request\Notify;
 
 final class UpdatePaymentStateExtension implements ExtensionInterface
 {
-    /**
-     * @var StateMachineManager
-     */
-    private $stateMachineManager;
+    private StateMachineManager $stateMachineManager;
 
-    /**
-     * @param StateMachineManager $stateMachineManager
-     */
     public function __construct(StateMachineManager $stateMachineManager)
     {
         $this->stateMachineManager = $stateMachineManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPreExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onExecute(Context $context)
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function onPostExecute(Context $context)
     {
         if ($context->getException()) {
@@ -99,11 +84,7 @@ final class UpdatePaymentStateExtension implements ExtensionInterface
         }
     }
 
-    /**
-     * @param PaymentInterface $payment
-     * @param string           $nextState
-     */
-    private function updatePaymentState(PaymentInterface $payment, string $nextState)
+    private function updatePaymentState(PaymentInterface $payment, string $nextState): void
     {
         $workflow = $this->stateMachineManager->get($payment, PaymentTransitions::IDENTIFIER);
         if (null !== $transition = $this->stateMachineManager->getTransitionToState($workflow, $payment, $nextState)) {

@@ -20,9 +20,6 @@ use CoreShop\Component\Order\Repository\CartPriceRuleVoucherRepositoryInterface;
 
 class CartPriceRuleVoucherRepository extends EntityRepository implements CartPriceRuleVoucherRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByCode(string $code): ?CartPriceRuleVoucherCodeInterface
     {
         return $this->createQueryBuilder('o')

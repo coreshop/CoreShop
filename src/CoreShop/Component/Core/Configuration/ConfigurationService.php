@@ -25,8 +25,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ConfigurationService extends BaseConfigurationService implements ConfigurationServiceInterface
 {
-    protected $configurationRepository;
-    protected $storeContext;
+    protected ConfigurationRepositoryInterface $myConfigurationRepository;
+    protected StoreContextInterface $storeContext;
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -36,23 +36,20 @@ class ConfigurationService extends BaseConfigurationService implements Configura
     ) {
         parent::__construct($entityManager, $configurationRepository, $configurationFactory);
 
-        $this->configurationRepository = $configurationRepository;
+        $this->myConfigurationRepository = $configurationRepository;
         $this->storeContext = $storeContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForStore(string $key, StoreInterface $store = null, $returnObject = false)
     {
         if (null === $store) {
             $store = $this->getStore();
         }
 
-        $config = $this->configurationRepository->findForKeyAndStore($key, $store);
+        $config = $this->myConfigurationRepository->findForKeyAndStore($key, $store);
 
         if (null === $config) {
-            $config = $this->configurationRepository->findBy(['key' => $key, 'store' => null]);
+            $config = $this->myConfigurationRepository->findBy(['key' => $key, 'store' => null]);
 
             if (is_array($config) && count($config) > 0) {
                 $config = $config[0];
@@ -66,9 +63,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setForStore(string $key, $data, StoreInterface $store = null): \CoreShop\Component\Core\Model\ConfigurationInterface
     {
         if (null === $store) {
@@ -91,9 +85,6 @@ class ConfigurationService extends BaseConfigurationService implements Configura
         return $config;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeForStore(string $key, StoreInterface $store = null): void
     {
         if (null === $store) {

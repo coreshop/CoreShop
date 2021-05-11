@@ -20,9 +20,6 @@ use Pimcore\Model\Element\ElementInterface;
 
 class ObjectIdSumInterpreter implements InterpreterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $sum = 0;

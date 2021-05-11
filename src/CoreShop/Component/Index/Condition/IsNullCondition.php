@@ -16,7 +16,7 @@ namespace CoreShop\Component\Index\Condition;
 
 class IsNullCondition implements ConditionInterface
 {
-    private $fieldName;
+    private string $fieldName;
 
     public function __construct(string $fieldName)
     {

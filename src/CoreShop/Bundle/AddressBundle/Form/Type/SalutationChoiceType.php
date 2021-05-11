@@ -23,16 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class SalutationChoiceType extends AbstractType
 {
-    private $countryContext;
+    private CountryContextInterface $countryContext;
 
     public function __construct(CountryContextInterface $countryContext)
     {
         $this->countryContext = $countryContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -54,17 +51,11 @@ final class SalutationChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_salutation_choice';

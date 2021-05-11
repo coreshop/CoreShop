@@ -23,9 +23,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 final class QuantityConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
 
     public function isValid(
         ResourceInterface $subject,

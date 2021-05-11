@@ -168,9 +168,9 @@ final class TrackingContext implements Context
         $code = '';
 
         if ($tracker instanceof TagManagerEnhancedEcommerce) {
-            $code = implode('', $tracker->codeTracker->getBlocks());
+            $code = implode('', $tracker->getCodeTracker()->getBlocks());
         } elseif ($tracker instanceof TagManagerClassicEcommerce) {
-            $code = implode('', $tracker->codeTracker->getBlocks());
+            $code = implode('', $tracker->getCodeTracker()->getBlocks());
         } elseif ($tracker instanceof AnalyticsEnhancedEcommerce ||
             $tracker instanceof GlobalSiteTagEnhancedEcommerce ||
             $tracker instanceof UniversalEcommerce

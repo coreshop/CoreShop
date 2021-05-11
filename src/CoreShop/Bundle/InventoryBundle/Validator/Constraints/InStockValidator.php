@@ -24,8 +24,8 @@ use Webmozart\Assert\Assert;
 
 final class InStockValidator extends ConstraintValidator
 {
-    private $availabilityChecker;
-    private $accessor;
+    private AvailabilityCheckerInterface $availabilityChecker;
+    private PropertyAccessor $accessor;
 
     public function __construct(AvailabilityCheckerInterface $availabilityChecker)
     {
@@ -33,9 +33,6 @@ final class InStockValidator extends ConstraintValidator
         $this->accessor = PropertyAccess::createPropertyAccessor();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($value, Constraint $constraint): void
     {
         /** @var InStock $constraint */

@@ -40,9 +40,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         $this->taxApplicator = $taxApplicator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getPrice($product, $context, true);
@@ -55,9 +52,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getDiscountPrice($product, $context);
@@ -77,9 +71,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getPrice($product, $context);
@@ -93,9 +84,6 @@ class TaxedProductPriceCalculator implements TaxedProductPriceCalculatorInterfac
         return $discount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(PurchasableInterface $product, array $context, bool $withTax = true): int
     {
         $price = $this->purchasableCalculator->getRetailPrice($product, $context);

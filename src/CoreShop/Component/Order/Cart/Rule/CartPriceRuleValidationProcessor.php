@@ -23,16 +23,13 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcessorInterface
 {
-    private $ruleConditionsValidationProcessor;
+    private RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor;
 
     public function __construct(RuleConditionsValidationProcessorInterface $ruleConditionsValidationProcessor)
     {
         $this->ruleConditionsValidationProcessor = $ruleConditionsValidationProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValidCartRule(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         if (null === $voucherCode && $cartPriceRule->getIsVoucherRule()) {
@@ -45,9 +42,6 @@ class CartPriceRuleValidationProcessor implements CartPriceRuleValidationProcess
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $params = []): bool
     {
         return $this->ruleConditionsValidationProcessor->isValid(

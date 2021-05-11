@@ -28,9 +28,6 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $discount = $this->getDiscount($cart, $configuration);
@@ -44,17 +41,11 @@ class SurchargePercentActionProcessor implements CartPriceRuleActionProcessorInt
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDiscount(OrderInterface $cart, array $configuration): int
     {
         $total = $cart->getSubtotal(false);

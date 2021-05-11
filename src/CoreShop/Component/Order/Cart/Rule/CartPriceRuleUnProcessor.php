@@ -25,17 +25,13 @@ use Webmozart\Assert\Assert;
 
 class CartPriceRuleUnProcessor implements CartPriceRuleUnProcessorInterface
 {
-    private $actionServiceRegistry;
+    private ServiceRegistryInterface $actionServiceRegistry;
 
-    public function __construct(
-        ServiceRegistryInterface $actionServiceRegistry
-    ) {
+    public function __construct(ServiceRegistryInterface $actionServiceRegistry)
+    {
         $this->actionServiceRegistry = $actionServiceRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unProcess(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, CartPriceRuleVoucherCodeInterface $voucherCode = null): bool
     {
         $priceRuleItem = $cart->getPriceRuleByCartPriceRule($cartPriceRule, $voucherCode);

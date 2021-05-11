@@ -22,9 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FilterType extends AbstractResourceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -42,9 +39,6 @@ class FilterType extends AbstractResourceType
             ->add('index', IndexChoiceType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_filter';

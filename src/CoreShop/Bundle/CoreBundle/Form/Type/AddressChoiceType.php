@@ -25,18 +25,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class AddressChoiceType extends AbstractType
 {
-    private $customerRepository;
-    private $customerAddressAllocator;
+    private PimcoreRepositoryInterface $customerRepository;
+    private CustomerAddressAllocatorInterface $customerAddressAllocator;
 
-    public function __construct(PimcoreRepositoryInterface $customerRepository, CustomerAddressAllocatorInterface $customerAddressAllocator)
+    public function __construct(
+        PimcoreRepositoryInterface $customerRepository,
+        CustomerAddressAllocatorInterface $customerAddressAllocator
+    )
     {
         $this->customerRepository = $customerRepository;
         $this->customerAddressAllocator = $customerAddressAllocator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('customer');
@@ -82,17 +82,11 @@ final class AddressChoiceType extends AbstractType
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_customer_address_choice';

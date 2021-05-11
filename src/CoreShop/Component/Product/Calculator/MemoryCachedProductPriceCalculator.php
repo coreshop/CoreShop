@@ -19,12 +19,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class MemoryCachedProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    private $inner;
-    private $requestStack;
-    private $cachedPrice = [];
-    private $cachedRetailPrice = [];
-    private $cachedDiscountPrice = [];
-    private $cachedDiscount = [];
+    private ProductPriceCalculatorInterface $inner;
+    private RequestStack $requestStack;
+    private array $cachedPrice = [];
+    private array $cachedRetailPrice = [];
+    private array $cachedDiscountPrice = [];
+    private array $cachedDiscount = [];
 
     public function __construct(ProductPriceCalculatorInterface $inner, RequestStack $requestStack)
     {
@@ -32,9 +32,6 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(ProductInterface $subject, array $context, bool $includingDiscounts = false): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
@@ -50,9 +47,6 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedPrice[$identifier];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
@@ -66,9 +60,6 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedRetailPrice[$subject->getId()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         if (!$this->requestStack->getCurrentRequest()) {
@@ -82,9 +73,6 @@ final class MemoryCachedProductPriceCalculator implements ProductPriceCalculator
         return $this->cachedDiscountPrice[$subject->getId()];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         if (!$this->requestStack->getCurrentRequest()) {

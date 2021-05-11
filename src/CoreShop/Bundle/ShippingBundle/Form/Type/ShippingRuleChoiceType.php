@@ -23,16 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class ShippingRuleChoiceType extends AbstractType
 {
-    private $shippingRuleRepository;
+    private RepositoryInterface $shippingRuleRepository;
 
     public function __construct(RepositoryInterface $shippingRuleRepository)
     {
         $this->shippingRuleRepository = $shippingRuleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -53,17 +50,11 @@ final class ShippingRuleChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_shipping_rule_choice';

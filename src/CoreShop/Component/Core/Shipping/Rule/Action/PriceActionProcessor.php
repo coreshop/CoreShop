@@ -35,9 +35,6 @@ class PriceActionProcessor implements CarrierPriceActionProcessorInterface
         $this->moneyConverter = $moneyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address, array $configuration, array $context): int
     {
         Assert::keyExists($context, 'currency');

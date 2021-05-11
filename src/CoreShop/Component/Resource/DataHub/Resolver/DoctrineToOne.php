@@ -19,20 +19,9 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class DoctrineToOne
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string
-     */
-    private $graphName;
-
-    /**
-     * @var DoctrineProvider
-     */
-    private $typeProvider;
+    private string $name;
+    private string $graphName;
+    private DoctrineProvider $typeProvider;
 
     public function __construct(
         DoctrineProvider $provider,
@@ -49,7 +38,7 @@ class DoctrineToOne
      *
      * @return array
      */
-    public function getDefinition()
+    public function getDefinition(): array
     {
         $outputType = $this->typeProvider->getType($this->graphName);
 

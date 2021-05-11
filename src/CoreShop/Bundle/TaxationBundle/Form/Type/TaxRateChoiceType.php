@@ -23,16 +23,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class TaxRateChoiceType extends AbstractType
 {
-    private $countryRepository;
+    private RepositoryInterface $countryRepository;
 
     public function __construct(RepositoryInterface $countryRepository)
     {
         $this->countryRepository = $countryRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -57,17 +54,11 @@ final class TaxRateChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_tax_rule_choice';

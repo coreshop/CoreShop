@@ -23,9 +23,6 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CategorySelectConditionProcessor implements FilterConditionProcessorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function prepareValuesForRendering(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter): array
     {
         $field = 'categoryIds';
@@ -73,9 +70,6 @@ class CategorySelectConditionProcessor implements FilterConditionProcessorInterf
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addCondition(FilterConditionInterface $condition, FilterInterface $filter, ListingInterface $list, array $currentFilter, ParameterBag $parameterBag, bool $isPrecondition = false): array
     {
         $field = 'categoryIds';

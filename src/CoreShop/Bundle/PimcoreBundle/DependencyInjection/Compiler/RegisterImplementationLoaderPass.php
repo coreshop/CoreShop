@@ -20,29 +20,15 @@ use Symfony\Component\DependencyInjection\Reference;
 
 abstract class RegisterImplementationLoaderPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    protected $implementationLoader;
+    protected string $implementationLoader;
+    protected string $tag;
 
-    /**
-     * @var string
-     */
-    protected $tag;
-
-    /**
-     * @param string $implementationLoader
-     * @param string $tag
-     */
     public function __construct(string $implementationLoader, string $tag)
     {
         $this->implementationLoader = $implementationLoader;
         $this->tag = $tag;
     }
 
-    /**
-     * @param ContainerBuilder $container
-     */
     public function process(ContainerBuilder $container)
     {
         if (!$container->hasDefinition($this->implementationLoader)) {

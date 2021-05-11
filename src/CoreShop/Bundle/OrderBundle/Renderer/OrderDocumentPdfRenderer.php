@@ -26,10 +26,10 @@ use Symfony\Component\HttpKernel\Fragment\FragmentRendererInterface;
 
 class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
 {
-    private $fragmentRenderer;
-    private $eventDispatcher;
-    private $renderer;
-    private $themeHelper;
+    private FragmentRendererInterface $fragmentRenderer;
+    private EventDispatcherInterface $eventDispatcher;
+    private PdfRendererInterface $renderer;
+    private ThemeHelperInterface $themeHelper;
 
     public function __construct(
         FragmentRendererInterface $fragmentRenderer,
@@ -43,9 +43,6 @@ class OrderDocumentPdfRenderer implements OrderDocumentRendererInterface
         $this->themeHelper = $themeHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderDocumentPdf(OrderDocumentInterface $orderDocument): string
     {
         return $this->themeHelper->useTheme($orderDocument->getOrder()->getStore()->getTemplate(), function () use ($orderDocument) {

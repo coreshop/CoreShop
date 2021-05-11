@@ -20,10 +20,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class AdminJavascriptListener implements EventSubscriberInterface
 {
-    private $jsResources;
-    private $editmodeJsResources;
-    private $cssResources;
-    private $editmodeCssResources;
+    private array $jsResources;
+    private array $editmodeJsResources;
+    private array $cssResources;
+    private array $editmodeCssResources;
 
     public function __construct(
         array $jsResources,

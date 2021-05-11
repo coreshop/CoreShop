@@ -23,9 +23,6 @@ use Payum\Core\Request\Capture;
 
 class NotifyAction implements ActionInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function execute($request)
     {
         /** @var $request Capture */
@@ -37,9 +34,6 @@ class NotifyAction implements ActionInterface
         throw new HttpResponse(microtime() . ' NOTIFY - OK', 200);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports($request)
     {
         return

@@ -18,5 +18,5 @@ use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 
 interface PimcorePageInterface extends SymfonyPageInterface
 {
-    public function waitForPimcore($time = 10000, $condition = null);
+    public function waitForPimcore($time = 10000, $condition = null): void;
 }

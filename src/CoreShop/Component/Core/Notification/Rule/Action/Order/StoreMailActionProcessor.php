@@ -29,9 +29,6 @@ class StoreMailActionProcessor implements NotificationRuleProcessorInterface
         $this->mailActionProcessor = $mailActionProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply($subject, NotificationRuleInterface $rule, array $configuration, array $params = []): void
     {
         $store = null;

@@ -35,9 +35,6 @@ final class StoreBasedCartContext implements CartContextInterface
         $this->shopperContext = $shopperContext;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         if (null !== $this->cart) {

@@ -30,9 +30,6 @@ final class CartCurrencyConversionProcessor implements CartProcessorInterface
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $cart->removeConvertedAdjustmentsRecursively();

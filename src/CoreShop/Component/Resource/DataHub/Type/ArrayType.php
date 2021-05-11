@@ -20,25 +20,16 @@ class ArrayType extends ScalarType
 {
     public $name = 'array';
 
-    /**
-     * {@inheritdoc}
-     */
     public function serialize($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseValue($value)
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parseLiteral($valueNode, ?array $variables = null)
     {
         return $valueNode->value;

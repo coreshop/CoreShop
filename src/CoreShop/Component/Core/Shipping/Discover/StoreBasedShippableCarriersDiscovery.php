@@ -37,9 +37,6 @@ final class StoreBasedShippableCarriersDiscovery implements CarriersResolverInte
         $this->shippableCarrierValidator = $shippableCarrierValidator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolveCarriers(ShippableInterface $shippable, AddressInterface $address): array
     {
         if ($shippable instanceof StoreAwareInterface) {

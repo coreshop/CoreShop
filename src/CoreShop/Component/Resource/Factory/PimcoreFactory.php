@@ -16,22 +16,13 @@ namespace CoreShop\Component\Resource\Factory;
 
 final class PimcoreFactory implements FactoryInterface, PimcoreFactoryInterface
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
-    /**
-     * @param string $className
-     */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         $this->className = $className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createNew()
     {
         return new $this->className();

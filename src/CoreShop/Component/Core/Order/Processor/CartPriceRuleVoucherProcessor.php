@@ -43,9 +43,6 @@ final class CartPriceRuleVoucherProcessor implements CartProcessorInterface
         $this->cartPriceRuleUnProcessor = $cartPriceRuleUnProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $priceRuleItems = $cart->getPriceRuleItems();

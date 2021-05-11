@@ -21,9 +21,6 @@ use CoreShop\Component\Shipping\Rule\Condition\AbstractConditionChecker;
 
 class CountriesConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isShippingRuleValid(
         CarrierInterface $carrier,
         ShippableInterface $shippable,

@@ -18,9 +18,6 @@ use CoreShop\Bundle\RuleBundle\Form\Type\RuleConditionChoiceType;
 
 class ProductQuantityPriceRuleConditionChoiceType extends RuleConditionChoiceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_quantity_price_rule_condition_choice';

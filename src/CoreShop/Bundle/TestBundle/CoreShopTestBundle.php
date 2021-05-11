@@ -21,17 +21,11 @@ use Pimcore\Extension\Bundle\AbstractPimcoreBundle;
 
 class CoreShopTestBundle extends AbstractPimcoreBundle
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getNiceName(): string
     {
         return 'CoreShop - Test';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDescription(): string
     {
         return 'CoreShop - Test Bundle';

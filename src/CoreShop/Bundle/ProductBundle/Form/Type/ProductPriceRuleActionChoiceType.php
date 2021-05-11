@@ -18,9 +18,6 @@ use CoreShop\Bundle\RuleBundle\Form\Type\RuleActionChoiceType;
 
 class ProductPriceRuleActionChoiceType extends RuleActionChoiceType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_action_choice';

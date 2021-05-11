@@ -20,9 +20,6 @@ use CoreShop\Component\Product\Repository\CategoryRepositoryInterface;
 
 class CategoryRepository extends PimcoreRepository implements CategoryRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findFirstLevel(): array
     {
         $list = $this->getList();
@@ -31,9 +28,6 @@ class CategoryRepository extends PimcoreRepository implements CategoryRepository
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findChildCategories(CategoryInterface $category): array
     {
         $list = $this->getList();

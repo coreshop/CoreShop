@@ -20,9 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class ProductUnitDefinitionPriceCollectionType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -35,17 +32,11 @@ class ProductUnitDefinitionPriceCollectionType extends AbstractType
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return CollectionType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_unit_definition_price_collection';

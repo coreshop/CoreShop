@@ -20,17 +20,11 @@ use Webmozart\Assert\Assert;
 
 final class DocumentExtractor implements ExtractorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function supports($object): bool
     {
         return $object instanceof Page;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateMetadata($object, SEOMetadataInterface $seoMetadata): void
     {
         Assert::isInstanceOf($object, Page::class);

@@ -23,17 +23,11 @@ final class AddToCartMaximumQuantity extends Constraint
      */
     public $messageAboveMaximum;
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop_add_to_cart_maximum_quantity';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

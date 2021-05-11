@@ -20,9 +20,6 @@ use CoreShop\Component\Address\Repository\AddressIdentifierRepositoryInterface;
 
 class AddressIdentifierRepository extends EntityRepository implements AddressIdentifierRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByName($name): ?AddressIdentifierInterface
     {
         return $this->createQueryBuilder('o')

@@ -25,16 +25,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class StoreChoiceType extends AbstractType
 {
-    private $storeRepository;
+    private RepositoryInterface $storeRepository;
 
     public function __construct(RepositoryInterface $storeRepository)
     {
         $this->storeRepository = $storeRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if ($options['multiple']) {
@@ -42,9 +39,6 @@ final class StoreChoiceType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -64,17 +58,11 @@ final class StoreChoiceType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_store_choice';

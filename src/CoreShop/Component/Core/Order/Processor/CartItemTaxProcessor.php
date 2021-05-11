@@ -41,9 +41,6 @@ final class CartItemTaxProcessor implements CartProcessorInterface
         $this->defaultAddressProvider = $defaultAddressProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $store = $cart->getStore();

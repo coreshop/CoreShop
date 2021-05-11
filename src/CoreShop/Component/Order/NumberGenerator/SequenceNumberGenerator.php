@@ -19,8 +19,8 @@ use CoreShop\Component\Sequence\Generator\SequenceGeneratorInterface;
 
 class SequenceNumberGenerator implements NumberGeneratorInterface
 {
-    protected $sequenceNumberGenerator;
-    protected $type;
+    protected SequenceGeneratorInterface $sequenceNumberGenerator;
+    protected string $type;
 
     public function __construct(SequenceGeneratorInterface $sequenceNumberGenerator, string $type)
     {
@@ -28,9 +28,6 @@ class SequenceNumberGenerator implements NumberGeneratorInterface
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function generate(ResourceInterface $model): string
     {
         return (string)$this->sequenceNumberGenerator->getNextSequenceForType($this->type);

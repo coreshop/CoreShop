@@ -14,23 +14,19 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ValidPriceRulesHelperInterface;
 use CoreShop\Component\Product\Rule\Fetcher\ValidRulesFetcherInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
 final class ValidPriceRulesExtension extends AbstractExtension
 {
-    protected $validPriceRulesFetcher;
+    protected ValidRulesFetcherInterface $validPriceRulesFetcher;
 
     public function __construct(ValidRulesFetcherInterface $validPriceRulesFetcher)
     {
         $this->validPriceRulesFetcher = $validPriceRulesFetcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFilters(): array
     {
         return [

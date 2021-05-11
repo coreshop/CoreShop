@@ -19,9 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ProductPriceRuleConditionCollectionType extends RuleConditionCollectionType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
@@ -29,9 +26,6 @@ class ProductPriceRuleConditionCollectionType extends RuleConditionCollectionTyp
         $resolver->setDefault('entry_type', ProductPriceRuleConditionType::class);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_product_price_rule_condition_collection';

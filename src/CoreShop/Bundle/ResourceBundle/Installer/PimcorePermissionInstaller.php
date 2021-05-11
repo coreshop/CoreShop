@@ -23,8 +23,8 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class PimcorePermissionInstaller implements ResourceInstallerInterface
 {
-    private $kernel;
-    private $connection;
+    private KernelInterface $kernel;
+    private Connection $connection;
 
     public function __construct(KernelInterface $kernel, Connection $connection)
     {

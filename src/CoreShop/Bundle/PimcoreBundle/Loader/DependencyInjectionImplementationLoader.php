@@ -21,24 +21,18 @@ use Pimcore\Model\Document\Editable\EditableInterface;
 
 class DependencyInjectionImplementationLoader implements LoaderInterface
 {
-    private $factories;
+    private ServiceRegistryInterface $factories;
 
     public function __construct(ServiceRegistryInterface $factories)
     {
         $this->factories = $factories;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports(string $name): bool
     {
         return $this->factories->has($name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(string $name, array $params = []): EditableInterface
     {
         /**

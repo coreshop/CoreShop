@@ -22,24 +22,18 @@ use CoreShop\Component\Rule\Repository\RuleRepositoryInterface;
 
 final class RuleAvailabilityAssessor implements RuleAvailabilityAssessorInterface
 {
-    private $ruleRepository;
+    private RuleRepositoryInterface $ruleRepository;
 
     public function __construct(RuleRepositoryInterface $ruleRepository)
     {
         $this->ruleRepository = $ruleRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRules(): array
     {
         return $this->ruleRepository->findActive();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(RuleInterface $rule): bool
     {
         /** @var Condition $condition */

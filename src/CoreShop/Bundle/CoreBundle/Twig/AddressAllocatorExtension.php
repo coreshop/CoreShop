@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\AddressAllocatorHelperInterface;
 use CoreShop\Component\Core\Customer\Allocator\CustomerAddressAllocatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -22,24 +21,20 @@ use Twig\TwigTest;
 
 final class AddressAllocatorExtension extends AbstractExtension
 {
-    private $customerAddressAllocator;
+    private CustomerAddressAllocatorInterface $customerAddressAllocator;
 
     public function __construct(CustomerAddressAllocatorInterface $customerAddressAllocator)
     {
         $this->customerAddressAllocator = $customerAddressAllocator;
     }
 
-
-    public function getTests()
+    public function getTests(): array
     {
         return [
             new TwigTest('coreshop_address_owner_of', [$this->customerAddressAllocator, 'isOwnerOfAddress'])
         ];
     }
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_allocate_valid_addresses', [$this->customerAddressAllocator, 'allocateForCustomer']),

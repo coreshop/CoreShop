@@ -26,10 +26,10 @@ use Pimcore\Http\RequestHelper;
 
 final class CustomerAndStoreBasedCartContext implements CartContextInterface
 {
-    private $customerContext;
-    private $storeContext;
-    private $cartRepository;
-    private $pimcoreRequestHelper;
+    private CustomerContextInterface $customerContext;
+    private StoreContextInterface $storeContext;
+    private OrderRepositoryInterface $cartRepository;
+    private RequestHelper $pimcoreRequestHelper;
 
     public function __construct(
         CustomerContextInterface $customerContext,
@@ -43,9 +43,6 @@ final class CustomerAndStoreBasedCartContext implements CartContextInterface
         $this->pimcoreRequestHelper = $pimcoreRequestHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCart(): OrderInterface
     {
         if ($this->pimcoreRequestHelper->hasMasterRequest()) {

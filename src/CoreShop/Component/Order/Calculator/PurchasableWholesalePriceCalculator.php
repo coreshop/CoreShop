@@ -22,16 +22,13 @@ use Webmozart\Assert\Assert;
 
 class PurchasableWholesalePriceCalculator implements PurchasableWholesalePriceCalculatorInterface
 {
-    private $currencyConverter;
+    private CurrencyConverterInterface $currencyConverter;
 
     public function __construct(CurrencyConverterInterface $currencyConverter)
     {
         $this->currencyConverter = $currencyConverter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPurchasableWholesalePrice(PurchasableInterface $subject, array $context): int
     {
         Assert::keyExists($context, 'currency');

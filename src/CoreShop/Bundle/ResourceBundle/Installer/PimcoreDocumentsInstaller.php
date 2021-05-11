@@ -25,22 +25,13 @@ use Symfony\Component\Yaml\Yaml;
 
 final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
 {
-    /**
-     * @var KernelInterface
-     */
-    private $kernel;
-
-    /**<
-     * @param KernelInterface $kernel
-     */
+    private KernelInterface $kernel;
+    
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function installResources(OutputInterface $output, string $applicationName = null, array $options = []): void
     {
         $parameter = $applicationName ? sprintf(
@@ -143,14 +134,7 @@ final class PimcoreDocumentsInstaller implements ResourceInstallerInterface
         }
     }
 
-    /**
-     * @param Document $rootDocument
-     * @param string   $language
-     * @param array    $properties
-     *
-     * @return Document|null
-     */
-    private function installDocument(Document $rootDocument, $language, $properties)
+    private function installDocument(Document $rootDocument, string $language, array $properties): ?Document
     {
         $path = $rootDocument->getRealFullPath() . '/' . $language . '/' . $properties['path'] . '/' . $properties['key'];
 

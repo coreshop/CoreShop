@@ -20,9 +20,6 @@ use Webmozart\Assert\Assert;
 
 final class TaxApplicator implements TaxApplicatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function applyTax(
         int $price,
         array $context,

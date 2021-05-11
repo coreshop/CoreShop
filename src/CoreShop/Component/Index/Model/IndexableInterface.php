@@ -27,7 +27,7 @@ interface IndexableInterface
     public function getKey();
 
     /**
-     * @return int
+     * @return string
      */
     public function getClassId();
 

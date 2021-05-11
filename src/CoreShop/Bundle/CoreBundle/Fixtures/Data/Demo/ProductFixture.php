@@ -32,10 +32,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class ProductFixture extends AbstractProductFixture
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         if (!count($this->container->get('coreshop.repository.product')->findAll())) {
             $productsCount = 25;

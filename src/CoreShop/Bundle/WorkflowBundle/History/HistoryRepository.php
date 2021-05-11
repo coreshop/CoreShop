@@ -19,22 +19,13 @@ use Pimcore\Model\Element\Note;
 
 class HistoryRepository implements HistoryRepositoryInterface
 {
-    /**
-     * @var string
-     */
-    private $noteIdentifier;
+    private string $noteIdentifier;
 
-    /**
-     * @param string $noteIdentifier
-     */
     public function __construct(string $noteIdentifier)
     {
         $this->noteIdentifier = $noteIdentifier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHistory(DataObject\Concrete $object): array
     {
         $noteList = new Note\Listing();

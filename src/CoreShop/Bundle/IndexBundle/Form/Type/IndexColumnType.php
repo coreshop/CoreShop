@@ -24,8 +24,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
 {
-    private $getterTypeRegistry;
-    private $interpreterTypeRegistry;
+    private FormTypeRegistryInterface $getterTypeRegistry;
+    private FormTypeRegistryInterface $interpreterTypeRegistry;
 
     public function __construct(string $dataClass, array $validationGroups, FormTypeRegistryInterface $formTypeRegistry, FormTypeRegistryInterface $getterTypeRegistry, FormTypeRegistryInterface $interpreterTypeRegistry)
     {
@@ -35,9 +35,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
         $this->interpreterTypeRegistry = $interpreterTypeRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options = []): void
     {
         parent::buildForm($builder, $options);
@@ -164,9 +161,6 @@ final class IndexColumnType extends AbstractConfigurableIndexColumnElementType
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'coreshop_index_column';

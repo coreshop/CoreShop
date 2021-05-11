@@ -30,17 +30,11 @@ class LocalizedNestedInterpreter implements LocalizedInterpreterInterface
         $this->interpreterRegistry = $interpreterRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpret($value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         throw new \Exception('method "interpret" in Localized Interpreter not allowed. Please use "interpretForLanguage" instead.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function interpretForLanguage(string $language, $value, IndexableInterface $indexable, IndexColumnInterface $config, array $interpreterConfig = [])
     {
         $this->assert($interpreterConfig);

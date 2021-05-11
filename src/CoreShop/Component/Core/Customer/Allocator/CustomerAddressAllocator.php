@@ -21,9 +21,6 @@ use CoreShop\Component\Core\Model\CustomerInterface;
 
 final class CustomerAddressAllocator implements CustomerAddressAllocatorInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function allocateForCustomer(CustomerInterface $customer)
     {
         $addressAccessType = $customer->getAddressAccessType();
@@ -49,9 +46,6 @@ final class CustomerAddressAllocator implements CustomerAddressAllocatorInterfac
         throw new \Exception(sprintf('Cannot allocate addresses for customer %d with access type "%s"', $customer->getId(), $addressAccessType));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isOwnerOfAddress(CustomerInterface $customer, AddressInterface $address)
     {
         if (!$customer instanceof AddressesAwareInterface) {

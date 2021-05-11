@@ -24,10 +24,10 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 
 class VersionObjectConstructor implements ObjectConstructorInterface
 {
-    private $fallbackConstructor;
-    private $fallbacksFallbackConstructor;
-    private $fallbackStrategy;
-    private $expressionLanguageExclusionStrategy;
+    private ObjectConstructorInterface $fallbackConstructor;
+    private ObjectConstructorInterface $fallbacksFallbackConstructor;
+    private string $fallbackStrategy;
+    private ?ExpressionLanguageExclusionStrategy $expressionLanguageExclusionStrategy;
 
     public function __construct(
         ObjectConstructorInterface $fallbackConstructor,
@@ -42,9 +42,6 @@ class VersionObjectConstructor implements ObjectConstructorInterface
         $this->expressionLanguageExclusionStrategy = $expressionLanguageExclusionStrategy;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function construct(DeserializationVisitorInterface $visitor, ClassMetadata $metadata, $data, array $type, DeserializationContext $context): ?object
     {
         if (!$context->hasAttribute('em')) {

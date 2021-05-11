@@ -21,7 +21,7 @@ use Laminas\Stdlib\PriorityQueue;
 
 class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInterface
 {
-    private $shippableCarrierValidator;
+    private PriorityQueue $shippableCarrierValidator;
 
     public function __construct()
     {
@@ -33,9 +33,6 @@ class CompositeShippableCarrierValidator implements ShippableCarrierValidatorInt
         $this->shippableCarrierValidator->insert($shippableCarrierValidator, $priority);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCarrierValid(CarrierInterface $carrier, ShippableInterface $shippable, AddressInterface $address): bool
     {
         foreach ($this->shippableCarrierValidator as $shippableCarrierValidator) {

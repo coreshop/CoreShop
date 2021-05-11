@@ -23,9 +23,6 @@ use Payum\Core\GatewayFactory;
 
 class ConcurrencyGatewayFactory extends GatewayFactory
 {
-    /**
-     * {@inheritDoc}
-     */
     protected function populateConfig(ArrayObject $config)
     {
         $config->defaults([

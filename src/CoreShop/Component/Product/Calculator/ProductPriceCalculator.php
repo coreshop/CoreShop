@@ -20,9 +20,9 @@ use CoreShop\Component\Product\Model\ProductInterface;
 
 final class ProductPriceCalculator implements ProductPriceCalculatorInterface
 {
-    private $retailPriceCalculator;
-    private $discountPriceCalculator;
-    private $discountCalculator;
+    private ProductRetailPriceCalculatorInterface $retailPriceCalculator;
+    private ProductDiscountPriceCalculatorInterface $discountPriceCalculator;
+    private ProductDiscountCalculatorInterface $discountCalculator;
 
     public function __construct(
         ProductRetailPriceCalculatorInterface $retailPriceCalculator,
@@ -34,9 +34,6 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         $this->discountCalculator = $discountCalculator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPrice(ProductInterface $product, array $context, bool $includingDiscounts = false): int
     {
         $retailPrice = $this->getRetailPrice($product, $context);
@@ -55,9 +52,6 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         return $price;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(ProductInterface $subject, array $context): int
     {
         try {
@@ -68,9 +62,6 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscountPrice(ProductInterface $subject, array $context): int
     {
         try {
@@ -81,9 +72,6 @@ final class ProductPriceCalculator implements ProductPriceCalculatorInterface
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiscount(ProductInterface $subject, array $context, int $price): int
     {
         return $this->discountCalculator->getDiscount($subject, $context, $price);

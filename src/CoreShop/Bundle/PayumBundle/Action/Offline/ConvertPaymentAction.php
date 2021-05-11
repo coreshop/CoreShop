@@ -39,9 +39,6 @@ final class ConvertPaymentAction implements ActionInterface
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request)
     {
         return

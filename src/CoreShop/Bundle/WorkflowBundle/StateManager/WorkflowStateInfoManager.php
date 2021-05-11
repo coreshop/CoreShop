@@ -22,11 +22,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterface
 {
-    private $eventDispatcher;
-    private $stateMachineManager;
-    private $translator;
-    private $historyRepository;
-    private $stateColors;
+    private EventDispatcherInterface $eventDispatcher;
+    private StateMachineManagerInterface $stateMachineManager;
+    private TranslatorInterface $translator;
+    private HistoryRepositoryInterface $historyRepository;
+    private array $stateColors;
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,

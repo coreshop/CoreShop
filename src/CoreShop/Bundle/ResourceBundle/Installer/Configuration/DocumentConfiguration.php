@@ -19,9 +19,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class DocumentConfiguration implements ConfigurationInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('documents');

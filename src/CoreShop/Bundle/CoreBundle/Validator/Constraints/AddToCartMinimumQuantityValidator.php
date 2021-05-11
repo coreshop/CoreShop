@@ -27,10 +27,10 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Webmozart\Assert\Assert;
 
-class AddToCartMinimumQuantityValidator extends ConstraintValidator
+final class AddToCartMinimumQuantityValidator extends ConstraintValidator
 {
-    private $quantityValidatorService;
-    protected $cartItemResolver;
+    private QuantityValidatorService $quantityValidatorService;
+    private StorageListItemResolverInterface $cartItemResolver;
 
     public function __construct(
         QuantityValidatorService $quantityValidatorService,
@@ -41,15 +41,15 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         $this->cartItemResolver = $cartItemResolver;
     }
 
-    public function validate($addToCartDto, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        Assert::isInstanceOf($addToCartDto, AddToCartInterface::class);
+        Assert::isInstanceOf($value, AddToCartInterface::class);
         Assert::isInstanceOf($constraint, AddToCartMinimumQuantity::class);
 
         /**
          * @var PurchasableInterface $purchasable
          */
-        $purchasable = $addToCartDto->getCartItem()->getProduct();
+        $purchasable = $value->getCartItem()->getProduct();
 
         if (!$purchasable instanceof StockableInterface) {
             return;
@@ -62,12 +62,12 @@ class AddToCartMinimumQuantityValidator extends ConstraintValidator
         /**
          * @var OrderInterface $cart
          */
-        $cart = $addToCartDto->getCart();
+        $cart = $value->getCart();
 
         /**
          * @var OrderItemInterface $cartItem
          */
-        $cartItem = $addToCartDto->getCartItem();
+        $cartItem = $value->getCartItem();
 
         $quantity = $cartItem->getDefaultUnitQuantity() + $this->getExistingCartItemQuantityFromCart($cart, $cartItem);
         $minLimit = $purchasable->getMinimumQuantityToOrder();

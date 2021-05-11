@@ -20,10 +20,7 @@ use Twig\TwigFilter;
 
 final class CurrencyExtension extends AbstractExtension
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('coreshop_currency_symbol', [$this, 'convertCurrencyCodeToSymbol']),

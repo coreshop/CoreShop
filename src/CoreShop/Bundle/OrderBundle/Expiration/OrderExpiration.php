@@ -22,9 +22,9 @@ use Pimcore\Model\DataObject\Concrete;
 
 final class OrderExpiration implements ProposalExpirationInterface
 {
-    private $orderRepository;
-    private $stateMachineApplier;
-    private $historyLogger;
+    private OrderRepositoryInterface $orderRepository;
+    private StateMachineApplier $stateMachineApplier;
+    private HistoryLoggerInterface $historyLogger;
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
@@ -36,9 +36,6 @@ final class OrderExpiration implements ProposalExpirationInterface
         $this->historyLogger = $historyLogger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function expire(int $days, array $params = []): void
     {
         if ($days <= 0) {

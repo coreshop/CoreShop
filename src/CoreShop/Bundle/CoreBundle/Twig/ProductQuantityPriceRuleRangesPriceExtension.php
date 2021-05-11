@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Twig;
 
-use CoreShop\Bundle\CoreBundle\Templating\Helper\ProductQuantityPriceRuleRangesPriceHelperInterface;
 use CoreShop\Component\Address\Model\AddressInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
 use CoreShop\Component\Core\Model\QuantityRangeInterface;
@@ -30,11 +29,11 @@ use Twig\TwigFunction;
 
 final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtension
 {
-    protected $quantityReferenceDetector;
-    protected $purchasableCalculator;
-    private $defaultTaxAddressProvider;
-    private $taxCalculatorFactory;
-    private $taxApplicator;
+    private QuantityReferenceDetectorInterface $quantityReferenceDetector;
+    private PurchasableCalculatorInterface$purchasableCalculator;
+    private DefaultTaxAddressProviderInterface $defaultTaxAddressProvider;
+    private ProductTaxCalculatorFactoryInterface $taxCalculatorFactory;
+    private TaxApplicatorInterface $taxApplicator;
 
     public function __construct(
         QuantityReferenceDetectorInterface $quantityReferenceDetector,
@@ -50,9 +49,6 @@ final class ProductQuantityPriceRuleRangesPriceExtension extends AbstractExtensi
         $this->taxApplicator = $taxApplicator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

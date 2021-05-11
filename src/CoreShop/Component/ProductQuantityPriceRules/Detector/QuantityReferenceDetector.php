@@ -22,8 +22,8 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareIn
 
 class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
 {
-    private $quantityRuleFetcher;
-    private $quantityPriceFetcher;
+    private QuantityRuleFetcher $quantityRuleFetcher;
+    private QuantityPriceFetcher $quantityPriceFetcher;
 
     public function __construct(QuantityRuleFetcher $quantityRuleFetcher, QuantityPriceFetcher $quantityPriceFetcher)
     {
@@ -31,17 +31,11 @@ class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
         $this->quantityPriceFetcher = $quantityPriceFetcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function detectRule(QuantityRangePriceAwareInterface $subject, array $context): ProductQuantityPriceRuleInterface
     {
         return $this->quantityRuleFetcher->fetch($subject, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function detectQuantityPrice(QuantityRangePriceAwareInterface $subject, float $quantity, int $originalPrice, array $context): int
     {
         $priceRule = $this->detectRule($subject, $context);
@@ -49,9 +43,6 @@ class QuantityReferenceDetector implements QuantityReferenceDetectorInterface
         return $this->quantityPriceFetcher->fetchQuantityPrice($priceRule, $subject, $quantity, $originalPrice, $context);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function detectRangePrice(QuantityRangePriceAwareInterface $subject, QuantityRangeInterface $range, int $originalPrice, array $context): int
     {
         return $this->quantityPriceFetcher->fetchRangePrice($range, $subject, $originalPrice, $context);

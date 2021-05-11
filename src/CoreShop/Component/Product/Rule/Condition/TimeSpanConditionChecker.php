@@ -21,9 +21,6 @@ use CoreShop\Component\Rule\Model\RuleInterface;
 
 class TimeSpanConditionChecker implements ConditionCheckerInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, array $params = []): bool
     {
         $dateFrom = Carbon::createFromTimestamp($configuration['dateFrom'] / 1000);

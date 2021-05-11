@@ -21,16 +21,13 @@ use Symfony\Component\Templating\Helper\Helper;
 
 class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
 {
-    private $linkGenerator;
+    private LinkGeneratorInterface $linkGenerator;
 
     public function __construct(LinkGeneratorInterface $linkGenerator)
     {
         $this->linkGenerator = $linkGenerator;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath($routeNameOrObject/*, $routeName*/, $params = [], $relative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
@@ -43,9 +40,6 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUrl($routeNameOrObject/*, $routeName*/, $params = [], $schemeRelative = false): string
     {
         list($object, $routeName, $params, $relative) = $this->prepareParameters(func_get_args());
@@ -113,9 +107,6 @@ class LinkGeneratorHelper extends Helper implements LinkGeneratorHelperInterface
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop_link';

@@ -45,9 +45,6 @@ final class CartItemsProcessor implements CartProcessorInterface
         $this->cartContextResolver = $cartContextResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(OrderInterface $cart): void
     {
         $context = $this->cartContextResolver->resolveCartContext($cart);

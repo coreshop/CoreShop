@@ -19,9 +19,6 @@ use CoreShop\Component\Payment\Repository\PaymentProviderRepositoryInterface;
 
 class PaymentProviderRepository extends EntityRepository implements PaymentProviderRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findByTitle(string $title, string $locale): array
     {
         return $this->createQueryBuilder('o')
@@ -35,9 +32,6 @@ class PaymentProviderRepository extends EntityRepository implements PaymentProvi
             ->getResult();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function findActive(): array
     {
         return $this->createQueryBuilder('o')

@@ -38,9 +38,6 @@ class DiscountAmountActionProcessor implements CartPriceRuleActionProcessorInter
         $this->cartRuleApplier = $cartRuleApplier;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(
         OrderInterface $cart,
         array $configuration,

@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class FilteredListingFactory implements FilteredListingFactoryInterface
 {
-    private $listingFactory;
-    private $filterProcessor;
+    private ListingFactoryInterface $listingFactory;
+    private FilterProcessorInterface $filterProcessor;
 
     public function __construct(ListingFactoryInterface $listingFactory, FilterProcessorInterface $filterProcessor)
     {
@@ -32,9 +32,6 @@ class FilteredListingFactory implements FilteredListingFactoryInterface
         $this->filterProcessor = $filterProcessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createList(FilterInterface $filter, ParameterBag $parameterBag): ListingInterface
     {
         $list = $this->listingFactory->createList($filter->getIndex());

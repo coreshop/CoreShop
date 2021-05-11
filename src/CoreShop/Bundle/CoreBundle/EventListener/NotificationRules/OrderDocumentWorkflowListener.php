@@ -20,7 +20,7 @@ use Webmozart\Assert\Assert;
 
 final class OrderDocumentWorkflowListener extends AbstractNotificationRuleListener
 {
-    private $type;
+    private string $type;
 
     public function setType(string $type): void
     {

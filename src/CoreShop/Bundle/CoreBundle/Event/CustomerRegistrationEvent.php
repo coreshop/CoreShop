@@ -19,8 +19,8 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 final class CustomerRegistrationEvent extends GenericEvent
 {
-    private $customer;
-    private $data;
+    private CustomerInterface $customer;
+    private array $data;
 
     public function __construct(CustomerInterface $customer, array $data)
     {

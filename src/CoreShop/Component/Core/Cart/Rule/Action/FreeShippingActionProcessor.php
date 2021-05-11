@@ -29,9 +29,6 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function applyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         $shippingAdjustments = $cart->getAdjustments(AdjustmentInterface::SHIPPING);
@@ -51,9 +48,6 @@ final class FreeShippingActionProcessor implements CartPriceRuleActionProcessorI
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function unApplyRule(OrderInterface $cart, array $configuration, ProposalCartPriceRuleItemInterface $cartPriceRuleItem): bool
     {
         return true;

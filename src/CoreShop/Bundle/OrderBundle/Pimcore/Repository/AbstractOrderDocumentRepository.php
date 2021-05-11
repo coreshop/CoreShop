@@ -20,17 +20,11 @@ use CoreShop\Component\Order\Repository\OrderDocumentRepositoryInterface;
 
 abstract class AbstractOrderDocumentRepository extends PimcoreRepository implements OrderDocumentRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getDocuments(OrderInterface $order): array
     {
         return $this->findBy(['order__id' => $order->getId()], [['key' => 'o_id', 'direction' => 'DESC']]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDocumentsInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();
@@ -39,9 +33,6 @@ abstract class AbstractOrderDocumentRepository extends PimcoreRepository impleme
         return $list->getObjects();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDocumentsNotInState(OrderInterface $order, string $state): array
     {
         $list = $this->getList();

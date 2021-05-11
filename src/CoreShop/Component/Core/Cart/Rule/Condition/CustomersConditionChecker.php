@@ -22,9 +22,6 @@ use CoreShop\Component\Order\Model\CartPriceRuleVoucherCodeInterface;
 
 final class CustomersConditionChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isCartRuleValid(OrderInterface $cart, CartPriceRuleInterface $cartPriceRule, ?CartPriceRuleVoucherCodeInterface $voucher, array $configuration): bool
     {
         if (!$cart->getCustomer() instanceof CustomerInterface) {

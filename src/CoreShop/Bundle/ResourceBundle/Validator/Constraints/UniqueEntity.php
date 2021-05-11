@@ -26,9 +26,6 @@ final class UniqueEntity extends Constraint
 
     public $allowSameEntity = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function validatedBy(): string
     {
         return 'coreshop.unique_entity';
@@ -42,9 +39,6 @@ final class UniqueEntity extends Constraint
         return ['fields', 'values'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

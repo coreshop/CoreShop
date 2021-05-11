@@ -23,7 +23,7 @@ use Pimcore\Model\Document\Email;
 
 final class OrderMailNoteEventListener
 {
-    private $noteService;
+    private NoteServiceInterface $noteService;
 
     public function __construct(NoteServiceInterface $noteService)
     {

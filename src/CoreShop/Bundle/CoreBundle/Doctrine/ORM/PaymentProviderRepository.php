@@ -20,9 +20,6 @@ use CoreShop\Component\Store\Model\StoreInterface;
 
 class PaymentProviderRepository extends BasePaymentProviderRepository implements PaymentProviderRepositoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function findActiveForStore(StoreInterface $store): array
     {
         return $this->createQueryBuilder('o')

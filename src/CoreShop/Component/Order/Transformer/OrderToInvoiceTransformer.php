@@ -33,20 +33,20 @@ use Webmozart\Assert\Assert;
 
 class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
 {
-    protected $orderItemToInvoiceItemTransformer;
-    protected $numberGenerator;
-    protected $invoiceFolderPath;
-    protected $objectService;
-    protected $orderItemRepository;
-    protected $invoiceItemFactory;
-    protected $invoiceRepository;
-    protected $eventDispatcher;
-    protected $adjustmentFactory;
+    protected OrderDocumentItemTransformerInterface $orderItemToInvoiceItemTransformer;
+    protected NumberGeneratorInterface $numberGenerator;
+    protected string $invoiceFolderPath;
+    protected ObjectServiceInterface $objectService;
+    protected PimcoreRepositoryInterface $orderItemRepository;
+    protected PimcoreFactoryInterface $invoiceItemFactory;
+    protected OrderInvoiceRepositoryInterface $invoiceRepository;
+    protected TransformerEventDispatcherInterface $eventDispatcher;
+    protected AdjustmentFactoryInterface $adjustmentFactory;
 
     public function __construct(
         OrderDocumentItemTransformerInterface $orderDocumentItemTransformer,
         NumberGeneratorInterface $numberGenerator,
-        $invoiceFolderPath,
+        string $invoiceFolderPath,
         ObjectServiceInterface $objectService,
         PimcoreRepositoryInterface $orderItemRepository,
         PimcoreFactoryInterface $invoiceItemFactory,
@@ -65,9 +65,6 @@ class OrderToInvoiceTransformer implements OrderDocumentTransformerInterface
         $this->adjustmentFactory = $adjustmentFactory;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform(OrderInterface $order, OrderDocumentInterface $invoice, $itemsToTransform)
     {
         /**

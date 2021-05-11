@@ -24,9 +24,9 @@ use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 
 final class CartCollector extends DataCollector
 {
-    private $cartContext;
-    private $localeContext;
-    private $pimcoreContext;
+    private CartContextInterface $cartContext;
+    private LocaleContextInterface $localeContext;
+    private PimcoreContextResolver $pimcoreContext;
 
     public function __construct(
         CartContextInterface $cartContext,
@@ -59,9 +59,6 @@ final class CartCollector extends DataCollector
         return $this->data['admin'];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function collect(Request $request, Response $response, \Throwable $exception = null): void
     {
         if ($this->pimcoreContext->matchesPimcoreContext($request, PimcoreContextResolver::CONTEXT_ADMIN)) {
@@ -78,17 +75,11 @@ final class CartCollector extends DataCollector
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reset(): void
     {
         $this->data = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getName(): string
     {
         return 'coreshop.cart_collector';

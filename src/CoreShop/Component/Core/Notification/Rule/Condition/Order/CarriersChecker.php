@@ -20,9 +20,6 @@ use CoreShop\Component\Notification\Rule\Condition\AbstractConditionChecker;
 
 class CarriersChecker extends AbstractConditionChecker
 {
-    /**
-     * {@inheritdoc}
-     */
     public function isNotificationRuleValid($subject, array $params, array $configuration): bool
     {
         if ($subject instanceof OrderInterface) {

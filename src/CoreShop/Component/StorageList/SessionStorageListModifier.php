@@ -19,7 +19,7 @@ use CoreShop\Component\StorageList\Model\StorageListItemInterface;
 
 class SessionStorageListModifier extends SimpleStorageListModifier
 {
-    private $manager;
+    private StorageListManagerInterface $manager;
 
     public function __construct(StorageListManagerInterface $manager)
     {
@@ -28,9 +28,6 @@ class SessionStorageListModifier extends SimpleStorageListModifier
         $this->manager = $manager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addToList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         parent::addToList($storageList, $item);
@@ -38,9 +35,6 @@ class SessionStorageListModifier extends SimpleStorageListModifier
         $this->manager->persist($storageList);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeFromList(StorageListInterface $storageList, StorageListItemInterface $item): void
     {
         parent::removeFromList($storageList, $item);

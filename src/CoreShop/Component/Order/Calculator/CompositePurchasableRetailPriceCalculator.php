@@ -20,16 +20,13 @@ use CoreShop\Component\Registry\PrioritizedServiceRegistryInterface;
 
 class CompositePurchasableRetailPriceCalculator implements PurchasableRetailPriceCalculatorInterface
 {
-    protected $calculators;
+    protected PrioritizedServiceRegistryInterface $calculators;
 
     public function __construct(PrioritizedServiceRegistryInterface $calculators)
     {
         $this->calculators = $calculators;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRetailPrice(PurchasableInterface $purchasable, array $context): int
     {
         $price = null;

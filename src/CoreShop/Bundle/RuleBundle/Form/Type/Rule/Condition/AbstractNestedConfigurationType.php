@@ -21,9 +21,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 abstract class AbstractNestedConfigurationType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

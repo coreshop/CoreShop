@@ -152,9 +152,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForResource($data, $object = null, $params = [])
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
@@ -172,9 +169,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataFromResource($data, $object = null, $params = [])
     {
         $currencyIndex = $this->getName() . '__currency';
@@ -190,17 +184,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForQueryResource($data, $object = null, $params = [])
     {
         return $this->getDataForResource($data, $object, $params);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataForEditmode($data, $object = null, $params = [])
     {
         if ($data instanceof \CoreShop\Component\Currency\Model\Money) {
@@ -218,9 +206,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
         public function getDataFromEditmode($data, $object = null, $params = [])
     {
         if (is_array($data)) {
@@ -234,17 +219,11 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getVersionPreview($data, $object = null, $params = [])
     {
         return $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkValidity($data, $omitMandatoryCheck = false, $params = [])
     {
         if (!$omitMandatoryCheck && $this->getMandatory() && $this->isEmpty($data)) {
@@ -276,9 +255,6 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getForCsvExport($object, $params = [])
     {
         $data = $this->getDataFromObjectParam($object, $params);
@@ -286,33 +262,21 @@ class MoneyCurrency extends Model\DataObject\ClassDefinition\Data implements Mod
         return json_encode($this->getDataForResource($data, $object, $params));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFromCsvImport($importValue, $object = null, $params = [])
     {
         //TODO
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDiffChangeAllowed($object, $params = [])
     {
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDiffDataForEditMode($data, $object = null, $params = [])
     {
         return [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty($data)
     {
         if ($data instanceof Money) {

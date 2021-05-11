@@ -40,9 +40,6 @@ final class CheapestDefaultCarrierResolver implements DefaultCarrierResolverInte
         $this->cartContextResolver = $cartContextResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefaultCarrier(ShippableInterface $shippable, AddressInterface $address): CarrierInterface
     {
         $carriers = $this->carriersResolver->resolveCarriers($shippable, $address);
