@@ -16,7 +16,7 @@ class Version20210511074115 extends AbstractPimcoreMigration
         SharedTranslation::add('coreshop.order_payment.total', 'de', 'Zahlung behinhaltet %items% Einträge für Betrag %total%.');
         SharedTranslation::add('coreshop.order_payment.total', 'de_CH', 'Zahlung behinhaltet %items% Einträge für Betrag %total%.');
         SharedTranslation::add('coreshop.order_payment.total', 'en', 'Payment contains %items% item(s) for a total of %total%.');
-        SharedTranslation::add('coreshop.order_payment.total', 'it', 'Payment contains %items% item(s) for a total of %total%.');
+        SharedTranslation::add('coreshop.order_payment.total', 'it', 'Il pagamento contiene %items% voce/i per un totale di %total%.');
     }
 
     /**

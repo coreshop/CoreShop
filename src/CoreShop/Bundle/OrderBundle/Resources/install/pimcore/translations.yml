@@ -4,4 +4,4 @@ translations:
             en: 'Payment contains %items% item(s) for a total of %total%.'
             de: 'Zahlung behinhaltet %items% Einträge für Betrag %total%.'
             de_CH: 'Zahlung behinhaltet %items% Einträge für Betrag %total%.'
-            it: 'Payment contains %items% item(s) for a total of %total%.'
+            it: 'Il pagamento contiene %items% voce/i per un totale di %total%.'
