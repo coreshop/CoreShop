@@ -166,10 +166,11 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
         });
 
         var store = Ext.create('store.coreshop_carrier_shipping_rules');
-        store.load();
+        store.load(function() {
+            this.shippingRuleGroupsGrid.setStore(this.shippingRuleGroupsStore);
+        }.bind(this));
 
         this.shippingRuleGroupsGrid = Ext.create('Ext.grid.Panel', {
-            store: this.shippingRuleGroupsStore,
             columns: [
                 {
                     header: t('coreshop_carriers_shipping_rule'),
@@ -272,7 +273,7 @@ coreshop.carrier.item = Class.create(coreshop.resource.item, {
                 name: 'isFree',
                 fieldLabel: t('coreshop_carrier_isFree'),
                 width: 250,
-                value: parseInt(this.data.isFree)
+                value: this.data.isFree
             }, this.getShippingRulesGrid()]
         });
 
