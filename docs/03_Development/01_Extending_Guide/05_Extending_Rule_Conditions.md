@@ -25,7 +25,8 @@ namespace AppBundle\CoreShop;
 
 final class CustomCondition implements \CoreShop\Component\Rule\Condition\ConditionCheckerInterface
 {
-    public function isValid($subject, array $configuration);
+    public function isValid(ResourceInterface $subject, RuleInterface $rule, array $configuration, $params = [])
+    {
         //return true if valid, false if not
         return true;
     }
