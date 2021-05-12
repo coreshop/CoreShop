@@ -19,7 +19,7 @@ use CoreShop\Component\ProductQuantityPriceRules\Model\ProductQuantityPriceRuleI
 use CoreShop\Component\ProductQuantityPriceRules\Model\QuantityRangePriceAwareInterface;
 use CoreShop\Component\ProductQuantityPriceRules\Rule\Fetcher\ValidRulesFetcherInterface;
 
-class QuantityRuleFetcher
+class QuantityRuleFetcher implements QuantityRuleFetcherInterface
 {
     private ValidRulesFetcherInterface $validRulesFetcher;
 

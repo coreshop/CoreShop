@@ -8,3 +8,4 @@ services:
             - '@coreshop.factory.payment'
             - '%coreshop.currency.decimal_factor%'
             - '%coreshop.currency.decimal_precision%'
+            - '@translator'

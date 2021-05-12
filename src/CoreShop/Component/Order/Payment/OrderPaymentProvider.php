@@ -12,26 +12,34 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\Payment;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
     private FactoryInterface $paymentFactory;
     private int $decimalFactor;
     private int $decimalPrecision;
+    private TranslatorInterface $translator;
 
-    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
+    public function __construct(
+        FactoryInterface $paymentFactory,
+        int $decimalFactor,
+        int $decimalPrecision,
+        TranslatorInterface $translator
+    )
     {
         $this->paymentFactory = $paymentFactory;
         $this->decimalFactor = $decimalFactor;
         $this->decimalPrecision = $decimalPrecision;
+        $this->translator = $translator;
     }
 
     public function provideOrderPayment(OrderInterface $order): PaymentInterface
@@ -59,10 +67,12 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
             $payment->setOrder($order);
         }
 
-        $description = sprintf(
-            'Payment contains %s item(s) for a total of %s.',
-            count($order->getItems()),
-            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
+        $description = $this->translator->trans(
+            'coreshop.order_payment.total',
+            [
+                '%items%' => count($order->getItems()),
+                '%total%' => round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision),
+            ]
         );
 
         //payum setters

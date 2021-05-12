@@ -146,6 +146,7 @@ class RegisterController extends FrontendController
                 if ($handledForm->isSubmitted() && $handledForm->isValid()) {
                     $resetPassword = $handledForm->getData();
 
+                    $customer->setPasswordResetHash(null);
                     $customer->setPassword($resetPassword['password']);
                     $customer->save();
 
