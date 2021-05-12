@@ -12,14 +12,15 @@
 
 namespace CoreShop\Component\Order\Payment;
 
-use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Order\Model\OrderPaymentInterface;
+use CoreShop\Component\Payment\Model\PaymentInterface;
 use CoreShop\Component\Payment\Model\PaymentSettingsAwareInterface;
 use CoreShop\Component\Resource\Factory\FactoryInterface;
 use CoreShop\Component\Resource\TokenGenerator\UniqueTokenGenerator;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\Payment;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class OrderPaymentProvider implements OrderPaymentProviderInterface
 {
@@ -39,15 +40,27 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
     private $decimalPrecision;
 
     /**
-     * @param FactoryInterface $paymentFactory
-     * @param int              $decimalFactor
-     * @param int              $decimalPrecision
+     * @var TranslatorInterface|null
      */
-    public function __construct(FactoryInterface $paymentFactory, int $decimalFactor, int $decimalPrecision)
+    private $translator;
+
+    /**
+     * @param FactoryInterface         $paymentFactory
+     * @param int                      $decimalFactor
+     * @param int                      $decimalPrecision
+     * @param TranslatorInterface|null $translator
+     */
+    public function __construct(
+        FactoryInterface $paymentFactory,
+        int $decimalFactor,
+        int $decimalPrecision,
+        TranslatorInterface $translator = null
+    )
     {
         $this->paymentFactory = $paymentFactory;
         $this->decimalFactor = $decimalFactor;
         $this->decimalPrecision = $decimalPrecision;
+        $this->translator = $translator;
     }
 
     /**
@@ -78,11 +91,21 @@ class OrderPaymentProvider implements OrderPaymentProviderInterface
             $payment->setOrder($order);
         }
 
-        $description = sprintf(
-            'Payment contains %s item(s) for a total of %s.',
-            count($order->getItems()),
-            round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
-        );
+        if (null !== $this->translator) {
+            $description = $this->translator->trans(
+                'coreshop.order_payment.total',
+                [
+                    '%items%' => count($order->getItems()),
+                    '%total%' => round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision),
+                ]
+            );
+        } else {
+            $description = sprintf(
+                'Payment contains %s item(s) for a total of %s.',
+                count($order->getItems()),
+                round($order->getTotal() / $this->decimalFactor, $this->decimalPrecision)
+            );
+        }
 
         //payum setters
         if ($payment instanceof Payment) {
