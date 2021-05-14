@@ -21,7 +21,7 @@ the Checkout for you then.
 
 If you have an optional checkout step - depending on the cart, your Checkout Step can implement the interface ```CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface```.
 
-You need to implement the function ```isRequired(CartInterface $cart)```
+You need to implement the function ```isRequired(OrderInterface $cart)```
 
 ### Optional Checkout Step Example
 
@@ -36,7 +36,7 @@ use CoreShop\Component\Order\Checkout\CheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\OptionalCheckoutStepInterface;
 use CoreShop\Component\Order\Checkout\ValidationCheckoutStepInterface;
 use CoreShop\Component\Order\Manager\CartManagerInterface;
-use CoreShop\Component\Order\Model\CartInterface;
+use CoreShop\Component\Order\Model\OrderInterface;
 use CoreShop\Component\Payment\Model\PaymentProviderInterface;
 use CoreShop\Component\Store\Context\StoreContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
