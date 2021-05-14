@@ -1,5 +1,28 @@
 # CoreShop State Machine - Available Workflows
 
+## Order Sale Workflow
+
+In CoreShop 3.x the Cart, Order and Quote are the same DataObject. To differentiate between them, we use states with workflows.
+
+State Machine: `coreshop_order_sales_type`
+
+
+### Available Places
+
+| Name | Description |
+|:-----|:------------|
+| `cart` | Initial State - Cart |
+| `order` | Once the customer finishes the checkout, pre-payment, it becomes an order |
+| `quote` | Once the customer finishes the checkout and requests a quote |
+
+### Available Transition
+
+| Name | Allowed from Places |
+|:-----|:--------------------|
+| `order` | `cart` |
+| `cart` | `cart` |
+| `quote` | `cart`  |
+
 ## Order Workflow
 
 State Machine: `coreshop_order`

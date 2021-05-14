@@ -20,24 +20,10 @@ interface GridActionInterface
      * The name of action.
      * This value will be translated via backend translator,
      * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.action.your_action_name".
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @param array $processIds
-     *
-     * @return string
-     */
-    public function apply(array $processIds);
+    public function apply(array $processIds): string;
 
-    /**
-     * Define if action is valid for $type.
-     *
-     * @param string $type
-     *
-     * @return bool
-     */
-    public function supports($type);
+    public function supports(string $type): bool;
 }

@@ -1,3 +1,6 @@
 # CoreShop Rule Bundle
 
-Base Bundle for all Rule related stuff.
+## Installation
+```bash
+$ composer require coreshop/rule-bundle:^3.0
+```

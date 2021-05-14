@@ -34,7 +34,7 @@ use CoreShop\Component\Order\Processor\CartProcessorInterface;
 
 final class CustomCartProcessor implements CartProcessorInterface
 {
-    public function process(CartInterface $cart)
+    public function process(OrderInterface $cart): void
     {
         $cart->setCustomField(uniqid());
     }

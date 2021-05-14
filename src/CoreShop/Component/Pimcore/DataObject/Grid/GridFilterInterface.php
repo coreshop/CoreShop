@@ -22,25 +22,13 @@ interface GridFilterInterface
      * The name of filter action.
      * This value will be translated via backend translator,
      * so it's good practice to choose a symfony standard translation keys like "coreshop.grid.filter.your_filter_name".
-     *
-     * @return string
      */
-    public function getName();
+    public function getName(): string;
 
-    /**
-     * @param DataObject\Listing $list
-     * @param array              $context
-     *
-     * @return DataObject\Listing
-     */
-    public function filter(DataObject\Listing $list, array $context);
+    public function filter(DataObject\Listing $list, array $context): DataObject\Listing;
 
     /**
      * Define if filter is valid for $type.
-     *
-     * @param string $listType
-     *
-     * @return bool
      */
-    public function supports($listType);
+    public function supports(string $listType): bool;
 }

@@ -1,3 +1,6 @@
 # CoreShop Product Quantity Price Rules Bundle
 
-Bundle for Quantity Price Rules.
+## Installation
+```bash
+$ composer require coreshop/product-quantity-price-rules-bundle:^3.0
+```
