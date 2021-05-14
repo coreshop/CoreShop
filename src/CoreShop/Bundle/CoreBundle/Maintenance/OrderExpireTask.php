@@ -18,7 +18,7 @@ use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Pimcore\Maintenance\TaskInterface;
 
-final class ProposalExpireTask implements TaskInterface
+final class OrderExpireTask implements TaskInterface
 {
     private ConfigurationServiceInterface $configurationService;
     private ProposalExpirationInterface $proposalExpiration;

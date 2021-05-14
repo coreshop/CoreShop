@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Tracking\Extractor;
 
 use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\Model\AdjustmentInterface;
-use CoreShop\Component\Order\Model\ProposalInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
 class OrderExtractor implements TrackingExtractorInterface

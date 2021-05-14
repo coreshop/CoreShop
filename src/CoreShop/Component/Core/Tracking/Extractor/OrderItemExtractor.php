@@ -16,7 +16,6 @@ namespace CoreShop\Component\Core\Tracking\Extractor;
 
 use CoreShop\Component\Core\Model\OrderItemInterface;
 use CoreShop\Component\Core\Model\ProductInterface;
-use CoreShop\Component\Order\Model\ProposalItemInterface;
 use CoreShop\Component\Order\Model\PurchasableInterface;
 use CoreShop\Component\Tracking\Extractor\TrackingExtractorInterface;
 
@@ -31,13 +30,13 @@ class OrderItemExtractor implements TrackingExtractorInterface
 
     public function supports($object): bool
     {
-        return $object instanceof ProposalItemInterface;
+        return $object instanceof OrderItemInterface;
     }
 
     public function updateMetadata($object, $data = []): array
     {
         /**
-         * @var ProposalItemInterface $object
+         * @var OrderItemInterface $object
          */
         $product = $object->getProduct();
         $categories = [];

@@ -16,7 +16,7 @@ namespace CoreShop\Bundle\OrderBundle\Expiration;
 
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 
-final class CartExpiration implements ProposalExpirationInterface
+final class CartExpiration implements OrderExpirationInterface
 {
     private OrderRepositoryInterface $cartRepository;
 

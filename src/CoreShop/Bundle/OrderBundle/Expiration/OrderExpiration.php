@@ -20,7 +20,7 @@ use CoreShop\Component\Order\OrderTransitions;
 use CoreShop\Component\Order\Repository\OrderRepositoryInterface;
 use Pimcore\Model\DataObject\Concrete;
 
-final class OrderExpiration implements ProposalExpirationInterface
+final class OrderExpiration implements OrderExpirationInterface
 {
     private OrderRepositoryInterface $orderRepository;
     private StateMachineApplier $stateMachineApplier;
