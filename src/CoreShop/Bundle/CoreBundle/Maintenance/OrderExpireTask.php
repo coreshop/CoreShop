@@ -14,21 +14,21 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\CoreBundle\Maintenance;
 
-use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
+use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
 use CoreShop\Component\Core\Configuration\ConfigurationServiceInterface;
 use Pimcore\Maintenance\TaskInterface;
 
 final class OrderExpireTask implements TaskInterface
 {
     private ConfigurationServiceInterface $configurationService;
-    private ProposalExpirationInterface $proposalExpiration;
+    private OrderExpirationInterface $proposalExpiration;
     private string $type;
     private int $days;
     private array $params;
 
     public function __construct(
         ConfigurationServiceInterface $configurationService,
-        ProposalExpirationInterface $proposalExpiration,
+        OrderExpirationInterface $proposalExpiration,
         string $type,
         int $days = 0,
         array $params = []

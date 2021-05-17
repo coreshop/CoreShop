@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Command;
 
-use CoreShop\Bundle\OrderBundle\Expiration\ProposalExpirationInterface;
+use CoreShop\Bundle\OrderBundle\Expiration\OrderExpirationInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -22,11 +22,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class CartExpireCommand extends Command
 {
-    protected ProposalExpirationInterface $cartExpiration;
+    protected OrderExpirationInterface $cartExpiration;
     protected int $days;
     protected array $params;
 
-    public function __construct(ProposalExpirationInterface $cartExpiration, int $days = 0, array $params = [])
+    public function __construct(OrderExpirationInterface $cartExpiration, int $days = 0, array $params = [])
     {
         $this->cartExpiration = $cartExpiration;
         $this->days = $days;
