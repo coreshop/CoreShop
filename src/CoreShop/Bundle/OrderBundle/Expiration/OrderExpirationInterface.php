@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace CoreShop\Bundle\OrderBundle\Expiration;
 
-interface ProposalExpirationInterface
+interface OrderExpirationInterface
 {
     /**
      * @param int   $days

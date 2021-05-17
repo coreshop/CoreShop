@@ -7,6 +7,31 @@ CoreShop\Component\Order\Model\Order:
             exp: object.getToken()
             type: string
             groups: [List, Detailed]
+        saleState:
+            serialized_name: saleState
+            exp: object.getSaleState()
+            type: string
+            groups: [List, Detailed]
+        orderState:
+            serialized_name: orderState
+            exp: object.getOrderState()
+            type: string
+            groups: [List, Detailed]
+        shippingState:
+            serialized_name: shippingState
+            exp: object.getShippingState()
+            type: string
+            groups: [Detailed]
+        invoiceState:
+            serialized_name: invoiceState
+            exp: object.getInvoiceState()
+            type: string
+            groups: [Detailed]
+        paymentState:
+            serialized_name: paymentState
+            exp: object.getPaymentState()
+            type: string
+            groups: [Detailed]
         paymentProvider:
             serialized_name: paymentProvider
             exp: object.getPaymentProvider()
@@ -34,6 +59,11 @@ CoreShop\Component\Order\Model\Order:
             serialized_name: priceRuleItems
             exp: object.getPriceRuleItems()
             type: array
+            groups: [Detailed]
+        paymentTotal:
+            serialized_name: paymentTotal
+            exp: object.getPaymentTotal()
+            type: integer
             groups: [Detailed]
         totalTax:
             serialized_name: totalTax
@@ -154,6 +184,11 @@ CoreShop\Component\Order\Model\Order:
             serialized_name: orderNumber
             exp: object.getOrderNumber()
             type: string
+            groups: [Detailed]
+        orderDate:
+            serialized_name: orderDate
+            exp: object.getOrderDate()
+            type: DateTime
             groups: [Detailed]
         shippingAddress:
             serialized_name: shippingAddress

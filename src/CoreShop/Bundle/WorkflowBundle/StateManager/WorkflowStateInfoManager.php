@@ -89,8 +89,8 @@ final class WorkflowStateInfoManager implements WorkflowStateInfoManagerInterfac
         return $data;
     }
 
-    public function getStateHistory($proposal): array
+    public function getStateHistory($order): array
     {
-        return $this->historyRepository->getHistory($proposal);
+        return $this->historyRepository->getHistory($order);
     }
 }

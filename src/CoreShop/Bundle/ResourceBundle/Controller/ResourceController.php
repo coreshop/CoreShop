@@ -126,26 +126,26 @@ class ResourceController extends AdminController
 
         if (strlen($name) <= 0) {
             return $this->viewHandler->handle(['success' => false]);
-        } else {
-            $resource = $this->factory->createNew();
-
-            if ($resource instanceof ResourceInterface) {
-                $resource->setValue('name', $name);
-            }
-
-            foreach ($request->request->all() as $key => $value) {
-                $resource->setValue($key, $value);
-            }
-
-            $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
-
-            $this->manager->persist($resource);
-            $this->manager->flush();
-
-            $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
-
-            return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
         }
+
+        $resource = $this->factory->createNew();
+
+        if ($resource instanceof ResourceInterface) {
+            $resource->setValue('name', $name);
+        }
+
+        foreach ($request->request->all() as $key => $value) {
+            $resource->setValue($key, $value);
+        }
+
+        $this->eventDispatcher->dispatchPreEvent('create', $this->metadata, $resource, $request);
+
+        $this->manager->persist($resource);
+        $this->manager->flush();
+
+        $this->eventDispatcher->dispatchPostEvent('create', $this->metadata, $resource, $request);
+
+        return $this->viewHandler->handle(['data' => $resource, 'success' => true], ['group' => 'Detailed']);
     }
 
     public function deleteAction(Request $request)
