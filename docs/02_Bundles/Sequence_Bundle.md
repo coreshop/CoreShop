@@ -2,7 +2,7 @@
 
 ## Installation
 ```bash
-$ composer require coreshop/sequence-bundle:^2.0
+$ composer require coreshop/sequence-bundle:^3.0
 ```
 
 ### Adding required bundles to kernel
