@@ -13,16 +13,16 @@
 namespace CoreShop\Bundle\CoreBundle\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20200715071804 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20200715071804 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         //update translations
         $this->container->get('coreshop.resource.installer.shared_translations')->installResources(new NullOutput(), 'coreshop');
@@ -31,7 +31,7 @@ class Version20200715071804 extends AbstractPimcoreMigration implements Containe
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
     }
 }
