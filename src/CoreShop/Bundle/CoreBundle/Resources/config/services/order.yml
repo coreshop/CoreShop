@@ -25,7 +25,7 @@ services:
             - '@CoreShop\Component\Core\Order\Transformer\OrderItemToShipmentItemTransformer.inner'
 
     coreshop.maintenance.cart.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
             - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - '@CoreShop\Bundle\OrderBundle\Expiration\CartExpiration'
@@ -36,7 +36,7 @@ services:
             - { name: pimcore.maintenance.task, type: coreshop_expire_carts }
 
     coreshop.maintenance.order.expire_task:
-        class: CoreShop\Bundle\CoreBundle\Maintenance\ProposalExpireTask
+        class: CoreShop\Bundle\CoreBundle\Maintenance\OrderExpireTask
         arguments:
             - '@CoreShop\Component\Core\Configuration\ConfigurationServiceInterface'
             - '@CoreShop\Bundle\OrderBundle\Expiration\OrderExpiration'

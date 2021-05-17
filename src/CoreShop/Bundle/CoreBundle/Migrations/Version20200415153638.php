@@ -6,21 +6,19 @@ use CoreShop\Component\Core\Model\OrderInterface;
 use CoreShop\Component\Order\OrderSaleStates;
 use CoreShop\Component\Pimcore\BatchProcessing\BatchListing;
 use Doctrine\DBAL\Schema\Schema;
-use Pimcore\Migrations\Migration\AbstractPimcoreMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class Version20200415153638 extends AbstractPimcoreMigration implements ContainerAwareInterface
+class Version20200415153638 extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
-        $this->writeMessage('Start migration for Order Objects');
-
         $orderList = $this->container->get('coreshop.repository.order')->getList();
         $batchList = new BatchListing($orderList, 50);
 
@@ -77,16 +75,12 @@ class Version20200415153638 extends AbstractPimcoreMigration implements Containe
 
             $order->save();
         }
-
-        foreach ($fieldsNotMigrated as $from => $to) {
-            $this->writeMessage(sprintf('Could not migrate %s to %s', $from, $to));
-        }
     }
 
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
 

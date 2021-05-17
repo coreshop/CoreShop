@@ -27,12 +27,12 @@ use Pimcore\Model\DataObject;
 
 class DemoFilter implements GridFilterInterface
 {
-    public function getName()
+    public function getName(): string
     {
         return 'coreshop.order_filter.shipment_apply';
     }
 
-    public function filter(DataObject\Listing $list, array $context)
+    public function filter(DataObject\Listing $list, array $context): DataObject\Listing
     {
         $list->onCreateQuery(function (QueryBuilder $select) use ($list) {
             $select->join(
@@ -47,7 +47,7 @@ class DemoFilter implements GridFilterInterface
         return $list;
     }
 
-    public function supports($listType)
+    public function supports(string $listType): bool
     {
         return $listType === 'coreshop_order';
     }

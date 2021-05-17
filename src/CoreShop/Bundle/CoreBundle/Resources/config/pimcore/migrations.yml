@@ -1,0 +1,3 @@
+doctrine_migrations:
+    migrations_paths:
+        'CoreShop\Bundle\CoreShopCoreBundle\Migrations': '@CoreShopCoreBundle/Migrations'
